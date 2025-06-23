@@ -4549,182 +4549,719 @@
 // export default TokenRoadmap;
 
 
-import React from 'react';
+// import React from 'react';
 
-const phaseData = [
-  {
-    status: "Live",
-    phaseNo: "Phase 1",
-    tokens: "10 Billion Tokens",
-    price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-    button: "Buy Now",
-    roadmapText: "Launching mobile application, Dapp Integration, Own Crypto Wallet Development"
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 2",
-    tokens: "20 Billion Tokens",
-    price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-    button: "Coming Soon",
-    roadmapText: "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development"
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 3",
-    tokens: "25 Billion Tokens",
-    price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-    button: "Coming Soon",
-    roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration"
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 4",
-    tokens: "30 Billion Tokens",
-    price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-    button: "Coming Soon",
-    roadmapText: "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway"
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 5",
-    tokens: "25 Billion Tokens",
-    price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-    button: "Coming Soon",
-    roadmapText: "Global Exchange Listings and More..."
-  },
-];
+// const phaseData = [
+//   {
+//     status: "Live",
+//     phaseNo: "Phase 1",
+//     tokens: "10 Billion Tokens",
+//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
+//     button: "Buy Now",
+//     roadmapText: "Launching mobile application, Dapp Integration, Own Crypto Wallet Development"
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 2",
+//     tokens: "20 Billion Tokens",
+//     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
+//     button: "Coming Soon",
+//     roadmapText: "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development"
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 3",
+//     tokens: "25 Billion Tokens",
+//     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
+//     button: "Coming Soon",
+//     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration"
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 4",
+//     tokens: "30 Billion Tokens",
+//     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
+//     button: "Coming Soon",
+//     roadmapText: "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway"
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 5",
+//     tokens: "25 Billion Tokens",
+//     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
+//     button: "Coming Soon",
+//     roadmapText: "Global Exchange Listings and More..."
+//   },
+// ];
 
-const TokenRoadmap = () => {
+// const TokenRoadmap = () => {
+//   return (
+//     <div className="min-h-screen p-6 sm:p-8  text-white">
+//       <div className="max-w-6xl mx-auto">
+//         <div className="text-center mb-12">
+//           <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
+//             Token Sale <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 to-green-500">Roadmap</span>
+//           </h1>
+//           {/* <p className="text-teal-200 text-base sm:text-lg">Join our phased token launch journey</p> */}
+//         </div>
+
+//         <div className="relative max-w-5xl mx-auto">
+//           <div className="absolute left-6 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-1 z-0" style={{ background: 'linear-gradient(to bottom, #5eead4, #14b8a6)' }}></div>
+
+//           <div className="space-y-16 md:space-y-24">
+//             {phaseData.map((phase, index) => {
+//               const isLive = phase.status === "Live";
+
+//               const cardClass = `
+//                 relative rounded-2xl p-6 border transition-all duration-300
+//                 ${isLive
+//                   ? "bg-gradient-to-br from-green-900 via-green-700 to-lime-600 ring-2 ring-lime-400/50 shadow-2xl hover:scale-[1.03]"
+//                   : "bg-gradient-to-br from-green to-lime-600 border-green-700 text-teal-100 shadow-lg opacity-90 hover:scale-100"}
+//               `;
+
+//               const buttonClass = `
+//                 w-full py-3 px-6 rounded-full font-semibold text-sm sm:text-base transition-all duration-300
+//                 ${isLive
+//                   ? "bg-gradient-to-r from-green-500 to-lime-400 text-white hover:scale-105 shadow-md"
+//                   : "bg-gradient-to-r from-green-500 to-lime-400 text-teal-200 cursor-not-allowed"}
+//               `;
+
+//               const badgeClass = `
+//                 px-4 py-1 rounded-full text-sm font-semibold shadow-sm
+//                 ${isLive ? "bg-green-500 text-white animate-pulse" : "bg-teal-600 text-white"}
+//               `;
+
+//               return (
+//                 <div key={index} className="relative">
+//                   {/* Desktop layout */}
+//                   <div className="hidden md:grid md:grid-cols-2 md:items-center md:gap-8">
+//                     {index % 2 === 0 ? (
+//                       <div className="flex justify-end pr-4">
+//                         <div className={cardClass}>
+//                           <div className="absolute -top-3 right-6">
+//                             <span className={badgeClass}>{phase.status}</span>
+//                           </div>
+//                           <h3 className="text-2xl font-bold mb-3">{phase.phaseNo}</h3>
+//                           <div className="mb-4 space-y-2">
+//                             <div className="flex items-center gap-2 text-lime-300">
+//                               <div className="w-2 h-2 bg-lime-400 rounded-full"></div>
+//                               <span>{phase.tokens}</span>
+//                             </div>
+//                             <p className="text-sm text-white">{phase.price}</p>
+//                           </div>
+//                           <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
+//                             <p className="text-sm text-teal-100">{phase.roadmapText}</p>
+//                           </div>
+//                           <button className={buttonClass} disabled={!isLive}>{phase.button}</button>
+//                           <div className="absolute top-1/2 right-0 translate-x-full -translate-y-1/2 w-8 h-0.5 bg-gradient-to-r from-teal-300 to-green-500 z-10"></div>
+//                         </div>
+//                       </div>
+//                     ) : (
+//                       <div></div>
+//                     )}
+
+//                     {index % 2 === 1 ? (
+//                       <div className="flex justify-start pl-4">
+//                         <div className={cardClass}>
+//                           <div className="absolute -top-3 left-6">
+//                             <span className={badgeClass}>{phase.status}</span>
+//                           </div>
+//                           <h3 className="text-2xl font-bold mb-3">{phase.phaseNo}</h3>
+//                           <div className="mb-4 space-y-2">
+//                             <div className="flex items-center gap-2 text-lime-300">
+//                               <div className="w-2 h-2 bg-lime-400 rounded-full"></div>
+//                               <span>{phase.tokens}</span>
+//                             </div>
+//                             <p className="text-sm text-white">{phase.price}</p>
+//                           </div>
+//                           <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
+//                             <p className="text-sm text-teal-100">{phase.roadmapText}</p>
+//                           </div>
+//                           <button className={buttonClass} disabled={!isLive}>{phase.button}</button>
+//                           <div className="absolute top-1/2 left-0 -translate-x-full -translate-y-1/2 w-8 h-0.5 bg-gradient-to-l from-teal-300 to-green-500 z-10"></div>
+//                         </div>
+//                       </div>
+//                     ) : (
+//                       <div></div>
+//                     )}
+
+//                     {/* Timeline node */}
+//                     <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+//                       <div className={`w-6 h-6 rounded-full border-4 ${isLive ? "bg-lime-300 border-green-500 shadow-xl" : "bg-teal-400 border-teal-300"}`}></div>
+//                     </div>
+//                   </div>
+
+//                   {/* Mobile layout */}
+//                   <div className="md:hidden flex items-start gap-1">
+//                     <div className="mt-8">
+//                       <div className={`relative left-1/2 w-6 h-6 rounded-full border-4 ${isLive ? "bg-lime-300 border-green-500 shadow-xl" : "bg-gradient-to-br from-teal-900 via-green-700 to-teal-600 border-teal-300"}`}></div>
+//                     </div>
+//                     <div className="mt-11 w-6 h-0.5 bg-gradient-to-r from-teal-300 to-green-500"></div>
+//                     <div className="flex-1">
+//                       <div className={`${cardClass} p-5`}>
+//                         <div className="absolute -top-3 left-4">
+//                           <span className={`text-xs ${badgeClass}`}>{phase.status}</span>
+//                         </div>
+//                         <h3 className="text-lg font-bold mb-3">{phase.phaseNo}</h3>
+//                         <div className="mb-3 space-y-2">
+//                           <div className="flex items-center gap-2 text-lime-300 text-sm">
+//                             <div className="w-2 h-2 bg-lime-400 rounded-full"></div>
+//                             <span>{phase.tokens}</span>
+//                           </div>
+//                           <p className="text-xs text-white">{phase.price}</p>
+//                         </div>
+//                         <div className="bg-white/5 border border-white/10 rounded-lg p-3 mb-3">
+//                           <p className="text-xs text-teal-100">{phase.roadmapText}</p>
+//                         </div>
+//                         <button className={buttonClass} disabled={!isLive}>{phase.button}</button>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TokenRoadmap;
+
+
+
+
+// import React from "react";
+
+// export default function TimelinePrimaryColor() {
+//   const timelineData = [
+//     {
+//       date: "P1 2024",
+//       title: "CONCEPT DEVELOPMENT AND TEAM FORMATION",
+//       content: "Establish the foundational concept of JAIMAX TOKEN. Assemble a dedicated team of blockchain experts, developers, marketers, and legal advisors."
+//     },
+//     {
+//       date: "P2 2024", 
+//       title: "SMART CONTRACT DEVELOPMENT AND SECURITY AUDITS",
+//       content: "Develop and deploy JAIMAX TOKEN smart contracts on the Binance Smart Chain (BSC). Conduct thorough security audits to ensure the robustness and security of the smart contracts."
+//     },
+//     {
+//       date: "P3 2024",
+//       title: "WEBSITE LAUNCH AND WHITEPAPER PUBLICATION", 
+//       content: "Launch the official JAIMAX TOKEN website. Publish the comprehensive white paper detailing the vision, technical architecture, and roadmap of JAIMAX TOKEN."
+//     },
+//     {
+//       date: "P4 2024",
+//       title: "PRE-SALE AND PUBLIC ICO LAUNCH",
+//       content: "Conduct the pre-sale and public Initial Coin Offering (ICO) of JAIMAX TOKEN. Initiate marketing campaigns to attract potential investors and build community engagement."
+//     },
+//     {
+//       date: "P5 2024",
+//       title: "MOBILE APP LAUNCH",
+//       content: "Launch JAIMAX TOKEN mobile apps for both Android and iOS platforms. Ensure the apps support seamless and secure transactions within the JAIMAX ecosystem."
+//     },
+//     {
+//       date: "P1 2025",
+//       title: "MAINNET LAUNCH AND DAPP INTEGRATIONS",
+//       content: "Launch the JAIMAX TOKEN mainnet. Integrate JAIMAX TOKEN with various decentralized applications (Dapps) to enhance its utility and adoption."
+//     },
+//     {
+//       date: "P2 2025",
+//       title: "EXPANSION OF USE CASES AND ECOSYSTEM DEVELOPMENT",
+//       content: "Expand JAIMAX TOKEN's use cases across different sectors, including DeFi, NFTS, and payments. Faster ecosystem development through collaborations and innovations."
+//     },
+//     {
+//       date: "P3 2025",
+//       title: "EXCHANGE LISTINGS & STRATEGIC PARTNERSHIPS",
+//       content: "List JAIMAX TOKEN on major cryptocurrency exchanges such as Binance, Coinbase, Kucoin, Gate.io, OKX, Bybit, and HTX. Forge strategic partnerships to enhance the JAIMAX TOKEN ecosystem and expand its use cases."
+//     },
+//     {
+//       date: "P4 2025",
+//       title: "JAIMAX CRYPTO EXCHANGE LAUNCH",
+//       content: "Following the successful first phase token sale, launch the JAIMAX Crypto Exchange. Provide a platform for trading a wide range of cryptocurrencies."
+//     },
+//     {
+//       date: "P5 2025",
+//       title: "MULTI-BLOCKCHAIN SUPPORT", 
+//       content: "Enhance JAIMAX TOKEN to support multiple blockchains, increasing its interoperability and reach."
+//     },
+//     {
+//       date: "P6 2025",
+//       title: "DEVELOPMENT OF JAIMAX BLOCKCHAIN",
+//       content: "Begin the development of JAIMAX COIN proprietary blockchain. Focus on creating a highly scalable, secure, and efficient blockchain network."
+//     },
+//     {
+//       date: "P7 2025",
+//       title: "DEVELOPMENT OF JMC SWAP, DAPPS, AND WALLETS",
+//       content: "Develop and launch JMC Swap, enabling users to exchange tokens seamlessly. Introduce various Dapps and secure JMC Wallets for storing JAIMAX COIN and other cryptocurrencies."
+//     },
+//     {
+//       date: "P8 2025",
+//       title: "MARKET POSITIONING & EXCHANGE PRICE",
+//       content: "Aim for JAIMAX COIN to achieve a top 100 ranking on Coin Market Cap (CMC). Set the initial exchange listing price at INR 4.0 (approximately USD 0.046)."
+//     },
+//     {
+//       date: "P1 2026",
+//       title: "COMPREHENSIVE CRYPTO SUPPORT & PAYMENT GATEWAY DEVELOPMENT",
+//       content: "Ensure JAIMAX Coin supports all major cryptocurrencies. Develop an integrated payment gateway for facilitating all types of money transactions."
+//     },
+//     {
+//       date: "P2 2026",
+//       title: "GLOBAL EXCHANGE LISTINGS",
+//       content: "Continue listing JAIMAX COIN on leading global exchanges to enhance liquidity and accessibility. Focus on establishing a strong global presence and user base."
+//     }
+//   ];
+
+//   return (
+//     <div className="min-h-screen  relative overflow-hidden">
+//       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+//         <div className="text-center mb-12 md:mb-24">
+//           <div className="relative inline-block">
+//             <p className="text-slate-400 text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 md:mb-6 font-medium">JAIMAX TOKEN</p>
+//             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-gradient-to-r from-teal-300 via-green-300 to-lime-300 bg-clip-text mb-4 tracking-tight">
+//               Road Map
+//             </h1>
+//             <div className="w-16 sm:w-20 md:w-24 h-0.5 md:h-1 bg-gradient-to-r from-teal-500 via-green-400 to-lime-500 mx-auto rounded-full"></div>
+//           </div>
+//         </div>
+//         <div className="relative max-w-4xl mx-auto hidden lg:block">
+//           <div className="absolute  top-0 h-full flex items-center justify-center w-20 xl:w-24 pointer-events-none">
+//             <div className="relative h-full flex items-center">
+//               <h1 className="text-6xl xl:text-8xl font-black text-transparent bg-gradient-to-b from-purple-400/40 via-pink-400/35 to-purple-500/30 bg-clip-text transform -rotate-90 whitespace-nowrap select-none tracking-[0.4em] xl:tracking-[0.2em] drop-shadow-lg">
+//                 ROADMAP
+//               </h1>
+//               <div className="absolute inset-0 text-6xl xl:text-8xl font-black text-purple-500/10 transform -rotate-90 whitespace-nowrap select-none blur-sm tracking-[0.4em] xl:tracking-[0.6em] flex items-center">
+//                 ROADMAP
+//               </div>
+//             </div>
+//           </div>
+//           <div className="absolute left-56 xl:left-[15rem] top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+          
+//           <div className="space-y-6 xl:space-y-4">
+//             {timelineData.map((item, index) => (
+//               <div key={index} className="relative flex items-center group">
+//                 <div className="w-48 xl:w-52 text-right pr-6 xl:pr-8">
+//                   <h3 className="text-xl xl:text-2xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text group-hover:from-lime-300 group-hover:to-teal-300 transition-all duration-500">
+//                     {item.date}
+//                   </h3>
+//                 </div>
+                
+//                 {/* Enhanced Timeline node */}
+//                 <div className="relative z-10 ml-5">
+//                   <div className="w-6 h-6  bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-4 border-slate-900 shadow-xl shadow-teal-400/30 group-hover:scale-125 transition-transform duration-300">
+//                     <div className="absolute inset-0 bg-teal-400 rounded-full  opacity-40" ></div>
+//                     <div className="absolute inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
+//                   </div>
+//                 </div>
+                
+//                 {/* Enhanced Horizontal line to content */}
+//                 <div className="w-12 xl:w-16 h-0.5 bg-gradient-to-r from-teal-400 via-teal-300 to-transparent group-hover:w-16 xl:group-hover:w-20 transition-all duration-300"></div>
+//                 <div className="flex-1 ml-3 xl:ml-4">
+//                   <div className=" rounded-2xl p-4 xl:p-4   max-w-lg xl:max-w-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+//                     <h4 className="text-base xl:text-lg font-bold text-teal-300 mb-2 xl:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+//                       {item.title}
+//                     </h4>
+//                     <p className="text-slate-300 text-sm xl:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+//                       {item.content}
+//                     </p>
+//                   </div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Timeline - Mobile/Tablet Layout */}
+//         <div className="lg:hidden">
+//           <div className="relative">
+//             {/* Vertical timeline line for mobile */}
+//             <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+            
+//             <div className="space-y-8 md:space-y-1">
+//               {timelineData.map((item, index) => (
+//                 <div key={index} className="relative flex items-start group">
+//                   {/* Timeline node for mobile */}
+//                   <div className="relative z-10 mt-2">
+//                     <div className="w-4 h-4 md:w-5 md:h-5 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-2 md:border-3 border-slate-900 shadow-lg shadow-teal-400/30">
+//                       <div className="absolute inset-0 bg-teal-400 rounded-full animate-ping opacity-40" style={{animationDelay: `${index * 200}ms`}}></div>
+//                       <div className="absolute inset-0.5 md:inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
+//                     </div>
+//                   </div>
+                  
+//                   {/* Content for mobile */}
+//                   <div className="flex-1 ml-6 md:ml-8">
+//                     <div className="bg-gradient-to-br from-slate-800/60 via-teal-900/40 to-slate-800/60 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 md:p-6 border border-teal-600/50 shadow-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+//                       <h3 className="text-lg md:text-xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text mb-2 md:mb-3">
+//                         {item.date}
+//                       </h3>
+//                       <h4 className="text-sm md:text-base font-bold text-teal-300 mb-2 md:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+//                         {item.title}
+//                       </h4>
+//                       <p className="text-slate-300 text-sm md:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+//                         {item.content}
+//                       </p>
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+// import React from "react";
+
+// export default function TimelinePrimaryColor() {
+//   const timelineData = [
+//     {
+//       date: "P1 2024",
+//       title: "CONCEPT DEVELOPMENT AND TEAM FORMATION",
+//       content: "Establish the foundational concept of JAIMAX TOKEN. Assemble a dedicated team of blockchain experts, developers, marketers, and legal advisors."
+//     },
+//     {
+//       date: "P2 2024", 
+//       title: "SMART CONTRACT DEVELOPMENT AND SECURITY AUDITS",
+//       content: "Develop and deploy JAIMAX TOKEN smart contracts on the Binance Smart Chain (BSC). Conduct thorough security audits to ensure the robustness and security of the smart contracts."
+//     },
+//     {
+//       date: "P3 2024",
+//       title: "WEBSITE LAUNCH AND WHITEPAPER PUBLICATION", 
+//       content: "Launch the official JAIMAX TOKEN website. Publish the comprehensive white paper detailing the vision, technical architecture, and roadmap of JAIMAX TOKEN."
+//     },
+//     {
+//       date: "P4 2024",
+//       title: "PRE-SALE AND PUBLIC ICO LAUNCH",
+//       content: "Conduct the pre-sale and public Initial Coin Offering (ICO) of JAIMAX TOKEN. Initiate marketing campaigns to attract potential investors and build community engagement."
+//     },
+//     {
+//       date: "P5 2024",
+//       title: "MOBILE APP LAUNCH",
+//       content: "Launch JAIMAX TOKEN mobile apps for both Android and iOS platforms. Ensure the apps support seamless and secure transactions within the JAIMAX ecosystem."
+//     },
+//     {
+//       date: "P1 2025",
+//       title: "MAINNET LAUNCH AND DAPP INTEGRATIONS",
+//       content: "Launch the JAIMAX TOKEN mainnet. Integrate JAIMAX TOKEN with various decentralized applications (Dapps) to enhance its utility and adoption."
+//     },
+//     {
+//       date: "P2 2025",
+//       title: "EXPANSION OF USE CASES AND ECOSYSTEM DEVELOPMENT",
+//       content: "Expand JAIMAX TOKEN's use cases across different sectors, including DeFi, NFTS, and payments. Faster ecosystem development through collaborations and innovations."
+//     },
+//     {
+//       date: "P3 2025",
+//       title: "EXCHANGE LISTINGS & STRATEGIC PARTNERSHIPS",
+//       content: "List JAIMAX TOKEN on major cryptocurrency exchanges such as Binance, Coinbase, Kucoin, Gate.io, OKX, Bybit, and HTX. Forge strategic partnerships to enhance the JAIMAX TOKEN ecosystem and expand its use cases."
+//     },
+//     {
+//       date: "P4 2025",
+//       title: "JAIMAX CRYPTO EXCHANGE LAUNCH",
+//       content: "Following the successful first phase token sale, launch the JAIMAX Crypto Exchange. Provide a platform for trading a wide range of cryptocurrencies."
+//     },
+//     {
+//       date: "P5 2025",
+//       title: "MULTI-BLOCKCHAIN SUPPORT", 
+//       content: "Enhance JAIMAX TOKEN to support multiple blockchains, increasing its interoperability and reach."
+//     },
+//     {
+//       date: "P6 2025",
+//       title: "DEVELOPMENT OF JAIMAX BLOCKCHAIN",
+//       content: "Begin the development of JAIMAX COIN proprietary blockchain. Focus on creating a highly scalable, secure, and efficient blockchain network."
+//     },
+//     {
+//       date: "P7 2025",
+//       title: "DEVELOPMENT OF JMC SWAP, DAPPS, AND WALLETS",
+//       content: "Develop and launch JMC Swap, enabling users to exchange tokens seamlessly. Introduce various Dapps and secure JMC Wallets for storing JAIMAX COIN and other cryptocurrencies."
+//     },
+//     {
+//       date: "P8 2025",
+//       title: "MARKET POSITIONING & EXCHANGE PRICE",
+//       content: "Aim for JAIMAX COIN to achieve a top 100 ranking on Coin Market Cap (CMC). Set the initial exchange listing price at INR 4.0 (approximately USD 0.046)."
+//     },
+//     {
+//       date: "P1 2026",
+//       title: "COMPREHENSIVE CRYPTO SUPPORT & PAYMENT GATEWAY DEVELOPMENT",
+//       content: "Ensure JAIMAX Coin supports all major cryptocurrencies. Develop an integrated payment gateway for facilitating all types of money transactions."
+//     },
+//     {
+//       date: "P2 2026",
+//       title: "GLOBAL EXCHANGE LISTINGS",
+//       content: "Continue listing JAIMAX COIN on leading global exchanges to enhance liquidity and accessibility. Focus on establishing a strong global presence and user base."
+//     }
+//   ];
+
+//   return (
+//     <div className="min-h-screen relative overflow-hidden"style={{backgroundImage:"url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/video-bg.png')",backgroundRepeat:'no-repeat'}}>
+//       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+//         <div className="text-center mb-12 md:mb-24" >
+//           <div className="relative inline-block">
+//             <p className="text-slate-400 text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 md:mb-6 font-medium">JAIMAX TOKEN</p>
+//             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-gradient-to-r from-teal-300 via-green-300 to-lime-300 bg-clip-text mb-4 tracking-tight">
+//               Road Map
+//             </h1>
+            
+//             <div className="w-16 sm:w-20 md:w-24 h-0.5 md:h-1 bg-gradient-to-r from-teal-500 via-green-400 to-lime-500 mx-auto rounded-full"></div>
+//           </div>
+//         </div>
+
+//         {/* Desktop Layout */}
+//         <div className="relative max-w-6xl mx-auto hidden lg:block">
+//           <div className="absolute -left-20 top-0  pointer-events-none">
+//               <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png"   alt="" />
+//           </div>
+//           <div className="absolute left-56 xl:left-[15rem] top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+          
+//           <div className="space-y-6 xl:space-y-4">
+//             {timelineData.map((item, index) => (
+//               <div key={index} className="relative flex items-center group">
+//                 <div className="w-48 xl:w-52 text-right pr-6 xl:pr-8">
+//                   <h3 className="text-xl xl:text-2xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text group-hover:from-lime-300 group-hover:to-teal-300 transition-all duration-500">
+//                     {item.date}
+//                   </h3>
+//                 </div>
+                
+//                 <div className="relative z-10 ml-5">
+//                   <div className="w-6 h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-4 border-slate-950 shadow-xl shadow-teal-400/30 group-hover:scale-125 transition-transform duration-300">
+//                     <div className="absolute inset-0 bg-teal-400 rounded-full opacity-40"></div>
+//                     <div className="absolute inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
+//                   </div>
+//                 </div>
+                
+//                 <div className="w-12 xl:w-16 h-0.5 bg-gradient-to-r from-teal-400 via-teal-300 to-transparent group-hover:w-16 xl:group-hover:w-20 transition-all duration-300"></div>
+//                 <div className="flex-1 ml-3 xl:ml-4">
+//                   <div className="rounded-2xl p-4 xl:p-4 max-w-lg xl:max-w-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+//                     <h4 className="text-base xl:text-lg font-bold text-teal-300 mb-2 xl:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+//                       {item.title}
+//                     </h4>
+//                     <p className="text-slate-300 text-sm xl:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+//                       {item.content}
+//                     </p>
+//                   </div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Mobile/Tablet Layout */}
+//         <div className="lg:hidden">
+//           <div className="relative max-w-4xl mx-auto">
+//             <div className="absolute left-4 sm:left-6 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+            
+//             <div className="space-y-6 sm:space-y-8 md:space-y-10">
+//               {timelineData.map((item, index) => (
+//                 <div key={index} className="relative flex items-start group">
+//                   <div className="relative z-10 mt-2">
+//                     <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-2 sm:border-3 md:border-4 border-slate-950 shadow-lg shadow-teal-400/30">
+//                       <div className="absolute inset-0 bg-teal-400 rounded-full animate-ping opacity-40" style={{animationDelay: `${index * 200}ms`}}></div>
+//                       <div className="absolute inset-0.5 sm:inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
+//                     </div>
+//                   </div>
+                  
+//                   <div className="flex-1 ml-6 sm:ml-8 md:ml-10">
+//                     <div className="bg-gradient-to-br from-slate-800/60 via-teal-900/40 to-slate-800/60 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-teal-600/50 shadow-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+//                       <h3 className="text-base sm:text-lg md:text-xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text mb-2 md:mb-3">
+//                         {item.date}
+//                       </h3>
+//                       <h4 className="text-sm sm:text-base md:text-lg font-bold text-teal-300 mb-2 md:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+//                         {item.title}
+//                       </h4>
+//                       <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+//                         {item.content}
+//                       </p>
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+import React from "react";
+
+export default function TimelinePrimaryColor() {
+  const timelineData = [
+    {
+      date: "P1 2024",
+      title: "CONCEPT DEVELOPMENT AND TEAM FORMATION",
+      content: "Establish the foundational concept of JAIMAX TOKEN. Assemble a dedicated team of blockchain experts, developers, marketers, and legal advisors."
+    },
+    {
+      date: "P2 2024", 
+      title: "SMART CONTRACT DEVELOPMENT AND SECURITY AUDITS",
+      content: "Develop and deploy JAIMAX TOKEN smart contracts on the Binance Smart Chain (BSC). Conduct thorough security audits to ensure the robustness and security of the smart contracts."
+    },
+    {
+      date: "P3 2024",
+      title: "WEBSITE LAUNCH AND WHITEPAPER PUBLICATION", 
+      content: "Launch the official JAIMAX TOKEN website. Publish the comprehensive white paper detailing the vision, technical architecture, and roadmap of JAIMAX TOKEN."
+    },
+    {
+      date: "P4 2024",
+      title: "PRE-SALE AND PUBLIC ICO LAUNCH",
+      content: "Conduct the pre-sale and public Initial Coin Offering (ICO) of JAIMAX TOKEN. Initiate marketing campaigns to attract potential investors and build community engagement."
+    },
+    {
+      date: "P5 2024",
+      title: "MOBILE APP LAUNCH",
+      content: "Launch JAIMAX TOKEN mobile apps for both Android and iOS platforms. Ensure the apps support seamless and secure transactions within the JAIMAX ecosystem."
+    },
+    {
+      date: "P1 2025",
+      title: "MAINNET LAUNCH AND DAPP INTEGRATIONS",
+      content: "Launch the JAIMAX TOKEN mainnet. Integrate JAIMAX TOKEN with various decentralized applications (Dapps) to enhance its utility and adoption."
+    },
+    {
+      date: "P2 2025",
+      title: "EXPANSION OF USE CASES AND ECOSYSTEM DEVELOPMENT",
+      content: "Expand JAIMAX TOKEN's use cases across different sectors, including DeFi, NFTS, and payments. Faster ecosystem development through collaborations and innovations."
+    },
+    {
+      date: "P3 2025",
+      title: "EXCHANGE LISTINGS & STRATEGIC PARTNERSHIPS",
+      content: "List JAIMAX TOKEN on major cryptocurrency exchanges such as Binance, Coinbase, Kucoin, Gate.io, OKX, Bybit, and HTX. Forge strategic partnerships to enhance the JAIMAX TOKEN ecosystem and expand its use cases."
+    },
+    {
+      date: "P4 2025",
+      title: "JAIMAX CRYPTO EXCHANGE LAUNCH",
+      content: "Following the successful first phase token sale, launch the JAIMAX Crypto Exchange. Provide a platform for trading a wide range of cryptocurrencies."
+    },
+    {
+      date: "P5 2025",
+      title: "MULTI-BLOCKCHAIN SUPPORT", 
+      content: "Enhance JAIMAX TOKEN to support multiple blockchains, increasing its interoperability and reach."
+    },
+    {
+      date: "P6 2025",
+      title: "DEVELOPMENT OF JAIMAX BLOCKCHAIN",
+      content: "Begin the development of JAIMAX COIN proprietary blockchain. Focus on creating a highly scalable, secure, and efficient blockchain network."
+    },
+    {
+      date: "P7 2025",
+      title: "DEVELOPMENT OF JMC SWAP, DAPPS, AND WALLETS",
+      content: "Develop and launch JMC Swap, enabling users to exchange tokens seamlessly. Introduce various Dapps and secure JMC Wallets for storing JAIMAX COIN and other cryptocurrencies."
+    },
+    {
+      date: "P8 2025",
+      title: "MARKET POSITIONING & EXCHANGE PRICE",
+      content: "Aim for JAIMAX COIN to achieve a top 100 ranking on Coin Market Cap (CMC). Set the initial exchange listing price at INR 4.0 (approximately USD 0.046)."
+    },
+    {
+      date: "P1 2026",
+      title: "COMPREHENSIVE CRYPTO SUPPORT & PAYMENT GATEWAY DEVELOPMENT",
+      content: "Ensure JAIMAX Coin supports all major cryptocurrencies. Develop an integrated payment gateway for facilitating all types of money transactions."
+    },
+    {
+      date: "P2 2026",
+      title: "GLOBAL EXCHANGE LISTINGS",
+      content: "Continue listing JAIMAX COIN on leading global exchanges to enhance liquidity and accessibility. Focus on establishing a strong global presence and user base."
+    }
+  ];
+
   return (
-    <div className="min-h-screen p-6 sm:p-8  text-white">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
-            Token Sale <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 to-green-500">Roadmap</span>
-          </h1>
-          {/* <p className="text-teal-200 text-base sm:text-lg">Join our phased token launch journey</p> */}
+    <div className="min-h-screen relative overflow-hidden" style={{backgroundImage:"url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/video-bg.png')",backgroundRepeat:'no-repeat'}}>
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <div className="text-center mb-12 md:mb-24">
+          <div className="relative inline-block">
+            <p className="text-slate-400 text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 md:mb-6 font-medium">JAIMAX TOKEN</p>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-gradient-to-r from-teal-300 via-green-300 to-lime-300 bg-clip-text mb-4 tracking-tight">
+              Road Map
+            </h1>
+            
+            <div className="w-16 sm:w-20 md:w-24 h-0.5 md:h-1 bg-gradient-to-r from-teal-500 via-green-400 to-lime-500 mx-auto rounded-full"></div>
+          </div>
         </div>
 
-        <div className="relative max-w-5xl mx-auto">
-          <div className="absolute left-6 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-1 z-0" style={{ background: 'linear-gradient(to bottom, #5eead4, #14b8a6)' }}></div>
+        {/* Desktop Layout - Left Aligned */}
+        <div className="relative max-w-6xl mx-auto hidden lg:block">
+          {/* Roadmap image positioned at left side */}
+          <div className="absolute -left-20 top-0 pointer-events-none">
+            <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png" alt="" />
+          </div>
+          
+          {/* Timeline line positioned more to the right */}
+          <div className="absolute left-24 xl:left-32 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+          
+          <div className="space-y-6 xl:space-y-4 pl-20 xl:pl-28">
+            {timelineData.map((item, index) => (
+              <div key={index} className="relative flex items-center group">
+                {/* Timeline dot */}
+                <div className="relative z-10 ml-8">
+                  <div className="w-6 h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-4 border-slate-950 shadow-xl shadow-teal-400/30 group-hover:scale-125 transition-transform duration-300">
+                    <div className="absolute inset-0 bg-teal-400 rounded-full opacity-40"></div>
+                    <div className="absolute inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
+                  </div>
+                </div>
+                
+                {/* Connecting line */}
+                <div className="w-12 xl:w-16 h-0.5 bg-gradient-to-r from-teal-400 via-teal-300 to-transparent group-hover:w-16 xl:group-hover:w-20 transition-all duration-300"></div>
+                
+                {/* Content on the right side of timeline */}
+                <div className="flex-1 ml-3 xl:ml-4">
+                  <div className="rounded-2xl p-4 xl:p-4 max-w-lg xl:max-w-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+                    <h3 className="text-xl xl:text-2xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text group-hover:from-lime-300 group-hover:to-teal-300 transition-all duration-500 mb-2">
+                      {item.date}
+                    </h3>
+                    <h4 className="text-base xl:text-lg font-bold text-teal-300 mb-2 xl:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+                      {item.title}
+                    </h4>
+                    <p className="text-slate-300 text-sm xl:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+                      {item.content}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          <div className="space-y-16 md:space-y-24">
-            {phaseData.map((phase, index) => {
-              const isLive = phase.status === "Live";
-
-              const cardClass = `
-                relative rounded-2xl p-6 border transition-all duration-300
-                ${isLive
-                  ? "bg-gradient-to-br from-green-900 via-green-700 to-lime-600 ring-2 ring-lime-400/50 shadow-2xl hover:scale-[1.03]"
-                  : "bg-gradient-to-br from-orange-900 to-lime-600 border-green-700 text-teal-100 shadow-lg opacity-90 hover:scale-100"}
-              `;
-
-              const buttonClass = `
-                w-full py-3 px-6 rounded-full font-semibold text-sm sm:text-base transition-all duration-300
-                ${isLive
-                  ? "bg-gradient-to-r from-green-500 to-lime-400 text-white hover:scale-105 shadow-md"
-                  : "bg-gradient-to-r from-green-500 to-lime-400 text-teal-200 cursor-not-allowed"}
-              `;
-
-              const badgeClass = `
-                px-4 py-1 rounded-full text-sm font-semibold shadow-sm
-                ${isLive ? "bg-green-500 text-white animate-pulse" : "bg-teal-600 text-white"}
-              `;
-
-              return (
-                <div key={index} className="relative">
-                  {/* Desktop layout */}
-                  <div className="hidden md:grid md:grid-cols-2 md:items-center md:gap-8">
-                    {index % 2 === 0 ? (
-                      <div className="flex justify-end pr-4">
-                        <div className={cardClass}>
-                          <div className="absolute -top-3 right-6">
-                            <span className={badgeClass}>{phase.status}</span>
-                          </div>
-                          <h3 className="text-2xl font-bold mb-3">{phase.phaseNo}</h3>
-                          <div className="mb-4 space-y-2">
-                            <div className="flex items-center gap-2 text-lime-300">
-                              <div className="w-2 h-2 bg-lime-400 rounded-full"></div>
-                              <span>{phase.tokens}</span>
-                            </div>
-                            <p className="text-sm text-white">{phase.price}</p>
-                          </div>
-                          <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
-                            <p className="text-sm text-teal-100">{phase.roadmapText}</p>
-                          </div>
-                          <button className={buttonClass} disabled={!isLive}>{phase.button}</button>
-                          <div className="absolute top-1/2 right-0 translate-x-full -translate-y-1/2 w-8 h-0.5 bg-gradient-to-r from-teal-300 to-green-500 z-10"></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-
-                    {index % 2 === 1 ? (
-                      <div className="flex justify-start pl-4">
-                        <div className={cardClass}>
-                          <div className="absolute -top-3 left-6">
-                            <span className={badgeClass}>{phase.status}</span>
-                          </div>
-                          <h3 className="text-2xl font-bold mb-3">{phase.phaseNo}</h3>
-                          <div className="mb-4 space-y-2">
-                            <div className="flex items-center gap-2 text-lime-300">
-                              <div className="w-2 h-2 bg-lime-400 rounded-full"></div>
-                              <span>{phase.tokens}</span>
-                            </div>
-                            <p className="text-sm text-white">{phase.price}</p>
-                          </div>
-                          <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
-                            <p className="text-sm text-teal-100">{phase.roadmapText}</p>
-                          </div>
-                          <button className={buttonClass} disabled={!isLive}>{phase.button}</button>
-                          <div className="absolute top-1/2 left-0 -translate-x-full -translate-y-1/2 w-8 h-0.5 bg-gradient-to-l from-teal-300 to-green-500 z-10"></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-
-                    {/* Timeline node */}
-                    <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                      <div className={`w-6 h-6 rounded-full border-4 ${isLive ? "bg-lime-300 border-green-500 shadow-xl" : "bg-teal-400 border-teal-300"}`}></div>
+        {/* Mobile/Tablet Layout */}
+        <div className="lg:hidden">
+          <div className="relative max-w-4xl mx-auto">
+            <div className="absolute left-4 sm:left-6 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+            
+            <div className="space-y-6 sm:space-y-8 md:space-y-10">
+              {timelineData.map((item, index) => (
+                <div key={index} className="relative flex items-start group">
+                  <div className="relative z-10 mt-2">
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-2 sm:border-3 md:border-4 border-slate-950 shadow-lg shadow-teal-400/30">
+                      <div className="absolute inset-0 bg-teal-400 rounded-full animate-ping opacity-40" style={{animationDelay: `${index * 200}ms`}}></div>
+                      <div className="absolute inset-0.5 sm:inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
                     </div>
                   </div>
-
-                  {/* Mobile layout */}
-                  <div className="md:hidden flex items-start gap-1">
-                    <div className="mt-8">
-                      <div className={`relative left-1/2 w-6 h-6 rounded-full border-4 ${isLive ? "bg-lime-300 border-green-500 shadow-xl" : "bg-gradient-to-br from-teal-900 via-green-700 to-teal-600 border-teal-300"}`}></div>
-                    </div>
-                    <div className="mt-11 w-6 h-0.5 bg-gradient-to-r from-teal-300 to-green-500"></div>
-                    <div className="flex-1">
-                      <div className={`${cardClass} p-5`}>
-                        <div className="absolute -top-3 left-4">
-                          <span className={`text-xs ${badgeClass}`}>{phase.status}</span>
-                        </div>
-                        <h3 className="text-lg font-bold mb-3">{phase.phaseNo}</h3>
-                        <div className="mb-3 space-y-2">
-                          <div className="flex items-center gap-2 text-lime-300 text-sm">
-                            <div className="w-2 h-2 bg-lime-400 rounded-full"></div>
-                            <span>{phase.tokens}</span>
-                          </div>
-                          <p className="text-xs text-white">{phase.price}</p>
-                        </div>
-                        <div className="bg-white/5 border border-white/10 rounded-lg p-3 mb-3">
-                          <p className="text-xs text-teal-100">{phase.roadmapText}</p>
-                        </div>
-                        <button className={buttonClass} disabled={!isLive}>{phase.button}</button>
-                      </div>
+                  
+                  <div className="flex-1 ml-6 sm:ml-8 md:ml-10">
+                    <div className="bg-gradient-to-br from-slate-800/60 via-teal-900/40 to-slate-800/60 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-teal-600/50 shadow-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+                      <h3 className="text-base sm:text-lg md:text-xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text mb-2 md:mb-3">
+                        {item.date}
+                      </h3>
+                      <h4 className="text-sm sm:text-base md:text-lg font-bold text-teal-300 mb-2 md:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+                        {item.title}
+                      </h4>
+                      <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+                        {item.content}
+                      </p>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default TokenRoadmap;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Wallet, TrendingUp, PieChart, BarChart3, Coins } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const CryptoServicesFlipCards = () => {
   const services = [
@@ -46,75 +47,129 @@ const CryptoServicesFlipCards = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-white mb-6 bg-gradient-to-r from-[#bace27] to-[#1e964a] bg-clip-text text-transparent">
+          <motion.h1
+            className="text-5xl font-bold text-white mb-6 bg-gradient-to-r from-[#bace27] to-[#1e964a] bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             Our Service Offerings
-          </h1>
-          <p className="text-xl text-[#bace27] max-w-3xl mx-auto mb-6 font-semibold">
+          </motion.h1>
+          <motion.p
+            className="text-xl text-[#bace27] max-w-3xl mx-auto mb-6 font-semibold"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             Explore the Future of Digital Finance with Jaimax – The Best Crypto Coin in India
-          </p>
-          <p className="text-gray-300 max-w-4xl mx-auto leading-relaxed text-lg">
+          </motion.p>
+          <motion.p
+            className="text-gray-300 max-w-4xl mx-auto leading-relaxed text-lg"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
             At Jaimax, we provide a powerful range of crypto services designed to help users grow, secure, and manage their digital assets with ease. Whether you're a new investor or a crypto-savvy expert, our platform delivers the tools and features you need to succeed in the world of cryptocurrency. Discover why Jaimax is fast becoming the best crypto coin in India.
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#195f64] to-[#1e964a] mx-auto mt-8 rounded-full"></div>
+          </motion.p>
+          <motion.div
+            className="w-24 h-1 bg-gradient-to-r from-[#195f64] to-[#1e964a] mx-auto mt-8 rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: "6rem" }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          ></motion.div>
         </div>
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className="group perspective-1000 h-80"
-            >
-              <div className="relative w-full h-full transform-style-preserve-3d transition-transform duration-700 group-hover:rotate-y-180">
-                {/* Front of card */}
-                <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-yello-800 to-gray-900 rounded-xl shadow-2xl p-8 flex flex-col items-center justify-center text-center border border-[#195f64] hover:border-[#bace27] transition-all duration-300 hover:shadow-[0_0_30px_rgba(186,206,39,0.3)]">
-                  <div className="text-[#bace27] mb-6 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-4 tracking-wide">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                  <div className="absolute top-4 right-4 w-2 h-2 bg-[#1e964a] rounded-full animate-pulse"></div>
-                </div>
+          <AnimatePresence>
+            {services.map((service, index) => (
+              <motion.div
+                key={index}
+                className="group perspective-1000 h-80"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }} // Subtle zoom on hover for the whole card
+              >
+                <div className="relative w-full h-full transform-style-preserve-3d transition-transform duration-700 group-hover:rotate-y-180">
+                  {/* Front of card */}
+                  <motion.div
+                    className="absolute inset-0 backface-hidden bg-gradient-to-br from-[#195f64] via-[#1e964a] to-[#bace27] rounded-xl shadow-2xl p-8 flex flex-col items-center justify-center text-center border border-[#195f64] hover:border-[#bace27] transition-all duration-300 hover:shadow-[0_0_30px_rgba(186,206,39,0.3)]"
+                    // No direct Framer Motion animation here as the parent div handles the flip
+                  >
+                    <motion.div
+                      className="text-[#bace27] mb-6 drop-shadow-lg"
+                      transition={{ duration: 0.3 }}
+                      // The group-hover:scale-110 in Tailwind handles the scale on hover
+                    >
+                      {service.icon}
+                    </motion.div>
+                    <h3 className="text-lg font-bold text-white mb-4 tracking-wide">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {service.description}
+                    </p>
+                    <div className="absolute top-4 right-4 w-2 h-2 bg-[#1e964a] rounded-full animate-pulse"></div>
+                  </motion.div>
 
-                {/* Back of card */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-[#195f64] via-[#1e964a] to-[#bace27] rounded-xl shadow-2xl p-8 flex flex-col items-center justify-center text-center text-white">
-                  <div className="mb-6 opacity-90 drop-shadow-lg">
-                    {service.icon}
+                  {/* Back of card */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 bg-[#195f64] rounded-xl shadow-2xl p-8 flex flex-col items-center justify-center text-center text-white">
+                    <motion.div
+                      className="mb-6 opacity-90 drop-shadow-lg"
+                      initial={{ rotateY: -180 }} // Counter-rotate so icon appears upright
+                      animate={{ rotateY: 0 }}
+                      transition={{ duration: 0.7, delay: 0.1 }}
+                    >
+                      {service.icon}
+                    </motion.div>
+                    <h3 className="text-xl font-bold mb-4 tracking-wide">
+                      {service.title}
+                    </h3>
+                    <p className="text-white/90 text-sm leading-relaxed mb-6">
+                      {service.backContent}
+                    </p>
+                    <motion.button
+                      className="px-8 py-3 bg-white/90 text-[#195f64] rounded-full font-bold hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Get Started
+                    </motion.button>
+                    <div className="absolute top-4 right-4 w-3 h-3 bg-white/50 rounded-full"></div>
+                    <div className="absolute bottom-4 left-4 w-2 h-2 bg-white/30 rounded-full"></div>
                   </div>
-                  <h3 className="text-xl font-bold mb-4 tracking-wide">
-                    {service.title}
-                  </h3>
-                  <p className="text-white/90 text-sm leading-relaxed mb-6">
-                    {service.backContent}
-                  </p>
-                  <button className="px-8 py-3 bg-white/90 text-[#195f64] rounded-full font-bold hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
-                    Get Started
-                  </button>
-                  <div className="absolute top-4 right-4 w-3 h-3 bg-white/50 rounded-full"></div>
-                  <div className="absolute bottom-4 left-4 w-2 h-2 bg-white/30 rounded-full"></div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* CTA Section */}
         <div className="text-center mt-20">
-          <div className="bg-gradient-to-r from-[#195f64] to-[#1e964a] rounded-2xl p-8 shadow-2xl">
+          <motion.div
+            className="bg-gradient-to-r from-[#195f64] to-[#1e964a] rounded-2xl p-8 shadow-2xl"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: services.length * 0.1 + 0.5 }} // Delay after cards appear
+            whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(30,150,74,0.5)" }}
+          >
             <h2 className="text-3xl font-bold text-white mb-4">
               Ready to Start Your Crypto Journey?
             </h2>
             <p className="text-white/90 mb-6 text-lg">
               Join thousands of investors who trust Jaimax for their digital asset management
             </p>
-            <button className="px-10 py-4 bg-[#bace27] text-[#195f64] rounded-full font-bold text-lg hover:bg-white hover:scale-105 transition-all duration-200 shadow-lg">
+            <motion.button
+              className="px-10 py-4 bg-[#bace27] text-[#195f64] rounded-full font-bold text-lg hover:bg-white shadow-lg"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
               Launch App
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </div>
 
