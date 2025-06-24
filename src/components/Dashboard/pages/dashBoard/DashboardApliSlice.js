@@ -16,11 +16,11 @@
 // export const { useUserDetailsQuery } = myTeamApiSlice;
  
 
-<<<<<<< HEAD
+
 import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";  
-=======
-import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi"; 
->>>>>>> 286e574427be55534872b4d30afd29180edd393c
+
+
+
 
 export const dashboardApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

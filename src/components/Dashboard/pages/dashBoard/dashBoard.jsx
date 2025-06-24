@@ -8,8 +8,7 @@ import SlabTabs from "./timeTracker/timeTracker";
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-[#1d8e85] p-4 text-sm sm:text-base md:text-lg overflow-x-hidden">
-      {/* Action Buttons */}
+   <div className="min-h-screen p-2  bg-[#1d8e85]   rounded-xl text-sm sm:text-base md:text-lg overflow-x-hidden">
       <div className="mb-6">
         <ActionButtons />
       </div>

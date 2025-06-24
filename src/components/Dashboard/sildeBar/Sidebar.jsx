@@ -25,7 +25,7 @@ import Shareholders from "../pages/shareholders/shareholders";
 import BuyHistory from "../pages/buyHistory/buyHistory";
 import Security from "../pages/security/security";
 import Profile from "../pages/profile/profile";
-import Kyc from "../pages/kyc/kyc";
+import kyc from "../pages/kyc/kyc"
 import WithDrawal from "../pages/widthDrawal/withDrawal";
 import Support from "../pages/support/support";
 

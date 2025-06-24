@@ -359,8 +359,9 @@ const CoinDisplay = () => (
     viewport={{ once: true }}
     transition={{ duration: 1, type: "spring", bounce: 0.3 }}
   >
-    <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-green-400 flex items-center justify-center">
+    <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden  flex items-center justify-center">
       <img src={icon} alt="Jaimax Coin" className="w-full h-full object-contain" />
+  
     </div>
   </motion.div>
 );
@@ -383,6 +384,11 @@ export default function CryptoStakingSection({
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16">
         <div className="flex-1">
           <CoinDisplay />
+          
+          <h1 className="mt-6 text-2xl md:text-3xl font-bold leading-snug tracking-wide text-center">
+    Missed Bitcoin? Don’t miss Jaimax. <br className="hidden md:block" />
+    <span className="text-yellow-300">Buy before the world catches up.</span>
+  </h1>
         </div>
 
         <div className="flex-1 space-y-6">

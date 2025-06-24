@@ -1,4 +1,4 @@
-import { apiSlice } from "../../storeJs/api/JaimaxApi"; 
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi"; 
 export const walletApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     walletTransactionsList: builder.query({

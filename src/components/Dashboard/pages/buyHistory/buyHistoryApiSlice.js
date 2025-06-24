@@ -1,6 +1,6 @@
 
 
-import { apiSlice } from "../../storeJs/api/JaimaxApi"; 
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
 
 export const buyHistoryApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

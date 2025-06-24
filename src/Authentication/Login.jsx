@@ -349,7 +349,7 @@ const LoginPage = () => {
     else if (!emailRegex.test(formData.email)) newErrors.email = 'Invalid email address';
 
     if (!formData.password) newErrors.password = 'Password is required';
-    else if (formData.password.length < 8) newErrors.password = 'Minimum 8 characters';
+    else if (formData.password.length < 6) newErrors.password = 'Minimum 8 characters';
 
     if (formData.phone && !/^\d+$/.test(formData.phone)) {
       newErrors.phone = 'Phone number should contain only digits';

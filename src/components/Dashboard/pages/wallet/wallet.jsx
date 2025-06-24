@@ -203,7 +203,7 @@ const Wallet = () => {
   const paginatedList = filteredList.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
-  );
+  ); 
 
   useEffect(() => setCurrentPage(1), [query]);
 
@@ -297,7 +297,7 @@ const Wallet = () => {
                     Add Money to Wallet
                   </h1>
                   <button
-                    className="w-full bg-gradient-to-r from-[#094e54] to-[#4ecdc4] text-white font-semibold px-5 py-2 sm:px-2 sm:py-3 text-sm sm:text-base rounded-full hover:from-[#0a5c64] hover:to-[#5dd5cd] transition duration-300"
+                    className=" px-5 bg-gradient-to-r from-[#094e54] to-[#4ecdc4] text-white font-semibold py-2 sm:px-2 sm:py-3 text-sm sm:text-base rounded-full hover:from-[#0a5c64] hover:to-[#5dd5cd] transition duration-300"
                     onClick={() => navigate("/add_funds")}
                   >
                     ADD FUNDS
