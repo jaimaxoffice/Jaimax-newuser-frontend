@@ -85,7 +85,7 @@ const Navbar = () => {
               <li>
                 <NavLink
                   className={({ isActive }) =>
-                    isActive && location.hash === "#services"
+                    isActive 
                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-2.5 rounded-full mx-1 transition-all duration-300 ease-in-out text-sm shadow-lg transform hover:scale-105"
                       : "inline-flex items-center text-white/90 px-4 py-2.5 rounded-full mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-sm"
                   }
@@ -113,7 +113,7 @@ const Navbar = () => {
               <li>
                 <NavLink
                   className={({ isActive }) =>
-                    isActive && location.hash === "blog"
+                    isActive
                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-2.5 rounded-full mx-1 transition-all duration-300 ease-in-out text-sm shadow-lg transform hover:scale-105"
                       : "inline-flex items-center text-white/90 px-4 py-2.5 rounded-full mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-sm"
                   }
@@ -242,7 +242,7 @@ const Navbar = () => {
                 <li>
                   <NavLink
                     className={({ isActive }) =>
-                      isActive && location.hash === "#services"
+                      isActive && location.hash === "services"
                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm"
                     }
