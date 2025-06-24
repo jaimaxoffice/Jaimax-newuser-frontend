@@ -6,6 +6,7 @@ import Footer from './global/Footer';
 import Home from './pages/home/Home';
 import Login from './Authentication/Login';
 import Register from './Authentication/Register';
+import ForgotPassword from './Authentication/ForgotPassword';
 import Contact from './components/contact/Contact';
 import JaimaxSplash from './global/Splashscreen';
 import JaimaxComponent from './components/About/About';
@@ -83,7 +84,7 @@ const DashboardLayout = () => {
 };
 const PublicLayout = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/login', '/register'];
+  const hideNavbarRoutes = ['/login', '/register','/forgot-password'];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -159,6 +160,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword/>}/>
           <Route path="about" element={<JaimaxComponent />} />
           <Route path="contact" element={<Contact />} />
           <Route path="features" element={<FeaturesSection />} />
