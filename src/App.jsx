@@ -4,8 +4,8 @@ import {Routes, Route, useLocation, Outlet } from 'react-router-dom';
 import Navbar from './global/Navbar';
 import Footer from './global/Footer';
 import Home from './pages/home/Home';
-import Login from './Authentication/Login';
-import Register from './Authentication/Register';
+import AuthContainer from './Authentication/Login';
+// import Register from './Authentication/Register';
 import ForgotPassword from './Authentication/ForgotPassword';
 import Contact from './components/contact/Contact';
 import JaimaxSplash from './global/Splashscreen';
@@ -158,8 +158,8 @@ const App = () => {
         </Route>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="login" element={<AuthContainer />} />
+          <Route path="register" element={<AuthContainer />} />
           <Route path="/forgot-password" element={<ForgotPassword/>}/>
           <Route path="about" element={<JaimaxComponent />} />
           <Route path="contact" element={<Contact />} />
