@@ -398,17 +398,17 @@ const BuyHistory = () => {
           <table className="w-full table-auto">
             <thead style={{ backgroundColor: '#1d8e85' }}>
               <tr className="text-white">
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">S.No</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Transaction ID</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Payment Mode</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">JaiMax Coin</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">INR Price</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">USD Price</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Round</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Currency</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Amount</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Purchase Date</th>
-                <th className="px-4 xl:px-6 py-3 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Status</th>
+                <th className="px-2 py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">S.No</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Transaction ID</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Payment Mode</th>
+                <th className="px-4 py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">JaiMax Coin</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">INR Price</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">USD Price</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Round</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Currency</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Amount</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Purchase Date</th>
+                <th className="px-4  py-1 xl:py-4 text-left text-sm xl:text-base font-medium min-w-max">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">

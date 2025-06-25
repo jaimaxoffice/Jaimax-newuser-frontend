@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Copy, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 import Tesseract from 'tesseract.js';
 import Qrcode from "../../../../assets/QR_CODE.png";
 
@@ -89,6 +89,20 @@ export default function AddMoneyToWallet() {
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
     return error === "";
+  };
+   const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    extractDetailsFromImage(file);
+    const isError = validateField("screenshot", file);
+    if (!isError) {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      setFormData((prev) => ({ ...prev, transactionId: "" }));
+      setUpiIdMatch(true);
+    } else {
+      setFormData((prev) => ({ ...prev, screenshot: file }));
+    }
   };
 
   // OCR Image processing
@@ -472,7 +486,7 @@ export default function AddMoneyToWallet() {
                       type="file"
                       id="file-upload"
                       className="hidden"
-                      onChange={handleFileChange}
+                      onChange={handleImageChange}
                       accept="image/*"
                       ref={fileInputRef}
                     />

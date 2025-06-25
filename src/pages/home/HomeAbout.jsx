@@ -264,11 +264,6 @@ const MetricCard = ({ item, index }) => (
     }}
     className="group relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 hover:border-emerald-500/50 transition-all duration-500 shadow-xl hover:shadow-2xl overflow-hidden"
   >
-<<<<<<< HEAD
-    <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden  flex items-center justify-center">
-      <img src={icon} alt="Jaimax Coin" className="w-full h-full object-contain" />
-  
-=======
     {/* Hover glow effect */}
     <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/5 to-teal-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     
@@ -303,7 +298,6 @@ const MetricCard = ({ item, index }) => (
       >
         {item.value}
       </motion.p>
->>>>>>> 42822ca8648f5a66f71d825efd501d2d2967e8e7
     </div>
   </motion.div>
 );
@@ -348,18 +342,6 @@ export default function CryptoStakingSection({
   };
 
   return (
-<<<<<<< HEAD
-    <section className="relative bg-gradient-to-b from-black via-gray-900 to-black text-white py-20 px-4 sm:px-10 lg:px-20 overflow-hidden">
-      <div className="absolute top-0 left-0 w-96 h-96 bg-green-400 opacity-20 rounded-full blur-3xl pointer-events-none" />
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16">
-        <div className="flex-1">
-          <CoinDisplay />
-          
-          <h1 className="mt-6 text-2xl md:text-3xl font-bold leading-snug tracking-wide text-center">
-    Missed Bitcoin? Don’t miss Jaimax. <br className="hidden md:block" />
-    <span className="text-yellow-300">Buy before the world catches up.</span>
-  </h1>
-=======
     <section className="relative  text-white py-24 px-4 sm:px-10 lg:px-20 overflow-hidden min-h-screen"style={{backgroundImage:"url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/team-bg.png')",backgroundRepeat:'no-repeat'}}
     >
 
@@ -424,7 +406,6 @@ export default function CryptoStakingSection({
               </motion.span>
             </motion.button>
           </motion.div>
->>>>>>> 42822ca8648f5a66f71d825efd501d2d2967e8e7
         </div>
 
         {/* Contract Address Section */}

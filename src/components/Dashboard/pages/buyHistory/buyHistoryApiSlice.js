@@ -1,10 +1,6 @@
 
 
-<<<<<<< HEAD
-import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
-=======
 import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi"; 
->>>>>>> 42822ca8648f5a66f71d825efd501d2d2967e8e7
 
 export const buyHistoryApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -19,4 +15,3 @@ export const buyHistoryApiSlice = apiSlice.injectEndpoints({
 })
 
 export const { useBuyDetailsQuery } = buyHistoryApiSlice; 
-

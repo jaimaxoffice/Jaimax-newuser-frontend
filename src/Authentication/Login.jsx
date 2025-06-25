@@ -1706,6 +1706,8 @@
 
 
 
+
+
 import React, { useState, useEffect } from 'react';
 import { User, Mail, Lock, Eye, EyeOff, Phone, Users, Shield, ChevronDown, AlertCircle, CheckCircle } from 'lucide-react';
 // import icon from '../assets/Images/login.png'
@@ -1716,8 +1718,10 @@ import {
   useRegisterMutation, 
   useVerifyMutation, 
   useLoginMutation, 
-  useOTPresentMutation 
+  useOTPresentMutation,
+  useVerifyRecaptchaMutation
 } from './authApiSlice';
+
 const countrycodes = [
   { code: '+1', country: 'United States', flag: '🇺🇸', name: 'US' },
   { code: '+91', country: 'India', flag: '🇮🇳', name: 'IN' },
@@ -1743,75 +1747,9 @@ const Notification = ({ type, message, onClose }) => {
     return () => clearTimeout(timer);
   }, [onClose]);
 
-<<<<<<< HEAD
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const validate = () => {
-    const newErrors = {};
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|mil|info|co|io|me|biz|live|yahoo|gmail)$/i;
-
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!emailRegex.test(formData.email)) newErrors.email = 'Invalid email address';
-
-    if (!formData.password) newErrors.password = 'Password is required';
-    else if (formData.password.length < 6) newErrors.password = 'Minimum 8 characters';
-
-    if (formData.phone && !/^\d+$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number should contain only digits';
-    }
-
-    // Optional: enable this if reCAPTCHA is integrated
-    // if (!recaptchaToken) newErrors.recaptcha = 'Please complete reCAPTCHA';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-
-    setLoading(true);
-    try {
-      const response = await login({
-        email: formData.email,
-        password: formData.password,
-        phone: formData.phone,
-        role: 1,
-        // recaptchaToken,
-      }).unwrap();
-
-      toast.success(response?.message || 'Login successful!', { position: 'top-center' });
-
-      localStorage.setItem('token', response?.data?.token);
-      localStorage.setItem('userData', JSON.stringify(response));
-
-      if (rememberMe) {
-        localStorage.setItem('rememberedEmail', formData.email.trim());
-        localStorage.setItem('rememberMe', 'true');
-      } else {
-        localStorage.removeItem('rememberedEmail');
-        localStorage.removeItem('rememberMe');
-      }
-
-      setTimeout(() => navigate('/dashboard'), 1000);
-    } catch (error) {
-      toast.error(error?.data?.message || 'Login failed', { position: 'top-center' });
-    } finally {
-      setLoading(false);
-    }
-  };
-=======
   const bgColor = type === 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
   const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
   const Icon = type === 'success' ? CheckCircle : AlertCircle;
->>>>>>> 42822ca8648f5a66f71d825efd501d2d2967e8e7
 
   return (
     <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg border ${bgColor} ${textColor} shadow-lg max-w-sm animate-slide-in`}>
@@ -1901,19 +1839,33 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [notification, setNotification] = useState(null);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // API Hooks
-  const [loginUser, { isLoading: isLoginLoading, error: loginError }] = useLoginMutation();
+  const [loginUser, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [verifyRecaptcha] = useVerifyRecaptchaMutation();
+
+  // Load saved email and remember me on component mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('email');
+    const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
+
+    if (savedEmail) {
+      setFormData(prev => ({ ...prev, email: savedEmail }));
+    }
+    setRememberMe(savedRememberMe);
+  }, []);
 
   const validateField = (name, value) => {
     const newErrors = { ...errors };
+    const emailRegex = /^(?![-.])[a-zA-Z0-9-]+(?!.*?\.\.)[a-zA-Z0-9-_.]+@[a-zA-Z0-9]+[a-z.0-9]+\.[a-z.]{2,4}$/;
 
     switch (name) {
       case 'email':
-        if (!value.trim()) {
+        if (!value?.trim()) {
           newErrors.email = 'Email is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          newErrors.email = 'Invalid email address';
+        } else if (!emailRegex.test(value?.trim())) {
+          newErrors.email = 'Invalid email format';
         } else {
           delete newErrors.email;
         }
@@ -1922,7 +1874,7 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
         if (!value) {
           newErrors.password = 'Password is required';
         } else if (value.length < 6) {
-          newErrors.password = 'Password must be at least 6 characters';
+          newErrors.password = 'Password must be at least 6 characters long';
         } else {
           delete newErrors.password;
         }
@@ -1930,6 +1882,7 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     }
 
     setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (e) => {
@@ -1938,54 +1891,66 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     validateField(name, value);
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
 
-  // Validate all fields
-  Object.keys(formData).forEach(key => {
-    validateField(key, formData[key]);
-  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const hasErrors = Object.keys(errors).length > 0;
-  if (hasErrors) return;
+    // Validate all fields
+    const isEmailValid = validateField('email', formData.email);
+    const isPasswordValid = validateField('password', formData.password);
 
-  try {
-    const payload = {
-      ...formData,
-      role: 1
-    };
+    if (!isEmailValid || !isPasswordValid) return;
 
-    const response = await loginUser(payload);
+    // Handle remember me
+    if (rememberMe) {
+      localStorage.setItem('email', formData.email?.trim());
+      localStorage.setItem('rememberMe', 'true');
+    } else {
+      localStorage.removeItem('email');
+      localStorage.removeItem('rememberMe');
+    }
 
-    if (response.data?.success) {
+    try {
+      // If you have reCAPTCHA token, verify it first
+      // const recaptchaResponse = await verifyRecaptcha({ response: recaptchaToken });
+
+      const loginPayload = {
+        email: formData.email?.trim(),
+        password: formData.password,
+        // recaptchaToken: recaptchaToken, // Add if you have reCAPTCHA
+        role: 1
+      };
+
+      const response = await loginUser(loginPayload).unwrap();
+
       setNotification({
         type: 'success',
-        message: 'Login successful! Redirecting...'
+        message: (response?.message || 'Login successful!') + ' Redirecting...'
       });
 
-      if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
+      // Store token and user data
+      if (response?.data?.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userData', JSON.stringify(response));
       }
 
-      onSubmit(payload); // Optional
+      onSubmit?.(loginPayload);
 
-      // Redirect to dashboard after a short delay (optional)
+      // Redirect after a short delay
       setTimeout(() => {
         navigate('/dashboard');
-      }, 1000); // Wait for 1 second for user to see the message
-    } else {
+      }, 1000);
+
+    } catch (error) {
       setNotification({
         type: 'error',
-        message: response.data?.message || 'Login failed. Please try again.'
+        message: error?.data?.message || 'Login failed. Please try again.'
       });
     }
-  } catch (error) {
-    setNotification({
-      type: 'error',
-      message: 'Network error. Please check your connection.'
-    });
-  }
-};
+  };
 
   return (
     <div className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
@@ -2002,7 +1967,7 @@ const handleSubmit = async (e) => {
         <p className="text-gray-600">Enter your credentials to access your account</p>
       </div>
 
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email Input - Fixed Layout */}
         <div className="relative mb-6">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -2014,6 +1979,7 @@ const handleSubmit = async (e) => {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="Email"
+            autoComplete="email"
             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
               errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
             }`}
@@ -2037,6 +2003,7 @@ const handleSubmit = async (e) => {
             value={formData.password}
             onChange={handleInputChange}
             placeholder="Password"
+            autoComplete="current-password"
             className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
               errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
             }`}
@@ -2060,21 +2027,33 @@ const handleSubmit = async (e) => {
           </div>
         </div>
 
-        <div className="text-right mt-4">
-          <a href="#" className="text-teal-600 hover:text-teal-700 text-sm font-medium">
+        {/* Remember Me and Forgot Password */}
+        <div className="flex justify-between items-center mt-4">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={handleRememberMeChange}
+              className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+            />
+            <label htmlFor="rememberMe" className="ml-2 text-sm text-gray-600 cursor-pointer">
+              Remember me
+            </label>
+          </div>
+          <a href="/forgot-password" className="text-teal-600 hover:text-teal-700 text-sm font-medium">
             Forgot Password?
           </a>
         </div>
 
         <button
           type="submit"
-          onClick={handleSubmit}
           disabled={isLoginLoading}
           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
         >
           {isLoginLoading ? 'Signing In...' : 'LOGIN'}
         </button>
-      </div>
+      </form>
 
       <div className="mt-8 text-center">
         <p className="text-gray-600">
@@ -2087,6 +2066,321 @@ const handleSubmit = async (e) => {
     </div>
   );
 };
+// import React, { useState, useEffect } from 'react';
+// import { User, Mail, Lock, Eye, EyeOff, Phone, Users, Shield, ChevronDown, AlertCircle, CheckCircle } from 'lucide-react';
+// // import icon from '../assets/Images/login.png'
+// import icon from '../../public/logo.png'
+// import { useNavigate } from 'react-router-dom';
+// // Replace the mock hooks at the top with:
+// import { 
+//   useRegisterMutation, 
+//   useVerifyMutation, 
+//   useLoginMutation, 
+//   useOTPresentMutation 
+// } from './authApiSlice';
+// const countrycodes = [
+//   { code: '+1', country: 'United States', flag: '🇺🇸', name: 'US' },
+//   { code: '+91', country: 'India', flag: '🇮🇳', name: 'IN' },
+//   { code: '+44', country: 'United Kingdom', flag: '🇬🇧', name: 'UK' },
+//   { code: '+49', country: 'Germany', flag: '🇩🇪', name: 'DE' },
+//   { code: '+33', country: 'France', flag: '🇫🇷', name: 'FR' },
+//   { code: '+86', country: 'China', flag: '🇨🇳', name: 'CN' },
+//   { code: '+81', country: 'Japan', flag: '🇯🇵', name: 'JP' },
+//   { code: '+82', country: 'South Korea', flag: '🇰🇷', name: 'KR' },
+//   { code: '+61', country: 'Australia', flag: '🇦🇺', name: 'AU' },
+//   { code: '+7', country: 'Russia', flag: '🇷🇺', name: 'RU' },
+//   { code: '+55', country: 'Brazil', flag: '🇧🇷', name: 'BR' },
+//   { code: '+34', country: 'Spain', flag: '🇪🇸', name: 'ES' },
+//   { code: '+39', country: 'Italy', flag: '🇮🇹', name: 'IT' },
+//   { code: '+31', country: 'Netherlands', flag: '🇳🇱', name: 'NL' },
+//   { code: '+46', country: 'Sweden', flag: '🇸🇪', name: 'SE' }
+// ];
+
+// // Notification Component
+// const Notification = ({ type, message, onClose }) => {
+//   useEffect(() => {
+//     const timer = setTimeout(onClose, 5000);
+//     return () => clearTimeout(timer);
+//   }, [onClose]);
+
+//   const bgColor = type === 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
+//   const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
+//   const Icon = type === 'success' ? CheckCircle : AlertCircle;
+
+//   return (
+//     <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg border ${bgColor} ${textColor} shadow-lg max-w-sm animate-slide-in`}>
+//       <div className="flex items-center gap-3">
+//         <Icon className="h-5 w-5 flex-shrink-0" />
+//         <p className="text-sm font-medium">{message}</p>
+//         <button 
+//           onClick={onClose}
+//           className="ml-auto text-gray-400 hover:text-gray-600"
+//         >
+//           ×
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const CountryCodeDropdown = ({ value, onChange, className }) => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState('');
+
+//   const filteredCountries = countrycodes.filter(country => 
+//     country.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//     country.code.includes(searchTerm) ||
+//     country.name.toLowerCase().includes(searchTerm.toLowerCase())
+//   );
+
+//   const selectedCountry = countrycodes.find(c => c.code === value) || countrycodes[1];
+
+//   return (
+//     <div className="relative">
+//       <button
+//         type="button"
+//         onClick={() => setIsOpen(!isOpen)}
+//         className={`${className} flex items-center justify-between min-w-[120px] hover:bg-teal-50 transition-colors duration-200`}
+//       >
+//         <span className="flex items-center gap-2 text-sm">
+//           <span className="text-lg">{selectedCountry.flag}</span>
+//           <span className="font-medium">{selectedCountry.code}</span>
+//         </span>
+//         <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+//       </button>
+
+//       {isOpen && (
+//         <div className="absolute top-full left-0 mt-1 w-full min-w-[280px] bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-64 overflow-hidden">
+//           <div className="p-3 border-b border-gray-100">
+//             <input
+//               type="text"
+//               placeholder="Search countries..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//               className="w-full px-3 py-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+//             />
+//           </div>
+//           <div className="max-h-48 overflow-y-auto">
+//             {filteredCountries.map((country) => (
+//               <button
+//                 key={country.code}
+//                 type="button"
+//                 onClick={() => {
+//                   onChange(country.code);
+//                   setIsOpen(false);
+//                   setSearchTerm('');
+//                 }}
+//                 className="w-full px-4 py-3 text-left hover:bg-teal-50 flex items-center gap-3 text-sm transition-colors duration-150 border-b border-gray-50 last:border-b-0"
+//               >
+//                 <span className="text-lg">{country.flag}</span>
+//                 <span className="font-medium text-gray-900">{country.code}</span>
+//                 <span className="text-gray-600 truncate">{country.country}</span>
+//               </button>
+//             ))}
+//             {filteredCountries.length === 0 && (
+//               <div className="px-4 py-3 text-sm text-gray-500 text-center">
+//                 No countries found
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
+//   const navigate = useNavigate();
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [formData, setFormData] = useState({ email: '', password: '' });
+//   const [errors, setErrors] = useState({});
+//   const [notification, setNotification] = useState(null);
+
+//   // API Hooks
+//   const [loginUser, { isLoading: isLoginLoading, error: loginError }] = useLoginMutation();
+
+//   const validateField = (name, value) => {
+//     const newErrors = { ...errors };
+
+//     switch (name) {
+//       case 'email':
+//         if (!value.trim()) {
+//           newErrors.email = 'Email is required';
+//         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+//           newErrors.email = 'Invalid email address';
+//         } else {
+//           delete newErrors.email;
+//         }
+//         break;
+//       case 'password':
+//         if (!value) {
+//           newErrors.password = 'Password is required';
+//         } else if (value.length < 6) {
+//           newErrors.password = 'Password must be at least 6 characters';
+//         } else {
+//           delete newErrors.password;
+//         }
+//         break;
+//     }
+
+//     setErrors(newErrors);
+//   };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData(prev => ({ ...prev, [name]: value }));
+//     validateField(name, value);
+//   };
+
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+
+//   // Validate all fields
+//   Object.keys(formData).forEach(key => {
+//     validateField(key, formData[key]);
+//   });
+
+//   const hasErrors = Object.keys(errors).length > 0;
+//   if (hasErrors) return;
+
+//   try {
+//     const payload = {
+//       ...formData,
+//       role: 1
+//     };
+
+//     const response = await loginUser(payload);
+
+//     if (response.data?.success) {
+//       setNotification({
+//         type: 'success',
+//         message: 'Login successful! Redirecting...'
+//       });
+
+//       if (response.data.token) {
+//         localStorage.setItem('authToken', response.data.token);
+//       }
+
+//       onSubmit(payload); // Optional
+
+//       // Redirect to dashboard after a short delay (optional)
+//       setTimeout(() => {
+//         navigate('/dashboard');
+//       }, 1000); // Wait for 1 second for user to see the message
+//     } else {
+//       setNotification({
+//         type: 'error',
+//         message: response.data?.message || 'Login failed. Please try again.'
+//       });
+//     }
+//   } catch (error) {
+//     setNotification({
+//       type: 'error',
+//       message: 'Network error. Please check your connection.'
+//     });
+//   }
+// };
+
+//   return (
+//     <div className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+
+//       <div className="text-center mb-8">
+//         <h1 className="text-3xl font-bold text-gray-800 mb-2">LOGIN</h1>
+//         <p className="text-gray-600">Enter your credentials to access your account</p>
+//       </div>
+
+//       <div className="space-y-4">
+//         {/* Email Input - Fixed Layout */}
+//         <div className="relative mb-6">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Mail className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleInputChange}
+//             placeholder="Email"
+//             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//               errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//             }`}
+//           />
+//           {/* Fixed error container - always reserves space */}
+//           <div className="absolute top-full left-0 right-0 min-h-[24px] pt-1">
+//             {errors.email && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.email}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Password Input - Fixed Layout */}
+//         <div className="relative mb-6">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Lock className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type={showPassword ? "text" : "password"}
+//             name="password"
+//             value={formData.password}
+//             onChange={handleInputChange}
+//             placeholder="Password"
+//             className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//               errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//             }`}
+//           />
+//           <button
+//             type="button"
+//             onClick={() => setShowPassword(!showPassword)}
+//             className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors"
+//           >
+//             {showPassword ? (
+//               <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             ) : (
+//               <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             )}
+//           </button>
+//           {/* Fixed error container - always reserves space */}
+//           <div className="absolute top-full left-0 right-0 min-h-[24px] pt-1">
+//             {errors.password && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.password}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="text-right mt-4">
+//           <a href="#" className="text-teal-600 hover:text-teal-700 text-sm font-medium">
+//             Forgot Password?
+//           </a>
+//         </div>
+
+//         <button
+//           type="submit"
+//           onClick={handleSubmit}
+//           disabled={isLoginLoading}
+//           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+//         >
+//           {isLoginLoading ? 'Signing In...' : 'LOGIN'}
+//         </button>
+//       </div>
+
+//       <div className="mt-8 text-center">
+//         <p className="text-gray-600">
+//           Don't have an account?{' '}
+//           <button onClick={onToggleMode} className="text-teal-600 hover:text-teal-700 font-semibold">
+//             Sign up
+//           </button>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
 
 const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
   const [showPassword, setShowPassword] = useState(false);

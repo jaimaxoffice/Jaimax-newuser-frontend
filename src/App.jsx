@@ -135,7 +135,7 @@ const App = () => {
         <Route path="/shareholders" element={<DashboardLayout />}>
           <Route index element={<Shareholders />} />
         </Route>
-           <Route path="/add_funds" element={<DashboardLayout />}>
+           <Route path="/add-funds" element={<DashboardLayout />}>
           <Route index element={<AddMoneyToWallet />} />
         </Route>
         <Route path="/buy-history" element={<DashboardLayout />}>
