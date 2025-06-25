@@ -964,8 +964,7 @@ const ContactInformationSectionContent = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
-          {/* Head office and Contact Details */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
           <motion.div
             className="bg-[#134e4a] rounded-xl p-8 shadow-2xl"
             initial="hidden"
@@ -981,22 +980,18 @@ const ContactInformationSectionContent = () => {
           >
             <h3 className="text-white text-xl font-semibold mb-6">Head office</h3>
             <div className="space-y-8">
-              {/* Location */}
               <motion.div className="flex items-start text-white" variants={itemVariants}>
                 <MapPin className="h-6 w-6 text-lime-400 mr-3 mt-0.5 flex-shrink-0" />
                 <span>Survey No :18, India building, 4th Floor, Vaishnavi's Cynosure, Extension, Gachibowli, Hyderabad, Telangana 500081.</span>
               </motion.div>
-              {/* Phone */}
               <motion.div className="flex items-center text-white" variants={itemVariants}>
                 <Phone className="h-6 w-6 text-lime-400 mr-3" />
                 <span>+91 6303008654</span>
               </motion.div>
-              {/* Email */}
               <motion.div className="flex items-center text-white" variants={itemVariants}>
                 <Mail className="h-6 w-6 text-lime-400 mr-3" />
                 <span>info@jaimax.com</span>
               </motion.div>
-              {/* Business Hours */}
               <motion.div className="flex items-start text-white" variants={itemVariants}>
                 <Clock className="h-6 w-6 text-lime-400 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
@@ -1007,7 +1002,6 @@ const ContactInformationSectionContent = () => {
             </div>
           </motion.div>
 
-          {/* Send us a message form */}
           <motion.div
             className="bg-[#134e4a] rounded-xl p-8 shadow-2xl"
             initial="hidden"
@@ -1081,7 +1075,131 @@ const ContactInformationSectionContent = () => {
               </motion.button>
             </form>
           </motion.div>
+        </div> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
+  {/* Head office and Contact Details */}
+  <motion.div
+    className="relative rounded-xl p-8 shadow-2xl backdrop-blur-md bg-white/10 border border-white/20 overflow-hidden" // Added glassmorphic styles
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.3 }}
+    variants={{
+      visible: {
+        transition: {
+          staggerChildren: 0.1,
+        },
+      },
+    }}
+  >
+    {/* Optional: Add a subtle background gradient or pattern for depth */}
+    <div className="absolute inset-0 z-[-1] opacity-20" style={{ background: 'linear-gradient(to top right, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}></div>
+
+    <h3 className="text-white text-xl font-semibold mb-6">Head office</h3>
+    <div className="space-y-8">
+      {/* Location */}
+      <motion.div className="flex items-start text-white" variants={itemVariants}>
+        <MapPin className="h-6 w-6 text-lime-400 mr-3 mt-0.5 flex-shrink-0" />
+        <span>Survey No :18, India building, 4th Floor, Vaishnavi's Cynosure, Extension, Gachibowli, Hyderabad, Telangana 500081.</span>
+      </motion.div>
+      {/* Phone */}
+      <motion.div className="flex items-center text-white" variants={itemVariants}>
+        <Phone className="h-6 w-6 text-lime-400 mr-3" />
+        <span>+91 6303008654</span>
+      </motion.div>
+      {/* Email */}
+      <motion.div className="flex items-center text-white" variants={itemVariants}>
+        <Mail className="h-6 w-6 text-lime-400 mr-3" />
+        <span>info@jaimax.com</span>
+      </motion.div>
+      {/* Business Hours */}
+      <motion.div className="flex items-start text-white" variants={itemVariants}>
+        <Clock className="h-6 w-6 text-lime-400 mr-3 mt-0.5 flex-shrink-0" />
+        <div>
+          <p>Mon - Fri: 9:00 AM - 6:00 PM</p>
+          <p>Sat - Sun: Closed</p>
         </div>
+      </motion.div>
+    </div>
+  </motion.div>
+
+  {/* Send us a message form */}
+  <motion.div
+    className="relative rounded-xl p-8 shadow-2xl backdrop-blur-md bg-white/10 border border-white/20 overflow-hidden" // Added glassmorphic styles
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.3 }}
+    variants={formVariants}
+  >
+    {/* Optional: Add a subtle background gradient or pattern for depth */}
+    <div className="absolute inset-0 z-[-1] opacity-20" style={{ background: 'linear-gradient(to bottom left, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}></div>
+
+    <h3 className="text-white text-xl font-semibold mb-6">Send us a message</h3>
+    <form onSubmit={formik.handleSubmit} className="space-y-6">
+      <motion.div variants={itemVariants}>
+        <label htmlFor="name" className="block text-white text-sm font-medium mb-2">
+          Your name
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          className="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-xl border border-white/10" // Adjusted input styles
+          placeholder="Enter your name"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.name}
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="text-red-400 text-sm mt-1">{formik.errors.name}</div>
+        ) : null}
+      </motion.div>
+      <motion.div variants={itemVariants}>
+        <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+          Your email
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          className="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-xl border border-white/10" // Adjusted input styles
+          placeholder="Enter your email"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+        />
+        {formik.touched.email && formik.errors.email ? (
+          <div className="text-red-400 text-sm mt-1">{formik.errors.email}</div>
+        ) : null}
+      </motion.div>
+      <motion.div variants={itemVariants}>
+        <label htmlFor="message" className="block text-white text-sm font-medium mb-2">
+          Your message
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows="4"
+          className="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-xl border border-white/10" // Adjusted input styles
+          placeholder="Type your message here..."
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.message}
+        ></textarea>
+        {formik.touched.message && formik.errors.message ? (
+          <div className="text-red-400 text-sm mt-1">{formik.errors.message}</div>
+        ) : null}
+      </motion.div>
+      <motion.button
+        type="submit"
+        className="w-full bg-teal-600 text-white font-bold py-3 px-6 rounded-full hover:bg-teal-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-[#09545a]"
+        whileHover={{ scale: 1.02 }} // Simple hover animation for button
+        whileTap={{ scale: 0.98 }}   // Simple tap animation for button
+      >
+        Send Message
+      </motion.button>
+    </form>
+  </motion.div>
+</div>
       </div>
     </section>
   );

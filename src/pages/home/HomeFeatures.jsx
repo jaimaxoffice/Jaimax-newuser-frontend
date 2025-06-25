@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { TrendingUp, Shield, Users, Globe, BookOpen, Settings, CreditCard, Headphones, ArrowRight } from 'lucide-react';
-
+import icon from '../../assets/Images/loginReg.svg'
+import icon2 from '../../assets/Images/jaicoin.svg'
 const JaimaxLanding = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -91,15 +92,10 @@ const JaimaxLanding = () => {
     <div className="min-h-screen text-white">
       {/* Geometric background pattern */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full opacity-20"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-slate-500 to-slate-500 rounded-full opacity-15"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-green-500 to-teal-500 rounded-full opacity-10"></div>
-
-        {/* Grid pattern overlay */}
+        <img src={icon} alt="" className="absolute -top-0 -right-80  opacity-10" />
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       </div>
 
-      {/* Hero Section */}
       <motion.div
         ref={heroRef}
         initial="hidden"
@@ -107,7 +103,7 @@ const JaimaxLanding = () => {
         variants={fadeIn}
         className="relative z-10"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-16 sm:pb-20 lg:pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-10 pb-2 sm:pb-20 lg:pb-4">
           <div className="text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -160,15 +156,15 @@ const JaimaxLanding = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="text-center mb-12 sm:mb-16">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={isFeaturesInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.2, delay: 0.2 }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6"
             >
               Core <span className="text-lime-400">Functional Features</span>
             </motion.h2>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={isFeaturesInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto"

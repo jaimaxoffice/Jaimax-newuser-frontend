@@ -560,8 +560,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import about from '../../assets/Images/about.jpg'
-
+// import about from '../../assets/Images/future.png'
+const about='https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg'
 // SVG Icons as React Components (These remain the same as they are functional)
 const CoinsIcon = ({ className = "w-6 h-6" }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24">
