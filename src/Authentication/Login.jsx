@@ -2270,7 +2270,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { User, Mail, Lock, Eye, EyeOff, Phone, Users, Shield, ChevronDown, AlertCircle, CheckCircle } from 'lucide-react';
-import icon from '../assets/Images/jaimaxcoin.png'
+import icon from '../assets/Images/greencoin.png'
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import {
   useRegisterMutation,
@@ -2389,150 +2389,336 @@ const CountryCodeDropdown = ({ value, onChange, className, countryCodes }) => {
   );
 };
 
-const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [errors, setErrors] = useState({});
-  const [notification, setNotification] = useState(null);
+// const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
+//   const navigate = useNavigate();
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [formData, setFormData] = useState({ email: '', password: '' });
+//   const [errors, setErrors] = useState({});
+//   const [notification, setNotification] = useState(null);
 
-  const [loginUser, { isLoading: isLoginLoading, error: loginError }] = useLoginMutation();
+//   const [loginUser, { isLoading: isLoginLoading, error: loginError }] = useLoginMutation();
+
+//   useEffect(() => {
+//     if (loginError) {
+//       console.error("Login API Error:", loginError);
+//       let errorMessage = 'An unexpected error occurred during login.';
+//       if (loginError.data && loginError.data.message) {
+//         errorMessage = loginError.data.message;
+//       } else if (loginError.error) {
+//         errorMessage = loginError.error;
+//       } else if (loginError.status) {
+//         if (loginError.status === 401) {
+//           errorMessage = 'Invalid credentials. Please check your email and password.';
+//         } else if (loginError.status === 403) {
+//           errorMessage = 'Access denied.';
+//         } else if (loginError.status >= 500) {
+//           errorMessage = 'Server error. Please try again later.';
+//         } else {
+//           errorMessage = `Error: ${loginError.status}`;
+//         }
+//       }
+
+//       setNotification({
+//         type: 'error',
+//         message: errorMessage
+//       });
+//     }
+//   }, [loginError]);
+
+//   const validateField = (name, value) => {
+//     const newErrors = { ...errors };
+//     const emailRegex = /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/;
+//     switch (name) {
+//       case 'email':
+//         if (!value.trim()) {
+//           newErrors.email = 'Email is required';
+//         } else if (!emailRegex.test(value)) {
+//           newErrors.email = 'Invalid email address';
+//         } else {
+//           delete newErrors.email;
+//         }
+//         break;
+//       case 'password':
+//         if (!value) {
+//           newErrors.password = 'Password is required';
+//         } else if (value.length < 6) {
+//           newErrors.password = 'Password must be at least 6 characters';
+//         } else {
+//           delete newErrors.password;
+//         }
+//         break;
+//       default:
+//         break;
+//     }
+
+//     setErrors(newErrors);
+//   };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData(prev => ({ ...prev, [name]: value }));
+//     validateField(name, value);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     let hasSubmitErrors = false;
+//     const errorsOnSubmit = {};
+//     if (!formData.email.trim()) {
+//       errorsOnSubmit.email = 'Email is required';
+//       hasSubmitErrors = true;
+//     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+//       errorsOnSubmit.email = 'Invalid email address';
+//       hasSubmitErrors = true;
+//     }
+
+//     if (!formData.password) {
+//       errorsOnSubmit.password = 'Password is required';
+//       hasSubmitErrors = true;
+//     }
+//     // else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+//     //   errorsOnSubmit.password = 'Password must contain at least one special character';
+//     //   hasSubmitErrors = true;
+//     // }
+
+//     setErrors(errorsOnSubmit);
+
+//     if (hasSubmitErrors) {
+//       console.log("Validation errors detected, preventing API call.");
+//       setNotification({
+//         type: 'error',
+//         message: 'Please correct the highlighted fields.'
+//       });
+//       return;
+//     }
+
+//     setNotification(null);
+
+//     try {
+//       const payload = {
+//         ...formData,
+//         role: 1
+//       };
+
+//       const response = await loginUser(payload).unwrap();
+
+//       if (response.success) {
+//         setNotification({
+//           type: 'success',
+//           message: 'Login successful! Redirecting...'
+//         });
+
+//         if (response.token) {
+//           localStorage.setItem('authToken', response.token);
+//         }
+
+//         if (onSubmit) {
+//           onSubmit(payload);
+//         }
+
+//         setTimeout(() => {
+//           navigate('/dashboard');
+//         }, 1000);
+//       } else {
+//         setNotification({
+//           type: 'error',
+//           message: response.message || 'Login failed. Please try again.'
+//         });
+//       }
+//     } catch (error) {
+//       console.error("Login API Catch Error:", error);
+//     }
+//   };
+
+//   return (
+//     <div className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+
+//       <div className="text-center mb-8">
+//         <h1 className="text-3xl font-bold text-gray-800 mb-2">LOGIN</h1>
+//         <p className="text-gray-600">Enter your credentials to access your account</p>
+//       </div>
+
+//       <div className="space-y-4">
+//         <div className="relative mb-6">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Mail className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleInputChange}
+//             placeholder="Email"
+//             required
+//             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//               }`}
+//           />
+//           <div className="absolute top-full left-0 right-0 min-h-[24px] pt-1">
+//             {errors.email && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.email}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="relative mb-6">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Lock className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type={showPassword ? "text" : "password"}
+//             name="password"
+//             value={formData.password}
+//             onChange={handleInputChange}
+//             placeholder="Password"
+//             required
+//             className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//               }`}
+//           />
+//           <button
+//             type="button"
+//             onClick={() => setShowPassword(!showPassword)}
+//             className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors"
+//           >
+//             {showPassword ? (
+//               <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             ) : (
+//               <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             )}
+//           </button>
+//           <div className="absolute top-full left-0 right-0 min-h-[24px] pt-1">
+//             {errors.password && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.password}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="text-right mt-4">
+//           <button
+//         onClick={() => navigate("/forgot-password")}
+//         className="text-teal-600 hover:text-teal-700 text-sm font-medium"
+//       >
+//         Forgot Password?
+//       </button>
+//         </div>
+
+//         <button
+//           type="submit"
+//           onClick={handleSubmit}
+//           disabled={isLoginLoading}
+//           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+//         >
+//           {isLoginLoading ? 'Signing In...' : 'LOGIN'}
+//         </button>
+//       </div>
+
+//       <div className="mt-8 text-center">
+//         <p className="text-gray-600">
+//           Don't have an account?{' '}
+//           <button onClick={onToggleMode} className="text-teal-600 hover:text-teal-700 font-semibold">
+//             Sign up
+//           </button>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
+const LoginComponent = ({ onToggleMode, isVisible }) => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [notification, setNotification] = useState(null);
+  const [login, { isLoading, error: loginError }] = useLoginMutation();
 
   useEffect(() => {
     if (loginError) {
-      console.error("Login API Error:", loginError);
-      let errorMessage = 'An unexpected error occurred during login.';
-      if (loginError.data && loginError.data.message) {
-        errorMessage = loginError.data.message;
-      } else if (loginError.error) {
-        errorMessage = loginError.error;
-      } else if (loginError.status) {
-        if (loginError.status === 401) {
-          errorMessage = 'Invalid credentials. Please check your email and password.';
-        } else if (loginError.status === 403) {
-          errorMessage = 'Access denied.';
-        } else if (loginError.status >= 500) {
-          errorMessage = 'Server error. Please try again later.';
-        } else {
-          errorMessage = `Error: ${loginError.status}`;
-        }
-      }
-
-      setNotification({
-        type: 'error',
-        message: errorMessage
-      });
+      const message =
+        loginError?.data?.message || "Login failed. Please try again.";
+      setNotification({ type: "error", message });
     }
   }, [loginError]);
 
-  const validateField = (name, value) => {
-    const newErrors = { ...errors };
-    const emailRegex = /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/;
-    switch (name) {
-      case 'email':
-        if (!value.trim()) {
-          newErrors.email = 'Email is required';
-        } else if (!emailRegex.test(value)) {
-          newErrors.email = 'Invalid email address';
-        } else {
-          delete newErrors.email;
-        }
-        break;
-      case 'password':
-        if (!value) {
-          newErrors.password = 'Password is required';
-        } else if (value.length < 6) {
-          newErrors.password = 'Password must be at least 6 characters';
-        } else {
-          delete newErrors.password;
-        }
-        break;
-      default:
-        break;
+  const validate = () => {
+    const newErrors = {};
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email address";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    validateField(name, value);
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let hasSubmitErrors = false;
-    const errorsOnSubmit = {};
-    if (!formData.email.trim()) {
-      errorsOnSubmit.email = 'Email is required';
-      hasSubmitErrors = true;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errorsOnSubmit.email = 'Invalid email address';
-      hasSubmitErrors = true;
-    }
-
-    if (!formData.password) {
-      errorsOnSubmit.password = 'Password is required';
-      hasSubmitErrors = true;
-    }
-    // else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
-    //   errorsOnSubmit.password = 'Password must contain at least one special character';
-    //   hasSubmitErrors = true;
-    // }
-
-    setErrors(errorsOnSubmit);
-
-    if (hasSubmitErrors) {
-      console.log("Validation errors detected, preventing API call.");
+    if (!validate()) {
       setNotification({
-        type: 'error',
-        message: 'Please correct the highlighted fields.'
+        type: "error",
+        message: "Please fix the highlighted fields.",
       });
       return;
     }
 
-    setNotification(null);
-
     try {
-      const payload = {
-        ...formData,
-        role: 1
-      };
+      const response = await login({ ...formData, role: 1 }).unwrap();
 
-      const response = await loginUser(payload).unwrap();
+      if (response?.success) {
+        localStorage.setItem("token", response?.data?.token);
+        localStorage.setItem("userData", JSON.stringify(response));
 
-      if (response.success) {
         setNotification({
-          type: 'success',
-          message: 'Login successful! Redirecting...'
+          type: "success",
+          message: response?.message || "Login successful! Redirecting...",
         });
 
-        if (response.token) {
-          localStorage.setItem('authToken', response.token);
-        }
-
-        if (onSubmit) {
-          onSubmit(payload);
-        }
-
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate("/dashboard");
         }, 1000);
       } else {
         setNotification({
-          type: 'error',
-          message: response.message || 'Login failed. Please try again.'
+          type: "error",
+          message: response?.message || "Login failed.",
         });
       }
-    } catch (error) {
-      console.error("Login API Catch Error:", error);
+    } catch (err) {
+      setNotification({
+        type: "error",
+        message: err?.data?.message || "Login error",
+      });
     }
   };
 
   return (
-    <div className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+    <div
+      className={`w-full max-w-md transition-all duration-500 transform ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+    >
       {notification && (
         <Notification
           type={notification.type}
@@ -2543,86 +2729,86 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
 
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">LOGIN</h1>
-        <p className="text-gray-600">Enter your credentials to access your account</p>
+        <p className="text-gray-600">
+          Enter your credentials to access your account
+        </p>
       </div>
 
       <div className="space-y-4">
         <div className="relative mb-6">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
             <Mail className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleInputChange}
+            onChange={handleChange}
             placeholder="Email"
-            required
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
-              }`}
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
+            }`}
           />
-          <div className="absolute top-full left-0 right-0 min-h-[24px] pt-1">
-            {errors.email && (
-              <div className="text-red-500 text-sm animate-fadeIn">{errors.email}</div>
-            )}
-          </div>
+          {errors.email && (
+            <div className="text-red-500 text-sm mt-1">{errors.email}</div>
+          )}
         </div>
 
         <div className="relative mb-6">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
             <Lock className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
-            onChange={handleInputChange}
+            onChange={handleChange}
             placeholder="Password"
-            required
-            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
-              }`}
+            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
+            }`}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center"
           >
             {showPassword ? (
-              <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+              <EyeOff className="h-5 w-5 text-gray-400" />
             ) : (
-              <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+              <Eye className="h-5 w-5 text-gray-400" />
             )}
           </button>
-          <div className="absolute top-full left-0 right-0 min-h-[24px] pt-1">
-            {errors.password && (
-              <div className="text-red-500 text-sm animate-fadeIn">{errors.password}</div>
-            )}
-          </div>
+          {errors.password && (
+            <div className="text-red-500 text-sm mt-1">{errors.password}</div>
+          )}
         </div>
 
         <div className="text-right mt-4">
           <button
-        onClick={() => navigate("/forgot-password")}
-        className="text-teal-600 hover:text-teal-700 text-sm font-medium"
-      >
-        Forgot Password?
-      </button>
+            onClick={() => navigate("/forgot-password")}
+            className="text-teal-600 hover:text-teal-700 text-sm font-medium"
+          >
+            Forgot Password?
+          </button>
         </div>
 
         <button
-          type="submit"
           onClick={handleSubmit}
-          disabled={isLoginLoading}
+          disabled={isLoading}
           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
         >
-          {isLoginLoading ? 'Signing In...' : 'LOGIN'}
+          {isLoading ? "Signing In..." : "LOGIN"}
         </button>
       </div>
 
       <div className="mt-8 text-center">
         <p className="text-gray-600">
-          Don't have an account?{' '}
-          <button onClick={onToggleMode} className="text-teal-600 hover:text-teal-700 font-semibold">
+          Don't have an account?{" "}
+          <button
+            onClick={onToggleMode}
+            className="text-teal-600 hover:text-teal-700 font-semibold"
+          >
             Sign up
           </button>
         </p>
@@ -2630,7 +2816,6 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     </div>
   );
 };
-
 const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
