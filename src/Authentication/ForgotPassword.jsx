@@ -1,913 +1,455 @@
-// import React, { useEffect, useState } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import {
-//   useForgotMutation,
-//   useVerifyMutation,
-//   useVerifyOtpMutation,
-// } from "./authApiSlice";
-// import { toast } from "react-toastify";
-// import hide from "../../assets/Images/hide.svg";
-// import show from "../../assets/Images/show.svg";
-// import JaimaxText from "../../assets/Images/Jaimaxtext.svg";
+// import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { MailIcon, ArrowLeft } from 'lucide-react';
+// import icon from '../assets/Images/jaimacxoin.png'; // Replace with actual path
 
-// const ForgotPassword = () => {
+// export default function ForgotPassword() {
+//   const [email, setEmail] = useState('');
+//   const [submitted, setSubmitted] = useState(false);
 //   const navigate = useNavigate();
-//   const [forgot, { isLoading }] = useForgotMutation();
-//   const [verify, { isVerifyLoading }] = useVerifyMutation();
-//   const [verifyOtp, { isSomething }] = useVerifyOtpMutation();
 
-//   /**
-//    * This function is used to toggle the password visibility
-//    */
-//   const togglePassword = () => {
-//     if (type == "password") {
-//       setIcon(show);
-//       setType("text");
-//     } else {
-//       setIcon(hide);
-//       setType("password");
-//     }
-//   };
-
-//   /**
-//    * This function is used to toggle the confirm password visibility
-//    */
-//   const togglePassword2 = () => {
-//     if (type2 == "password") {
-//       setIcon2(show);
-//       setType2("text");
-//     } else {
-//       setIcon2(hide);
-//       setType2("password");
-//     }
-//   };
-
-//   const [formData, setFormData] = useState({
-//     email: "",
-//     OTP: "",
-//     password: "",
-//     confirmPwd: "",
-//   });
-//   const [errors, setErrors] = useState({});
-//   const [otpSent, setOtpSent] = useState(false);
-//   const [timer, setTimer] = useState(120); // 3 minutes timer
-//   // const [resendOtp, setResendOtp] = useState(false);
-//   const [newPass, setNewPass] = useState(false);
-//   const [isOtpSending, setIsOtpSending] = useState(false);
-//   const [type, setType] = useState("password");
-//   const [type2, setType2] = useState("password");
-//   const [icon, setIcon] = useState(hide);
-//   const [icon2, setIcon2] = useState(hide);
-
-//   /**
-//    * This function is used to handle the change in the input field
-//    * @param {*} e
-//    */
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData({ ...formData, [name]: value });
-//   };
-
-//   /**
-//    * This function is used to validate the email
-//    * @return {*}
-//    */
-//   const validate = () => {
-//     let formErrors = {};
-//     const emailRegex = /^(?![-.])[a-zA-Z0-9-]+(?!.*?\.\.)[a-zA-Z0-9-_.]+@[a-zA-Z0-9]+[a-z.0-9]+\.[a-z.]{2,4}$/;
-//     // const emailRegex = /^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
-
-//     //email validation
-//     if (!formData.email) {
-//       formErrors.email = "Email is required";
-//     } else if (!emailRegex.test(formData.email)) {
-//       formErrors.email = "Invalid email format";
-//     }
-
-//     setErrors(formErrors);
-//     return formErrors;
-//   };
-
-//   /**
-//    * This function is used to validate the password and confirm password
-//    * @return {*}
-//    */
-//   const validatePassword = () => {
-//     let formErrors = {};
-//     // Password validation
-//     if (!formData.password) {
-//       formErrors.password = "Password is required";
-//     } else if (formData.password.length < 6) {
-//       formErrors.password = "Password must be at least 6 characters";
-//     }
-//     // Confirm password validation
-//     if (!formData.confirmPwd) {
-//       formErrors.confirmPwd = "Confirm Password is required";
-//     } else if (formData.password !== formData.confirmPwd) {
-//       formErrors.confirmPwd = "Passwords do not match";
-//     }
-
-    
-//     setErrors(formErrors);
-//     return formErrors;
-//   };
-
-//   /**
-//    * This function is used to submit the email for forgot password
-//    * @param {*} e
-//    * @return {*}
-//    */
-//   const onSubmitEmail = async (e) => {
+//   const handleSubmit = (e) => {
 //     e.preventDefault();
-//     if (Object.keys(validate()).length > 0) {
-//       return;
-//     }
-
-//     if (validate()) {
-//       try {
-//         // Payload for sending OTP
-//         const response = await forgot({
-//           email: formData.email,
-//         }).unwrap();
-//         toast.success(`${response?.message}`, {
-//           position: "top-center",
-//         });
-//         setOtpSent(true);
-//       } catch (error) {
-//         toast.error(`${error?.data?.message}`, {
-//           position: "top-center",
-//         });
-//       }
-//     }
-//   };
-
-//   /**
-//    * This function is used to handle the OTP verification
-//    * @param {*} e
-//    * @return {*}
-//    */
-//   const handleVerifyOtp = async (e) => {
-//     e.preventDefault();
-//     if (!formData.OTP) {
-//       setErrors((prevErrors) => ({
-//         ...prevErrors,
-//         OTP: "OTP is required",
-//       }));
-//       toast.error("OTP is required", {
-//         position: "top-center",
-//       });
-//       return;
-//     }
-
-//     try {
-//       // Payload for verifying OTP
-//       const payload = {
-//         email: formData.email,
-//         otp: Number(formData.OTP),
-//         otpType: "forgotPassword",
-//       };
-//       const res = await verify(payload).unwrap();
-//       if (res?.success == 1) {
-//         setNewPass(true);
-//       }
-//       toast.success(`${res?.message}`, {
-//         position: "top-center",
-//       });
-//     } catch (err) {
-//       toast.error(`${err?.data?.message}`, {
-//         position: "top-center",
-//       });
-//       setErrors((prevErrors) => ({
-//         ...prevErrors,
-//         OTP: err?.data?.message || "Invalid OTP",
-//       }));
-//     }
-//   };
-
-//   /**
-//    * This function is used to submit the new password
-//    * @param {*} e
-//    */
-//   const onSubmitNewPassword = async (e) => {
-//     e.preventDefault();
-//     const formErrors = validatePassword();
-//     setErrors(formErrors);
-//     if (Object.keys(formErrors).length === 0) {
-//       try {
-//         // Payload for setting new password
-//         const payload = {
-//           email: formData.email,
-//           password: formData.password,
-//         };
-//         const res = await verifyOtp(payload).unwrap();
-//         console.log("res ??", res?.message);
-
-//         toast.success(`${res?.message}`, {
-//           position: "top-center",
-//         });
-//         navigate("/login");
-//       } catch (error) {
-//         toast.error(`${error?.data?.message}`, {
-//           position: "top-center",
-//         });
-//       }
-//     }
+//     if (!email) return;
+//     // You can replace this with an API call
+//     console.log('Reset link sent to:', email);
+//     setSubmitted(true);
 //   };
 
 //   return (
-//     <div>
-//       <div className="container-fluid login ">
-//         <div className="row homeGrid">
-//           <div className="col-lg-6 col-md-6 col-sm-6 d-xs-none signIn-bg d-none d-sm-block d-md-blockd-lg-block">
-//             <div className="text-center content">
-//               <h6 className="text-center text-uppercase">welcome to</h6>
-//               <img className="img-fluid pt-2" src={JaimaxText} alt="Logo" />
-//               <div className="w-100 d-flex justify-content-center align-items-center">
-//                 {/* <p className="pt-1 w-75">
-//                   Most famous crypto investing, trading, and literacy platform.
-//                   integrated with multiple Payment gateways with Virtual cards.{" "}
-//                 </p> */}
-//               </div>
-//             </div>
+//     <div className="min-h-screen w-full bg-gray-50 flex">
+//       {/* Left Section (Brand / Visual) */}
+//       <div className="w-1/2 bg-gradient-to-br from-[#085358] via-teal-600 to-green-900 relative hidden lg:flex flex-col justify-center items-center text-white p-12">
+//         <div className="relative w-56 h-56 mb-6 transform transition-all duration-700 hover:scale-105">
+//           <img src={icon} alt="Logo" className="w-full h-full object-contain" />
+//           <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
+//           <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-700"></div>
+//         </div>
+//         <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent">
+//           Reset Your Password
+//         </h2>
+//         <p className="text-teal-50 text-center text-lg leading-relaxed max-w-md">
+//           Forgot your password? Don’t worry — we’ll send you a link to reset it!
+//         </p>
+//       </div>
+
+//       {/* Right Section (Form) */}
+//       <div className="w-full lg:w-1/2 bg-white flex items-center justify-center p-6 lg:p-12">
+//         <div className="w-full max-w-md">
+//           <div className="flex items-center gap-2 mb-4 text-teal-700 cursor-pointer" onClick={() => navigate('/login')}>
+//             <ArrowLeft size={18} />
+//             <span className="text-sm font-medium">Back to Login</span>
 //           </div>
 
-//           <div className="col-lg-6 col-md-6 col-sm-6 my-auto">
-//             <div className="mx-auto welcome w-75">
-//               <div className="px-lg-5 px-md-0 px-sm-0 mx-lg-2 mx-md-0 mx-sm-0">
-//                 <div className="px-0 px-lg-4 px-md-4 heading">
-//                   <h6 className="text-white mb-3 text-uppercase">
-//                     Forgot Password
-//                   </h6>
-//                 </div>
-
-//                 <form className="px-0 px-lg-4 px-md-4 loginFm">
-//                   {!otpSent ? (
-//                     <>
-//                       <div className="form-label-group mb-2">
-//                         <label>Email</label>
-//                         <span className="ps-1 MandatorySymbol"> *</span>
-//                         <div className="customInputs inputHeight">
-//                           <input
-//                             autoComplete="off"
-//                             type="text"
-//                             name="email"
-//                             value={formData.email}
-//                             onChange={handleChange}
-//                             className="form-control"
-//                             placeholder="Enter your email"
-//                           />
-//                           {errors.email && (
-//                             <div className="error_cls">{errors.email}</div>
-//                           )}
-//                         </div>
-//                       </div>
-
-//                       <div className="text-end">
-//                         <Link to="/login" className="forgotPwd">
-//                           Return to Login
-//                         </Link>
-//                       </div>
-
-//                       <div className="submit_btn text-center">
-//                         {isLoading ? (
-//                           <button
-//                             className="btns loginBtn w-100 mb-2"
-//                             type="button"
-//                             disabled
-//                           >
-//                             <span
-//                               className="spinner-grow spinner-grow-sm"
-//                               aria-hidden="true"
-//                             ></span>
-//                             <span role="status">Loading...</span>
-//                           </button>
-//                         ) : (
-//                           <button
-//                             type="submit"
-//                             onClick={onSubmitEmail}
-//                             className="btn loginBtn w-100 my-3"
-//                           >
-//                             <span className="btnText text-uppercase">
-//                               Confirm
-//                             </span>
-//                           </button>
-//                         )}
-//                       </div>
-//                     </>
-//                   ) : newPass ? (
-//                     <>
-//                       <div className="form-label-group mb-2">
-//                         <label>New Password</label>
-//                         <span className="ps-1 MandatorySymbol"> *</span>
-//                         <div className="customInputs inputHeight">
-//                           <div className="input-group buttonInput bg-white">
-//                             <input
-//                               autoComplete="off"
-//                               type={type}
-//                               className="form-control"
-//                               placeholder="Enter new password"
-//                               name="password"
-//                               value={formData.password}
-//                               onChange={handleChange}
-//                             />
-//                             <span className="input-group-text border-0 bg-white">
-//                               <img
-//                                 src={icon}
-//                                 alt="eye-icon"
-//                                 className="img-fluid"
-//                                 onClick={togglePassword}
-//                                 style={{ cursor: "pointer" }}
-//                               />
-//                             </span>
-//                           </div>
-//                           {errors.password && (
-//                             <div className="error_cls">{errors.password}</div>
-//                           )}
-//                         </div>
-//                       </div>
-
-//                       <div className="form-label-group mb-2">
-//                         <label>Confirm new Password</label>
-//                         <span className="ps-1 MandatorySymbol"> *</span>
-//                         <div className="customInputs inputHeight">
-//                           <div className="input-group buttonInput bg-white">
-//                             <input
-//                               autoComplete="off"
-//                               type={type2}
-//                               name="confirmPwd"
-//                               id="confirmPwd"
-//                               placeholder="Confirm new password"
-//                               className={`form-control ${
-//                                 errors.confirmPwd ? "is-invalid" : ""
-//                               }`}
-//                               value={formData.confirmPwd}
-//                               onChange={handleChange}
-//                             />
-//                             <span className="input-group-text border-0 bg-white">
-//                               <img
-//                                 src={icon2}
-//                                 alt="eye-icon"
-//                                 className="img-fluid"
-//                                 onClick={togglePassword2}
-//                                 style={{ cursor: "pointer" }}
-//                               />
-//                             </span>
-//                           </div>
-//                           {errors.confirmPwd && (
-//                             <div className="error_cls">{errors.confirmPwd}</div>
-//                           )}
-//                         </div>
-//                       </div>
-//                       <div className="submit_btn text-center mt-2">
-//                         {isLoading ? (
-//                           <button
-//                             className="btn loginBtn w-100 my-3"
-//                             type="button"
-//                             disabled
-//                           >
-//                             <span
-//                               className="spinner-grow spinner-grow-sm"
-//                               aria-hidden="true"
-//                             ></span>
-//                             <span role="status" className="btnText">
-//                               Loading...
-//                             </span>
-//                           </button>
-//                         ) : (
-//                           <button
-//                             type="submit"
-//                             onClick={onSubmitNewPassword}
-//                             className="btn loginBtn w-100 my-3"
-//                           >
-//                             <span className="btnText text-uppercase">
-//                               Set Password
-//                             </span>
-//                           </button>
-//                         )}
-//                       </div>
-//                     </>
-//                   ) : (
-//                     <>
-//                       <div className="form-label-group mb-2">
-//                         <label htmlFor="otp">Enter OTP</label>
-//                         <div className="customInputs inputHeight">
-//                           <input
-//                             autoComplete="off"
-//                             type="text"
-//                             name="OTP"
-//                             value={formData.OTP}
-//                             onChange={handleChange}
-//                             className="form-control"
-//                             placeholder="Enter OTP"
-//                           />
-//                           {errors.OTP && (
-//                             <div className="error_cls">{errors.OTP}</div>
-//                           )}
-//                         </div>
-//                       </div>
-//                       <div className="submit_btn text-center">
-//                         {isVerifyLoading ? (
-//                           <button
-//                             className="btn loginBtn w-100 my-3"
-//                             type="button"
-//                             disabled
-//                           >
-//                             <span
-//                               className="spinner-grow spinner-grow-sm"
-//                               aria-hidden="true"
-//                             ></span>
-//                             <span role="status" className="btnText">
-//                               Loading...
-//                             </span>
-//                           </button>
-//                         ) : (
-//                           <button
-//                             type="submit"
-//                             onClick={handleVerifyOtp}
-//                             className="btn loginBtn w-100 my-3"
-//                           >
-//                             <span className="btnText text-uppercase">
-//                               Verify OTP
-//                             </span>
-//                           </button>
-//                         )}
-//                       </div>
-//                     </>
-//                   )}
-//                 </form>
-//               </div>
-//             </div>
+//           <div className="text-center mb-6">
+//             <MailIcon className="w-12 h-12 text-teal-600 mx-auto mb-2" />
+//             <h2 className="text-2xl font-bold text-teal-800">Forgot Password</h2>
+//             <p className="text-gray-600 text-sm mt-2">
+//               Enter your registered email to receive a password reset link.
+//             </p>
 //           </div>
+
+//           {!submitted ? (
+//             <form onSubmit={handleSubmit} className="space-y-4">
+//               <input
+//                 type="email"
+//                 placeholder="example@domain.com"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//                 required
+//                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none transition"
+//               />
+//               <button
+//                 type="submit"
+//                 className="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition duration-300"
+//               >
+//                 Send Reset Link
+//               </button>
+//             </form>
+//           ) : (
+//             <div className="text-center text-green-600 font-medium">
+//               ✅ A reset link has been sent to your email.
+//             </div>
+//           )}
 //         </div>
 //       </div>
 //     </div>
 //   );
-// };
+// }
 
-// export default ForgotPassword;
-import React, { useEffect, useState } from "react";
+
+
+// import { useState, useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { MailIcon, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
+// import { useForgotMutation } from './authApiSlice';
+// import icon from '../assets/Images/jaimaxcoin.png'; // replace with your logo path
+
+// export default function ForgotPassword() {
+//   const [email, setEmail] = useState('');
+//   const [notification, setNotification] = useState(null);
+//   const [forgot, { isLoading }] = useForgotMutation();
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!email) {
+//       setNotification({ type: 'error', message: 'Please enter your email.' });
+//       return;
+//     }
+
+//     try {
+//       const res = await forgot({ email }).unwrap();
+
+//       if (res?.success) {
+//         setNotification({
+//           type: 'success',
+//           message: res.message || 'Reset link sent to your email!',
+//         });
+//       } else {
+//         setNotification({
+//           type: 'error',
+//           message: res.message || 'Unable to send reset link.',
+//         });
+//       }
+//     } catch (err) {
+//       setNotification({
+//         type: 'error',
+//         message: err?.data?.message || 'Something went wrong. Try again.',
+//       });
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen w-full bg-gray-50 flex">
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+
+//       {/* Left Side - Branding */}
+//       <div className="w-1/2 bg-gradient-to-br from-[#085358] via-teal-600 to-green-900 hidden lg:flex flex-col items-center justify-center text-white p-12">
+//         <img src={icon} alt="Logo" className="w-56 h-56 mb-6" />
+//         <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent">
+//           Forgot Password?
+//         </h2>
+//         <p className="text-teal-50 text-center text-lg max-w-md">
+//           No worries! We'll email you a reset link. Just enter your email.
+//         </p>
+//       </div>
+
+//       {/* Right Side - Form */}
+//       <div className="w-full lg:w-1/2 bg-white flex items-center justify-center p-6 lg:p-12">
+//         <div className="w-full max-w-md">
+//           <div
+//             className="flex items-center gap-2 mb-4 text-teal-700 cursor-pointer"
+//             onClick={() => navigate('/login')}
+//           >
+//             <ArrowLeft size={18} />
+//             <span className="text-sm font-medium">Back to Login</span>
+//           </div>
+
+//           <div className="text-center mb-6">
+//             <MailIcon className="w-12 h-12 text-teal-600 mx-auto mb-2" />
+//             <h2 className="text-2xl font-bold text-teal-800">Forgot Password</h2>
+//             <p className="text-gray-600 text-sm mt-2">
+//               Enter your email to receive a password reset link.
+//             </p>
+//           </div>
+
+//           <form onSubmit={handleSubmit} className="space-y-4">
+//             <input
+//               type="email"
+//               placeholder="example@domain.com"
+//               value={email}
+//               onChange={(e) => setEmail(e.target.value)}
+//               required
+//               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none transition"
+//             />
+//             <button
+//               type="submit"
+//               disabled={isLoading}
+//               className={`w-full py-3 font-semibold rounded-lg transition duration-300 ${
+//                 isLoading
+//                   ? 'bg-gray-400 cursor-not-allowed'
+//                   : 'bg-teal-600 hover:bg-teal-700 text-white'
+//               }`}
+//             >
+//               {isLoading ? 'Sending...' : 'Send Reset Link'}
+//             </button>
+//           </form>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// // ⬇️ Included Notification Component Inside This File
+// function Notification({ type = 'success', message, onClose }) {
+//   useEffect(() => {
+//     const timer = setTimeout(onClose, 5000);
+//     return () => clearTimeout(timer);
+//   }, [onClose]);
+
+//   const bgColor = type === 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
+//   const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
+//   const Icon = type === 'success' ? CheckCircle : AlertCircle;
+
+//   return (
+//     <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg border ${bgColor} ${textColor} shadow-lg max-w-sm animate-slide-in`}>
+//       <div className="flex items-center gap-3">
+//         <Icon className="h-5 w-5 flex-shrink-0" />
+//         <p className="text-sm font-medium">{message}</p>
+//         <button
+//           onClick={onClose}
+//           className="ml-auto text-gray-400 hover:text-gray-600"
+//         >
+//           ×
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from './Logo'
 import {
   useForgotMutation,
   useVerifyMutation,
   useVerifyOtpMutation,
 } from "./authApiSlice";
+import { MailIcon, ArrowLeft, CheckCircle, AlertCircle, LockKeyhole, ShieldCheck } from "lucide-react";
+import logo from "../assets/Images/jaimaxcoin.png";
 
-import hide from "../assets/Images/hide.svg";
-import show from "../assets/Images/show.svg";
-import JaimaxText from "../assets/Images/Jaimaxtext.svg";
-const Link = ({ to, children, className }) => (
-  <a href={to} className={className} onClick={(e) => { e.preventDefault(); console.log(`Navigate to: ${to}`); }}>
-    {children}
-  </a>
-);
-
-const ForgotPassword = () => {
+export default function ForgotPassword() {
   const navigate = useNavigate();
-  const [forgot, { isLoading }] = useForgotMutation();
-  const [verify, { isVerifyLoading }] = useVerifyMutation();
-  const [verifyOtp, { isSomething }] = useVerifyOtpMutation();
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
+  const [notification, setNotification] = useState(null);
 
-  /**
-   * This function is used to toggle the password visibility
-   */
-  const togglePassword = () => {
-    if (type == "password") {
-      setIcon(show);
-      setType("text");
-    } else {
-      setIcon(hide);
-      setType("password");
-    }
-  };
+  const [forgot, { isLoading: loadingEmail }] = useForgotMutation();
+  const [verify, { isLoading: loadingOtp }] = useVerifyMutation();
+  const [verifyOtp, { isLoading: loadingReset }] = useVerifyOtpMutation();
 
-  /**
-   * This function is used to toggle the confirm password visibility
-   */
-  const togglePassword2 = () => {
-    if (type2 == "password") {
-      setIcon2(show);
-      setType2("text");
-    } else {
-      setIcon2(hide);
-      setType2("password");
-    }
-  };
+  const showNotification = (type, message) =>
+    setNotification({ type, message });
 
-  const [formData, setFormData] = useState({
-    email: "",
-    OTP: "",
-    password: "",
-    confirmPwd: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [otpSent, setOtpSent] = useState(false);
-  const [timer, setTimer] = useState(120); // 3 minutes timer
-  // const [resendOtp, setResendOtp] = useState(false);
-  const [newPass, setNewPass] = useState(false);
-  const [isOtpSending, setIsOtpSending] = useState(false);
-  const [type, setType] = useState("password");
-  const [type2, setType2] = useState("password");
-  const [icon, setIcon] = useState(hide);
-  const [icon2, setIcon2] = useState(hide);
-
-  /**
-   * This function is used to handle the change in the input field
-   * @param {*} e
-   */
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  /**
-   * This function is used to validate the email
-   * @return {*}
-   */
-  const validate = () => {
-    let formErrors = {};
-    const emailRegex = /^(?![-.])[a-zA-Z0-9-]+(?!.*?\.\.)[a-zA-Z0-9-_.]+@[a-zA-Z0-9]+[a-z.0-9]+\.[a-z.]{2,4}$/;
-    // const emailRegex = /^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
-
-    //email validation
-    if (!formData.email) {
-      formErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      formErrors.email = "Invalid email format";
-    }
-
-    setErrors(formErrors);
-    return formErrors;
-  };
-
-  /**
-   * This function is used to validate the password and confirm password
-   * @return {*}
-   */
-  const validatePassword = () => {
-    let formErrors = {};
-    // Password validation
-    if (!formData.password) {
-      formErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      formErrors.password = "Password must be at least 6 characters";
-    }
-    // Confirm password validation
-    if (!formData.confirmPwd) {
-      formErrors.confirmPwd = "Confirm Password is required";
-    } else if (formData.password !== formData.confirmPwd) {
-      formErrors.confirmPwd = "Passwords do not match";
-    }
-
-    
-    setErrors(formErrors);
-    return formErrors;
-  };
-
-  /**
-   * This function is used to submit the email for forgot password
-   * @param {*} 
-   * @return {*}
-   */
-  const onSubmitEmail = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    if (Object.keys(validate()).length > 0) {
-      return;
-    }
-
-    if (validate()) {
-      try {
-        // Payload for sending OTP
-        const response = await forgot({
-          email: formData.email,
-        }).unwrap();
-        toast.success(`${response?.message}`, {
-          position: "top-center",
-        });
-        setOtpSent(true);
-      } catch (error) {
-        toast.error(`${error?.data?.message}`, {
-          position: "top-center",
-        });
-      }
-    }
-  };
-
-  /**
-   * This function is used to handle the OTP verification
-   * @param {*} e
-   * @return {*}
-   */
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    if (!formData.OTP) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        OTP: "OTP is required",
-      }));
-      toast.error("OTP is required", {
-        position: "top-center",
-      });
-      return;
-    }
+    if (!email) return showNotification("error", "Email is required");
 
     try {
-      // Payload for verifying OTP
-      const payload = {
-        email: formData.email,
-        otp: Number(formData.OTP),
-        otpType: "forgotPassword",
-      };
-      const res = await verify(payload).unwrap();
-      if (res?.success == 1) {
-        setNewPass(true);
+      const res = await forgot({ email }).unwrap();
+      if (res?.success) {
+        showNotification("success", res.message || "OTP sent!");
+        setStep(2);
+      } else {
+        showNotification("error", res.message || "Failed to send OTP.");
       }
-      toast.success(`${res?.message}`, {
-        position: "top-center",
-      });
     } catch (err) {
-      toast.error(`${err?.data?.message}`, {
-        position: "top-center",
-      });
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        OTP: err?.data?.message || "Invalid OTP",
-      }));
+      showNotification("error", err?.data?.message || "Something went wrong.");
     }
   };
 
-  /**
-   * This function is used to submit the new password
-   * @param {*} e
-   */
-  const onSubmitNewPassword = async (e) => {
+  const handleOtpSubmit = async (e) => {
     e.preventDefault();
-    const formErrors = validatePassword();
-    setErrors(formErrors);
-    if (Object.keys(formErrors).length === 0) {
-      try {
-        // Payload for setting new password
-        const payload = {
-          email: formData.email,
-          password: formData.password,
-        };
-        const res = await verifyOtp(payload).unwrap();
-        console.log("res ??", res?.message);
+    if (!otp) return showNotification("error", "OTP is required");
 
-        toast.success(`${res?.message}`, {
-          position: "top-center",
-        });
-        navigate("/login");
-      } catch (error) {
-        toast.error(`${error?.data?.message}`, {
-          position: "top-center",
-        });
+    try {
+      const res = await verify({
+        email,
+        otp: Number(otp),
+        otpType: "forgotPassword",
+      }).unwrap();
+      if (res?.success) {
+        showNotification("success", res.message || "OTP verified!");
+        setStep(3);
+      } else {
+        showNotification("error", res.message || "Invalid OTP.");
       }
+    } catch (err) {
+      showNotification("error", err?.data?.message || "OTP verification failed.");
     }
   };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (!password || !confirmPwd)
+      return showNotification("error", "Both password fields are required");
+    if (password !== confirmPwd)
+      return showNotification("error", "Passwords do not match");
+
+    try {
+      const res = await verifyOtp({ email, password }).unwrap();
+      if (res?.success) {
+        showNotification("success", res.message || "Password updated!");
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        showNotification("error", res.message || "Failed to update password.");
+      }
+    } catch (err) {
+      showNotification("error", err?.data?.message || "Reset failed.");
+    }
+  };
+
+return (
+  <div className="min-h-screen w-full bg-gray-50 flex flex-col lg:flex-row">
+    {notification && (
+      <Notification
+        type={notification.type}
+        message={notification.message}
+        onClose={() => setNotification(null)}
+      />
+    )}
+
+    {/* Branding Section - full width on mobile, 1/2 on desktop */}
+    <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#085358] via-teal-600 to-green-900 text-white p-8 lg:p-12">
+      <img src={logo} alt="Logo" className="w-40 h-40 mb-6" />
+      <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent mb-2">
+        Forgot Password?
+      </h2>
+      <p className="text-base lg:text-lg text-teal-100 text-center max-w-xs">
+        We’ll send you a code to reset your password.
+      </p>
+    </div>
+
+    {/* Form Section */}
+    <div className="w-full lg:w-1/2 bg-white flex items-center justify-center p-6 lg:p-12">
+      <div className="w-full max-w-md">
+        {/* Back Button */}
+        <div
+          className="flex items-center gap-2 mb-4 text-teal-700 cursor-pointer"
+          onClick={() => navigate("/login")}
+        >
+          <ArrowLeft size={18} />
+          <span className="text-sm font-medium">Back to Login</span>
+        </div>
+
+        {/* Icon & Heading */}
+        <div className="text-center mb-6">
+          {step === 1 && <MailIcon className="w-12 h-12 text-teal-600 mx-auto mb-2" />}
+          {step === 2 && <ShieldCheck className="w-12 h-12 text-teal-600 mx-auto mb-2" />}
+          {step === 3 && <LockKeyhole className="w-12 h-12 text-teal-600 mx-auto mb-2" />}
+          <h2 className="text-2xl font-bold text-teal-800">
+            {step === 1 ? "Forgot Password" : step === 2 ? "Enter OTP" : "Set New Password"}
+          </h2>
+        </div>
+
+        {/* Forms (unchanged) */}
+        {step === 1 && (
+          <form onSubmit={handleEmailSubmit} className="space-y-4">
+            <input
+              type="email"
+              placeholder="example@domain.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+              required
+            />
+            <button
+              type="submit"
+              disabled={loadingEmail}
+              className={`w-full py-3 font-semibold rounded-lg ${
+                loadingEmail
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-teal-600 hover:bg-teal-700 text-white"
+              }`}
+            >
+              {loadingEmail ? "Sending..." : "Send OTP"}
+            </button>
+          </form>
+        )}
+
+        {step === 2 && (
+          <form onSubmit={handleOtpSubmit} className="space-y-4">
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+              required
+            />
+            <button
+              type="submit"
+              disabled={loadingOtp}
+              className={`w-full py-3 font-semibold rounded-lg ${
+                loadingOtp
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-teal-600 hover:bg-teal-700 text-white"
+              }`}
+            >
+              {loadingOtp ? "Verifying..." : "Verify OTP"}
+            </button>
+          </form>
+        )}
+
+        {step === 3 && (
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <input
+              type="password"
+              placeholder="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Confirm New Password"
+              value={confirmPwd}
+              onChange={(e) => setConfirmPwd(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+              required
+            />
+            <button
+              type="submit"
+              disabled={loadingReset}
+              className={`w-full py-3 font-semibold rounded-lg ${
+                loadingReset
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-teal-600 hover:bg-teal-700 text-white"
+              }`}
+            >
+              {loadingReset ? "Resetting..." : "Reset Password"}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+}
+
+function Notification({ type = "success", message, onClose }) {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const bg = type === "success" ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200";
+  const text = type === "success" ? "text-green-800" : "text-red-800";
+  const Icon = type === "success" ? CheckCircle : AlertCircle;
 
   return (
-    <div>
-      <div className="min-h-screen bg-gray-900"
-                style={{
-  backgroundImage: "url('https://t4.ftcdn.net/jpg/02/22/68/39/360_F_222683930_mXWfHnOk9spCYOyEhqXNSWbWhZd4dFKF.jpg')",
-  backgroundRepeat:'no-repeat',
-  backgroundSize:'cover',
-}}>
-        <div className="flex min-h-screen">
-          {/* Left side - Welcome section */}
-          <div className="hidden sm:flex sm:w-1/2  items-center justify-center" 
-
-
-            >
-            <div className="text-center text-white px-8">
-              <h6 className="text-sm uppercase tracking-wide mb-2">welcome to</h6>
-              {/* <img className="w-auto h-16 mx-auto pt-2" src={JaimaxText} alt="Logo" /> */}
-              <Logo/>
-              <div className="w-full flex justify-center items-center mt-4">
-                {/* <p className="text-sm opacity-90 max-w-md">
-                  Most famous crypto investing, trading, and literacy platform.
-                  integrated with multiple Payment gateways with Virtual cards.
-                </p> */}
-              </div>
-            </div>
-          </div>
-
-          {/* Right side - Form section */}
-          <div className="w-full sm:w-1/2 flex  items-center justify-center p-8">
-            <div className="w-full max-w-md">
-              <div className="mb-8">
-                <h6 className="text-white text-lg uppercase tracking-wide mb-6">
-                  Forgot Password
-                </h6>
-              </div>
-
-              <div className="space-y-6">
-                {!otpSent ? (
-                  <>
-                    <div>
-                      <label className="block text-white text-sm mb-2">
-                        Email
-                        <span className="text-red-500 ml-1">*</span>
-                      </label>
-                      <div>
-                        <input
-                          autoComplete="off"
-                          type="text"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Enter your email"
-                        />
-                        {errors.email && (
-                          <div className="text-red-500 text-sm mt-1">{errors.email}</div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="text-right">
-                      <Link to="/login" className="text-blue-400 hover:text-blue-300 text-sm">
-                        Return to Login
-                      </Link>
-                    </div>
-
-                    <div className="text-center">
-                      {isLoading ? (
-                        <button
-                          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium opacity-75 cursor-not-allowed flex items-center justify-center"
-                          type="button"
-                          disabled
-                        >
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Loading...
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          onClick={onSubmitEmail}
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 uppercase tracking-wide"
-                        >
-                          Confirm
-                        </button>
-                      )}
-                    </div>
-                  </>
-                ) : newPass ? (
-                  <>
-                    <div>
-                      <label className="block text-white text-sm mb-2">
-                        New Password
-                        <span className="text-red-500 ml-1">*</span>
-                      </label>
-                      <div>
-                        <div className="relative">
-                          <input
-                            autoComplete="off"
-                            type={type}
-                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
-                            placeholder="Enter new password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                          />
-                          <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                            onClick={togglePassword}
-                          >
-                            <img
-                              src={icon}
-                              alt="eye-icon"
-                              className="h-5 w-5 cursor-pointer"
-                            />
-                          </button>
-                        </div>
-                        {errors.password && (
-                          <div className="text-red-500 text-sm mt-1">{errors.password}</div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-white text-sm mb-2">
-                        Confirm new Password
-                        <span className="text-red-500 ml-1">*</span>
-                      </label>
-                      <div>
-                        <div className="relative">
-                          <input
-                            autoComplete="off"
-                            type={type2}
-                            name="confirmPwd"
-                            id="confirmPwd"
-                            placeholder="Confirm new password"
-                            className={`w-full px-4 py-3 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12 ${
-                              errors.confirmPwd ? "border-red-500" : "border-gray-300"
-                            }`}
-                            value={formData.confirmPwd}
-                            onChange={handleChange}
-                          />
-                          <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                            onClick={togglePassword2}
-                          >
-                            <img
-                              src={icon2}
-                              alt="eye-icon"
-                              className="h-5 w-5 cursor-pointer"
-                            />
-                          </button>
-                        </div>
-                        {errors.confirmPwd && (
-                          <div className="text-red-500 text-sm mt-1">{errors.confirmPwd}</div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="text-center mt-6">
-                      {isLoading ? (
-                        <button
-                          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium opacity-75 cursor-not-allowed flex items-center justify-center"
-                          type="button"
-                          disabled
-                        >
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Loading...
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          onClick={onSubmitNewPassword}
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 uppercase tracking-wide"
-                        >
-                          Set Password
-                        </button>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div>
-                      <label htmlFor="otp" className="block text-white text-sm mb-2">
-                        Enter OTP
-                      </label>
-                      <div>
-                        <input
-                          autoComplete="off"
-                          type="text"
-                          name="OTP"
-                          value={formData.OTP}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Enter OTP"
-                        />
-                        {errors.OTP && (
-                          <div className="text-red-500 text-sm mt-1">{errors.OTP}</div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="text-center">
-                      {isVerifyLoading ? (
-                        <button
-                          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium opacity-75 cursor-not-allowed flex items-center justify-center"
-                          type="button"
-                          disabled
-                        >
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Loading...
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          onClick={handleVerifyOtp}
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors duration-200 uppercase tracking-wide"
-                        >
-                          Verify OTP
-                        </button>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg border ${bg} ${text} shadow-lg max-w-sm animate-slide-in`}>
+      <div className="flex items-center gap-3">
+        <Icon className="w-5 h-5 flex-shrink-0" />
+        <p className="text-sm font-medium">{message}</p>
+        <button onClick={onClose} className="ml-auto text-gray-400 hover:text-gray-600">
+          ×
+        </button>
       </div>
     </div>
   );
-};
-
-export default ForgotPassword;
+}

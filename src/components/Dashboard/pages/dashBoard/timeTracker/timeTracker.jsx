@@ -1,18 +1,19 @@
 
 
-
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
-import jicon from "../../../../../assets/jcoin.png"
-
-import assets from "../../../../../assets/assets";
+import { ChevronLeft, ChevronRight, Play, Pause, ArrowLeft, ArrowRight, TrendingUp, Coins, DollarSign, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import jcoin from "../../../../../assets/logo.png"
+// Mock assets for demonstration
+// const assets = {
+//   welcomeDraw: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23f59e0b'/%3E%3Ctext x='50' y='55' font-family='Arial' font-size='20' font-weight='bold' text-anchor='middle' fill='white'%3EJ%3C/text%3E%3C/svg%3E"
+// };
 
 const slabsData = [
   {
     id: 1,
     title: "1st ICO Slab",
     status: "Live",
-    statusColor: "bg-green-500",
+    statusColor: "bg-emerald-500",
     type: "active",
     prices: { usd: 0.00024, inr: 0.02 },
     soldPercentage: 20.50,
@@ -23,7 +24,7 @@ const slabsData = [
     id: 2,
     title: "2nd ICO Slab",
     status: "Upcoming",
-    statusColor: "bg-yellow-500",
+    statusColor: "bg-amber-500",
     type: "upcoming",
     prices: { usd: 0.00059, inr: 0.05 },
     totalCoins: "20000000000"
@@ -32,7 +33,7 @@ const slabsData = [
     id: 3,
     title: "3rd ICO Slab",
     status: "Upcoming",
-    statusColor: "bg-yellow-500",
+    statusColor: "bg-amber-500",
     type: "upcoming",
     prices: { usd: 0.00710, inr: 0.60000 },
     totalCoins: "25000000000"
@@ -41,7 +42,7 @@ const slabsData = [
     id: 4,
     title: "4th ICO Slab",
     status: "Upcoming",
-    statusColor: "bg-yellow-500",
+    statusColor: "bg-amber-500",
     type: "upcoming",
     prices: { usd: 0.01893, inr: 1.60000 },
     totalCoins: "30000000000"
@@ -50,7 +51,7 @@ const slabsData = [
     id: 5,
     title: "5th ICO Slab",
     status: "Upcoming",
-    statusColor: "bg-yellow-500",
+    statusColor: "bg-amber-500",
     type: "upcoming",
     prices: { usd: 0.00189, inr: 0.159 },
     totalCoins: "23000000000"
@@ -70,362 +71,212 @@ const ActiveSlabContent = ({ slab, isActive }) => {
   };
 
   return (
-    <div className={`bg-white rounded-lg p-4 w-full w-full max-w-7xl text-gray-800 shadow-lg border border-gray-200 transform transition-all duration-500 min-h-[350px] ${
-      isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'
-    }`}>
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-gray-800 font-semibold text-base">{slab.title}</h3>
-        <span className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1`}>
-          <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
-          {slab.status}
-        </span>
-      </div>
+    <div className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4  text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'
+      }`}>
 
-      {/* Payment Method Selection */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-600 mb-2">Pay with</label>
-        <div className="flex gap-4">
-          {['INR', 'USD'].map((method) => (
-            <label key={method} className="flex items-center gap-2 cursor-pointer group">
-              <div className="relative">
-                <input 
-                  type="radio" 
-                  name="paymentMethod" 
-                  value={method}
-                  checked={paymentMethod === method}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="sr-only"
-                />
-                <div className={`w-3.5 h-3.5 rounded-full border-2 transition-all duration-300 ${
-                  paymentMethod === method 
-                    ? 'border-green-500 bg-green-500' 
-                    : 'border-gray-300'
-                } flex items-center justify-center`}>
-                  {paymentMethod === method && (
-                    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                  )}
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-emerald-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
+      <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-teal-400/15 to-transparent rounded-full translate-y-4 -translate-x-4 blur-lg"></div>
+
+      <div className="relative z-10">
+        {/* Header with Status */}
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></div>
+            <h3 className="text-gray-800 font-bold text-base bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              {slab.title}
+            </h3>
+          </div>
+          <span className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}>
+            <CheckCircle size={12} />
+            {slab.status}
+          </span>
+        </div>
+
+        {/* Payment Method Selection */}
+        <div className="mb-3">
+          <label className="block text-xs font-bold text-gray-700 mb-2 flex items-center gap-1">
+            <DollarSign size={12} className="text-emerald-600" />
+            Payment Method
+          </label>
+          <div className="flex gap-3">
+            {['INR', 'USD'].map((method) => (
+              <label key={method} className="flex items-center gap-2 cursor-pointer">
+                <div className="relative">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value={method}
+                    checked={paymentMethod === method}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="sr-only"
+                  />
+                  <div className={`w-3 h-3 rounded-full border-2 transition-all duration-300 shadow-md ${paymentMethod === method
+                    ? 'border-emerald-500 bg-emerald-500 shadow-emerald-500/25'
+                    : 'border-gray-300 bg-white shadow-gray-200'
+                    } flex items-center justify-center`}>
+                    {paymentMethod === method && (
+                      <div className="w-1 h-1 bg-white rounded-full animate-pulse"></div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <span className={`text-sm font-medium ${
-                paymentMethod === method ? 'text-gray-800' : 'text-gray-500'
-              }`}>{method}</span>
-            </label>
-          ))}
+                <span className={`text-sm font-semibold transition-all duration-300 ${paymentMethod === method ? 'text-emerald-700' : 'text-gray-500'
+                  }`}>{method}</span>
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Amount Input */}
-      <div className="mb-4 space-y-3">
-        <input
-          type="number"
-          placeholder="Enter Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2.5 px-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/20"
-        />
+        {/* Amount Input */}
+        <div className="mb-3 space-y-2">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Enter Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full bg-white/80 backdrop-blur-sm border border-emerald-200 rounded-lg py-2 px-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-md transition-all duration-300"
+            />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-600 font-semibold text-xs">
+              {paymentMethod}
+            </div>
+          </div>
 
-        <button 
-          onClick={handleProceedToPay}
-          className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2.5 px-3 rounded-lg text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
-        >
-          Proceed to pay
-        </button>
-      </div>
-
-      {/* Price Changes */}
-      <div className="flex justify-between mb-4">
-        <span className="text-green-600 text-sm font-medium flex items-center gap-1">
-          <span className="text-green-600">↗</span>
-          {slab.prices.inr.toFixed(5)} INR
-        </span>
-        <span className="text-green-600 text-sm font-medium flex items-center gap-1">
-          <span className="text-green-600">↗</span>
-          {slab.prices.usd.toFixed(5)} USD
-        </span>
-      </div>
-
-      {/* Progress Section */}
-      <div className="mb-4">
-        <p className="text-gray-600 text-sm mb-2">Sold Tokens {slab.soldPercentage}%</p>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-gradient-to-r from-green-500 to-green-600 h-full rounded-full transition-all duration-1000"
-            style={{ width: `${slab.soldPercentage}%` }}
-          ></div>
+          <button
+            onClick={handleProceedToPay}
+            className="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
+            <span className="relative z-10">Proceed to Pay</span>
+            <TrendingUp size={14} className="relative z-10" />
+          </button>
         </div>
-      </div>
 
-      {/* Description */}
-      <div className="text-center">
-        <p className="text-gray-600 text-sm leading-relaxed">
-          {slab.description}
-        </p>
+        {/* Price Changes */}
+        <div className="flex justify-between mb-3 gap-2">
+          <div className="flex-1 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-2 border border-emerald-200/50 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-emerald-700 text-xs font-semibold">INR</span>
+              <span className="text-emerald-600 text-xs">↗ +5.2%</span>
+            </div>
+            <p className="text-emerald-800 text-sm font-bold">₹{slab.prices.inr.toFixed(5)}</p>
+          </div>
+          <div className="flex-1 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-2 border border-blue-200/50 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-blue-700 text-xs font-semibold">USD</span>
+              <span className="text-blue-600 text-xs">↗ +3.8%</span>
+            </div>
+            <p className="text-blue-800 text-sm font-bold">${slab.prices.usd.toFixed(5)}</p>
+          </div>
+        </div>
+
+        {/* Progress Section */}
+        <div className="mb-3">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-gray-700 text-xs font-bold flex items-center gap-1">
+              <Coins size={12} className="text-emerald-600" />
+              Sold Tokens
+            </span>
+            <span className="text-emerald-700 text-sm font-bold">{slab.soldPercentage}%</span>
+          </div>
+          <div className="w-full bg-gradient-to-r from-gray-200 to-gray-300 rounded-full h-2 overflow-hidden shadow-inner">
+            <div
+              className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 h-full rounded-full transition-all duration-1000 ease-out shadow-sm relative overflow-hidden"
+              style={{ width: `${slab.soldPercentage}%` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="text-center bg-gradient-to-r from-emerald-50/50 to-teal-50/50 rounded-lg p-2 border border-emerald-100">
+          <p className="text-gray-700 text-xs leading-relaxed font-medium">
+            {slab.description}
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
+
+
 const UpcomingSlabContent = ({ slab, isActive }) => (
-  <div className={`bg-white rounded-lg p-4 text-gray-800 shadow-lg border border-gray-200 transform transition-all duration-500 min-h-[320px] ${
-    isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'
-  }`}>
-    {/* Header */}
-    <div className="flex justify-between items-center mb-4">
-      <h3 className="text-gray-800 font-semibold text-base">{slab.title}</h3>
-      <span className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1`}>
-        <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
-        {slab.status}
-      </span>
-    </div>
+  <div className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'}`}>
 
-    {/* Coin Image */}
-    <div className="flex justify-center mb-4">
-      <div className="w-14 h-14 ">
-        <span className="text-white font-bold text-xl">
+    {/* Decorative Background Elements */}
+    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-amber-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
+    <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-orange-400/15 to-transparent rounded-full translate-y-4 -translate-x-4 blur-lg"></div>
 
-          <img src={assets.welcomeDraw} alt="" />
+    <div className="relative z-10 flex flex-col justify-between h-full">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse shadow-lg shadow-amber-500/50"></div>
+          <h3 className="text-gray-800 font-bold text-base bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+            {slab.title}
+          </h3>
+        </div>
+        <span className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}>
+          <Clock size={12} />
+          {slab.status}
         </span>
       </div>
-    </div>
 
-    {/* Price Information */}
-    <div className="grid grid-cols-2 gap-3 mb-4">
-      <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 text-center">
-        <p className="text-sm font-semibold text-gray-600 mb-1">USD</p>
-        <p className="text-base font-bold text-gray-800">{slab.prices.usd.toFixed(5)}</p>
+      {/* Large Coin Image */}
+      <div className="flex justify-center mb-4">
+        <div className="w-24 h-24 rounded-full border border-orange-400 shadow-lg overflow-hidden bg-white p-1">
+          <img src={jcoin} alt="Coin" className="w-full h-full object-cover" />
+        </div>
       </div>
-      <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 text-center">
-        <p className="font-bold text-gray-600 text-sm mb-1">INR</p>
-        <p className="text-base font-semibold text-gray-800">{slab.prices.inr.toFixed(5)}</p>
-      </div>
-    </div>
 
-    {/* Total Coins */}
-    <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200 text-center">
-      <p className="text-sm font-medium text-gray-600 mb-2">
-        Total Coins Ready for Release
-      </p>
-      <p className="text-xl font-bold text-green-600">
-        {parseInt(slab.totalCoins).toLocaleString()}
-      </p>
+      {/* Price Info */}
+      <div className="flex justify-between mb-3 gap-2">
+        <div className="flex-1 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-2 border border-blue-200/50 shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-blue-700 text-xs font-semibold">USD</span>
+            <span className="text-blue-600 text-xs">↗ +3.8%</span>
+          </div>
+          <p className="text-blue-800 text-sm font-bold">${slab.prices.usd.toFixed(5)}</p>
+        </div>
+        <div className="flex-1 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-2 border border-emerald-200/50 shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-emerald-700 text-xs font-semibold">INR</span>
+            <span className="text-emerald-600 text-xs">↗ +5.2%</span>
+          </div>
+          <p className="text-emerald-800 text-sm font-bold">₹{slab.prices.inr.toFixed(5)}</p>
+        </div>
+      </div>
+
+      {/* Total Coins */}
+      <div className="mb-3">
+        <div className="text-xs font-bold text-gray-700 mb-1 flex items-center gap-1">
+          <Coins size={12} className="text-amber-600" />
+          Total Coins Ready for Release
+        </div>
+        <div className="bg-gradient-to-r from-orange-50 to-amber-100 rounded-lg p-3 border border-amber-200/50 shadow text-center">
+          <p className="text-lg font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+            {parseInt(slab.totalCoins).toLocaleString()}
+          </p>
+        </div>
+      </div>
+
+      {/* Description */}
+      <div className="text-center bg-gradient-to-r from-amber-50/50 to-orange-50/50 rounded-lg p-2 border border-amber-100">
+        <p className="text-gray-700 text-xs leading-relaxed font-medium">
+          {slab.description}
+        </p>
+      </div>
     </div>
   </div>
 );
 
-// const SlabTabs = () => {
-//   const [activeTab, setActiveTab] = useState(0);
-//   const [isAutoPlay, setIsAutoPlay] = useState(false);
-//   const [isDragging, setIsDragging] = useState(false);
-//   const [dragStart, setDragStart] = useState(0);
-//   const [dragOffset, setDragOffset] = useState(0);
-//   const scrollRef = useRef(null);
-//   const autoPlayRef = useRef(null);
-
-//   const scrollToTab = useCallback((index, smooth = true) => {
-//     const container = scrollRef.current;
-//     if (container && index >= 0 && index < slabsData.length) {
-//       const width = container.clientWidth;
-//       container.scrollTo({
-//         left: width * index,
-//         behavior: smooth ? "smooth" : "auto",
-//       });
-//       setActiveTab(index);
-//     }
-//   }, []);
-
-//   const handleTabClick = (index) => {
-//     setActiveTab(index);
-//     scrollToTab(index, true);
-//     setIsAutoPlay(false);
-//   };
-
-//   useEffect(() => {
-//     if (isAutoPlay) {
-//       autoPlayRef.current = setInterval(() => {
-//         setActiveTab(prev => {
-//           const next = prev + 1 >= slabsData.length ? 0 : prev + 1;
-//           scrollToTab(next);
-//           return next;
-//         });
-//       }, 4000);
-//     } else {
-//       clearInterval(autoPlayRef.current);
-//     }
-
-//     return () => clearInterval(autoPlayRef.current);
-//   }, [isAutoPlay, scrollToTab]);
-
-//   const handleScroll = useCallback(() => {
-//     const container = scrollRef.current;
-//     if (container && !isDragging) {
-//       const index = Math.round(container.scrollLeft / container.clientWidth);
-//       if (index !== activeTab) {
-//         setActiveTab(index);
-//       }
-//     }
-//   }, [activeTab, isDragging]);
-
-//   const handleDragStart = (e) => {
-//     setIsDragging(true);
-//     setDragStart(e.type === 'mousedown' ? e.clientX : e.touches[0].clientX);
-//     setIsAutoPlay(false);
-//   };
-
-//   const handleDragMove = (e) => {
-//     if (!isDragging) return;
-//     const currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-//     setDragOffset(currentX - dragStart);
-//   };
-
-//   const handleDragEnd = () => {
-//     if (!isDragging) return;
-//     setIsDragging(false);
-    
-//     const threshold = 50;
-//     if (Math.abs(dragOffset) > threshold) {
-//       if (dragOffset > 0 && activeTab > 0) {
-//         scrollToTab(activeTab - 1);
-//       } else if (dragOffset < 0 && activeTab < slabsData.length - 1) {
-//         scrollToTab(activeTab + 1);
-//       }
-//     }
-//     setDragOffset(0);
-//   };
-
-//   useEffect(() => {
-//     const handleKeyDown = (e) => {
-//       if (e.key === 'ArrowLeft' && activeTab > 0) {
-//         handleTabClick(activeTab - 1);
-//       } else if (e.key === 'ArrowRight' && activeTab < slabsData.length - 1) {
-//         handleTabClick(activeTab + 1);
-//       } else if (e.key === ' ') {
-//         e.preventDefault();
-//         setIsAutoPlay(!isAutoPlay);
-//       }
-//     };
-
-//     window.addEventListener('keydown', handleKeyDown);
-//     return () => window.removeEventListener('keydown', handleKeyDown);
-//   }, [activeTab, isAutoPlay]);
-
-//   const getOrdinalSuffix = (num) => {
-//     const suffixes = ['th', 'st', 'nd', 'rd'];
-//     const remainder = num % 100;
-//     return suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0];
-//   };
-
-//   return (
-//     <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 rounded-lg text-xs w-full mx-auto">
-//       <div className="px-4 py-4">
-        
-//         {/* Top Navigation Tabs */}
-//         <div className="flex justify-center mb-4">
-//           <div className="flex bg-white rounded-lg p-1 border border-gray-200 shadow-sm overflow-x-auto gap-1 max-w-full">
-//             {slabsData.map((slab, index) => (
-//               <button
-//                 key={slab.id}
-//                 onClick={() => handleTabClick(index)}
-//                 className={`px-2 py-1 text-xs rounded-md font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
-//                   activeTab === index
-//                     ? "bg-green-100 text-gray-800 shadow-sm"
-//                     : "text-gray-500 hover:text-gray-800 hover:bg-green-50"
-//                 }`}
-//               >
-//                 {slab.id}{getOrdinalSuffix(slab.id)}
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Carousel Container */}
-//         <div className="relative group">
-//           {/* Left Arrow */}
-//           <button
-//             onClick={() =>
-//               handleTabClick(activeTab > 0 ? activeTab - 1 : slabsData.length - 1)
-//             }
-//             className="absolute left-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 hover:bg-white shadow-sm rounded-full p-2 transition-all duration-200 border border-gray-200"
-//           >
-//             <ChevronLeft size={16} className="text-gray-600" />
-//           </button>
-
-//           {/* Single Card Display */}
-//           <div className="flex justify-center">
-//             <div className="w-full max-w-lg mx-auto">
-//               {slabsData[activeTab].type === "active" ? (
-//                 <ActiveSlabContent slab={slabsData[activeTab]} isActive={true} />
-//               ) : (
-//                 <UpcomingSlabContent slab={slabsData[activeTab]} isActive={true} />
-//               )}
-//             </div>
-//           </div>
-
-//           {/* Right Arrow */}
-//           <button
-//             onClick={() =>
-//               handleTabClick(activeTab < slabsData.length - 1 ? activeTab + 1 : 0)
-//             }
-//             className="absolute right-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 hover:bg-white shadow-sm rounded-full p-2 transition-all duration-200 border border-gray-200"
-//           >
-//             <ChevronRight size={16} className="text-gray-600" />
-//           </button>
-//         </div>
-
-//         {/* Pagination Dots */}
-//         <div className="flex justify-center items-center gap-1.5 my-3">
-//           {slabsData.map((_, index) => (
-//             <button
-//               key={index}
-//               onClick={() => handleTabClick(index)}
-//               className={`h-2 rounded-full transition-all duration-300 ${
-//                 activeTab === index
-//                   ? "bg-green-500 w-5"
-//                   : "bg-gray-300 w-2 hover:bg-gray-400"
-//               }`}
-//             />
-//           ))}
-//         </div>
-
-//         {/* Progress Bar */}
-//         <div className="text-sm">
-//           <div className="bg-gray-200 rounded-full h-1.5 overflow-hidden mb-2">
-//             <div
-//               className="bg-gradient-to-r from-green-400 to-green-500 h-full transition-all duration-500 rounded-full"
-//               style={{
-//                 width: `${((activeTab + 1) / slabsData.length) * 100}%`,
-//               }}
-//             />
-//           </div>
-//           <div className="flex justify-between text-gray-500 text-sm">
-//             <span>{activeTab + 1}/{slabsData.length}</span>
-//             <span className="text-green-600 truncate">{slabsData[activeTab].title}</span>
-//           </div>
-//         </div>
-//       </div>
-
-//       <style jsx>{`
-//         .no-scrollbar {
-//           -ms-overflow-style: none;
-//           scrollbar-width: none;
-//         }
-//         .no-scrollbar::-webkit-scrollbar {
-//           display: none;
-//         }
-//       `}</style>
-//     </div>
-//   );
-// };
-
-// export default SlabTabs;
 
 
 const SlabTabs = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
   const scrollRef = useRef(null);
   const autoPlayRef = useRef(null);
 
@@ -450,7 +301,7 @@ const SlabTabs = () => {
   useEffect(() => {
     if (isAutoPlay) {
       autoPlayRef.current = setInterval(() => {
-        setActiveTab(prev => {
+        setActiveTab((prev) => {
           const next = prev + 1 >= slabsData.length ? 0 : prev + 1;
           scrollToTab(next);
           return next;
@@ -463,171 +314,169 @@ const SlabTabs = () => {
     return () => clearInterval(autoPlayRef.current);
   }, [isAutoPlay, scrollToTab]);
 
-  // const handleScroll = useCallback(() => {
-  //   const container = scrollRef.current;
-  //   if (container && !isDragging) {
-  //     const index = Math.round(container.scrollLeft / container.clientWidth);
-  //     if (index !== activeTab) {
-  //       setActiveTab(index);
-  //     }
-  //   }
-  // }, [activeTab, isDragging]);
-
-  // const handleDragStart = (e) => {
-  //   setIsDragging(true);
-  //   setDragStart(e.type === 'mousedown' ? e.clientX : e.touches[0].clientX);
-  //   setIsAutoPlay(false);
-  // };
-
-  // const handleDragMove = (e) => {
-  //   if (!isDragging) return;
-  //   const currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-  //   setDragOffset(currentX - dragStart);
-  // };
-
-  // const handleDragEnd = () => {
-  //   if (!isDragging) return;
-  //   setIsDragging(false);
-    
-  //   const threshold = 50;
-  //   if (Math.abs(dragOffset) > threshold) {
-  //     if (dragOffset > 0 && activeTab > 0) {
-  //       scrollToTab(activeTab - 1);
-  //     } else if (dragOffset < 0 && activeTab < slabsData.length - 1) {
-  //       scrollToTab(activeTab + 1);
-  //     }
-  //   }
-  //   setDragOffset(0);
-  // };
-
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'ArrowLeft' && activeTab > 0) {
+      if (e.key === "ArrowLeft" && activeTab > 0) {
         handleTabClick(activeTab - 1);
-      } else if (e.key === 'ArrowRight' && activeTab < slabsData.length - 1) {
+      } else if (e.key === "ArrowRight" && activeTab < slabsData.length - 1) {
         handleTabClick(activeTab + 1);
-      } else if (e.key === ' ') {
+      } else if (e.key === " ") {
         e.preventDefault();
         setIsAutoPlay(!isAutoPlay);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeTab, isAutoPlay]);
 
   const getOrdinalSuffix = (num) => {
-    const suffixes = ['th', 'st', 'nd', 'rd'];
+    const suffixes = ["th", "st", "nd", "rd"];
     const remainder = num % 100;
     return suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0];
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 rounded-lg w-full mx-auto">
-      <div className="px-2 py-2 md:px-4 md:py-4">
-        
-        {/* Top Navigation Tabs - Hidden on mobile, visible on desktop */}
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 rounded-2xl w-full max-w-7xl mx-auto shadow-2xl border border-white/50 backdrop-blur-sm">
+      <div className="px-4 py-3 md:px-8 md:py-4">
+
+        {/* Desktop Tabs */}
         <div className="hidden md:flex justify-center mb-4">
-          <div className="flex bg-white rounded-lg p-1 border border-gray-200 shadow-sm overflow-x-auto gap-1 max-w-full">
+          <div className="flex bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 rounded-xl p-2 border border-slate-700/50 shadow-xl overflow-x-auto gap-2 max-w-full no-scrollbar backdrop-blur-sm">
             {slabsData.map((slab, index) => (
               <button
                 key={slab.id}
                 onClick={() => handleTabClick(index)}
-                className={`px-3 py-2 text-sm rounded-md font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 ${
-                  activeTab === index
-                    ? "bg-green-100 text-gray-800 shadow-sm"
-                    : "text-gray-500 hover:text-gray-800 hover:bg-green-50"
-                }`}
+                className={`px-4 py-2 text-sm rounded-lg font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${activeTab === index
+                  ? "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white shadow-lg shadow-emerald-500/25 scale-105"
+                  : "bg-gradient-to-r from-slate-700 to-slate-800 text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
+                  }`}
               >
-                {slab.id}{getOrdinalSuffix(slab.id)}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
+                <span className="relative z-10">
+                  {slab.id}
+                  {getOrdinalSuffix(slab.id)} Slab
+                </span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Mobile Top Tabs - Only visible on mobile */}
-        <div className="flex md:hidden justify-start mb-3 overflow-x-auto">
-          <div className="flex gap-1 min-w-max px-1">
+        {/* Mobile Tabs */}
+        <div className="flex md:hidden justify-start mb-4 overflow-x-auto no-scrollbar">
+          <div className="flex gap-2 min-w-max px-2">
             {slabsData.map((slab, index) => (
               <button
                 key={slab.id}
                 onClick={() => handleTabClick(index)}
-                className={`px-3 py-1.5 text-xs rounded-md font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 border ${
-                  activeTab === index
-                    ? "bg-green-500 text-white border-green-500"
-                    : "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600"
-                }`}
+                className={`px-3 py-2 text-xs rounded-lg font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${activeTab === index
+                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
+                  : "bg-gradient-to-r from-slate-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
+                  }`}
               >
-                {slab.id}{getOrdinalSuffix(slab.id)} Slab
+                {slab.id}
+                {getOrdinalSuffix(slab.id)} Slab
               </button>
             ))}
           </div>
         </div>
 
-        {/* Carousel Container */}
+        {/* Carousel Area */}
         <div className="relative group">
-          {/* Left Arrow - Hidden on mobile */}
+
+          {/* LEFT ARROW */}
           <button
             onClick={() =>
               handleTabClick(activeTab > 0 ? activeTab - 1 : slabsData.length - 1)
             }
-            className="hidden md:block absolute left-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 hover:bg-white shadow-sm rounded-full p-2 transition-all duration-200 border border-gray-200"
+            className="hidden md:block absolute -left-12 top-1/2 transform -translate-y-1/2 z-30
+             bg-gradient-to-r from-white via-white to-gray-50 hover:from-gray-50 hover:to-white 
+             text-slate-700 shadow-xl rounded-full p-3 border border-slate-200/50 
+             transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95
+             backdrop-blur-sm"
           >
-            <ChevronLeft size={16} className="text-gray-600" />
+            <ArrowLeft size={18} />
           </button>
 
-          {/* Single Card Display */}
+
+
+          {/* Card Container */}
           <div className="flex justify-center">
-            <div className="w-full max-w-sm md:max-w-2xl mx-auto">
+            <div className="w-full max-w-lg md:max-w-4xl mx-auto">
               {slabsData[activeTab].type === "active" ? (
-                <ActiveSlabContent slab={slabsData[activeTab]} isActive={true} />
+                <ActiveSlabContent slab={slabsData[activeTab]} isActive />
               ) : (
-                <UpcomingSlabContent slab={slabsData[activeTab]} isActive={true} />
+                <UpcomingSlabContent slab={slabsData[activeTab]} isActive />
               )}
             </div>
           </div>
 
-          {/* Right Arrow - Hidden on mobile */}
+          {/* RIGHT ARROW */}
+          {/* <button
+            onClick={() =>
+              handleTabClick(activeTab < slabsData.length - 1 ? activeTab + 1 : 0)
+            }
+            className="hidden md:block absolute -right-12 top-1/2 transform -translate-y-1/2 z-30
+                       bg-gradient-to-r from-white via-white to-gray-50 hover:from-gray-50 hover:to-white 
+                       text-slate-700 shadow-xl rounded-full p-3 border border-slate-200/50 
+                       transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95
+                       backdrop-blur-sm"
+          >
+            <ChevronRight size={18} />
+          </button> */}
           <button
             onClick={() =>
               handleTabClick(activeTab < slabsData.length - 1 ? activeTab + 1 : 0)
             }
-            className="hidden md:block absolute right-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 hover:bg-white shadow-sm rounded-full p-2 transition-all duration-200 border border-gray-200"
+            className="hidden md:block absolute -right-12 top-1/2 transform -translate-y-1/2 z-30
+             bg-gradient-to-r from-white via-white to-gray-50 hover:from-gray-50 hover:to-white 
+             text-slate-700 shadow-xl rounded-full p-3 border border-slate-200/50 
+             transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95
+             backdrop-blur-sm"
           >
-            <ChevronRight size={16} className="text-gray-600" />
+            <ArrowRight size={18} />
           </button>
+
+
         </div>
 
         {/* Pagination Dots */}
-        <div className="flex justify-center items-center gap-1.5 my-3">
+        {/* Pagination Dots */}
+        <div className="flex justify-center items-center gap-2 my-3">
           {slabsData.map((_, index) => (
             <button
               key={index}
               onClick={() => handleTabClick(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                activeTab === index
-                  ? "bg-green-500 w-5"
-                  : "bg-gray-300 w-2 hover:bg-gray-400"
-              }`}
+              className={`rounded-full transition-all duration-500 shadow-md ${activeTab === index
+                ? "bg-gradient-to-r from-emerald-500 to-teal-500 w-4 h-2.5 shadow-emerald-500/25"
+                : "bg-gradient-to-r from-slate-400 to-slate-500 w-2.5 h-2.5 hover:from-slate-300 hover:to-slate-400 hover:scale-125"
+                }`}
             />
           ))}
         </div>
 
+
         {/* Progress Bar */}
-        <div className="text-xs md:text-sm">
-          <div className="bg-gray-200 rounded-full h-1.5 overflow-hidden mb-2">
+        {/* <div className="text-xs md:text-sm">
+          <div className="bg-gradient-to-r from-slate-200 via-gray-200 to-slate-200 rounded-full h-3 overflow-hidden mb-2 shadow-inner border border-slate-300/50">
             <div
-              className="bg-gradient-to-r from-green-400 to-green-500 h-full transition-all duration-500 rounded-full"
+              className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 h-full transition-all duration-1000 ease-out rounded-full shadow-md relative overflow-hidden"
               style={{
                 width: `${((activeTab + 1) / slabsData.length) * 100}%`,
               }}
-            />
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+            </div>
           </div>
-          <div className="flex justify-between text-gray-500 text-xs md:text-sm">
-            <span>{activeTab + 1}/{slabsData.length}</span>
-            <span className="text-green-600 truncate text-xs md:text-sm">{slabsData[activeTab].title}</span>
+          <div className="flex justify-between items-center">
+            <span className="text-slate-700 font-bold bg-gradient-to-r from-slate-100 to-gray-100 px-2 py-1 rounded-full shadow-sm border border-slate-200 text-xs">
+              {activeTab + 1}/{slabsData.length}
+            </span>
+            <span className="text-slate-700 font-bold truncate max-w-xs bg-gradient-to-r from-emerald-50 to-teal-50 px-2 py-1 rounded-full shadow-sm border border-emerald-200/50 text-xs">
+              {slabsData[activeTab].title}
+            </span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <style jsx>{`

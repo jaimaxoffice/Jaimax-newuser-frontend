@@ -15,4 +15,3 @@ export const buyHistoryApiSlice = apiSlice.injectEndpoints({
 })
 
 export const { useBuyDetailsQuery } = buyHistoryApiSlice; 
-

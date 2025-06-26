@@ -2270,7 +2270,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { User, Mail, Lock, Eye, EyeOff, Phone, Users, Shield, ChevronDown, AlertCircle, CheckCircle } from 'lucide-react';
-import icon from '../../public/logo.png'
+import icon from '../assets/Images/jaimaxcoin.png'
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import {
   useRegisterMutation,
@@ -2441,8 +2441,8 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
       case 'password':
         if (!value) {
           newErrors.password = 'Password is required';
-        } else if (value.length < 8) {
-          newErrors.password = 'Password must be at least 8 characters';
+        } else if (value.length < 6) {
+          newErrors.password = 'Password must be at least 6 characters';
         } else {
           delete newErrors.password;
         }
@@ -2476,10 +2476,11 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     if (!formData.password) {
       errorsOnSubmit.password = 'Password is required';
       hasSubmitErrors = true;
-    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
-      errorsOnSubmit.password = 'Password must contain at least one special character';
-      hasSubmitErrors = true;
     }
+    // else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+    //   errorsOnSubmit.password = 'Password must contain at least one special character';
+    //   hasSubmitErrors = true;
+    // }
 
     setErrors(errorsOnSubmit);
 
@@ -2600,9 +2601,12 @@ const LoginComponent = ({ onSubmit, onToggleMode, isVisible }) => {
         </div>
 
         <div className="text-right mt-4">
-          <a href="#" className="text-teal-600 hover:text-teal-700 text-sm font-medium">
-            Forgot Password?
-          </a>
+          <button
+        onClick={() => navigate("/forgot-password")}
+        className="text-teal-600 hover:text-teal-700 text-sm font-medium"
+      >
+        Forgot Password?
+      </button>
         </div>
 
         <button
@@ -2743,7 +2747,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
       newErrors.password = 'Password must contain at least one uppercase letter';
     } else if (!/\d/.test(formData.password)) {
       newErrors.password = 'Password must contain at least one number';
-    } else if(!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)){
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
       newErrors.password = 'Password must contain at least one special character';
     }
 
@@ -2925,7 +2929,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
       });
 
       setTimeout(() => {
-        navigate("/home");
+        navigate("/dashboard");
       }, 1000);
 
     } catch (err) {
@@ -2944,8 +2948,8 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
         />
       )}
 
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">REGISTER</h1>
+      <div className="text-center mb-2">
+        <h1 className="text-3xl font-bold text-gray-800 mb-1">REGISTER</h1>
         <p className="text-gray-600">Create a new account to get started</p>
       </div>
 
@@ -3132,12 +3136,12 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
               onClick={handleVerify}
               disabled={isRegisterLoading || isOTPresentLoading || otpSent || Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0}
               className={`px-4 py-3 rounded-lg font-semibold whitespace-nowrap transition-all duration-200 ${otpSent && timer > 0
-                  ? 'bg-green-100 text-green-700 cursor-default'
-                  : (isRegisterLoading || isOTPresentLoading)
-                    ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                    : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105 shadow-md'
+                ? 'bg-green-100 text-green-700 cursor-default'
+                : (isRegisterLoading || isOTPresentLoading)
+                  ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                  : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105 shadow-md'
                 }`}
             >
               {isRegisterLoading || isOTPresentLoading ? 'Sending...' : otpSent && timer > 0 ? `Sent (${timer}s)` : 'Send OTP'}
@@ -3191,18 +3195,14 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
 export default function AuthContainer() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { cluster } = useParams(); // Get cluster from URL params
-
-  // Determine if we should show login or register based on URL
+  const { cluster } = useParams();
   const [isLogin, setIsLogin] = useState(() => {
     if (cluster === 'login') return true;
     if (cluster === 'register') return false;
-    return true; // Default to login
+    return true;
   });
 
   const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // Update component state when URL changes
   useEffect(() => {
     if (cluster === 'login') {
       setIsLogin(true);
@@ -3289,6 +3289,42 @@ export default function AuthContainer() {
 
           {/* Enhanced Icon Section */}
           <div className="flex items-center justify-center w-full h-full relative z-10">
+            {/* Inline SVG Backgrounds */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              {/* Place SVG */}
+              <svg className="absolute top-12 left-12 w-28 h-28 opacity-10" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
+              </svg>
+
+              {/* Coins SVG */}
+              <svg className="absolute bottom-16 left-16 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.97 0 8 1.64 8 2s-3.03 2-8 2-8-1.64-8-2 3.03-2 8-2zm0 14c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V16c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V12c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V10c0 .36-3.03 2-8 2z" />
+              </svg>
+
+              {/* User SVG */}
+              <svg className="absolute top-1/2 right-16 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
+                <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+              </svg>
+
+              {/* Share/Network SVG */}
+              <svg className="absolute bottom-8 right-10 w-16 h-16 opacity-10" viewBox="0 0 24 24" fill="white">
+                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.018 3.018 0 0 0 0-1.39l7.05-4.11a2.99 2.99 0 1 0-.96-1.72L8 9.59a3 3 0 1 0 0 4.83l7.05 4.11c.12.62.45 1.17.95 1.56.5.39 1.14.61 1.8.61a3 3 0 1 0 0-6z" />
+              </svg>
+              <svg className="absolute top-8 right-12 w-20 h-20 opacity-10 rotate-12" viewBox="0 0 24 24" fill="white">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+              </svg>
+
+              {/* 🌱 Plant SVG */}
+              <svg className="absolute bottom-12 left-6 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2C10.34 2 9 3.34 9 5c0 .66.26 1.26.68 1.7L12 9l2.32-2.3A2.5 2.5 0 0 0 15 5c0-1.66-1.34-3-3-3zm6 7c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 9c-2.33 0-7 1.17-7 3.5V22h14v-1.5c0-2.33-4.67-3.5-7-3.5z" />
+              </svg>
+
+              {/* 👥 Group SVG */}
+              <svg className="absolute top-1/4 right-8 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
+                <path d="M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h8v-1c0-.76.32-1.45.84-1.94C11.03 16.35 13.94 16 16 16s4.97.35 6.16.56c.52.49.84 1.18.84 1.94v1h-8v-1.5c0-2.33-4.67-3.5-7-3.5z" />
+              </svg>
+            </div>
+
             <div className="text-center text-white px-8">
               <div className="mb-12 relative">
                 <div className="relative w-58 h-58 mx-auto mb-6 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
@@ -3338,8 +3374,38 @@ export default function AuthContainer() {
 
       {/* Mobile View - Stack Layout */}
       <div className="lg:hidden w-full min-h-screen flex flex-col">
+
         {/* Mobile Header with Icon */}
         <div className="bg-gradient-to-br from-[#085358] via-teal-600 to-green-900 relative overflow-hidden">
+          {/* Inline SVG Backgrounds */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            {/* Place SVG */}
+            <svg className="absolute top-12 left-12 w-28 h-28 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
+            </svg>
+
+            {/* Coins SVG */}
+            <svg className="absolute bottom-16 left-16 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.97 0 8 1.64 8 2s-3.03 2-8 2-8-1.64-8-2 3.03-2 8-2zm0 14c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V16c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V12c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V10c0 .36-3.03 2-8 2z" />
+            </svg>
+
+            {/* User SVG */}
+            <svg className="absolute top-1/2 right-16 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+            </svg>
+
+           
+
+            <svg className="absolute top-8 right-12 w-20 h-20 opacity-10 rotate-12" viewBox="0 0 24 24" fill="white">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+            </svg>
+
+            <svg className="absolute bottom-12 left-6 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M18 2C10.34 2 9 3.34 9 5c0 .66.26 1.26.68 1.7L12 9l2.32-2.3A2.5 2.5 0 0 0 15 5c0-1.66-1.34-3-3-3zm6 7c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 9c-2.33 0-7 1.17-7 3.5V22h14v-1.5c0-2.33-4.67-3.5-7-3.5z" />
+            </svg>
+
+          </div>
+
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-radial from-white/20 via-transparent to-transparent"></div>
             <div className="absolute top-1/4 left-1/4 w-16 h-16 bg-white/10 rounded-full blur-xl animate-pulse"></div>
@@ -3376,11 +3442,9 @@ export default function AuthContainer() {
           <div className="relative z-10 py-8 text-center text-white">
             <div className="mb-6 relative">
               <div className="absolute inset-0 w-32 h-32 mx-auto bg-gradient-to-r from-teal-400 to-green-400 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+              <div className="relative w-32 h-32 mx-auto mb-4  rounded-full flex items-center justify-center backdrop-blur-sm  shadow-xl transform transition-all duration-500 hover:scale-110">
+                <img src={icon} alt="" width={200} />
 
-              <div className="relative w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-white/20 to-white/5 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-xl transform transition-all duration-500 hover:scale-110">
-                <div className="w-24 h-24 bg-gradient-to-br from-teal-300 to-green-400 rounded-full flex items-center justify-center shadow-lg">
-                  <div className="text-4xl font-bold text-white">J</div>
-                </div>
 
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
                 <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-700"></div>
@@ -3473,3 +3537,5 @@ export default function AuthContainer() {
     </div>
   );
 }
+
+

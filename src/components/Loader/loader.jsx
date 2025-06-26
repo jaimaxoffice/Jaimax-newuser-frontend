@@ -8,7 +8,7 @@ import loaderImage from "../../assets/jcoin.png";
 const Loader = () => {
   return (
     <div className="wallet_loader">
-      <img
+      {/* <img
         src={loaderImage}
         alt=""
         id="asdf"
@@ -18,7 +18,7 @@ const Loader = () => {
           width: "100px",
           height: "auto",
         }}
-      />
+      /> */}
     </div>
   );
 };

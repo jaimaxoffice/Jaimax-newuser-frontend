@@ -239,7 +239,7 @@ const BlogLayout = () => {
 
   return (
     <div 
-      className="min-h-screen  px-12 py-8"
+      className="min-h-screen  px-6 py-8"
       style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
     >
       <div className="w-full mx-0">
@@ -315,7 +315,7 @@ const BlogLayout = () => {
             </div>
 
             {/* Community */}
-            <div className="relative group">
+            {/* <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
                 <div className="flex items-center gap-2 mb-4">
@@ -334,27 +334,28 @@ const BlogLayout = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </div> */}
           </aside>
 
           {/* Main Content - Matching Teal/Cyan Theme */}
           <main className="lg:col-span-3">
             
             {/* Header */}
-            <div className="mb-8">
-              <div className="flex items-center  justify-between">
-                <div>
-                  <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
-                    Crypto Insights
-                  </h1>
-                  <p className="text-cyan-200/70 text-sm">Latest news and analysis from the blockchain world</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
-                  <p className="text-teal-400/60 text-xs">Updated daily</p>
-                </div>
-              </div>
-            </div>
+           <div className="mb-8">
+  <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+    <div>
+      <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+        Crypto Insights
+      </h1>
+      <p className="text-cyan-200/70 text-sm">Latest news and analysis from the blockchain world</p>
+    </div>
+    <div className="text-left lg:text-right">
+      <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
+      <p className="text-teal-400/60 text-xs">Updated daily</p>
+    </div>
+  </div>
+</div>
+
 
             {/* Posts Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2   xl:grid-cols-3 gap-8 w-full">
