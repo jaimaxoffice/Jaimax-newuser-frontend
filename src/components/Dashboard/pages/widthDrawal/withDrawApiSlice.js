@@ -1,7 +1,4 @@
-// /withdraw/withdrawHistory
-
-
-import { apiSlice } from "../../services/api/jaiMaxApi";
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
 
 export const withdrawApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

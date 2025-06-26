@@ -1,0 +1,25 @@
+/* Basic Tailwind setup or other global styles you might have */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Filter to make the Bitcoin SVG appear golden */
+.gold-filter {
+  /* This filter aims to convert black/gray SVG to a golden hue */
+  filter: invert(60%) sepia(80%) saturate(1500%) hue-rotate(30deg) brightness(120%) contrast(100%);
+}
+
+/* You might want to adjust font-family or other body styles here */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

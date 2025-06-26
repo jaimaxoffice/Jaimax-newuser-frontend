@@ -4,8 +4,8 @@ import {Routes, Route, useLocation, Outlet } from 'react-router-dom';
 import Navbar from './global/Navbar';
 import Footer from './global/Footer';
 import Home from './pages/home/Home';
-import Login from './Authentication/Login';
-import Register from './Authentication/Register';
+import AuthContainer from './Authentication/Login';
+// import Register from './Authentication/Register';
 import ForgotPassword from './Authentication/ForgotPassword';
 import Contact from './components/contact/Contact';
 import JaimaxSplash from './global/Splashscreen';
@@ -158,8 +158,8 @@ const App = () => {
         </Route>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="login" element={<AuthContainer />} />
+          <Route path="register" element={<AuthContainer />} />
           <Route path="/forgot-password" element={<ForgotPassword/>}/>
           <Route path="about" element={<JaimaxComponent />} />
           <Route path="contact" element={<Contact />} />
@@ -187,861 +187,309 @@ export default App;
 
 
 
-// import React, { useState } from 'react';
-// import { Menu, X, TrendingUp, Shield, Zap, Users, ArrowRight, Star, CheckCircle } from 'lucide-react';
-
-// export default function App() {
-//   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-[#1d8e85] via-[#2aa398] to-[#1d8e85] relative overflow-hidden">
-//       {/* Background Golden Particles */}
-//       <div className="absolute inset-0 pointer-events-none">
-//         {[...Array(50)].map((_, i) => (
-//           <div
-//             key={i}
-//             className="absolute w-1 h-1 bg-yellow-400 rounded-full animate-pulse opacity-30"
-//             style={{
-//               left: `${Math.random() * 100}%`,
-//               top: `${Math.random() * 100}%`,
-//               animationDelay: `${Math.random() * 5}s`,
-//               animationDuration: `${3 + Math.random() * 4}s`
-//             }}
-//           />
-//         ))}
-//       </div>
-//       {/* Navigation */}
-//       <nav className="relative z-50 px-4 sm:px-6 lg:px-8 py-4">
-//         <div className="max-w-7xl mx-auto flex items-center justify-between">
-//           <div className="flex items-center space-x-2">
-//             <div className="w-8 h-8 bg-gradient-to-r from-white to-gray-100 rounded-full flex items-center justify-center">
-//               <Zap className="w-5 h-5 text-[#1d8e85]" />
-//             </div>
-//             <span className="text-2xl font-bold text-white">JAIMX PAYOUTS</span>
-//           </div>
-          
-//           {/* Desktop Menu */}
-//           <div className="hidden md:flex items-center space-x-8">
-//             <a href="#features" className="text-white hover:text-gray-200 transition-colors">Features</a>
-//             <a href="#about" className="text-white hover:text-gray-200 transition-colors">About</a>
-//             <a href="#roadmap" className="text-white hover:text-gray-200 transition-colors">Roadmap</a>
-//             <a href="#contact" className="text-white hover:text-gray-200 transition-colors">Contact</a>
-//             <button className="bg-white text-[#1d8e85] px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-//               Join Now
-//             </button>
-//           </div>
-
-//           {/* Mobile Menu Button */}
-//           <button 
-//             className="md:hidden text-white"
-//             onClick={() => setIsMenuOpen(!isMenuOpen)}
-//           >
-//             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-//           </button>
-//         </div>
-
-//         {/* Mobile Menu */}
-//         {isMenuOpen && (
-//           <div className="md:hidden absolute top-full left-0 right-0 bg-white bg-opacity-95 backdrop-blur-sm rounded-lg mx-4 mt-2 p-4 shadow-xl">
-//             <div className="flex flex-col space-y-4">
-//               <a href="#features" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">Features</a>
-//               <a href="#about" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">About</a>
-//               <a href="#roadmap" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">Roadmap</a>
-//               <a href="#contact" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">Contact</a>
-//               <button className="bg-[#1d8e85] text-white px-6 py-2 rounded-full font-semibold hover:bg-[#2aa398] transition-colors">
-//                 Join Now
-//               </button>
-//             </div>
-//           </div>
-//         )}
-//       </nav>
-
-//       {/* Hero Section */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid lg:grid-cols-2 gap-12 items-center">
-//             <div className="text-center lg:text-left">
-//               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-//                 Earn up to <span className="text-yellow-300">15%</span> monthly with
-//                 <br />
-//                 <span className="text-7xl sm:text-8xl lg:text-9xl font-black bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-//                   JAIMX
-//                   <br />
-//                   PAYOUTS
-//                 </span>
-//               </h1>
-//               <p className="text-xl text-gray-100 mb-8 max-w-lg mx-auto lg:mx-0">
-//                 Deposit cryptocurrency or stablecoins and watch your investments grow with our innovative DeFi platform
-//               </p>
-//               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-//                 <button className="bg-white text-[#1d8e85] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
-//                   Start Earning <ArrowRight className="inline ml-2" size={20} />
-//                 </button>
-//                 <button className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-[#1d8e85] transition-all">
-//                   Learn More
-//                 </button>
-//               </div>
-//             </div>
-            
-//             {/* Coin Visual Element */}
-//             <div className="relative flex justify-center lg:justify-end">
-//               <div className="relative w-80 h-80 lg:w-96 lg:h-96 overflow-hidden">
-//                 {/* Background Golden Particles */}
-//                 <div className="absolute inset-0">
-//                   {[...Array(20)].map((_, i) => (
-//                     <div
-//                       key={i}
-//                       className="absolute w-2 h-2 bg-yellow-400 rounded-full animate-pulse opacity-60"
-//                       style={{
-//                         left: `${Math.random() * 100}%`,
-//                         top: `${Math.random() * 100}%`,
-//                         animationDelay: `${Math.random() * 2}s`,
-//                         animationDuration: `${2 + Math.random() * 3}s`
-//                       }}
-//                     />
-//                   ))}
-//                 </div>
-                
-//                 {/* Main JAIMX Coin */}
-//                 <div className="relative w-full h-full flex items-center justify-center">
-//                   <div className="relative w-64 h-64 lg:w-80 lg:h-80 transform hover:scale-110 transition-transform duration-500 cursor-pointer group">
-//                     {/* Coin Shadow/Glow */}
-//                     <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/30 to-orange-400/30 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                    
-//                     {/* Main Coin */}
-//                     <div className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-500 rounded-full border-8 border-yellow-300 shadow-2xl flex items-center justify-center overflow-hidden">
-//                       {/* Coin Inner Design */}
-//                       <div className="absolute inset-4 border-4 border-yellow-200 rounded-full"></div>
-//                       <div className="absolute inset-8 border-2 border-yellow-100 rounded-full"></div>
-                      
-//                       {/* JAIMX Logo */}
-//                       <div className="relative z-10 text-white text-4xl lg:text-5xl font-black drop-shadow-lg">
-//                         J
-//                       </div>
-                      
-//                       {/* Coin Text Around Edge */}
-//                       <div className="absolute inset-0 flex items-center justify-center">
-//                         <svg className="w-full h-full animate-spin" style={{ animationDuration: '20s' }}>
-//                           <circle cx="50%" cy="50%" r="45%" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
-//                           <path id="coin-text" d="M 50,50 m -120,0 a 120,120 0 1,1 240,0 a 120,120 0 1,1 -240,0" fill="none"/>
-//                           <text className="text-xs fill-white font-bold">
-//                             <textPath href="#coin-text" startOffset="0%">
-//                               JAIMX • DECENTRALIZED DIGITAL CURRENCY • JAIMX • 
-//                             </textPath>
-//                           </text>
-//                         </svg>
-//                       </div>
-                      
-//                       {/* Shine Effect */}
-//                       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-//                     </div>
-//                   </div>
-//                 </div>
-                
-//                 {/* Floating Smaller Coins */}
-//                 <div className="absolute top-8 right-8 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full animate-bounce opacity-80"></div>
-//                 <div className="absolute bottom-12 left-8 w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full animate-bounce delay-300 opacity-60"></div>
-//                 <div className="absolute top-20 left-12 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full animate-bounce delay-500 opacity-70"></div>
-                
-//                 {/* Interactive Stats Floating */}
-//                 <div className="absolute -top-4 -right-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full p-3 animate-pulse hover:scale-110 transition-transform cursor-pointer">
-//                   <TrendingUp className="text-white" size={20} />
-//                 </div>
-//                 <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full p-3 animate-pulse hover:scale-110 transition-transform cursor-pointer delay-100">
-//                   <Shield className="text-white" size={20} />
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Stats Section */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-16 bg-white/10 backdrop-blur-sm">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">$50M+</div>
-//               <div className="text-gray-200">Total Value Locked</div>
-//             </div>
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">25K+</div>
-//               <div className="text-gray-200">Active Users</div>
-//             </div>
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">15%</div>
-//               <div className="text-gray-200">Max Monthly Returns</div>
-//             </div>
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">99.9%</div>
-//               <div className="text-gray-200">Uptime</div>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Features Section */}
-//       <section id="features" className="px-4 sm:px-6 lg:px-8 py-20">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-white mb-4">Why Choose JAIMX?</h2>
-//             <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-//               Experience the future of cryptocurrency investing with our cutting-edge platform
-//             </p>
-//           </div>
-          
-//           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-//             {[
-//               {
-//                 icon: <TrendingUp size={32} />,
-//                 title: "High Yields",
-//                 description: "Earn up to 15% monthly returns on your cryptocurrency investments"
-//               },
-//               {
-//                 icon: <Shield size={32} />,
-//                 title: "Secure & Safe",
-//                 description: "Military-grade security with multi-signature wallets and insurance coverage"
-//               },
-//               {
-//                 icon: <Zap size={32} />,
-//                 title: "Instant Deposits",
-//                 description: "Quick and seamless deposits with support for major cryptocurrencies"
-//               },
-//               {
-//                 icon: <Users size={32} />,
-//                 title: "Community Driven",
-//                 description: "Join thousands of investors earning passive income together"
-//               },
-//               {
-//                 icon: <CheckCircle size={32} />,
-//                 title: "Verified Platform",
-//                 description: "Fully audited smart contracts and transparent operations"
-//               },
-//               {
-//                 icon: <Star size={32} />,
-//                 title: "24/7 Support",
-//                 description: "Round-the-clock customer support to help you succeed"
-//               }
-//             ].map((feature, index) => (
-//               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all transform hover:scale-105">
-//                 <div className="text-white mb-4">{feature.icon}</div>
-//                 <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-//                 <p className="text-gray-200">{feature.description}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* How It Works */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-20 bg-white/5">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-white mb-4">How It Works</h2>
-//             <p className="text-xl text-gray-200">Get started in just 3 simple steps</p>
-//           </div>
-          
-//           <div className="grid md:grid-cols-3 gap-8">
-//             {[
-//               {
-//                 step: "01",
-//                 title: "Create Account",
-//                 description: "Sign up and verify your account in under 5 minutes"
-//               },
-//               {
-//                 step: "02",
-//                 title: "Deposit Funds",
-//                 description: "Deposit your cryptocurrency or stablecoins securely"
-//               },
-//               {
-//                 step: "03",
-//                 title: "Start Earning",
-//                 description: "Watch your investments grow with daily compound interest"
-//               }
-//             ].map((step, index) => (
-//               <div key={index} className="text-center">
-//                 <div className="bg-gradient-to-r from-white to-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-//                   <span className="text-2xl font-bold text-[#1d8e85]">{step.step}</span>
-//                 </div>
-//                 <h3 className="text-2xl font-bold text-white mb-4">{step.title}</h3>
-//                 <p className="text-gray-200 text-lg">{step.description}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* CTA Section */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-20">
-//         <div className="max-w-4xl mx-auto text-center">
-//           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-//             Ready to Start Earning?
-//           </h2>
-//           <p className="text-xl text-gray-200 mb-8">
-//             Join thousands of investors already earning passive income with JAIMX Payouts
-//           </p>
-//           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-//             <button className="bg-white text-[#1d8e85] px-10 py-4 rounded-full font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl">
-//               Join Now <ArrowRight className="inline ml-2" size={24} />
-//             </button>
-//             <button className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-xl hover:bg-white hover:text-[#1d8e85] transition-all">
-//               View Whitepaper
-//             </button>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Footer */}
-//       <footer className="px-4 sm:px-6 lg:px-8 py-12 bg-white/10 backdrop-blur-sm">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid md:grid-cols-4 gap-8">
-//             <div>
-//               <div className="flex items-center space-x-2 mb-4">
-//                 <div className="w-8 h-8 bg-gradient-to-r from-white to-gray-100 rounded-full flex items-center justify-center">
-//                   <Zap className="w-5 h-5 text-[#1d8e85]" />
-//                 </div>
-//                 <span className="text-xl font-bold text-white">JAIMX PAYOUTS</span>
-//               </div>
-//               <p className="text-gray-200">
-//                 The future of cryptocurrency investing is here.
-//               </p>
-//             </div>
-            
-//             <div>
-//               <h4 className="text-white font-semibold mb-4">Platform</h4>
-//               <div className="space-y-2">
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Features</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Security</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Pricing</a>
-//               </div>
-//             </div>
-            
-//             <div>
-//               <h4 className="text-white font-semibold mb-4">Resources</h4>
-//               <div className="space-y-2">
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Documentation</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">API</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Support</a>
-//               </div>
-//             </div>
-            
-//             <div>
-//               <h4 className="text-white font-semibold mb-4">Company</h4>
-//               <div className="space-y-2">
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">About</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Blog</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Careers</a>
-//               </div>
-//             </div>
-//           </div>
-          
-//           <div className="border-t border-white/20 mt-12 pt-8 text-center text-gray-200">
-//             <p>&copy; 2025 JAIMX Payouts. All rights reserved.</p>
-//           </div>
-//         </div>
-//       </footer>
-//     </div>
-//   );
-// }
 
 
+// import React from 'react';
+// const BitcoinIcon = ({ size = 'w-10 h-10', children }) => (
+//   <div className={`flex items-center justify-center bg-yellow-500 rounded-full ${size} shadow-lg text-gray-800 font-bold text-xl`}>
+//     B
+//     {children} {/* For the large icon at the end, if needed */}
+//   </div>
+// );
 
-// import React, { useState, useEffect } from 'react';
-// import { Plus, TrendingUp, Shield, Target, Zap, BarChart3, DollarSign } from 'lucide-react';
-
-// const App= () => {
-//   const [hoveredSquare, setHoveredSquare] = useState(null);
-
-//   // Chess pieces in Unicode
-//   const chessPieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-
-//   const strategies = [
-//     {
-//       id: 1,
-//       title: "Strategic asset management in bear and bull markets",
-//       icon: BarChart3,
-//       position: { row: 0, col: 1 },
-//       piece: '♕'
-//     },
-//     {
-//       id: 2,
-//       title: "Aggressive high/medium risk trading with 10x leveraged trading",
-//       icon: TrendingUp,
-//       position: { row: 0, col: 4 },
-//       piece: '♖'
-//     },
-//     {
-//       id: 3,
-//       title: "Conservative growth portfolio management",
-//       icon: Shield,
-//       position: { row: 2, col: 2 },
-//       piece: '♗'
-//     }
+// function RoadmapPage() {
+//   // Define roadmap items with their approximate positions along the diagonal
+//   const roadmapItems = [
+//     { year: '2022', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', top: '65%', left: '10%' },
+//     { year: '2023', description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ut aliquip ex ea commodo consequat.', top: '48%', left: '25%' },
+//     { year: '2024', description: 'Duis aute irure dolor in reprehenderit in nisi nulla voluptate velit esse cillum dolore eu fugiat pariatur.', top: '31%', left: '40%' },
+//     { year: '2025', description: 'Duis aute irure dolor in reprehenderit in nisi nulla.', top: '14%', left: '55%' },
 //   ];
 
-//   // Create 8x6 grid like in the image
-//   const createGrid = () => {
-//     const grid = [];
-//     for (let row = 0; row < 4; row++) {
-//       for (let col = 0; col < 6; col++) {
-//         const isStrategy = strategies.find(s => s.position.row === row && s.position.col === col);
-//         const isDark = (row + col) % 2 === 1;
-//         const squareId = `${row}-${col}`;
-        
-//         grid.push({
-//           id: squareId,
-//           row,
-//           col,
-//           isDark,
-//           strategy: isStrategy,
-//           piece: isStrategy ? isStrategy.piece : chessPieces[Math.floor(Math.random() * chessPieces.length)]
-//         });
-//       }
-//     }
-//     return grid;
-//   };
-
-//   const [grid, setGrid] = useState(createGrid());
-
-//   // Animation for chess pieces
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setGrid(prevGrid => 
-//         prevGrid.map(square => ({
-//           ...square,
-//           piece: square.strategy ? square.piece : chessPieces[Math.floor(Math.random() * chessPieces.length)]
-//         }))
-//       );
-//     }, 2000);
-
-//     return () => clearInterval(interval);
-//   }, []);
-
 //   return (
-//     <div className="min-h-screen bg-[#1d8e85] text-white relative overflow-hidden">
-//       {/* Background animated chess pieces */}
-//       <div className="absolute inset-0 opacity-10">
-//         {[...Array(20)].map((_, i) => (
+//     <div className="min-h-screen bg-gray-900 text-white p-8 font-sans flex flex-col lg:flex-row items-center justify-center lg:justify-between relative overflow-hidden">
+
+//       {/* --- Left Content Area --- */}
+//       <div className="lg:w-1/2 p-4 text-center lg:text-left mb-8 lg:mb-0">
+//         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-green-400">
+//           Cryptocurrency Roadmap
+//         </h1>
+//         <p className="text-base md:text-lg leading-relaxed text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0">
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore eu fugiat nulla.
+//         </p>
+//         {/* Bitcoin Plant Image */}
+//         <div className="flex justify-center lg:justify-start">
+//           <img
+//             src={''}
+//             alt="Bitcoin plant growing from coin"
+//             className="w-48 h-48 object-contain" // Adjust size as needed
+//           />
+//         </div>
+//       </div>
+
+//       {/* --- Right Roadmap Section --- */}
+//       {/* Ensure this container has a defined height or is allowed to expand */}
+//       <div className="relative lg:w-1/2 p-4 flex flex-col items-center justify-center min-h-[500px] lg:min-h-screen">
+//         {/* SVG for the diagonal line */}
+//         <svg className="absolute inset-0 w-full h-full z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+//           {/* Line from bottom-left (approx 15,85) to top-right (approx 75,5) */}
+//           <line
+//             x1="15" y1="85"
+//             x2="75" y2="5"
+//             stroke="#10B981"
+//             strokeWidth="2"
+//             strokeLinecap="round"
+//           />
+//         </svg>
+
+//         {roadmapItems.map((item, index) => (
 //           <div
-//             key={i}
-//             className="absolute text-6xl animate-pulse text-white"
-//             style={{
-//               left: `${Math.random() * 100}%`,
-//               top: `${Math.random() * 100}%`,
-//               animationDelay: `${Math.random() * 2}s`,
-//               animationDuration: `${3 + Math.random() * 2}s`
-//             }}
+//             key={item.year}
+//             // Position each item absolutely using the top/left percentages defined in roadmapItems
+//             className="absolute flex items-center w-auto z-10"
+//             style={{ top: item.top, left: item.left, transform: 'translateY(-50%)' }} // translateY(-50%) centers the item vertically on its 'top' position
 //           >
-//             {chessPieces[Math.floor(Math.random() * chessPieces.length)]}
+//             {/* Bitcoin Icon */}
+//             <div className="flex-shrink-0 mr-4">
+//               <BitcoinIcon />
+//             </div>
+
+//             {/* Content for the roadmap item */}
+//             <div className="bg-gray-800 p-3 rounded-lg shadow-xl text-left max-w-xs md:max-w-sm">
+//               <h3 className="text-lg font-bold mb-1 text-green-300">{item.year}</h3>
+//               <p className="text-gray-400 text-xs md:text-sm">{item.description}</p>
+//             </div>
 //           </div>
 //         ))}
+
+//         {/* Large Bitcoin icon at the very top-right end of the roadmap */}
+//         <div className="absolute top-[3%] right-[10%] z-10"> {/* Adjust position to match the end of the line */}
+//           <BitcoinIcon size="w-24 h-24" />
+//         </div>
 //       </div>
-
-//       <div className="relative z-10 p-8">
-//         {/* Header */}
-//         <div className="flex items-center justify-between mb-12">
-//           <div className="flex items-center space-x-4">
-//             <div className="flex items-center space-x-2">
-//               <div className="text-green-400 text-2xl">✱</div>
-//               <h1 className="text-2xl font-bold text-green-400 tracking-wider">SOLANA PAYOUTS</h1>
-//             </div>
-//             <div className="bg-[#1d8e85]/60 rounded-full p-2 backdrop-blur-sm border border-white/30">
-//               <div className="flex items-center space-x-2 px-4 py-1">
-//                 <span className="text-white">Menu</span>
-//                 <Plus className="w-4 h-4 text-white" />
-//               </div>
-//             </div>
-//           </div>
-//           <div className="text-right">
-//             <p className="text-gray-300 text-sm mb-1">Investment strategy</p>
-//             <h2 className="text-4xl font-light tracking-wide">Investment strategy</h2>
-//           </div>
-//         </div>
-
-//         {/* Chess Board Grid */}
-//         <div className="max-w-6xl mx-auto">
-//           <div className="grid grid-cols-6 gap-1 bg-[#1d8e85]/60 p-4 rounded-lg backdrop-blur-sm border border-white/20">
-//             {grid.map((square) => (
-//               <div
-//                 key={square.id}
-//                 className={`
-//                   aspect-square relative cursor-pointer transition-all duration-500 group
-//                   ${square.isDark ? 'bg-[#1d8e85]/80' : 'bg-[#1d8e85]/40'}
-//                   ${hoveredSquare === square.id ? 'scale-105 z-20' : ''}
-//                   ${square.strategy ? 'hover:bg-green-500/20' : 'hover:bg-[#1d8e85]/60'}
-//                 `}
-//                 onMouseEnter={() => setHoveredSquare(square.id)}
-//                 onMouseLeave={() => setHoveredSquare(null)}
-//               >
-//                 {/* Chess piece background */}
-//                 <div className={`
-//                   absolute inset-0 flex items-center justify-center text-4xl opacity-30
-//                   ${square.strategy ? 'text-green-400' : 'text-white'}
-//                   transition-all duration-300 group-hover:scale-110 group-hover:rotate-12
-//                 `}>
-//                   {square.piece}
-//                 </div>
-
-//                 {/* Strategy content */}
-//                 {square.strategy && (
-//                   <div className="absolute inset-0 p-3 flex flex-col justify-center items-center text-center">
-//                     <div className="bg-green-500/20 p-2 rounded-full mb-2 backdrop-blur-sm">
-//                       <div className="text-green-400 text-xl">✱</div>
-//                     </div>
-//                     <p className="text-white text-xs leading-tight font-medium">
-//                       {square.strategy.title}
-//                     </p>
-//                   </div>
-//                 )}
-
-//                 {/* Hover overlay */}
-//                 {hoveredSquare === square.id && square.strategy && (
-//                   <div className="absolute inset-0 bg-green-500/30 backdrop-blur-sm rounded-lg p-2 flex items-center justify-center border border-white/30">
-//                     <div className="text-center">
-//                       <div className="text-2xl mb-1 text-white">{square.strategy.piece}</div>
-//                       <p className="text-xs text-white font-semibold">
-//                         {square.strategy.title.split(' ').slice(0, 3).join(' ')}...
-//                       </p>
-//                     </div>
-//                   </div>
-//                 )}
-
-//                 {/* Empty square hover effect */}
-//                 {hoveredSquare === square.id && !square.strategy && (
-//                   <div className="absolute inset-0 bg-[#1d8e85]/60 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
-//                     <div className="text-3xl animate-spin text-white">{square.piece}</div>
-//                   </div>
-//                 )}
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Bottom section with additional info */}
-//         <div className="mt-12 max-w-6xl mx-auto">
-//           <div className="grid grid-cols-3 gap-6">
-//             {strategies.map((strategy, index) => (
-//               <div key={strategy.id} className="bg-[#1d8e85]/60 rounded-lg p-6 backdrop-blur-sm hover:bg-[#1d8e85]/80 transition-all duration-300 border border-white/20">
-//                 <div className="flex items-center space-x-3 mb-3">
-//                   <div className="text-3xl text-white">{strategy.piece}</div>
-//                   <div className="text-green-400 text-xl">✱</div>
-//                 </div>
-//                 <p className="text-white text-sm leading-relaxed">
-//                   {strategy.title}
-//                 </p>
-//                 <div className="mt-4 flex items-center space-x-2">
-//                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-//                   <span className="text-white text-xs">Active Strategy</span>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Floating chess pieces */}
-//         <div className="fixed top-20 right-10 text-6xl text-white/20 animate-bounce">♔</div>
-//         <div className="fixed bottom-20 left-10 text-6xl text-white/20 animate-pulse">♕</div>
-//         <div className="fixed top-1/2 right-20 text-4xl text-white/30 animate-spin" style={{ animationDuration: '10s' }}>♖</div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default App;
-
-
-
-// import React, { useState } from 'react';
-// import { Menu, X, TrendingUp, Shield, Zap, Users, ArrowRight, Star, CheckCircle } from 'lucide-react';
-
-// export default function App() {
-//   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-[#1d8e85] via-[#2aa398] to-[#1d8e85]">
-//       {/* Navigation */}
-//       <nav className="relative z-50 px-4 sm:px-6 lg:px-8 py-4">
-//         <div className="max-w-7xl mx-auto flex items-center justify-between">
-//           <div className="flex items-center space-x-2">
-//             <div className="w-8 h-8 bg-gradient-to-r from-white to-gray-100 rounded-full flex items-center justify-center">
-//               <Zap className="w-5 h-5 text-[#1d8e85]" />
-//             </div>
-//             <span className="text-2xl font-bold text-white">JAIMX PAYOUTS</span>
-//           </div>
-          
-//           {/* Desktop Menu */}
-//           <div className="hidden md:flex items-center space-x-8">
-//             <a href="#features" className="text-white hover:text-gray-200 transition-colors">Features</a>
-//             <a href="#about" className="text-white hover:text-gray-200 transition-colors">About</a>
-//             <a href="#roadmap" className="text-white hover:text-gray-200 transition-colors">Roadmap</a>
-//             <a href="#contact" className="text-white hover:text-gray-200 transition-colors">Contact</a>
-//             <button className="bg-white text-[#1d8e85] px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-//               Join Now
-//             </button>
-//           </div>
-
-//           {/* Mobile Menu Button */}
-//           <button 
-//             className="md:hidden text-white"
-//             onClick={() => setIsMenuOpen(!isMenuOpen)}
-//           >
-//             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-//           </button>
-//         </div>
-
-//         {/* Mobile Menu */}
-//         {isMenuOpen && (
-//           <div className="md:hidden absolute top-full left-0 right-0 bg-white bg-opacity-95 backdrop-blur-sm rounded-lg mx-4 mt-2 p-4 shadow-xl">
-//             <div className="flex flex-col space-y-4">
-//               <a href="#features" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">Features</a>
-//               <a href="#about" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">About</a>
-//               <a href="#roadmap" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">Roadmap</a>
-//               <a href="#contact" className="text-[#1d8e85] hover:text-[#2aa398] transition-colors">Contact</a>
-//               <button className="bg-[#1d8e85] text-white px-6 py-2 rounded-full font-semibold hover:bg-[#2aa398] transition-colors">
-//                 Join Now
-//               </button>
-//             </div>
-//           </div>
-//         )}
-//       </nav>
-
-//       {/* Hero Section */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid lg:grid-cols-2 gap-12 items-center">
-//             <div className="text-center lg:text-left">
-//               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-//                 Earn up to <span className="text-yellow-300">15%</span> monthly with
-//                 <br />
-//                 <span className="text-7xl sm:text-8xl lg:text-9xl font-black bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-//                   JAIMX
-//                   <br />
-//                   PAYOUTS
-//                 </span>
-//               </h1>
-//               <p className="text-xl text-gray-100 mb-8 max-w-lg mx-auto lg:mx-0">
-//                 Deposit cryptocurrency or stablecoins and watch your investments grow with our innovative DeFi platform
-//               </p>
-//               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-//                 <button className="bg-white text-[#1d8e85] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl">
-//                   Start Earning <ArrowRight className="inline ml-2" size={20} />
-//                 </button>
-//                 <button className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-[#1d8e85] transition-all">
-//                   Learn More
-//                 </button>
-//               </div>
-//             </div>
-            
-//             {/* 3D Visual Element */}
-//             <div className="relative flex justify-center lg:justify-end">
-//               <div className="relative w-80 h-80 lg:w-96 lg:h-96">
-//                 {/* Animated Circles */}
-//                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-white/10 animate-pulse"></div>
-//                 <div className="absolute inset-4 rounded-full bg-gradient-to-r from-white/30 to-white/20 animate-ping"></div>
-//                 <div className="absolute inset-8 rounded-full bg-white/40 flex items-center justify-center">
-//                   <div className="text-6xl font-bold text-[#1d8e85]">₿</div>
-//                 </div>
-                
-//                 {/* Floating Elements */}
-//                 <div className="absolute -top-4 -right-4 bg-yellow-400 rounded-full p-3 animate-bounce">
-//                   <TrendingUp className="text-white" size={24} />
-//                 </div>
-//                 <div className="absolute -bottom-4 -left-4 bg-green-400 rounded-full p-3 animate-bounce delay-100">
-//                   <Shield className="text-white" size={24} />
-//                 </div>
-//                 <div className="absolute top-1/2 -right-8 bg-blue-400 rounded-full p-3 animate-bounce delay-200">
-//                   <Zap className="text-white" size={24} />
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Stats Section */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-16 bg-white/10 backdrop-blur-sm">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">$50M+</div>
-//               <div className="text-gray-200">Total Value Locked</div>
-//             </div>
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">25K+</div>
-//               <div className="text-gray-200">Active Users</div>
-//             </div>
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">15%</div>
-//               <div className="text-gray-200">Max Monthly Returns</div>
-//             </div>
-//             <div>
-//               <div className="text-4xl font-bold text-white mb-2">99.9%</div>
-//               <div className="text-gray-200">Uptime</div>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Features Section */}
-//       <section id="features" className="px-4 sm:px-6 lg:px-8 py-20">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-white mb-4">Why Choose JAIMX?</h2>
-//             <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-//               Experience the future of cryptocurrency investing with our cutting-edge platform
-//             </p>
-//           </div>
-          
-//           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-//             {[
-//               {
-//                 icon: <TrendingUp size={32} />,
-//                 title: "High Yields",
-//                 description: "Earn up to 15% monthly returns on your cryptocurrency investments"
-//               },
-//               {
-//                 icon: <Shield size={32} />,
-//                 title: "Secure & Safe",
-//                 description: "Military-grade security with multi-signature wallets and insurance coverage"
-//               },
-//               {
-//                 icon: <Zap size={32} />,
-//                 title: "Instant Deposits",
-//                 description: "Quick and seamless deposits with support for major cryptocurrencies"
-//               },
-//               {
-//                 icon: <Users size={32} />,
-//                 title: "Community Driven",
-//                 description: "Join thousands of investors earning passive income together"
-//               },
-//               {
-//                 icon: <CheckCircle size={32} />,
-//                 title: "Verified Platform",
-//                 description: "Fully audited smart contracts and transparent operations"
-//               },
-//               {
-//                 icon: <Star size={32} />,
-//                 title: "24/7 Support",
-//                 description: "Round-the-clock customer support to help you succeed"
-//               }
-//             ].map((feature, index) => (
-//               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all transform hover:scale-105">
-//                 <div className="text-white mb-4">{feature.icon}</div>
-//                 <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-//                 <p className="text-gray-200">{feature.description}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* How It Works */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-20 bg-white/5">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="text-center mb-16">
-//             <h2 className="text-4xl font-bold text-white mb-4">How It Works</h2>
-//             <p className="text-xl text-gray-200">Get started in just 3 simple steps</p>
-//           </div>
-          
-//           <div className="grid md:grid-cols-3 gap-8">
-//             {[
-//               {
-//                 step: "01",
-//                 title: "Create Account",
-//                 description: "Sign up and verify your account in under 5 minutes"
-//               },
-//               {
-//                 step: "02",
-//                 title: "Deposit Funds",
-//                 description: "Deposit your cryptocurrency or stablecoins securely"
-//               },
-//               {
-//                 step: "03",
-//                 title: "Start Earning",
-//                 description: "Watch your investments grow with daily compound interest"
-//               }
-//             ].map((step, index) => (
-//               <div key={index} className="text-center">
-//                 <div className="bg-gradient-to-r from-white to-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-//                   <span className="text-2xl font-bold text-[#1d8e85]">{step.step}</span>
-//                 </div>
-//                 <h3 className="text-2xl font-bold text-white mb-4">{step.title}</h3>
-//                 <p className="text-gray-200 text-lg">{step.description}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* CTA Section */}
-//       <section className="px-4 sm:px-6 lg:px-8 py-20">
-//         <div className="max-w-4xl mx-auto text-center">
-//           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-//             Ready to Start Earning?
-//           </h2>
-//           <p className="text-xl text-gray-200 mb-8">
-//             Join thousands of investors already earning passive income with JAIMX Payouts
-//           </p>
-//           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-//             <button className="bg-white text-[#1d8e85] px-10 py-4 rounded-full font-bold text-xl hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl">
-//               Join Now <ArrowRight className="inline ml-2" size={24} />
-//             </button>
-//             <button className="border-2 border-white text-white px-10 py-4 rounded-full font-bold text-xl hover:bg-white hover:text-[#1d8e85] transition-all">
-//               View Whitepaper
-//             </button>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Footer */}
-//       <footer className="px-4 sm:px-6 lg:px-8 py-12 bg-white/10 backdrop-blur-sm">
-//         <div className="max-w-7xl mx-auto">
-//           <div className="grid md:grid-cols-4 gap-8">
-//             <div>
-//               <div className="flex items-center space-x-2 mb-4">
-//                 <div className="w-8 h-8 bg-gradient-to-r from-white to-gray-100 rounded-full flex items-center justify-center">
-//                   <Zap className="w-5 h-5 text-[#1d8e85]" />
-//                 </div>
-//                 <span className="text-xl font-bold text-white">JAIMX PAYOUTS</span>
-//               </div>
-//               <p className="text-gray-200">
-//                 The future of cryptocurrency investing is here.
-//               </p>
-//             </div>
-            
-//             <div>
-//               <h4 className="text-white font-semibold mb-4">Platform</h4>
-//               <div className="space-y-2">
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Features</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Security</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Pricing</a>
-//               </div>
-//             </div>
-            
-//             <div>
-//               <h4 className="text-white font-semibold mb-4">Resources</h4>
-//               <div className="space-y-2">
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Documentation</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">API</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Support</a>
-//               </div>
-//             </div>
-            
-//             <div>
-//               <h4 className="text-white font-semibold mb-4">Company</h4>
-//               <div className="space-y-2">
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">About</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Blog</a>
-//                 <a href="#" className="block text-gray-200 hover:text-white transition-colors">Careers</a>
-//               </div>
-//             </div>
-//           </div>
-          
-//           <div className="border-t border-white/20 mt-12 pt-8 text-center text-gray-200">
-//             <p>&copy; 2025 JAIMX Payouts. All rights reserved.</p>
-//           </div>
-//         </div>
-//       </footer>
 //     </div>
 //   );
 // }
+
+// export default RoadmapPage;
+
+
+
+
+// src/RoadmapPage.jsx
+
+// import React from 'react';
+
+
+// // Helper component for the Bitcoin Icon to keep the code clean
+// const BitcoinIcon = ({ size = 'w-10 h-10', children }) => (
+//   <div className={`flex items-center justify-center bg-yellow-500 rounded-full ${size} shadow-lg text-gray-800 font-bold text-xl`}>
+//     B
+//     {children}
+//   </div>
+// );
+
+// function RoadmapPage() {
+//   const roadmapItems = [
+//     { year: '2022', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', top: '75%', left: '12%' },
+//     { year: '2023', description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ut aliquip ex ea commodo consequat.', top: '55%', left: '28%' },
+//     { year: '2024', description: 'Duis aute irure dolor in reprehenderit in nisi nulla voluptate velit esse cillum dolore eu fugiat pariatur.', top: '35%', left: '44%' },
+//     { year: '2025', description: 'Duis aute irure dolor in reprehenderit in nisi nulla.', top: '15%', left: '60%' },
+//   ];
+//   const wavyPathData = `
+//     M 5 100                       
+//     C 40 85, 20 65, 30 60         
+//     C 50 55, 35 45, 50 40         
+//     C 60 35, 55 25, 70 20         
+//     C 80 15, 75 5, 85 10          
+//   `;
+
+//   return (
+//     <div className="min-h-screen bg-gray-900 text-white p-8 font-sans flex flex-col lg:flex-row items-center justify-center lg:justify-between relative overflow-hidden">
+//       <div className="lg:w-1/2 p-4 text-center lg:text-left mb-8 lg:mb-0">
+//         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-green-400">
+//           Cryptocurrency Roadmap
+//         </h1>
+//         <p className="text-base md:text-lg leading-relaxed text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0">
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore eu fugiat nulla.
+//         </p>
+//         <div className="flex justify-center lg:justify-start">
+//           <img
+//             src={''}
+//             alt="Bitcoin plant growing from coin"
+//             className="w-48 h-48 object-contain"
+//           />
+//         </div>
+//       </div>
+
+//       {/* --- Right Roadmap Section --- */}
+//       <div className="relative lg:w-1/2 p-0 flex flex-col items-center justify-center min-h-[600px] lg:min-h-screen">
+//         {/* SVG for the Wavy Line - This is the correct way to draw it */}
+//         <svg className="absolute  right-60  w-full h-full z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+//           <path
+//             d={wavyPathData}
+//             stroke="#10B981" 
+//             strokeWidth="1"
+//             fill="none"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           />
+//         </svg>
+
+//         {roadmapItems.map((item, index) => (
+//           <div
+//             key={item.year}
+//             className="absolute flex items-center w-auto z-10"
+//             style={{ top: item.top, left: item.left, transform: 'translate(-50%, -50%)' }}
+//           >
+//             {/* Bitcoin Icon */}
+//             <div className="flex-shrink-0 mr-4">
+//               <BitcoinIcon />
+//             </div>
+
+//             {/* Content for the roadmap item */}
+//             <div className="bg-gray-800 p-3 rounded-lg shadow-xl text-left max-w-xs md:max-w-sm">
+//               <h3 className="text-lg font-bold mb-1 text-green-300">{item.year}</h3>
+//               <p className="text-gray-400 text-xs md:text-sm">{item.description}</p>
+//             </div>
+//           </div>
+//         ))}
+
+//         {/* Large Bitcoin icon at the very top-right end of the roadmap */}
+//         <div className="absolute top-[8%] left-[80%] z-10" style={{ transform: 'translate(-50%, -50%)' }}>
+//           <BitcoinIcon size="w-24 h-24" />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default RoadmapPage;
+
+
+
+
+// import React from 'react';
+
+// // Helper component for the Bitcoin Icon to keep the code clean
+// const BitcoinIcon = ({ size = 'w-10 h-10', children }) => (
+//   <div className={`flex items-center justify-center bg-yellow-500 rounded-full ${size} shadow-lg text-gray-800 font-bold text-xl`}>
+//     B
+//     {children}
+//   </div>
+// );
+
+// function RoadmapPage() {
+//   const roadmapItems = [
+//     // These 'top' and 'left' values define the center of the Bitcoin icon.
+//     // They are critical for the SVG path to pass through them accurately.
+//     { year: '2022', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', top: '80%', left: '46%' }, // Adjusted
+//     { year: '2023', description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ut aliquip ex ea commodo consequat.', top: '60%', left: '56%' }, // Adjusted
+//     { year: '2024', description: 'Duis aute irure dolor in reprehenderit in nisi nulla voluptate velit esse cillum dolore eu fugiat pariatur.', top: '40%', left: '68%' }, // Adjusted
+//     { year: '2025', description: 'Duis aute irure dolor in reprehenderit in nisi nulla.', top: '18%', left: '78%' }, // Adjusted
+//   ];
+
+//   // The single, continuous wavy path (SVG 'd' attribute).
+//   // These coordinates are relative to the SVG's viewBox (0 0 100 100) of the right section.
+//   // **This path is meticulously crafted to pass through the centers of the Bitcoin icons.**
+//   // The numbers are percentages of the right section's width/height.
+//   const wavyPathData = `
+//     M 41 82.5                     
+//     C 45 76, 48 70, 52 61.5      
+//     C 56 53, 60 45, 65 40.5      
+//     C 70 36, 73 29, 76 21      
+//     C 79 16, 82 11, 85.5 5       
+//   `;
+
+//   // Path data for the subtle background wave/gradient shape on the left side of the roadmap
+//   const backgroundWavePath = `M0 0 H30 C 50 20, 40 80, 20 100 H0 Z`;
+
+//   return (
+//     // Main container with a single dark background color
+//     <div className="min-h-screen bg-[#1A1A1A] text-white p-8 font-sans flex flex-col lg:flex-row items-center justify-center lg:justify-between relative overflow-hidden">
+
+//       {/* Left section content */}
+//       <div className="lg:w-1/2 p-4 text-center lg:text-left mb-8 lg:mb-0 relative z-10">
+//         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-green-400">
+//           Cryptocurrency Roadmap
+//         </h1>
+//         <p className="text-base md:text-lg leading-relaxed text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0">
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore eu fugiat nulla.
+//         </p>
+//         <div className="flex justify-center lg:justify-start">
+//           {/* Bitcoin plant image - using a suitable placeholder URL */}
+//           <img
+//             src={'https://via.placeholder.com/200?text=Bitcoin+Plant'} // Replace with your actual image URL
+//             alt="Bitcoin plant growing from coin"
+//             className="w-48 h-48 object-contain"
+//             style={{ filter: 'drop-shadow(0 0 10px rgba(0,255,0,0.5))' }} // Subtle glow similar to image
+//           />
+//         </div>
+//       </div>
+
+//       {/* --- Right Roadmap Section --- */}
+//       <div className="relative lg:w-1/2 p-0 flex flex-col items-center justify-center min-h-[600px] lg:min-h-screen">
+        
+//         {/* Subtle background wave shape for the left side of the roadmap section */}
+//         <div className="absolute inset-0 z-0">
+//           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+//             <path
+//               d={backgroundWavePath}
+//               fill="rgba(0,0,0,0.1)" // A very subtle dark overlay, matching the image's background depth
+//             />
+//           </svg>
+//         </div>
+
+//         {/* SVG for the main continuous wavy line connecting the roadmap items */}
+//         <svg className="absolute w-full h-full z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+//           <path
+//             d={wavyPathData}
+//             stroke="#10B981" // Green color for the line
+//             strokeWidth="3" // Increased stroke width to match the image
+//             fill="none"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           />
+//         </svg>
+
+//         {roadmapItems.map((item, index) => (
+//           <div
+//             key={item.year}
+//             // Position the entire flex container (year + icon + text)
+//             className="absolute flex items-center w-auto z-10"
+//             // The 'left' calculation is crucial for aligning the Bitcoin icon on the path.
+//             // It subtracts half the icon's width (assuming w-10 = 40px, so 20px) plus some padding.
+//             style={{ 
+//               top: item.top, 
+//               left: `calc(${item.left} - 25px)`, // Offset left to place Bitcoin icon correctly on the line
+//               transform: 'translate(-50%, -50%)',
+//               flexDirection: 'row' // Ensure items align horizontally
+//             }} 
+//           >
+//             {/* Year text - positioned to the left of the Bitcoin icon */}
+//             <span className="text-xl font-bold mr-4 text-green-300" style={{ transform: 'translateX(-100%)', whiteSpace: 'nowrap' }}>
+//               {item.year}
+//             </span>
+
+//             {/* Bitcoin Icon */}
+//             <div className="flex-shrink-0 mr-4">
+//               <BitcoinIcon />
+//             </div>
+
+//             {/* Content for the roadmap item - offset to the right of the icon */}
+//             <div className="bg-gray-800 p-3 rounded-lg shadow-xl text-left max-w-xs md:max-w-sm">
+//               <p className="text-gray-400 text-xs md:text-sm">{item.description}</p>
+//             </div>
+//           </div>
+//         ))}
+
+//         {/* Large Bitcoin icon at the very top-right end of the roadmap */}
+//         <div className="absolute top-[8%] left-[88%] z-10" style={{ transform: 'translate(-50%, -50%)' }}>
+//           <BitcoinIcon size="w-24 h-24" />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default RoadmapPage;

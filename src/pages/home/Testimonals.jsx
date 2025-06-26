@@ -574,7 +574,6 @@
 
 import React, { useEffect, useState } from "react";
 
-// Testimonial data
 const testimonials = [
   {
     quote:

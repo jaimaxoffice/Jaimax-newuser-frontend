@@ -1073,3 +1073,6 @@ const JaimaxLanding = () => {
 };
 
 export default JaimaxLanding;
+
+
+

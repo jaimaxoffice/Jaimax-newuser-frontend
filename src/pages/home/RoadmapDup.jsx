@@ -1612,16 +1612,16 @@
 //           </h1>
 //           <p className="text-xl text-gray-300">Join our phased token launch journey</p>
 //         </div>
-
+        
 //         <div className="relative max-w-5xl mx-auto">
 //           {/* Central Timeline */}
 //           <div className="absolute left-6 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-1 z-0" style={{background: 'linear-gradient(to bottom, #bbcf28, #1c994a, #bbcf28)'}}></div>
-
+          
 //           {/* Timeline Phases */}
 //           <div className="space-y-24">
 //             {phaseData.map((phase, index) => (
 //               <div key={index} className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-center md:min-h-[200px]">
-
+                
 //                 {/* Left Side - Even indices (0, 2, 4) */}
 //                 {index % 2 === 0 ? (
 //                   <div className="flex justify-end pr-4">
@@ -1644,22 +1644,22 @@
 //                             {phase.status}
 //                           </span>
 //                         </div>
-
+                        
 //                         {/* Phase Content */}
 //                         <div className="mt-4">
 //                           <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                          
 //                           <div className="space-y-3 mb-6">
 //                             <div className="flex items-center space-x-2">
 //                               <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                               <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                             </div>
-
+                            
 //                             <div className="text-gray-300 text-sm leading-relaxed">
 //                               {phase.price}
 //                             </div>
 //                           </div>
-
+                          
 //                           <button className={`w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 ${
 //                             phase.status === 'Live'
 //                               ? 'text-white shadow-lg'
@@ -1671,7 +1671,7 @@
 //                             {phase.button}
 //                           </button>
 //                         </div>
-
+                        
 //                         {/* Connecting Line from right edge of left card */}
 //                         <div className="absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                           background: 'linear-gradient(to right, #bbcf28, #1c994a)'
@@ -1682,7 +1682,7 @@
 //                 ) : (
 //                   <div></div>
 //                 )}
-
+                
 //                 {/* Right Side - Odd indices (1, 3) */}
 //                 {index % 2 === 1 ? (
 //                   <div className="flex justify-start pl-4">
@@ -1705,22 +1705,22 @@
 //                             {phase.status}
 //                           </span>
 //                         </div>
-
+                        
 //                         {/* Phase Content */}
 //                         <div className="mt-4">
 //                           <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                          
 //                           <div className="space-y-3 mb-6">
 //                             <div className="flex items-center space-x-2">
 //                               <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                               <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                             </div>
-
+                            
 //                             <div className="text-gray-300 text-sm leading-relaxed">
 //                               {phase.price}
 //                             </div>
 //                           </div>
-
+                          
 //                           <button className={`w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 ${
 //                             phase.status === 'Live'
 //                               ? 'text-white shadow-lg'
@@ -1732,7 +1732,7 @@
 //                             {phase.button}
 //                           </button>
 //                         </div>
-
+                        
 //                         {/* Connecting Line from left edge of right card */}
 //                         <div className="absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                           background: 'linear-gradient(to left, #bbcf28, #1c994a)'
@@ -1743,7 +1743,7 @@
 //                 ) : (
 //                   <div></div>
 //                 )}
-
+                
 //                 {/* Timeline Node - Always centered */}
 //                 <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
 //                   <div className={`w-6 h-6 rounded-full border-4 ${
@@ -1821,22 +1821,22 @@
 //           </h1>
 //           <p className="text-lg md:text-xl text-gray-300">Join our phased token launch journey</p>
 //         </div>
-
+        
 //         <div className="relative max-w-5xl mx-auto">
 //           {/* Central Timeline - Hidden on mobile */}
 //           <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 z-0" style={{background: 'linear-gradient(to bottom, #bbcf28, #1c994a, #bbcf28)'}}></div>
-
+          
 //           {/* Left Timeline for mobile */}
 //           <div className="md:hidden absolute left-6 h-full w-1 z-0" style={{background: 'linear-gradient(to bottom, #bbcf28, #1c994a, #bbcf28)'}}></div>
-
+          
 //           {/* Timeline Phases */}
 //           <div className="space-y-8 md:space-y-24">
 //             {phaseData.map((phase, index) => (
 //               <div key={index} className="relative">
-
+                
 //                 {/* Desktop Layout - Alternating sides */}
 //                 <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-center md:min-h-[200px]">
-
+                  
 //                   {/* Left Side - Even indices (0, 2, 4) */}
 //                   {index % 2 === 0 ? (
 //                     <div className="flex justify-end pr-4">
@@ -1859,22 +1859,22 @@
 //                               {phase.status}
 //                             </span>
 //                           </div>
-
+                          
 //                           {/* Phase Content */}
 //                           <div className="mt-4">
 //                             <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                            
 //                             <div className="space-y-3 mb-6">
 //                               <div className="flex items-center space-x-2">
 //                                 <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                                 <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="text-gray-300 text-sm leading-relaxed">
 //                                 {phase.price}
 //                               </div>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-lg'
@@ -1886,7 +1886,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line from right edge of left card */}
 //                           <div className="absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                             background: 'linear-gradient(to right, #bbcf28, #1c994a)'
@@ -1897,7 +1897,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Right Side - Odd indices (1, 3) */}
 //                   {index % 2 === 1 ? (
 //                     <div className="flex justify-start pl-4">
@@ -1920,22 +1920,22 @@
 //                               {phase.status}
 //                             </span>
 //                           </div>
-
+                          
 //                           {/* Phase Content */}
 //                           <div className="mt-4">
 //                             <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                            
 //                             <div className="space-y-3 mb-6">
 //                               <div className="flex items-center space-x-2">
 //                                 <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                                 <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="text-gray-300 text-sm leading-relaxed">
 //                                 {phase.price}
 //                               </div>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-lg'
@@ -1947,7 +1947,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line from left edge of right card */}
 //                           <div className="absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                             background: 'linear-gradient(to left, #bbcf28, #1c994a)'
@@ -1958,7 +1958,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Timeline Node - Always centered on desktop */}
 //                   <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
 //                     <div className={`w-6 h-6 rounded-full border-4 ${
@@ -2021,22 +2021,22 @@
 //                           {phase.status}
 //                         </span>
 //                       </div>
-
+                      
 //                       {/* Phase Content */}
 //                       <div className="mt-3">
 //                         <h3 className="text-xl font-bold text-white mb-2">{phase.phaseNo}</h3>
-
+                        
 //                         <div className="space-y-2 mb-4">
 //                           <div className="flex items-center space-x-2">
 //                             <div className="w-1.5 h-1.5 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                             <span className="font-medium text-sm" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                           </div>
-
+                          
 //                           <div className="text-gray-300 text-xs leading-relaxed">
 //                             {phase.price}
 //                           </div>
 //                         </div>
-
+                        
 //                         <button className={`w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-300 ${
 //                           phase.status === 'Live'
 //                             ? 'text-white shadow-lg'
@@ -2051,7 +2051,7 @@
 //                     </div>
 //                   </div>
 //                 </div>
-
+                
 //               </div>
 //             ))}
 //           </div>
@@ -2129,7 +2129,7 @@
 //               <span className="text-sm font-medium text-white tracking-widest uppercase">Token Sale</span>
 //             </div>
 //           </div>
-
+          
 //           <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 tracking-tight">
 //             Token Sale{' '}
 //             <span className="relative inline-block">
@@ -2143,28 +2143,28 @@
 //             Join our phased token launch journey
 //           </p>
 //         </div>
-
+        
 //         <div className="relative max-w-5xl mx-auto">
 //           {/* Central Timeline - Enhanced */}
 //           <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 z-0" style={{
 //             background: 'linear-gradient(to bottom, #bbcf28 0%, #1c994a 50%, #bbcf28 100%)',
 //             boxShadow: '0 0 20px rgba(188, 207, 40, 0.3)'
 //           }}></div>
-
+          
 //           {/* Left Timeline for mobile - Enhanced */}
 //           <div className="md:hidden absolute left-6 h-full w-1 z-0" style={{
 //             background: 'linear-gradient(to bottom, #bbcf28 0%, #1c994a 50%, #bbcf28 100%)',
 //             boxShadow: '0 0 15px rgba(188, 207, 40, 0.3)'
 //           }}></div>
-
+          
 //           {/* Timeline Phases */}
 //           <div className="space-y-8 md:space-y-24">
 //             {phaseData.map((phase, index) => (
 //               <div key={index} className="relative">
-
+                
 //                 {/* Desktop Layout - Alternating sides */}
 //                 <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-center md:min-h-[200px]">
-
+                  
 //                   {/* Left Side - Even indices (0, 2, 4) */}
 //                   {index % 2 === 0 ? (
 //                     <div className="flex justify-end pr-4">
@@ -2183,7 +2183,7 @@
 //                           <div className="absolute -top-6 left-8 text-4xl transform group-hover:scale-110 transition-transform duration-300">
 //                             {phase.icon}
 //                           </div>
-
+                          
 //                           {/* Status Badge - Redesigned */}
 //                           <div className="absolute -top-4 right-8">
 //                             <div className={`relative px-6 py-2 rounded-full text-sm font-bold tracking-wide ${
@@ -2204,25 +2204,25 @@
 //                               )}
 //                             </div>
 //                           </div>
-
+                          
 //                           {/* Content */}
 //                           <div className="mt-8">
 //                             <h3 className="text-3xl font-black text-white mb-2 tracking-tight">{phase.phaseNo}</h3>
 //                             <p className="text-gray-400 text-sm mb-6 italic">{phase.description}</p>
-
+                            
 //                             <div className="space-y-4 mb-8 flex flex-2">
 //                               <div className="flex items-center space-x-3 p-3 rounded-xl bg-black/20 border border-green-400/20">
 //                                 {/* <div className="w-3 h-3 rounded-full bg-gradient-to-r from-green-400 to-green-300 animate-pulse"></div> */}
 //                                 <span className="font-bold text-green-300">{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="p-3 rounded-xl bg-black/20 border border-gray-600/20">
 //                                 <div className="text-gray-300 text-sm leading-relaxed font-medium">
 //                                   {phase.price}
 //                                 </div>
 //                               </div>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-4 px-8 rounded-2xl font-bold text-lg tracking-wide transition-all duration-300 transform hover:scale-105 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-2xl hover:shadow-green-400/25'
@@ -2238,7 +2238,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line Enhanced */}
 //                           <div className="absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 w-8 h-1 z-10" style={{
 //                             background: 'linear-gradient(to right, #bbcf28, #1c994a)',
@@ -2250,7 +2250,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Right Side - Odd indices (1, 3) */}
 //                   {index % 2 === 1 ? (
 //                     <div className="flex justify-start pl-4">
@@ -2269,7 +2269,7 @@
 //                           <div className="absolute -top-6 right-8 text-4xl transform group-hover:scale-110 transition-transform duration-300">
 //                             {phase.icon}
 //                           </div>
-
+                          
 //                           {/* Status Badge */}
 //                           <div className="absolute -top-4 left-8">
 //                             <div className={`relative px-6 py-2 rounded-full text-sm font-bold tracking-wide ${
@@ -2290,25 +2290,25 @@
 //                               )}
 //                             </div>
 //                           </div>
-
+                          
 //                           {/* Content */}
 //                           <div className="mt-8">
 //                             <h3 className="text-3xl font-black text-white mb-2 tracking-tight">{phase.phaseNo}</h3>
 //                             <p className="text-gray-400 text-sm mb-6 italic">{phase.description}</p>
-
+                            
 //                             <div className="space-y-4 mb-8 flex flex-1">
 //                               <div className="flex items-center space-x-3 p-3 rounded-xl bg-black/20 border border-green-400/20">
 //                                 <div className="w-3 h-3 rounded-full bg-gradient-to-r from-green-400 to-green-300 animate-pulse"></div>
 //                                 <span className="font-bold text-green-300">{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="p-3 rounded-xl bg-black/20 border border-gray-600/20">
 //                                 <div className="text-gray-300 text-sm leading-relaxed font-medium">
 //                                   {phase.price}
 //                                 </div>
 //                               </div>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-4 px-8 rounded-2xl font-bold text-lg tracking-wide transition-all duration-300 transform hover:scale-105 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-2xl hover:shadow-green-400/25'
@@ -2324,7 +2324,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line Enhanced */}
 //                           <div className="absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 w-8 h-1 z-10" style={{
 //                             background: 'linear-gradient(to left, #bbcf28, #1c994a)',
@@ -2336,7 +2336,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Timeline Node - Enhanced */}
 //                   <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
 //                     <div className={`relative w-8 h-8 rounded-full border-4 ${
@@ -2403,7 +2403,7 @@
 //                       <div className="absolute -top-3 left-4 text-2xl">
 //                         {phase.icon}
 //                       </div>
-
+                      
 //                       {/* Status Badge */}
 //                       <div className="absolute -top-3 right-4">
 //                         <span className={`px-4 py-1 rounded-full text-xs font-bold ${
@@ -2421,25 +2421,25 @@
 //                           {phase.status}
 //                         </span>
 //                       </div>
-
+                      
 //                       {/* Content */}
 //                       <div className="mt-4">
 //                         <h3 className="text-xl font-black text-white mb-1">{phase.phaseNo}</h3>
 //                         <p className="text-gray-400 text-xs mb-4 italic">{phase.description}</p>
-
+                        
 //                         <div className="space-y-3 mb-5">
 //                           <div className="flex items-center space-x-2 p-2 rounded-lg bg-black/20">
 //                             <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-green-300"></div>
 //                             <span className="font-bold text-green-300 text-sm">{phase.tokens}</span>
 //                           </div>
-
+                          
 //                           <div className="p-2 rounded-lg bg-black/20">
 //                             <div className="text-gray-300 text-xs leading-relaxed">
 //                               {phase.price}
 //                             </div>
 //                           </div>
 //                         </div>
-
+                        
 //                         <button className={`w-full py-3 px-6 rounded-xl font-bold text-sm transition-all duration-300 ${
 //                           phase.status === 'Live'
 //                             ? 'text-white shadow-xl'
@@ -2458,7 +2458,7 @@
 //                     </div>
 //                   </div>
 //                 </div>
-
+                
 //               </div>
 //             ))}
 //           </div>
@@ -2568,12 +2568,12 @@
 //         <div className="relative">
 //           {/* Vertical line */}
 //           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-teal-400 to-green-400 opacity-30"></div>
-
+          
 //           {phaseData.map((phase, index) => {
 //             const IconComponent = phase.icon;
 //             const isVisible = visiblePhases.includes(index);
 //             const isLive = phase.status === "Live";
-
+            
 //             return (
 //               <div
 //                 key={index}
@@ -2594,7 +2594,7 @@
 //                         🔥 LIVE NOW
 //                       </div>
 //                     )}
-
+                    
 //                     {/* Phase Header */}
 //                     <div className="flex items-center mb-6">
 //                       <div className={`p-3 rounded-xl bg-gradient-to-r ${phase.gradient} text-white mr-4 shadow-lg`}>
@@ -2633,7 +2633,7 @@
 //                             </div>
 //                           </div>
 //                         </div>
-
+                        
 //                         <div className="flex-1 relative overflow-hidden bg-gradient-to-br from-green-400/20 via-white/80 to-green-600/30 rounded-2xl p-6 border border-green-300/40 shadow-xl backdrop-blur-md hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
 //                           <div className="absolute inset-0 bg-gradient-to-br from-green-200/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 //                           <div className="relative z-10">
@@ -2651,9 +2651,9 @@
 //                           </div>
 //                         </div>
 //                       </div>
-
+                      
 //                       <p className="text-gray-600 italic">{phase.description}</p>
-
+                      
 //                       <button className={`w-full py-3 px-6 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-105 ${
 //                         isLive
 //                           ? 'bg-gradient-to-r from-teal-500 to-green-600 hover:from-teal-600 hover:to-green-700 shadow-lg hover:shadow-xl'
@@ -2816,7 +2816,7 @@
 //         <div className="absolute -top-10 -left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
 //         <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
 //         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse delay-500"></div>
-
+        
 //         {/* Floating Particles */}
 //         {[...Array(20)].map((_, i) => (
 //           <div
@@ -2905,7 +2905,7 @@
 //                   </div>
 //                 </div>
 //               </div>
-
+              
 //               <p className="text-gray-300 text-lg leading-relaxed">
 //                 {phaseData[currentPhase].description}
 //               </p>
@@ -2922,7 +2922,7 @@
 //                   <div className="text-xs text-gray-500 mt-1">{phaseData[currentPhase].fullTokens}</div>
 //                 </div>
 //               </div>
-
+              
 //               <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
 //                 <div className="text-center">
 //                   <div className="text-lg font-bold text-white">
@@ -2967,7 +2967,7 @@
 //                 const IconComponent = phase.icon;
 //                 const isActive = index === currentPhase;
 //                 const isCompleted = phase.status === 'Live';
-
+                
 //                 return (
 //                   <div
 //                     key={index}
@@ -2982,7 +2982,7 @@
 //                     {index < phaseData.length - 1 && (
 //                       <div className="absolute left-6 top-14 w-0.5 h-12 bg-gradient-to-b from-white/20 to-transparent"></div>
 //                     )}
-
+                    
 //                     <div className={`flex items-center space-x-4 p-4 rounded-2xl transition-all duration-300 ${
 //                       isActive 
 //                         ? 'bg-white/10 backdrop-blur-sm border border-white/20 shadow-xl' 
@@ -2999,14 +2999,14 @@
 //                         <IconComponent className={`w-6 h-6 ${
 //                           isActive ? 'text-white' : isCompleted ? 'text-green-400' : 'text-gray-400'
 //                         }`} />
-
+                        
 //                         {isCompleted && (
 //                           <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse">
 //                             <CheckCircle className="w-4 h-4 text-white" />
 //                           </div>
 //                         )}
 //                       </div>
-
+                      
 //                       {/* Phase Info */}
 //                       <div className="flex-1 min-w-0">
 //                         <div className="flex items-center justify-between">
@@ -3022,7 +3022,7 @@
 //                         }`}>
 //                           {phase.title}
 //                         </p>
-
+                        
 //                         {/* Progress Bar for Active/Completed Phases */}
 //                         {(isActive || isCompleted) && (
 //                           <div className="mt-2 h-1 bg-white/10 rounded-full overflow-hidden">
@@ -3194,7 +3194,7 @@
 //               MISSION STATUS: ACTIVE • LEVEL {currentLevel + 1}/5
 //             </div>
 //           </div>
-
+          
 //           <div className="bg-black/50 backdrop-blur border border-green-400/30 rounded-lg p-3 md:p-4 font-mono">
 //             <div className="text-xs text-gray-400">TOTAL XP</div>
 //             <div className="text-lg md:text-xl font-bold text-green-400">{currentXP.toLocaleString()}</div>
@@ -3204,7 +3204,7 @@
 //       </div>
 //       <div className="relative z-10 px-4 md:px-6 pb-4 md:pb-6">
 //         <div className="bg-black/30 backdrop-blur border border-gray-800 rounded-xl md:rounded-2xl p-4 md:p-6">
-
+          
 //           {/* Chart Header */}
 //           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 md:mb-6 space-y-2 md:space-y-0">
 //             <div className="flex items-center space-x-4">
@@ -3244,7 +3244,7 @@
 //                   <stop offset="100%" stopColor="url(#chartGradient)" stopOpacity="0" />
 //                 </linearGradient>
 //               </defs>
-
+              
 //               {/* Chart Path - Responsive */}
 //               <path
 //                 d="M 0 85 Q 20 75 40 65 Q 60 50 80 35 Q 90 20 100 10"
@@ -3267,7 +3267,7 @@
 //               const isActive = index === currentLevel;
 //               const isCompleted = index < currentLevel;
 //               const IconComponent = level.icon;
-
+              
 //               return (
 //                 <div
 //                   key={index}
@@ -3285,7 +3285,7 @@
 //                          boxShadow: isActive ? `0 0 15px ${level.color}` : 'none'
 //                        }}>
 //                     <IconComponent className="w-4 h-4 md:w-5 lg:w-6 md:h-5 lg:h-6 text-white" />
-
+                    
 //                     {level.status === 'ACTIVE' && (
 //                       <div className="absolute -top-0.5 -right-0.5 w-3 h-3 md:w-4 md:h-4 bg-green-400 rounded-full animate-ping" />
 //                     )}
@@ -3423,381 +3423,381 @@
 
 
 
-// import React, { useState, useEffect } from 'react';
-// import { Rocket, Star, Diamond, Crown, Trophy, TrendingUp, Zap, Target, ArrowUp } from 'lucide-react';
+  // import React, { useState, useEffect } from 'react';
+  // import { Rocket, Star, Diamond, Crown, Trophy, TrendingUp, Zap, Target, ArrowUp } from 'lucide-react';
 
-// const SpaceTradingRoadmap = () => {
-//   const [currentLevel, setCurrentLevel] = useState(0);
-//   const [rocketPosition, setRocketPosition] = useState(0);
-//   const [showStats, setShowStats] = useState(false);
+  // const SpaceTradingRoadmap = () => {
+  //   const [currentLevel, setCurrentLevel] = useState(0);
+  //   const [rocketPosition, setRocketPosition] = useState(0);
+  //   const [showStats, setShowStats] = useState(false);
 
-//   const levels = [
-//     {
-//       level: 1,
-//       title: "LAUNCH PAD",
-//       subtitle: "Genesis Protocol",
-//       tokens: "10B",
-//       fullTokens: "10 Billion Tokens",
-//       price: "₹0.01-0.04",
-//       priceUSD: "$0.00012-0.00046",
-//       marketCap: "$1.2M-4.6M",
-//       xp: 1000,
-//       status: "ACTIVE",
-//       color: "#14B8A6",
-//       bgColor: "from-teal-500 to-green-600",
-//       icon: Rocket,
-//       planet: "Earth",
-//       description: "Launch phase with exclusive early-bird benefits",
-//       unlocks: ["Early Adopter Badge", "2x Rewards Multiplier"],
-//       progress: 85,
-//       button: "Buy Now"
-//     },
-//     {
-//       level: 2,
-//       title: "ORBIT STATION",
-//       subtitle: "Community Expansion", 
-//       tokens: "20B",
-//       fullTokens: "20 Billion Tokens",
-//       price: "₹0.05-0.50",
-//       priceUSD: "$0.00061-0.0061",
-//       marketCap: "$12M-122M",
-//       xp: 2500,
-//       status: "LOCKED",
-//       color: "#14B8A6",
-//       bgColor: "from-teal-400 to-teal-600",
-//       icon: Star,
-//       planet: "Moon",
-//       description: "Enhanced rewards and premium token allocation",
-//       unlocks: ["Staking Rewards", "DAO Voting Rights"],
-//       progress: 0,
-//       button: "Coming Soon"
-//     },
-//     {
-//       level: 3,
-//       title: "ASTEROID BELT",
-//       subtitle: "DeFi Mining",
-//       tokens: "25B", 
-//       fullTokens: "25 Billion Tokens",
-//       price: "₹0.60-1.53",
-//       priceUSD: "$0.0071-0.018",
-//       marketCap: "$177M-450M",
-//       xp: 5000,
-//       status: "LOCKED",
-//       color: "#10B981",
-//       bgColor: "from-green-400 to-green-600",
-//       icon: Diamond,
-//       planet: "Mars",
-//       description: "Diamond tier with exclusive staking benefits",
-//       unlocks: ["Yield Farming", "NFT Marketplace"],
-//       progress: 0,
-//       button: "Coming Soon"
-//     },
-//     {
-//       level: 4,
-//       title: "DEEP SPACE",
-//       subtitle: "Galactic Network",
-//       tokens: "30B",
-//       fullTokens: "30 Billion Tokens",
-//       price: "₹1.60-3.00",
-//       priceUSD: "$0.019-0.036",
-//       marketCap: "$570M-1.08B",
-//       xp: 10000,
-//       status: "LOCKED",
-//       color: "#14B8A6",
-//       bgColor: "from-teal-500 to-green-500",
-//       icon: Crown,
-//       planet: "Jupiter",
-//       description: "Premium phase with governance token access",
-//       unlocks: ["Cross-Chain Bridge", "Governance Token"],
-//       progress: 0,
-//       button: "Coming Soon"
-//     },
-//     {
-//       level: 5,
-//       title: "GALAXY CORE",
-//       subtitle: "Universal Adoption",
-//       tokens: "25B",
-//       fullTokens: "25 Billion Tokens",
-//       price: "₹3.15-4.10",
-//       priceUSD: "$0.037-0.049",
-//       marketCap: "$925M-1.22B",
-//       xp: 25000,
-//       status: "LOCKED",
-//       color: "#10B981",
-//       bgColor: "from-green-500 to-teal-600",
-//       icon: Trophy,
-//       planet: "Alpha Centauri",
-//       description: "Ultimate tier with maximum rewards potential",
-//       unlocks: ["Mass Adoption", "Legacy Status"],
-//       progress: 0,
-//       button: "Coming Soon"
-//     }
-//   ];
+  //   const levels = [
+  //     {
+  //       level: 1,
+  //       title: "LAUNCH PAD",
+  //       subtitle: "Genesis Protocol",
+  //       tokens: "10B",
+  //       fullTokens: "10 Billion Tokens",
+  //       price: "₹0.01-0.04",
+  //       priceUSD: "$0.00012-0.00046",
+  //       marketCap: "$1.2M-4.6M",
+  //       xp: 1000,
+  //       status: "ACTIVE",
+  //       color: "#14B8A6",
+  //       bgColor: "from-teal-500 to-green-600",
+  //       icon: Rocket,
+  //       planet: "Earth",
+  //       description: "Launch phase with exclusive early-bird benefits",
+  //       unlocks: ["Early Adopter Badge", "2x Rewards Multiplier"],
+  //       progress: 85,
+  //       button: "Buy Now"
+  //     },
+  //     {
+  //       level: 2,
+  //       title: "ORBIT STATION",
+  //       subtitle: "Community Expansion", 
+  //       tokens: "20B",
+  //       fullTokens: "20 Billion Tokens",
+  //       price: "₹0.05-0.50",
+  //       priceUSD: "$0.00061-0.0061",
+  //       marketCap: "$12M-122M",
+  //       xp: 2500,
+  //       status: "LOCKED",
+  //       color: "#14B8A6",
+  //       bgColor: "from-teal-400 to-teal-600",
+  //       icon: Star,
+  //       planet: "Moon",
+  //       description: "Enhanced rewards and premium token allocation",
+  //       unlocks: ["Staking Rewards", "DAO Voting Rights"],
+  //       progress: 0,
+  //       button: "Coming Soon"
+  //     },
+  //     {
+  //       level: 3,
+  //       title: "ASTEROID BELT",
+  //       subtitle: "DeFi Mining",
+  //       tokens: "25B", 
+  //       fullTokens: "25 Billion Tokens",
+  //       price: "₹0.60-1.53",
+  //       priceUSD: "$0.0071-0.018",
+  //       marketCap: "$177M-450M",
+  //       xp: 5000,
+  //       status: "LOCKED",
+  //       color: "#10B981",
+  //       bgColor: "from-green-400 to-green-600",
+  //       icon: Diamond,
+  //       planet: "Mars",
+  //       description: "Diamond tier with exclusive staking benefits",
+  //       unlocks: ["Yield Farming", "NFT Marketplace"],
+  //       progress: 0,
+  //       button: "Coming Soon"
+  //     },
+  //     {
+  //       level: 4,
+  //       title: "DEEP SPACE",
+  //       subtitle: "Galactic Network",
+  //       tokens: "30B",
+  //       fullTokens: "30 Billion Tokens",
+  //       price: "₹1.60-3.00",
+  //       priceUSD: "$0.019-0.036",
+  //       marketCap: "$570M-1.08B",
+  //       xp: 10000,
+  //       status: "LOCKED",
+  //       color: "#14B8A6",
+  //       bgColor: "from-teal-500 to-green-500",
+  //       icon: Crown,
+  //       planet: "Jupiter",
+  //       description: "Premium phase with governance token access",
+  //       unlocks: ["Cross-Chain Bridge", "Governance Token"],
+  //       progress: 0,
+  //       button: "Coming Soon"
+  //     },
+  //     {
+  //       level: 5,
+  //       title: "GALAXY CORE",
+  //       subtitle: "Universal Adoption",
+  //       tokens: "25B",
+  //       fullTokens: "25 Billion Tokens",
+  //       price: "₹3.15-4.10",
+  //       priceUSD: "$0.037-0.049",
+  //       marketCap: "$925M-1.22B",
+  //       xp: 25000,
+  //       status: "LOCKED",
+  //       color: "#10B981",
+  //       bgColor: "from-green-500 to-teal-600",
+  //       icon: Trophy,
+  //       planet: "Alpha Centauri",
+  //       description: "Ultimate tier with maximum rewards potential",
+  //       unlocks: ["Mass Adoption", "Legacy Status"],
+  //       progress: 0,
+  //       button: "Coming Soon"
+  //     }
+  //   ];
 
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setRocketPosition(prev => (prev + 0.5) % 100);
-//     }, 50);
-//     return () => clearInterval(interval);
-//   }, []);
+  //   useEffect(() => {
+  //     const interval = setInterval(() => {
+  //       setRocketPosition(prev => (prev + 0.5) % 100);
+  //     }, 50);
+  //     return () => clearInterval(interval);
+  //   }, []);
 
-//   useEffect(() => {
-//     setShowStats(true);
-//   }, []);
+  //   useEffect(() => {
+  //     setShowStats(true);
+  //   }, []);
 
-//   const totalXP = levels.reduce((sum, level) => sum + level.xp, 0);
-//   const currentXP = levels.slice(0, currentLevel + 1).reduce((sum, level) => sum + level.xp, 0);
+  //   const totalXP = levels.reduce((sum, level) => sum + level.xp, 0);
+  //   const currentXP = levels.slice(0, currentLevel + 1).reduce((sum, level) => sum + level.xp, 0);
 
-//   return (
-//     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-//       {/* Space Background */}
-//       <div className="absolute inset-0">
-//         {/* Stars */}
+  //   return (
+  //     <div className="min-h-screen bg-black text-white relative overflow-hidden">
+  //       {/* Space Background */}
+  //       <div className="absolute inset-0">
+  //         {/* Stars */}
+          
+          
+  //         {/* Nebula Effect */}
+  //         <div className="absolute top-20 right-20 w-96 h-96 bg-purple-500 rounded-full opacity-20 blur-3xl"></div>
+  //         <div className="absolute bottom-20 left-20 w-80 h-80 bg-blue-500 rounded-full opacity-15 blur-3xl"></div>
+  //       </div>
 
+  //       {/* HUD Header */}
+  //       <div className="relative z-10 p-4 md:p-6">
+  //         <div className="flex flex-col md:flex-row md:justify-between md:items-start space-y-4 md:space-y-0">
+  //           <div>
+  //             <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+  //               SPACE TRADING PROTOCOL
+  //             </h1>
+  //             <div className="text-green-400 font-mono text-xs md:text-sm mt-1">
+  //               MISSION STATUS: ACTIVE • LEVEL {currentLevel + 1}/5
+  //             </div>
+  //           </div>
+            
+  //           <div className="bg-black/50 backdrop-blur border border-green-400/30 rounded-lg p-3 md:p-4 font-mono">
+  //             <div className="text-xs text-gray-400">TOTAL XP</div>
+  //             <div className="text-lg md:text-xl font-bold text-green-400">{currentXP.toLocaleString()}</div>
+  //             <div className="text-xs text-gray-400">/{totalXP.toLocaleString()}</div>
+  //           </div>
+  //         </div>
+  //       </div>
 
-//         {/* Nebula Effect */}
-//         <div className="absolute top-20 right-20 w-96 h-96 bg-purple-500 rounded-full opacity-20 blur-3xl"></div>
-//         <div className="absolute bottom-20 left-20 w-80 h-80 bg-blue-500 rounded-full opacity-15 blur-3xl"></div>
-//       </div>
+  //       {/* Main Trading Chart Area */}
+  //       <div className="relative z-10 px-4 md:px-6 pb-4 md:pb-6">
+  //         <div className="bg-black/30 backdrop-blur border border-gray-800 rounded-xl md:rounded-2xl p-4 md:p-6">
+            
+  //           {/* Chart Header */}
+  //           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 md:mb-6 space-y-2 md:space-y-0">
+  //             <div className="flex items-center space-x-4">
+  //               <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+  //               <span className="font-mono text-green-400 text-sm md:text-base">PHASE PROGRESSION CHART</span>
+  //             </div>
+  //             <div className="text-xs font-mono text-gray-400">
+  //               <span className="hidden md:inline">TIME FRAME: 12 MONTHS • CHART TYPE: EXPONENTIAL</span>
+  //               <span className="md:hidden">12M • EXPONENTIAL</span>
+  //             </div>
+  //           </div>
 
-//       {/* HUD Header */}
-//       <div className="relative z-10 p-4 md:p-6">
-//         <div className="flex flex-col md:flex-row md:justify-between md:items-start space-y-4 md:space-y-0">
-//           <div>
-//             <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
-//               SPACE TRADING PROTOCOL
-//             </h1>
-//             <div className="text-green-400 font-mono text-xs md:text-sm mt-1">
-//               MISSION STATUS: ACTIVE • LEVEL {currentLevel + 1}/5
-//             </div>
-//           </div>
+  //           {/* Chart Grid */}
+  //           <div className="relative h-64 md:h-80 lg:h-96 mb-6 md:mb-8 overflow-hidden">
+  //             {/* Grid Lines */}
+  //             <div className="absolute inset-0">
+  //               {[...Array(6)].map((_, i) => (
+  //                 <div key={i} className="absolute w-full border-t border-gray-800/50" style={{ top: `${i * 20}%` }} />
+  //               ))}
+  //               {[...Array(6)].map((_, i) => (
+  //                 <div key={i} className="absolute h-full border-l border-gray-800/50" style={{ left: `${i * 20}%` }} />
+  //               ))}
+  //             </div>
 
-//           <div className="bg-black/50 backdrop-blur border border-green-400/30 rounded-lg p-3 md:p-4 font-mono">
-//             <div className="text-xs text-gray-400">TOTAL XP</div>
-//             <div className="text-lg md:text-xl font-bold text-green-400">{currentXP.toLocaleString()}</div>
-//             <div className="text-xs text-gray-400">/{totalXP.toLocaleString()}</div>
-//           </div>
-//         </div>
-//       </div>
+  //             {/* Price Chart Line */}
+  //             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+  //               <defs>
+  //                 <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+  //                   <stop offset="0%" stopColor="#00ff88" />
+  //                   <stop offset="25%" stopColor="#0099ff" />
+  //                   <stop offset="50%" stopColor="#9933ff" />
+  //                   <stop offset="75%" stopColor="#ff9900" />
+  //                   <stop offset="100%" stopColor="#ff3366" />
+  //                 </linearGradient>
+  //                 <linearGradient id="chartFill" x1="0%" y1="0%" x2="0%" y2="100%">
+  //                   <stop offset="0%" stopColor="url(#chartGradient)" stopOpacity="0.3" />
+  //                   <stop offset="100%" stopColor="url(#chartGradient)" stopOpacity="0" />
+  //                 </linearGradient>
+  //               </defs>
+                
+  //               {/* Chart Path - Responsive */}
+  //               <path
+  //                 d="M 0 85 Q 20 75 40 65 Q 60 50 80 35 Q 90 20 100 10"
+  //                 fill="none"
+  //                 stroke="url(#chartGradient)"
+  //                 strokeWidth="0.5"
+  //                 vectorEffect="non-scaling-stroke"
+  //                 className="drop-shadow-lg"
+  //               />
+  //               <path
+  //                 d="M 0 85 Q 20 75 40 65 Q 60 50 80 35 Q 90 20 100 10 L 100 100 L 0 100 Z"
+  //                 fill="url(#chartFill)"
+  //               />
+  //             </svg>
 
-//       {/* Main Trading Chart Area */}
-//       <div className="relative z-10 px-4 md:px-6 pb-4 md:pb-6">
-//         <div className="bg-black/30 backdrop-blur border border-gray-800 rounded-xl md:rounded-2xl p-4 md:p-6">
+  //             {/* Level Markers */}
+  //             {levels.map((level, index) => {
+  //               const x = (index * 20) + 10;
+  //               const y = 75 - (index * 12);
+  //               const isActive = index === currentLevel;
+  //               const isCompleted = index < currentLevel;
+  //               const IconComponent = level.icon;
+                
+  //               return (
+  //                 <div
+  //                   key={index}
+  //                   className={`absolute cursor-pointer transition-all duration-300 ${
+  //                     isActive ? 'scale-110 md:scale-125 z-20' : 'hover:scale-105 md:hover:scale-110 z-10'
+  //                   }`}
+  //                   style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
+  //                   onClick={() => setCurrentLevel(index)}
+  //                 >
+  //                   {/* Level Node */}
+  //                   <div className={`relative w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300`}
+  //                       style={{
+  //                         backgroundColor: level.status === 'ACTIVE' ? level.color : (isCompleted ? level.color : '#374151'),
+  //                         borderColor: isActive ? '#ffffff' : level.color,
+  //                         boxShadow: isActive ? `0 0 15px ${level.color}` : 'none'
+  //                       }}>
+  //                     <IconComponent className="w-4 h-4 md:w-5 lg:w-6 md:h-5 lg:h-6 text-white" />
+                      
+  //                     {level.status === 'ACTIVE' && (
+  //                       <div className="absolute -top-0.5 -right-0.5 w-3 h-3 md:w-4 md:h-4 bg-green-400 rounded-full animate-ping" />
+  //                     )}
+  //                   </div>
 
-//           {/* Chart Header */}
-//           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 md:mb-6 space-y-2 md:space-y-0">
-//             <div className="flex items-center space-x-4">
-//               <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-//               <span className="font-mono text-green-400 text-sm md:text-base">PHASE PROGRESSION CHART</span>
-//             </div>
-//             <div className="text-xs font-mono text-gray-400">
-//               <span className="hidden md:inline">TIME FRAME: 12 MONTHS • CHART TYPE: EXPONENTIAL</span>
-//               <span className="md:hidden">12M • EXPONENTIAL</span>
-//             </div>
-//           </div>
+  //                   {/* Level Label */}
+  //                   <div className="absolute top-full mt-1 md:mt-2 left-1/2 transform -translate-x-1/2 text-center min-w-max">
+  //                     <div className="text-xs md:text-sm font-bold" style={{ color: level.color }}>
+  //                       LVL {level.level}
+  //                     </div>
+  //                     <div className="text-xs text-gray-400 hidden md:block">{level.planet}</div>
+  //                   </div>
+  //                 </div>
+  //               );
+  //             })}
 
-//           {/* Chart Grid */}
-//           <div className="relative h-64 md:h-80 lg:h-96 mb-6 md:mb-8 overflow-hidden">
-//             {/* Grid Lines */}
-//             <div className="absolute inset-0">
-//               {[...Array(6)].map((_, i) => (
-//                 <div key={i} className="absolute w-full border-t border-gray-800/50" style={{ top: `${i * 20}%` }} />
-//               ))}
-//               {[...Array(6)].map((_, i) => (
-//                 <div key={i} className="absolute h-full border-l border-gray-800/50" style={{ left: `${i * 20}%` }} />
-//               ))}
-//             </div>
+  //             {/* Rocket Animation */}
+  //             <div 
+  //               className="absolute transition-all duration-100 ease-linear"
+  //               style={{ 
+  //                 left: `${10 + (currentLevel * 20) + (rocketPosition * 0.15)}%`, 
+  //                 top: `${75 - (currentLevel * 12) - 8}%`,
+  //                 transform: 'translate(-50%, -50%)'
+  //               }}
+  //             >
+  //               <div className="text-lg md:text-2xl animate-bounce">
+  //                 🚀
+  //               </div>
+  //             </div>
+  //           </div>
 
-//             {/* Price Chart Line */}
-//             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-//               <defs>
-//                 <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-//                   <stop offset="0%" stopColor="#00ff88" />
-//                   <stop offset="25%" stopColor="#0099ff" />
-//                   <stop offset="50%" stopColor="#9933ff" />
-//                   <stop offset="75%" stopColor="#ff9900" />
-//                   <stop offset="100%" stopColor="#ff3366" />
-//                 </linearGradient>
-//                 <linearGradient id="chartFill" x1="0%" y1="0%" x2="0%" y2="100%">
-//                   <stop offset="0%" stopColor="url(#chartGradient)" stopOpacity="0.3" />
-//                   <stop offset="100%" stopColor="url(#chartGradient)" stopOpacity="0" />
-//                 </linearGradient>
-//               </defs>
+  //           {/* Level Details Panel */}
+  //           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+  //             {/* Left: Current Level Info */}
+  //             <div className={`bg-gradient-to-br ${levels[currentLevel].bgColor} p-4 md:p-6 rounded-xl border border-white/20`}>
+  //               <div className="flex items-center space-x-3 mb-4">
+  //                 <div className="w-10 h-10 md:w-12 md:h-12 bg-black/30 rounded-lg flex items-center justify-center">
+  //                   {React.createElement(levels[currentLevel].icon, { className: "w-5 h-5 md:w-6 md:h-6 text-white" })}
+  //                 </div>
+  //                 <div className="min-w-0 flex-1">
+  //                   <h3 className="text-lg md:text-xl font-black text-white truncate">{levels[currentLevel].title}</h3>
+  //                   <p className="text-white/80 text-sm md:text-base">{levels[currentLevel].subtitle}</p>
+  //                 </div>
+  //               </div>
 
-//               {/* Chart Path - Responsive */}
-//               <path
-//                 d="M 0 85 Q 20 75 40 65 Q 60 50 80 35 Q 90 20 100 10"
-//                 fill="none"
-//                 stroke="url(#chartGradient)"
-//                 strokeWidth="0.5"
-//                 vectorEffect="non-scaling-stroke"
-//                 className="drop-shadow-lg"
-//               />
-//               <path
-//                 d="M 0 85 Q 20 75 40 65 Q 60 50 80 35 Q 90 20 100 10 L 100 100 L 0 100 Z"
-//                 fill="url(#chartFill)"
-//               />
-//             </svg>
+  //               <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4">
+  //                 <div className="bg-black/30 rounded-lg p-2 md:p-3 text-center">
+  //                   <div className="text-sm md:text-lg font-bold text-white">{levels[currentLevel].tokens}</div>
+  //                   <div className="text-xs text-white/70">SUPPLY</div>
+  //                 </div>
+  //                 <div className="bg-black/30 rounded-lg p-2 md:p-3 text-center">
+  //                   <div className="text-xs md:text-sm font-bold text-white">{levels[currentLevel].price}</div>
+  //                   <div className="text-xs text-white/70">PRICE</div>
+  //                 </div>
+  //                 <div className="bg-black/30 rounded-lg p-2 md:p-3 text-center">
+  //                   <div className="text-xs md:text-sm font-bold text-white">{levels[currentLevel].marketCap}</div>
+  //                   <div className="text-xs text-white/70">MCAP</div>
+  //                 </div>
+  //               </div>
 
-//             {/* Level Markers */}
-//             {levels.map((level, index) => {
-//               const x = (index * 20) + 10;
-//               const y = 75 - (index * 12);
-//               const isActive = index === currentLevel;
-//               const isCompleted = index < currentLevel;
-//               const IconComponent = level.icon;
+  //               {/* XP Progress */}
+  //               <div className="mb-4">
+  //                 <div className="flex justify-between text-sm mb-1">
+  //                   <span className="text-white/80">XP PROGRESS</span>
+  //                   <span className="text-white font-bold">{levels[currentLevel].progress}%</span>
+  //                 </div>
+  //                 <div className="w-full bg-black/30 rounded-full h-2">
+  //                   <div 
+  //                     className="h-2 bg-white rounded-full transition-all duration-1000"
+  //                     style={{ width: `${levels[currentLevel].progress}%` }}
+  //                   />
+  //                 </div>
+  //               </div>
 
-//               return (
-//                 <div
-//                   key={index}
-//                   className={`absolute cursor-pointer transition-all duration-300 ${
-//                     isActive ? 'scale-110 md:scale-125 z-20' : 'hover:scale-105 md:hover:scale-110 z-10'
-//                   }`}
-//                   style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
-//                   onClick={() => setCurrentLevel(index)}
-//                 >
-//                   {/* Level Node */}
-//                   <div className={`relative w-8 h-8 md:w-10 lg:w-12 md:h-10 lg:h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300`}
-//                       style={{
-//                         backgroundColor: level.status === 'ACTIVE' ? level.color : (isCompleted ? level.color : '#374151'),
-//                         borderColor: isActive ? '#ffffff' : level.color,
-//                         boxShadow: isActive ? `0 0 15px ${level.color}` : 'none'
-//                       }}>
-//                     <IconComponent className="w-4 h-4 md:w-5 lg:w-6 md:h-5 lg:h-6 text-white" />
+  //               {levels[currentLevel].status === 'ACTIVE' && (
+  //                 <button className="w-full bg-black/50 text-white font-bold py-2 md:py-3 text-sm md:text-base rounded-lg hover:bg-black/70 transition-colors border border-white/20">
+  //                   ENGAGE PROTOCOL
+  //                 </button>
+  //               )}
+  //             </div>
 
-//                     {level.status === 'ACTIVE' && (
-//                       <div className="absolute -top-0.5 -right-0.5 w-3 h-3 md:w-4 md:h-4 bg-green-400 rounded-full animate-ping" />
-//                     )}
-//                   </div>
+  //             {/* Right: Unlocks & Stats */}
+  //             <div className="space-y-4">
+  //               {/* Unlocks */}
+  //               <div className="bg-black/50 backdrop-blur border border-gray-800 rounded-xl p-4">
+  //                 <h4 className="text-white font-bold mb-3 flex items-center text-sm md:text-base">
+  //                   <Target className="w-4 h-4 mr-2 text-green-400" />
+  //                   MISSION REWARDS
+  //                 </h4>
+  //                 <div className="space-y-2">
+  //                   {levels[currentLevel].unlocks.map((unlock, idx) => (
+  //                     <div key={idx} className="flex items-center space-x-3 text-xs md:text-sm">
+  //                       <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
+  //                       <span className="text-gray-300">{unlock}</span>
+  //                     </div>
+  //                   ))}
+  //                 </div>
+  //               </div>
 
-//                   {/* Level Label */}
-//                   <div className="absolute top-full mt-1 md:mt-2 left-1/2 transform -translate-x-1/2 text-center min-w-max">
-//                     <div className="text-xs md:text-sm font-bold" style={{ color: level.color }}>
-//                       LVL {level.level}
-//                     </div>
-//                     <div className="text-xs text-gray-400 hidden md:block">{level.planet}</div>
-//                   </div>
-//                 </div>
-//               );
-//             })}
+  //               {/* Trading Stats */}
+  //               <div className="bg-black/50 backdrop-blur border border-gray-800 rounded-xl p-4">
+  //                 <h4 className="text-white font-bold mb-3 flex items-center text-sm md:text-base">
+  //                   <TrendingUp className="w-4 h-4 mr-2 text-blue-400" />
+  //                   PROTOCOL STATS
+  //                 </h4>
+  //                 <div className="grid grid-cols-2 gap-3 text-xs md:text-sm">
+  //                   <div>
+  //                     <div className="text-gray-400">HOLDERS</div>
+  //                     <div className="text-white font-bold">1,247</div>
+  //                   </div>
+  //                   <div>
+  //                     <div className="text-gray-400">24H VOL</div>
+  //                     <div className="text-green-400 font-bold">+247%</div>
+  //                   </div>
+  //                   <div>
+  //                     <div className="text-gray-400">LIQUIDITY</div>
+  //                     <div className="text-white font-bold">$2.4M</div>
+  //                   </div>
+  //                   <div>
+  //                     <div className="text-gray-400">APY</div>
+  //                     <div className="text-yellow-400 font-bold">420%</div>
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
-//             {/* Rocket Animation */}
-//             <div 
-//               className="absolute transition-all duration-100 ease-linear"
-//               style={{ 
-//                 left: `${10 + (currentLevel * 20) + (rocketPosition * 0.15)}%`, 
-//                 top: `${75 - (currentLevel * 12) - 8}%`,
-//                 transform: 'translate(-50%, -50%)'
-//               }}
-//             >
-//               <div className="text-lg md:text-2xl animate-bounce">
-//                 🚀
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Level Details Panel */}
-//           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-//             {/* Left: Current Level Info */}
-//             <div className={`bg-gradient-to-br ${levels[currentLevel].bgColor} p-4 md:p-6 rounded-xl border border-white/20`}>
-//               <div className="flex items-center space-x-3 mb-4">
-//                 <div className="w-10 h-10 md:w-12 md:h-12 bg-black/30 rounded-lg flex items-center justify-center">
-//                   {React.createElement(levels[currentLevel].icon, { className: "w-5 h-5 md:w-6 md:h-6 text-white" })}
-//                 </div>
-//                 <div className="min-w-0 flex-1">
-//                   <h3 className="text-lg md:text-xl font-black text-white truncate">{levels[currentLevel].title}</h3>
-//                   <p className="text-white/80 text-sm md:text-base">{levels[currentLevel].subtitle}</p>
-//                 </div>
-//               </div>
-
-//               <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4">
-//                 <div className="bg-black/30 rounded-lg p-2 md:p-3 text-center">
-//                   <div className="text-sm md:text-lg font-bold text-white">{levels[currentLevel].tokens}</div>
-//                   <div className="text-xs text-white/70">SUPPLY</div>
-//                 </div>
-//                 <div className="bg-black/30 rounded-lg p-2 md:p-3 text-center">
-//                   <div className="text-xs md:text-sm font-bold text-white">{levels[currentLevel].price}</div>
-//                   <div className="text-xs text-white/70">PRICE</div>
-//                 </div>
-//                 <div className="bg-black/30 rounded-lg p-2 md:p-3 text-center">
-//                   <div className="text-xs md:text-sm font-bold text-white">{levels[currentLevel].marketCap}</div>
-//                   <div className="text-xs text-white/70">MCAP</div>
-//                 </div>
-//               </div>
-
-//               {/* XP Progress */}
-//               <div className="mb-4">
-//                 <div className="flex justify-between text-sm mb-1">
-//                   <span className="text-white/80">XP PROGRESS</span>
-//                   <span className="text-white font-bold">{levels[currentLevel].progress}%</span>
-//                 </div>
-//                 <div className="w-full bg-black/30 rounded-full h-2">
-//                   <div 
-//                     className="h-2 bg-white rounded-full transition-all duration-1000"
-//                     style={{ width: `${levels[currentLevel].progress}%` }}
-//                   />
-//                 </div>
-//               </div>
-
-//               {levels[currentLevel].status === 'ACTIVE' && (
-//                 <button className="w-full bg-black/50 text-white font-bold py-2 md:py-3 text-sm md:text-base rounded-lg hover:bg-black/70 transition-colors border border-white/20">
-//                   ENGAGE PROTOCOL
-//                 </button>
-//               )}
-//             </div>
-
-//             {/* Right: Unlocks & Stats */}
-//             <div className="space-y-4">
-//               {/* Unlocks */}
-//               <div className="bg-black/50 backdrop-blur border border-gray-800 rounded-xl p-4">
-//                 <h4 className="text-white font-bold mb-3 flex items-center text-sm md:text-base">
-//                   <Target className="w-4 h-4 mr-2 text-green-400" />
-//                   MISSION REWARDS
-//                 </h4>
-//                 <div className="space-y-2">
-//                   {levels[currentLevel].unlocks.map((unlock, idx) => (
-//                     <div key={idx} className="flex items-center space-x-3 text-xs md:text-sm">
-//                       <div className="w-2 h-2 bg-green-400 rounded-full flex-shrink-0"></div>
-//                       <span className="text-gray-300">{unlock}</span>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
-
-//               {/* Trading Stats */}
-//               <div className="bg-black/50 backdrop-blur border border-gray-800 rounded-xl p-4">
-//                 <h4 className="text-white font-bold mb-3 flex items-center text-sm md:text-base">
-//                   <TrendingUp className="w-4 h-4 mr-2 text-blue-400" />
-//                   PROTOCOL STATS
-//                 </h4>
-//                 <div className="grid grid-cols-2 gap-3 text-xs md:text-sm">
-//                   <div>
-//                     <div className="text-gray-400">HOLDERS</div>
-//                     <div className="text-white font-bold">1,247</div>
-//                   </div>
-//                   <div>
-//                     <div className="text-gray-400">24H VOL</div>
-//                     <div className="text-green-400 font-bold">+247%</div>
-//                   </div>
-//                   <div>
-//                     <div className="text-gray-400">LIQUIDITY</div>
-//                     <div className="text-white font-bold">$2.4M</div>
-//                   </div>
-//                   <div>
-//                     <div className="text-gray-400">APY</div>
-//                     <div className="text-yellow-400 font-bold">420%</div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default SpaceTradingRoadmap;
+  // export default SpaceTradingRoadmap;
 
 
 
@@ -3815,18 +3815,18 @@
 //       <h2 className="text-lg font-normal text-teal-700 mb-3">{title}</h2>
 //       <p className="text-base leading-relaxed text-black">{description}</p>
 //     </div>
-
+    
 //     {/* Connecting Line */}
 //     <div className="w-12 h-0.5 bg-teal"></div>
-
+    
 //     {/* Icon Circle */}
 //     <div className="w-12 h-12 bg-yellow-300 border-2 border-teal-700 rounded-full flex items-center justify-center">
 //       <Icon size={20} className="text-teal-700" />
 //     </div>
-
+    
 //     {/* Timeline Dot */}
 //     <div className="w-4 h-4 bg-white border-2 border-teal-700 rounded-full"></div>
-
+    
 //     {/* Date */}
 //     <div className={`
 //       ml-4 text-sm font-bold text-teal-700 uppercase tracking-wider
@@ -3889,7 +3889,7 @@
 //         <div className="relative">
 //           {/* Central vertical line */}
 //           <div className="absolute left-1/2 transform -translate-x-0.5 w-0.5 bg-white h-full hidden md:block"></div>
-
+          
 //           {/* Timeline items - Desktop */}
 //           <div className="hidden md:block">
 //             {timelineData.map((item, index) => (
@@ -3904,18 +3904,18 @@
 //                       <h2 className="text-lg font-normal text-teal-700 mb-3">{item.title}</h2>
 //                       <p className="text-base leading-relaxed text-black">{item.description}</p>
 //                     </div>
-
+                    
 //                     {/* Connecting Line */}
 //                     <div className="w-12 h-0.5 bg-white"></div>
-
+                    
 //                     {/* Icon Circle */}
 //                     <div className="w-12 h-12 bg-yellow-300 border-2 border-white rounded-full flex items-center justify-center z-10">
 //                       <item.icon size={20} className="text-teal-700" />
 //                     </div>
-
+                    
 //                     {/* Timeline Dot */}
 //                     <div className="w-4 h-4 bg-white border-2 border-twhite rounded-full z-10"></div>
-
+                    
 //                     {/* Date */}
 //                     <div className={`
 //                       px-4 text-sm font-bold text-teal-700 uppercase tracking-wider
@@ -3927,7 +3927,7 @@
 //               </div>
 //             ))}
 //           </div>
-
+          
 //           {/* Mobile version - all items on one side */}
 //           <div className="md:hidden">
 //             <div className="absolute left-6 w-0.5 bg-teal-700 h-full"></div>
@@ -3937,15 +3937,15 @@
 //                 <div className="absolute left-0 text-sm font-bold text-teal-700 uppercase tracking-wider">
 //                   {item.date}
 //                 </div>
-
+                
 //                 {/* Timeline Dot */}
 //                 <div className="absolute left-5 w-4 h-4 bg-white border-2 border-teal-700 rounded-full z-10"></div>
-
+                
 //                 {/* Icon Circle */}
 //                 <div className="w-12 h-12 bg-yellow-300 border-2 border-teal-700 rounded-full flex items-center justify-center mr-3">
 //                   <item.icon size={20} className="text-teal-700" />
 //                 </div>
-
+                
 //                 {/* Content Box */}
 //                 <div className="px-8 py-6 bg-yellow-300 rounded-r-full flex-1">
 //                   <h2 className="text-lg font-normal text-teal-700 mb-3">{item.title}</h2>
@@ -4012,16 +4012,16 @@
 //           </h1>
 //           <p className="text-lg md:text-xl text-gray-300">Join our phased token launch journey</p>
 //         </div>
-
+        
 //         <div className="relative max-w-5xl mx-auto">
 //           {/* Central Timeline - Desktop centered, Mobile left */}
 //           <div className="absolute left-6 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-1 z-0" style={{background: 'linear-gradient(to bottom, #bbcf28, #1c994a, #bbcf28)'}}></div>
-
+          
 //           {/* Timeline Phases */}
 //           <div className="space-y-12 md:space-y-24">
 //             {phaseData.map((phase, index) => (
 //               <div key={index} className="relative">
-
+                
 //                 {/* Desktop Layout */}
 //                 <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-center md:min-h-[200px]">
 //                   {/* Left Side - Even indices (0, 2, 4) */}
@@ -4046,22 +4046,22 @@
 //                               {phase.status}
 //                             </span>
 //                           </div>
-
+                          
 //                           {/* Phase Content */}
 //                           <div className="mt-4">
 //                             <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                            
 //                             <div className="space-y-3 mb-6">
 //                               <div className="flex items-center space-x-2">
 //                                 <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                                 <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="text-gray-300 text-sm leading-relaxed">
 //                                 {phase.price}
 //                               </div>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-lg'
@@ -4073,7 +4073,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line from right edge of left card */}
 //                           <div className="absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                             background: 'linear-gradient(to right, #bbcf28, #1c994a)'
@@ -4084,7 +4084,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Right Side - Odd indices (1, 3) */}
 //                   {index % 2 === 1 ? (
 //                     <div className="flex justify-start pl-4">
@@ -4105,22 +4105,22 @@
 //                               {phase.status}
 //                             </span>
 //                           </div>
-
+                          
 //                           {/* Phase Content */}
 //                           <div className="mt-4">
 //                             <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                            
 //                             <div className="space-y-3 mb-6">
 //                               <div className="flex items-center space-x-2">
 //                                 <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                                 <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="text-gray-300 text-sm leading-relaxed">
 //                                 {phase.price}
 //                               </div>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-lg'
@@ -4132,7 +4132,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line from left edge of right card */}
 //                           <div className="absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                             background: 'linear-gradient(to left, #bbcf28, #1c994a)'
@@ -4143,7 +4143,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Timeline Node - Always centered on desktop */}
 //                   <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
 //                     <div className={`w-6 h-6 rounded-full border-4 ${
@@ -4204,22 +4204,22 @@
 //                           {phase.status}
 //                         </span>
 //                       </div>
-
+                      
 //                       {/* Phase Content */}
 //                       <div className="mt-4">
 //                         <h3 className="text-xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                        
 //                         <div className="space-y-3 mb-6">
 //                           <div className="flex items-center space-x-2">
 //                             <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                             <span className="font-medium text-sm" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                           </div>
-
+                          
 //                           <div className="text-gray-300 text-xs leading-relaxed">
 //                             {phase.price}
 //                           </div>
 //                         </div>
-
+                        
 //                         <button className={`w-full py-2.5 px-4 rounded-full font-semibold text-sm transition-all duration-300 ${
 //                           phase.status === 'Live'
 //                             ? 'text-white shadow-lg'
@@ -4300,16 +4300,16 @@
 //           </h1>
 //           <p className="text-lg md:text-xl text-gray-300">Join our phased token launch journey</p>
 //         </div>
-
+        
 //         <div className="relative max-w-5xl mx-auto">
 //           {/* Central Timeline - Desktop centered, Mobile left */}
 //           <div className="absolute left-6 md:left-1/2 md:transform md:-translate-x-1/2 h-full w-1 z-0" style={{background: 'linear-gradient(to bottom, #bbcf28, #1c994a, #bbcf28)'}}></div>
-
+          
 //           {/* Timeline Phases */}
 //           <div className="space-y-12 md:space-y-24">
 //             {phaseData.map((phase, index) => (
 //               <div key={index} className="relative">
-
+                
 //                 {/* Desktop Layout */}
 //                 <div className="hidden md:grid md:grid-cols-2 md:gap-8 md:items-center md:min-h-[200px]">
 //                   {/* Left Side - Even indices (0, 2, 4) */}
@@ -4334,17 +4334,17 @@
 //                               {phase.status}
 //                             </span>
 //                           </div>
-
+                          
 //                           {/* Phase Content */}
 //                           <div className="mt-4">
 //                             <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                            
 //                             <div className="space-y-3 mb-4">
 //                               <div className="flex items-center space-x-2">
 //                                 <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                                 <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="text-gray-300 text-sm leading-relaxed">
 //                                 {phase.price}
 //                               </div>
@@ -4356,7 +4356,7 @@
 //                                 {phase.roadmapText}
 //                               </p>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-lg'
@@ -4368,7 +4368,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line from right edge of left card */}
 //                           <div className="absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                             background: 'linear-gradient(to right, #bbcf28, #1c994a)'
@@ -4379,7 +4379,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Right Side - Odd indices (1, 3) */}
 //                   {index % 2 === 1 ? (
 //                     <div className="flex justify-start pl-4">
@@ -4400,17 +4400,17 @@
 //                               {phase.status}
 //                             </span>
 //                           </div>
-
+                          
 //                           {/* Phase Content */}
 //                           <div className="mt-4">
 //                             <h3 className="text-2xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                            
 //                             <div className="space-y-3 mb-4">
 //                               <div className="flex items-center space-x-2">
 //                                 <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                                 <span className="font-medium" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                               </div>
-
+                              
 //                               <div className="text-gray-300 text-sm leading-relaxed">
 //                                 {phase.price}
 //                               </div>
@@ -4422,7 +4422,7 @@
 //                                 {phase.roadmapText}
 //                               </p>
 //                             </div>
-
+                            
 //                             <button className={`w-full py-3 px-6 rounded-full font-semibold transition-all duration-300 ${
 //                               phase.status === 'Live'
 //                                 ? 'text-white shadow-lg'
@@ -4434,7 +4434,7 @@
 //                               {phase.button}
 //                             </button>
 //                           </div>
-
+                          
 //                           {/* Connecting Line from left edge of right card */}
 //                           <div className="absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 w-8 h-0.5 z-10" style={{
 //                             background: 'linear-gradient(to left, #bbcf28, #1c994a)'
@@ -4445,7 +4445,7 @@
 //                   ) : (
 //                     <div></div>
 //                   )}
-
+                  
 //                   {/* Timeline Node - Always centered on desktop */}
 //                   <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
 //                     <div className={`w-6 h-6 rounded-full border-4 ${
@@ -4500,17 +4500,17 @@
 //                           {phase.status}
 //                         </span>
 //                       </div>
-
+                      
 //                       {/* Phase Content */}
 //                       <div className="mt-4">
 //                         <h3 className="text-xl font-bold text-white mb-3">{phase.phaseNo}</h3>
-
+                        
 //                         <div className="space-y-3 mb-4">
 //                           <div className="flex items-center space-x-2">
 //                             <div className="w-2 h-2 rounded-full" style={{backgroundColor: '#bbcf28'}}></div>
 //                             <span className="font-medium text-sm" style={{color: '#bbcf28'}}>{phase.tokens}</span>
 //                           </div>
-
+                          
 //                           <div className="text-gray-300 text-xs leading-relaxed">
 //                             {phase.price}
 //                           </div>
@@ -4522,7 +4522,7 @@
 //                             {phase.roadmapText}
 //                           </p>
 //                         </div>
-
+                        
 //                         <button className={`w-full py-2.5 px-4 rounded-full font-semibold text-sm transition-all duration-300 ${
 //                           phase.status === 'Live'
 //                             ? 'text-white shadow-lg'
@@ -4837,7 +4837,7 @@
 //             </div>
 //           </div>
 //           <div className="absolute left-56 xl:left-[15rem] top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
-
+          
 //           <div className="space-y-6 xl:space-y-4">
 //             {timelineData.map((item, index) => (
 //               <div key={index} className="relative flex items-center group">
@@ -4846,7 +4846,7 @@
 //                     {item.date}
 //                   </h3>
 //                 </div>
-
+                
 //                 {/* Enhanced Timeline node */}
 //                 <div className="relative z-10 ml-5">
 //                   <div className="w-6 h-6  bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-4 border-slate-900 shadow-xl shadow-teal-400/30 group-hover:scale-125 transition-transform duration-300">
@@ -4854,7 +4854,7 @@
 //                     <div className="absolute inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
 //                   </div>
 //                 </div>
-
+                
 //                 {/* Enhanced Horizontal line to content */}
 //                 <div className="w-12 xl:w-16 h-0.5 bg-gradient-to-r from-teal-400 via-teal-300 to-transparent group-hover:w-16 xl:group-hover:w-20 transition-all duration-300"></div>
 //                 <div className="flex-1 ml-3 xl:ml-4">
@@ -4877,7 +4877,7 @@
 //           <div className="relative">
 //             {/* Vertical timeline line for mobile */}
 //             <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
-
+            
 //             <div className="space-y-8 md:space-y-1">
 //               {timelineData.map((item, index) => (
 //                 <div key={index} className="relative flex items-start group">
@@ -4888,7 +4888,7 @@
 //                       <div className="absolute inset-0.5 md:inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
 //                     </div>
 //                   </div>
-
+                  
 //                   {/* Content for mobile */}
 //                   <div className="flex-1 ml-6 md:ml-8">
 //                     <div className="bg-gradient-to-br from-slate-800/60 via-teal-900/40 to-slate-800/60 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 md:p-6 border border-teal-600/50 shadow-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
@@ -5006,7 +5006,7 @@
 //             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-gradient-to-r from-teal-300 via-green-300 to-lime-300 bg-clip-text mb-4 tracking-tight">
 //               Road Map
 //             </h1>
-
+            
 //             <div className="w-16 sm:w-20 md:w-24 h-0.5 md:h-1 bg-gradient-to-r from-teal-500 via-green-400 to-lime-500 mx-auto rounded-full"></div>
 //           </div>
 //         </div>
@@ -5017,7 +5017,7 @@
 //               <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png"   alt="" />
 //           </div>
 //           <div className="absolute left-56 xl:left-[15rem] top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
-
+          
 //           <div className="space-y-6 xl:space-y-4">
 //             {timelineData.map((item, index) => (
 //               <div key={index} className="relative flex items-center group">
@@ -5026,14 +5026,14 @@
 //                     {item.date}
 //                   </h3>
 //                 </div>
-
+                
 //                 <div className="relative z-10 ml-5">
 //                   <div className="w-6 h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-4 border-slate-950 shadow-xl shadow-teal-400/30 group-hover:scale-125 transition-transform duration-300">
 //                     <div className="absolute inset-0 bg-teal-400 rounded-full opacity-40"></div>
 //                     <div className="absolute inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
 //                   </div>
 //                 </div>
-
+                
 //                 <div className="w-12 xl:w-16 h-0.5 bg-gradient-to-r from-teal-400 via-teal-300 to-transparent group-hover:w-16 xl:group-hover:w-20 transition-all duration-300"></div>
 //                 <div className="flex-1 ml-3 xl:ml-4">
 //                   <div className="rounded-2xl p-4 xl:p-4 max-w-lg xl:max-w-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
@@ -5054,7 +5054,7 @@
 //         <div className="lg:hidden">
 //           <div className="relative max-w-4xl mx-auto">
 //             <div className="absolute left-4 sm:left-6 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
-
+            
 //             <div className="space-y-6 sm:space-y-8 md:space-y-10">
 //               {timelineData.map((item, index) => (
 //                 <div key={index} className="relative flex items-start group">
@@ -5064,7 +5064,7 @@
 //                       <div className="absolute inset-0.5 sm:inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
 //                     </div>
 //                   </div>
-
+                  
 //                   <div className="flex-1 ml-6 sm:ml-8 md:ml-10">
 //                     <div className="bg-gradient-to-br from-slate-800/60 via-teal-900/40 to-slate-800/60 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-teal-600/50 shadow-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
 //                       <h3 className="text-base sm:text-lg md:text-xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text mb-2 md:mb-3">
@@ -5090,1916 +5090,181 @@
 
 
 
-// import React from "react";
-
-// export default function TimelinePrimaryColor() {
-//   const timelineData = [
-//     {
-//       date: "P1 2024",
-//       title: "CONCEPT DEVELOPMENT AND TEAM FORMATION",
-//       content: "Establish the foundational concept of JAIMAX TOKEN. Assemble a dedicated team of blockchain experts, developers, marketers, and legal advisors."
-//     },
-//     {
-//       date: "P2 2024", 
-//       title: "SMART CONTRACT DEVELOPMENT AND SECURITY AUDITS",
-//       content: "Develop and deploy JAIMAX TOKEN smart contracts on the Binance Smart Chain (BSC). Conduct thorough security audits to ensure the robustness and security of the smart contracts."
-//     },
-//     {
-//       date: "P3 2024",
-//       title: "WEBSITE LAUNCH AND WHITEPAPER PUBLICATION", 
-//       content: "Launch the official JAIMAX TOKEN website. Publish the comprehensive white paper detailing the vision, technical architecture, and roadmap of JAIMAX TOKEN."
-//     },
-//     {
-//       date: "P4 2024",
-//       title: "PRE-SALE AND PUBLIC ICO LAUNCH",
-//       content: "Conduct the pre-sale and public Initial Coin Offering (ICO) of JAIMAX TOKEN. Initiate marketing campaigns to attract potential investors and build community engagement."
-//     },
-//     {
-//       date: "P5 2024",
-//       title: "MOBILE APP LAUNCH",
-//       content: "Launch JAIMAX TOKEN mobile apps for both Android and iOS platforms. Ensure the apps support seamless and secure transactions within the JAIMAX ecosystem."
-//     },
-//     {
-//       date: "P1 2025",
-//       title: "MAINNET LAUNCH AND DAPP INTEGRATIONS",
-//       content: "Launch the JAIMAX TOKEN mainnet. Integrate JAIMAX TOKEN with various decentralized applications (Dapps) to enhance its utility and adoption."
-//     },
-//     {
-//       date: "P2 2025",
-//       title: "EXPANSION OF USE CASES AND ECOSYSTEM DEVELOPMENT",
-//       content: "Expand JAIMAX TOKEN's use cases across different sectors, including DeFi, NFTS, and payments. Faster ecosystem development through collaborations and innovations."
-//     },
-//     {
-//       date: "P3 2025",
-//       title: "EXCHANGE LISTINGS & STRATEGIC PARTNERSHIPS",
-//       content: "List JAIMAX TOKEN on major cryptocurrency exchanges such as Binance, Coinbase, Kucoin, Gate.io, OKX, Bybit, and HTX. Forge strategic partnerships to enhance the JAIMAX TOKEN ecosystem and expand its use cases."
-//     },
-//     {
-//       date: "P4 2025",
-//       title: "JAIMAX CRYPTO EXCHANGE LAUNCH",
-//       content: "Following the successful first phase token sale, launch the JAIMAX Crypto Exchange. Provide a platform for trading a wide range of cryptocurrencies."
-//     },
-//     {
-//       date: "P5 2025",
-//       title: "MULTI-BLOCKCHAIN SUPPORT", 
-//       content: "Enhance JAIMAX TOKEN to support multiple blockchains, increasing its interoperability and reach."
-//     },
-//     {
-//       date: "P6 2025",
-//       title: "DEVELOPMENT OF JAIMAX BLOCKCHAIN",
-//       content: "Begin the development of JAIMAX COIN proprietary blockchain. Focus on creating a highly scalable, secure, and efficient blockchain network."
-//     },
-//     {
-//       date: "P7 2025",
-//       title: "DEVELOPMENT OF JMC SWAP, DAPPS, AND WALLETS",
-//       content: "Develop and launch JMC Swap, enabling users to exchange tokens seamlessly. Introduce various Dapps and secure JMC Wallets for storing JAIMAX COIN and other cryptocurrencies."
-//     },
-//     {
-//       date: "P8 2025",
-//       title: "MARKET POSITIONING & EXCHANGE PRICE",
-//       content: "Aim for JAIMAX COIN to achieve a top 100 ranking on Coin Market Cap (CMC). Set the initial exchange listing price at INR 4.0 (approximately USD 0.046)."
-//     },
-//     {
-//       date: "P1 2026",
-//       title: "COMPREHENSIVE CRYPTO SUPPORT & PAYMENT GATEWAY DEVELOPMENT",
-//       content: "Ensure JAIMAX Coin supports all major cryptocurrencies. Develop an integrated payment gateway for facilitating all types of money transactions."
-//     },
-//     {
-//       date: "P2 2026",
-//       title: "GLOBAL EXCHANGE LISTINGS",
-//       content: "Continue listing JAIMAX COIN on leading global exchanges to enhance liquidity and accessibility. Focus on establishing a strong global presence and user base."
-//     }
-//   ];
-
-//   return (
-//     <div className="min-h-screen relative overflow-hidden" style={{backgroundImage:"url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/video-bg.png')",backgroundRepeat:'no-repeat'}}>
-//       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-//         <div className="text-center mb-12 md:mb-24">
-//           <div className="relative inline-block">
-//             <p className="text-slate-400 text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 md:mb-6 font-medium">JAIMAX TOKEN</p>
-//             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-gradient-to-r from-teal-300 via-green-300 to-lime-300 bg-clip-text mb-4 tracking-tight">
-//               Road Map
-//             </h1>
-
-//             <div className="w-16 sm:w-20 md:w-24 h-0.5 md:h-1 bg-gradient-to-r from-teal-500 via-green-400 to-lime-500 mx-auto rounded-full"></div>
-//           </div>
-//         </div>
-
-//         {/* Desktop Layout - Left Aligned */}
-//         <div className="relative max-w-6xl mx-auto hidden lg:block">
-//           {/* Roadmap image positioned at left side */}
-//           <div className="absolute -left-20 top-0 pointer-events-none">
-//             <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png" alt="" />
-//           </div>
-
-//           {/* Timeline line positioned more to the right */}
-//           <div className="absolute left-24 xl:left-32 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
-
-//           <div className="space-y-6 xl:space-y-4 pl-20 xl:pl-28">
-//             {timelineData.map((item, index) => (
-//               <div key={index} className="relative flex items-center group">
-//                 {/* Timeline dot */}
-//                 <div className="relative z-10 ml-8">
-//                   <div className="w-6 h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-4 border-slate-950 shadow-xl shadow-teal-400/30 group-hover:scale-125 transition-transform duration-300">
-//                     <div className="absolute inset-0 bg-teal-400 rounded-full opacity-40"></div>
-//                     <div className="absolute inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
-//                   </div>
-//                 </div>
-
-//                 {/* Connecting line */}
-//                 <div className="w-12 xl:w-16 h-0.5 bg-gradient-to-r from-teal-400 via-teal-300 to-transparent group-hover:w-16 xl:group-hover:w-20 transition-all duration-300"></div>
-
-//                 {/* Content on the right side of timeline */}
-//                 <div className="flex-1 ml-3 xl:ml-4">
-//                   <div className="rounded-2xl p-4 xl:p-4 max-w-lg xl:max-w-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
-//                     <h3 className="text-xl xl:text-2xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text group-hover:from-lime-300 group-hover:to-teal-300 transition-all duration-500 mb-2">
-//                       {item.date}
-//                     </h3>
-//                     <h4 className="text-base xl:text-lg font-bold text-teal-300 mb-2 xl:mb-3 group-hover:text-teal-200 transition-colors duration-300">
-//                       {item.title}
-//                     </h4>
-//                     <p className="text-slate-300 text-sm xl:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
-//                       {item.content}
-//                     </p>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Mobile/Tablet Layout */}
-//         <div className="lg:hidden">
-//           <div className="relative max-w-4xl mx-auto">
-//             <div className="absolute left-4 sm:left-6 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
-
-//             <div className="space-y-6 sm:space-y-8 md:space-y-10">
-//               {timelineData.map((item, index) => (
-//                 <div key={index} className="relative flex items-start group">
-//                   <div className="relative z-10 mt-2">
-//                     <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-2 sm:border-3 md:border-4 border-slate-950 shadow-lg shadow-teal-400/30">
-//                       <div className="absolute inset-0 bg-teal-400 rounded-full animate-ping opacity-40" style={{animationDelay: `${index * 200}ms`}}></div>
-//                       <div className="absolute inset-0.5 sm:inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
-//                     </div>
-//                   </div>
-
-//                   <div className="flex-1 ml-6 sm:ml-8 md:ml-10">
-//                     <div className="bg-gradient-to-br from-slate-800/60 via-teal-900/40 to-slate-800/60 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-teal-600/50 shadow-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
-//                       <h3 className="text-base sm:text-lg md:text-xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text mb-2 md:mb-3">
-//                         {item.date}
-//                       </h3>
-//                       <h4 className="text-sm sm:text-base md:text-lg font-bold text-teal-300 mb-2 md:mb-3 group-hover:text-teal-200 transition-colors duration-300">
-//                         {item.title}
-//                       </h4>
-//                       <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
-//                         {item.content}
-//                       </p>
-//                     </div>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-// import React from "react";
-// import {
-//   Briefcase,
-//   TrendingUp,
-//   Repeat,
-//   Layers,
-//   DollarSign,
-// } from "lucide-react";
-
-// /**
-//  * GrowthPlanTimeline
-//  * ------------------------------------------------------------------
-//  * A responsive React component that reproduces the “Company’s Growth
-//  * Plan Outlook (2020 – 2024)” slide you shared. Built with Tailwind CSS
-//  * utility classes and Lucide icons (tree‑shakable SVGs).
-//  *
-//  * ✔  Horizontal timeline on ≥ md screens
-//  * ✔  Stacked timeline on small screens
-//  * ✔  Accessible (semantic headings, focusable milestones)
-//  * ------------------------------------------------------------------
-//  */
-
-// const timeline = [
-//   {
-//     year: "2020",
-//     title: "Market Penetration",
-//     description:
-//       "The company is planning to expand its market penetration and share by selling more products to the customers. For this, the company is planning to start a campaign regarding awareness of banking products.",
-//     Icon: Briefcase,
-//     badgeColor: "bg-yellow-400 text-teal-800",
-//   },
-//   {
-//     year: "2021",
-//     title: "Market Expansion",
-//     description:
-//       "The company plans to expand its presence in domestic as well as international market. In this line, it is planning to:\n• Open new branches\n• Acquire companies in new markets",
-//     Icon: TrendingUp,
-//     badgeColor: "bg-green-500 text-teal-800",
-//   },
-//   {
-//     year: "2022",
-//     title: "Merger and Acquisition",
-//     description:
-//       "The bank has plans to expand its operations in new markets through merger and acquisition with other companies specifically in:\n• Auto financing solutions\n• Vehicle insurance operations",
-//     Icon: Repeat,
-//     badgeColor: "bg-yellow-400 text-teal-800",
-//   },
-//   {
-//     year: "2023",
-//     title: "Strengthen Financials",
-//     description:
-//       "The company has following targets for 2023:\n• Revenue: $ 30 Bn (15% growth)\n• EBIT Margin: 25–28%\n• Net Margin: 20–22%\n• Non‑Performing Loans: 10 MM (reduced by 90%)",
-//     Icon: DollarSign,
-//     badgeColor: "bg-green-500 text-teal-800",
-//   },
-//   {
-//     year: "2024",
-//     title: "Diversification",
-//     description:
-//       "The company plans to diversify its offerings. Adapt it to your needs and capture your audience’s attention.",
-//     Icon: Layers,
-//     badgeColor: "bg-yellow-400 text-teal-800",
-//   },
-// ];
-
-// export default function TimelinePrimaryColor() {
-//   return (
-//     <section className="bg-teal-800 text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-//       {/* Heading */}
-//       <div className="text-center max-w-4xl mx-auto mb-10">
-//         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-//           Company’s Growth Plan Outlook <span className="text-yellow-400">(2020 – 2024)</span>
-//         </h2>
-//         <p className="mt-2 text-teal-100 text-sm md:text-base leading-relaxed">
-//           The slide provides the company’s future growth plans for the next five years: market
-//           penetration, merger/acquisition, diversification, market expansion, and strengthening
-//           financials.
-//         </p>
-//       </div>
-
-//       {/* Timeline */}
-//       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-//         {/* Center line (horizontal on desktop, hidden on mobile) */}
-//         <div className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-teal-600" aria-hidden="true" />
-
-//         {timeline.map(({ year, title, description, Icon, badgeColor }, idx) => (
-//           <div
-//             key={year}
-//             className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none"
-//             tabIndex={0}
-//           >
-//             {/* Icon badge */}
-//             <span
-//               className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor}`}
-//             >
-//               <Icon className="w-7 h-7" aria-hidden="true" />
-//             </span>
-
-//             {/* Year label (rotated on desktop) */}
-//             <span className="mt-4 md:mt-0 md:rotate-90 md:absolute md:-left-7 md:top-1/2 md:-translate-y-1/2 font-semibold text-sm tracking-widest text-teal-100 select-none">
-//               {year}
-//             </span>
-
-//             {/* Card */}
-//             <article
-//               className="mt-6 md:mt-16 bg-teal-700 rounded-lg p-5 shadow-md max-w-xs md:max-w-none"
-//             >
-//               <h3 className="text-lg font-semibold text-yellow-300 mb-2 leading-snug">
-//                 {title}
-//               </h3>
-//               {description.split("\n").map((line, i) => (
-//                 <p key={i} className="text-sm leading-relaxed whitespace-pre-line">
-//                   {line}
-//                 </p>
-//               ))}
-//             </article>
-
-//             {/* Connector on mobile (vertical) */}
-//             {idx < timeline.length - 1 && (
-//               <span
-//                 className="absolute md:hidden -bottom-8 w-1 h-16 bg-teal-600"
-//                 aria-hidden="true"
-//               />
-//             )}
-//           </div>
-//         ))}
-//       </div>
-//     </section>
-//   );
-// }
-// import React from "react";
-// import {
-//   Briefcase,
-//   TrendingUp,
-//   Repeat,
-//   Layers,
-//   DollarSign,
-//     Heart,
-//   Clock,
-// } from "lucide-react";
-
-
-// // Map phases to icons & colors (you can customize as needed)
-// // const iconMap = {
-// //   "Phase 1": Briefcase,
-// //   "Phase 2": TrendingUp,
-// //   "Phase 3": Repeat,
-// //   "Phase 4": DollarSign,
-// //   "Phase 5": Layers,
-// // };
-// const iconMap = {
-//   "Phase 1": Heart,
-//   "Phase 2": Clock,
-//   "Phase 3": Clock,
-//   "Phase 4": Clock,
-//   "Phase 5": Clock,
-// };
-
-// const badgeColorMap = {
-//   Live: "bg-yellow-300 text-[#09535a]",
-//   Upcoming: "bg-white text-[#09535a]",
-// };
-
-// const phaseData = [
-//   {
-//     status: "Live",
-//     phaseNo: "Phase 1",
-//     tokens: "10 Billion Tokens",
-//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-//     button: "Buy Now",
-//     roadmapText:
-//       "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 2",
-//     tokens: "20 Billion Tokens",
-//     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 3",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 4",
-//     tokens: "30 Billion Tokens",
-//     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 5",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Global Exchange Listings and More...",
-//   },
-// ];
-
-// export default function TimelinePrimaryColor() {
-//   return (
-//     <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-//       {/* Heading */}
-//       <div className="text-center max-w-4xl mx-auto mb-12">
-//         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-//           Company’s Growth Plan Outlook{" "}
-//           <span className="text-yellow-300">(2020 – 2024)</span>
-//         </h2>
-//         <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-//           The company’s strategic roadmap includes market penetration, expansion, mergers,
-//           financial strengthening, and global diversification.
-//         </p>
-//       </div>
-
-//       {/* Timeline */}
-//       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-//         {/* Horizontal line for desktop */}
-//         <div
-//           className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-white/30"
-//           aria-hidden="true"
-//         />
-
-//         {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-//           const Icon = iconMap[phaseNo] || Briefcase;
-//           const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-
-//           return (
-//             <div
-//               key={phaseNo}
-//               className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none"
-//               tabIndex={0}
-//             >
-//               {/* Icon badge */}
-//               <span
-//                 className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor}`}
-//               >
-//                 <Icon className="w-7 h-7" aria-hidden="true" />
-//               </span>
-
-//               {/* Year label (rotated on desktop) */}
-//               <span className="mt-4 md:mt-0 md:rotate-90 md:absolute md:-left-6 md:top-1/2 md:-translate-y-1/2 font-semibold text-xs tracking-widest text-white/70 select-none">
-//                 {phaseNo}
-//               </span>
-
-//               {/* Card */}
-//               <article className="mt-6 md:mt-16 bg-[#0e666b] rounded-lg p-5 shadow-md max-w-xs md:max-w-none">
-//                 <h3 className="text-lg font-semibold text-yellow-300 mb-2 leading-snug">
-//                   {status}
-//                 </h3>
-//                 <p className="text-sm leading-relaxed whitespace-pre-line text-white/90 mb-1">
-//                   {tokens}
-//                 </p>
-//                 <p className="text-sm leading-relaxed whitespace-pre-line text-white/80 mb-3 italic">
-//                   {price}
-//                 </p>
-//                 <p className="text-sm leading-relaxed whitespace-pre-line text-white/70">
-//                   {roadmapText}
-//                 </p>
-//               </article>
-
-//               {/* Connector on mobile (vertical) */}
-//               {idx < phaseData.length - 1 && (
-//                 <span
-//                   className="absolute md:hidden -bottom-8 w-1 h-16 bg-white/30"
-//                   aria-hidden="true"
-//                 />
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// }
-
-
-// /* --------------------------------------------------------------------
-//    Installation notes:
-//    1.  `npm i lucide-react` (or `yarn add`)
-//    2.  Ensure Tailwind CSS is configured (https://tailwindcss.com/docs/guides/create-react-app)
-//    3.  Import and render <GrowthPlanTimeline /> inside your app.
-// --------------------------------------------------------------------- */
-
-
-// import React from "react";
-// import {
-//   Briefcase,
-//   TrendingUp,
-//   Repeat,
-//   Layers,
-//   DollarSign,
-//   Heart,
-//   Clock,
-//   CheckCircle,
-//   Rocket,
-// } from "lucide-react";
-
-// // Map icons to each phase
-// const iconMap = {
-//   "Phase 1": Rocket,
-//   "Phase 2": Clock,
-//   "Phase 3": Clock,
-//   "Phase 4": Clock,
-//   "Phase 5": Clock,
-// };
-
-// // Badge color map
-// const badgeColorMap = {
-//   Live: "bg-yellow-300 text-[#09535a]",
-//   Upcoming: "bg-white text-[#09535a]",
-// };
-
-// // Phase data
-// const phaseData = [
-//   {
-//     status: "Live",
-//     phaseNo: "Phase 1",
-//     tokens: "10 Billion Tokens",
-//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-//     button: "Buy Now",
-//     roadmapText:
-//       "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 2",
-//     tokens: "20 Billion Tokens",
-//     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 3",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 4",
-//     tokens: "30 Billion Tokens",
-//     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 5",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Global Exchange Listings and More...",
-//   },
-// ];
-
-// // Status badge component
-// const StatusBadge = ({ status }) => {
-//   return status === "Live" ? (
-//     <div className="flex items-center gap-2 text-green-400 font-semibold mb-2">
-//       <CheckCircle className="w-5 h-5" />
-//       Live
-//     </div>
-//   ) : (
-//     <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
-//       <Clock className="w-5 h-5 animate-pulse" />
-//       Upcoming
-//     </div>
-//   );
-// };
-
-// // Main component
-// export default function TimelinePrimaryColor() {
-//   return (
-//     <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-//       {/* Heading */}
-//       <div className="text-center max-w-4xl mx-auto mb-12">
-//         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-//           Company’s Growth Plan Outlook{" "}
-//           <span className="text-yellow-300">(2020 – 2024)</span>
-//         </h2>
-//         <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-//           The company’s strategic roadmap includes market penetration, expansion,
-//           mergers, financial strengthening, and global diversification.
-//         </p>
-//       </div>
-
-//       {/* Timeline */}
-//       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-//         {/* Horizontal line for desktop */}
-//         <div
-//           className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-white/30"
-//           aria-hidden="true"
-//         />
-
-//         {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-//           const Icon = iconMap[phaseNo] || Briefcase;
-//           const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-
-//           return (
-//             <div
-//               key={phaseNo}
-//               className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none"
-//               tabIndex={0}
-//             >
-//               {/* Icon badge */}
-//               <span
-//                 className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor}`}
-//               >
-//                 <Icon className="w-7 h-7" aria-hidden="true" />
-//               </span>
-
-//               {/* Phase label (rotated on desktop) */}
-//               <span className="mt-4 md:mt-0 md:rotate-90 md:absolute md:-left-6 md:top-1/2 md:-translate-y-1/2 font-semibold text-xs tracking-widest text-white/70 select-none">
-//                 {phaseNo}
-//               </span>
-
-//               {/* Card */}
-//               {/* <article className="mt-6 md:mt-16 bg-[#0e666b] rounded-lg p-5 shadow-md max-w-xs md:max-w-none">
-//                 <StatusBadge status={status} />
-//                 <p className="text-sm leading-relaxed text-white/90 mb-1">
-//                   {tokens}
-//                 </p>
-//                 <p className="text-sm leading-relaxed text-white/80 mb-3 italic">
-//                   {price}
-//                 </p>
-//                 <p className="text-sm leading-relaxed text-white/70">
-//                   {roadmapText}
-//                 </p>
-//               </article> */}
-//               <article className="mt-6 md:mt-16 bg-[#0e666b] rounded-2xl p-5 shadow-lg max-w-xs md:max-w-none font-sans">
-//   {/* Status badge */}
-//   <StatusBadge status={status} />
-
-//   {/* Token info */}
-//   <div className="mb-2">
-//     <p className="text-sm text-white/90 font-semibold">{tokens}</p>
-//   </div>
-
-//   {/* Price info */}
-//   <div className="mb-3">
-//     <p className="text-sm italic text-white/80">{price}</p>
-//   </div>
-
-//   {/* Roadmap */}
-//   <div>
-//     <p className="text-sm text-white/70 leading-relaxed">{roadmapText}</p>
-//   </div>
-// </article>
-
-
-//               {/* Connector on mobile (vertical) */}
-//               {idx < phaseData.length - 1 && (
-//                 <span
-//                   className="absolute md:hidden -bottom-8 w-1 h-16 bg-white/30"
-//                   aria-hidden="true"
-//                 />
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// }
-
-//   import React from "react";
-// import {
-//   Briefcase,
-//   TrendingUp,
-//   Repeat,
-//   Layers,
-//   DollarSign,
-//   Clock,
-//   CheckCircle,
-//   Rocket,
-// } from "lucide-react";
-
-// const iconMap = {
-//   "Phase 1": Rocket,
-//   "Phase 2": Clock,
-//   "Phase 3": Clock,
-//   "Phase 4": Clock,
-//   "Phase 5": Clock,
-// };
-
-// const badgeColorMap = {
-//   Live: "bg-yellow-300 text-[#09535a]",
-//   Upcoming: "bg-white text-[#09535a]",
-// };
-
-// const phaseData = [
-//   {
-//     status: "Live",
-//     phaseNo: "Phase 1",
-//     tokens: "10 Billion Tokens",
-//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-//     button: "Buy Now",
-//     roadmapText:
-//       "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 2",
-//     tokens: "20 Billion Tokens",
-//     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 3",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 4",
-//     tokens: "30 Billion Tokens",
-//     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 5",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Global Exchange Listings and More...",
-//   },
-// ];
-
-// const StatusBadge = ({ status }) => {
-//   return status === "Live" ? (
-//     <div className="flex items-center gap-2 text-green-400 font-semibold mb-2">
-//       <CheckCircle className="w-5 h-5" />
-//       Live
-//     </div>
-//   ) : (
-//     <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
-//       <Clock className="w-5 h-5 animate-pulse" />
-//       Upcoming
-//     </div>
-//   );
-// };
-
-// export default function TimelinePrimaryColor() {
-//   return (
-//     <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-//       {/* Heading */}
-//       <div className="text-center max-w-4xl mx-auto mb-12">
-//         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-//           Company’s Growth Plan Outlook{" "}
-//           <span className="text-yellow-300">(2020 – 2024)</span>
-//         </h2>
-//         <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-//           The company’s strategic roadmap includes market penetration, expansion,
-//           mergers, financial strengthening, and global diversification.
-//         </p>
-//       </div>
-
-//       {/* Timeline */}
-//       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-//         {/* Horizontal line for desktop */}
-//         <div
-//           className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-white/30"
-//           aria-hidden="true"
-//         />
-
-//         {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-//           const Icon = iconMap[phaseNo] || Briefcase;
-//           const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-
-//           return (
-//             <div
-//               key={phaseNo}
-//               className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none group"
-//               tabIndex={0}
-//             >
-//               {/* Icon badge */}
-//               <span
-//                 className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor}`}
-//               >
-//                 <Icon className="w-7 h-7" aria-hidden="true" />
-//               </span>
-
-//               {/* Static label on left (desktop only) */}
-//               <span className="hidden md:block md:rotate-90 md:absolute md:-left-6 md:top-1/2 md:-translate-y-1/2 font-semibold text-xs tracking-widest text-white/70 select-none">
-//                 {phaseNo}
-//               </span>
-
-//               {/* Hover label inside card top */}
-//               <div className="relative w-full h-5 mt-4 mb-1">
-//                 <div className="absolute top-0 left-0 w-full text-center text-xs font-bold tracking-wide text-transparent group-hover:text-yellow-300 transition-all duration-300">
-//                   {phaseNo}
-//                 </div>
-//               </div>
-
-//               {/* Card */}
-//               <article className="mt-2 md:mt-16 bg-[#0e666b] rounded-2xl p-5 shadow-lg max-w-xs md:max-w-none font-sans">
-//                 <StatusBadge status={status} />
-//                 <div className="mb-2">
-//                   <p className="text-sm text-white/90 font-semibold">{tokens}</p>
-//                 </div>
-//                 <div className="mb-3">
-//                   <p className="text-sm italic text-white/80">{price}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-white/70 leading-relaxed">{roadmapText}</p>
-//                 </div>
-//               </article>
-
-//               {/* Vertical connector on mobile */}
-//               {idx < phaseData.length - 1 && (
-//                 <span
-//                   className="absolute md:hidden -bottom-8 w-1 h-16 bg-white/30"
-//                   aria-hidden="true"
-//                 />
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// }
-
-
-
-  // import React from "react";
-  // import {
-  //   Briefcase,
-  //   TrendingUp,
-  //   Repeat,
-  //   Layers,
-  //   DollarSign,
-  //   Clock,
-  //   CheckCircle,
-  //   Rocket,
-  // } from "lucide-react";
-
-  // // Map icons to each phase
-  // const iconMap = {
-  //   "Phase 1": Rocket,
-  //   "Phase 2": Clock,
-  //   "Phase 3": Clock,
-  //   "Phase 4": Clock,
-  //   "Phase 5": Clock,
-  // };
-
-  // // Badge color map
-  // const badgeColorMap = {
-  //   Live: "bg-yellow-300 text-[#09535a]",
-  //   Upcoming: "bg-white text-[#09535a]",
-  // };
-
-  // // Phase data
-  // const phaseData = [
-  //   {
-  //     status: "Live",
-  //     phaseNo: "Phase 1",
-  //     tokens: "10 Billion Tokens",
-  //     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-  //     button: "Buy Now",
-  //     roadmapText:
-  //       "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-  //   },
-  //   {
-  //     status: "Upcoming",
-  //     phaseNo: "Phase 2",
-  //     tokens: "20 Billion Tokens",
-  //     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-  //     button: "Coming Soon",
-  //     roadmapText:
-  //       "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-  //   },
-  //   {
-  //     status: "Upcoming",
-  //     phaseNo: "Phase 3",
-  //     tokens: "25 Billion Tokens",
-  //     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-  //     button: "Coming Soon",
-  //     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-  //   },
-  //   {
-  //     status: "Upcoming",
-  //     phaseNo: "Phase 4",
-  //     tokens: "30 Billion Tokens",
-  //     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-  //     button: "Coming Soon",
-  //     roadmapText:
-  //       "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-  //   },
-  //   {
-  //     status: "Upcoming",
-  //     phaseNo: "Phase 5",
-  //     tokens: "25 Billion Tokens",
-  //     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-  //     button: "Coming Soon",
-  //     roadmapText: "Global Exchange Listings and More...",
-  //   },
-  // ];
-
-  // // Status badge component
-  // const StatusBadge = ({ status }) => {
-  //   return status === "Live" ? (
-  //     <div className="flex items-center gap-2 text-green-400 font-semibold mb-2">
-  //       <CheckCircle className="w-5 h-5" />
-  //       Live
-  //     </div>
-  //   ) : (
-  //     <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
-  //       <Clock className="w-5 h-5 animate-pulse" />
-  //       Upcoming
-  //     </div>
-  //   );
-  // };
-
-  // // Main component
-  // export default function TimelinePrimaryColor() {
-  //   return (
-  //     <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-  //       {/* Heading */}
-  //       <div className="text-center max-w-4xl mx-auto mb-12">
-  //         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-  //           Company’s Growth Plan Outlook{" "}
-  //           <span className="text-yellow-300">(2020 – 2024)</span>
-  //         </h2>
-  //         <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-  //           The company’s strategic roadmap includes market penetration, expansion,
-  //           mergers, financial strengthening, and global diversification.
-  //         </p>
-  //       </div>
-
-  //       {/* Timeline */}
-  //       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-  //         {/* Horizontal line for desktop */}
-  //         <div className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-white/30" aria-hidden="true" />
-
-  //         {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-  //           const Icon = iconMap[phaseNo] || Briefcase;
-  //           const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-
-  //           return (
-  //             <div
-  //               key={phaseNo}
-  //               className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none group"
-  //               tabIndex={0}
-  //             >
-  //               {/* Icon badge */}
-  //               <span className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor}`}>
-  //                 <Icon className="w-7 h-7" aria-hidden="true" />
-  //               </span>
-
-  //               {/* Static side label (desktop) */}
-  //               {/* Vertical Phase Label Outside Card */}
-  //               <span
-  //                 className="absolute -left-3 top-1/2 -translate-y-1/2 rotate-[-90deg] origin-left font-semibold text-white/80 text-xs whitespace-nowrap select-none"
-  //               >
-  //                 {phaseNo}
-  //               </span>
-
-
-  //               {/* Hover label inside card top */}
-  //               <div className="relative w-full h-5 mt-4 mb-1">
-  //                 <div className="absolute top-0 left-0 w-full text-center text-xs font-bold tracking-wide text-transparent group-hover:text-yellow-300 transition-all duration-300">
-  //                   {phaseNo}
-  //                 </div>
-  //               </div>
-
-  //               {/* Card */}
-  //               <article
-  //                 className="mt-2 md:mt-16 rounded-2xl p-5 h-[250px]    shadow-lg max-w-xs md:max-w-none font-sans 
-  //                   bg-gradient-to-br from-[#107f87] to-[#0e666b] 
-  //                   hover:scale-[1.03] hover:shadow-xl hover:shadow-yellow-200/20 transition-all duration-300"
-  //               >
-  //                 <StatusBadge status={status} />
-  //                 <div className="mb-2">
-  //                   <p className="text-sm text-white/90 font-semibold">{tokens}</p>
-  //                 </div>
-  //                 <div className="mb-3">
-  //                   <p className="text-sm  text-white/80">{price}</p>
-  //                 </div>
-  //                 <div>
-  //                   <p className="text-sm text-white/70 leading-relaxed">{roadmapText}</p>
-  //                 </div>
-  //               </article>
-
-  //               {/* Connector on mobile */}
-  //               {idx < phaseData.length - 1 && (
-  //                 <span className="absolute md:hidden -bottom-8 w-1 h-16 bg-white/30" aria-hidden="true" />
-  //               )}
-  //             </div>
-  //           );
-  //         })}
-  //       </div>
-  //     </section>
-  //   );
-  // }
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Briefcase,
-//   Clock,
-//   CheckCircle,
-//   Rocket,
-// } from "lucide-react";
-
-// // Map icons to each phase
-// const iconMap = {
-//   "Phase 1": Rocket,
-//   "Phase 2": Clock,
-//   "Phase 3": Clock,
-//   "Phase 4": Clock,
-//   "Phase 5": Clock,
-// };
-
-// // Badge color map
-// const badgeColorMap = {
-//   Live: "bg-yellow-300 text-[#09535a]",
-//   Upcoming: "bg-white text-[#09535a]",
-// };
-
-// // Phase data
-// const phaseData = [
-//   {
-//     status: "Live",
-//     phaseNo: "Phase 1",
-//     tokens: "10 Billion Tokens",
-//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-//     button: "Buy Now",
-//     roadmapText:
-//       "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 2",
-//     tokens: "20 Billion Tokens",
-//     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 3",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 4",
-//     tokens: "30 Billion Tokens",
-//     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 5",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Global Exchange Listings and More...",
-//   },
-// ];
-
-// // Status badge component
-// const StatusBadge = ({ status }) => {
-//   return status === "Live" ? (
-//     <div className="flex items-center gap-2 text-green-400 font-semibold mb-2">
-//       <CheckCircle className="w-5 h-5" />
-//       Live
-//     </div>
-//   ) : (
-//     <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
-//       <Clock className="w-5 h-5 animate-pulse" />
-//       Upcoming
-//     </div>
-//   );
-// };
-
-// export default function TimelinePrimaryColor() {
-//   // State for clicked phaseNo to trigger jump effect
-//   const [jumpedPhase, setJumpedPhase] = useState(null);
-
-//   // Clear jump effect after 300ms
-//   useEffect(() => {
-//     if (jumpedPhase) {
-//       const timeout = setTimeout(() => {
-//         setJumpedPhase(null);
-//       }, 300);
-//       return () => clearTimeout(timeout);
-//     }
-//   }, [jumpedPhase]);
-
-//   return (
-//     <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-//       {/* Heading */}
-//       <div className="text-center max-w-4xl mx-auto mb-12">
-//         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-//           Company’s Growth Plan Outlook{" "}
-//           <span className="text-yellow-300">(2020 – 2024)</span>
-//         </h2>
-//         <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-//           The company’s strategic roadmap includes market penetration, expansion,
-//           mergers, financial strengthening, and global diversification.
-//         </p>
-//       </div>
-
-//       {/* Timeline */}
-//       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-//         {/* Horizontal line for desktop */}
-//         <div
-//           className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-white/30"
-//           aria-hidden="true"
-//         />
-
-//         {/* Vertical line for mobile/tablet on left side */}
-//         <div className="md:hidden absolute left-8 top-0 bottom-0 w-[2px] bg-white/30 z-0" />
-
-//         {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-//           const Icon = iconMap[phaseNo] || Briefcase;
-//           const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-//           const isJumping = jumpedPhase === phaseNo;
-
-//           // Blur cards from Phase 2 and onward
-//           const shouldBlur = idx > 0;
-
-//           return (
-//             <div
-//               key={phaseNo}
-//               className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none group z-10"
-//               tabIndex={0}
-//             >
-//               {/* Icon badge with click handler */}
-//               <span
-//                 onClick={() => setJumpedPhase(phaseNo)}
-//                 className={`flex cursor-pointer items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor} select-none z-20`}
-//                 role="button"
-//                 tabIndex={0}
-//                 onKeyDown={(e) => {
-//                   if (e.key === "Enter" || e.key === " ") setJumpedPhase(phaseNo);
-//                 }}
-//               >
-//                 <Icon className="w-7 h-7" aria-hidden="true" />
-//               </span>
-
-//               {/* Static vertical phase label outside card on desktop */}
-//               <span
-//                 className="absolute -left-3 top-1/2 -translate-y-1/2 rotate-[-90deg] origin-left font-semibold text-white/80 text-xs whitespace-nowrap select-none"
-//               >
-//                 {phaseNo}
-//               </span>
-
-//               {/* Hover label inside card top */}
-//               <div className="relative w-full h-5 mt-4 mb-1">
-//                 <div className="absolute top-0 left-0 w-full text-center text-xs font-bold tracking-wide text-transparent group-hover:text-yellow-300 transition-all duration-300">
-//                   {phaseNo}
-//                 </div>
-//               </div>
-
-//               {/* Card */}
-//               <article
-//                 className={`mt-2 md:mt-16 rounded-2xl p-5 h-[250px] shadow-lg max-w-xs md:max-w-none font-sans
-//                   bg-gradient-to-br from-[#107f87] to-[#0e666b]
-//                   hover:scale-[1.03] hover:shadow-xl hover:shadow-yellow-200/20 transition-all duration-300
-//                   ${isJumping ? "scale-[1.08] shadow-yellow-400/50" : ""}
-//                   ${shouldBlur ? "filter blur-sm pointer-events-none select-none" : ""}
-//                 `}
-//                 style={{ zIndex: shouldBlur ? 0 : 10 }}
-//               >
-//                 <StatusBadge status={status} />
-//                 <div className="mb-2">
-//                   <p className="text-sm text-white/90 font-semibold">{tokens}</p>
-//                 </div>
-//                 <div className="mb-3">
-//                   <p className="text-sm text-white/80">{price}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-white/70 leading-relaxed">{roadmapText}</p>
-//                 </div>
-//               </article>
-
-//               {/* Connector on mobile */}
-//               {idx < phaseData.length - 1 && (
-//                 <span
-//                   className="absolute md:hidden left-14 top-full w-1 h-16 bg-white/30 z-0"
-//                   aria-hidden="true"
-//                 />
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// }
-
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Briefcase,
-  Clock,
-  CheckCircle,
-  Rocket,
-  CreditCard,
-   DollarSign,
-} from "lucide-react";
-
-
-// Map icons to each phase
-const iconMap = {
-  "Phase 1": Rocket,
-  "Phase 2": Clock,
-  "Phase 3": Clock,
-  "Phase 4": Clock,
-  "Phase 5": Clock,
-};
-
-// Badge color map
-const badgeColorMap = {
-  Live: "bg-yellow-300 text-[#09535a]",
-  Upcoming: "bg-white text-[#09535a]",
-};
-
-// Phase data
-const phaseData = [
-  {
-    status: "Live",
-    phaseNo: "Phase 1",
-    tokens: "10 Billion Tokens",
-    price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-    button: "Buy Now",
-    roadmapText:
-      "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 2",
-    tokens: "20 Billion Tokens",
-    price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-    button: "Coming Soon",
-    roadmapText:
-      "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 3",
-    tokens: "25 Billion Tokens",
-    price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-    button: "Coming Soon",
-    roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 4",
-    tokens: "30 Billion Tokens",
-    price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-    button: "Coming Soon",
-    roadmapText:
-      "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-  },
-  {
-    status: "Upcoming",
-    phaseNo: "Phase 5",
-    tokens: "25 Billion Tokens",
-    price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-    button: "Coming Soon",
-    roadmapText: "Global Exchange Listings and More...",
-  },
-];
-
-// Status badge component
-const StatusBadge = ({ status }) => {
-  return status === "Live" ? (
-    <div className="flex items-center gap-2 text-green-400 font-semibold mb-2">
-      <CheckCircle className="w-5 h-5" />
-      Live
-    </div>
-  ) : (
-    <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
-      <Clock className="w-5 h-5 animate-pulse" />
-      Upcoming
-    </div>
-  );
-};
+import React from "react";
 
 export default function TimelinePrimaryColor() {
-  const [jumpedPhase, setJumpedPhase] = useState(null);
-  const scrollRef = useRef(null);
-
-  useEffect(() => {
-    if (jumpedPhase && scrollRef.current) {
-      const idx = phaseData.findIndex((p) => p.phaseNo === jumpedPhase);
-      if (idx !== -1) {
-        const container = scrollRef.current;
-        const child = container.children[idx];
-        if (child) {
-          child.scrollIntoView({ behavior: "smooth", inline: "center" });
-        }
-      }
+  const timelineData = [
+    {
+      date: "P1 2024",
+      title: "CONCEPT DEVELOPMENT AND TEAM FORMATION",
+      content: "Establish the foundational concept of JAIMAX TOKEN. Assemble a dedicated team of blockchain experts, developers, marketers, and legal advisors."
+    },
+    {
+      date: "P2 2024", 
+      title: "SMART CONTRACT DEVELOPMENT AND SECURITY AUDITS",
+      content: "Develop and deploy JAIMAX TOKEN smart contracts on the Binance Smart Chain (BSC). Conduct thorough security audits to ensure the robustness and security of the smart contracts."
+    },
+    {
+      date: "P3 2024",
+      title: "WEBSITE LAUNCH AND WHITEPAPER PUBLICATION", 
+      content: "Launch the official JAIMAX TOKEN website. Publish the comprehensive white paper detailing the vision, technical architecture, and roadmap of JAIMAX TOKEN."
+    },
+    {
+      date: "P4 2024",
+      title: "PRE-SALE AND PUBLIC ICO LAUNCH",
+      content: "Conduct the pre-sale and public Initial Coin Offering (ICO) of JAIMAX TOKEN. Initiate marketing campaigns to attract potential investors and build community engagement."
+    },
+    {
+      date: "P5 2024",
+      title: "MOBILE APP LAUNCH",
+      content: "Launch JAIMAX TOKEN mobile apps for both Android and iOS platforms. Ensure the apps support seamless and secure transactions within the JAIMAX ecosystem."
+    },
+    {
+      date: "P1 2025",
+      title: "MAINNET LAUNCH AND DAPP INTEGRATIONS",
+      content: "Launch the JAIMAX TOKEN mainnet. Integrate JAIMAX TOKEN with various decentralized applications (Dapps) to enhance its utility and adoption."
+    },
+    {
+      date: "P2 2025",
+      title: "EXPANSION OF USE CASES AND ECOSYSTEM DEVELOPMENT",
+      content: "Expand JAIMAX TOKEN's use cases across different sectors, including DeFi, NFTS, and payments. Faster ecosystem development through collaborations and innovations."
+    },
+    {
+      date: "P3 2025",
+      title: "EXCHANGE LISTINGS & STRATEGIC PARTNERSHIPS",
+      content: "List JAIMAX TOKEN on major cryptocurrency exchanges such as Binance, Coinbase, Kucoin, Gate.io, OKX, Bybit, and HTX. Forge strategic partnerships to enhance the JAIMAX TOKEN ecosystem and expand its use cases."
+    },
+    {
+      date: "P4 2025",
+      title: "JAIMAX CRYPTO EXCHANGE LAUNCH",
+      content: "Following the successful first phase token sale, launch the JAIMAX Crypto Exchange. Provide a platform for trading a wide range of cryptocurrencies."
+    },
+    {
+      date: "P5 2025",
+      title: "MULTI-BLOCKCHAIN SUPPORT", 
+      content: "Enhance JAIMAX TOKEN to support multiple blockchains, increasing its interoperability and reach."
+    },
+    {
+      date: "P6 2025",
+      title: "DEVELOPMENT OF JAIMAX BLOCKCHAIN",
+      content: "Begin the development of JAIMAX COIN proprietary blockchain. Focus on creating a highly scalable, secure, and efficient blockchain network."
+    },
+    {
+      date: "P7 2025",
+      title: "DEVELOPMENT OF JMC SWAP, DAPPS, AND WALLETS",
+      content: "Develop and launch JMC Swap, enabling users to exchange tokens seamlessly. Introduce various Dapps and secure JMC Wallets for storing JAIMAX COIN and other cryptocurrencies."
+    },
+    {
+      date: "P8 2025",
+      title: "MARKET POSITIONING & EXCHANGE PRICE",
+      content: "Aim for JAIMAX COIN to achieve a top 100 ranking on Coin Market Cap (CMC). Set the initial exchange listing price at INR 4.0 (approximately USD 0.046)."
+    },
+    {
+      date: "P1 2026",
+      title: "COMPREHENSIVE CRYPTO SUPPORT & PAYMENT GATEWAY DEVELOPMENT",
+      content: "Ensure JAIMAX Coin supports all major cryptocurrencies. Develop an integrated payment gateway for facilitating all types of money transactions."
+    },
+    {
+      date: "P2 2026",
+      title: "GLOBAL EXCHANGE LISTINGS",
+      content: "Continue listing JAIMAX COIN on leading global exchanges to enhance liquidity and accessibility. Focus on establishing a strong global presence and user base."
     }
-  }, [jumpedPhase]);
-
-  // Clear jump effect after 300ms
-  useEffect(() => {
-    if (jumpedPhase) {
-      const timeout = setTimeout(() => {
-        setJumpedPhase(null);
-      }, 300);
-      return () => clearTimeout(timeout);
-    }
-  }, [jumpedPhase]);
+  ];
 
   return (
-    <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-      {/* Heading */}
-      <div className="text-center max-w-4xl mx-auto mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-          Company’s Growth Plan Outlook{" "}
-          <span className="text-yellow-300">(2020 – 2024)</span>
-        </h2>
-        <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-          The company’s strategic roadmap includes market penetration, expansion,
-          mergers, financial strengthening, and global diversification.
-        </p>
-      </div>
-
-      {/* Mobile horizontal scroll container */}
-      <div
-        className="md:hidden relative overflow-x-auto scrollbar-hide"
-        ref={scrollRef}
-      >
-        <div className="flex gap-8 min-w-[640px] px-4">
-          {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-            const Icon = iconMap[phaseNo] || Briefcase;
-            const isJumping = jumpedPhase === phaseNo;
-            const shouldBlur = idx > 0;
-
-            return (
-              <div
-                key={phaseNo}
-                className="relative flex flex-col items-center min-w-[220px]"
-              >
-                <span
-                  onClick={() => setJumpedPhase(phaseNo)}
-                  className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg cursor-pointer
-                    ${badgeColorMap[status] || "bg-white text-[#09535a]"}`}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) =>
-                    (e.key === "Enter" || e.key === " ") && setJumpedPhase(phaseNo)
-                  }
-                >
-                  <Icon className="w-7 h-7" />
-                </span>
-
-                <span className="mt-2 text-xs font-semibold text-white/70">
-                  {phaseNo}
-                </span>
-
-                <article
-                  className={`mt-4 rounded-2xl p-4 w-full h-[250px] shadow-md text-left
-                    bg-gradient-to-br from-[#107f87] to-[#0e666b] transition-all duration-300
-                    ${
-                      isJumping
-                        ? "scale-[1.08] shadow-yellow-400/50"
-                        : "hover:scale-[1.03] hover:shadow-yellow-200/20"
-                    }
-                    ${shouldBlur ? "blur-sm pointer-events-none select-none" : ""}`}
-                >
-                  <StatusBadge status={status} />
-                  <p className="text-sm font-semibold mb-1">{tokens}</p>
-                  <p className="text-sm text-white/80 mb-2">{price}</p>
-                  <p className="text-sm text-white/70 leading-relaxed">
-                    {roadmapText}
-                  </p>
-                </article>
-              </div>
-            );
-          })}
+    <div className="min-h-screen relative overflow-hidden" style={{backgroundImage:"url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/video-bg.png')",backgroundRepeat:'no-repeat'}}>
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <div className="text-center mb-12 md:mb-24">
+          <div className="relative inline-block">
+            <p className="text-slate-400 text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 md:mb-6 font-medium">JAIMAX TOKEN</p>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-gradient-to-r from-teal-300 via-green-300 to-lime-300 bg-clip-text mb-4 tracking-tight">
+              Road Map
+            </h1>
+            
+            <div className="w-16 sm:w-20 md:w-24 h-0.5 md:h-1 bg-gradient-to-r from-teal-500 via-green-400 to-lime-500 mx-auto rounded-full"></div>
+          </div>
         </div>
 
-        {/* Dots */}
-        <div className="mt-6 flex justify-center gap-2">
-          {phaseData.map(({ phaseNo }) => (
-            <button
-              key={phaseNo}
-              className={`w-3 h-3 rounded-full transition-all duration-300
-                ${jumpedPhase === phaseNo ? "bg-yellow-300 scale-110" : "bg-white/30"}`}
-              onClick={() => setJumpedPhase(phaseNo)}
-              aria-label={`Jump to ${phaseNo}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Desktop & tablet timeline (unchanged original) */}
-      <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0 hidden md:flex">
-        {/* Horizontal line for desktop */}
-        <div
-          className="absolute top-7 left-0 right-0 h-1 bg-white/30"
-          aria-hidden="true"
-        />
-
-        {/* Vertical line for mobile/tablet on left side (hidden on desktop) */}
-        <div className="md:hidden absolute left-8 top-0 bottom-0 w-[2px] bg-white/30 z-0" />
-
-        {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-          const Icon = iconMap[phaseNo] || Briefcase;
-          const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-          const isJumping = jumpedPhase === phaseNo;
-
-          // Blur cards from Phase 2 and onward
-          const shouldBlur = idx > 0;
-
-          return (
-            <div
-              key={phaseNo}
-              className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none group z-10"
-              tabIndex={0}
-            >
-              {/* Icon badge with click handler */}
-              <span
-                onClick={() => setJumpedPhase(phaseNo)}
-                className={`flex cursor-pointer items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor} select-none z-20`}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") setJumpedPhase(phaseNo);
-                }}
-              >
-                <Icon className="w-7 h-7" aria-hidden="true" />
-              </span>
-
-              {/* Static vertical phase label outside card on desktop */}
-              <span
-                className="absolute -left-3 top-1/2 -translate-y-1/2 rotate-[-90deg] origin-left font-semibold text-white/80 text-lg
- whitespace-nowrap select-none"
-              >
-                {phaseNo}
-              </span>
-
-              {/* Hover label inside card top */}
-              <div className="relative w-full h-5 mt-4 mb-1">
-                <div className="absolute top-0 left-0 w-full text-center text-xs font-bold tracking-wide text-transparent group-hover:text-yellow-300 transition-all duration-300">
-                  {phaseNo}
+        {/* Desktop Layout - Left Aligned */}
+        <div className="relative max-w-6xl mx-auto hidden lg:block">
+          {/* Roadmap image positioned at left side */}
+          <div className="absolute -left-20 top-0 pointer-events-none">
+            <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png" alt="" />
+          </div>
+          
+          {/* Timeline line positioned more to the right */}
+          <div className="absolute left-24 xl:left-32 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+          
+          <div className="space-y-6 xl:space-y-4 pl-20 xl:pl-28">
+            {timelineData.map((item, index) => (
+              <div key={index} className="relative flex items-center group">
+                {/* Timeline dot */}
+                <div className="relative z-10 ml-8">
+                  <div className="w-6 h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-4 border-slate-950 shadow-xl shadow-teal-400/30 group-hover:scale-125 transition-transform duration-300">
+                    <div className="absolute inset-0 bg-teal-400 rounded-full opacity-40"></div>
+                    <div className="absolute inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
+                  </div>
+                </div>
+                
+                {/* Connecting line */}
+                <div className="w-12 xl:w-16 h-0.5 bg-gradient-to-r from-teal-400 via-teal-300 to-transparent group-hover:w-16 xl:group-hover:w-20 transition-all duration-300"></div>
+                
+                {/* Content on the right side of timeline */}
+                <div className="flex-1 ml-3 xl:ml-4">
+                  <div className="rounded-2xl p-4 xl:p-4 max-w-lg xl:max-w-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+                    <h3 className="text-xl xl:text-2xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text group-hover:from-lime-300 group-hover:to-teal-300 transition-all duration-500 mb-2">
+                      {item.date}
+                    </h3>
+                    <h4 className="text-base xl:text-lg font-bold text-teal-300 mb-2 xl:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+                      {item.title}
+                    </h4>
+                    <p className="text-slate-300 text-sm xl:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+                      {item.content}
+                    </p>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
 
-              {/* Card */}
-               {/* <article
-                className={`mt-2 md:mt-16 rounded-2xl p-5 h-[250px] shadow-lg max-w-xs md:max-w-none font-sans
-                  bg-gradient-to-br from-[#107f87] to-[#0e666b]
-                  hover:scale-[1.03] hover:shadow-xl hover:shadow-yellow-200/20 transition-all duration-300
-                  ${isJumping ? "scale-[1.08] shadow-yellow-400/50" : ""}
-                  ${shouldBlur ? "filter blur-sm pointer-events-none select-none" : ""}
-                `}
-                style={{ zIndex: shouldBlur ? 0 : 10 }}
-              >
-                <StatusBadge status={status} />
-                <div className="mb-2">
-                  <p className="text-sm text-white/90 font-semibold">{tokens}</p>
+        {/* Mobile/Tablet Layout */}
+        <div className="lg:hidden">
+          <div className="relative max-w-4xl mx-auto">
+            <div className="absolute left-4 sm:left-6 md:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-teal-400 to-transparent rounded-full shadow-lg shadow-teal-400/20"></div>
+            
+            <div className="space-y-6 sm:space-y-8 md:space-y-10">
+              {timelineData.map((item, index) => (
+                <div key={index} className="relative flex items-start group">
+                  <div className="relative z-10 mt-2">
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-gradient-to-br from-teal-400 to-green-500 rounded-full border-2 sm:border-3 md:border-4 border-slate-950 shadow-lg shadow-teal-400/30">
+                      <div className="absolute inset-0 bg-teal-400 rounded-full animate-ping opacity-40" style={{animationDelay: `${index * 200}ms`}}></div>
+                      <div className="absolute inset-0.5 sm:inset-1 bg-gradient-to-br from-teal-300 to-green-400 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1 ml-6 sm:ml-8 md:ml-10">
+                    <div className="bg-gradient-to-br from-slate-800/60 via-teal-900/40 to-slate-800/60 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-teal-600/50 shadow-xl group-hover:border-teal-400/30 group-hover:shadow-teal-400/10 transition-all duration-500">
+                      <h3 className="text-base sm:text-lg md:text-xl font-black text-transparent bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text mb-2 md:mb-3">
+                        {item.date}
+                      </h3>
+                      <h4 className="text-sm sm:text-base md:text-lg font-bold text-teal-300 mb-2 md:mb-3 group-hover:text-teal-200 transition-colors duration-300">
+                        {item.title}
+                      </h4>
+                      <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+                        {item.content}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="mb-3">
-                  <p className="text-sm text-white/80">{price}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-white/70 leading-relaxed">{roadmapText}</p>
-                </div>
-          </article>   */}
- <article
-  className={`
-    mt-2 md:mt-16 rounded-2xl p-6 h-[320px] shadow-lg max-w-xs md:max-w-none font-sans
-    bg-gradient-to-br from-[#107f87] to-[#0e666b]
-    hover:scale-[1.03] hover:shadow-xl hover:shadow-yellow-200/30 transition-all duration-300
-    cursor-pointer
-    ${isJumping ? "scale-[1.08] shadow-yellow-400/60" : ""}
-    ${shouldBlur ? "filter blur-sm pointer-events-none select-none" : ""}
-  `}
-  style={{ zIndex: shouldBlur ? 0 : 10 }}
->
-  <StatusBadge status={status} />
-  
-  <div className="mb-4 flex items-center gap-2">
-    <CreditCard className="text-[#b8cc26]" size={20} />
-    <p className="text-lg font-bold text-[#b8cc26]">{tokens}</p>
-  </div>
-
-  <div className="mb-4 flex items-center gap-2">
-    <DollarSign className="text-[#facc15]" size={20} />
-    <p className="text-lg font-semibold text-[#facc15]">{price}</p>
-  </div>
-
-  <div className="flex items-start gap-2">
-    <Clock className="text-[#00ffc3]" size={18} />
-    <p className="text-sm leading-relaxed text-[#a0f0e8]">{roadmapText}</p>
-  </div>
-</article>
-
-
-
-
-              {/* Connector on mobile */}
-              {idx < phaseData.length - 1 && (
-                <span
-                  className="absolute md:hidden left-14 top-full w-1 h-16 bg-white/30 z-0"
-                  aria-hidden="true"
-                />
-              )}
+              ))}
             </div>
-          );
-        })}
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 
-//   import React, { useState, useEffect } from "react";
-// import {
-//   Briefcase,
-//   Clock,
-//   CheckCircle,
-//   Rocket,
-// } from "lucide-react";
 
-// // Map icons to each phase
-// const iconMap = {
-//   "Phase 1": Rocket,
-//   "Phase 2": Clock,
-//   "Phase 3": Clock,
-//   "Phase 4": Clock,
-//   "Phase 5": Clock,
-// };
-
-// // Badge color map
-// const badgeColorMap = {
-//   Live: "bg-yellow-300 text-[#09535a]",
-//   Upcoming: "bg-white text-[#09535a]",
-// };
-
-// // Phase data
-// const phaseData = [
-//   {
-//     status: "Live",
-//     phaseNo: "Phase 1",
-//     tokens: "10 Billion Tokens",
-//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-//     button: "Buy Now",
-//     roadmapText:
-//       "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 2",
-//     tokens: "20 Billion Tokens",
-//     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 3",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 4",
-//     tokens: "30 Billion Tokens",
-//     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 5",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Global Exchange Listings and More...",
-//   },
-// ];
-
-// // Status badge component
-// const StatusBadge = ({ status }) => {
-//   return status === "Live" ? (
-//     <div className="flex items-center gap-2 text-green-400 font-semibold mb-2">
-//       <CheckCircle className="w-5 h-5" />
-//       Live
-//     </div>
-//   ) : (
-//     <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
-//       <Clock className="w-5 h-5 animate-pulse" />
-//       Upcoming
-//     </div>
-//   );
-// };
-
-// export default function TimelinePrimaryColor() {
-//   // State for clicked phaseNo to trigger jump effect
-//   const [jumpedPhase, setJumpedPhase] = useState(null);
-
-//   // Clear jump effect after 300ms
-//   useEffect(() => {
-//     if (jumpedPhase) {
-//       const timeout = setTimeout(() => {
-//         setJumpedPhase(null);
-//       }, 300);
-//       return () => clearTimeout(timeout);
-//     }
-//   }, [jumpedPhase]);
-
-//   return (
-//     <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-//       {/* Heading */}
-//       <div className="text-center max-w-4xl mx-auto mb-12">
-//         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-//           Company’s Growth Plan Outlook{" "}
-//           <span className="text-yellow-300">(2020 – 2024)</span>
-//         </h2>
-//         <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-//           The company’s strategic roadmap includes market penetration, expansion,
-//           mergers, financial strengthening, and global diversification.
-//         </p>
-//       </div>
-
-//       {/* Timeline */}
-//       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-//         {/* Horizontal line for desktop */}
-//         <div
-//           className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-white/30"
-//           aria-hidden="true"
-//         />
-
-//         {/* Vertical line for mobile/tablet on left side */}
-//         <div className="md:hidden absolute left-8 top-0 bottom-0 w-[2px] bg-white/30 z-0" />
-
-//         {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-//           const Icon = iconMap[phaseNo] || Briefcase;
-//           const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-//           const isJumping = jumpedPhase === phaseNo;
-
-//           // Blur cards from Phase 2 and onward
-//           const shouldBlur = idx > 0;
-
-//           return (
-//             <div
-//               key={phaseNo}
-//               className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none group z-10"
-//               tabIndex={0}
-//             >
-//               {/* Icon badge with click handler */}
-//               <span
-//                 onClick={() => setJumpedPhase(phaseNo)}
-//                 className={`flex cursor-pointer items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor} select-none z-20`}
-//                 role="button"
-//                 tabIndex={0}
-//                 onKeyDown={(e) => {
-//                   if (e.key === "Enter" || e.key === " ") setJumpedPhase(phaseNo);
-//                 }}
-//               >
-//                 <Icon className="w-7 h-7" aria-hidden="true" />
-//               </span>
-
-//               {/* Static vertical phase label outside card on desktop */}
-//               <span
-//                 className="absolute -left-3 top-1/2 -translate-y-1/2 rotate-[-90deg] origin-left font-semibold text-white/80 text-xs whitespace-nowrap select-none"
-//               >
-//                 {phaseNo}
-//               </span>
-
-//               {/* Hover label inside card top */}
-//               <div className="relative w-full h-5 mt-4 mb-1">
-//                 <div className="absolute top-0 left-0 w-full text-center text-xs font-bold tracking-wide text-transparent group-hover:text-yellow-300 transition-all duration-300">
-//                   {phaseNo}
-//                 </div>
-//               </div>
-
-//               {/* Card */}
-//               <article
-//                 className={`mt-2 md:mt-16 rounded-2xl p-5 h-[250px] shadow-lg max-w-xs md:max-w-none font-sans
-//                   bg-gradient-to-br from-[#107f87] to-[#0e666b]
-//                   hover:scale-[1.03] hover:shadow-xl hover:shadow-yellow-200/20 transition-all duration-300
-//                   ${isJumping ? "scale-[1.08] shadow-yellow-400/50" : ""}
-//                   ${shouldBlur ? "filter blur-sm pointer-events-none select-none" : ""}
-//                 `}
-//                 style={{ zIndex: shouldBlur ? 0 : 10 }}
-//               >
-//                 <StatusBadge status={status} />
-//                 <div className="mb-2">
-//                   <p className="text-sm text-white/90 font-semibold">{tokens}</p>
-//                 </div>
-//                 <div className="mb-3">
-//                   <p className="text-sm text-white/80">{price}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-white/70 leading-relaxed">{roadmapText}</p>
-//                 </div>
-//               </article>
-
-//               {/* Connector on mobile */}
-//               {idx < phaseData.length - 1 && (
-//                 <span
-//                   className="absolute md:hidden left-14 top-full w-1 h-16 bg-white/30 z-0"
-//                   aria-hidden="true"
-//                 />
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// }
-
-//   import React, { useState, useEffect } from "react";
-// import {
-//   Briefcase,
-//   TrendingUp,
-//   Repeat,
-//   Layers,
-//   DollarSign,
-//   Clock,
-//   CheckCircle,
-//   Rocket,
-// } from "lucide-react";
-
-// // Map icons to each phase
-// const iconMap = {
-//   "Phase 1": Rocket,
-//   "Phase 2": Clock,
-//   "Phase 3": Clock,
-//   "Phase 4": Clock,
-//   "Phase 5": Clock,
-// };
-
-// // Badge color map
-// const badgeColorMap = {
-//   Live: "bg-yellow-300 text-[#09535a]",
-//   Upcoming: "bg-white text-[#09535a]",
-// };
-
-// // Phase data
-// const phaseData = [
-//   {
-//     status: "Live",
-//     phaseNo: "Phase 1",
-//     tokens: "10 Billion Tokens",
-//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
-//     button: "Buy Now",
-//     roadmapText:
-//       "Launching mobile application, Dapp Integration, Own Crypto Wallet Development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 2",
-//     tokens: "20 Billion Tokens",
-//     price: "Price INR 0.05 - 0.50 Paisa (0.00061 - 0.0061 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Crypto coins to buy Jmax coin, Multi coin integration, P2P deposits or Live, DeFi + NFT development",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 3",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 0.60 - 1.53 Paisa (0.0071 - 0.018 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Own Blockchain development, Pancake, Swap, Uniswap Integration",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 4",
-//     tokens: "30 Billion Tokens",
-//     price: "Price INR 1.60 - 3.00 Paisa (0.091 - 0.036 USD)",
-//     button: "Coming Soon",
-//     roadmapText:
-//       "Jaimax Exchange Launching, Trading Live, Staking Pairs, 25 Crypto Coins, Deposits & Withdrawals, Payment Gateway",
-//   },
-//   {
-//     status: "Upcoming",
-//     phaseNo: "Phase 5",
-//     tokens: "25 Billion Tokens",
-//     price: "Price INR 3.15 - 4.10 Paisa (0.037 - 0.049 USD)",
-//     button: "Coming Soon",
-//     roadmapText: "Global Exchange Listings and More...",
-//   },
-// ];
-
-// // Status badge component
-// const StatusBadge = ({ status }) => {
-//   return status === "Live" ? (
-//     <div className="flex items-center gap-2 text-green-400 font-semibold mb-2">
-//       <CheckCircle className="w-5 h-5" />
-//       Live
-//     </div>
-//   ) : (
-//     <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
-//       <Clock className="w-5 h-5 animate-pulse" />
-//       Upcoming
-//     </div>
-//   );
-// };
-
-// export default function TimelinePrimaryColor() {
-//   // State for clicked phaseNo to trigger jump effect
-//   const [jumpedPhase, setJumpedPhase] = useState(null);
-
-//   // Clear jump effect after 300ms
-//   useEffect(() => {
-//     if (jumpedPhase) {
-//       const timeout = setTimeout(() => {
-//         setJumpedPhase(null);
-//       }, 300);
-//       return () => clearTimeout(timeout);
-//     }
-//   }, [jumpedPhase]);
-
-//   return (
-//     <section className="bg-[#09535a] text-white py-12 px-4 md:px-10 lg:px-20 font-sans">
-//       {/* Heading */}
-//       <div className="text-center max-w-4xl mx-auto mb-12">
-//         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-//           Company’s Growth Plan Outlook{" "}
-//           <span className="text-yellow-300">(2020 – 2024)</span>
-//         </h2>
-//         <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-//           The company’s strategic roadmap includes market penetration, expansion,
-//           mergers, financial strengthening, and global diversification.
-//         </p>
-//       </div>
-
-//       {/* Timeline */}
-//       <div className="relative flex flex-col md:flex-row md:justify-between gap-y-16 md:gap-y-0">
-//         {/* Horizontal line for desktop */}
-//         <div
-//           className="hidden md:block absolute top-7 left-0 right-0 h-1 bg-white/30"
-//           aria-hidden="true"
-//         />
-
-//         {phaseData.map(({ status, phaseNo, tokens, price, roadmapText }, idx) => {
-//           const Icon = iconMap[phaseNo] || Briefcase;
-//           const badgeColor = badgeColorMap[status] || "bg-white text-[#09535a]";
-//           const isJumping = jumpedPhase === phaseNo;
-
-//           return (
-//             <div
-//               key={phaseNo}
-//               className="relative flex flex-col items-center md:basis-1/5 md:max-w-[18%] focus:outline-none group"
-//               tabIndex={0}
-//             >
-//               {/* Icon badge with click handler */}
-//               <span
-//                 onClick={() => setJumpedPhase(phaseNo)}
-//                 className={`flex cursor-pointer items-center justify-center w-14 h-14 rounded-full shadow-lg ${badgeColor} select-none`}
-//                 role="button"
-//                 tabIndex={0}
-//                 onKeyDown={(e) => {
-//                   if (e.key === "Enter" || e.key === " ") setJumpedPhase(phaseNo);
-//                 }}
-//               >
-//                 <Icon className="w-7 h-7" aria-hidden="true" />
-//               </span>
-
-//               {/* Static vertical phase label outside card on desktop */}
-//               <span
-//                 className="absolute -left-3 top-1/2 -translate-y-1/2 rotate-[-90deg] origin-left font-semibold text-white/80 text-xs whitespace-nowrap select-none"
-//               >
-//                 {phaseNo}
-//               </span>
-
-//               {/* Hover label inside card top */}
-//               <div className="relative w-full h-5 mt-4 mb-1">
-//                 <div className="absolute top-0 left-0 w-full text-center text-xs font-bold tracking-wide text-transparent group-hover:text-yellow-300 transition-all duration-300">
-//                   {phaseNo}
-//                 </div>
-//               </div>
-
-//               {/* Card */}
-//               <article
-//                 className={`mt-2 md:mt-16 rounded-2xl p-5 h-[250px] shadow-lg max-w-xs md:max-w-none font-sans
-//                   bg-gradient-to-br from-[#107f87] to-[#0e666b]
-//                   hover:scale-[1.03] hover:shadow-xl hover:shadow-yellow-200/20 transition-all duration-300
-//                   ${isJumping ? "scale-[1.08] shadow-yellow-400/50" : ""}`}
-//               >
-//                 <StatusBadge status={status} />
-//                 <div className="mb-2">
-//                   <p className="text-sm text-white/90 font-semibold">{tokens}</p>
-//                 </div>
-//                 <div className="mb-3">
-//                   <p className="text-sm text-white/80">{price}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm text-white/70 leading-relaxed">{roadmapText}</p>
-//                 </div>
-//               </article>
-
-//               {/* Connector on mobile */}
-//               {idx < phaseData.length - 1 && (
-//                 <span
-//                   className="absolute md:hidden -bottom-8 w-1 h-16 bg-white/30"
-//                   aria-hidden="true"
-//                 />
-//               )}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// }
 
