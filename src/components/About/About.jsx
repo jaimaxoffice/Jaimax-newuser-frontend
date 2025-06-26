@@ -884,7 +884,7 @@ const JaimaxOverview = () => {
       </AnimatedSection>
 
       {/* This div now contains the rest of your content and maintains the max-width */}
-      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-8 lg:px-20 py-16">
+      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-8 lg:px-10 py-16">
         {/* Our Mission Section - APPLYING FRAMER MOTION HERE */}
         <AnimatedSection className="mb-20">
           <p className="text-teal-400 text-sm font-semibold mb-4 uppercase tracking-wider text-center lg:text-left">OUR MISSION</p>
@@ -1083,7 +1083,7 @@ const JaimaxOverview = () => {
         <AnimatedSection>
           <motion.div
             whileHover={{ scale: 1.01 }}
-            className="bg-gradient-to-r from-teal-600 to-green-600 rounded-xl py-12 px-4 sm:px-8 text-center"
+            className="rounded-xl py-12 px-4 sm:px-8 text-center"
           >
             <h5 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-white">
               We're Not Just Building a Coin — We're Building a Future
@@ -1097,7 +1097,7 @@ const JaimaxOverview = () => {
               onClick={navigateToLogin}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-teal-700 px-8 py-3 font-semibold rounded-lg hover:bg-gray-100 transition-colors text-sm sm:text-base"
+              className="bg-[#bace27] text-[#195f64]  text-white px-8 py-3 font-semibold rounded-lg hover:bg-gray-100 transition-colors text-sm sm:text-base"
             >
               Join Jaimax. Join the Future.
             </motion.button>

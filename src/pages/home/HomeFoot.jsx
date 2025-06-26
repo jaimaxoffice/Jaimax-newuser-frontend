@@ -98,156 +98,166 @@ export default function HomeFooter() {
 
                 </div>
 
-                <div className="relative z-10 container mx-auto px-6 py-20">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
+<div className="relative z-10 max-w-8xl  px-4 sm:px-6 lg:px-8 py-20">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh]">
+    {/* Left Column – Content */}
+    <div className="space-y-8 animate-fadeInUp text-center lg:text-left mx-auto lg:mx-0">
 
-                        {/* Left Column - Content */}
-                        <div className="space-y-8 animate-fadeInUp">
-                            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md border border-white/20 shadow-2xl"
-                                style={{
-                                    background: 'rgba(255, 255, 255, 0.1)',
-                                    boxShadow: '0 8px 32px rgba(78, 205, 196, 0.3)'
-                                }}>
-                                <Shield className="w-5 h-5 text-white" />
-                                <span className="text-sm font-semibold text-white tracking-wider uppercase">Secure Investment</span>
-                            </div>
+      <div
+        className="inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-md border border-white/20 shadow-2xl mx-auto lg:mx-0"
+        style={{
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 8px 32px rgba(78, 205, 196, 0.3)",
+        }}
+      >
+        <Shield className="w-5 h-5 text-white" />
+        <span className="text-sm font-semibold text-white tracking-wider uppercase">
+          Secure Investment
+        </span>
+      </div>
 
-                            {/* Main Heading */}
-                            <div className="space-y-6">
-                                <h1 className="text-4xl lg:text-6xl xl:text-7xl font-bold text-[#bace27] leading-tight tracking-tight">
-                                    Secure Your{" "}
-                                    <span className="relative inline-block">
-                                        <span className="bg-gradient-to-r from-white via-cyan-200 to-white bg-clip-text text-transparent animate-shimmer bg-[length:200%_100%]">
-                                            Financial
-                                        </span>
-                                        <div
-                                            className="absolute -bottom-2 left-0 right-0 h-1 rounded-full animate-pulse"
-                                            style={{ background: 'linear-gradient(90deg, #4ecdc4, #26a69a, #4ecdc4)' }}
-                                        />
-                                    </span>
-                                    {" "}Tomorrow
-                                </h1>
+      {/* Main Heading */}
+      <div className="space-y-6">
+        <h1 className="text-4xl lg:text-6xl xl:text-7xl font-bold text-[#bace27] leading-tight tracking-tight">
+          Secure Your{" "}
+          <span className="relative inline-block">
+            <span className="bg-gradient-to-r from-white via-cyan-200 to-white bg-clip-text text-transparent animate-shimmer bg-[length:200%_100%]">
+              Financial
+            </span>
+            <div
+              className="absolute -bottom-2 left-0 right-0 h-1 rounded-full animate-pulse"
+              style={{
+                background: "linear-gradient(90deg, #4ecdc4, #26a69a, #4ecdc4)",
+              }}
+            />
+          </span>{" "}
+          Tomorrow
+        </h1>
 
-                                <div className="relative group">
-                                    <h2 className="text-3xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-2">
-                                        with{" "}
-                                        <span
-                                            className="relative inline-block"
-                                            style={{
-                                                background: 'linear-gradient(45deg, #4ecdc4, #26a69a)',
-                                                WebkitBackgroundClip: 'text',
-                                                WebkitTextFillColor: 'transparent',
-                                                backgroundClip: 'text'
-                                            }}
-                                        >
-                                            Jaimax
-                                        </span>
-                                    </h2>
-                                    <div
-                                        className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
-                                        style={{ background: 'linear-gradient(45deg, rgba(78, 205, 196, 0.3), rgba(38, 166, 154, 0.3))' }}
-                                    />
-                                </div>
+        <div className="relative group">
+          <h2 className="text-3xl lg:text-5xl xl:text-6xl font-extrabold text-white mb-2">
+            with{" "}
+            <span
+              className="relative inline-block"
+              style={{
+                background: "linear-gradient(45deg, #4ecdc4, #26a69a)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Jaimax
+            </span>
+          </h2>
+          <div
+            className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
+            style={{
+              background:
+                "linear-gradient(45deg, rgba(78, 205, 196, 0.3), rgba(38, 166, 154, 0.3))",
+            }}
+          />
+        </div>
 
-                                <p className="text-xl lg:text-2xl text-white/90 leading-relaxed font-light max-w-2xl">
-                                    Begin your journey into the world of cryptocurrency investment with our{" "}
-                                    <span className="font-semibold text-[#bace27]">revolutionary Starter Investment plan</span>.
-                                    Your gateway to financial freedom awaits.
-                                </p>
-                            </div>
+        <p className="text-xl lg:text-2xl text-white/90 leading-relaxed font-light max-w-2xl mx-auto lg:mx-0">
+          Begin your journey into the world of cryptocurrency investment with our{" "}
+          <span className="font-semibold text-[#bace27]">
+            revolutionary Starter Investment plan
+          </span>
+          . Your gateway to financial freedom awaits.
+        </p>
+      </div>
 
-                            {/* Download Section */}
-                            <div className="space-y-8 pt-4">
-                                <div className="flex items-center gap-4">
-                                    <div
-                                        className="w-12 h-12 rounded-full flex items-center justify-center"
-                                        style={{ background: 'linear-gradient(45deg, #4ecdc4, #26a69a)' }}
-                                    >
-                                        <Download className="w-6 h-6 text-white animate-bounce" />
-                                    </div>
-                                    <div>
-                                        <span className="block text-white font-bold tracking-widest text-sm uppercase">
-                                            Download Now
-                                        </span>
-                                        <span className="text-[#bace27] text-sm">Available on all platforms</span>
-                                    </div>
-                                </div>
+      {/* Download Section */}
+      <div className="space-y-8 pt-4">
+        <div className="flex items-center gap-4 justify-center lg:justify-start">
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{
+              background: "linear-gradient(45deg, #4ecdc4, #26a69a)",
+            }}
+          >
+            <Download className="w-6 h-6 text-white animate-bounce" />
+          </div>
+          <div>
+            <span className="block text-white font-bold tracking-widest text-sm uppercase">
+              Download Now
+            </span>
+            <span className="text-[#bace27] text-sm">Available on all platforms</span>
+          </div>
+        </div>
 
-                                {/* Enhanced App Store Buttons */}
-                                <div className="flex gap-6 max-w-lg">
-                                    <a
-                                        href={playStoreLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group flex-1 relative overflow-hidden rounded-2xl p-1 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
-                                        style={{
-                                            background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.3), rgba(38, 166, 154, 0.4))',
-                                            boxShadow: '0 15px 35px rgba(78, 205, 196, 0.4)'
-                                        }}
-                                    >
-                                        <div
-                                            className="relative rounded-xl p-4 backdrop-blur-sm transition-all duration-300 group-hover:backdrop-blur-md"
-                                            style={{ background: 'rgba(9, 78, 84, 0.6)' }}
-                                        >
-                                            <div className="flex items-center gap-4">
-                                                <div
-                                                    className="w-12 h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                                // style={{ background: 'linear-gradient(45deg, #4ecdc4, #26a69a)' }}
-                                                >
-                                                    {/* <Play className="w-6 h-6 text-white" /> */} <img src={playstore} alt="" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <div className="text-xs text-cyan-200 font-medium">Get it on</div>
-                                                    <div className="text-lg font-bold text-[#bace27]">Google Play</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                            style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(38, 166, 154, 0.3))' }}
-                                        />
-                                    </a>
-
-                                    <a
-                                        href={appleStoreLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group flex-1 relative overflow-hidden rounded-2xl p-1 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
-                                        style={{
-                                            background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.3), rgba(38, 166, 154, 0.4))',
-                                            boxShadow: '0 15px 35px rgba(78, 205, 196, 0.4)'
-                                        }}
-                                    >
-                                        <div
-                                            className="relative rounded-xl p-4 backdrop-blur-sm transition-all duration-300 group-hover:backdrop-blur-md"
-                                            style={{ background: 'rgba(9, 78, 84, 0.6)' }}
-                                        >
-                                            <div className="flex items-center gap-4">
-                                                <div
-                                                    className="w-12 h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                                // style={{ background: 'linear-gradient(45deg, #4ecdc4, #26a69a)' }}
-                                                >
-                                                    {/* <Apple className="w-6 h-6 text-white" /> */}
-                                                    <img src={applestore} alt="" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <div className="text-xs text-cyan-200 font-medium">Download on</div>
-                                                    <div className="text-lg font-bold text-[#bace27]">App Store</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Right Column - Visual */}
-                        <div className="relative flex items-center justify-center animate-fadeInRight">
-                            <img src={secureImg} alt="" width="600px" />
-                        </div>
-                    </div>
+        {/* Store Buttons */}
+        <div className="flex flex-col sm:flex-row gap-6 max-w-lg mx-auto lg:mx-0">
+          {/* Google Play */}
+          <a
+            href={playStoreLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex-1 relative overflow-hidden rounded-2xl p-1 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(78, 205, 196, 0.3), rgba(38, 166, 154, 0.4))",
+            //   boxShadow: "0 15px 35px rgba(78, 205, 196, 0.4)",
+            }}
+          >
+            <div
+              className="relative rounded-xl p-4 backdrop-blur-sm transition-all duration-300 group-hover:backdrop-blur-md"
+              style={{ background: "rgba(9, 78, 84, 0.6)" }}
+            >
+              <div className="flex items-center gap-4 justify-center sm:justify-start">
+                <div className="w-12 h-12">
+                  <img src={playstore} alt="Google Play" className="w-full h-full" />
                 </div>
+                <div className="text-left">
+                  <div className="text-xs text-cyan-200 font-medium">Get it on</div>
+                  <div className="text-lg font-bold text-[#bace27]">Google Play</div>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          {/* App Store */}
+          <a
+            href={appleStoreLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex-1 relative overflow-hidden rounded-2xl p-1 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(78, 205, 196, 0.3), rgba(38, 166, 154, 0.4))",
+              boxShadow: "0 15px 35px rgba(78, 205, 196, 0.4)",
+            }}
+          >
+            <div
+              className="relative rounded-xl p-4 backdrop-blur-sm transition-all duration-300 group-hover:backdrop-blur-md"
+              style={{ background: "rgba(9, 78, 84, 0.6)" }}
+            >
+              <div className="flex items-center gap-4 justify-center sm:justify-start">
+                <div className="w-12 h-12">
+                  <img src={applestore} alt="App Store" className="w-full h-full" />
+                </div>
+                <div className="text-left">
+                  <div className="text-xs text-cyan-200 font-medium">Download on</div>
+                  <div className="text-lg font-bold text-[#bace27]">App Store</div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Column – Visual */}
+    <div className="relative flex justify-center lg:justify-end animate-fadeInRight">
+      <img
+        src={secureImg}
+        alt="Secure"
+        className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+      />
+    </div>
+  </div>
+</div>
+
             </div>
             <div
                 className="w-full relative"

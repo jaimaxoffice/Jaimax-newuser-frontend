@@ -9,8 +9,9 @@ import MyTotalTeam from "../myTotalTeam/myTotalTeam";
 import { useUserDetailsQuery } from "../myTotalTeam/myTotatTeamApliSlice";
 import search from "../../../../assets/search.svg"
 import Loader from "../../../Loader/loader";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer ,toast} from "react-toastify";
 import Pagination from "../../../pagination/pagination";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   
@@ -24,6 +25,8 @@ const Dashboard = () => {
   const { data, isLoading, isError, error, refetch } = useUserDetailsQuery(queryParams);
 
   const TableData = data?.data?.withdrawRequests || [];
+
+  const navigate = useNavigate()
 
   // Auth check
   useEffect(() => {
