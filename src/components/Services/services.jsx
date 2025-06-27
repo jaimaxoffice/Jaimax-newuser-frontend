@@ -312,6 +312,7 @@ const CryptoServicesFlipCards = () => {
             className="px-8 py-3 bg-white/90 text-[#195f64] rounded-full font-bold hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/register")}
           >
             {isPrimary ? 'Join Now' : 'Get Started'}
           </motion.button>

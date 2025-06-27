@@ -44,8 +44,11 @@
 
 import React, { useEffect } from "react";
 import { AlertTriangle, Shield, Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Disclaimer = () => {
+
+  const navigate = useNavigate()
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -123,7 +126,9 @@ const Disclaimer = () => {
                 </p>
                 <div className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full text-white font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                   <Shield className="w-5 h-5" />
-                  <span>Acknowledge & Continue</span>
+                  <button
+                  onClick={() => navigate("/blog")}
+                  ><span>Acknowledge & Continue</span></button>
                 </div>
               </div>
             </div>

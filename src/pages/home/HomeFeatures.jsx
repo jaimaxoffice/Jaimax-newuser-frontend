@@ -634,6 +634,10 @@ import { motion, useInView } from 'framer-motion';
 import { TrendingUp, Shield, Users, Globe, BookOpen, Settings, CreditCard, Headphones, ArrowRight, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import blockchain from "../../assets/blockchain1.jpg"
+import featureImage from "../../assets/websiteicons.png"
+import RealTimeTicker from './scroll';
+
 const JaimaxLanding = () => {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate()
@@ -698,13 +702,13 @@ const JaimaxLanding = () => {
 
   const hexImages = [
     {
-      src: "https://images.unsplash.com/photo-1611079221193-1d3d34df3ff1?w=400&h=400&fit=crop",
+      src:blockchain,
       rotate: "-5deg",
       top: "0px",
       left: "10px",
     },
     {
-      src: "https://images.unsplash.com/photo-1612435974214-c351f7a8f984?w=400&h=400&fit=crop",
+      src: "",
       rotate: "10deg",
       top: "210px",
       left: "100px",
@@ -758,7 +762,7 @@ const JaimaxLanding = () => {
   };
 
   const handleGetStartedClick = () => {
-    console.log("Navigating to login/signup page...");
+   navigate("/register")
   };
 
   const RotatedHex = ({ src, rotate, top, left }) => (
@@ -786,84 +790,65 @@ const JaimaxLanding = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
+          <RealTimeTicker  />
+<motion.section
+  ref={hexSectionRef}
+  initial="hidden"
+  animate={isHexSectionInView ? "visible" : "hidden"}
+  variants={fadeIn}
+  className="relative  text-white px-4 md:px-6 overflow-hidden"
+>
+  <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 py-12 md:py-14 gap-12 relative z-10">
 
-       <motion.section
-        ref={hexSectionRef}
-        initial="hidden"
-        animate={isHexSectionInView ? "visible" : "hidden"}
-        variants={fadeIn}
-        className="relative bg-[#095359] text-white px-6 overflow-hidden"
-      >
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 py-12 gap-12 relative z-10 min-h-[600px]">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isHexSectionInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative w-[500px] h-[500px] overflow-hidden"
-          >
-            {hexImages.map((hex, index) => (
-              <RotatedHex key={index} {...hex} />
-            ))}
-            <FloatingCircle size="120px" top="20%" left="70%" color="#facc15" />
-            <FloatingCircle size="170px" top="65%" left="60%" color="#ffffff" />
-            <FloatingCircle size="140px" top="40%" left="85%" color="#00ffc3" />
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isHexSectionInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="z-20 py-12"
-          >
-            <h1 className="text-5xl font-bold text-white leading-snug">
-              Life With <span className="text-[#b8cc26]">Jaimax Coin</span><br />Is Secure & <span className="text-yellow-400">Powerful</span>
-            </h1>
-            <p className="text-gray-200 mt-6 text-lg max-w-md">
-              Experience seamless digital transactions and revolutionary blockchain technology with Jaimax.
-            </p>
-            <div className="flex gap-4 mt-8 flex-wrap">
-              <button
-              onClick={() => navigate("/")}
-              className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold shadow-md transition">
-                Start Investing
-              </button>
-              <button
-              onClick={() => navigate("/blog")}
-              className="flex items-center gap-2 px-6 py-3 border border-yellow-300 text-yellow-200 hover:bg-yellow-300 hover:text-black rounded-lg transition">
-                <div className="bg-yellow-300 text-black p-1.5 rounded-full">
-                  <Play size={16} />
-                </div>
-                Learn More
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
+    {/* 🔹 Left: Full Static Image */}
+    <motion.div
+      initial={{ opacity: 0, x: -50 }}
+      animate={isHexSectionInView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="relative w-full h-[380px] sm:h-[400px] md:h-[500px] flex items-center justify-center"
+    >
+      <img
+        src={featureImage}
+        alt="Jaimax Features"
+        className="w-full h-full object-contain "
+      />
+    </motion.div>
 
-      <style jsx>{`
-        .bg-grid-pattern {
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-          background-size: 50px 50px;
-        }
-        .hex {
-          clip-path: polygon(
-            50% 0%,
-            93% 25%,
-            93% 75%,
-            50% 100%,
-            7% 75%,
-            7% 25%
-          );
-          background-color: #1a1a1a;
-          
-          transition: transform 0.3s ease;
-        }
-        .hex:hover {
-          transform: scale(1.05);
-        }
-      `}</style>
+    {/* 🔹 Right: Content */}
+    <motion.div
+      initial={{ opacity: 0, x: 50 }}
+      animate={isHexSectionInView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.8, delay: 0.4 }}
+      className="z-20 flex flex-col justify-center"
+    >
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-snug">
+        Life With <span className="text-[#b8cc26]">Jaimax Coin</span><br />
+        Is Secure & <span className="text-yellow-400">Powerful</span>
+      </h1>
+      <p className="text-gray-200 mt-6 text-base sm:text-lg max-w-md">
+        Experience seamless digital transactions and revolutionary blockchain technology with Jaimax.
+      </p>
+      <div className="flex gap-4 mt-8 flex-wrap">
+        <button
+          onClick={() => navigate("/")}
+          className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold shadow-md transition"
+        >
+          Start Investing
+        </button>
+        <button
+          onClick={() => navigate("/blog")}
+          className="flex items-center gap-2 px-6 py-3 border border-yellow-300 text-yellow-200 hover:bg-yellow-300 hover:text-black rounded-lg transition"
+        >
+          <div className="bg-yellow-300 text-black p-1.5 rounded-full">
+            <Play size={16} />
+          </div>
+          Learn More
+        </button>
+      </div>
+    </motion.div>
+  </div>
+</motion.section>
+
       <div className="text-white bg-[#095359]  relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 overflow-hidden">
@@ -879,30 +864,7 @@ const JaimaxLanding = () => {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-12 pb-10 sm:pb-16 lg:pb-12">
             <div className="text-center">
-              {/* <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={isVisible || isHeroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
-              >
-                <span className="block mb-2">Powering the</span>
-                <span className="bg-[#095359]  text-yellow-500 bg-clip-text text-transparent drop-shadow-md">
-                  Future of Crypto
-                </span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isVisible || isHeroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-base sm:text-lg lg:text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed px-4"
-              >
-                Welcome to <strong className="text-lime-400">Jaimax</strong>, one of the best crypto coins designed for growth,
-                transparency, and financial freedom. Built on powerful blockchain technology,
-                Jaimax offers a secure and scalable platform for users who want to be part of
-                the next generation of digital finance.
-              </motion.p> */}
-
+              
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={isVisible || isHeroInView ? { opacity: 1, y: 0 } : {}}
@@ -917,7 +879,9 @@ const JaimaxLanding = () => {
                   <ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform duration-300" size={18} />
                 </button>
 
-                <button className="px-6 py-3 border-2 border-lime-500 text-lime-400 font-semibold text-base rounded-full hover:bg-lime-500 hover:text-white transition-all duration-300 w-full sm:w-auto">
+                <button className="px-6 py-3 border-2 border-lime-500 text-lime-400 font-semibold text-base rounded-full hover:bg-lime-500 hover:text-white transition-all duration-300 w-full sm:w-auto" 
+                onClick={() => navigate("/blog")}
+                >
                   Learn More
                 </button>
               </motion.div>
