@@ -47,58 +47,10 @@ export default function HomeFooter() {
       <div
         className="w-full min-h-screen relative"
         style={{
-          background: loading ? '#666' : 'linear-gradient(135deg, #094e54, #4ecdc4)',
+          // background: loading ? '#666' : 'linear-gradient(135deg, #094e54, #4ecdc4)',
         }}
       >
-
-        {/* Dynamic Animated Background */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Primary Floating Orb */}
-          <div
-            className="absolute w-[500px] h-[500px] rounded-full opacity-20 blur-3xl"
-            style={{
-              background: 'radial-gradient(circle, #4ecdc4, rgba(78, 205, 196, 0.3), transparent)',
-              left: `${15 + mousePosition.x * 0.03}%`,
-              top: `${10 + mousePosition.y * 0.02}%`,
-              animation: 'float 10s ease-in-out infinite'
-            }}
-          />
-
-          {/* Secondary Floating Orb */}
-          <div
-            className="absolute w-[400px] h-[400px] rounded-full opacity-25 blur-3xl"
-            style={{
-              background: 'radial-gradient(circle, #26a69a, rgba(38, 166, 154, 0.4), transparent)',
-              right: `${10 + mousePosition.x * 0.02}%`,
-              bottom: `${15 + mousePosition.y * 0.03}%`,
-              animation: 'float 8s ease-in-out infinite reverse'
-            }}
-          />
-
-          {/* Central Conic Gradient */}
-          <div
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10 blur-3xl"
-            style={{
-              background: 'conic-gradient(from 0deg, #4ecdc4, #094e54, #26a69a, #4ecdc4)',
-              animation: 'spin 20s linear infinite'
-            }}
-          />
-
-          {/* Hexagonal Pattern Overlay */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="h-full w-full"
-              style={{
-                backgroundImage: `
-                                     radial-gradient(circle at 25% 25%, rgba(78, 205, 196, 0.3) 2px, transparent 2px),
-                                     radial-gradient(circle at 75% 75%, rgba(38, 166, 154, 0.3) 2px, transparent 2px)
-                                 `,
-                backgroundSize: '60px 60px',
-                backgroundPosition: '0 0, 30px 30px'
-              }}
-            />
-          </div>
-
-        </div>
+    
 
         <div className="relative z-10 max-w-8xl  px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh]">

@@ -65,7 +65,7 @@ const DashboardLayout = () => {
         className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
           } h-screen overflow-hidden`}
       >
-        <div className="mt-6 mb-3">
+        <div className="mt-6 mb-1">
           <Header />
         </div>
 

@@ -358,7 +358,7 @@ return (
             <button
               type="submit"
               disabled={loadingEmail}
-              className={`w-full py-3 font-semibold rounded-lg ${
+              className={`w-full py-3 font-semibold rounded-full ${
                 loadingEmail
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-teal-600 hover:bg-teal-700 text-white"

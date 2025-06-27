@@ -292,14 +292,14 @@ Don't miss out on this chance to be part of something BIG! 💥
       return userData.data.name.toUpperCase();
     }
     if (userData?.data?.username) {
-      return userData.data.username.substring(0, 2).toUpperCase();
+      return userData.data.username.toUpperCase();
     }
-    return "JM";
+    return "jaimax";
   };
 
   return (
     <>
-      <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-5">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
           
           {/* Profile Section */}
@@ -333,7 +333,7 @@ Don't miss out on this chance to be part of something BIG! 💥
             <div className="min-w-[260px] shadow-xl rounded-full">
               <TextField
                 label="Referral Code"
-                value={userData?.data?.username || "Loading..."}
+                value={userData?.data?.username || "JAIMAXXXXXXXX"}
                 size="small"
                 fullWidth
                 InputProps={{

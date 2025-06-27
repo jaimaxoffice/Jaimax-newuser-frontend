@@ -2796,7 +2796,7 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
         <button
           onClick={handleSubmit}
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+          className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
         >
           {isLoading ? "Signing In..." : "LOGIN"}
         </button>
@@ -3359,7 +3359,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
           type="submit"
           onClick={handleSubmit}
           disabled={isVerifyLoading || !otpSent || Object.keys(errors).length > 0 || !formData.otp.trim()}
-          className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+          className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-4"
         >
           {isVerifyLoading ? 'Verifying OTP...' : 'REGISTER'}
         </button>

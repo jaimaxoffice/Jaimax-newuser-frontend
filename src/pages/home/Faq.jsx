@@ -83,9 +83,7 @@ const JaimaxFAQ = () => {
         <div className="max-w-6xl mx-auto">
           {/* Hero Header */}
           <div className="text-center mb-16">
-            <h1 className="text-6xl md:text-7xl font-black text-transparent bg-gradient-to-r from-white via-[#4ecdc4] to-white bg-clip-text mb-4">
-              JAIMAX
-            </h1>
+            
             <p className="text-2xl font-light text-slate-300 mb-8">
               Frequently Asked Questions
             </p>

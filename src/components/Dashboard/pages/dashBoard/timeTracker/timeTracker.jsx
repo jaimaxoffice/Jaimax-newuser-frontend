@@ -123,7 +123,6 @@ const ActiveSlabContent = ({ slab, isActive }) => {
         </div>
         <div className="mb-3">
           <label className="block text-xs font-bold text-gray-700 mb-2 flex items-center gap-1">
-            {/* <DollarSign size={12} className="text-emerald-600" /> */}
             Payment method
           </label>
           <div className="flex gap-3">
@@ -171,11 +170,10 @@ const ActiveSlabContent = ({ slab, isActive }) => {
 
           <button
             onClick={handleProceedToPay}
-            className="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
+            className="w-full rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
-            <span className="relative z-10">Proceed to Pay</span>
-            <TrendingUp size={14} className="relative z-10" />
+            <span className="relative rounded-full z-10">Proceed to Pay</span>
           </button>
         </div>
         <div className="flex justify-between mb-1 gap-2">
@@ -370,7 +368,7 @@ const SlabTabs = () => {
               <button
                 key={slab.id}
                 onClick={() => handleTabClick(index)}
-                className={`px-4 py-1 text-sm rounded-lg font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${activeTab === index
+                className={`px-3 py-1 text-sm rounded-lg font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${activeTab === index
                   ? "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white shadow-lg shadow-emerald-500/25 scale-105"
                   : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
                   }`}
@@ -419,8 +417,8 @@ const SlabTabs = () => {
              backdrop-blur-sm"
           >
             <ArrowLeft size={14} />
-          </button> */}
-
+          </button>
+ */}
 
 
           {/* Card Container */}
@@ -446,14 +444,14 @@ const SlabTabs = () => {
             <ArrowRight size={14} />
           </button> */}
         </div>
-        <div className="flex justify-center items-center gap-2 my-3">
+        <div className="flex justify-center items-center gap-2 my-1.5">
           {slabsData.map((_, index) => (
             <button
               key={index}
               onClick={() => handleTabClick(index)}
               className={`rounded-full transition-all duration-500 shadow-md ${activeTab === index
-                ? "bg-gradient-to-r from-emerald-500 to-teal-500 w-4 h-2.5 shadow-emerald-500/25"
-                : "bg-gradient-to-r from-slate-400 to-slate-500 w-2.5 h-2.5 hover:from-slate-300 hover:to-slate-400 hover:scale-125"
+                ? "bg-gradient-to-r from-emerald-500 to-teal-500 w-6 h-2 shadow-emerald-500/25"
+                : "bg-gradient-to-r from-slate-400 to-slate-500 w-2 h-2 hover:from-slate-300 hover:to-slate-400 hover:scale-125"
                 }`}
             />
           ))}

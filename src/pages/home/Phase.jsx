@@ -900,7 +900,7 @@ export default function GrowthPlanTimeline() {
   };
 
   return (
-    <section className="bg-[#085259] text-white px-4 sm:px-8 md:px-10 lg:px-10 font-sans">
+    <section className=" text-white px-4 sm:px-8 md:px-10 lg:px-10 font-sans">
       {/* Heading */}
       <div className="text-center max-w-4xl mx-auto mb-10 px-2 sm:px-6">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight">

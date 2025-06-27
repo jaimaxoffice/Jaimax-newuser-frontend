@@ -934,173 +934,902 @@
 //   );
 // }
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaChartLine, FaUsers, FaDollarSign } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+// import React, { useState } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { FaChartLine, FaUsers, FaDollarSign } from "react-icons/fa";
+// import { useNavigate } from "react-router-dom";
 
-const CopyToClipboardButton = ({ textToCopy }) => {
+// const CopyToClipboardButton = ({ textToCopy }) => {
+//   const [copied, setCopied] = useState(false);
+
+//   const handleCopy = () => {
+//     navigator.clipboard.writeText(textToCopy);
+//     setCopied(true);
+//     setTimeout(() => setCopied(false), 2000);
+//   };
+
+//   return (
+//     <motion.button
+//       onClick={handleCopy}
+//       className="ml-2 sm:ml-4 bg-green-600 hover:bg-green-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base flex-shrink-0"
+//       whileHover={{ scale: 1.02 }}
+//       whileTap={{ scale: 0.98 }}
+//     >
+//       <AnimatePresence mode="wait">
+//         {copied ? (
+//           <motion.span
+//             key="copied"
+//             initial={{ opacity: 0, y: 5 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             exit={{ opacity: 0, y: -5 }}
+//           >
+//             ✓ Copied
+//           </motion.span>
+//         ) : (
+//           <motion.span
+//             key="copy"
+//             initial={{ opacity: 0, y: 5 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             exit={{ opacity: 0, y: -5 }}
+//           >
+//             Copy
+//           </motion.span>
+//         )}
+//       </AnimatePresence>
+//     </motion.button>
+//   );
+// };
+
+// const CoinDisplay = () => (
+//   <motion.div
+//     className="mb-6 lg:mb-10 flex justify-center"
+//     initial={{ scale: 0, rotate: -180 }}
+//     whileInView={{ scale: 1, rotate: 0 }}
+//     viewport={{ once: true }}
+//     transition={{ duration: 1, type: "spring", bounce: 0.3 }}
+//   >
+//     {/* Hidden on mobile (below md breakpoint), visible on md+ */}
+//     <div className="hidden md:flex w-[300px] md:w-[350px] lg:w-[400px] xl:w-[480px] h-[300px] md:h-[350px] lg:h-[400px] xl:h-[480px] overflow-hidden items-center justify-center">
+//       <iframe
+//         src="https://my.spline.design/security-4f17ed732da8f38cc4ab0615c59d5e68/"
+//         frameBorder="0"
+//         allow="autoplay; fullscreen"
+//         title="Jaimax Coin Animation"
+//         className="w-full h-full"
+//         style={{ pointerEvents: "none" }}
+//       />
+//     </div>
+//   </motion.div>
+// );
+
+// export default function CryptoStakingSection({
+//   contractAddress = "0x742d35Cc6648C25cbEC6900001Cfb3De3Fxxd4f",
+//   liveRounds = [{ atPriceUsdt: "0.00012" }],
+//   // onClickNavigateToAboutUs = () => { },
+// }) {
+//   const navigate = useNavigate();
+//    const onClickNavigateToAboutUs = () => { 
+//     navigate("/blog")
+//    }
+//   const metrics = [
+//     { icon: <FaDollarSign />, label: "Current Price", value: `$${liveRounds[0].atPriceUsdt}` },
+//     { icon: <FaUsers />, label: "Tokens Sold", value: "225.7M" },
+//     { icon: <FaChartLine />, label: "Community", value: "24,567" },
+//   ];
+
+//   return (
+//     <section className="relative  text-white py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 overflow-hidden">
+//       {/* Background blur effect */}
+//       <div className="absolute top-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-green-400 opacity-20 rounded-full blur-3xl pointer-events-none" />
+      
+//       <div className="max-w-7xl mx-auto">
+//         {/* Main content container */}
+//         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
+//           {/* Left side: Spline Animation - hidden on mobile (below md) */}
+//           <div className="flex-1 flex justify-center order-2 lg:order-1">
+//             {/* <CoinDisplay /> */}
+//             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1leb85WofOlN6KWXP0nIchbawzZg4lDq0eg&s" alt="" />
+//           </div>
+
+//           {/* Right side: Text Content */}
+//           <div className="flex-1 space-y-4 sm:space-y-6 order-1 lg:order-2 text-center lg:text-left">
+//             <p className="text-green-200 font-semibold text-base sm:text-lg tracking-wide">
+//               Your Gateway to Digital Wealth
+//             </p>
+            
+//             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-green-200 via-white to-green-200 bg-clip-text text-transparent">
+//               J COIN
+//             </h1>
+            
+//             <h2 className="text-green-400 text-2xl sm:text-3xl md:text-4xl font-bold">
+//               About Jaimax
+//             </h2>
+            
+//             <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
+//               Jaimax, the most valuable crypto investment app, is dedicated to making crypto accessible in a simple way. Established in 2024, Jaimax has addressed numerous challenges faced by the crypto community, providing solutions for investing, trading, and literacy.
+//               <a
+//                 href="#"
+//                 onClick={onClickNavigateToAboutUs}
+//                 className="cursor-pointer text-green-400 hover:text-green-500 font-semibold hover:underline transition-all duration-300 ml-2 inline-block sm:inline"
+//               >
+//                 READ MORE →
+//               </a>
+//             </p>
+            
+//             {/* Contract Address */}
+//             <div className="flex flex-col sm:flex-row items-center justify-between bg-gray-800 border border-gray-700 rounded-2xl p-3 sm:p-4 gap-3 sm:gap-0">
+//               <p className="text-green-400 font-mono font-medium text-xs sm:text-sm break-all sm:truncate sm:max-w-[60%] lg:max-w-[70%]">
+//                 {contractAddress}
+//               </p>
+//               <CopyToClipboardButton textToCopy={contractAddress} />
+//             </div>
+
+//             {/* Action Buttons */}
+//             <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-6 justify-center lg:justify-start">
+//               <button
+//                 onClick={() => navigate("/images/Jaimax_white_paper.pdf")}
+//                 className="border border-green-500 text-green-400 hover:bg-green-500 hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base"
+//               >
+//                 Read Whitepaper
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Metrics Section */}
+//         <div className="mt-12 sm:mt-16 lg:mt-20">
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+//             {metrics.map((item, index) => (
+//               <motion.div
+//                 key={index}
+//                 initial={{ opacity: 0, y: 20 }}
+//                 whileInView={{ opacity: 1, y: 0 }}
+//                 viewport={{ once: true }}
+//                 transition={{ duration: 0.6, delay: index * 0.2 }}
+//                 className="bg-green-900/10 border border-green-500/20 rounded-xl py-4 sm:py-6 px-4 sm:px-6 flex flex-col items-center text-center hover:bg-green-900/20 transition-all duration-300 shadow-md"
+//               >
+//                 <div className="text-green-400 text-2xl sm:text-3xl mb-2 sm:mb-3">
+//                   {item.icon}
+//                 </div>
+//                 <p className="text-base sm:text-lg font-semibold mb-1">
+//                   {item.label}
+//                 </p>
+//                 <p className="text-lg sm:text-xl font-bold">
+//                   {item.value}
+//                 </p>
+//               </motion.div>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+
+
+// import React, { useState } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { FaChartLine, FaUsers, FaDollarSign } from "react-icons/fa";
+// import { useNavigate } from "react-router-dom";
+
+// const CopyToClipboardButton = ({ textToCopy }) => {
+//   const [copied, setCopied] = useState(false);
+
+//   const handleCopy = () => {
+//     navigator.clipboard.writeText(textToCopy);
+//     setCopied(true);
+//     setTimeout(() => setCopied(false), 2000);
+//   };
+
+//   return (
+//     <motion.button
+//       onClick={handleCopy}
+//       className="ml-2 sm:ml-4 bg-green-600 hover:bg-green-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base flex-shrink-0"
+//       whileHover={{ scale: 1.02 }}
+//       whileTap={{ scale: 0.98 }}
+//     >
+//       <AnimatePresence mode="wait">
+//         {copied ? (
+//           <motion.span
+//             key="copied"
+//             initial={{ opacity: 0, y: 5 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             exit={{ opacity: 0, y: -5 }}
+//           >
+//             ✓ Copied
+//           </motion.span>
+//         ) : (
+//           <motion.span
+//             key="copy"
+//             initial={{ opacity: 0, y: 5 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             exit={{ opacity: 0, y: -5 }}
+//           >
+//             Copy
+//           </motion.span>
+//         )}
+//       </AnimatePresence>
+//     </motion.button>
+//   );
+// };
+
+// // This component is currently not being used, but is kept for reference as it was in the original code.
+// // If you intend to use the Spline animation, uncomment the relevant sections in CryptoStakingSection.
+// const CoinDisplay = () => (
+//   <motion.div
+//     className="mb-6 lg:mb-10 flex justify-center"
+//     initial={{ scale: 0, rotate: -180 }}
+//     whileInView={{ scale: 1, rotate: 0 }}
+//     viewport={{ once: true }}
+//     transition={{ duration: 1, type: "spring", bounce: 0.3 }}
+//   >
+//     {/* Hidden on mobile (below md breakpoint), visible on md+ */}
+//     <div className="hidden md:flex w-[300px] md:w-[350px] lg:w-[400px] xl:w-[480px] h-[300px] md:h-[350px] lg:h-[400px] xl:h-[480px] overflow-hidden items-center justify-center">
+//       <iframe
+//         src="https://my.spline.design/security-4f17ed732da8f38cc4ab0615c59d5e68/"
+//         frameBorder="0"
+//         allow="autoplay; fullscreen"
+//         title="Jaimax Coin Animation"
+//         className="w-full h-full"
+//         style={{ pointerEvents: "none" }}
+//       />
+//     </div>
+//   </motion.div>
+// );
+
+// export default function CryptoStakingSection({
+//   contractAddress = "0x742d35Cc6648C25cbEC6900001Cfb3De3Fxxd4f",
+//   liveRounds = [{ atPriceUsdt: "0.00012" }],
+// }) {
+//   const navigate = useNavigate();
+//   const onClickNavigateToAboutUs = () => {
+//     navigate("/blog");
+//   };
+
+//   const metrics = [
+//     { icon: <FaDollarSign />, label: "Current Price", value: `$${liveRounds[0].atPriceUsdt}` },
+//     { icon: <FaUsers />, label: "Tokens Sold", value: "225.7M" },
+//     { icon: <FaChartLine />, label: "Community", value: "24,567" },
+//   ];
+
+//   return (
+//     <section className="relative text-white py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 overflow-hidden">
+//       {/* Background blur effect */}
+//       <div className="absolute top-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-green-400 opacity-20 rounded-full blur-3xl pointer-events-none" />
+
+//       <div className="max-w-7xl mx-auto">
+//         {/* Main content container */}
+//         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
+//           {/* Left side: Coin Image / Spline Animation */}
+//           <div className="flex-1 flex justify-center order-2 lg:order-1 w-full lg:w-auto">
+//             {/* Display static image on all screens, or conditional rendering if Spline is desired on desktop */}
+//             <motion.img
+//               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1leb85WofOlN6KWXP0nIchbawzZg4lDq0eg&s"
+//               alt="Jaimax Coin Illustration"
+//               className="w-full h-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+//               initial={{ opacity: 0, scale: 0.8 }}
+//               whileInView={{ opacity: 1, scale: 1 }}
+//               viewport={{ once: true }}
+//               transition={{ duration: 0.8, ease: "easeOut" }}
+//             />
+//             {/* If you want to use the Spline animation on larger screens: */}
+//             {/* <div className="hidden md:block">
+//                 <CoinDisplay />
+//             </div>
+//             <div className="md:hidden">
+//                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1leb85WofOlN6KWXP0nIchbawzZg4lDq0eg&s" alt="Jaimax Coin Illustration" className="w-full h-auto max-w-xs" />
+//             </div> */}
+//           </div>
+
+//           {/* Right side: Text Content */}
+//           <div className="flex-1 space-y-4 sm:space-y-6 order-1 lg:order-2 text-center lg:text-left">
+//             <p className="text-green-200 font-semibold text-base sm:text-lg tracking-wide">
+//               Your Gateway to Digital Wealth
+//             </p>
+
+//             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-green-200 via-white to-green-200 bg-clip-text text-transparent">
+//               J COIN
+//             </h1>
+
+//             <h2 className="text-green-400 text-2xl sm:text-3xl md:text-4xl font-bold">
+//               About Jaimax
+//             </h2>
+
+//             <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
+//               Jaimax, the most valuable crypto investment app, is dedicated to making crypto accessible in a simple way. Established in 2024, Jaimax has addressed numerous challenges faced by the crypto community, providing solutions for investing, trading, and literacy.
+//               <a
+//                 href="#"
+//                 onClick={onClickNavigateToAboutUs}
+//                 className="cursor-pointer text-green-400 hover:text-green-500 font-semibold hover:underline transition-all duration-300 ml-2 inline-block sm:inline"
+//               >
+//                 READ MORE →
+//               </a>
+//             </p>
+
+//             {/* Contract Address */}
+//             <div className="flex flex-col sm:flex-row items-center justify-between bg-gray-800 border border-gray-700 rounded-2xl p-3 sm:p-4 gap-3 sm:gap-0">
+//               <p className="text-green-400 font-mono font-medium text-xs sm:text-sm break-all sm:truncate sm:max-w-[60%] lg:max-w-[70%]">
+//                 {contractAddress}
+//               </p>
+//               <CopyToClipboardButton textToCopy={contractAddress} />
+//             </div>
+
+//             {/* Action Buttons */}
+//             <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-6 justify-center lg:justify-start">
+//               <button
+//                 onClick={() => navigate("/images/Jaimax_white_paper.pdf")}
+//                 className="border border-green-500 text-green-400 hover:bg-green-500 hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base"
+//               >
+//                 Read Whitepaper
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//         {/* Metrics Section */}
+//         <div className="mt-12 sm:mt-16 lg:mt-20">
+//           <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-8 bg-gradient-to-r from-green-300 to-green-500 bg-clip-text text-transparent">
+//             Jaimax Key Metrics
+//           </h3>
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+//             {metrics.map((item, index) => (
+//               <motion.div
+//                 key={index}
+//                 initial={{ opacity: 0, y: 20 }}
+//                 whileInView={{ opacity: 1, y: 0 }}
+//                 viewport={{ once: true }}
+//                 transition={{ duration: 0.6, delay: index * 0.2 }}
+//                 className="bg-green-900/10 border border-green-500/20 rounded-xl py-4 sm:py-6 px-4 sm:px-6 flex flex-col items-center text-center hover:bg-green-900/20 transition-all duration-300 shadow-md"
+//               >
+//                 <div className="text-green-400 text-2xl sm:text-3xl mb-2 sm:mb-3">
+//                   {item.icon}
+//                 </div>
+//                 <p className="text-base sm:text-lg font-semibold mb-1">
+//                   {item.label}
+//                 </p>
+//                 <p className="text-lg sm:text-xl font-bold">
+//                   {item.value}
+//                 </p>
+//               </motion.div>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+
+
+
+// import React, { useState } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { FaChartLine, FaUsers, FaDollarSign, FaCopy, FaCheck, FaArrowRight } from "react-icons/fa";
+
+// const CopyToClipboardButton = ({ textToCopy }) => {
+//   const [copied, setCopied] = useState(false);
+
+//   const handleCopy = () => {
+//     navigator.clipboard.writeText(textToCopy);
+//     setCopied(true);
+//     setTimeout(() => setCopied(false), 2000);
+//   };
+
+//   return (
+//     <motion.button
+//       onClick={handleCopy}
+//       className="relative flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2.5 rounded-xl font-medium transition-all duration-300 text-sm flex-shrink-0 shadow-lg hover:shadow-xl group overflow-hidden"
+//       whileHover={{ scale: 1.02 }}
+//       whileTap={{ scale: 0.98 }}
+//     >
+//       <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+//       <AnimatePresence mode="wait">
+//         {copied ? (
+//           <motion.div
+//             key="copied"
+//             initial={{ opacity: 0, scale: 0.8 }}
+//             animate={{ opacity: 1, scale: 1 }}
+//             exit={{ opacity: 0, scale: 0.8 }}
+//             className="flex items-center gap-2"
+//           >
+//             <FaCheck className="text-sm" />
+//             <span>Copied!</span>
+//           </motion.div>
+//         ) : (
+//           <motion.div
+//             key="copy"
+//             initial={{ opacity: 0, scale: 0.8 }}
+//             animate={{ opacity: 1, scale: 1 }}
+//             exit={{ opacity: 0, scale: 0.8 }}
+//             className="flex items-center gap-2"
+//           >
+//             <FaCopy className="text-sm" />
+//             <span>Copy</span>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+//     </motion.button>
+//   );
+// };
+
+// const FloatingElement = ({ children, delay = 0 }) => (
+//   <motion.div
+//     animate={{
+//       y: [0, -10, 0],
+//       rotate: [0, 1, -1, 0],
+//     }}
+//     transition={{
+//       duration: 6,
+//       delay,
+//       repeat: Infinity,
+//       ease: "easeInOut",
+//     }}
+//   >
+//     {children}
+//   </motion.div>
+// );
+
+// export default function CryptoStakingSection({
+//   contractAddress = "0x742d35Cc6648C25cbEC6900001Cfb3De3Fxxd4f",
+//   liveRounds = [{ atPriceUsdt: "0.00012" }],
+// }) {
+//   const metrics = [
+//     { 
+//       icon: <FaDollarSign />, 
+//       label: "Current Price", 
+//       value: `$${liveRounds[0].atPriceUsdt}`,
+//       gradient: "from-yellow-400 to-orange-500"
+//     },
+//     { 
+//       icon: <FaUsers />, 
+//       label: "Tokens Sold", 
+//       value: "225.7M",
+//       gradient: "from-blue-400 to-purple-500"
+//     },
+//     { 
+//       icon: <FaChartLine />, 
+//       label: "Community", 
+//       value: "24,567",
+//       gradient: "from-pink-400 to-red-500"
+//     },
+//   ];
+
+//   const handleWhitepaperClick = () => {
+//     window.open("/images/Jaimax_white_paper.pdf", "_blank");
+//   };
+
+//   const handleReadMore = () => {
+//     // Navigate to blog/about section
+//     console.log("Navigate to about us");
+//   };
+
+//   return (
+//     <section className="relative min-h-screen  text-white py-12 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-12 overflow-hidden">
+//       {/* Enhanced Background Effects */}
+//       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+//         <div className="absolute top-0 left-0 w-72 h-72 bg-green-400/20 rounded-full blur-3xl animate-pulse" />
+//         <div className="absolute top-1/4 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+//         <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-cyan-400/15 rounded-full blur-3xl" />
+        
+//         {/* Animated grid pattern */}
+//         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] bg-[size:40px_40px] opacity-30" />
+//       </div>
+
+//       <div className="relative max-w-7xl mx-auto">
+//         {/* Main Hero Section */}
+//         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16 lg:mb-24">
+//           {/* Left side: Content */}
+//           <motion.div 
+//             className="space-y-6 lg:space-y-8 text-center lg:text-left order-2 lg:order-1"
+//             initial={{ opacity: 0, x: -50 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             transition={{ duration: 0.8 }}
+//           >
+//             <motion.p 
+//               className="text-green-300 font-semibold text-lg md:text-xl tracking-wide"
+//               initial={{ opacity: 0, y: 20 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.2 }}
+//             >
+//               Your Gateway to Digital Wealth
+//             </motion.p>
+
+//             <motion.h1 
+//               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-none"
+//               initial={{ opacity: 0, y: 30 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.4 }}
+//             >
+//               <span className="bg-gradient-to-r from-green-200 via-emerald-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-2xl">
+//                 J COIN
+//               </span>
+//             </motion.h1>
+
+//             <motion.h2 
+//               className="text-green-400 text-3xl sm:text-4xl md:text-5xl font-bold"
+//               initial={{ opacity: 0, y: 20 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.6 }}
+//             >
+//               About Jaimax
+//             </motion.h2>
+
+//             <motion.div 
+//               className="space-y-4"
+//               initial={{ opacity: 0, y: 20 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 0.8 }}
+//             >
+//               <p className="text-gray-300 leading-relaxed text-base md:text-lg max-w-2xl mx-auto lg:mx-0">
+//                 Jaimax, the most valuable crypto investment app, is dedicated to making crypto accessible in a simple way. Established in 2024, Jaimax has addressed numerous challenges faced by the crypto community, providing solutions for investing, trading, and literacy.
+//               </p>
+              
+//               <button
+//                 onClick={handleReadMore}
+//                 className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 font-semibold transition-all duration-300 group"
+//               >
+//                 READ MORE
+//                 <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
+//               </button>
+//             </motion.div>
+
+//             {/* Enhanced Contract Address Card */}
+//             <motion.div 
+//               className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-4 md:p-6"
+//               initial={{ opacity: 0, y: 20 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 1.0 }}
+//             >
+//               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+//                 <div className="flex-1 min-w-0">
+//                   <p className="text-gray-400 text-sm mb-1">Contract Address</p>
+//                   <p className="text-green-400 font-mono font-medium text-sm md:text-base break-all">
+//                     {contractAddress}
+//                   </p>
+//                 </div>
+//                 <CopyToClipboardButton textToCopy={contractAddress} />
+//               </div>
+//             </motion.div>
+
+//             {/* Action Buttons */}
+//             <motion.div 
+//               className="flex flex-wrap gap-4 justify-center lg:justify-start"
+//               initial={{ opacity: 0, y: 20 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: 1.2 }}
+//             >
+//               <button
+//                 onClick={handleWhitepaperClick}
+//                 className="relative group bg-transparent border-2 border-green-500 text-green-400 hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 overflow-hidden"
+//               >
+//                 <span className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+//                 <span className="relative z-10">Read Whitepaper</span>
+//               </button>
+//             </motion.div>
+//           </motion.div>
+
+//           {/* Right side: Coin Image */}
+//           <motion.div 
+//             className="flex justify-center order-1 lg:order-2"
+//             initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+//             animate={{ opacity: 1, scale: 1, rotate: 0 }}
+//             transition={{ duration: 1, delay: 0.5 }}
+//           >
+//             <di delay={0}>
+//               <div className="relative">
+//                 <div className="absolute inset-0 " />
+//                 <img
+//                   src="https://i.pinimg.com/736x/b6/a1/fa/b6a1fa6845d22fbaab3a2759f92d695e.jpg"
+//                   alt="Jaimax Coin"
+//                   className="relative rounded-lg shadow-2xl  w-full h-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+//                 />
+//                 {/* Glowing ring effect */}
+//                 {/* <div className="absolute inset-0 rounded-full border-2 border-green-400/50 animate-pulse" /> */}
+//               </div>
+//             </di>
+//           </motion.div>
+//         </div>
+
+//         {/* Enhanced Metrics Section */}
+//         <motion.div 
+//           className="space-y-8 md:space-y-12"
+//           initial={{ opacity: 0, y: 50 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           viewport={{ once: true, margin: "-100px" }}
+//           transition={{ duration: 0.8 }}
+//         >
+//           <div className="text-center">
+//             <h3 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4">
+//               <span className="bg-gradient-to-r from-green-300 via-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+//                 Key Metrics
+//               </span>
+//             </h3>
+//             <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+//               Real-time insights into Jaimax's performance and community growth
+//             </p>
+//           </div>
+
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+//             {metrics.map((item, index) => (
+//               <motion.div
+//                 key={index}
+//                 initial={{ opacity: 0, y: 30 }}
+//                 whileInView={{ opacity: 1, y: 0 }}
+//                 viewport={{ once: true }}
+//                 transition={{ duration: 0.6, delay: index * 0.2 }}
+//                 whileHover={{ y: -10, scale: 1.02 }}
+//                 className="group relative"
+//               >
+//                 <div className="relative bg-gradient-to-br from-gray-800/50 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 md:p-8 text-center hover:border-green-500/50 transition-all duration-500 overflow-hidden">
+//                   {/* Background gradient effect */}
+//                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+                  
+//                   {/* Icon */}
+//                   <div className={`inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br ${item.gradient} mb-4 md:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+//                     <div className="text-white text-2xl md:text-3xl">
+//                       {item.icon}
+//                     </div>
+//                   </div>
+
+//                   {/* Content */}
+//                   <div className="relative z-10">
+//                     <p className="text-gray-300 text-base md:text-lg font-medium mb-2">
+//                       {item.label}
+//                     </p>
+//                     <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-white group-hover:text-green-300 transition-colors duration-300">
+//                       {item.value}
+//                     </p>
+//                   </div>
+
+//                   {/* Decorative elements */}
+//                   <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/5 to-transparent rounded-full transform translate-x-10 -translate-y-10" />
+//                   <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-white/5 to-transparent rounded-full transform -translate-x-8 translate-y-8" />
+//                 </div>
+//               </motion.div>
+//             ))}
+//           </div>
+//         </motion.div>
+
+//       </div>
+//     </section>
+//   );
+// }
+
+
+// import React from "react";
+// import { Copy } from "lucide-react";
+// import logo from '../../../public/images/site_logo.svg';
+// import { useNavigate } from "react-router-dom";
+
+// const HomeAbout = () => {
+//   const contractAddress = "0x71eC974DA6D18df497D21af8026B3ADF7B1865B6";
+//   const navigate = useNavigate();
+//   const handleCopy = () => {
+//     navigator.clipboard.writeText(contractAddress);
+//   };
+
+//   return (
+//     <section className=" text-teal-800 py-12 px-4 lg:px-24 text-center font-[Poppins]">
+//       {/* Logo */}
+//       <div className="flex justify-center mb-4 w-full h-50">
+//         <img
+//           src={logo}
+//           alt="Jaimax Logo"
+//           className="w-40 h-40 object-contain"
+//         />
+//       </div>
+
+//       {/* Heading */}
+//       <h2 className="text-4xl font-extrabold text-white uppercase mb-6">
+//         About Jaimax
+//       </h2>
+
+//       {/* Description */}
+//       <p className="text-lg leading-relaxed max-w-3xl mx-auto text-white">
+//         Jaimax, the most valuable crypto investment app, is dedicated to making
+//         crypto accessible in a simple way. Established in 2024, Jaimax has
+//         addressed numerous challenges faced by the crypto community, providing
+//         solutions for crypto investing, trading, and literacy...
+//         <span className="text-teal-500 font-semibold ml-1 cursor-pointer hover:underline" onClick={()=>navigate('/about')}>
+//           READ MORE
+//         </span>
+//       </p>
+
+//       {/* Contract Address */}
+//       <div className="mt-10">
+//         <h4 className="text-xl text-white font-semibold mb-3">
+//           CONTRACT ADDRESS
+//         </h4>
+//         <div className="inline-flex items-center bg-teal-100 text-teal-800 font-bold px-6 py-3 rounded-full shadow-lg space-x-2">
+//           <span>{contractAddress}</span>
+//           <button onClick={handleCopy} title="Copy">
+//             <Copy size={18} className="hover:text-teal-600" />
+//           </button>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default HomeAbout;
+
+
+
+import React, { useState, useEffect } from "react";
+import { Copy, Users, Coins, TrendingUp, Check } from "lucide-react";
+import logo from '../../../public/images/site_logo.svg';
+const HomeAbout = () => {
+  const contractAddress = "0x71eC974DA6D18df497D21af8026B3ADF7B1865B6";
   const [copied, setCopied] = useState(false);
+  
+  // Simulated live data - in real app, these would come from API
+  const [liveData, setLiveData] = useState({
+    members: 12547,
+    soldCoins: 8924567,
+    livePrice: 0.0234
+  });
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(textToCopy);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(contractAddress);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // Simulate live data updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveData(prev => ({
+        members: prev.members + Math.floor(Math.random() * 3),
+        soldCoins: prev.soldCoins + Math.floor(Math.random() * 100),
+        livePrice: prev.livePrice + (Math.random() - 0.5) * 0.001
+      }));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleNavigate = () => {
+    // navigate('/about') - uncomment when using with router
+    console.log('Navigate to about page');
+  };
+
+  const formatNumber = (num) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toLocaleString();
   };
 
   return (
-    <motion.button
-      onClick={handleCopy}
-      className="ml-2 sm:ml-4 bg-green-600 hover:bg-green-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base flex-shrink-0"
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-    >
-      <AnimatePresence mode="wait">
-        {copied ? (
-          <motion.span
-            key="copied"
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-          >
-            ✓ Copied
-          </motion.span>
-        ) : (
-          <motion.span
-            key="copy"
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-          >
-            Copy
-          </motion.span>
-        )}
-      </AnimatePresence>
-    </motion.button>
-  );
-};
+    <section className=" text-white py-16 px-4 lg:px-24 relative overflow-hidden">
+     
 
-const CoinDisplay = () => (
-  <motion.div
-    className="mb-6 lg:mb-10 flex justify-center"
-    initial={{ scale: 0, rotate: -180 }}
-    whileInView={{ scale: 1, rotate: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 1, type: "spring", bounce: 0.3 }}
-  >
-    {/* Hidden on mobile (below md breakpoint), visible on md+ */}
-    <div className="hidden md:flex w-[300px] md:w-[350px] lg:w-[400px] xl:w-[480px] h-[300px] md:h-[350px] lg:h-[400px] xl:h-[480px] overflow-hidden items-center justify-center">
-      <iframe
-        src="https://my.spline.design/security-4f17ed732da8f38cc4ab0615c59d5e68/"
-        frameBorder="0"
-        allow="autoplay; fullscreen"
-        title="Jaimax Coin Animation"
-        className="w-full h-full"
-        style={{ pointerEvents: "none" }}
-      />
-    </div>
-  </motion.div>
-);
-
-export default function CryptoStakingSection({
-  contractAddress = "0x742d35Cc6648C25cbEC6900001Cfb3De3Fxxd4f",
-  liveRounds = [{ atPriceUsdt: "0.00012" }],
-  // onClickNavigateToAboutUs = () => { },
-}) {
-  const navigate = useNavigate();
-   const onClickNavigateToAboutUs = () => { 
-    navigate("/blog")
-   }
-  const metrics = [
-    { icon: <FaDollarSign />, label: "Current Price", value: `$${liveRounds[0].atPriceUsdt}` },
-    { icon: <FaUsers />, label: "Tokens Sold", value: "225.7M" },
-    { icon: <FaChartLine />, label: "Community", value: "24,567" },
-  ];
-
-  return (
-    <section className="relative bg-gradient-to-b from-black via-gray-900 to-black text-white py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 overflow-hidden">
-      {/* Background blur effect */}
-      <div className="absolute top-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-green-400 opacity-20 rounded-full blur-3xl pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto">
-        {/* Main content container */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
-          {/* Left side: Spline Animation - hidden on mobile (below md) */}
-          <div className="flex-1 flex justify-center order-2 lg:order-1">
-            <CoinDisplay />
-          </div>
-
-          {/* Right side: Text Content */}
-          <div className="flex-1 space-y-4 sm:space-y-6 order-1 lg:order-2 text-center lg:text-left">
-            <p className="text-green-200 font-semibold text-base sm:text-lg tracking-wide">
-              Your Gateway to Digital Wealth
-            </p>
-            
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-green-200 via-white to-green-200 bg-clip-text text-transparent">
-              J COIN
-            </h1>
-            
-            <h2 className="text-green-400 text-2xl sm:text-3xl md:text-4xl font-bold">
-              About Jaimax
-            </h2>
-            
-            <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
-              Jaimax, the most valuable crypto investment app, is dedicated to making crypto accessible in a simple way. Established in 2024, Jaimax has addressed numerous challenges faced by the crypto community, providing solutions for investing, trading, and literacy.
-              <a
-                href="#"
-                onClick={onClickNavigateToAboutUs}
-                className="cursor-pointer text-green-400 hover:text-green-500 font-semibold hover:underline transition-all duration-300 ml-2 inline-block sm:inline"
-              >
-                READ MORE →
-              </a>
-            </p>
-            
-            {/* Contract Address */}
-            <div className="flex flex-col sm:flex-row items-center justify-between bg-gray-800 border border-gray-700 rounded-2xl p-3 sm:p-4 gap-3 sm:gap-0">
-              <p className="text-green-400 font-mono font-medium text-xs sm:text-sm break-all sm:truncate sm:max-w-[60%] lg:max-w-[70%]">
-                {contractAddress}
-              </p>
-              <CopyToClipboardButton textToCopy={contractAddress} />
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-6 justify-center lg:justify-start">
-              <button
-                onClick={() => navigate("/images/Jaimax_white_paper.pdf")}
-                className="border border-green-500 text-green-400 hover:bg-green-500 hover:text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base"
-              >
-                Read Whitepaper
-              </button>
-            </div>
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Logo Section */}
+        <div className="flex justify-center mb-12">
+          <div className="relative">
+            <img src={logo} alt="" />
+            {/* <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-pulse"></div> */}
           </div>
         </div>
 
-        {/* Metrics Section */}
-        <div className="mt-12 sm:mt-16 lg:mt-20">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {metrics.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="bg-green-900/10 border border-green-500/20 rounded-xl py-4 sm:py-6 px-4 sm:px-6 flex flex-col items-center text-center hover:bg-green-900/20 transition-all duration-300 shadow-md"
-              >
-                <div className="text-green-400 text-2xl sm:text-3xl mb-2 sm:mb-3">
-                  {item.icon}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {/* Live Members */}
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
+            <div className="flex items-center justify-between mb-3">
+              <Users className="w-8 h-8 text-teal-400" />
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">
+              {formatNumber(liveData.members)}
+            </h3>
+            <p className="text-teal-300 text-sm font-medium">Live Members</p>
+          </div>
+
+          {/* Sold Coins */}
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
+            <div className="flex items-center justify-between mb-3">
+              <Coins className="w-8 h-8 text-yellow-400" />
+              <TrendingUp className="w-4 h-4 text-green-400" />
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">
+              {formatNumber(liveData.soldCoins)}
+            </h3>
+            <p className="text-yellow-300 text-sm font-medium">Coins Sold</p>
+          </div>
+
+          {/* Live Price */}
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
+            <div className="flex items-center justify-between mb-3">
+              <TrendingUp className="w-8 h-8 text-green-400" />
+              <div className="text-xs text-green-400 font-semibold bg-green-400/20 px-2 py-1 rounded-full">
+                LIVE
+              </div>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">
+              ${liveData.livePrice.toFixed(4)}
+            </h3>
+            <p className="text-green-300 text-sm font-medium">Current Price</p>
+          </div>
+        </div>
+<div className="mb-12">
+  <img
+    src="https://cdn.dribbble.com/users/1787323/screenshots/17509856/media/13f8ac5374e47b9a108d08912b97e2ae.png?compress=1&resize=1200x900"
+    alt="Crypto Illustration"
+    className="w-full max-w-4xl mx-auto rounded-3xl shadow-xl"
+  />
+</div>
+        {/* Main Content */}
+        <div className="text-center">
+          {/* Heading */}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-400 uppercase mb-8 leading-tight">
+            About Jaimax
+          </h2>
+
+          {/* Description */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <p className="text-lg md:text-xl leading-relaxed text-gray-200 mb-6">
+              Jaimax, the most valuable crypto investment app, is dedicated to making
+              crypto accessible in a simple way. Established in 2024, Jaimax has
+              addressed numerous challenges faced by the crypto community, providing
+              solutions for crypto investing, trading, and literacy.
+            </p>
+            <button 
+              onClick={handleNavigate}
+              className="inline-flex items-center text-teal-400 font-semibold hover:text-teal-300 transition-colors duration-200 group"
+            >
+              <span className="border-b-2 border-teal-400 group-hover:border-teal-300 transition-colors duration-200">
+                READ MORE
+              </span>
+              <TrendingUp className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-200" />
+            </button>
+          </div>
+
+          {/* Contract Address */}
+          <div className="max-w-2xl mx-auto">
+            <h4 className="text-xl md:text-2xl font-semibold mb-6 text-gray-200">
+              CONTRACT ADDRESS
+            </h4>
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-gray-400 mb-1">Smart Contract</p>
+                  <p className="font-mono text-sm md:text-base text-white break-all">
+                    {contractAddress}
+                  </p>
                 </div>
-                <p className="text-base sm:text-lg font-semibold mb-1">
-                  {item.label}
-                </p>
-                <p className="text-lg sm:text-xl font-bold">
-                  {item.value}
-                </p>
-              </motion.div>
-            ))}
+                <button 
+                  onClick={handleCopy}
+                  className="flex items-center space-x-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg"
+                  title={copied ? "Copied!" : "Copy to clipboard"}
+                >
+                  {copied ? (
+                    <>
+                      <Check size={18} />
+                      <span className="hidden sm:inline">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={18} />
+                      <span className="hidden sm:inline">Copy</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default HomeAbout;
