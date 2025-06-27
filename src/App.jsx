@@ -41,6 +41,7 @@ import ReferEarn from './services/Referearn'
 
 import AddFundsPage from './components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet';
 import AddMoneyToWallet from './components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet';
+import TodayEarning from './components/Dashboard/pages/TodayEarnings/TodayEarning';
 // Dashboard Layout Component
 
 const DashboardLayout = () => {
@@ -134,6 +135,9 @@ const App = () => {
         </Route>
         <Route path="/shareholders" element={<DashboardLayout />}>
           <Route index element={<Shareholders />} />
+        </Route>
+        <Route path="/earnings" element={<DashboardLayout />}>
+          <Route index element={<TodayEarning />} />
         </Route>
            <Route path="/add-funds" element={<DashboardLayout />}>
           <Route index element={<AddMoneyToWallet />} />

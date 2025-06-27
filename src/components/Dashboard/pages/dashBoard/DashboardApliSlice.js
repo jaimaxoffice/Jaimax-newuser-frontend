@@ -1,24 +1,4 @@
-
-// import { apiSlice } from "../../storeJs/api/JaimaxApi"; 
-
-// export const myTeamApiSlice = apiSlice.injectEndpoints({
-//     endpoints: (builder) => ({
-//           userDetails: builder.query({
-//             query: (queryParams) => ({
-//               url: `/user/userReport?${queryParams}`,
-//               method: 'GET', 
-//             }),
-//           })
-        
-//     })
-// })
-
-// export const { useUserDetailsQuery } = myTeamApiSlice;
- 
-
 import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";  
-// import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi"; 
-
 export const dashboardApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getRound: builder.query({

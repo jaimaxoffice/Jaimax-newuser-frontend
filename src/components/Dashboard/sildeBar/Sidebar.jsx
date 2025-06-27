@@ -13,6 +13,7 @@ import {
   HiOutlineCash,
   HiOutlineChatAlt2,
   HiOutlineLogout,
+  HiOutlineClock
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { FaHandshake } from "react-icons/fa";
@@ -34,6 +35,7 @@ const navItems = [
   { name: "Wallet", path: "/wallet", icon: <HiOutlineClipboardList /> },
   { name: "My Total Team", path: "/my-team", icon: <HiOutlineCalendar /> },
   {name:"Share Holders", path:"/shareholders", icon:<FaHandshake />},
+  {name:"Todays Earnings", path:"/earnings", icon:<HiOutlineClock />},
   { name: "Buy History", path: "/buy-history", icon: <HiOutlineChartBar /> },
   { name: "Security", path: "/security", icon: <HiOutlineShieldCheck /> },
   { name: "Profile", path: "/profile", icon: <HiOutlineUser /> },
@@ -42,8 +44,6 @@ const navItems = [
   { name: "Support", path: "/support", icon: <HiOutlineChatAlt2 /> },
   { name: "Logout", icon: <HiOutlineLogout /> },
 ];
-import Wallet from "../../Dashboard/pages/wallet/wallet";
-
 function Sidebar({ onLogoutClick }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -93,12 +93,12 @@ function Sidebar({ onLogoutClick }) {
           onClick={() => setIsOpen(false)}
         />
       )}
-
+{/* bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#000000] */}
       {/* Sidebar */}
       <div
         className={`
           fixed top-0 left-0 h-full bg-flex flex-col z-40 
-          transition-all duration-300 ease-in-out shadow-lg border-r border-teal-600/20 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#000000]
+          transition-all duration-300 ease-in-out shadow-lg border-r border-teal-600/20 bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
           ${isMobile 
             ? `${isOpen ? 'translate-x-0' : '-translate-x-full'} w-72` 
             : `${isOpen ? 'w-80' : 'w-20'} relative mt-6 ml-3 mb-6 rounded-lg`
