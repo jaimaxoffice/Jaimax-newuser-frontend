@@ -178,11 +178,11 @@ const Footer = () => {
                     </NavLink>
                   </li>
                 ))}
-                <li className="pt-2 border-t border-white/10">
+                {/* <li className="pt-2 border-t border-white/10">
                   <div className="text-[#c5d82e] text-sm font-semibold">
                     10% referral income
                   </div>
-                </li>
+                </li> */}
               </ul>
             </div>
 

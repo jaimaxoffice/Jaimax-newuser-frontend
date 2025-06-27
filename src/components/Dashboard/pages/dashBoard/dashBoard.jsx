@@ -328,6 +328,7 @@ const Dashboard = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-gradient-to-br from-teal-500 via-teal-600 to-teal-700 lg:p-4 overflow-y-scroll scrollbar-hidden">
       <div className="max-w-7xl mx-auto">
         <ActionButtons />
@@ -491,3 +492,8 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+=======
+    <div>dashBoard</div>
+  )
+}
+>>>>>>> 09250ef9d80d9d1683efa451e03be9894dc6c7f0

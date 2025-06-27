@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import homeBgDesktop from "../../assets/Images/HomeDesktop.jpg";
 import homeBgMobile from "../../assets/Images/HomeMobile.jpg";
 const Threads = React.lazy(() => import('../../global/Threads'));
-import Roadmap from './RoadmapDup';
+
 import Partners from './Partners';
 import HomeFooter from './HomeFoot';
 import JaimaxFAQ from './Faq';
@@ -13,6 +13,8 @@ import ServicesComponent from './Homeservices';
 import PhaseCarousel from './Phase';
 import CryptoStakingSection from './HomeAbout';
 import HomeContact from './HomeContact';
+import GrowthPlanTimeline from './Phase';
+import RealTimeTicker from './scroll';
 const Home = () => {
   const [currentBg, setCurrentBg] = useState('');
   const navigate = useNavigate();
@@ -43,105 +45,90 @@ const Home = () => {
   return (
     <div className="outer-container">
 
-      {/* Hero Section */}
-      <div
-        className="revolutionSection w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
-        style={{
-          backgroundImage: `url(${currentBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed"
-        }}
-      >
-        {/* Floating Elements */}
-        <div className="floating-elements">
-          <div className="floating-circle circle-1"></div>
-          <div className="floating-circle circle-2"></div>
-          <div className="floating-circle circle-3"></div>
-          <div className="floating-square square-1"></div>
-          <div className="floating-square square-2"></div>
-        </div>
 
-        {/* Overlays */}
-        <div className="gradient-overlay-1"></div>
-        <div className="gradient-overlay-2"></div>
 
-        {/* Main Heading */}
-        <div className="relative z-10 text-center px-6 md:px-12 max-w-6xl mx-auto mt-44 md:mt-48">
-          <motion.h2
-            initial={{ opacity: 0, y: 50 }}
+
+      <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-8 bg-[#09535a]">
+
+        {/* ✅ Background Image with blur */}
+        <img
+          src={homeBgDesktop}
+          alt="Jaimax Background"
+          className="absolute inset-0 w-full h-full object-cover brightness-110 contrast-110 opacity-90 blur-sm z-0"
+        />
+
+        {/* ✅ Layered overlay with smooth glow */}
+        <div className="absolute inset-0 z-0" />
+
+
+        {/* ✅ Glow Ring Effect */}
+        <div className="absolute w-[500px] h-[500px] bg-[#b8cc26]/10 rounded-full blur-3xl opacity-50 z-0 top-[10%] left-[10%]" />
+        <div className="absolute w-[400px] h-[400px] bg-[#1d8e85]/20 rounded-full blur-2xl opacity-40 z-0 bottom-[5%] right-[5%]" />
+
+        {/* ✅ Foreground Content */}
+        <div className="relative z-10 text-center mt-16 max-w-4xl">
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
-            className="tagline text-2xl md:text-4xl lg:text-5xl font-bold leading-tight text-center"
+            transition={{ duration: 1 }}
+            className="text-white font-bold text-4xl sm:text-5xl md:text-6xl leading-tight drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)]"
           >
-            <span
-              style={{
-                color: '#b8cc26',
-                display: 'block',
-                textShadow: '0 2px 6px rgba(0, 0, 0, 0.6)',
-              }}
-            >
-              Secure Your Financial Tomorrow
-            </span>
-            <span
-              style={{
-                color: '#fff',
-                textShadow: '0 1px 4px rgba(0,0,0,0.4)',
-                display: 'block',
-                marginTop: '0.5rem',
-              }}
-            >
-              with Innovation & Trust
-            </span>
-          </motion.h2>
+            <span className="block text-[#b8cc26]">Secure Your</span>
+            <span className="block">Financial Tomorrow</span>
+            <span className="block text-[#ffffff]">with Innovation & Trust</span>
+          </motion.h1>
 
-          {/* CTA Button */}
-          <div className="cta-section mt-6">
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className="text-white/80 text-base sm:text-lg mt-6 "
+          >
+            Jaimax blends blockchain technology with speed and safety — built to empower the next generation of financial freedom.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="mt-10 flex justify-center flex-wrap gap-4"
+          >
             <button
-              className="cta-button rounded-full hover:bg-lime-600 transition-transform duration-300 hover:scale-105"
-              style={{
-                padding: "1rem 3rem",
-                color: "white",
-                backgroundColor: "#1e964a",
-                boxShadow: "0 0 12px rgba(186, 206, 39, 0.5)",
-                border: "1px solid #bace27"
-              }}
-              onClick={handleJoinRevolution}
-            >
-              <span className="uppercase tracking-wide font-semibold">Join Revolution</span>
+              onClick={() => navigate("/login")}
+              className="bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] text-[#0f1c14] px-6 py-3 rounded-full font-bold shadow-xl hover:scale-110 transition-transform duration-300">
+              Start Building
             </button>
-          </div>
+            <button
+              onClick={() => navigate("/blog")}
+              className="border border-yellow-400 text-white px-6 py-3 rounded-full font-semibold hover:bg-white/10 hover:border-yellow-300 transition-all duration-300"
+            >
+              Explore Resources
+            </button>
+
+          </motion.div>
         </div>
 
-        {/* Threads Animation */}
-        {/* <div className="absolute bottom-0 left-0 right-0 h-[400px] md:h-[600px] pointer-events-none">
-          <div className="w-full h-full relative opacity-60">
-            <Suspense fallback={<div>Loading threads...</div>}>
-              <Threads
-                amplitude={1.5}
-                distance={0}
-                enableMouseInteraction={true}
-              />
-            </Suspense>
-          </div>
-        </div> */}
+
       </div>
 
       {/* Page Sections */}
       <CryptoStakingSection />
-      <PhaseCarousel />
+      {/* <PhaseCarousel /> */}
       <ServicesComponent />
-      <Roadmap />
-{/* <img  src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/data-bg.png"  className="absolute left-20 right-20 ml-20" alt="" /> */}
-{/* <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/data-bg-space.png"  alt=""/> */}
-{/* <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/services-bg1.png" alt="" /> */}
-{/* <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/services-bg-1.png" alt="" /> */}
+      {/* <Roadmap /> */}
+      <GrowthPlanTimeline />
+      {/* <img  src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/data-bg.png"  className="absolute left-20 right-20 ml-20" alt="" /> */}
+      {/* <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/data-bg-space.png"  alt=""/> */}
+      {/* <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/services-bg1.png" alt="" /> */}
+      {/* <img src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/services-bg-1.png" alt="" /> */}
 
       <Partners />
       <AnimatedTestimonials />
       <JaimaxFAQ />
-      <HomeContact />
+      {/* <HomeContact /> */}
       <HomeFooter />
     </div>
   );
