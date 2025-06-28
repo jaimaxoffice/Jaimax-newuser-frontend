@@ -631,3 +631,565 @@
 //     </section>
 //   );
 // }
+
+
+// import React from "react";
+
+// /**
+//  * JaimaxRoadmap v2 – matches the original Shutterstock layout closely
+//  * ------------------------------------------------------------------
+//  * – Horizontal timeline on desktop (cards sit above a coloured bar & connector)
+//  * – Stacks vertically on tablets/mobiles (bar disappears / converts to inline)
+//  * – Only TailwindCSS utilities, no extra CSS file required
+//  * – Replace emoji placeholders with SVGs / icons as needed
+//  */
+
+// const roadmapData = [
+//   {
+//     step: "STEP 01",
+//     title: "IDEAS",
+//     description: [
+//       "Concept development completed",
+//       "Tokenomics drafted & reviewed",
+//       "White-paper outline ready"
+//     ],
+//     icon: "💡",
+//     progress: "PROGRESS A",
+//     bar: "bg-orange-400",
+//     card: "bg-orange-50 text-orange-500"
+//   },
+//   {
+//     step: "STEP 02",
+//     title: "WORKS",
+//     description: [
+//       "Smart-contract coding started",
+//       "Initial audits scheduled",
+//       "Website wireframes done"
+//     ],
+//     icon: "⚙️",
+//     progress: "PROGRESS B",
+//     bar: "bg-pink-500",
+//     card: "bg-pink-50 text-pink-600"
+//   },
+//   {
+//     step: "STEP 03",
+//     title: "VALUE",
+//     description: [
+//       "Private sale live",
+//       "Strategic partnerships inked",
+//       "Liquidity planning in motion"
+//     ],
+//     icon: "📊",
+//     progress: "PROGRESS C",
+//     bar: "bg-rose-500",
+//     card: "bg-rose-50 text-rose-600"
+//   },
+//   {
+//     step: "STEP 04",
+//     title: "REFERENCE",
+//     description: [
+//       "Testnet deployment",
+//       "Community testing phase",
+//       "Security hardening"
+//     ],
+//     icon: "📚",
+//     progress: "PROGRESS D",
+//     bar: "bg-purple-700",
+//     card: "bg-purple-50 text-purple-700"
+//   },
+//   {
+//     step: "STEP 05",
+//     title: "GROWTH",
+//     description: [
+//       "Mainnet launch",
+//       "Marketing blitz",
+//       "Exchange listings"
+//     ],
+//     icon: "🌱",
+//     progress: "PROGRESS E",
+//     bar: "bg-indigo-700",
+//     card: "bg-indigo-50 text-indigo-700"
+//   },
+//   {
+//     step: "STEP 06",
+//     title: "OUR GOAL",
+//     description: [
+//       "Ecosystem expansion",
+//       "Staking & farming",
+//       "Global adoption push"
+//     ],
+//     icon: "🚀",
+//     progress: "PROGRESS F",
+//     bar: "bg-blue-700",
+//     card: "bg-blue-50 text-blue-700"
+//   }
+// ];
+
+// const JaimaxRoadmap = () => {
+//   return (
+//     <section className="w-full py-20 px-4 bg-gradient-to-r from-purple-900 via-purple-800 to-gray-900 overflow-x-auto">
+//       <h2 className="text-center text-white text-4xl font-bold mb-16 tracking-wider">ROADMAP</h2>
+
+//       {/* ---------- DESKTOP / LARGE ---------- */}
+//       <div className="hidden lg:flex lg:space-x-8 max-w-7xl mx-auto relative">
+//         {/* progress bar (bottom) */}
+//         <div className="absolute bottom-0 left-0 right-0 flex">
+//           {roadmapData.map(({ bar }, idx) => (
+//             <div key={idx} className={`flex-1 h-6 ${bar}`} />
+//           ))}
+//         </div>
+
+//         {roadmapData.map((item, idx) => (
+//           <div key={idx} className="flex flex-col items-center flex-1 relative">
+//             {/* card */}
+//             <div
+//               className={`w-full rounded-xl shadow-xl ${item.card} p-6 backdrop-blur-sm transition-transform hover:-translate-y-1`}
+//             >
+//               <p className="text-xs font-bold opacity-80 tracking-widest mb-2">
+//                 {item.step}
+//               </p>
+//               <h3 className="text-lg font-semibold mb-3 uppercase tracking-wide">
+//                 {item.title}
+//               </h3>
+//               <ul className="space-y-1 text-sm list-disc list-inside opacity-90">
+//                 {item.description.map((d, i) => (
+//                   <li key={i}>{d}</li>
+//                 ))}
+//               </ul>
+//             </div>
+
+//             {/* connector */}
+//             <div className="h-8 w-0.5 bg-white/70" />
+//             <div className="w-3 h-3 rounded-full bg-white relative -top-1" />
+
+//             {/* progress label */}
+//             <span className="mt-2 text-xs text-white/80 tracking-wide">
+//               {item.progress}
+//             </span>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* ---------- MOBILE / TABLET ---------- */}
+//       <div className="lg:hidden flex flex-col space-y-14 max-w-md mx-auto">
+//         {roadmapData.map((item, idx) => (
+//           <div key={idx} className="flex flex-col items-center">
+//             <div
+//               className={`w-full rounded-xl ${item.card} p-6 shadow-lg`}
+//             >
+//               <p className="text-xs font-bold opacity-80 tracking-widest mb-1">
+//                 {item.step}
+//               </p>
+//               <h3 className="text-lg font-semibold mb-2 uppercase">
+//                 {item.title}
+//               </h3>
+//               <ul className="space-y-1 text-sm list-disc list-inside opacity-90">
+//                 {item.description.map((d, i) => (
+//                   <li key={i}>{d}</li>
+//                 ))}
+//               </ul>
+//             </div>
+//             {/* vertical bar */}
+//             <div className="w-1 bg-white h-8" />
+//             <div className={`w-full h-4 ${item.bar}`} />
+//             <span className="mt-2 text-xs text-white/80 tracking-wide">
+//               {item.progress}
+//             </span>
+//           </div>
+//         ))}
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default JaimaxRoadmap;
+
+// import React, { useState } from "react";
+
+/**
+ * JaimaxRoadmap – polished zig‑zag timeline (2024‑2026)
+ * --------------------------------------------------------
+ * ‣ Gradient background & subtle pattern for better visual depth
+ * ‣ Perfected alignment: cards are symmetric around a centre guide
+ * ‣ Connector dots + small stem that touches the vertical line
+ * ‣ Responsive: single‑column on ≤md, two‑sided zig‑zag on ≥md
+ * ‣ Accessible: highlighted focus states on year tab buttons
+ * --------------------------------------------------------
+ */
+
+// const roadmap = {
+//   2024: [
+//     {
+//       title: "P1 2024: Concept Development and Team Formation",
+//       desc: `• Establish the foundational concept of JAIMAX TOKEN\n• Assemble a dedicated team of blockchain experts, developers, marketers, and legal advisors.`,
+//     },
+//     {
+//       title: "P2 2024: Smart Contract Development and Security Audits",
+//       desc: `• Develop and deploy JAIMAX TOKEN smart contracts on BSC\n• Conduct thorough security audits to ensure contract security.`,
+//     },
+//     {
+//       title: "P3 2024: Website Launch and Whitepaper Publication",
+//       desc: `• Launch the official JAIMAX TOKEN website\n• Publish the detailed whitepaper covering vision and architecture.`,
+//     },
+//     {
+//       title: "P4 2024: Pre-Sale and Public ICO Launch",
+//       desc: `• Conduct the pre-sale and ICO of JAIMAX TOKEN\n• Run marketing campaigns to attract investors.`,
+//     },
+//     {
+//       title: "P5 2024: Mobile App Launch",
+//       desc: `• Launch mobile apps for Android and iOS\n• Ensure secure and seamless in-app transactions.`,
+//     },
+//   ],
+//   2025: [
+//     {
+//       title: "P1 2025: Mainnet Launch and DApp Integrations",
+//       desc: `• Launch JAIMAX mainnet\n• Integrate with DApps to enhance utility.`,
+//     },
+//     {
+//       title: "P2 2025: Expansion of Use Cases and Ecosystem",
+//       desc: `• Broaden use cases in DeFi, NFTs, and payments\n• Collaborate for faster ecosystem growth.`,
+//     },
+//     {
+//       title: "P3 2025: Exchange Listings & Partnerships",
+//       desc: `• List on Binance, Coinbase, Gate.io, OKX, etc.\n• Form strategic ecosystem partnerships.`,
+//     },
+//     {
+//       title: "P4 2025: JAIMAX Crypto Exchange Launch",
+//       desc: `• Launch JAIMAX Exchange post-token sale\n• Provide multi-crypto trading platform.`,
+//     },
+//     {
+//       title: "P5 2025: Multi-Blockchain Support",
+//       desc: `• Enhance JAIMAX interoperability across chains.`,
+//     },
+//     {
+//       title: "P6 2025: Development of JAIMAX Blockchain",
+//       desc: `• Build proprietary scalable blockchain\n• Ensure secure, high-performance architecture.`,
+//     },
+//     {
+//       title: "P7 2025: JMC Swap, DApps, and Wallets",
+//       desc: `• Launch JMC Swap for token exchanges\n• Deploy JMC Wallets for secure storage.`,
+//     },
+//     {
+//       title: "P8 2025: Market Positioning & Exchange Price",
+//       desc: `• Target top 100 on CMC\n• Set listing price around ₹4.0 (USD 0.046).`,
+//     },
+//   ],
+//   2026: [
+//     {
+//       title: "P1 2026: Crypto Support & Payment Gateway",
+//       desc: `• Ensure JAIMAX supports major cryptocurrencies\n• Develop integrated crypto payment gateway.`,
+//     },
+//     {
+//       title: "P2 2026: Global Exchange Listings",
+//       desc: `• Continue global listings\n• Strengthen global user base.`,
+//     },
+//   ],
+// };
+
+
+// const years = Object.keys(roadmap);
+
+// const JaimaxRoadmap = () => {
+//   const [activeYear, setActiveYear] = useState(years[0]);
+
+//   return (
+  
+//     <section className="relative w-full overflow-hidden select-none">
+//   {/* Background gradient */}
+//   <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-sky-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 z-0" />
+
+//   <div className="relative z-10 max-w-8xl mx-auto flex flex-col lg:flex-row justify-between gap-y-16 gap-x-12 py-20 px-4 md:px-10">
+//     {/* ---------- LEFT COLUMN ---------- */}
+//     <div className="w-full lg:w-[40%] flex flex-col justify-between lg:pr-4">
+//       <div>
+//         <h2 className="text-4xl sm:text-5xl font-extrabold text-emerald-700 leading-tight mb-6">
+//           Cryptocurrency <br /> Roadmap
+//         </h2>
+//         <p className="text-gray-700 dark:text-gray-300 max-w-md mb-10">
+//           Explore our phased rollout. Click on a year below to reveal the milestones on Jaimax Coin’s journey.
+//         </p>
+
+//         {/* Decorative icons */}
+//         <div className="relative w-max">
+//           <img
+//             src="https://img.icons8.com/ios-filled/100/seedling.png"
+//             alt="seedling"
+//             className="w-20 absolute -top-8 -left-6 rotate-[-10deg] opacity-90"
+//           />
+//           <img
+//             src="https://img.icons8.com/fluency/144/bitcoin.png"
+//             alt="bitcoin"
+//             className="w-24 drop-shadow-xl"
+//           />
+//         </div>
+//       </div>
+//     </div>
+
+//     {/* ---------- RIGHT COLUMN ---------- */}
+//     <div className="w-full lg:w-[58%] relative">
+//       {/* Year tabs */}
+//       <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-12">
+//         {years.map((yr) => (
+//           <button
+//             key={yr}
+//             onClick={() => setActiveYear(yr)}
+//             className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+//               activeYear === yr
+//                 ? "bg-emerald-600 text-white border-emerald-600 ring-emerald-500"
+//                 : "bg-white/80 dark:bg-gray-800/80 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-emerald-100 dark:hover:bg-gray-700 focus:ring-emerald-500"
+//             }`}
+//           >
+//             {yr}
+//           </button>
+//         ))}
+//       </div>
+
+//       {/* Vertical center line for desktop */}
+//       <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 h-full w-[2px] bg-emerald-600" />
+
+//       {/* Timeline cards */}
+//       <div className="relative grid gap-20 md:gap-24">
+//         {roadmap[activeYear].map((item, idx) => {
+//           const isLeft = idx % 2 === 0;
+
+//           return (
+//             <div
+//               key={item.title}
+//               className={`md:max-w-md w-full relative ${
+//                 isLeft ? "md:pr-16 md:mr-auto text-left" : "md:pl-16 md:ml-auto text-left"
+//               }`}
+//             >
+//               {/* Connector Line (Desktop) */}
+//               <div
+//                 className={`hidden md:block absolute top-6 h-px w-14 bg-emerald-600 ${
+//                   isLeft ? "right-0" : "left-0"
+//                 }`}
+//               />
+
+//               {/* Dot */}
+//               <span
+//                 className={`hidden md:block absolute top-4 w-4 h-4 rounded-full border-4 border-white dark:border-gray-900 bg-emerald-600 ${
+//                   isLeft ? "-right-8" : "-left-8"
+//                 }`}
+//               />
+
+//               {/* Timeline Card */}
+//               <div className="p-6 rounded-xl shadow-lg border-l-4 border-emerald-600 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+//                 <h4 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">
+//                   {item.title}
+//                 </h4>
+//                 <p className="text-sm text-gray-700 dark:text-gray-300">
+//                   {item.desc}
+//                 </p>
+//               </div>
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   </div>
+// </section>
+
+//   );
+// };
+
+// export default JaimaxRoadmap;
+
+
+
+import React, { useState } from "react";
+import threedimage from "../../assets/3djaimax3.jpg"
+
+const roadmap = {
+  2024: [
+    {
+      title: "P1 2024: Concept Development and Team Formation",
+      desc: `• Establish the foundational concept of JAIMAX TOKEN\n• Assemble a dedicated team of blockchain experts, developers, marketers, and legal advisors.`,
+      image: "https://source.unsplash.com/600x400/?crypto,team",
+    },
+    {
+      title: "P2 2024: Smart Contract Development and Security Audits",
+      desc: `• Develop and deploy JAIMAX TOKEN smart contracts on BSC\n• Conduct thorough security audits to ensure contract security.`,
+      image: "https://source.unsplash.com/600x400/?blockchain,security",
+    },
+    {
+      title: "P3 2024: Website Launch and Whitepaper Publication",
+      desc: `• Launch the official JAIMAX TOKEN website\n• Publish the detailed whitepaper covering vision and architecture.`,
+      image: "https://source.unsplash.com/600x400/?website,crypto",
+    },
+    {
+      title: "P4 2024: Pre-Sale and Public ICO Launch",
+      desc: `• Conduct the pre-sale and ICO of JAIMAX TOKEN\n• Run marketing campaigns to attract investors.`,
+      image: "https://source.unsplash.com/600x400/?ico,launch",
+    },
+    {
+      title: "P5 2024: Mobile App Launch",
+      desc: `• Launch mobile apps for Android and iOS\n• Ensure secure and seamless in-app transactions.`,
+      image: "https://source.unsplash.com/600x400/?crypto,mobileapp",
+    },
+  ],
+  2025: [
+    {
+      title: "P1 2025: Mainnet Launch and DApp Integrations",
+      desc: `• Launch JAIMAX mainnet\n• Integrate with DApps to enhance utility.`,
+      image: "https://source.unsplash.com/600x400/?blockchain,dapps",
+    },
+    {
+      title: "P2 2025: Expansion of Use Cases and Ecosystem",
+      desc: `• Broaden use cases in DeFi, NFTs, and payments\n• Collaborate for faster ecosystem growth.`,
+      image: "https://source.unsplash.com/600x400/?defi,nft",
+    },
+    {
+      title: "P3 2025: Exchange Listings & Partnerships",
+      desc: `• List on Binance, Coinbase, Gate.io, OKX, etc.\n• Form strategic ecosystem partnerships.`,
+      image: "https://source.unsplash.com/600x400/?crypto,exchange",
+    },
+    {
+      title: "P4 2025: JAIMAX Crypto Exchange Launch",
+      desc: `• Launch JAIMAX Exchange post-token sale\n• Provide multi-crypto trading platform.`,
+      image: "https://source.unsplash.com/600x400/?crypto,platform",
+    },
+    {
+      title: "P5 2025: Multi-Blockchain Support",
+      desc: `• Enhance JAIMAX interoperability across chains.`,
+      image: "https://source.unsplash.com/600x400/?blockchain,interoperability",
+    },
+    {
+      title: "P6 2025: Development of JAIMAX Blockchain",
+      desc: `• Build proprietary scalable blockchain\n• Ensure secure, high-performance architecture.`,
+      image: "https://source.unsplash.com/600x400/?crypto,infrastructure",
+    },
+    {
+      title: "P7 2025: JMC Swap, DApps, and Wallets",
+      desc: `• Launch JMC Swap for token exchanges\n• Deploy JMC Wallets for secure storage.`,
+      image: "https://source.unsplash.com/600x400/?crypto,wallet",
+    },
+    {
+      title: "P8 2025: Market Positioning & Exchange Price",
+      desc: `• Target top 100 on CMC\n• Set listing price around ₹4.0 (USD 0.046).`,
+      image: "https://source.unsplash.com/600x400/?crypto,analytics",
+    },
+  ],
+  2026: [
+    {
+      title: "P1 2026: Crypto Support & Payment Gateway",
+      desc: `• Ensure JAIMAX supports major cryptocurrencies\n• Develop integrated crypto payment gateway.`,
+      image: "https://source.unsplash.com/600x400/?crypto,payment",
+    },
+    {
+      title: "P2 2026: Global Exchange Listings",
+      desc: `• Continue global listings\n• Strengthen global user base.`,
+      image: "https://source.unsplash.com/600x400/?crypto,global",
+    },
+  ],
+};
+
+const years = Object.keys(roadmap);
+const cardGradientMap = {
+  2024: "bg-[#18a04a]",
+  2025: "bg-[#18a04a]",
+  2026: "bg-[#18a04a]",
+};
+
+
+const JaimaxRoadmap = () => {
+  const [activeYear, setActiveYear] = useState(years[0]);
+
+  return (
+    <section className="relative w-full overflow-hidden select-none bg-[#085056]">
+      <div className="relative z-10 max-w-8xl mx-auto flex flex-col lg:flex-row justify-between gap-y-16 gap-x-12 py-20 px-4 md:px-10">
+       <div className="w-full lg:w-[40%] flex flex-col justify-between lg:pr-4">
+  <div>
+    <h2 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-6">
+      Our Roadmap
+      <br />
+      <span className="bg-gradient-to-r from-[#00ffe0] to-[#00ff7f] bg-clip-text text-transparent">
+        Buy Jaimax, Grow Your Future
+      </span>
+    </h2>
+
+    <p className="text-white/80 max-w-md mb-8">
+      Invest in a vision built to scale. Our roadmap is your gateway to opportunity, innovation, and sustainable growth.
+    </p>
+
+    <ul className="space-y-6 text-white/90">
+      <li className="border-l-4 border-cyan-400 pl-4">
+        <h4 className="text-lg font-semibold">Phase 1: Trust the Start</h4>
+        <p className="text-sm text-white/70">
+          Buy early, join the mission, and become a foundational member of the Jaimax journey.
+        </p>
+      </li>
+      <li className="border-l-4 border-green-400 pl-4">
+        <h4 className="text-lg font-semibold">Phase 2: Build & Earn</h4>
+        <p className="text-sm text-white/70">
+          Enable staking, referrals, and real-time rewards as the ecosystem begins to grow.
+        </p>
+      </li>
+      <li className="border-l-4 border-yellow-400 pl-4">
+        <h4 className="text-lg font-semibold">Phase 3: Utility in Action</h4>
+        <p className="text-sm text-white/70">
+          Launch real-world integrations, payment tools, and token utilities that drive demand.
+        </p>
+      </li>
+      <li className="border-l-4 border-pink-400 pl-4">
+        <h4 className="text-lg font-semibold">Phase 4: Scale & Sustain</h4>
+        <p className="text-sm text-white/70">
+          Expand globally with strategic partners and unlock passive growth for long-term holders.
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+        <div className="w-full lg:w-[58%] relative">
+          <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-12">
+            {years.map((yr) => (
+              <button
+                key={yr}
+                onClick={() => setActiveYear(yr)}
+                className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  activeYear === yr
+                    ? "bg-white text-[#085056] border-white ring-white"
+                    : "bg-[#0b616b] text-white border-white/30 hover:bg-[#0d6d76] focus:ring-white"
+                }`}
+              >
+                {yr}
+              </button>
+            ))}
+          </div>
+
+          <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 h-full w-[2px] bg-white/40" />
+
+          <div className="relative grid gap-20 md:gap-24">
+            {roadmap[activeYear].map((item, idx) => {
+              const isLeft = idx % 2 === 0;
+              const cardColor = cardGradientMap[activeYear];
+
+              return (
+                <div
+                  key={item.title}
+                  className={`md:max-w-md w-full relative ${
+                    isLeft ? "md:pr-16 md:mr-auto text-left" : "md:pl-16 md:ml-auto text-left"
+                  }`}
+                >
+                  <div className={`hidden md:block absolute top-6 h-px w-14 bg-white ${isLeft ? "right-0" : "left-0"}`} />
+
+                  <span className={`hidden md:block absolute top-4 w-4 h-4 rounded-full border-4 border-[#085056] bg-white ${isLeft ? "-right-8" : "-left-8"}`} />
+
+                  <div className={`p-6 rounded-xl shadow-lg border-l-4 border-white ${cardColor}`}>
+  <h4 className="text-lg text-white font-bold mb-2">{item.title}</h4>
+  <p className="text-sm whitespace-pre-line">{item.desc}</p>
+</div>
+
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default JaimaxRoadmap;

@@ -1021,7 +1021,7 @@
 //     <section className="relative  text-white py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 xl:px-20 overflow-hidden">
 //       {/* Background blur effect */}
 //       <div className="absolute top-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-green-400 opacity-20 rounded-full blur-3xl pointer-events-none" />
-      
+
 //       <div className="max-w-7xl mx-auto">
 //         {/* Main content container */}
 //         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
@@ -1036,15 +1036,15 @@
 //             <p className="text-green-200 font-semibold text-base sm:text-lg tracking-wide">
 //               Your Gateway to Digital Wealth
 //             </p>
-            
+
 //             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-green-200 via-white to-green-200 bg-clip-text text-transparent">
 //               J COIN
 //             </h1>
-            
+
 //             <h2 className="text-green-400 text-2xl sm:text-3xl md:text-4xl font-bold">
 //               About Jaimax
 //             </h2>
-            
+
 //             <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
 //               Jaimax, the most valuable crypto investment app, is dedicated to making crypto accessible in a simple way. Established in 2024, Jaimax has addressed numerous challenges faced by the crypto community, providing solutions for investing, trading, and literacy.
 //               <a
@@ -1055,7 +1055,7 @@
 //                 READ MORE →
 //               </a>
 //             </p>
-            
+
 //             {/* Contract Address */}
 //             <div className="flex flex-col sm:flex-row items-center justify-between bg-gray-800 border border-gray-700 rounded-2xl p-3 sm:p-4 gap-3 sm:gap-0">
 //               <p className="text-green-400 font-mono font-medium text-xs sm:text-sm break-all sm:truncate sm:max-w-[60%] lg:max-w-[70%]">
@@ -1410,7 +1410,7 @@
 //         <div className="absolute top-0 left-0 w-72 h-72 bg-green-400/20 rounded-full blur-3xl animate-pulse" />
 //         <div className="absolute top-1/4 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
 //         <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-cyan-400/15 rounded-full blur-3xl" />
-        
+
 //         {/* Animated grid pattern */}
 //         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] bg-[size:40px_40px] opacity-30" />
 //       </div>
@@ -1463,7 +1463,7 @@
 //               <p className="text-gray-300 leading-relaxed text-base md:text-lg max-w-2xl mx-auto lg:mx-0">
 //                 Jaimax, the most valuable crypto investment app, is dedicated to making crypto accessible in a simple way. Established in 2024, Jaimax has addressed numerous challenges faced by the crypto community, providing solutions for investing, trading, and literacy.
 //               </p>
-              
+
 //               <button
 //                 onClick={handleReadMore}
 //                 className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 font-semibold transition-all duration-300 group"
@@ -1563,7 +1563,7 @@
 //                 <div className="relative bg-gradient-to-br from-gray-800/50 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 md:p-8 text-center hover:border-green-500/50 transition-all duration-500 overflow-hidden">
 //                   {/* Background gradient effect */}
 //                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                  
+
 //                   {/* Icon */}
 //                   <div className={`inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br ${item.gradient} mb-4 md:mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
 //                     <div className="text-white text-2xl md:text-3xl">
@@ -1658,10 +1658,12 @@
 import React, { useState, useEffect } from "react";
 import { Copy, Users, Coins, TrendingUp, Check } from "lucide-react";
 import logo from '../../../public/images/site_logo.svg';
+import { useNavigate } from "react-router-dom";
 const HomeAbout = () => {
   const contractAddress = "0x71eC974DA6D18df497D21af8026B3ADF7B1865B6";
   const [copied, setCopied] = useState(false);
-  
+  const navigate = useNavigate()
+
   // Simulated live data - in real app, these would come from API
   const [liveData, setLiveData] = useState({
     members: 12547,
@@ -1679,6 +1681,26 @@ const HomeAbout = () => {
     }
   };
 
+  const stats = [
+    {
+      label: "LIVE PRICE",
+      value: "$0.00024",
+      icon: <TrendingUp className="w-4 h-4 text-lime-400" />, // simulate up-trend
+      color: "text-lime-400",
+    },
+    {
+      label: "SOLD TOKENS",
+      value: "225765326",
+      icon: <TrendingUp className="w-4 h-4 text-white" />, // simulate up-trend
+      color: "text-white",
+    },
+    {
+      label: "LIVE MEMBERS",
+      value: "24567",
+      icon: <TrendingUp className="w-4 h-4 text-emerald-300" />,
+      color: "text-emerald-300",
+    },
+  ];
   // Simulate live data updates
   useEffect(() => {
     const interval = setInterval(() => {
@@ -1694,7 +1716,7 @@ const HomeAbout = () => {
 
   const handleNavigate = () => {
     // navigate('/about') - uncomment when using with router
-    console.log('Navigate to about page');
+   navigate("/blog")
   };
 
   const formatNumber = (num) => {
@@ -1708,127 +1730,126 @@ const HomeAbout = () => {
   };
 
   return (
-    <section className=" text-white py-16 px-4 lg:px-24 relative overflow-hidden">
-     
+    <>
+      <section className=" text-white py-10 px-4 lg:px-14 relative overflow-hidden">
 
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Logo Section */}
-        <div className="flex justify-center mb-12">
-          <div className="relative">
-            <img src={logo} alt="" />
-            {/* <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-pulse"></div> */}
-          </div>
-        </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {/* Live Members */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-3">
-              <Users className="w-8 h-8 text-teal-400" />
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+        <div className="relative z-10 max-w-7xl mx-auto">
+          {/* Logo Section */}
+          <div className="flex justify-center mb-12">
+            <div className="relative">
+              <img src={logo} alt="" width="500px" />
+              {/* <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-pulse"></div> */}
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">
-              {formatNumber(liveData.members)}
-            </h3>
-            <p className="text-teal-300 text-sm font-medium">Live Members</p>
           </div>
 
-          {/* Sold Coins */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-3">
-              <Coins className="w-8 h-8 text-yellow-400" />
-              <TrendingUp className="w-4 h-4 text-green-400" />
-            </div>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">
-              {formatNumber(liveData.soldCoins)}
-            </h3>
-            <p className="text-yellow-300 text-sm font-medium">Coins Sold</p>
-          </div>
-
-          {/* Live Price */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1">
-            <div className="flex items-center justify-between mb-3">
-              <TrendingUp className="w-8 h-8 text-green-400" />
-              <div className="text-xs text-green-400 font-semibold bg-green-400/20 px-2 py-1 rounded-full">
-                LIVE
-              </div>
-            </div>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-1">
-              ${liveData.livePrice.toFixed(4)}
-            </h3>
-            <p className="text-green-300 text-sm font-medium">Current Price</p>
-          </div>
-        </div>
+          {/* Stats Cards */}
+          {/*    
 <div className="mb-12">
   <img
     src="https://cdn.dribbble.com/users/1787323/screenshots/17509856/media/13f8ac5374e47b9a108d08912b97e2ae.png?compress=1&resize=1200x900"
     alt="Crypto Illustration"
     className="w-full max-w-4xl mx-auto rounded-3xl shadow-xl"
   />
-</div>
-        {/* Main Content */}
-        <div className="text-center">
-          {/* Heading */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-400 uppercase mb-8 leading-tight">
-            About Jaimax
-          </h2>
+</div> */}
+          {/* Main Content */}
+          <div className="text-center">
+            {/* Heading */}
+            {/* <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1ac0c7] uppercase mb-8 leading-tight">
+  About Jaimax
+</h2> */}
 
-          {/* Description */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <p className="text-lg md:text-xl leading-relaxed text-gray-200 mb-6">
-              Jaimax, the most valuable crypto investment app, is dedicated to making
-              crypto accessible in a simple way. Established in 2024, Jaimax has
-              addressed numerous challenges faced by the crypto community, providing
-              solutions for crypto investing, trading, and literacy.
-            </p>
-            <button 
-              onClick={handleNavigate}
-              className="inline-flex items-center text-teal-400 font-semibold hover:text-teal-300 transition-colors duration-200 group"
-            >
-              <span className="border-b-2 border-teal-400 group-hover:border-teal-300 transition-colors duration-200">
-                READ MORE
-              </span>
-              <TrendingUp className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-200" />
-            </button>
-          </div>
 
-          {/* Contract Address */}
-          <div className="max-w-2xl mx-auto">
-            <h4 className="text-xl md:text-2xl font-semibold mb-6 text-gray-200">
-              CONTRACT ADDRESS
-            </h4>
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-400 mb-1">Smart Contract</p>
-                  <p className="font-mono text-sm md:text-base text-white break-all">
-                    {contractAddress}
-                  </p>
-                </div>
-                <button 
-                  onClick={handleCopy}
-                  className="flex items-center space-x-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg"
-                  title={copied ? "Copied!" : "Copy to clipboard"}
-                >
-                  {copied ? (
-                    <>
-                      <Check size={18} />
-                      <span className="hidden sm:inline">Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy size={18} />
-                      <span className="hidden sm:inline">Copy</span>
-                    </>
-                  )}
-                </button>
-              </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-500 uppercase mb-8 leading-tight">
+              About Jaimax
+            </h2>
+
+            {/* Description */}
+            <div className="max-w-4xl mx-auto mb-12">
+              <p className="text-lg md:text-xl leading-relaxed text-gray-200 mb-6">
+                Jaimax, the most valuable crypto investment app, is dedicated to making crypto accessible in a simple way. Established in 2024, Jaimax has addressed numerous challenges faced by the crypto community, providing solutions for crypto investing, trading, and literacy...
+              </p>
+              <button
+                onClick={handleNavigate}
+                className="inline-flex items-center text-teal-400 font-semibold hover:text-teal-300 transition-colors duration-200 group"
+              >
+                <span
+                
+                className="border-b-2 border-teal-400 group-hover:border-teal-300 transition-colors duration-200">
+                  READ MORE
+                </span>
+                <TrendingUp className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-200" />
+              </button>
             </div>
+
+            {/* Contract Address */}
+         <div className="max-w-2xl mx-auto">
+  <h4 className="text-xl md:text-2xl font-semibold mb-6 text-gray-200">
+    CONTRACT ADDRESS
+  </h4>
+  <div className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 w-full">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 px-3 py-2 sm:px-4 sm:py-2">
+      <p className="flex-1 text-center sm:text-left font-mono text-sm sm:text-base md:text-lg text-white break-all leading-tight">
+        {contractAddress}
+      </p>
+
+      <button
+        onClick={handleCopy}
+        className="flex items-center justify-center space-x-0 sm:space-x-2 bg-teal-500 hover:bg-teal-600 text-white text-xs sm:text-sm font-medium px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md"
+        title={copied ? 'Copied!' : 'Copy to clipboard'}
+      >
+        {copied ? (
+          <>
+            {/* Icon hidden on mobile, visible on sm+ */}
+            <Check className="hidden sm:inline" size={16} />
+            {/* Text always visible */}
+            <span>{copied ? "Copied!" : "Copied!"}</span>
+          </>
+        ) : (
+          <>
+            {/* Icon hidden on mobile, visible on sm+ */}
+            <Copy className="hidden sm:inline" size={16} />
+            {/* Text always visible */}
+            <span>{copied ? "Copy" : "Copy"}</span>
+          </>
+        )}
+      </button>
+    </div>
+  </div>
+</div>
+
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <section className="bg-[#085056] py-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 via-green-300 to-emerald-400 uppercase mb-2">
+            LIVE UPDATE
+          </h2>
+          <p className="text-sm sm:text-base text-gray-200">
+            TOTAL TOKENS: <span className="text-yellow-400 font-bold">10 BILLION</span> &nbsp;|&nbsp;
+            STARTING PRICE: <span className="text-yellow-400 font-semibold">INR 0.01</span> (<span className="text-green-300">USD 0.00012</span>)
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {stats.map((stat, index) => (
+            <div
+              key={index}
+              className="bg-[#063c40] border border-[#17bba3] rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-lg transition duration-300"
+            >
+              <p className="text-white text-sm tracking-wide mb-2 uppercase">
+                {stat.label}
+              </p>
+              <div className="flex items-center gap-1">
+                <h3 className={`text-2xl sm:text-3xl font-extrabold ${stat.color}`}>{stat.value}</h3>
+                {stat.icon}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 };
 

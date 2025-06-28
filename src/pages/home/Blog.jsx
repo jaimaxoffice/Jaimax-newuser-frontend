@@ -4098,35 +4098,51 @@ export const blogsData = [
 ];
 
 
-// import { Search, TrendingUp, Flame, Eye, Calendar, Clock, ArrowRight, Star, ArrowLeft } from 'lucide-react';
+// import { useNavigate } from 'react-router-dom';
 
+
+
+// import { useNavigate } from 'react-router-dom';
 // // Import your blog images
 // import Blog1 from '../../../public/images/Blog1poster.jpg'
 // import Blog2 from '../../../public/images/Blog2poster.jpg'
 // import Blog3 from '../../../public/images/Blog3poster.jpg'
 // import Blog4 from '../../../public/images/Blog4poster.jpg'
 // import Blog5 from '../../../public/images/Blog5poster.jpg'
-// import ArticleView from './Article';
-// import ReferralModal from '../../components/Dashboard/modals/referalModal';
+// import { 
+//   Search, 
+//   TrendingUp, 
+//   Flame, 
+//   Star, 
+//   Eye, 
+//   Calendar, 
+//   ArrowRight,
+//   ArrowLeft
+// } from 'lucide-react';
 // import { FaShareAlt } from 'react-icons/fa';
-// import { useNavigate } from 'react-router-dom';
+// import ReferralModal from '../../components/Dashboard/modals/referalModal';
+
+
+// // Helper function to create URL-friendly slugs
+// const slugify = (str) =>
+//   str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
 
 // const BlogLayout = () => {
 //   const [searchQuery, setSearchQuery] = useState('');
 //   const [activeCategory, setActiveCategory] = useState('All');
-//   const [currentView, setCurrentView] = useState('list'); // 'list' or 'article'
 //   const [hoveredPost, setHoveredPost] = useState(null);
 //   const [showReferralModal, setShowReferralModal] = useState(false);
 //   const [selectedReferralPost, setSelectedReferralPost] = useState(null);
+  
+//   const navigate = useNavigate();
 
-//   const userDataTopasID = localStorage.getItem("userData");
-// const navigate = useNavigate();
-
-// // helper slugify function if you don't have one yet
-// const slugify = (str) =>
-//   str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
-
-
+//   const categories = ['All', 'Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Trading'];
+//   const topPosts = [
+//     'Bitcoin hits new all-time high amid institutional adoption',
+//     'Ethereum 2.0 staking rewards reach $1B milestone',
+//     'DeFi protocols face regulatory scrutiny in 2024',
+//     'NFT market shows signs of recovery after winter'
+//   ];
 
 //   const handleOpenReferralModal = (post) => {
 //     setSelectedReferralPost(post);
@@ -4137,15 +4153,35 @@ export const blogsData = [
 //     setShowReferralModal(false);
 //     setSelectedReferralPost(null);
 //   };
-//   // Sample data - replace with your actual blogsData, categories, and topPosts
-//   const categories = ['All', 'Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Trading'];
-//   const topPosts = [
-//     'Bitcoin hits new all-time high amid institutional adoption',
-//     'Ethereum 2.0 staking rewards reach $1B milestone',
-//     'DeFi protocols face regulatory scrutiny in 2024',
-//     'NFT market shows signs of recovery after winter'
-//   ];
 
+//   // Share function for specific blog post
+//   const handleSharePost = async (post) => {
+//     const shareData = {
+//       title: post.headline,
+//       text: post.description,
+//       url: `${window.location.origin}/blog/${slugify(post.headline)}`
+//     };
+
+//     try {
+//       if (navigator.share) {
+//         // Use native share API if available
+//         await navigator.share(shareData);
+//       } else {
+//         // Fallback: copy to clipboard
+//         await navigator.clipboard.writeText(shareData.url);
+//         alert('Blog link copied to clipboard!');
+//       }
+//     } catch (error) {
+//       // Fallback for older browsers
+//       const textArea = document.createElement('textarea');
+//       textArea.value = shareData.url;
+//       document.body.appendChild(textArea);
+//       textArea.select();
+//       document.execCommand('copy');
+//       document.body.removeChild(textArea);
+//       alert('Blog link copied to clipboard!');
+//     }
+//   };
 
 //   const filteredPosts = blogsData.filter(post => {
 //     const matchesSearch = post.headline.toLowerCase().includes(searchQuery.toLowerCase());
@@ -4154,406 +4190,11 @@ export const blogsData = [
 //   });
 
 //   const handleReadMore = (post) => {
-//     if (post.content) {
-//       setSelectedPost(post);
-//       setCurrentView('article');
-//     }
+//     // Navigate to individual article page
+//     navigate(`/blog/${slugify(post.headline)}`);
 //   };
 
-//   // const handleBackToList = () => {
-//   //   setCurrentView('list');
-//   //   setSelectedPost(null);
-//   // };
-
-//   const renderContent = (sections) => {
-//     return sections.map((section, index) => {
-//       switch (section.type) {
-//         case 'heading':
-//           return (
-//             <h2 key={index} className="text-xl font-bold text-cyan-100 mb-4 mt-6">
-//               {section.content}
-//             </h2>
-//           );
-//         case 'paragraph':
-//           return (
-//             <p key={index} className="text-gray-300 mb-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: section.content }}>
-//             </p>
-//           );
-//         case 'unordered_list':
-//           return (
-//             <ul key={index} className="list-disc list-inside mb-4 text-gray-300 space-y-2">
-//               {section.content.map((item, itemIndex) => (
-//                 <li key={itemIndex} dangerouslySetInnerHTML={{ __html: item }}></li>
-//               ))}
-//             </ul>
-//           );
-//         default:
-//           return null;
-//       }
-//     });
-//   };
-
-
-//   // const ArticleView = () => (
-//   //   <div 
-//   //     className="min-h-screen px-6 py-8"
-//   //     style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
-//   //   >
-//   //     <div className="max-w-8xl mx-auto">
-//   //       {/* Back Button */}
-//   //       <button
-//   //         onClick={handleBackToList}
-//   //         className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 mb-6 group"
-//   //       >
-//   //         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-//   //         Back to Articles
-//   //       </button>
-
-//   //       {/* Article Header */}
-//   //       <div className="relative group mb-8">
-//   //         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20"></div>
-//   //         <div className="relative bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/30 overflow-hidden">
-
-//   //           {/* Featured Image */}
-//   //           <div className="relative aspect-video overflow-hidden">
-//   //             <img 
-//   //               src={selectedPost.image} 
-//   //               alt={selectedPost.headline}
-//   //               className="w-full h-full object-cover" 
-//   //             />
-//   //             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-
-//   //             {/* Badges */}
-//   //             <div className="absolute top-4 left-4 flex gap-2">
-//   //               {selectedPost.trending && (
-//   //                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-teal-400/50">
-//   //                   <TrendingUp className="w-4 h-4" />
-//   //                   Trending
-//   //                 </span>
-//   //               )}
-//   //               {selectedPost.featured && (
-//   //                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-cyan-400/50">
-//   //                   <Star className="w-4 h-4" />
-//   //                   Featured
-//   //                 </span>
-//   //               )}
-//   //               {selectedPost.hot && (
-//   //                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-teal-400/50">
-//   //                   <Flame className="w-4 h-4" />
-//   //                   Hot
-//   //                 </span>
-//   //               )}
-//   //             </div>
-
-//   //             {/* Views */}
-//   //             <div className="absolute top-4 right-4">
-//   //               <span className="inline-flex items-center gap-1 px-3 py-1 bg-black/50 backdrop-blur-sm rounded-full text-sm text-cyan-200">
-//   //                 <Eye className="w-4 h-4" />
-//   //                 {selectedPost.views}
-//   //               </span>
-//   //             </div>
-//   //           </div>
-
-//   //           {/* Article Meta */}
-//   //           <div className="p-6">
-//   //             <div className="flex items-center justify-between mb-4">
-//   //               <span className="px-3 py-1 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 backdrop-blur-sm rounded-full text-sm font-medium text-cyan-300 border border-cyan-400/25">
-//   //                 {selectedPost.category}
-//   //               </span>
-//   //               <div className="flex items-center gap-4 text-sm text-teal-400/80">
-//   //                 <div className="flex items-center gap-1">
-//   //                   <Calendar className="w-4 h-4" />
-//   //                   {selectedPost.date}
-//   //                 </div>
-//   //                 <div className="flex items-center gap-1">
-//   //                   <Clock className="w-4 h-4" />
-//   //                   {selectedPost.readTime} min read
-//   //                 </div>
-//   //               </div>
-//   //             </div>
-
-//   //             <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-4">
-//   //               {selectedPost.content.title}
-//   //             </h1>
-//   //           </div>
-//   //         </div>
-//   //       </div>
-
-//   //       {/* Article Content */}
-//   //       <div className="relative group">
-//   //         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-10"></div>
-//   //         <div className="relative bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 p-8">
-//   //           <div className="prose prose-invert max-w-none">
-//   //             {renderContent(selectedPost.content.sections)}
-//   //           </div>
-//   //         </div>
-//   //       </div>
-
-//   //       {/* Article Footer */}
-//   //       <div className="mt-8 text-center">
-//   //         <button
-//   //           onClick={handleBackToList}
-//   //           className="relative group"
-//   //         >
-//   //           <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-//   //           <div className="relative px-8 py-4 bg-gradient-to-r from-cyan-600/25 to-teal-600/25 backdrop-blur-xl rounded-xl border border-cyan-400/40 text-cyan-100 font-semibold transition-all duration-300 hover:scale-105">
-//   //             Read More Articles
-//   //           </div>
-//   //         </button>
-//   //       </div>
-//   //     </div>
-//   //   </div>
-//   // );
-
-//   //   const ArticleView = () => (
-//   //   <div className="min-h-screen bg-[#0b1f24] text-white w-full">
-//   //     <div className="w-full">
-
-//   //       {/* Back Button */}
-//   //       <button
-//   //         onClick={handleBackToList}
-//   //         className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 mb-6 px-4 pt-6"
-//   //       >
-//   //         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-//   //         Back to Articles
-//   //       </button>
-
-//   //       {/* Article Header */}
-//   //       <div className="mb-8 px-4">
-//   //         <div className="mb-4 text-sm text-cyan-200 flex flex-wrap gap-4">
-//   //           <span><strong>Category:</strong> {selectedPost.category}</span>
-//   //           <span className="flex items-center gap-1">
-//   //             <Calendar className="w-4 h-4" />
-//   //             {selectedPost.date}
-//   //           </span>
-//   //           <span className="flex items-center gap-1">
-//   //             <Clock className="w-4 h-4" />
-//   //             {selectedPost.readTime} min read
-//   //           </span>
-//   //           <span className="flex items-center gap-1">
-//   //             <Eye className="w-4 h-4" />
-//   //             {selectedPost.views}
-//   //           </span>
-//   //         </div>
-
-//   //         <h1 className="text-3xl lg:text-4xl font-bold text-cyan-100 mb-4">
-//   //           {selectedPost.content.title}
-//   //         </h1>
-//   //       </div>
-
-//   //       {/* Article Content */}
-//   //       <div className="px-4">
-//   //         <div className="prose prose-invert max-w-none text-justify">
-//   //           <img
-//   //             src={selectedPost.image}
-//   //             alt={selectedPost.headline}
-//   //             className="float-right ml-6 mb-4 w-full max-w-sm rounded"
-//   //           />
-//   //           {renderContent(selectedPost.content.sections)}
-//   //         </div>
-//   //       </div>
-
-//   //       {/* Article Footer */}
-//   //       <div className="mt-10 px-4 pb-10">
-//   //         <button
-//   //           onClick={handleBackToList}
-//   //           className="text-cyan-400 hover:underline"
-//   //         >
-//   //           ← Read More Articles
-//   //         </button>
-//   //       </div>
-//   //     </div>
-//   //   </div>
-//   // );
-//   // const ArticleView = () => {
-//   //   const [view, setView] = useState("article");
-
-//   //   // Dummy article data
-//   //   const selectedPost = {
-//   //     image: "https://via.placeholder.com/500x300",
-//   //     headline: "Why Blockchain Matters",
-//   //     category: "Crypto",
-//   //     date: "June 25, 2025",
-//   //     readTime: 5,
-//   //     views: 1240,
-//   //     content: {
-//   //       title: "Understanding Blockchain in 2025",
-//   //       sections: [
-//   //         {
-//   //           content: `<p>Blockchain is a decentralized digital ledger that records transactions across many computers.</p>
-//   //                     <p>Its use in cryptocurrencies like Bitcoin has revolutionized finance. <a href="#">Learn more</a>.</p>`,
-//   //         },
-//   //         {
-//   //           content: `<h2>Key Benefits</h2><ul><li>Transparency</li><li>Security</li><li>Decentralization</li></ul>`,
-//   //         },
-//   //       ],
-//   //     },
-//   //   };
-
-//   //   const recentBlogsData = [
-//   //     { title: "Understanding Blockchain Scaling" },
-//   //     { title: "How Crypto Wallets Work" },
-//   //     { title: "Top 5 Web3 Tools in 2025" },
-//   //     { title: "What is Layer 2?" },
-//   //     { title: "Crypto Security Best Practices" },
-//   //   ];
-
-//   //   const renderContent = (sections) =>
-//   //     sections.map((sec, i) => (
-//   //       <div key={i} dangerouslySetInnerHTML={{ __html: sec.content }} />
-//   //     ));
-
-//   //   const handleBackToList = () => {
-//   //     alert("Back to articles clicked.");
-//   //   };
-
-//   //   return (
-//   //     <div className="min-h-screen bg-[#0b1f24] text-white w-full">
-//   //       <div className="w-full px-4 pt-6">
-
-//   //         {/* Toggle Buttons */}
-//   //         <div className="flex items-center justify-between mb-6">
-//   //           <button
-//   //             onClick={handleBackToList}
-//   //             className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300"
-//   //           >
-//   //             <ArrowLeft className="w-4 h-4" />
-//   //             Back to Articles
-//   //           </button>
-
-//   //           <div className="flex gap-4">
-//   //             <button
-//   //               onClick={() => setView("article")}
-//   //               className={`text-sm px-3 py-1 rounded ${
-//   //                 view === "article"
-//   //                   ? "bg-cyan-600 text-white"
-//   //                   : "text-cyan-400 hover:text-cyan-300"
-//   //               }`}
-//   //             >
-//   //               Article
-//   //             </button>
-//   //             <button
-//   //               onClick={() => setView("recent")}
-//   //               className={`text-sm px-3 py-1 rounded ${
-//   //                 view === "recent"
-//   //                   ? "bg-cyan-600 text-white"
-//   //                   : "text-cyan-400 hover:text-cyan-300"
-//   //               }`}
-//   //             >
-//   //               Recent Blogs
-//   //             </button>
-//   //           </div>
-//   //         </div>
-
-//   //         {view === "article" ? (
-//   //           <div className="flex flex-col lg:flex-row gap-8">
-//   //             {/* Left Side - Article */}
-//   //             <div className="lg:w-2/3 w-full">
-//   //               <div className="mb-4 text-sm text-cyan-200 flex flex-wrap gap-4">
-//   //                 <span><strong>Category:</strong> {selectedPost.category}</span>
-//   //                 <span className="flex items-center gap-1">
-//   //                   <Calendar className="w-4 h-4" />
-//   //                   {selectedPost.date}
-//   //                 </span>
-//   //                 <span className="flex items-center gap-1">
-//   //                   <Clock className="w-4 h-4" />
-//   //                   {selectedPost.readTime} min read
-//   //                 </span>
-//   //                 <span className="flex items-center gap-1">
-//   //                   <Eye className="w-4 h-4" />
-//   //                   {selectedPost.views}
-//   //                 </span>
-//   //               </div>
-
-//   //               <h1 className="text-3xl lg:text-4xl font-bold text-cyan-100 mb-4">
-//   //                 {selectedPost.content.title}
-//   //               </h1>
-
-//   //               <div className="prose prose-invert max-w-none text-justify">
-//   //                 <img
-//   //                   src={selectedPost.image}
-//   //                   alt={selectedPost.headline}
-//   //                   className="float-right ml-6 mb-4 w-full max-w-sm rounded"
-//   //                 />
-//   //                 {renderContent(selectedPost.content.sections)}
-//   //               </div>
-
-//   //               <div className="mt-10 pb-10">
-//   //                 <button
-//   //                   onClick={handleBackToList}
-//   //                   className="text-cyan-400 hover:underline"
-//   //                 >
-//   //                   ← Read More Articles
-//   //                 </button>
-//   //               </div>
-//   //             </div>
-
-//   //             {/* Right Side - Sidebar */}
-//   //             <div className="lg:w-1/3 w-full flex flex-col gap-8">
-//   //               {/* Recent Blogs */}
-//   //               <div className="bg-[#10252c] p-5 rounded-xl border border-cyan-500/10">
-//   //                 <h2 className="text-lg font-semibold text-cyan-300 mb-3">Recent Blogs</h2>
-//   //                 <ul className="space-y-2 list-disc list-inside text-sm text-cyan-100">
-//   //                   {recentBlogsData.map((blog, i) => (
-//   //                     <li key={i}>{blog.title}</li>
-//   //                   ))}
-//   //                 </ul>
-//   //               </div>
-
-//   //               {/* Request Form */}
-//   //               <div className="bg-[#10252c] p-5 rounded-xl border border-cyan-500/10">
-//   //                 <h2 className="text-lg font-semibold text-cyan-300 mb-3">Raise a Request</h2>
-//   //                 <form className="flex flex-col gap-4 text-sm text-cyan-100">
-//   //                   <div>
-//   //                     <label className="block mb-1">Name</label>
-//   //                     <input
-//   //                       type="text"
-//   //                       className="w-full px-3 py-2 rounded bg-[#0e1f24] text-white border border-cyan-500/20"
-//   //                     />
-//   //                   </div>
-//   //                   <div>
-//   //                     <label className="block mb-1">Phone Number</label>
-//   //                     <input
-//   //                       type="tel"
-//   //                       className="w-full px-3 py-2 rounded bg-[#0e1f24] text-white border border-cyan-500/20"
-//   //                     />
-//   //                   </div>
-//   //                   <div>
-//   //                     <label className="block mb-1">Description</label>
-//   //                     <textarea
-//   //                       rows="4"
-//   //                       className="w-full px-3 py-2 rounded bg-[#0e1f24] text-white border border-cyan-500/20"
-//   //                     ></textarea>
-//   //                   </div>
-//   //                   <button
-//   //                     type="submit"
-//   //                     className="mt-2 px-4 py-2 rounded bg-cyan-600 hover:bg-cyan-700 transition text-white font-medium"
-//   //                   >
-//   //                     Submit Request
-//   //                   </button>
-//   //                 </form>
-//   //               </div>
-//   //             </div>
-//   //           </div>
-//   //         ) : (
-//   //           // Recent View
-//   //           <div className="bg-[#10252c] p-6 rounded-xl border border-cyan-500/10 max-w-3xl mx-auto">
-//   //             <h2 className="text-xl font-semibold text-cyan-300 mb-4">Recent Blog History</h2>
-//   //             <ul className="space-y-3 list-disc list-inside text-cyan-100">
-//   //               {recentBlogsData.map((blog, i) => (
-//   //                 <li key={i} className="text-base">{blog.title}</li>
-//   //               ))}
-//   //             </ul>
-//   //           </div>
-//   //         )}
-//   //       </div>
-//   //     </div>
-//   //   );
-//   // };
-
-
-//   // Blog List View Component
-//   const BlogListView = () => (
+//   return (
 //     <div
 //       className="min-h-screen px-6 py-8"
 //       style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
@@ -4561,9 +4202,8 @@ export const blogsData = [
 //       <div className="w-full mx-0">
 //         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-//           {/* Sidebar - Cohesive Teal/Cyan Theme */}
+//           {/* Sidebar */}
 //           <aside className="lg:col-span-1 space-y-6">
-
 //             {/* Search Bar */}
 //             <div className="relative group">
 //               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
@@ -4594,10 +4234,11 @@ export const blogsData = [
 //                     <button
 //                       key={cat}
 //                       onClick={() => setActiveCategory(cat)}
-//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${activeCategory === cat
-//                         ? 'bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40'
-//                         : 'text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10'
-//                         }`}
+//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+//                         activeCategory === cat
+//                           ? 'bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40'
+//                           : 'text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10'
+//                       }`}
 //                     >
 //                       {cat}
 //                     </button>
@@ -4630,9 +4271,8 @@ export const blogsData = [
 //             </div>
 //           </aside>
 
-//           {/* Main Content - Matching Teal/Cyan Theme */}
+//           {/* Main Content */}
 //           <main className="lg:col-span-3">
-
 //             {/* Header */}
 //             <div className="mb-8">
 //               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
@@ -4650,24 +4290,29 @@ export const blogsData = [
 //             </div>
 
 //             {/* Posts Grid */}
-//             {/* <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+//             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
 //               {filteredPosts.map((post, idx) => (
 //                 <article
-//                   key={idx}
+//                   key={post.id}
 //                   className="group relative h-full w-full"
 //                   onMouseEnter={() => setHoveredPost(idx)}
 //                   onMouseLeave={() => setHoveredPost(null)}
 //                 >
-               
+//                   {/* Glow Effect */}
 //                   <div
 //                     className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
-//                     style={{ background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)" }}
+//                     style={{
+//                       background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+//                     }}
 //                   ></div>
 
-             
+//                   {/* Card */}
 //                   <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
-                  
-//                     <div className="relative aspect-video overflow-hidden">
+//                     {/* Image */}
+//                     <div
+//                       className="relative aspect-video overflow-hidden cursor-pointer"
+//                       onClick={() => navigate(`/blog/${slugify(post.headline)}`)}
+//                     >
 //                       <img
 //                         src={post.image}
 //                         alt={post.headline}
@@ -4675,7 +4320,7 @@ export const blogsData = [
 //                       />
 //                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-                    
+//                       {/* Badges */}
 //                       <div className="absolute top-3 left-3 flex gap-2">
 //                         {post.trending && (
 //                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
@@ -4697,6 +4342,7 @@ export const blogsData = [
 //                         )}
 //                       </div>
 
+//                       {/* Views */}
 //                       <div className="absolute top-3 right-3">
 //                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
 //                           <Eye className="w-3 h-3" />
@@ -4705,9 +4351,9 @@ export const blogsData = [
 //                       </div>
 //                     </div>
 
-               
+//                     {/* Content */}
 //                     <div className="p-5 flex flex-col flex-grow">
-                  
+//                       {/* Meta */}
 //                       <div className="flex items-center justify-between mb-3">
 //                         <span className="px-3 py-1 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 backdrop-blur-sm rounded-full text-xs font-medium text-cyan-300 border border-cyan-400/25">
 //                           {post.category}
@@ -4718,17 +4364,318 @@ export const blogsData = [
 //                         </div>
 //                       </div>
 
-                 
-//                       <h3 className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow">
+//                       {/* Title */}
+//                       <h3 
+//                         className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
+//                         onClick={() => navigate(`/blog/${slugify(post.headline)}`)}
+//                       >
 //                         {post.headline}
 //                       </h3>
 
-                    
+//                       {/* Excerpt */}
 //                       <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
 //                         {post.description}
 //                       </p>
 
-                    
+//                       {/* Footer */}
+//                       <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
+//                         <button
+//                           onClick={() => handleReadMore(post)}
+//                           className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
+//                         >
+//                           Read More
+//                           <ArrowRight className="w-4 h-4" />
+//                         </button>
+
+//                         <button
+//                           onClick={() => handleSharePost(post)}
+//                           title="Share this blog post"
+//                           type="button"
+//                           className="rounded-lg hover:bg-cyan-500/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 p-2 transition-all duration-300 hover:scale-110"
+//                           style={{ color: "#22d3ee", display: "flex", alignItems: "center" }}
+//                         >
+//                           <FaShareAlt size={16} />
+//                         </button>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </article>
+//               ))}
+//             </div>
+
+//             {/* Referral Modal */}
+//             {showReferralModal && selectedReferralPost && (
+//               <ReferralModal
+//                 show={showReferralModal}
+//                 onHide={handleCloseReferralModal}
+//                 post={selectedReferralPost}
+//               />
+//             )}
+
+//             {/* Load More */}
+//             <div className="mt-12 text-center">
+//               <button className="relative group">
+//                 <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+//                 <div className="relative px-8 py-4 bg-gradient-to-r from-cyan-600/25 to-teal-600/25 backdrop-blur-xl rounded-xl border border-cyan-400/40 text-cyan-100 font-semibold transition-all duration-300 hover:scale-105">
+//                   Load More Articles
+//                 </div>
+//               </button>
+//             </div>
+//           </main>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default BlogLayout;
+// // Import your blog images
+import Blog1 from '../../../public/images/Blog1poster.jpg'
+import Blog2 from '../../../public/images/Blog2poster.jpg'
+import Blog3 from '../../../public/images/Blog3poster.jpg'
+import Blog4 from '../../../public/images/Blog4poster.jpg'
+import Blog5 from '../../../public/images/Blog5poster.jpg'
+// import { 
+//   Search, 
+//   TrendingUp, 
+//   Flame, 
+//   Star, 
+//   Eye, 
+//   Calendar, 
+//   Clock, 
+//   ArrowRight,
+//   ArrowLeft
+// } from 'lucide-react';
+// import { FaShareAlt } from 'react-icons/fa';
+// import ReferralModal from '../../components/Dashboard/modals/referalModal';
+
+
+// // Helper function to create URL-friendly slugs
+// const slugify = (str) =>
+//   str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+
+// const BlogLayout = () => {
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [activeCategory, setActiveCategory] = useState('All');
+//   const [hoveredPost, setHoveredPost] = useState(null);
+//   const [showReferralModal, setShowReferralModal] = useState(false);
+//   const [selectedReferralPost, setSelectedReferralPost] = useState(null);
+  
+//   const navigate = useNavigate();
+
+//   const categories = ['All', 'Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Trading'];
+//   const topPosts = [
+//     'Bitcoin hits new all-time high amid institutional adoption',
+//     'Ethereum 2.0 staking rewards reach $1B milestone',
+//     'DeFi protocols face regulatory scrutiny in 2024',
+//     'NFT market shows signs of recovery after winter'
+//   ];
+
+//   const handleOpenReferralModal = (post) => {
+//     setSelectedReferralPost(post);
+//     setShowReferralModal(true);
+//   };
+
+//   const handleCloseReferralModal = () => {
+//     setShowReferralModal(false);
+//     setSelectedReferralPost(null);
+//   };
+
+//   const filteredPosts = blogsData.filter(post => {
+//     const matchesSearch = post.headline.toLowerCase().includes(searchQuery.toLowerCase());
+//     const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
+//     return matchesSearch && matchesCategory;
+//   });
+
+//   const handleReadMore = (post) => {
+//     // Navigate to individual article page
+//     navigate(`/blog/${slugify(post.headline)}`);
+//   };
+
+//   return (
+//     <div
+//       className="min-h-screen px-6 py-8"
+//       style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
+//     >
+//       <div className="w-full mx-0">
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+//           {/* Sidebar */}
+//           <aside className="lg:col-span-1 space-y-6">
+//             {/* Search Bar */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
+//                 <div className="relative">
+//                   <input
+//                     type="text"
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     placeholder="Search insights..."
+//                     className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
+//                   />
+//                   <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Categories */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <TrendingUp className="w-4 h-4 text-cyan-400" />
+//                   <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
+//                 </div>
+//                 <div className="space-y-1">
+//                   {categories.map((cat) => (
+//                     <button
+//                       key={cat}
+//                       onClick={() => setActiveCategory(cat)}
+//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+//                         activeCategory === cat
+//                           ? 'bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40'
+//                           : 'text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10'
+//                       }`}
+//                     >
+//                       {cat}
+//                     </button>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Top Posts */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-teal-950/80 to-cyan-950/70 backdrop-blur-xl rounded-2xl border border-teal-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <Flame className="w-4 h-4 text-teal-400" />
+//                   <h3 className="font-semibold text-teal-100 text-sm">Trending</h3>
+//                 </div>
+//                 <div className="space-y-3">
+//                   {topPosts.slice(0, 4).map((post, i) => (
+//                     <div key={i} className="flex items-start gap-3 group/item cursor-pointer">
+//                       <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-teal-500/30 to-cyan-500/30 rounded-full flex items-center justify-center border border-teal-400/40">
+//                         <span className="text-xs font-bold text-teal-200">{i + 1}</span>
+//                       </div>
+//                       <p className="text-xs text-teal-200/80 group-hover/item:text-teal-100 transition-colors line-clamp-2 leading-relaxed">
+//                         {post}
+//                       </p>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+//           </aside>
+
+//           {/* Main Content */}
+//           <main className="lg:col-span-3">
+//             {/* Header */}
+//             <div className="mb-8">
+//               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+//                 <div>
+//                   <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+//                     Crypto Insights
+//                   </h1>
+//                   <p className="text-cyan-200/70 text-sm">Latest news and analysis from the blockchain world</p>
+//                 </div>
+//                 <div className="text-left lg:text-right">
+//                   <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
+//                   <p className="text-teal-400/60 text-xs">Updated daily</p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Posts Grid */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+//               {filteredPosts.map((post, idx) => (
+//                 <article
+//                   key={post.id}
+//                   className="group relative h-full w-full"
+//                   onMouseEnter={() => setHoveredPost(idx)}
+//                   onMouseLeave={() => setHoveredPost(null)}
+//                 >
+//                   {/* Glow Effect */}
+//                   <div
+//                     className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
+//                     style={{
+//                       background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+//                     }}
+//                   ></div>
+
+//                   {/* Card */}
+//                   <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
+//                     {/* Image */}
+//                     <div
+//                       className="relative aspect-video overflow-hidden cursor-pointer"
+//                       onClick={() => navigate(`/blog/${slugify(post.headline)}`)}
+//                     >
+//                       <img
+//                         src={post.image}
+//                         alt={post.headline}
+//                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+//                       />
+//                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+//                       {/* Badges */}
+//                       <div className="absolute top-3 left-3 flex gap-2">
+//                         {post.trending && (
+//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                             <TrendingUp className="w-3 h-3" />
+//                             Trending
+//                           </span>
+//                         )}
+//                         {post.featured && (
+//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
+//                             <Star className="w-3 h-3" />
+//                             Featured
+//                           </span>
+//                         )}
+//                         {post.hot && (
+//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                             <Flame className="w-3 h-3" />
+//                             Hot
+//                           </span>
+//                         )}
+//                       </div>
+
+//                       {/* Views */}
+//                       <div className="absolute top-3 right-3">
+//                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
+//                           <Eye className="w-3 h-3" />
+//                           {post.views}
+//                         </span>
+//                       </div>
+//                     </div>
+
+//                     {/* Content */}
+//                     <div className="p-5 flex flex-col flex-grow">
+//                       {/* Meta */}
+//                       <div className="flex items-center justify-between mb-3">
+//                         <span className="px-3 py-1 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 backdrop-blur-sm rounded-full text-xs font-medium text-cyan-300 border border-cyan-400/25">
+//                           {post.category}
+//                         </span>
+//                         <div className="flex items-center gap-1 text-xs text-teal-400/80">
+//                           <Calendar className="w-3 h-3" />
+//                           {post.date}
+//                         </div>
+//                       </div>
+
+//                       {/* Title */}
+//                       <h3 
+//                         className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
+//                         onClick={() => navigate(`/blog/${slugify(post.headline)}`)}
+//                       >
+//                         {post.headline}
+//                       </h3>
+
+//                       {/* Excerpt */}
+//                       <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
+//                         {post.description}
+//                       </p>
+
+//                       {/* Footer */}
 //                       <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
 //                         <button
 //                           onClick={() => handleReadMore(post)}
@@ -4747,139 +4694,24 @@ export const blogsData = [
 //                           onClick={() => handleOpenReferralModal(post)}
 //                           title="Share Referral Code"
 //                           type="button"
-//                           className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+//                           className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white p-2"
 //                           style={{ color: "white", display: "flex", alignItems: "center" }}
 //                         >
-//                           <FaShareAlt size={18} />
+//                           <FaShareAlt size={16} />
 //                         </button>
 //                       </div>
 //                     </div>
 //                   </div>
 //                 </article>
 //               ))}
-//             </div>   */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
-//     {filteredPosts.map((post, idx) => (
-//       <article
-//         key={idx}
-//         className="group relative h-full w-full"
-//         onMouseEnter={() => setHoveredPost(idx)}
-//         onMouseLeave={() => setHoveredPost(null)}
-//       >
-//         {/* Glow Effect */}
-//         <div
-//           className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
-//           style={{
-//             background:
-//               "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
-//           }}
-//         ></div>
-
-//         {/* Card */}
-//         <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
-//           {/* Image */}
-//           <div
-//             className="relative aspect-video overflow-hidden cursor-pointer"
-//             onClick={() => navigate(`/blog/${slugify(post.headline)}`)} // <-- Added click navigation here
-//           >
-//             <img
-//               src={post.image}
-//               alt={post.headline}
-//               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-//             />
-//             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-
-//             {/* Badges */}
-//             <div className="absolute top-3 left-3 flex gap-2">
-//               {post.trending && (
-//                 <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
-//                   <TrendingUp className="w-3 h-3" />
-//                   Trending
-//                 </span>
-//               )}
-//               {post.featured && (
-//                 <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
-//                   <Star className="w-3 h-3" />
-//                   Featured
-//                 </span>
-//               )}
-//               {post.hot && (
-//                 <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
-//                   <Flame className="w-3 h-3" />
-//                   Hot
-//                 </span>
-//               )}
 //             </div>
 
-//             {/* Views */}
-//             <div className="absolute top-3 right-3">
-//               <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
-//                 <Eye className="w-3 h-3" />
-//                 {post.views}
-//               </span>
-//             </div>
-//           </div>
-
-//           {/* Content */}
-//           <div className="p-5 flex flex-col flex-grow">
-//             {/* Meta */}
-//             <div className="flex items-center justify-between mb-3">
-//               <span className="px-3 py-1 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 backdrop-blur-sm rounded-full text-xs font-medium text-cyan-300 border border-cyan-400/25">
-//                 {post.category}
-//               </span>
-//               <div className="flex items-center gap-1 text-xs text-teal-400/80">
-//                 <Calendar className="w-3 h-3" />
-//                 {post.date}
-//               </div>
-//             </div>
-
-//             {/* Title */}
-//             <h3 className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow">
-//               {post.headline}
-//             </h3>
-
-//             {/* Excerpt */}
-//             <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
-//               {post.description}
-//             </p>
-
-//             {/* Footer */}
-//             <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
-//               <button
-//                 onClick={() => handleReadMore(post)}
-//                 className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
-//               >
-//                 Read More
-//                 <ArrowRight className="w-4 h-4" />
-//               </button>
-
-//               <div className="inline-flex items-center gap-1 text-xs text-teal-400/70">
-//                 <Clock className="w-3 h-3" />
-//                 {post.readTime} min read
-//               </div>
-
-//               <button
-//                 onClick={() => handleOpenReferralModal(post)}
-//                 title="Share Referral Code"
-//                 type="button"
-//                 className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
-//                 style={{ color: "white", display: "flex", alignItems: "center" }}
-//               >
-//                 <FaShareAlt size={18} />
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </article>
-//     ))}
-//   </div>
-
-//             {/* Referral Modal outside the grid */}
+//             {/* Referral Modal */}
 //             {showReferralModal && selectedReferralPost && (
 //               <ReferralModal
 //                 show={showReferralModal}
 //                 onHide={handleCloseReferralModal}
-//                 post={selectedReferralPost} // pass the post to modal if needed
+//                 post={selectedReferralPost}
 //               />
 //             )}
 
@@ -4897,172 +4729,1613 @@ export const blogsData = [
 //       </div>
 //     </div>
 //   );
-
-//   // Main render - conditionally show list or article view
-//   return currentView === 'article' && selectedPost ? <ArticleView /> : <BlogListView />;
 // };
 
 // export default BlogLayout;
 
-// BlogLayout.jsx - Main Blog Component
 
-import { useNavigate } from 'react-router-dom';
-// Import your blog images
-import Blog1 from '../../../public/images/Blog1poster.jpg'
-import Blog2 from '../../../public/images/Blog2poster.jpg'
-import Blog3 from '../../../public/images/Blog3poster.jpg'
-import Blog4 from '../../../public/images/Blog4poster.jpg'
-import Blog5 from '../../../public/images/Blog5poster.jpg'
-import { 
-  Search, 
-  TrendingUp, 
-  Flame, 
-  Star, 
-  Eye, 
-  Calendar, 
-  Clock, 
-  ArrowRight,
-  ArrowLeft
-} from 'lucide-react';
-import { FaShareAlt } from 'react-icons/fa';
-import ReferralModal from '../../components/Dashboard/modals/referalModal';
 
-// Sample blog data - replace with your actual data
-// const blogsData = [
-//   {
-//     id: 1,
-//     headline: "Bitcoin Hits New All-Time High Amid Institutional Adoption",
-//     description: "Bitcoin reached unprecedented levels as major institutions continue to embrace cryptocurrency, marking a pivotal moment in digital asset adoption.",
-//     category: "Bitcoin",
-//     date: "June 25, 2025",
-//     readTime: 5,
-//     views: "12.4K",
-//     image: "/images/Blog1poster.jpg",
-//     trending: true,
-//     featured: true,
-//     content: {
-//       title: "Bitcoin Hits New All-Time High Amid Institutional Adoption",
-//       sections: [
-//         {
-//           type: "paragraph",
-//           content: "Bitcoin has reached an unprecedented milestone, surpassing all previous records as institutional adoption continues to accelerate across the globe. This historic moment represents a significant shift in how traditional finance views cryptocurrency."
-//         },
-//         {
-//           type: "heading",
-//           content: "Institutional Investment Surge"
-//         },
-//         {
-//           type: "paragraph",
-//           content: "Major corporations and financial institutions have been steadily increasing their Bitcoin holdings, with companies like Tesla, MicroStrategy, and Square leading the charge. This institutional backing has provided unprecedented legitimacy to the cryptocurrency market."
-//         },
-//         {
-//           type: "unordered_list",
-//           content: [
-//             "Corporate treasury adoption by major companies",
-//             "Bitcoin ETF approvals driving institutional access",
-//             "Central bank interest in digital assets",
-//             "Regulatory clarity improving market confidence"
-//           ]
-//         },
-//         {
-//           type: "heading",
-//           content: "Market Impact and Future Outlook"
-//         },
-//         {
-//           type: "paragraph",
-//           content: "The sustained institutional interest has created a more stable foundation for Bitcoin's price growth. Analysts predict continued upward momentum as more institutions announce their digital asset strategies."
-//         }
-//       ]
+import { ChevronLeft, TrendingUp, Share2, Flame,Eye ,ArrowRight , ChevronRight, Calendar, User, Clock, Search, Phone, Mail, MapPin } from 'lucide-react';
+
+// Sample blog data
+
+import { useEffect } from 'react';
+// Utility function to normalize headlines for URLs
+const normalizeHeadline = (str) => {
+  return str
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]/g, '');
+};
+
+// Contact Component
+const BlogContact = () => {
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    mobile: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState({});
+
+  const onChangeContact = (e) => {
+    let { name, value } = e.target;
+    if (name === 'mobile') {
+      value = value.replace(/[^0-9 ]/g, '');
+    }
+    setContactForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const validate = () => {
+    const formErrors = {};
+    if (!contactForm.name.trim()) formErrors.name = 'Name is required';
+    if (!contactForm.mobile.trim()) formErrors.mobile = 'Phone Number is required';
+    if (!contactForm.message.trim()) formErrors.message = 'Description is required';
+    
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0;
+  };
+
+  const onSubmitContact = (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    
+    // Simulate form submission
+    alert('Thank you for your message! We will get back to you soon.');
+    setContactForm({ name: '', mobile: '', message: '' });
+    setErrors({});
+  };
+
+  return (
+    <div className="bg-gray-800 rounded-lg p-6 mb-6">
+      <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+        <Phone className="w-5 h-5 mr-2" />
+        Contact Us
+      </h3>
+      <div className="space-y-4">
+        <div>
+          <label className="block text-gray-300 text-sm font-medium mb-2">
+            Name <span className="text-red-400">*</span>
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={contactForm.name}
+            onChange={onChangeContact}
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your name"
+          />
+          {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
+        </div>
+        
+        <div>
+          <label className="block text-gray-300 text-sm font-medium mb-2">
+            Phone Number <span className="text-red-400">*</span>
+          </label>
+          <input
+            type="text"
+            name="mobile"
+            value={contactForm.mobile}
+            onChange={onChangeContact}
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your phone number"
+          />
+          {errors.mobile && <p className="text-red-400 text-sm mt-1">{errors.mobile}</p>}
+        </div>
+        
+        <div>
+          <label className="block text-gray-300 text-sm font-medium mb-2">
+            Message <span className="text-red-400">*</span>
+          </label>
+          <textarea
+            name="message"
+            value={contactForm.message}
+            onChange={onChangeContact}
+            rows="3"
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your message"
+          />
+          {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
+        </div>
+        
+        <button
+          onClick={onSubmitContact}
+          className="w-full bg-[#b9cd26] text-white font-medium py-2 px-4 rounded-md transition-colors"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Blog Card Component
+const BlogCard = ({ blog, onClick }) => {
+  return (
+    <div 
+      className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+      onClick={() => onClick(blog)}
+    >
+      <div className="relative overflow-hidden">
+        <img 
+          src={blog.image} 
+          alt={blog.headline}
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-sm">
+          {blog.category}
+        </div>
+      </div>
+      
+      <div className="p-6">
+        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
+          {blog.headline}
+        </h3>
+        
+        <p className="text-gray-300 mb-4 line-clamp-3">
+          {blog.description}
+        </p>
+        
+        <div className="flex items-center justify-between text-sm text-gray-400">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <User className="w-4 h-4 mr-1" />
+              {blog.author}
+            </div>
+            <div className="flex items-center">
+              <Calendar className="w-4 h-4 mr-1" />
+              {new Date(blog.date).toLocaleDateString()}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <Clock className="w-4 h-4 mr-1" />
+            {blog.readTime}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Blog Detail Component
+// const BlogDetail = ({ blog, onBack, onNavigate, currentIndex, totalBlogs }) => {
+//   const [recentlyViewed, setRecentlyViewed] = useState([]);
+
+//   useEffect(() => {
+//     // Add current blog to recently viewed
+//     const viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+//     const filtered = viewed.filter(item => item.id !== blog.id);
+//     const updated = [{ id: blog.id, headline: blog.headline, date: new Date().toISOString() }, ...filtered].slice(0, 5);
+//     setRecentlyViewed(updated);
+//     localStorage.setItem('recentlyViewed', JSON.stringify(updated));
+//   }, [blog]);
+
+//   const handlePrevious = () => {
+//     if (currentIndex > 0) {
+//       onNavigate(currentIndex - 1);
 //     }
-//   },
-//   {
-//     id: 2,
-//     headline: "Ethereum 2.0 Staking Rewards Reach $1B Milestone",
-//     description: "The Ethereum network's proof-of-stake mechanism has generated over $1 billion in staking rewards, demonstrating the success of the network's transition.",
-//     category: "Ethereum",
-//     date: "June 24, 2025",
-//     readTime: 4,
-//     views: "8.7K",
-//     image: "/images/Blog2poster.jpg",
-//     hot: true,
-//     content: {
-//       title: "Ethereum 2.0 Staking Rewards Reach $1B Milestone",
-//       sections: [
-//         {
-//           type: "paragraph",
-//           content: "Ethereum's transition to proof-of-stake has proven to be one of the most successful upgrades in blockchain history, with staking rewards now exceeding $1 billion since the merge."
-//         },
-//         {
-//           type: "heading",
-//           content: "Proof-of-Stake Success"
-//         },
-//         {
-//           type: "paragraph",
-//           content: "The Ethereum network's shift from energy-intensive mining to efficient staking has not only reduced its environmental impact by over 99% but also created new opportunities for network participants to earn rewards."
-//         },
-//         {
-//           type: "unordered_list",
-//           content: [
-//             "Over 32 million ETH currently staked",
-//             "Annual staking yields averaging 4-6%",
-//             "Reduced energy consumption by 99.9%",
-//             "Improved network security and decentralization"
-//           ]
-//         }
-//       ]
+//   };
+
+//   const handleNext = () => {
+//     if (currentIndex < totalBlogs - 1) {
+//       onNavigate(currentIndex + 1);
 //     }
-//   },
-//   {
-//     id: 3,
-//     headline: "DeFi Protocols Face Regulatory Scrutiny in 2024",
-//     description: "Decentralized finance protocols are navigating an increasingly complex regulatory landscape as governments worldwide develop new frameworks.",
-//     category: "DeFi",
-//     date: "June 23, 2025",
-//     readTime: 6,
-//     views: "6.2K",
-//     image: "/images/Blog3poster.jpg",
-//     content: {
-//       title: "DeFi Protocols Face Regulatory Scrutiny in 2024",
-//       sections: [
-//         {
-//           type: "paragraph",
-//           content: "The decentralized finance sector is experiencing increased regulatory attention as traditional financial authorities work to establish comprehensive frameworks for governing DeFi protocols."
-//         },
-//         {
-//           type: "heading",
-//           content: "Global Regulatory Landscape"
-//         },
-//         {
-//           type: "paragraph",
-//           content: "Different jurisdictions are taking varied approaches to DeFi regulation, creating a complex patchwork of rules that protocols must navigate to ensure compliance while maintaining their decentralized nature."
-//         }
-//       ]
-//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-900 text-white">
+//       <div className="container mx-auto px-4 py-8">
+//         {/* Navigation Header */}
+//         <div className="flex items-center justify-between mb-6">
+//           <button
+//             onClick={onBack}
+//             className="flex items-center text-blue-400 hover:text-blue-300 transition-colors"
+//           >
+//             <ChevronLeft className="w-5 h-5 mr-1" />
+//             Back to Articles
+//           </button>
+          
+//           <div className="flex items-center space-x-4">
+//             <button
+//               onClick={handlePrevious}
+//               disabled={currentIndex === 0}
+//               className="flex items-center px-3 py-1 bg-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-colors"
+//             >
+//               <ChevronLeft className="w-4 h-4 mr-1" />
+//               Previous
+//             </button>
+            
+//             <span className="text-gray-400">
+//               {currentIndex + 1} of {totalBlogs}
+//             </span>
+            
+//             <button
+//               onClick={handleNext}
+//               disabled={currentIndex === totalBlogs - 1}
+//               className="flex items-center px-3 py-1 bg-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-colors"
+//             >
+//               Next
+//               <ChevronRight className="w-4 h-4 ml-1" />
+//             </button>
+//           </div>
+//         </div>
+
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+//           {/* Main Content */}
+//           <div className="lg:col-span-3">
+//             <article className="bg-gray-800 rounded-lg overflow-hidden">
+//               <img 
+//                 src={blog.image} 
+//                 alt={blog.headline}
+//                 className="w-full h-64 md:h-80 object-cover"
+//               />
+              
+//               <div className="p-6 md:p-8">
+//                 <div className="flex items-center justify-between mb-4">
+//                   <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+//                     {blog.category}
+//                   </span>
+//                   <div className="flex items-center space-x-4 text-sm text-gray-400">
+//                     <div className="flex items-center">
+//                       <User className="w-4 h-4 mr-1" />
+//                       {blog.author}
+//                     </div>
+//                     <div className="flex items-center">
+//                       <Calendar className="w-4 h-4 mr-1" />
+//                       {new Date(blog.date).toLocaleDateString()}
+//                     </div>
+//                     <div className="flex items-center">
+//                       <Clock className="w-4 h-4 mr-1" />
+//                       {blog.readTime}
+//                     </div>
+//                   </div>
+//                 </div>
+                
+//                 <h1 className="text-3xl md:text-4xl font-bold mb-4">
+//                   {blog.headline}
+//                 </h1>
+                
+//                 <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+//                   {blog.description}
+//                 </p>
+                
+//                 <div className="prose prose-invert max-w-none">
+//                   <h2 className="text-2xl font-semibold mb-4 text-white border-b border-gray-600 pb-2">
+//                     {blog.content.title}
+//                   </h2>
+                  
+//                   {blog.content.sections.map((section, index) => (
+//                     <div key={index} className="mb-6">
+//                       {section.type === 'paragraph' && (
+//                         <p className="text-gray-300 leading-relaxed mb-4">
+//                           {section.content}
+//                         </p>
+//                       )}
+                      
+//                       {section.type === 'heading' && (
+//                         <h2 className="text-xl font-semibold text-white mb-3 border-b border-gray-600 pb-2">
+//                           {section.content}
+//                         </h2>
+//                       )}
+                      
+//                       {section.type === 'subheading' && (
+//                         <h3 className="text-lg font-medium text-gray-200 mb-3">
+//                           {section.content}
+//                         </h3>
+//                       )}
+                      
+//                       {section.type === 'unordered_list' && (
+//                         <ul className="list-disc list-inside text-gray-300 space-y-2 mb-4">
+//                           {section.content.map((item, idx) => (
+//                             <li key={idx}>{item}</li>
+//                           ))}
+//                         </ul>
+//                       )}
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             </article>
+
+//             {/* Navigation at bottom */}
+//             <div className="flex justify-between mt-8">
+//               <button
+//                 onClick={handlePrevious}
+//                 disabled={currentIndex === 0}
+//                 className="flex items-center px-4 py-2 bg-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-colors"
+//               >
+//                 <ChevronLeft className="w-5 h-5 mr-2" />
+//                 Previous Article
+//               </button>
+              
+//               <button
+//                 onClick={handleNext}
+//                 disabled={currentIndex === totalBlogs - 1}
+//                 className="flex items-center px-4 py-2 bg-gray-700 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600 transition-colors"
+//               >
+//                 Next Article
+//                 <ChevronRight className="w-5 h-5 ml-2" />
+//               </button>
+//             </div>
+//           </div>
+
+//           {/* Sidebar */}
+//           <div className="lg:col-span-1">
+//             <div className="sticky top-4 space-y-6">
+//               {/* Recently Viewed */}
+//               {recentlyViewed.length > 0 && (
+//                 <div className="bg-gray-800 rounded-lg p-6">
+//                   <h3 className="text-lg font-semibold text-white mb-4">Recently Viewed</h3>
+//                   <ul className="space-y-3">
+//                     {recentlyViewed.map((item, index) => (
+//                       <li key={index} className="text-sm">
+//                         <div className="text-gray-300 line-clamp-2">{item.headline}</div>
+//                         <div className="text-gray-500 text-xs mt-1">
+//                           {new Date(item.date).toLocaleDateString()}
+//                         </div>
+//                       </li>
+//                     ))}
+//                   </ul>
+//                 </div>
+//               )}
+              
+//               {/* Contact Form */}
+//               <BlogContact />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
+const BlogDetail = ({ blog, onBack, onNavigate, currentIndex, totalBlogs }) => {
+  const [recentlyViewed, setRecentlyViewed] = useState([]);
+
+  useEffect(() => {
+    const viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    const filtered = viewed.filter(item => item.id !== blog.id);
+    const updated = [{ id: blog.id, headline: blog.headline, date: new Date().toISOString() }, ...filtered].slice(0, 5);
+    setRecentlyViewed(updated);
+    localStorage.setItem('recentlyViewed', JSON.stringify(updated));
+  }, [blog]);
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) onNavigate(currentIndex - 1);
+  };
+
+  const handleNext = () => {
+    if (currentIndex < totalBlogs - 1) onNavigate(currentIndex + 1);
+  };
+
+  return (
+    <div className="min-h-screen bg-white text-[#202122] font-serif">
+      <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Table of Contents */}
+        <aside className="hidden lg:block lg:col-span-3">
+          <nav className="sticky top-8">
+            <h2 className="font-bold text-lg mb-4">Contents</h2>
+            <ul className="list-decimal list-inside text-sm space-y-2 text-blue-600">
+              {blog.content.sections
+                .filter(section => section.type === 'heading')
+                .map((section, idx) => (
+                  <li key={idx}>
+                    <a href={`#section-${idx}`} className="hover:underline">
+                      {section.content.replace(/<[^>]*>/g, '')}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className="lg:col-span-9 w-full lg:px-16 xl:px-24">
+          <div className="flex items-center justify-between mb-6">
+            <button onClick={onBack} className="text-blue-700 hover:underline">
+              <ChevronLeft className="inline-block w-4 h-4 mr-1" />
+              Back to Articles
+            </button>
+            <div className="flex items-center space-x-4 text-sm">
+              <button
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
+                className="text-blue-700 disabled:opacity-40 hover:underline"
+              >
+                <ChevronLeft className="inline-block w-4 h-4 mr-1" />
+                Previous
+              </button>
+              <span>{currentIndex + 1} of {totalBlogs}</span>
+              <button
+                onClick={handleNext}
+                disabled={currentIndex === totalBlogs - 1}
+                className="text-blue-700 disabled:opacity-40 hover:underline"
+              >
+                Next
+                <ChevronRight className="inline-block w-4 h-4 ml-1" />
+              </button>
+            </div>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">{blog.headline}</h1>
+            <div className="text-sm text-gray-600 mb-4">
+              <span>{blog.author}</span> · <span>{new Date(blog.date).toLocaleDateString()}</span> · <span>{blog.readTime}</span>
+            </div>
+
+            <img src={blog.image} alt={blog.headline} className="w-full mb-6 object-cover" />
+            <p className="text-lg leading-relaxed mb-8">{blog.description}</p>
+
+            {blog.content.sections.map((section, index) => {
+              const contentText = typeof section.content === 'string' ? section.content.replace(/<[^>]*>/g, '') : '';
+              switch (section.type) {
+                case 'heading':
+                  return (
+                    <h2
+                      key={index}
+                      id={`section-${index}`}
+                      className="text-2xl font-semibold mt-10 mb-4 border-b border-gray-300 pb-2"
+                    >
+                      {contentText}
+                    </h2>
+                  );
+                case 'subheading':
+                  return (
+                    <h3
+                      key={index}
+                      className="text-xl font-medium mt-6 mb-3 text-[#202122]"
+                    >
+                      {contentText}
+                    </h3>
+                  );
+                case 'paragraph':
+                  return (
+                    <p key={index} className="mb-5 leading-7 text-[#202122]">
+                      {contentText}
+                    </p>
+                  );
+                case 'unordered_list':
+                  return (
+                    <ul key={index} className="list-disc list-inside mb-5 text-[#202122]">
+                      {section.content.map((item, idx) => (
+                        <li key={idx} className="mb-1">{item.replace(/<[^>]*>/g, '')}</li>
+                      ))}
+                    </ul>
+                  );
+                default:
+                  return null;
+              }
+            })}
+
+            <div className="flex justify-between mt-10">
+              <button
+                onClick={handlePrevious}
+                disabled={currentIndex === 0}
+                className="text-blue-700 hover:underline disabled:opacity-40"
+              >
+                <ChevronLeft className="inline-block w-4 h-4 mr-1" />
+                Previous Article
+              </button>
+              <button
+                onClick={handleNext}
+                disabled={currentIndex === totalBlogs - 1}
+                className="text-blue-700 hover:underline disabled:opacity-40"
+              >
+                Next Article
+                <ChevronRight className="inline-block w-4 h-4 ml-1" />
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      {/* Recently Viewed + Contact Side-by-Side */}
+      <div className="container mx-auto px-4 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {recentlyViewed.length > 0 && (
+            <div>
+              <h3 className="text-xl font-semibold mb-3">Recently Viewed</h3>
+              <ul className="list-disc list-inside text-gray-700">
+                {recentlyViewed.map((item, index) => (
+                  <li key={index} className="mb-1">
+                    <span className="font-medium">{item.headline}</span> –{' '}
+                    <span className="text-sm text-gray-500">
+                      {new Date(item.date).toLocaleDateString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div>
+            <BlogContact />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+// Main Blog System Component
+// Enhanced Main Blog System Component with new design
+// const  BlogLayout = () => {
+//   const [currentView, setCurrentView] = useState('list');
+//   const [selectedBlog, setSelectedBlog] = useState(null);
+//   const [selectedIndex, setSelectedIndex] = useState(0);
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [activeCategory, setActiveCategory] = useState('All');
+//   const [hoveredPost, setHoveredPost] = useState(null);
+//   const [showReferralModal, setShowReferralModal] = useState(false);
+//   const [selectedReferralPost, setSelectedReferralPost] = useState(null);
+
+//   const categories = ['All', 'Programming', 'JavaScript', 'CSS', 'React', 'Web Development'];
+//   const topPosts = [
+//     'Getting Started with React Development',
+//     'Advanced JavaScript Techniques for Modern Development',
+//     'CSS Grid vs Flexbox: When to Use Each',
+//     'Modern Web Development Best Practices'
+//   ];
+
+//   // Get unique categories from data
+//   const dataCategories = ['All', ...new Set(blogsData.map(blog => blog.category))];
+
+//   // Filter blogs based on search and category
+//   const filteredPosts = blogsData.filter(post => {
+//     const matchesSearch = post.headline.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//                          post.description.toLowerCase().includes(searchQuery.toLowerCase());
+//     const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
+//     return matchesSearch && matchesCategory;
+//   });
+
+//   const handleBlogClick = (blog) => {
+//     const index = blogsData.findIndex(b => b.id === blog.id);
+//     setSelectedBlog(blog);
+//     setSelectedIndex(index);
+//     setCurrentView('detail');
+//   };
+
+//   const handleBackToList = () => {
+//     setCurrentView('list');
+//     setSelectedBlog(null);
+//   };
+
+//   const handleNavigate = (index) => {
+//     setSelectedBlog(blogsData[index]);
+//     setSelectedIndex(index);
+//   };
+
+//   const handleOpenReferralModal = (post) => {
+//     setSelectedReferralPost(post);
+//     setShowReferralModal(true);
+//   };
+
+//   const handleCloseReferralModal = () => {
+//     setShowReferralModal(false);
+//     setSelectedReferralPost(null);
+//   };
+
+//   const handleReadMore = (post) => {
+//     handleBlogClick(post);
+//   };
+
+//   // Utility function to create URL-friendly slugs
+//   const slugify = (str) => {
+//     return str
+//       .toLowerCase()
+//       .replace(/ /g, '-')
+//       .replace(/[^\w-]/g, '');
+//   };
+
+//   if (currentView === 'detail' && selectedBlog) {
+//     return (
+//       <BlogDetail
+//         blog={selectedBlog}
+//         onBack={handleBackToList}
+//         onNavigate={handleNavigate}
+//         currentIndex={selectedIndex}
+//         totalBlogs={blogsData.length}
+//       />
+//     );
 //   }
-// ];
 
-// Helper function to create URL-friendly slugs
-const slugify = (str) =>
-  str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+//   return (
+//     <div
+//       className="min-h-screen px-6 py-8"
+//       style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
+//     >
+//       <div className="w-full mx-0">
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+//           {/* Sidebar */}
+//           <aside className="lg:col-span-1 space-y-6">
+//             {/* Search Bar */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
+//                 <div className="relative">
+//                   <input
+//                     type="text"
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     placeholder="Search insights..."
+//                     className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
+//                   />
+//                   <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Categories */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <TrendingUp className="w-4 h-4 text-cyan-400" />
+//                   <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
+//                 </div>
+//                 <div className="space-y-1">
+//                   {dataCategories.map((cat) => (
+//                     <button
+//                       key={cat}
+//                       onClick={() => setActiveCategory(cat)}
+//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+//                         activeCategory === cat
+//                           ? 'bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40'
+//                           : 'text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10'
+//                       }`}
+//                     >
+//                       {cat}
+//                     </button>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Top Posts */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-teal-950/80 to-cyan-950/70 backdrop-blur-xl rounded-2xl border border-teal-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <Flame className="w-4 h-4 text-teal-400" />
+//                   <h3 className="font-semibold text-teal-100 text-sm">Trending</h3>
+//                 </div>
+//                 <div className="space-y-3">
+//                   {topPosts.slice(0, 4).map((post, i) => (
+//                     <div key={i} className="flex items-start gap-3 group/item cursor-pointer">
+//                       <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-teal-500/30 to-cyan-500/30 rounded-full flex items-center justify-center border border-teal-400/40">
+//                         <span className="text-xs font-bold text-teal-200">{i + 1}</span>
+//                       </div>
+//                       <p className="text-xs text-teal-200/80 group-hover/item:text-teal-100 transition-colors line-clamp-2 leading-relaxed">
+//                         {post}
+//                       </p>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Contact Form */}
+//             <BlogContact />
+//           </aside>
+
+//           {/* Main Content */}
+//           <main className="lg:col-span-3">
+//             {/* Header */}
+//             <div className="mb-8">
+//               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+//                 <div>
+//                   <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+//                     Our Blog
+//                   </h1>
+//                   <p className="text-cyan-200/70 text-sm">Latest insights and tutorials from the development world</p>
+//                 </div>
+//                 <div className="text-left lg:text-right">
+//                   <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
+//                   <p className="text-teal-400/60 text-xs">Updated daily</p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Posts Grid */}
+//             {filteredPosts.length > 0 ? (
+//               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+//                 {filteredPosts.map((post, idx) => (
+//                   <article
+//                     key={post.id}
+//                     className="group relative h-full w-full"
+//                     onMouseEnter={() => setHoveredPost(idx)}
+//                     onMouseLeave={() => setHoveredPost(null)}
+//                   >
+//                     {/* Glow Effect */}
+//                     <div
+//                       className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
+//                       style={{
+//                         background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+//                       }}
+//                     ></div>
+
+//                     {/* Card */}
+//                     <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
+//                       {/* Image */}
+//                       <div
+//                         className="relative aspect-video overflow-hidden cursor-pointer"
+//                         onClick={() => handleBlogClick(post)}
+//                       >
+//                         <img
+//                           src={post.image}
+//                           alt={post.headline}
+//                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+//                         />
+//                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+//                         {/* Badges */}
+//                         <div className="absolute top-3 left-3 flex gap-2">
+//                           {post.trending && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <TrendingUp className="w-3 h-3" />
+//                               Trending
+//                             </span>
+//                           )}
+//                           {post.featured && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
+//                               <Star className="w-3 h-3" />
+//                               Featured
+//                             </span>
+//                           )}
+//                           {post.hot && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <Flame className="w-3 h-3" />
+//                               Hot
+//                             </span>
+//                           )}
+//                         </div>
+
+//                         {/* Views */}
+//                         <div className="absolute top-3 right-3">
+//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
+//                             <Eye className="w-3 h-3" />
+//                             {post.views || '1.2k'}
+//                           </span>
+//                         </div>
+//                       </div>
+
+//                       {/* Content */}
+//                       <div className="p-5 flex flex-col flex-grow">
+//                         {/* Meta */}
+//                         <div className="flex items-center justify-between mb-3">
+//                           <span className="px-3 py-1 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 backdrop-blur-sm rounded-full text-xs font-medium text-cyan-300 border border-cyan-400/25">
+//                             {post.category}
+//                           </span>
+//                           <div className="flex items-center gap-1 text-xs text-teal-400/80">
+//                             <Calendar className="w-3 h-3" />
+//                             {new Date(post.date).toLocaleDateString()}
+//                           </div>
+//                         </div>
+
+//                         {/* Title */}
+//                         <h3 
+//                           className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
+//                           onClick={() => handleBlogClick(post)}
+//                         >
+//                           {post.headline}
+//                         </h3>
+
+//                         {/* Excerpt */}
+//                         <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
+//                           {post.description}
+//                         </p>
+
+//                         {/* Footer */}
+//                         <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
+//                           <button
+//                             onClick={() => handleReadMore(post)}
+//                             className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
+//                           >
+//                             Read More
+//                             <ArrowRight className="w-4 h-4" />
+//                           </button>
+
+//                           <div className="inline-flex items-center gap-1 text-xs text-teal-400/70">
+//                             <Clock className="w-3 h-3" />
+//                             {post.readTime} min read
+//                           </div>
+
+//                           <button
+//                             onClick={() => handleOpenReferralModal(post)}
+//                             title="Share Article"
+//                             type="button"
+//                             className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white p-2 text-white"
+//                           >
+//                             <ArrowRight className="w-4 h-4" />
+//                           </button>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </article>
+//                 ))}
+//               </div>
+//             ) : (
+//               <div className="text-center py-12">
+//                 <h3 className="text-xl text-cyan-400 mb-2">No articles found</h3>
+//                 <p className="text-cyan-300/60">Try adjusting your search terms or filters</p>
+//               </div>
+//             )}
+
+//             {/* Referral Modal */}
+//             {showReferralModal && selectedReferralPost && (
+//               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+//                 <div className="bg-gradient-to-br from-cyan-950/90 to-teal-950/80 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-6 max-w-md w-full">
+//                   <h3 className="text-xl font-bold text-cyan-100 mb-4">Share Article</h3>
+//                   <p className="text-cyan-200/80 mb-4">Share this article with others:</p>
+//                   <p className="text-sm text-teal-300 bg-teal-950/50 p-3 rounded-lg mb-4 break-all">
+//                     {selectedReferralPost.headline}
+//                   </p>
+//                   <div className="flex gap-3">
+//                     <button
+//                       onClick={() => {
+//                         navigator.clipboard.writeText(selectedReferralPost.headline);
+//                         alert('Link copied to clipboard!');
+//                       }}
+//                       className="flex-1 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white py-2 px-4 rounded-lg transition-all duration-300"
+//                     >
+//                       Copy Link
+//                     </button>
+//                     <button
+//                       onClick={handleCloseReferralModal}
+//                       className="px-4 py-2 border border-cyan-400/30 text-cyan-300 rounded-lg hover:bg-cyan-500/10 transition-all duration-300"
+//                     >
+//                       Close
+//                     </button>
+//                   </div>
+//                 </div>
+//               </div>
+//             )}
+
+//             {/* Load More */}
+//             <div className="mt-12 text-center">
+//               <button className="relative group">
+//                 <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+//                 <div className="relative px-8 py-4 bg-gradient-to-r from-cyan-600/25 to-teal-600/25 backdrop-blur-xl rounded-xl border border-cyan-400/40 text-cyan-100 font-semibold transition-all duration-300 hover:scale-105">
+//                   Load More Articles
+//                 </div>
+//               </button>
+//             </div>
+//           </main>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default  BlogLayout;
+
+
+// const BlogLayout = () => {
+//   // your existing states...
+//   const [currentView, setCurrentView] = useState('list');
+//   const [selectedBlog, setSelectedBlog] = useState(null);
+//   const [selectedIndex, setSelectedIndex] = useState(0);
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [activeCategory, setActiveCategory] = useState('All');
+//   const [hoveredPost, setHoveredPost] = useState(null);
+//   const [showReferralModal, setShowReferralModal] = useState(false);
+//   const [selectedReferralPost, setSelectedReferralPost] = useState(null);
+
+//   const categories = ['All', 'Programming', 'JavaScript', 'CSS', 'React', 'Web Development'];
+//   const topPosts = [
+//     'Getting Started with React Development',
+//     'Advanced JavaScript Techniques for Modern Development',
+//     'CSS Grid vs Flexbox: When to Use Each',
+//     'Modern Web Development Best Practices'
+//   ];
+
+//   const dataCategories = ['All', ...new Set(blogsData.map(blog => blog.category))];
+
+//   const filteredPosts = blogsData.filter(post => {
+//     const matchesSearch = post.headline.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//                          post.description.toLowerCase().includes(searchQuery.toLowerCase());
+//     const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
+//     return matchesSearch && matchesCategory;
+//   });
+
+//   const handleBlogClick = (blog) => {
+//     const index = blogsData.findIndex(b => b.id === blog.id);
+//     setSelectedBlog(blog);
+//     setSelectedIndex(index);
+//     setCurrentView('detail');
+//   };
+
+//   const handleBackToList = () => {
+//     setCurrentView('list');
+//     setSelectedBlog(null);
+//   };
+
+//   const handleNavigate = (index) => {
+//     setSelectedBlog(blogsData[index]);
+//     setSelectedIndex(index);
+//   };
+
+//   const handleOpenReferralModal = (post) => {
+//     setSelectedReferralPost(post);
+//     setShowReferralModal(true);
+//   };
+
+//   const handleCloseReferralModal = () => {
+//     setShowReferralModal(false);
+//     setSelectedReferralPost(null);
+//   };
+
+//   const handleReadMore = (post) => {
+//     handleBlogClick(post);
+//   };
+
+//   if (currentView === 'detail' && selectedBlog) {
+//     return (
+//       <BlogDetail
+//         blog={selectedBlog}
+//         onBack={handleBackToList}
+//         onNavigate={handleNavigate}
+//         currentIndex={selectedIndex}
+//         totalBlogs={blogsData.length}
+//       />
+//     );
+//   }
+
+//   return (
+//     <div
+//       className="min-h-screen px-6 py-8"
+//       style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
+//     >
+//       <div className="w-full mx-0">
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+//           {/* Sidebar */}
+//           <aside className="lg:col-span-1 space-y-6">
+//             {/* Search Bar */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
+//                 <div className="relative">
+//                   <input
+//                     type="text"
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     placeholder="Search insights..."
+//                     className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
+//                   />
+//                   <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Categories */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <TrendingUp className="w-4 h-4 text-cyan-400" />
+//                   <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
+//                 </div>
+//                 <div className="space-y-1">
+//                   {dataCategories.map((cat) => (
+//                     <button
+//                       key={cat}
+//                       onClick={() => setActiveCategory(cat)}
+//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+//                         activeCategory === cat
+//                           ? 'bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40'
+//                           : 'text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10'
+//                       }`}
+//                     >
+//                       {cat}
+//                     </button>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Top Posts */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-teal-950/80 to-cyan-950/70 backdrop-blur-xl rounded-2xl border border-teal-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <Flame className="w-4 h-4 text-teal-400" />
+//                   <h3 className="font-semibold text-teal-100 text-sm">Trending</h3>
+//                 </div>
+//                 <div className="space-y-3">
+//                   {topPosts.slice(0, 4).map((post, i) => (
+//                     <div key={i} className="flex items-start gap-3 group/item cursor-pointer">
+//                       <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-teal-500/30 to-cyan-500/30 rounded-full flex items-center justify-center border border-teal-400/40">
+//                         <span className="text-xs font-bold text-teal-200">{i + 1}</span>
+//                       </div>
+//                       <p className="text-xs text-teal-200/80 group-hover/item:text-teal-100 transition-colors line-clamp-2 leading-relaxed">
+//                         {post}
+//                       </p>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Contact Form */}
+//             <BlogContact />
+//           </aside>
+
+//           {/* Main Content */}
+//           <main className="lg:col-span-3">
+//             {/* Header */}
+//             <div className="mb-8">
+//               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+//                 <div>
+//                   <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+//                     Our Blog
+//                   </h1>
+//                   <p className="text-cyan-200/70 text-sm">Latest insights and tutorials from the development world</p>
+//                 </div>
+//                 <div className="text-left lg:text-right">
+//                   <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
+//                   <p className="text-teal-400/60 text-xs">Updated daily</p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Posts Grid */}
+//             {filteredPosts.length > 0 ? (
+//               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+//                 {filteredPosts.map((post, idx) => (
+//                   <article
+//                     key={post.id}
+//                     className="group relative h-full w-full"
+//                     onMouseEnter={() => setHoveredPost(idx)}
+//                     onMouseLeave={() => setHoveredPost(null)}
+//                   >
+//                     {/* Glow Effect */}
+//                     <div
+//                       className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
+//                       style={{
+//                         background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+//                       }}
+//                     ></div>
+
+//                     {/* Card */}
+//                     <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
+//                       {/* Image */}
+//                       <div
+//                         className="relative aspect-video overflow-hidden cursor-pointer"
+//                         onClick={() => handleBlogClick(post)}
+//                       >
+//                         <img
+//                           src={post.image}
+//                           alt={post.headline}
+//                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+//                         />
+//                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+//                         {/* Badges */}
+//                         <div className="absolute top-3 left-3 flex gap-2">
+//                           {post.trending && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <TrendingUp className="w-3 h-3" />
+//                               Trending
+//                             </span>
+//                           )}
+//                           {post.featured && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
+//                               <Star className="w-3 h-3" />
+//                               Featured
+//                             </span>
+//                           )}
+//                           {post.hot && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <Flame className="w-3 h-3" />
+//                               Hot
+//                             </span>
+//                           )}
+//                         </div>
+
+//                         {/* Views */}
+//                         <div className="absolute top-3 right-3">
+//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
+//                             <Eye className="w-3 h-3" />
+//                             {post.views || '1.2k'}
+//                           </span>
+//                         </div>
+//                       </div>
+
+//                       {/* Content */}
+//                       <div className="p-5 flex flex-col flex-grow">
+//                         {/* Meta */}
+//                         <div className="flex items-center justify-between mb-3">
+//                           <span className="px-3 py-1 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 backdrop-blur-sm rounded-full text-xs font-medium text-cyan-300 border border-cyan-400/25">
+//                             {post.category}
+//                           </span>
+//                           <div className="flex items-center gap-1 text-xs text-teal-400/80">
+//                             <Calendar className="w-3 h-3" />
+//                             {new Date(post.date).toLocaleDateString()}
+//                           </div>
+//                         </div>
+
+//                         {/* Title */}
+//                         <h3 
+//                           className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
+//                           onClick={() => handleBlogClick(post)}
+//                         >
+//                           {post.headline}
+//                         </h3>
+
+//                         {/* Excerpt */}
+//                         <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
+//                           {post.description}
+//                         </p>
+
+//                         {/* Footer */}
+//                         <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
+//                           <button
+//                             onClick={() => handleReadMore(post)}
+//                             className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
+//                           >
+//                             Read More
+//                             <ArrowRight className="w-4 h-4" />
+//                           </button>
+
+//                           {/* Removed min read text */}
+
+//                           <button
+//                             onClick={() => handleOpenReferralModal(post)}
+//                             title="Share Article"
+//                             type="button"
+//                             className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white p-2 text-white"
+//                           >
+//                             <Share2 className="w-5 h-5" />
+//                           </button>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </article>
+//                 ))}
+//               </div>
+//             ) : (
+//               <div className="text-center py-12">
+//                 <h3 className="text-xl text-cyan-400 mb-2">No articles found</h3>
+//                 <p className="text-cyan-300/60">Try adjusting your search terms or filters</p>
+//               </div>
+//             )}
+
+//             {/* Referral Modal */}
+//             {showReferralModal && selectedReferralPost && (
+//               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+//                 <div className="bg-gradient-to-br from-cyan-950/90 to-teal-950/80 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-6 max-w-md w-full">
+//                   <h3 className="text-xl font-bold text-cyan-100 mb-4">Share Article</h3>
+//                   <p className="text-cyan-200/80 mb-4">Share this article with others:</p>
+//                   <p className="text-sm text-teal-300 bg-teal-950/50 p-3 rounded-lg mb-4 break-all">
+//                     {selectedReferralPost.headline}
+//                   </p>
+//                   <div className="flex gap-3">
+//                     <button
+//                       onClick={() => {
+//                         navigator.clipboard.writeText(selectedReferralPost.headline);
+//                         alert('Link copied to clipboard!');
+//                       }}
+//                       className="flex-1 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white py-2 px-4 rounded-lg transition-all duration-300"
+//                     >
+//                       Copy Link
+//                     </button>
+//                     <button
+//                       onClick={handleCloseReferralModal}
+//                       className="px-4 py-2 border border-cyan-400/30 text-cyan-300 rounded-lg hover:bg-cyan-500/10 transition-all duration-300"
+//                     >
+//                       Close
+//                     </button>
+//                   </div>
+//                 </div>
+//               </div>
+//             )}
+
+//             {/* Load More */}
+//             <div className="mt-12 text-center">
+//               <button className="relative group">
+//                 <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+//                 <div className="relative px-8 py-4 bg-gradient-to-r from-cyan-600/25 to-teal-600/25 backdrop-blur-xl rounded-xl border border-cyan-400/40 text-cyan-100 font-semibold transition-all duration-300 hover:scale-105">
+//                   Load More Articles
+//                 </div>
+//               </button>
+//             </div>
+//           </main>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }; 
+
+
+// export default BlogLayout;
+
+
+// const BlogLayout = () => {
+//   const [currentView, setCurrentView] = useState('list');
+//   const [selectedBlog, setSelectedBlog] = useState(null);
+//   const [selectedIndex, setSelectedIndex] = useState(0);
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [activeCategory, setActiveCategory] = useState('All');
+//   const [hoveredPost, setHoveredPost] = useState(null);
+//   const [showReferralModal, setShowReferralModal] = useState(false);
+//   const [selectedReferralPost, setSelectedReferralPost] = useState(null);
+
+//   const dataCategories = ['All', ...new Set(blogsData.map(blog => blog.category))];
+
+//   const filteredPosts = blogsData.filter(post => {
+//     const matchesSearch = post.headline.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//                          post.description.toLowerCase().includes(searchQuery.toLowerCase());
+//     const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
+//     return matchesSearch && matchesCategory;
+//   });
+
+//   const handleBlogClick = (blog) => {
+//     const index = blogsData.findIndex(b => b.id === blog.id);
+//     setSelectedBlog(blog);
+//     setSelectedIndex(index);
+//     setCurrentView('detail');
+//   };
+
+//   const handleBackToList = () => {
+//     setCurrentView('list');
+//     setSelectedBlog(null);
+//   };
+
+//   const handleNavigate = (index) => {
+//     setSelectedBlog(blogsData[index]);
+//     setSelectedIndex(index);
+//   };
+
+//   const handleOpenReferralModal = (post) => {
+//     setSelectedReferralPost(post);
+//     setShowReferralModal(true);
+//   };
+
+//   const handleCloseReferralModal = () => {
+//     setShowReferralModal(false);
+//     setSelectedReferralPost(null);
+//   };
+
+//   const handleReadMore = (post) => {
+//     handleBlogClick(post);
+//   };
+
+//   // Utility function to create URL-friendly slugs
+//   const slugify = (str) => {
+//     return str
+//       .toLowerCase()
+//       .replace(/ /g, '-')
+//       .replace(/[^\w-]/g, '');
+//   };
+
+//   // Real-time share function
+//   const handleShare = (post) => {
+//     const url = `https://yourdomain.com/blog/${slugify(post.headline)}`; // Replace with your real domain
+
+//     if (navigator.share) {
+//       navigator.share({
+//         title: post.headline,
+//         text: post.description,
+//         url,
+//       })
+//         .then(() => console.log('Shared successfully'))
+//         .catch((error) => console.error('Error sharing:', error));
+//     } else {
+//       navigator.clipboard.writeText(url)
+//         .then(() => alert('Link copied to clipboard!'))
+//         .catch(() => alert('Failed to copy link.'));
+//     }
+//   };
+
+//   if (currentView === 'detail' && selectedBlog) {
+//     return (
+//       <BlogDetail
+//         blog={selectedBlog}
+//         onBack={handleBackToList}
+//         onNavigate={handleNavigate}
+//         currentIndex={selectedIndex}
+//         totalBlogs={blogsData.length}
+//       />
+//     );
+//   }
+
+//   return (
+//     <div
+//       className="min-h-screen px-6 py-8"
+//       style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
+//     >
+//       <div className="w-full mx-0">
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+//           {/* Sidebar */}
+//           <aside className="lg:col-span-1 space-y-6">
+//             {/* Search Bar */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
+//                 <div className="relative">
+//                   <input
+//                     type="text"
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     placeholder="Search insights..."
+//                     className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
+//                   />
+//                   <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Categories */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <TrendingUp className="w-4 h-4 text-cyan-400" />
+//                   <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
+//                 </div>
+//                 <div className="space-y-1">
+//                   {dataCategories.map((cat) => (
+//                     <button
+//                       key={cat}
+//                       onClick={() => setActiveCategory(cat)}
+//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+//                         activeCategory === cat
+//                           ? 'bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40'
+//                           : 'text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10'
+//                       }`}
+//                     >
+//                       {cat}
+//                     </button>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Top Posts */}
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+//               <div className="relative bg-gradient-to-br from-teal-950/80 to-cyan-950/70 backdrop-blur-xl rounded-2xl border border-teal-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <Flame className="w-4 h-4 text-teal-400" />
+//                   <h3 className="font-semibold text-teal-100 text-sm">Trending</h3>
+//                 </div>
+//                 <div className="space-y-3">
+//                   {topPosts.slice(0, 4).map((post, i) => (
+//                     <div key={i} className="flex items-start gap-3 group/item cursor-pointer">
+//                       <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-teal-500/30 to-cyan-500/30 rounded-full flex items-center justify-center border border-teal-400/40">
+//                         <span className="text-xs font-bold text-teal-200">{i + 1}</span>
+//                       </div>
+//                       <p className="text-xs text-teal-200/80 group-hover/item:text-teal-100 transition-colors line-clamp-2 leading-relaxed">
+//                         {post}
+//                       </p>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Contact Form */}
+//             <BlogContact />
+//           </aside>
+
+//           {/* Main Content */}
+//           <main className="lg:col-span-3">
+//             {/* Header */}
+//             <div className="mb-8">
+//               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+//                 <div>
+//                   <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+//                     Our Blog
+//                   </h1>
+//                   <p className="text-cyan-200/70 text-sm">Latest insights and tutorials from the development world</p>
+//                 </div>
+//                 <div className="text-left lg:text-right">
+//                   <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
+//                   <p className="text-teal-400/60 text-xs">Updated daily</p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Posts Grid */}
+//             {filteredPosts.length > 0 ? (
+//               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+//                 {filteredPosts.map((post, idx) => (
+//                   <article
+//                     key={post.id}
+//                     className="group relative h-full w-full"
+//                     onMouseEnter={() => setHoveredPost(idx)}
+//                     onMouseLeave={() => setHoveredPost(null)}
+//                   >
+//                     {/* Glow Effect */}
+//                     <div
+//                       className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
+//                       style={{
+//                         background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+//                       }}
+//                     ></div>
+
+//                     {/* Card */}
+//                     <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
+//                       {/* Image */}
+//                       <div
+//                         className="relative aspect-video overflow-hidden cursor-pointer"
+//                         onClick={() => handleBlogClick(post)}
+//                       >
+//                         <img
+//                           src={post.image}
+//                           alt={post.headline}
+//                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+//                         />
+//                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+//                         {/* Badges */}
+//                         <div className="absolute top-3 left-3 flex gap-2">
+//                           {post.trending && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <TrendingUp className="w-3 h-3" />
+//                               Trending
+//                             </span>
+//                           )}
+//                           {post.featured && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
+//                               <Star className="w-3 h-3" />
+//                               Featured
+//                             </span>
+//                           )}
+//                           {post.hot && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <Flame className="w-3 h-3" />
+//                               Hot
+//                             </span>
+//                           )}
+//                         </div>
+
+//                         {/* Views */}
+//                         <div className="absolute top-3 right-3">
+//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
+//                             <Eye className="w-3 h-3" />
+//                             {post.views || '1.2k'}
+//                           </span>
+//                         </div>
+//                       </div>
+
+//                       {/* Content */}
+//                       <div className="p-5 flex flex-col flex-grow">
+//                         {/* Meta */}
+//                      <div className="flex items-center mb-3 justify-end">
+
+                       
+//                           <div className="flex items-center gap-1 text-xs text-teal-400/80">
+//                             <Calendar className="w-3 h-3" />
+//                             {new Date(post.date).toLocaleDateString()}
+//                           </div>
+//                         </div>
+
+//                         {/* Title */}
+//                         <h3 
+//                           className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
+//                           onClick={() => handleBlogClick(post)}
+//                         >
+//                           {post.headline}
+//                         </h3>
+
+//                         {/* Excerpt */}
+//                         <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
+//                           {post.description}
+//                         </p>
+
+//                         {/* Footer */}
+//                         <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
+//                           <button
+//                             onClick={() => handleReadMore(post)}
+//                             className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
+//                           >
+//                             Read More
+//                             <ArrowRight className="w-4 h-4" />
+//                           </button>
+
+//                           <button
+//                             onClick={() => handleShare(post)}
+//                             title="Share Article"
+//                             type="button"
+//                             className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white p-2 text-white"
+//                           >
+//                             <Share2 className="w-5 h-5" />
+//                           </button>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </article>
+//                 ))}
+//               </div>
+//             ) : (
+//               <div className="text-center py-12">
+//                 <h3 className="text-xl text-cyan-400 mb-2">No articles found</h3>
+//                 <p className="text-cyan-300/60">Try adjusting your search terms or filters</p>
+//               </div>
+//             )}
+
+//             {/* Referral Modal */}
+//             {showReferralModal && selectedReferralPost && (
+//               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+//                 <div className="bg-gradient-to-br from-cyan-950/90 to-teal-950/80 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-6 max-w-md w-full">
+//                   <h3 className="text-xl font-bold text-cyan-100 mb-4">Share Article</h3>
+//                   <p className="text-cyan-200/80 mb-4">Share this article with others:</p>
+//                   <p className="text-sm text-teal-300 bg-teal-950/50 p-3 rounded-lg mb-4 break-all">
+//                     {selectedReferralPost.headline}
+//                   </p>
+//                   <div className="flex gap-3">
+//                     <button
+//                       onClick={() => {
+//                         navigator.clipboard.writeText(selectedReferralPost.headline);
+//                         alert('Link copied to clipboard!');
+//                       }}
+//                       className="flex-1 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white py-2 px-4 rounded-lg transition-all duration-300"
+//                     >
+//                       Copy Link
+//                     </button>
+//                     <button
+//                       onClick={handleCloseReferralModal}
+//                       className="px-4 py-2 border border-cyan-400/30 text-cyan-300 rounded-lg hover:bg-cyan-500/10 transition-all duration-300"
+//                     >
+//                       Close
+//                     </button>
+//                   </div>
+//                 </div>
+//               </div>
+//             )}
+
+        
+//           </main>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default BlogLayout;
+
 
 const BlogLayout = () => {
+  const [currentView, setCurrentView] = useState('list');
+  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [hoveredPost, setHoveredPost] = useState(null);
   const [showReferralModal, setShowReferralModal] = useState(false);
   const [selectedReferralPost, setSelectedReferralPost] = useState(null);
-  
-  const navigate = useNavigate();
 
-  const categories = ['All', 'Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Trading'];
-  const topPosts = [
-    'Bitcoin hits new all-time high amid institutional adoption',
-    'Ethereum 2.0 staking rewards reach $1B milestone',
-    'DeFi protocols face regulatory scrutiny in 2024',
-    'NFT market shows signs of recovery after winter'
-  ];
+  const dataCategories = ['All', ...new Set(blogsData.map(blog => blog.category))];
 
-  const handleOpenReferralModal = (post) => {
+  const filteredPosts = blogsData.filter(post => {
+    const matchesSearch =
+      post.headline.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const handleBlogClick = blog => {
+    const index = blogsData.findIndex(b => b.id === blog.id);
+    setSelectedBlog(blog);
+    setSelectedIndex(index);
+    setCurrentView('detail');
+  };
+
+  const handleBackToList = () => {
+    setCurrentView('list');
+    setSelectedBlog(null);
+  };
+
+  const handleNavigate = index => {
+    setSelectedBlog(blogsData[index]);
+    setSelectedIndex(index);
+  };
+
+  const handleOpenReferralModal = post => {
     setSelectedReferralPost(post);
     setShowReferralModal(true);
   };
@@ -5072,16 +6345,50 @@ const BlogLayout = () => {
     setSelectedReferralPost(null);
   };
 
-  const filteredPosts = blogsData.filter(post => {
-    const matchesSearch = post.headline.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const handleReadMore = (post) => {
-    // Navigate to individual article page
-    navigate(`/blog/${slugify(post.headline)}`);
+  const handleReadMore = post => {
+    handleBlogClick(post);
   };
+
+  // Utility function to create URL-friendly slugs
+  const slugify = str => {
+    return str
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^\w-]/g, '');
+  };
+
+  // Real-time share function
+  const handleShare = post => {
+    const url = `https://yourdomain.com/blog/${slugify(post.headline)}`; // Replace with your real domain
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: post.headline,
+          text: post.description,
+          url,
+        })
+        .then(() => console.log('Shared successfully'))
+        .catch(error => console.error('Error sharing:', error));
+    } else {
+      navigator.clipboard
+        .writeText(url)
+        .then(() => alert('Link copied to clipboard!'))
+        .catch(() => alert('Failed to copy link.'));
+    }
+  };
+
+  if (currentView === 'detail' && selectedBlog) {
+    return (
+      <BlogDetail
+        blog={selectedBlog}
+        onBack={handleBackToList}
+        onNavigate={handleNavigate}
+        currentIndex={selectedIndex}
+        totalBlogs={blogsData.length}
+      />
+    );
+  }
 
   return (
     <div
@@ -5090,7 +6397,6 @@ const BlogLayout = () => {
     >
       <div className="w-full mx-0">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-
           {/* Sidebar */}
           <aside className="lg:col-span-1 space-y-6">
             {/* Search Bar */}
@@ -5101,7 +6407,7 @@ const BlogLayout = () => {
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={e => setSearchQuery(e.target.value)}
                     placeholder="Search insights..."
                     className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
                   />
@@ -5119,7 +6425,7 @@ const BlogLayout = () => {
                   <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
                 </div>
                 <div className="space-y-1">
-                  {categories.map((cat) => (
+                  {dataCategories.map(cat => (
                     <button
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
@@ -5136,27 +6442,9 @@ const BlogLayout = () => {
               </div>
             </div>
 
-            {/* Top Posts */}
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-              <div className="relative bg-gradient-to-br from-teal-950/80 to-cyan-950/70 backdrop-blur-xl rounded-2xl border border-teal-400/30 p-5">
-                <div className="flex items-center gap-2 mb-4">
-                  <Flame className="w-4 h-4 text-teal-400" />
-                  <h3 className="font-semibold text-teal-100 text-sm">Trending</h3>
-                </div>
-                <div className="space-y-3">
-                  {topPosts.slice(0, 4).map((post, i) => (
-                    <div key={i} className="flex items-start gap-3 group/item cursor-pointer">
-                      <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-br from-teal-500/30 to-cyan-500/30 rounded-full flex items-center justify-center border border-teal-400/40">
-                        <span className="text-xs font-bold text-teal-200">{i + 1}</span>
-                      </div>
-                      <p className="text-xs text-teal-200/80 group-hover/item:text-teal-100 transition-colors line-clamp-2 leading-relaxed">
-                        {post}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {/* Contact Form - Show only on sm and larger */}
+            <div className="hidden sm:block">
+              <BlogContact />
             </div>
           </aside>
 
@@ -5167,9 +6455,9 @@ const BlogLayout = () => {
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
                 <div>
                   <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
-                    Crypto Insights
+                    Our Blog
                   </h1>
-                  <p className="text-cyan-200/70 text-sm">Latest news and analysis from the blockchain world</p>
+                  <p className="text-cyan-200/70 text-sm">Latest insights and tutorials from the development world</p>
                 </div>
                 <div className="text-left lg:text-right">
                   <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
@@ -5179,142 +6467,156 @@ const BlogLayout = () => {
             </div>
 
             {/* Posts Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
-              {filteredPosts.map((post, idx) => (
-                <article
-                  key={post.id}
-                  className="group relative h-full w-full"
-                  onMouseEnter={() => setHoveredPost(idx)}
-                  onMouseLeave={() => setHoveredPost(null)}
-                >
-                  {/* Glow Effect */}
-                  <div
-                    className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
-                    }}
-                  ></div>
-
-                  {/* Card */}
-                  <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
-                    {/* Image */}
+            {filteredPosts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+                {filteredPosts.map((post, idx) => (
+                  <article
+                    key={post.id}
+                    className="group relative h-full w-full"
+                    onMouseEnter={() => setHoveredPost(idx)}
+                    onMouseLeave={() => setHoveredPost(null)}
+                  >
+                    {/* Glow Effect */}
                     <div
-                      className="relative aspect-video overflow-hidden cursor-pointer"
-                      onClick={() => navigate(`/blog/${slugify(post.headline)}`)}
-                    >
-                      <img
-                        src={post.image}
-                        alt={post.headline}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)',
+                      }}
+                    ></div>
 
-                      {/* Badges */}
-                      <div className="absolute top-3 left-3 flex gap-2">
-                        {post.trending && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
-                            <TrendingUp className="w-3 h-3" />
-                            Trending
-                          </span>
-                        )}
-                        {post.featured && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
-                            <Star className="w-3 h-3" />
-                            Featured
-                          </span>
-                        )}
-                        {post.hot && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
-                            <Flame className="w-3 h-3" />
-                            Hot
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Views */}
-                      <div className="absolute top-3 right-3">
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
-                          <Eye className="w-3 h-3" />
-                          {post.views}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-5 flex flex-col flex-grow">
-                      {/* Meta */}
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="px-3 py-1 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 backdrop-blur-sm rounded-full text-xs font-medium text-cyan-300 border border-cyan-400/25">
-                          {post.category}
-                        </span>
-                        <div className="flex items-center gap-1 text-xs text-teal-400/80">
-                          <Calendar className="w-3 h-3" />
-                          {post.date}
-                        </div>
-                      </div>
-
-                      {/* Title */}
-                      <h3 
-                        className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
-                        onClick={() => navigate(`/blog/${slugify(post.headline)}`)}
+                    {/* Card */}
+                    <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
+                      {/* Image */}
+                      <div
+                        className="relative aspect-video overflow-hidden cursor-pointer"
+                        onClick={() => handleBlogClick(post)}
                       >
-                        {post.headline}
-                      </h3>
+                        <img
+                          src={post.image}
+                          alt={post.headline}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-                      {/* Excerpt */}
-                      <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
-                        {post.description}
-                      </p>
-
-                      {/* Footer */}
-                      <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
-                        <button
-                          onClick={() => handleReadMore(post)}
-                          className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
-                        >
-                          Read More
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
-
-                        <div className="inline-flex items-center gap-1 text-xs text-teal-400/70">
-                          <Clock className="w-3 h-3" />
-                          {post.readTime} min read
+                        {/* Badges */}
+                        <div className="absolute top-3 left-3 flex gap-2">
+                          {post.trending && (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+                              <TrendingUp className="w-3 h-3" />
+                              Trending
+                            </span>
+                          )}
+                          {post.featured && (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
+                              <Star className="w-3 h-3" />
+                              Featured
+                            </span>
+                          )}
+                          {post.hot && (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
+                              <Flame className="w-3 h-3" />
+                              Hot
+                            </span>
+                          )}
                         </div>
 
-                        <button
-                          onClick={() => handleOpenReferralModal(post)}
-                          title="Share Referral Code"
-                          type="button"
-                          className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white p-2"
-                          style={{ color: "white", display: "flex", alignItems: "center" }}
+                        {/* Views */}
+                        <div className="absolute top-3 right-3">
+                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
+                            <Eye className="w-3 h-3" />
+                            {post.views || '1.2k'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-5 flex flex-col flex-grow">
+                        {/* Meta */}
+                        <div className="flex items-center mb-3 justify-end">
+                          <div className="flex items-center gap-1 text-xs text-teal-400/80">
+                            <Calendar className="w-3 h-3" />
+                            {new Date(post.date).toLocaleDateString()}
+                          </div>
+                        </div>
+
+                        {/* Title */}
+                        <h3
+                          className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
+                          onClick={() => handleBlogClick(post)}
                         >
-                          <FaShareAlt size={16} />
-                        </button>
+                          {post.headline}
+                        </h3>
+
+                        {/* Excerpt */}
+                        <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
+                          {post.description}
+                        </p>
+
+                        {/* Footer */}
+                        <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
+                          <button
+                            onClick={() => handleReadMore(post)}
+                            className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
+                          >
+                            Read More
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            onClick={() => handleShare(post)}
+                            title="Share Article"
+                            type="button"
+                            className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white p-2 text-white"
+                          >
+                            <Share2 className="w-5 h-5" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <h3 className="text-xl text-cyan-400 mb-2">No articles found</h3>
+                <p className="text-cyan-300/60">Try adjusting your search terms or filters</p>
+              </div>
+            )}
+
+            {/* Contact Form - Show only on mobile */}
+            <div className="block sm:hidden mt-10">
+              <BlogContact />
             </div>
 
             {/* Referral Modal */}
             {showReferralModal && selectedReferralPost && (
-              <ReferralModal
-                show={showReferralModal}
-                onHide={handleCloseReferralModal}
-                post={selectedReferralPost}
-              />
-            )}
-
-            {/* Load More */}
-            <div className="mt-12 text-center">
-              <button className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-                <div className="relative px-8 py-4 bg-gradient-to-r from-cyan-600/25 to-teal-600/25 backdrop-blur-xl rounded-xl border border-cyan-400/40 text-cyan-100 font-semibold transition-all duration-300 hover:scale-105">
-                  Load More Articles
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="bg-gradient-to-br from-cyan-950/90 to-teal-950/80 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-6 max-w-md w-full">
+                  <h3 className="text-xl font-bold text-cyan-100 mb-4">Share Article</h3>
+                  <p className="text-cyan-200/80 mb-4">Share this article with others:</p>
+                  <p className="text-sm text-teal-300 bg-teal-950/50 p-3 rounded-lg mb-4 break-all">
+                    {selectedReferralPost.headline}
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(selectedReferralPost.headline);
+                        alert('Link copied to clipboard!');
+                      }}
+                      className="flex-1 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white py-2 px-4 rounded-lg transition-all duration-300"
+                    >
+                      Copy Link
+                    </button>
+                    <button
+                      onClick={handleCloseReferralModal}
+                      className="px-4 py-2 border border-cyan-400/30 text-cyan-300 rounded-lg hover:bg-cyan-500/10 transition-all duration-300"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
-              </button>
-            </div>
+              </div>
+            )}
           </main>
         </div>
       </div>
