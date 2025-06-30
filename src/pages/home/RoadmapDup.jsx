@@ -1096,70 +1096,169 @@ const JaimaxRoadmap = () => {
   const [activeYear, setActiveYear] = useState(years[0]);
 
   return (
-    <section className="relative w-full overflow-hidden select-none bg-[#085056]">
-      <div className="relative z-10 max-w-8xl mx-auto flex flex-col lg:flex-row justify-between gap-y-16 gap-x-12 py-20 px-4 md:px-10">
-       <div className="w-full lg:w-[40%] flex flex-col justify-between lg:pr-4">
-  <div>
-    <h2 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-6">
-      Our Roadmap
-      <br />
-      <span className="bg-gradient-to-r from-[#00ffe0] to-[#00ff7f] bg-clip-text text-transparent">
-        Buy Jaimax, Grow Your Future
-      </span>
-    </h2>
+//     <section className="relative w-full overflow-hidden select-none bg-[#085056]">
+//       <div className="relative z-10 max-w-8xl mx-auto flex flex-col lg:flex-row justify-between gap-y-16 gap-x-12 py-20 px-4 md:px-10">
+//        <div className="w-full lg:w-[40%] flex flex-col justify-between lg:pr-4">
+//   <div>
+//     <h2 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-6">
+//       Our Roadmap
+//       <br />
+//       <span className="bg-gradient-to-r from-[#00ffe0] to-[#00ff7f] bg-clip-text text-transparent">
+//         Buy Jaimax, Grow Your Future
+//       </span>
+//     </h2>
 
-    <p className="text-white/80 max-w-md mb-8">
-      Invest in a vision built to scale. Our roadmap is your gateway to opportunity, innovation, and sustainable growth.
-    </p>
+//     <p className="text-white/80 max-w-md mb-8">
+//       Invest in a vision built to scale. Our roadmap is your gateway to opportunity, innovation, and sustainable growth.
+//     </p>
 
-    <ul className="space-y-6 text-white/90">
-      <li className="border-l-4 border-cyan-400 pl-4">
-        <h4 className="text-lg font-semibold">Phase 1: Trust the Start</h4>
-        <p className="text-sm text-white/70">
-          Buy early, join the mission, and become a foundational member of the Jaimax journey.
-        </p>
-      </li>
-      <li className="border-l-4 border-green-400 pl-4">
-        <h4 className="text-lg font-semibold">Phase 2: Build & Earn</h4>
-        <p className="text-sm text-white/70">
-          Enable staking, referrals, and real-time rewards as the ecosystem begins to grow.
-        </p>
-      </li>
-      <li className="border-l-4 border-yellow-400 pl-4">
-        <h4 className="text-lg font-semibold">Phase 3: Utility in Action</h4>
-        <p className="text-sm text-white/70">
-          Launch real-world integrations, payment tools, and token utilities that drive demand.
-        </p>
-      </li>
-      <li className="border-l-4 border-pink-400 pl-4">
-        <h4 className="text-lg font-semibold">Phase 4: Scale & Sustain</h4>
-        <p className="text-sm text-white/70">
-          Expand globally with strategic partners and unlock passive growth for long-term holders.
-        </p>
-      </li>
-    </ul>
-  </div>
-</div>
+//     <ul className="space-y-6 text-white/90">
+//       <li className="border-l-4 border-cyan-400 pl-4">
+//         <h4 className="text-lg font-semibold">Phase 1: Trust the Start</h4>
+//         <p className="text-sm text-white/70">
+//           Buy early, join the mission, and become a foundational member of the Jaimax journey.
+//         </p>
+//       </li>
+//       <li className="border-l-4 border-green-400 pl-4">
+//         <h4 className="text-lg font-semibold">Phase 2: Build & Earn</h4>
+//         <p className="text-sm text-white/70">
+//           Enable staking, referrals, and real-time rewards as the ecosystem begins to grow.
+//         </p>
+//       </li>
+//       <li className="border-l-4 border-yellow-400 pl-4">
+//         <h4 className="text-lg font-semibold">Phase 3: Utility in Action</h4>
+//         <p className="text-sm text-white/70">
+//           Launch real-world integrations, payment tools, and token utilities that drive demand.
+//         </p>
+//       </li>
+//       <li className="border-l-4 border-pink-400 pl-4">
+//         <h4 className="text-lg font-semibold">Phase 4: Scale & Sustain</h4>
+//         <p className="text-sm text-white/70">
+//           Expand globally with strategic partners and unlock passive growth for long-term holders.
+//         </p>
+//       </li>
+//     </ul>
+//   </div>
+// </div>
 
+
+//         <div className="w-full lg:w-[58%] relative">
+//           <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-12">
+//             {years.map((yr) => (
+//               <button
+//                 key={yr}
+//                 onClick={() => setActiveYear(yr)}
+//                 className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+//                   activeYear === yr
+//                     ? "bg-white text-[#085056] border-white ring-white"
+//                     : "bg-[#0b616b] text-white border-white/30 hover:bg-[#0d6d76] focus:ring-white"
+//                 }`}
+//               >
+//                 {yr}
+//               </button>
+//             ))}
+//           </div>
+
+//           <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 h-full w-[2px] bg-white/40" />
+
+//           <div className="relative grid gap-20 md:gap-24">
+//             {roadmap[activeYear].map((item, idx) => {
+//               const isLeft = idx % 2 === 0;
+//               const cardColor = cardGradientMap[activeYear];
+
+//               return (
+//                 <div
+//                   key={item.title}
+//                   className={`md:max-w-md w-full relative ${
+//                     isLeft ? "md:pr-16 md:mr-auto text-left" : "md:pl-16 md:ml-auto text-left"
+//                   }`}
+//                 >
+//                   <div className={`hidden md:block absolute top-6 h-px w-14 bg-white ${isLeft ? "right-0" : "left-0"}`} />
+
+//                   <span className={`hidden md:block absolute top-4 w-4 h-4 rounded-full border-4 border-[#085056] bg-white ${isLeft ? "-right-8" : "-left-8"}`} />
+
+//                   <div className={`p-6 rounded-xl shadow-lg border-l-4 border-white ${cardColor}`}>
+//   <h4 className="text-lg text-white font-bold mb-2">{item.title}</h4>
+//   <p className="text-sm whitespace-pre-line">{item.desc}</p>
+// </div>
+
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+<section className="relative w-full overflow-hidden select-none bg-[#085056]">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-green-400/10 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="relative z-10 max-w-8xl mx-auto lg:flex justify-between gap-x-12 py-20 px-4 md:px-10">
+        <div className="w-full lg:w-[40%] lg:pr-4 mb-16 lg:mb-0">
+          <div>
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-6 animate-fade-in">
+              Our Roadmap
+              <br />
+              <span className="bg-gradient-to-r from-[#00ffe0] to-[#00ff7f] bg-clip-text text-transparent animate-pulse">
+                Buy Jaimax, Grow Your Future
+              </span>
+            </h2>
+
+            <p className="text-white/80 max-w-md mb-8 animate-fade-in delay-200">
+              Invest in a vision built to scale. Our roadmap is your gateway to opportunity, innovation, and sustainable growth.
+            </p>
+
+            <ul className="space-y-6 text-white/90">
+              <li className="border-l-4 border-cyan-400 pl-4 transition-all duration-300 hover:border-l-8 hover:pl-6 hover:bg-white/5 hover:backdrop-blur-sm rounded-r-lg py-2 animate-fade-in delay-300">
+                <h4 className="text-lg font-semibold">Phase 1: Trust the Start</h4>
+                <p className="text-sm text-white/70">
+                  Buy early, join the mission, and become a foundational member of the Jaimax journey.
+                </p>
+              </li>
+              <li className="border-l-4 border-green-400 pl-4 transition-all duration-300 hover:border-l-8 hover:pl-6 hover:bg-white/5 hover:backdrop-blur-sm rounded-r-lg py-2 animate-fade-in delay-400">
+                <h4 className="text-lg font-semibold">Phase 2: Build & Earn</h4>
+                <p className="text-sm text-white/70">
+                  Enable staking, referrals, and real-time rewards as the ecosystem begins to grow.
+                </p>
+              </li>
+              <li className="border-l-4 border-yellow-400 pl-4 transition-all duration-300 hover:border-l-8 hover:pl-6 hover:bg-white/5 hover:backdrop-blur-sm rounded-r-lg py-2 animate-fade-in delay-500">
+                <h4 className="text-lg font-semibold">Phase 3: Utility in Action</h4>
+                <p className="text-sm text-white/70">
+                  Launch real-world integrations, payment tools, and token utilities that drive demand.
+                </p>
+              </li>
+              <li className="border-l-4 border-pink-400 pl-4 transition-all duration-300 hover:border-l-8 hover:pl-6 hover:bg-white/5 hover:backdrop-blur-sm rounded-r-lg py-2 animate-fade-in delay-600">
+                <h4 className="text-lg font-semibold">Phase 4: Scale & Sustain</h4>
+                <p className="text-sm text-white/70">
+                  Expand globally with strategic partners and unlock passive growth for long-term holders.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <div className="w-full lg:w-[58%] relative">
           <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-12">
-            {years.map((yr) => (
+            {years.map((yr, idx) => (
               <button
                 key={yr}
                 onClick={() => setActiveYear(yr)}
-                className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 animate-fade-in ${
                   activeYear === yr
-                    ? "bg-white text-[#085056] border-white ring-white"
-                    : "bg-[#0b616b] text-white border-white/30 hover:bg-[#0d6d76] focus:ring-white"
+                    ? "bg-white text-[#085056] border-white ring-white shadow-lg scale-105"
+                    : "bg-[#0b616b] text-white border-white/30 hover:bg-[#0d6d76] hover:shadow-lg focus:ring-white"
                 }`}
+                style={{ animationDelay: `${idx * 100}ms` }}
               >
                 {yr}
               </button>
             ))}
           </div>
 
-          <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 h-full w-[2px] bg-white/40" />
+          <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-0 h-full w-[2px] bg-gradient-to-b from-white/40 via-white/60 to-white/40" />
 
           <div className="relative grid gap-20 md:gap-24">
             {roadmap[activeYear].map((item, idx) => {
@@ -1169,19 +1268,20 @@ const JaimaxRoadmap = () => {
               return (
                 <div
                   key={item.title}
-                  className={`md:max-w-md w-full relative ${
+                  className={`md:max-w-md w-full relative transition-all duration-500 hover:scale-105 animate-slide-in ${
                     isLeft ? "md:pr-16 md:mr-auto text-left" : "md:pl-16 md:ml-auto text-left"
                   }`}
+                  style={{ animationDelay: `${idx * 200}ms` }}
                 >
-                  <div className={`hidden md:block absolute top-6 h-px w-14 bg-white ${isLeft ? "right-0" : "left-0"}`} />
+                  <div className={`hidden md:block absolute top-6 h-px w-14 bg-gradient-to-r from-white to-cyan-400 transition-all duration-300 hover:w-16 ${isLeft ? "right-0" : "left-0"}`} />
 
-                  <span className={`hidden md:block absolute top-4 w-4 h-4 rounded-full border-4 border-[#085056] bg-white ${isLeft ? "-right-8" : "-left-8"}`} />
+                  <span className={`hidden md:block absolute top-4 w-4 h-4 rounded-full border-4 border-[#085056] bg-white transition-all duration-300 hover:bg-cyan-400 hover:scale-125 hover:shadow-lg hover:shadow-cyan-400/50 ${isLeft ? "-right-8" : "-left-8"}`} />
 
-                  <div className={`p-6 rounded-xl shadow-lg border-l-4 border-white ${cardColor}`}>
-  <h4 className="text-lg text-white font-bold mb-2">{item.title}</h4>
-  <p className="text-sm whitespace-pre-line">{item.desc}</p>
-</div>
-
+                  <div className={`p-6 rounded-xl shadow-lg border-l-4 border-white transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:border-l-8 hover:border-cyan-400 cursor-pointer group ${cardColor}`}>
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                    <h4 className="text-lg text-white font-bold mb-2 transition-all duration-300 group-hover:text-cyan-300 group-hover:text-xl relative z-10">{item.title}</h4>
+                    <p className="text-sm whitespace-pre-line text-white/70 group-hover:text-white/90 transition-all duration-300 relative z-10">{item.desc}</p>
+                  </div>
                 </div>
               );
             })}

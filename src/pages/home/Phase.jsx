@@ -911,9 +911,7 @@ export default function GrowthPlanTimeline() {
             Company&nbsp;’s Growth Plan Outlook{" "}
             <span className="text-yellow-400">(2024 – 2026)</span>
           </h2>
-          <p className="mt-2 text-teal-100 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto">
-            Annual implementation and roadmap
-          </p>
+        
         </div>
 
         {/* Horizontal timeline line (desktop) */}
@@ -996,7 +994,7 @@ export default function GrowthPlanTimeline() {
                   </span>
 
                   <article
-                    className="mt-4 sm:mt-6 md:mt-16 bg-teal-700   bg-[#18a04a] rounded-lg p-4 pt-5 pb-6 sm:p-6 shadow-md relative w-full flex flex-col justify-between"
+                    className="mt-4 sm:mt-6 md:mt-16 bg-teal-700   bg-[#1c984a] rounded-lg p-4 pt-5 pb-6 sm:p-6 shadow-md relative w-full flex flex-col justify-between"
                     style={{ minHeight: "230px", width: "250px", maxWidth: "100%" }}
                   >
                     <div className="relative mb-2">
@@ -1048,7 +1046,7 @@ export default function GrowthPlanTimeline() {
                         <button
                           onClick={() => handleBuyNow(item)}
                           className={`
-                  px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold
+                  px-6 sm:px-6 py-3 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold
                   ${status === "Live"
                               ? "bg-[#1f954a] text-white hover:opacity-90"
                               : "bg-gray-400 text-gray-700 cursor-not-allowed"}

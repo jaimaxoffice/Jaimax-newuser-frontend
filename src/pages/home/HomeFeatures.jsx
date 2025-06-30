@@ -20,44 +20,50 @@ const JaimaxLanding = () => {
   const isFeaturesInView = useInView(featuresRef, { once: true, amount: 0.3 });
   const isWhyChooseInView = useInView(whyChooseRef, { once: true, amount: 0.4 });
 
-  const hexImages = [
+ const hexImages = [
   {
-    src: "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg",
+    src:      "https://www.cyberbahnit.com/wp-content/uploads/2017/11/blockchain.jpg"   ,  // Blockchain network visualization
     rotate: "-5deg",
     top: "0px",
     left: "10px",
+    category: "jaimac-blockchain"
   },
   {
-    src:  "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg",
+    src: "https://img.freepik.com/free-vector/gradient-stock-market-concept_52683-76908.jpg?semt=ais_items_boosted&w=740", // Digital wallet interface
     rotate: "10deg",
     top: "210px",
     left: "100px",
+    category: "jaimac-wallet"
   },
   {
-    src: "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg",
+    src: "https://images.pexels.com/photos/7567486/pexels-photo-7567486.jpeg?auto=compress&cs=tinysrgb&w=400", // Cryptocurrency trading
     rotate: "-15deg",
     top: "0px",
     left: "190px",
+    category: "jaimac-trading"
   },
   {
-    src: "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg",
+    src: "https://images.pexels.com/photos/8369648/pexels-photo-8369648.jpeg?auto=compress&cs=tinysrgb&w=400", // DeFi and smart contracts
     rotate: "8deg",
     top: "210px",
     left: "280px",
+    category: "jaimac-defi"
   },
   {
-    src:  "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg",
+    src: "https://images.pexels.com/photos/7567443/pexels-photo-7567443.jpeg?auto=compress&cs=tinysrgb&w=400", // Digital finance
     rotate: "18deg",
     top: "420px",
     left: "10px",
+    category: "jaimac-finance"
   },
   {
-    src: "https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg",
+    src: "https://images.pexels.com/photos/5980856/pexels-photo-5980856.jpeg?auto=compress&cs=tinysrgb&w=400", // Cryptocurrency concept
     rotate: "-10deg",
     top: "420px",
     left: "190px",
+    category: "jaimac-crypto"
   },
-];
+]
 
 const RotatedHex = ({ src, rotate, top, left }) => (
   <div
@@ -155,10 +161,10 @@ const FloatingCircle = ({ size, top, left, color }) => (
 
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 items-center">
+          <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 p-5 items-center">
             
             {/* Left: Hexagon Images */}
-            <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] order-2 lg:order-1">
+            <div className="relative h-[400px] sm:h-[500px] lg:h-[600px]  order-2 lg:order-1">
               {hexImages.map((img, index) => (
                 <RotatedHex
                   key={index}

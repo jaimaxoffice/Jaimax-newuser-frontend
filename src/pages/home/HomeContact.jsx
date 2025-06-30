@@ -1016,7 +1016,8 @@ const ContactSection = () => {
       {/* Two-column layout, splits at md */}
       <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* ─────────────────── Left column ─────────────────── */}
-        <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12">
+       <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12 pr-20 lg:pr-16">
+
           <h2 className="text-white font-extrabold leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
             <span className="block">Let's get</span>
             <span className="block">in touch</span>
