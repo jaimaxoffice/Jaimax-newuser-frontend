@@ -1027,7 +1027,7 @@ const JaimaxOverview = () => {
                 Whether you're new to crypto or looking to diversify your portfolio, Jaimax provides a powerful foundation to grow with a trustworthy and forward-looking project. We offer comprehensive guides and educational resources to help you understand the cryptocurrency market.
               </p>
               <motion.button
-                onClick={navigateToLogin}
+                onClick={() => navigate("/blog")}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-full font-semibold transition-all block mx-auto lg:inline-block"

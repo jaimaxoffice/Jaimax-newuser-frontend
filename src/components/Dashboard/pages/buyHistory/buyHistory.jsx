@@ -606,7 +606,7 @@ const BuyHistory = () => {
   };
 
   return (
-    <div className="bg-[#1d8e85] p-2 sm:p-6 lg:p-8 min-h-screen">
+    <div className="min-h-screen bg-[#1d8e85] p-2 sm:p-6 lg:p-8 min-h-screen">
       <div className="container mx-auto max-w-9xl">
         {/* Header and Controls */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-8 gap-2">
@@ -743,7 +743,7 @@ const BuyHistory = () => {
         </div>
 
         {/* Desktop Table View */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block min-h-screen">
           <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-lg">
             <div className="overflow-x-auto">
               <table className="w-full table-auto">

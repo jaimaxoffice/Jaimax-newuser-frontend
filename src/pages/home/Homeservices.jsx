@@ -2173,7 +2173,7 @@ const ServicesSection = () => {
   };
 
   return (
-    <div className="py-16 lg:py-24 overflow-hidden" style={{
+    <div className="py-16 lg:py-12 overflow-hidden" style={{
       backgroundImage: "url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/cases-bg.png')",
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
