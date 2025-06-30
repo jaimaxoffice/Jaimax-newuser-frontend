@@ -560,7 +560,7 @@ export default function AddMoneyToWallet() {
                 <button 
                   onClick={handleSubmit}
                   disabled={loading || isLoading}
-                  className="w-full bg-lime-400 text-black font-bold py-2 rounded-lg hover:bg-lime-300 transition duration-200 disabled:opacity-50"
+                  className="w-full bg-lime-400 text-black font-bold py-2 rounded-full hover:bg-lime-300 transition duration-200 disabled:opacity-50"
                 >
                   {loading ? 'Submitting...' : 'Submit Payment'}
                 </button>
@@ -570,7 +570,7 @@ export default function AddMoneyToWallet() {
                 <button 
                   onClick={isProceed ? addMoneyThroughPaypal : proceedPaypalAddMoney}
                   disabled={loading}
-                  className="w-full bg-lime-400 text-black font-bold py-2 rounded-lg hover:bg-lime-300 transition duration-200 disabled:opacity-50"
+                  className="w-full bg-lime-400 text-black font-bold py-2 rounded-full hover:bg-lime-300 transition duration-200 disabled:opacity-50"
                 >
                   {loading ? 'Processing...' : (isProceed ? 'Add Funds' : 'Proceed')}
                 </button>
@@ -580,7 +580,7 @@ export default function AddMoneyToWallet() {
                 <button 
                   onClick={onSubmitTransferMoney}
                   disabled={loading}
-                  className="w-full bg-lime-400 text-black font-bold py-2 rounded-lg hover:bg-lime-300 transition duration-200 disabled:opacity-50"
+                  className="w-full bg-lime-400 text-black font-bold py-2 rounded-full hover:bg-lime-300 transition duration-200 disabled:opacity-50"
                 >
                   {loading ? 'Transferring...' : 'Transfer'}
                 </button>
@@ -620,7 +620,7 @@ export default function AddMoneyToWallet() {
                       </div>
                       <button
                         onClick={() => handleCopy(value)}
-                        className="bg-lime-500/20 hover:bg-lime-400/30 px-2 py-1 rounded-lg"
+                        className="bg-lime-500/20 hover:bg-lime-400/30 px-2 py-1 rounded-full"
                         title={`Copy ${label}`}
                       >
                         <Copy size={14} />

@@ -115,7 +115,7 @@ const Footer = () => {
                   <a
                     key={social.name}
                     href={social.url}
-                    className={`w-9 h-9 rounded-full bg-white/10 backdrop-blur-[4px] border border-white/20 flex items-center justify-center text-white/80 transition-all duration-300 ${social.hoverBg} hover:text-white hover:scale-110 hover:shadow-lg`}
+                    className={`w-14 h-10 rounded-full bg-white/10 backdrop-blur-[4px] border border-white/20 flex items-center justify-center text-white/80 transition-all duration-300 ${social.hoverBg} hover:text-white hover:scale-110 hover:shadow-lg`}
                     style={{ WebkitBackdropFilter: 'blur(4px)' }}
                     title={social.name}
                   >
@@ -231,7 +231,7 @@ const Footer = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] text-[#0e0b0b] border border-white/20 rounded-xl px-6 py-3 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#b8cc26] hover:to-[#c5d82e] text-sm"
+                  className="w-full rounded-full bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] text-[#0e0b0b] border border-white/20 rounded-full px-6 py-3 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#b8cc26] hover:to-[#c5d82e] text-sm"
                   style={{ WebkitBackdropFilter: 'blur(4px)' }}
                 >
                   Subscribe Now

@@ -958,7 +958,7 @@ export default function CreativePartnersComponent() {
           <p className="text-[#f0fdfa] text-sm mb-4">Join our partner network</p>
           <button
             onClick={() => navigate("/login")}
-            className="group bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-lime-300"
+            className="group bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-lime-300"
           >
             <span className="flex items-center justify-center">
               Become a Partner
