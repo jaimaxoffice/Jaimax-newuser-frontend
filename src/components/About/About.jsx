@@ -1097,7 +1097,7 @@ const JaimaxOverview = () => {
               onClick={navigateToLogin}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-teal-700 px-8 py-3 font-semibold rounded-lg hover:bg-gray-100 transition-colors text-sm sm:text-base"
+              className="bg-white text-teal-700 px-8 py-3 font-semibold rounded-full hover:bg-gray-100 transition-colors text-sm sm:text-base"
             >
               Join Jaimax. Join the Future.
             </motion.button>

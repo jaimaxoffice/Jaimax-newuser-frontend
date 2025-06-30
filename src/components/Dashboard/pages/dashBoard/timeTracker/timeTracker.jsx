@@ -172,7 +172,7 @@ const ActiveSlabContent = ({ slab, isActive }) => {
 
           <button
             onClick={handleProceedToPay}
-            className="w-full rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
+            className="w-full rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-full text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
 
           >
             <div className="absolute inset-0  group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
@@ -406,7 +406,7 @@ const SlabTabs = () => {
               <button
                 key={slab.id}
                 onClick={() => handleTabClick(index)}
-                className={`px-3 py-1 text-sm rounded-lg font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${activeTab === index
+                className={`px-3 py-1 text-sm rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${activeTab === index
                   ? "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white shadow-lg shadow-emerald-500/25 scale-105"
                   : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
                   }`}
@@ -428,7 +428,7 @@ const SlabTabs = () => {
               <button
                 key={slab.id}
                 onClick={() => handleTabClick(index)}
-                className={`px-3 py-2 text-xs rounded-lg font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${activeTab === index
+                className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${activeTab === index
                   ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
                   : "bg-gradient-to-r from-slate-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
                   }`}

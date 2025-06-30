@@ -3320,7 +3320,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
               type="button"
               onClick={handleVerify}
               disabled={isRegisterLoading || isOTPresentLoading || otpSent || Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0}
-              className={`px-4 py-3 rounded-lg font-semibold whitespace-nowrap transition-all duration-200 ${otpSent && timer > 0
+              className={`px-4 py-3 rounded-full font-semibold whitespace-nowrap transition-all duration-200 ${otpSent && timer > 0
                 ? 'bg-green-100 text-green-700 cursor-default'
                 : (isRegisterLoading || isOTPresentLoading)
                   ? 'bg-gray-100 text-gray-500 cursor-not-allowed'

@@ -1079,7 +1079,7 @@ const ContactSection = () => {
               {/* CTA */}
               <button
                 type="button"
-                className="w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 bg-[#b9cd27] text-[#095259] text-sm sm:text-base font-semibold rounded hover:bg-[#fce66d] transition-colors"
+                className="w-full rounded-full sm:w-auto px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 bg-[#b9cd27] text-[#095259] text-sm sm:text-base font-semibold rounded hover:bg-[#fce66d] transition-colors"
               >
                 Send to us
               </button>

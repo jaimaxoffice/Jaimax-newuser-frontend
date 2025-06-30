@@ -768,15 +768,15 @@ const TransactionDetails = () => {
           
           <div className="flex items-center gap-2">
             <button 
-              className="px-3 py-1 bg-white border border-gray-200 rounded-lg text-gray-600 text-sm hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 bg-white border border-gray-200 rounded-full text-gray-600 text-sm hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={state.currentPage <= 1}
               onClick={() => handlePageChange(state.currentPage - 1)}
             >
               Previous
             </button>
-            <span className="px-3 py-1 text-white rounded-lg text-sm" style={{backgroundColor: '#1d8e85'}}>{state.currentPage}</span>
+            <span className="px-3 py-1 text-white rounded-full text-sm" style={{backgroundColor: '#1d8e85'}}>{state.currentPage}</span>
             <button 
-              className="px-3 py-1 bg-white border border-gray-200 rounded-lg text-gray-600 text-sm hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 bg-white border border-gray-200 rounded-full text-gray-600 text-sm hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={state.currentPage >= Math.ceil((buyDetails?.data?.pagination?.total || 0) / state?.perPage)}
               onClick={() => handlePageChange(state.currentPage + 1)}
             >

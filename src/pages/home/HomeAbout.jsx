@@ -1795,7 +1795,7 @@ const HomeAbout = () => {
 
       <button
         onClick={handleCopy}
-        className="flex items-center justify-center space-x-0 sm:space-x-2 bg-teal-500 hover:bg-teal-600 text-white text-xs sm:text-sm font-medium px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md"
+        className="flex items-center justify-center space-x-0 sm:space-x-2 bg-teal-500 hover:bg-teal-600 text-white text-xs sm:text-sm font-medium px-4 py-1.5 sm:px-5 sm:py-2 rounded-full transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md"
         title={copied ? 'Copied!' : 'Copy to clipboard'}
       >
         {copied ? (
