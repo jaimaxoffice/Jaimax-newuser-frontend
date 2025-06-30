@@ -54,33 +54,33 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="relative flex h-screen bg-white overflow-hidden">
-      <Sidebar
-        isOpen={sidebarOpen}
-        setIsOpen={setSidebarOpen}
-        onLogoutClick={() => setShowLogoutModal(true)}
-      />
+<div className="relative flex h-screen  bg-white overflow-auto"> {/* This is your main layout container */}
+  <Sidebar
+    isOpen={sidebarOpen}
+    setIsOpen={setSidebarOpen}
+    onLogoutClick={() => setShowLogoutModal(true)}
+  />
 
-      <div
-        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
-          } h-screen overflow-hidden`}
-      >
-        <div className="mt-6 mb-1">
-          <Header />
-        </div>
-
-        <div className="flex-1 overflow-y-auto bg-[#f2f2f2] rounded-xl scrollbar-hide mb-3 mt-1">
-          <Outlet />
-        </div>
-      </div>
-
-      {showLogoutModal && (
-        <LogoutModal
-          onCancel={() => setShowLogoutModal(false)}
-          onConfirm={handleLogout}
-        />
-      )}
+  <div
+    className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
+        } h-screen overflow-hidden`} // This is your main content wrapper
+  >
+    <div className="mt-6 mb-1">
+      <Header />
     </div>
+
+    <div className="flex-1 overflow-y-auto bg-[#f2f2f2] rounded-xl scrollbar-hide mb-3 mt-1">
+      <Outlet />
+    </div>
+  </div>
+
+  {showLogoutModal && (
+    <LogoutModal
+      onCancel={() => setShowLogoutModal(false)}
+      onConfirm={handleLogout}
+    />
+  )}
+</div>
   );
 };
 const PublicLayout = () => {

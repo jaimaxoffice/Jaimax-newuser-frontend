@@ -56,22 +56,24 @@ const slabsData = [
 const ActiveSlabContent = ({ slab, isActive }) => {
   const [paymentMethod, setPaymentMethod] = useState('INR');
   const [amount, setAmount] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleProceedToPay = () => {
     if (!amount) {
       alert('Please enter an amount');
       return;
     }
-    alert(`Proceeding to pay ${amount} ${paymentMethod} for ${slab.title}`);
+    setIsModalOpen(true); // Open the modal
   };
+
 
   return (
     <div className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4  text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'
       }`}>
 
       {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-emerald-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
-      <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-teal-400/15 to-transparent rounded-full translate-y-4 -translate-x-4 blur-lg"></div>
+      {/* <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-emerald-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
+      <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-teal-400/15 to-transparent rounded-full translate-y-4 -translate-x-4 blur-lg"></div> */}
 
       <div className="relative z-10">
         {/* Header with Status */}
@@ -91,7 +93,6 @@ const ActiveSlabContent = ({ slab, isActive }) => {
         {/* Payment Method Selection */}
         <div className="mb-3">
           <label className="block text-xs font-bold text-gray-700 mb-2 flex items-center gap-1">
-            {/* <DollarSign size={12} className="text-emerald-600" /> */}
             Pay with
           </label>
           <div className="flex gap-3">
@@ -168,14 +169,51 @@ const ActiveSlabContent = ({ slab, isActive }) => {
             </div>
           </div>
 
+
           <button
             onClick={handleProceedToPay}
             className="w-full rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
+
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
+            <div className="absolute inset-0  group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
             <span className="relative rounded-full z-10">Proceed to Pay</span>
           </button>
         </div>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full relative">
+              <button
+                className="absolute top-2 right-2 text-gray-600 hover:text-black"
+                onClick={() => setIsModalOpen(false)}
+              >
+                &times;
+              </button>
+              <h2 className="text-lg font-bold mb-4 text-teal-600">Confirm Payment</h2>
+              <p className="mb-4 text-gray-700">
+                You are about to pay <span className="font-semibold">{amount} {paymentMethod}</span> for <span className="font-semibold">{slab.title}</span>.
+              </p>
+              <div className="flex justify-end gap-2">
+                <button
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
+                  onClick={() => {
+                    // Final payment logic here
+                    setIsModalOpen(false);
+                    alert('Payment processed successfully!');
+                  }}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-between mb-1 gap-2">
           <div className="flex-1 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-2 border border-emerald-200/50 shadow-sm">
             <div className="flex items-center justify-between">

@@ -97,8 +97,8 @@ function Sidebar({ onLogoutClick }) {
       {/* Sidebar */}
       <div
   className={`
-    fixed top-0 left-0 h-full bg-flex flex-col z-40 
-    transition-all duration-300 ease-in-out shadow-lg border-r border-teal-600/20 bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
+    fixed top-0 left-0 min-h-screen  flex-col z-40 
+    transition-all duration-300 ease-in-out shadow-lg border-r  border-teal-600/20 bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
     ${isMobile 
       ? `${isOpen ? 'translate-x-0' : '-translate-x-full'} w-72` 
       : `${isOpen ? 'w-80' : 'w-20'} relative mt-6 ml-3 mb-6 rounded-lg`
@@ -128,19 +128,19 @@ function Sidebar({ onLogoutClick }) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto space-y-1 p-4">
-          {/* {(isOpen || isMobile) && (
+        <nav className=" overflow-y-auto space-y-1 p-4">
+          {(isOpen || isMobile) && (
             <p className="text-xs text-teal-200 uppercase font-semibold mb-4 select-none tracking-wider">
               Menu
             </p>
-          )} */}
+          )}
 
           {navItems.map((item) => (
             <div
               key={item.name}
               onClick={() => handleNavClick(item)}
               className={`
-                cursor-pointer relative flex items-center px-4 py-3 font-medium 
+                cursor-pointer relative flex items-center px-4 py-2.5 font-medium 
                 transition-all duration-200 rounded-lg group
                 ${(isOpen || isMobile) ? "justify-start gap-4" : "justify-center"}
                 ${location.pathname === item.path 
@@ -187,6 +187,12 @@ function Sidebar({ onLogoutClick }) {
 }
 
 export default Sidebar;
+
+
+
+
+
+
 // // export default Sidebar;
 // import { useLocation, useNavigate } from "react-router-dom";
 // import { Sling as Hamburger } from "hamburger-react";
