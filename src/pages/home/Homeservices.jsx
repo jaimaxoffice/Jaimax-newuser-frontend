@@ -2173,14 +2173,14 @@ const ServicesSection = () => {
   };
 
   return (
-    <div className="py-16 lg:py-12 overflow-hidden" style={{
+    <div className="py-10 lg:py-12 overflow-hidden" style={{
       backgroundImage: "url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/cases-bg.png')",
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
     }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <h4 className="text-slate-400 text-sm font-medium tracking-wider uppercase mb-4">
             OUR SERVICES
           </h4>

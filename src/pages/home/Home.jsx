@@ -227,40 +227,14 @@ const Home = () => {
             >
               Explore Resources
             </button>
-          </motion.div>
-        </div>
-
-        {/* Bottom CTA Box - Hidden on mobile */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="
-            hidden sm:block
-            absolute
-            bottom-24 sm:bottom-14 md:bottom-20 lg:bottom-24
-            left-4 sm:left-auto sm:right-6
-            w-[92%] sm:w-[420px]
-           
-            text-white px-6 py-5
-            rounded-2xl shadow-xl text-center
-            z-10
-          "
-        >
-          <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4">
+            <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-4 text-white">
             Our expertly designed platform ensures a seamless and secure investment process,
             allowing you to capitalize on the dynamic nature of the cryptocurrency market.
           </p>
-          <button
-            onClick={handleJoinRevolution}
-            className="bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] text-[#0f1c14] hover:text-[#0e9488] font-bold text-sm sm:text-base px-6 py-3 mt-2 rounded-full transition duration-300 shadow-md hover:shadow-lg"
-          >
-            Join the Revolution
-          </button>
-        </motion.div>
-      </div>
+          </motion.div>
+        </div>
 
-      {/* Main Sections Below Hero */}
+      </div>
       <CryptoStakingSection />
       <ServicesComponent />
       <GrowthPlanTimeline />

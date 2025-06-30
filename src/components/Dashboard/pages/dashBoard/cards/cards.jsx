@@ -209,9 +209,9 @@ const TopCards = () => {
               <div className="text-xl font-semibold mb-1 text-[#084e54] group-hover:text-white">
                 {item.value}
               </div>
-              <div className="text-sm text-[#1d4d4f] group-hover:text-white truncate">
+              {/* <div className="text-sm text-[#1d4d4f] group-hover:text-white truncate">
                 {userData ? "" : "Loading..."}
-              </div>
+              </div> */}
             </div>
 
             {/* Icon with dark background */}

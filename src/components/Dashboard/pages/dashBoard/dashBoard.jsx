@@ -188,7 +188,7 @@ const Dashboard = () => {
                   </tr>
                 ))
               ) : TableData.length === 0 ? (
-                <tr className="bg-white border-t border-teal-200">
+                <tr className=" border-t border-teal-200 justify-center align-center">
                   <td colSpan="7" className="p-4 text-center text-gray-600">No team build still</td>
                 </tr>
               ) : (

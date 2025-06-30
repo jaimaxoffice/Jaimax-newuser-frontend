@@ -130,7 +130,7 @@ function Sidebar({ onLogoutClick }) {
         {/* Navigation */}
         <nav className=" overflow-y-auto space-y-1 p-4">
           {(isOpen || isMobile) && (
-            <p className="text-xs text-teal-200 uppercase font-semibold mb-4 select-none tracking-wider">
+            <p className="text-xs text-white uppercase font-semibold mb-4 select-none tracking-wider">
               Menu
             </p>
           )}
@@ -145,7 +145,7 @@ function Sidebar({ onLogoutClick }) {
                 ${(isOpen || isMobile) ? "justify-start gap-4" : "justify-center"}
                 ${location.pathname === item.path 
                   ? "text-white bg-gradient-to-r from-teal-600/40 to-emerald-600/40 shadow-md border border-teal-500/30" 
-                  : "text-teal-100 hover:text-white hover:bg-gradient-to-r hover:from-teal-700/30 hover:to-teal-600/30 hover:shadow-sm"
+                  : "text-white hover:text-white hover:bg-gradient-to-r hover:from-teal-700/30 hover:to-teal-600/30 hover:shadow-sm"
                 }
               `}
               title={!isOpen && !isMobile ? item.name : undefined}
@@ -159,7 +159,7 @@ function Sidebar({ onLogoutClick }) {
               <span className={`text-xl flex-shrink-0 transition-colors duration-200 ${
                 location.pathname === item.path 
                   ? "text-emerald-200" 
-                  : "text-teal-300 group-hover:text-white"
+                  : "text-white group-hover:text-white"
               }`}>
                 {item.icon}
               </span>

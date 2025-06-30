@@ -879,7 +879,7 @@ export default function CreativePartnersComponent() {
   }, []);
 
   return (
-    <section className="py-12 sm:py-16 bg-[#085056]" ref={containerRef}>
+    <section className="py-4 sm:py-2 bg-[#085056]" ref={containerRef}>
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">

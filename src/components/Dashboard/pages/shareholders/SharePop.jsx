@@ -852,7 +852,7 @@ const ShareholderCard = () => {
   // --- Error State ---
   if (error) {
     return (
-      <div className="min-h-screen bg-teal-950 flex flex-col items-center justify-center p-5 text-red-400 text-lg gap-3 text-center">
+      <div className="min-h-screen  flex flex-col items-center justify-center p-5 text-red-400 text-lg gap-3 text-center">
         {/* Server Crash Icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"

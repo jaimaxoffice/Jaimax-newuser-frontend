@@ -1731,7 +1731,7 @@ const HomeAbout = () => {
 
   return (
     <>
-      <section className=" text-white py-10 px-4 lg:px-14 relative overflow-hidden">
+      <section className=" text-white py-10 px-4 lg:px-14 sm:py-5 relative overflow-hidden">
 
 
         <div className="relative z-10 max-w-7xl mx-auto">

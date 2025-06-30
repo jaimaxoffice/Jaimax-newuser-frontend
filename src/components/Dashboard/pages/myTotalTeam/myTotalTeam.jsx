@@ -1904,7 +1904,7 @@ const MyTotalTeam = () => {
     if (totalPages <= 1) return null;
 
     return (
-      <div className="flex items-center justify-center space-x-2">
+      <div className=" flex items-center justify-center space-x-2">
         <button
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
@@ -2002,7 +2002,7 @@ const MyTotalTeam = () => {
         `}
       </style>
 
-      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen bg-[#1d8e85] to-white p-4 sm:p-6 lg:p-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {infoBoxes.map((box, idx) => (
@@ -2048,7 +2048,7 @@ const MyTotalTeam = () => {
                     {/* Referral Code Display */}
                     <div className="bg-teal-50 rounded-lg p-4 border border-teal-200">
                       <div className="flex items-center justify-between">
-                        <code className="text-lg font-mono font-bold text-teal-800 truncate">
+                        <code className="text-lg  font-bold text-teal-800 truncate">
                           {box.value}
                         </code>
                         <span className="text-xs text-teal-600 ml-2">
@@ -2136,7 +2136,7 @@ const MyTotalTeam = () => {
                       </p> */}
                     </div>
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      className={`px-3 py-1 rounded-full text-xs ${
                         data.isActive
                           ? "bg-green-100 text-green-700 border border-green-200"
                           : "bg-red-100 text-red-700 border border-red-200"
@@ -2153,7 +2153,7 @@ const MyTotalTeam = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Referrals:</span>
-                      <span className="text-teal-700 font-medium">{data.totalChainReferrals || 0}</span>
+                      <span className="text-teal-700 ">{data.totalChainReferrals || 0}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Joined:</span>
@@ -2212,7 +2212,7 @@ const MyTotalTeam = () => {
                       </td>
                       <td className="py-4 px-4 text-gray-700">{data.email || "N/A"}</td>
                       <td className="py-4 px-4">
-                        <span className="bg-teal-100 text-teal-700 px-3 py-1 rounded-full text-sm font-medium">
+                        <span className="bg-teal-100 text-teal-700 px-3 py-1 rounded-full text-sm">
                           {data.totalChainReferrals || 0}
                         </span>
                       </td>
@@ -2223,7 +2223,7 @@ const MyTotalTeam = () => {
                       </td>
                       <td className="py-4 px-4">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          className={`px-3 py-1 rounded-full text-xs ${
                             data.isActive
                               ? "bg-green-100 text-green-700 border border-green-200"
                               : "bg-red-100 text-red-700 border border-red-200"

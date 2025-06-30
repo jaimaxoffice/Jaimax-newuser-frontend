@@ -1205,7 +1205,7 @@
 //                       </span>
 //                     </div>
 //                   </div>
-                  
+
 //                   <div>
 //                     <span className="text-gray-600 font-medium">Txn ID:</span>
 //                     <div className="mt-1">
@@ -1308,7 +1308,7 @@
 //                   <div className="col-span-1 font-medium">
 //                     {currentPage * perPage - (perPage - 1) + idx}
 //                   </div>
-                  
+
 //                   <div className="col-span-2">
 //                     {item.screenshotUrl ? (
 //                       <a
@@ -1323,22 +1323,22 @@
 //                       <span className="break-all">{item.transactionId || "N/A"}</span>
 //                     )}
 //                   </div>
-                  
+
 //                   <div className="col-span-1 font-semibold text-green-600">
 //                     {countryCode === 91
 //                       ? `₹${item.transactionAmount?.toFixed(2) || 0}`
 //                       : `$${item.transactionAmount?.toFixed(2) || 0}`}
 //                   </div>
-                  
+
 //                   {/* <div className="col-span-1">
 //                     {countryCode !== 91 ? `$${item.transactionFee?.toFixed(2) || 0}` : "-"}
 //                   </div> */}
-                  
+
 //                   <div className="col-span-1">{item.transactionType || "N/A"}</div>
 //                   <div className="col-span-1">{item.paymentMode || "N/A"}</div>
 //                   <div className="col-span-1">{item.currency || "N/A"}</div>
 //                   <div className="col-span-1 text-xs">{formatDateWithAmPm(item.transactionDate)}</div>
-                  
+
 //                   <div className="col-span-1">
 //                     <span
 //                       className="px-2 py-1 rounded-full text-xs font-semibold capitalize"
@@ -1360,11 +1360,11 @@
 //                       {item?.transactionStatus || "N/A"}
 //                     </span>
 //                   </div>
-                  
+
 //                   <div className="col-span-1 text-xs" title={item?.reason}>
 //                     {item?.reason || "N/A"}
 //                   </div>
-                  
+
 //                   <div className="col-span-1 text-xs">
 //                     <div>{item?.updatedBy?.name || "N/A"}</div>
 //                     <div className="text-gray-500 mt-1">{formatDateWithAmPm(item?.updatedOn)}</div>
@@ -1531,10 +1531,10 @@
 //     <div className="min-h-screen bg-gradient-to-br from-teal-600 to-teal-800">
 //       <div className="px-4 py-6">
 //         <div className="max-w-7xl mx-auto space-y-6">
-          
+
 //           {/* Header Cards */}
 //           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            
+
 //             {/* Wallet Balance Card */}
 //             <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
 //               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -1574,7 +1574,7 @@
 //                   <p className="text-sm text-gray-600">Share & Earn</p>
 //                 </div>
 //               </div>
-              
+
 //               <TextField
 //                 fullWidth
 //                 size="small"
@@ -1602,12 +1602,12 @@
 
 //           {/* Transactions Section */}
 //           <div className="bg-white rounded-lg shadow-md">
-            
+
 //             {/* Header */}
 //             <div className="p-4 border-b border-gray-200">
 //               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 //                 <h2 className="text-xl font-semibold text-gray-800">Transaction History</h2>
-                
+
 //                 <div className="flex flex-col sm:flex-row gap-3">
 //                   <Select
 //                     value={perPage}
@@ -1809,7 +1809,7 @@
 //                       <div className="text-sm text-gray-600">
 //                         Showing {((currentPage - 1) * perPage) + 1} to {Math.min(currentPage * perPage, walletTransactionsList?.data?.total || 0)} of {walletTransactionsList?.data?.total || 0} entries
 //                       </div>
-                      
+
 //                       <div className="flex items-center gap-2">
 //                         <button
 //                           onClick={handlePrevPage}
@@ -2076,7 +2076,7 @@ export default function WalletDashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <div className="bg-white/20 rounded-full p-3">
-                  <Wallet className="w-6 h-6" /> 
+                  <Wallet className="w-6 h-6" />
                 </div>
                 <div>
                   <p className="text-teal-100 text-sm font-medium">Wallet Balance</p>
@@ -2090,7 +2090,7 @@ export default function WalletDashboard() {
               <div className="text-right">
                 <p className="text-teal-100 text-sm mb-2">Add Money to Wallet</p>
                 <button className="bg-white hover:bg-gray-50 text-teal-700 px-6 py-2 rounded-full font-semibold transition-colors duration-200 shadow-md"
-                onClick={() => navigate("/add-funds")}>
+                  onClick={() => navigate("/add-funds")}>
                   ADD FUNDS
                 </button>
               </div>
@@ -2098,7 +2098,7 @@ export default function WalletDashboard() {
           </div>
 
           {/* Referral Code Card */}
-          <div className="lg:w-80 bg-white rounded-2xl p-3 shadow-xl border-2 border-teal-200">
+          <div className="lg:w-80 bg-white rounded-2xl p-3 shadow-xl">
             <div className="text-center space-y-2">
               <p className="text-teal-600 text-sm font-medium">Referral Code</p>
               <div className="flex items-center justify-center space-x-2">
@@ -2106,14 +2106,15 @@ export default function WalletDashboard() {
                 <button onClick={handleShareReferral} className="text-teal-600 hover:text-teal-800 transition-colors duration-200 p-1 rounded-full hover:bg-teal-100">
                   <Share2 className="w-5 h-5" />
                 </button>
-              <button
+                 <button
                 onClick={handleCopyReferral}
-                className="bg-teal-600 hover:bg-teal-700 text-white text-xs px-4 py-2 rounded-full  transition-colors duration-200 flex items-center space-x-4 mx-auto shadow-md"
+                className="bg-teal-600 hover:bg-teal-700 text-white text-xs px-4 py-2 rounded-full transition-colors duration-200 flex items-center space-x-2 mx-auto shadow-md"
               >
                 <Copy className="w-4 h-4" />
                 <span>Copy</span>
               </button>
               </div>
+             
             </div>
           </div>
         </div>
@@ -2164,14 +2165,14 @@ export default function WalletDashboard() {
           </div>
           <div className="hidden md:block overflow-x-auto">
             {paginatedTransactions.length > 0 ? (
-              <table className="min-w-full divide-y divide-teal-100"> 
+              <table className="min-w-full divide-y divide-teal-100">
                 <thead className="bg-teal-600 text-xs font-semibold text-white">
                   <tr>
                     <th scope="col" className="px-3 py-3    text-white uppercase">S.No</th>
                     <th scope="col" className="px-3 py-3   text-white uppercase ">Transaction ID</th>
                     <th scope="col" className="px-3 py-3   text-white uppercase ">Amount</th>
                     <th scope="col" className="px-3 py-3    text-white uppercase ">Type</th>
-                    <th scope="col" className="px-3 py-3    text-white uppercase ">Method</th> 
+                    <th scope="col" className="px-3 py-3    text-white uppercase ">Method</th>
                     <th scope="col" className="px-3 py-3    text-white uppercase">Currency</th>
                     <th scope="col" className="px-3 py-3    text-white uppercase ">Date</th>
                     <th scope="col" className="px-3 py-3   text-white uppercase ">Status</th>
@@ -2247,11 +2248,10 @@ export default function WalletDashboard() {
                   <button
                     onClick={handlePrevPage}
                     disabled={currentPage === 1}
-                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      currentPage === 1
+                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${currentPage === 1
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-teal-600 text-white hover:bg-teal-700'
-                    }`}
+                      }`}
                   >
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     Previous
@@ -2264,11 +2264,10 @@ export default function WalletDashboard() {
                   <button
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
-                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      currentPage === totalPages
+                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${currentPage === totalPages
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-teal-600 text-white hover:bg-teal-700'
-                    }`}
+                      }`}
                   >
                     Next
                     <ChevronRight className="w-4 h-4 ml-1" />
