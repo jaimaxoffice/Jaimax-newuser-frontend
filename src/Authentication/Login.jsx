@@ -2949,8 +2949,8 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     if (otpSent) {
       if (!formData.otp.trim()) {
         newErrors.otp = 'OTP is required';
-      } else if (!/^\d{6}$/.test(formData.otp)) {
-        newErrors.otp = 'OTP must be 6 digits';
+      } else if (!/^\d{4}$/.test(formData.otp)) {
+        newErrors.otp = 'OTP must be 4 digits';
       }
     }
 

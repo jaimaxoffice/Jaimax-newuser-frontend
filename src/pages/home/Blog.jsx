@@ -1051,19 +1051,245 @@ import Blog2 from '../../../public/images/Blog2poster.jpg'
 import Blog3 from '../../../public/images/Blog3poster.jpg'
 import Blog4 from '../../../public/images/Blog4poster.jpg'
 import Blog5 from '../../../public/images/Blog5poster.jpg'
-import { ChevronLeft, TrendingUp, Share2, Flame,Eye ,ArrowRight , ChevronRight, Calendar, User, Clock, Search, Phone, Mail, MapPin } from 'lucide-react';
+// import { ChevronLeft, TrendingUp, Share2, Flame,Eye ,ArrowRight , ChevronRight, Calendar, User, Clock, Search, Phone, Mail, MapPin } from 'lucide-react';
+// import { useNavigate, useParams } from "react-router-dom";
+// const BlogLayout = () => {
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [activeCategory, setActiveCategory] = useState("All");
+//   const navigate = useNavigate();
+//   const slugify = (str) =>
+//     str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]/g, "");
+//   const handleCardClick = (post) => {
+//     navigate(`/blog/${slugify(post.headline)}`);
+//   };
+
+//   const categories = ["All", 'Blockchain', 'Market Trends', 'DeFi', 'NFTs',"Cryto News",  ...new Set(blogsData.map((b) => b.category))];
+
+//   const filteredPosts = blogsData.filter((post) => {
+//     const q = searchQuery.toLowerCase();
+//     const matchesSearch =
+//       post.headline.toLowerCase().includes(q) ||
+//       post.description.toLowerCase().includes(q);
+//     const matchesCat = activeCategory === "All" || post.category === activeCategory;
+//     return matchesSearch && matchesCat;
+//   });
+//   return (
+//     <div
+//       className="min-h-screen px-6 py-8"
+//       style={{
+//         background:
+//           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+//       }}
+//     >
+//       <div className="w-full mx-0">
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+//           <aside className="lg:col-span-1 space-y-6">
+//             <div className="relative group">
+//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
+//                 <div className="relative">
+//                   <input
+//                     type="text"
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     placeholder="Search insights..."
+//                     className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
+//                   />
+//                   <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
+//                 </div>
+//               </div>
+//             </div>
+//             <div className="relative group min-h-screen">
+//               <div className="min-h-screen absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
+//                 <div className="flex items-center gap-2 mb-4">
+//                   <TrendingUp className="w-4 h-4 text-cyan-400" />
+//                   <h3 className="font-semibold text-cyan-100 text-sm ">Categories</h3>
+//                 </div>
+//                 <div className="space-y-1 min-h-screen">
+//                   {categories.map((cat) => (
+//                     <button
+//                       key={cat}
+//                       onClick={() => setActiveCategory(cat)}
+//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
+//                         activeCategory === cat
+//                           ? "bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40"
+//                           : "text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10"
+//                       }`}
+//                     >
+//                       {cat}
+//                     </button>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+
+           
+//           </aside>
+//           <main className="lg:col-span-3">
+//             <div className="mb-8">
+//               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+//                 <div>
+//                   <h1 className="text-3xl lg:text-4xl font-bold text-white bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+//                     Our Blog
+//                   </h1>
+//                   <p className="text-white text-sm">
+//                     Latest insights and tutorials from the development world
+//                   </p>
+//                 </div>
+//                 <div className="text-left lg:text-right">
+//                   <p className="text-teal-300/80 text-sm">
+//                     {filteredPosts.length} articles
+//                   </p>
+//                   <p className="text-teal-400/60 text-xs">Updated daily</p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* posts grid */}
+//             {filteredPosts.length ? (
+//               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+//                 {filteredPosts.map((post) => (
+//                   <article
+//                     key={post.id}
+//                     className="group relative h-full w-full"
+//                   >
+//                     {/* glow */}
+//                     <div
+//                       className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
+//                       style={{
+//                         background:
+//                           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+//                       }}
+//                     />
+//                     {/* card */}
+//                     <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
+//                       {/* image */}
+//                       <div
+//                         className="relative aspect-video overflow-hidden cursor-pointer"
+//                         onClick={() => handleCardClick(post)}
+//                       >
+//                         <img
+//                           src={post.image}
+//                           alt={post.headline}
+//                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+//                         />
+//                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+//                         {/* badges */}
+//                         <div className="absolute top-3 left-3 flex gap-2">
+//                           {post.trending && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <TrendingUp className="w-3 h-3" />
+//                               Trending
+//                             </span>
+//                           )}
+//                           {post.featured && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 rounded-full text-xs font-medium text-white border border-cyan-400/50">
+//                               <Star className="w-3 h-3" />
+//                               Featured
+//                             </span>
+//                           )}
+//                           {post.hot && (
+//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 rounded-full text-xs font-medium text-white border border-teal-400/50">
+//                               <Flame className="w-3 h-3" />
+//                               Hot
+//                             </span>
+//                           )}
+//                         </div>
+
+//                         {/* views */}
+//                         <div className="absolute top-3 right-3">
+//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 rounded-full text-xs text-cyan-200">
+//                             <Eye className="w-3 h-3" />
+//                             {post.views || "1.2k"}
+//                           </span>
+//                         </div>
+//                       </div>
+
+//                       {/* text */}
+//                       <div className="p-5 flex flex-col flex-grow">
+//                         <div className="flex items-center mb-3 justify-end">
+//                           <div className="flex items-center gap-1 text-xs text-teal-400/80">
+//                             <Calendar className="w-3 h-3" />
+//                             {new Date(post.date).toLocaleDateString()}
+//                           </div>
+//                         </div>
+
+//                         <h3
+//                           className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 cursor-pointer"
+//                           onClick={() => handleCardClick(post)}
+//                         >
+//                           {post.headline}
+//                         </h3>
+
+//                         <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow">
+//                           {post.description}
+//                         </p>
+
+//                         <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
+//                           <button
+//                             onClick={() => handleCardClick(post)}
+//                             className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300"
+//                           >
+//                             Read More
+//                             <ArrowRight className="w-4 h-4" />
+//                           </button>
+//                           <button
+                            
+//                             className="rounded hover:bg-white/20 p-2 text-white"
+//                           >
+//                             <Share2 className="w-5 h-5" />
+//                           </button>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </article>
+//                 ))}
+//               </div>
+//             ) : (
+//               <div className="text-center py-12">
+//                 <h3 className="text-xl text-cyan-400 mb-2">No articles found</h3>
+//                 <p className="text-cyan-300/60">
+//                   Try adjusting your search terms or filters
+//                 </p>
+//               </div>
+//             )}
+
+//             {/* contact (mobile) */}
+//             <div className="block sm:hidden mt-10">
+//             </div>
+//           </main>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default BlogLayout;
+
+
+import { ChevronLeft, TrendingUp, Share2, Flame, Eye, ArrowRight, ChevronRight, Calendar, User, Clock, Search, Phone, Mail, MapPin, Star, Filter, X, Copy, Check } from 'lucide-react';
 import { useNavigate, useParams } from "react-router-dom";
+
 const BlogLayout = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [activeShareDropdown, setActiveShareDropdown] = useState(null);
+  const [copiedPostId, setCopiedPostId] = useState(null);
   const navigate = useNavigate();
+  
   const slugify = (str) =>
     str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]/g, "");
+  
   const handleCardClick = (post) => {
     navigate(`/blog/${slugify(post.headline)}`);
   };
 
-  const categories = ["All", 'Blockchain', 'Market Trends', 'DeFi', 'NFTs',"Cryto News",  ...new Set(blogsData.map((b) => b.category))];
+
+
+  const categories = ["All", 'Blockchain', 'Market Trends', 'DeFi', 'NFTs', "Crypto News", ...new Set(blogsData.map((b) => b.category))];
 
   const filteredPosts = blogsData.filter((post) => {
     const q = searchQuery.toLowerCase();
@@ -1073,17 +1299,192 @@ const BlogLayout = () => {
     const matchesCat = activeCategory === "All" || post.category === activeCategory;
     return matchesSearch && matchesCat;
   });
+
+  const toggleMobileFilters = () => {
+    setShowMobileFilters(!showMobileFilters);
+  };
+
+  const toggleShareDropdown = (postId) => {
+    setActiveShareDropdown(activeShareDropdown === postId ? null : postId);
+  };
+
+  const copyToClipboard = async (text, postId) => {
+    try {
+      // Try modern clipboard API first
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        setCopiedPostId(postId);
+        setTimeout(() => setCopiedPostId(null), 2000);
+      } else {
+        // Fallback for older browsers or non-secure contexts
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          setCopiedPostId(postId);
+          setTimeout(() => setCopiedPostId(null), 2000);
+        } catch (err) {
+          console.error('Fallback copy failed:', err);
+          alert('Copy failed. Please copy the link manually: ' + text);
+        } finally {
+          document.body.removeChild(textArea);
+        }
+      }
+      setActiveShareDropdown(null);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      alert('Copy failed. Please copy the link manually: ' + text);
+      setActiveShareDropdown(null);
+    }
+  };
+
+  const shareToSocial = (platform, post) => {
+    const baseUrl = window.location.origin || 'https://yoursite.com';
+    const url = `${baseUrl}/blog/${slugify(post.headline)}`;
+    const text = post.headline;
+    
+    const shareUrls = {
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}\n\n${url}`)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+      instagram: url // We'll copy the URL for Instagram
+    };
+
+    console.log(`Sharing to ${platform}:`, shareUrls[platform]); // Debug log
+
+    if (platform === 'instagram') {
+      copyToClipboard(url, post.id);
+      alert('Link copied! Please paste it in your Instagram story or bio.');
+    } else {
+      try {
+        const newWindow = window.open(shareUrls[platform], '_blank', 'noopener,noreferrer,width=600,height=400');
+        if (!newWindow) {
+          // Popup blocked, fallback to current window
+          window.location.href = shareUrls[platform];
+        }
+      } catch (err) {
+        console.error('Failed to open share window:', err);
+        // Fallback: copy URL and show message
+        copyToClipboard(url, post.id);
+        alert(`Please manually share this link on ${platform}: ${url}`);
+      }
+    }
+    
+    setActiveShareDropdown(null);
+  };
+
   return (
     <div
-      className="min-h-screen px-6 py-8"
+      className="min-h-screen px-3 sm:px-6 py-4 sm:py-8"
       style={{
         background:
           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
       }}
     >
-      <div className="w-full mx-0">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <aside className="lg:col-span-1 space-y-6">
+      <div className="w-full mx-auto max-w-9xl">
+        {/* Mobile Header */}
+        <div className="block lg:hidden mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+                Our Blog
+              </h1>
+              <p className="text-white text-sm">
+                Latest insights and tutorials from the development world
+              </p>
+            </div>
+            <div className="text-left sm:text-right">
+              <p className="text-teal-300/80 text-sm">
+                {filteredPosts.length} articles
+              </p>
+              <p className="text-teal-400/60 text-xs">Updated daily</p>
+            </div>
+          </div>
+
+          {/* Mobile Search */}
+          <div className="relative group mb-4">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+            <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search insights..."
+                  className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm pr-8"
+                />
+                <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Filter Toggle */}
+          <button
+            onClick={toggleMobileFilters}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 rounded-xl border border-cyan-400/40 text-sm font-medium"
+          >
+            <Filter className="w-4 h-4" />
+            Categories
+            {activeCategory !== "All" && (
+              <span className="bg-cyan-400/30 px-2 py-1 rounded-full text-xs">
+                {activeCategory}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Filters Overlay */}
+        {showMobileFilters && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 lg:hidden">
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-br from-cyan-950/95 to-teal-950/90 backdrop-blur-xl rounded-t-3xl border-t border-cyan-400/30 p-6 max-h-[60vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-cyan-100 text-lg">Categories</h3>
+                <button
+                  onClick={toggleMobileFilters}
+                  className="text-cyan-400 hover:text-cyan-300"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setActiveCategory(cat);
+                      setShowMobileFilters(false);
+                    }}
+                    className={`text-center px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                      activeCategory === cat
+                        ? "bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40"
+                        : "text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10 border border-transparent"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Click outside to close dropdowns */}
+        {activeShareDropdown && (
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setActiveShareDropdown(null)}
+          />
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* Desktop Sidebar */}
+          <aside className="hidden lg:block lg:col-span-1 space-y-6">
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
@@ -1093,20 +1494,21 @@ const BlogLayout = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search insights..."
-                    className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
+                    className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm pr-8"
                   />
                   <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
                 </div>
               </div>
             </div>
-            <div className="relative group min-h-screen">
-              <div className="min-h-screen absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+            
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <TrendingUp className="w-4 h-4 text-cyan-400" />
-                  <h3 className="font-semibold text-cyan-100 text-sm ">Categories</h3>
+                  <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
                 </div>
-                <div className="space-y-1 min-h-screen">
+                <div className="space-y-1">
                   {categories.map((cat) => (
                     <button
                       key={cat}
@@ -1123,11 +1525,11 @@ const BlogLayout = () => {
                 </div>
               </div>
             </div>
-
-           
           </aside>
+
           <main className="lg:col-span-3">
-            <div className="mb-8">
+            {/* Desktop Header */}
+            <div className="hidden lg:block mb-8">
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
                 <div>
                   <h1 className="text-3xl lg:text-4xl font-bold text-white bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
@@ -1146,15 +1548,15 @@ const BlogLayout = () => {
               </div>
             </div>
 
-            {/* posts grid */}
+            {/* Posts Grid */}
             {filteredPosts.length ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
                 {filteredPosts.map((post) => (
                   <article
                     key={post.id}
                     className="group relative h-full w-full"
                   >
-                    {/* glow */}
+                    {/* Glow Effect */}
                     <div
                       className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
                       style={{
@@ -1162,9 +1564,10 @@ const BlogLayout = () => {
                           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
                       }}
                     />
-                    {/* card */}
+                    
+                    {/* Card */}
                     <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
-                      {/* image */}
+                      {/* Image */}
                       <div
                         className="relative aspect-video overflow-hidden cursor-pointer"
                         onClick={() => handleCardClick(post)}
@@ -1176,39 +1579,33 @@ const BlogLayout = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-                        {/* badges */}
-                        <div className="absolute top-3 left-3 flex gap-2">
+                        {/* Badges */}
+                        <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-wrap gap-1 sm:gap-2">
                           {post.trending && (
                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 rounded-full text-xs font-medium text-white border border-teal-400/50">
                               <TrendingUp className="w-3 h-3" />
-                              Trending
+                              <span className="hidden sm:inline">Trending</span>
                             </span>
                           )}
                           {post.featured && (
                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 rounded-full text-xs font-medium text-white border border-cyan-400/50">
                               <Star className="w-3 h-3" />
-                              Featured
+                              <span className="hidden sm:inline">Featured</span>
                             </span>
                           )}
                           {post.hot && (
                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 rounded-full text-xs font-medium text-white border border-teal-400/50">
                               <Flame className="w-3 h-3" />
-                              Hot
+                              <span className="hidden sm:inline">Hot</span>
                             </span>
                           )}
                         </div>
 
-                        {/* views */}
-                        <div className="absolute top-3 right-3">
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 rounded-full text-xs text-cyan-200">
-                            <Eye className="w-3 h-3" />
-                            {post.views || "1.2k"}
-                          </span>
-                        </div>
+                       
                       </div>
 
-                      {/* text */}
-                      <div className="p-5 flex flex-col flex-grow">
+                      {/* Content */}
+                      <div className="p-4 sm:p-5 flex flex-col flex-grow">
                         <div className="flex items-center mb-3 justify-end">
                           <div className="flex items-center gap-1 text-xs text-teal-400/80">
                             <Calendar className="w-3 h-3" />
@@ -1217,13 +1614,13 @@ const BlogLayout = () => {
                         </div>
 
                         <h3
-                          className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 cursor-pointer"
+                          className="font-bold text-base sm:text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 cursor-pointer leading-tight"
                           onClick={() => handleCardClick(post)}
                         >
                           {post.headline}
                         </h3>
 
-                        <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow">
+                        <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow leading-relaxed">
                           {post.description}
                         </p>
 
@@ -1232,15 +1629,86 @@ const BlogLayout = () => {
                             onClick={() => handleCardClick(post)}
                             className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300"
                           >
-                            Read More
+                            <span>Read More</span>
                             <ArrowRight className="w-4 h-4" />
                           </button>
-                          <button
+                          
+                          {/* Share Dropdown */}
+                          <div className="relative">
+                            <button 
+                              onClick={() => toggleShareDropdown(post.id)}
+                              className="rounded-lg hover:bg-white/20 p-2 text-white transition-colors duration-300"
+                            >
+                              <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </button>
                             
-                            className="rounded hover:bg-white/20 p-2 text-white"
-                          >
-                            <Share2 className="w-5 h-5" />
-                          </button>
+                            {/* Dropdown Menu */}
+                            {activeShareDropdown === post.id && (
+                              <div className="absolute bottom-full right-0 mb-2 w-48 bg-gradient-to-br from-slate-900/95 to-gray-900/95 backdrop-blur-xl rounded-xl border border-cyan-400/30 shadow-2xl z-50">
+                                <div className="p-2">
+                                  {/* Copy Link */}
+                                  <button
+                                    onClick={() => {
+                                      const url = `${window.location.origin || 'https://yoursite.com'}/blog/${slugify(post.headline)}`;
+                                      copyToClipboard(url, post.id);
+                                    }}
+                                    className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-cyan-100 hover:bg-cyan-500/20 rounded-lg transition-colors duration-200"
+                                  >
+                                    {copiedPostId === post.id ? (
+                                      <Check className="w-4 h-4 text-green-400" />
+                                    ) : (
+                                      <Copy className="w-4 h-4" />
+                                    )}
+                                    <span>{copiedPostId === post.id ? 'Copied!' : 'Copy Link'}</span>
+                                  </button>
+                                  
+                                  {/* WhatsApp */}
+                                  <button
+                                    onClick={() => shareToSocial('whatsapp', post)}
+                                    className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-cyan-100 hover:bg-cyan-500/20 rounded-lg transition-colors duration-200"
+                                  >
+                                    <div className="w-4 h-4 bg-green-500 rounded-sm flex items-center justify-center">
+                                      <span className="text-white text-xs font-bold">💬</span>
+                                    </div>
+                                    <span>WhatsApp</span>
+                                  </button>
+                                  
+                                  {/* Facebook */}
+                                  <button
+                                    onClick={() => shareToSocial('facebook', post)}
+                                    className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-cyan-100 hover:bg-cyan-500/20 rounded-lg transition-colors duration-200"
+                                  >
+                                    <div className="w-4 h-4 bg-blue-600 rounded-sm flex items-center justify-center">
+                                      <span className="text-white text-xs font-bold">f</span>
+                                    </div>
+                                    <span>Facebook</span>
+                                  </button>
+                                  
+                                  {/* Twitter */}
+                                  <button
+                                    onClick={() => shareToSocial('twitter', post)}
+                                    className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-cyan-100 hover:bg-cyan-500/20 rounded-lg transition-colors duration-200"
+                                  >
+                                    <div className="w-4 h-4 bg-black rounded-sm flex items-center justify-center border border-gray-600">
+                                      <span className="text-white text-xs font-bold">𝕏</span>
+                                    </div>
+                                    <span>Twitter</span>
+                                  </button>
+                                  
+                                  {/* Instagram */}
+                                  <button
+                                    onClick={() => shareToSocial('instagram', post)}
+                                    className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-cyan-100 hover:bg-cyan-500/20 rounded-lg transition-colors duration-200"
+                                  >
+                                    <div className="w-4 h-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-sm flex items-center justify-center">
+                                      <span className="text-white text-xs">📷</span>
+                                    </div>
+                                    <span>Instagram</span>
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1255,10 +1723,6 @@ const BlogLayout = () => {
                 </p>
               </div>
             )}
-
-            {/* contact (mobile) */}
-            <div className="block sm:hidden mt-10">
-            </div>
           </main>
         </div>
       </div>
@@ -1267,4 +1731,3 @@ const BlogLayout = () => {
 };
 
 export default BlogLayout;
-
