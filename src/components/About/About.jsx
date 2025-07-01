@@ -780,7 +780,7 @@ const VideoModal = ({ isOpen, onClose }) => {
         <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
           <iframe
             className="absolute top-0 left-0 w-full h-full rounded-lg"
-            src="https://www.youtube.com/embed/swfm8xCH4bc?si=VdZ-u2G0CDQQAJvs"
+            src="https://www.youtube.com/embed/SsoOifQVL5s?si=9OL3dWLSPFtKm4ND"
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -1009,7 +1009,7 @@ const JaimaxOverview = () => {
                 <motion.button
                   onClick={openVideo}
                   whileHover={{ scale: 1.1 }}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center cursor-pointer bg-black/50 hover:bg-black/80 transition-colors"
+                  className="absolute top-1/3 left-1/2  w-16 h-16 rounded-full flex items-center justify-center cursor-pointer bg-black/50 hover:bg-black/80 transition-colors"
                 >
                   <PlayIcon className="w-8 h-8 text-white ml-1" />
                 </motion.button>
