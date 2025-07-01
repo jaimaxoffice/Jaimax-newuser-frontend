@@ -909,7 +909,7 @@ export default function CreativePartnersComponent() {
                 key={`${partner.name}-${index}`}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                className="partner-card relative flex-shrink-0 min-w-[4.5rem] sm:min-w-[5.5rem] md:min-w-[6.5rem] lg:min-w-[7.5rem] snap-start"
+                className="partner-card relative flex-shrink-0 min-w-[4.5rem] sm:min-w-[5.5rem] md:min-w-[7rem] lg:min-w-[9.5rem] snap-start"
               >
                 <div className="relative h-14 sm:h-20 bg-white border border-gray-200 rounded-lg transition-all duration-300 hover:border-[#e3f252] hover:shadow-lg hover:-translate-y-1 cursor-pointer overflow-hidden group">
                   {/* Overlay + Grayscale on hover */}
