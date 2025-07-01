@@ -877,15 +877,14 @@ const JaimaxOverview = () => {
               initial={{ width: 0 }}
               animate={{ width: "250px" }}
               transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
-              className="h-1 bg-gradient-to-r from-teal-400 via-green-400 to-transparent mx-auto mb-10"
+              className="h-1 bg-gradient-to-r from-teal-400 via-green-400 to-transparent mx-auto mb-5"
             />
           </div>
         </motion.div>
       </AnimatedSection>
 
       {/* This div now contains the rest of your content and maintains the max-width */}
-      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-8 lg:px-20 py-16">
-        {/* Our Mission Section - APPLYING FRAMER MOTION HERE */}
+      <div className="max-w-8xl mx-auto relative z-10 px-4 sm:px-8 lg:px-20 py-0">
         <AnimatedSection className="mb-20">
           <p className="text-teal-400 text-sm font-semibold mb-4 uppercase tracking-wider text-center lg:text-left">OUR MISSION</p>
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12 gap-8">

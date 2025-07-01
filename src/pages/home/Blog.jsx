@@ -1,10 +1,7 @@
 
 
 import React, { useState } from 'react';
-// import { Search, TrendingUp, Star, Users, Calendar, ArrowRight, Flame, Zap, Eye, Clock, X } from 'lucide-react';
-
 const categories = ['All', 'Blockchain', 'Market Trends', 'DeFi', 'NFTs', 'Crypto News', 'Wallets'];
-
 const topPosts = [
   'What Makes Jaimax Coins the Future of Crypto?',
   'Top 5 Wallets to Store Your Jaimax Safely',
@@ -12,8 +9,6 @@ const topPosts = [
   'How to Stake and Earn Jaimax Coins Easily',
   'Latest Updates on Jaimax Coin Partnerships'
 ];
-
-
 export const blogsData = [
   {
     "id": 5,
@@ -1051,745 +1046,23 @@ export const blogsData = [
 
 
 ];
-
-
-
 import Blog1 from '../../../public/images/Blog1poster.jpg'
 import Blog2 from '../../../public/images/Blog2poster.jpg'
 import Blog3 from '../../../public/images/Blog3poster.jpg'
 import Blog4 from '../../../public/images/Blog4poster.jpg'
 import Blog5 from '../../../public/images/Blog5poster.jpg'
-// import { 
-
 import { ChevronLeft, TrendingUp, Share2, Flame,Eye ,ArrowRight , ChevronRight, Calendar, User, Clock, Search, Phone, Mail, MapPin } from 'lucide-react';
-
-// Sample blog data
-
-import { useEffect , } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { useRef } from 'react';
-
-// Utility function to normalize headlines for URLs
-const normalizeHeadline = (str) => {
-  return str
-    .toLowerCase()
-    .replace(/ /g, '-')
-    .replace(/[^\w-]/g, '');
-};
-
-// Contact Component
-const BlogContact = () => {
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    mobile: '',
-    message: ''
-  });
-  const [errors, setErrors] = useState({});
-
-  const onChangeContact = (e) => {
-    let { name, value } = e.target;
-    if (name === 'mobile') {
-      value = value.replace(/[^0-9 ]/g, '');
-    }
-    setContactForm(prev => ({ ...prev, [name]: value }));
-  };
-
-  const validate = () => {
-    const formErrors = {};
-    if (!contactForm.name.trim()) formErrors.name = 'Name is required';
-    if (!contactForm.mobile.trim()) formErrors.mobile = 'Phone Number is required';
-    if (!contactForm.message.trim()) formErrors.message = 'Description is required';
-    
-    setErrors(formErrors);
-    return Object.keys(formErrors).length === 0;
-  };
-
-  const onSubmitContact = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-    
-    // Simulate form submission
-    alert('Thank you for your message! We will get back to you soon.');
-    setContactForm({ name: '', mobile: '', message: '' });
-    setErrors({});
-  };
-
-  return (
-    <div className="bg-gray-800 rounded-lg p-6 mb-6">
-      <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-        <Phone className="w-5 h-5 mr-2" />
-        Contact Us
-      </h3>
-      <div className="space-y-4">
-        <div>
-          <label className="block text-gray-300 text-sm font-medium mb-2">
-            Name <span className="text-red-400">*</span>
-          </label>
-          <input
-            type="text"
-            name="name"
-            value={contactForm.name}
-            onChange={onChangeContact}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your name"
-          />
-          {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
-        </div>
-        
-        <div>
-          <label className="block text-gray-300 text-sm font-medium mb-2">
-            Phone Number <span className="text-red-400">*</span>
-          </label>
-          <input
-            type="text"
-            name="mobile"
-            value={contactForm.mobile}
-            onChange={onChangeContact}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your phone number"
-          />
-          {errors.mobile && <p className="text-red-400 text-sm mt-1">{errors.mobile}</p>}
-        </div>
-        
-        <div>
-          <label className="block text-gray-300 text-sm font-medium mb-2">
-            Message <span className="text-red-400">*</span>
-          </label>
-          <textarea
-            name="message"
-            value={contactForm.message}
-            onChange={onChangeContact}
-            rows="3"
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your message"
-          />
-          {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
-        </div>
-        
-        <button
-          onClick={onSubmitContact}
-          className="w-full bg-[#b9cd26] text-white font-medium py-2 px-4 rounded-md transition-colors"
-        >
-          Submit
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// Blog Card Component
-const BlogCard = ({ blog, onClick }) => {
-  return (
-    <div 
-      className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
-      onClick={() => onClick(blog)}
-    >
-      <div className="relative overflow-hidden">
-        <img 
-          src={blog.image} 
-          alt={blog.headline}
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-sm">
-          {blog.category}
-        </div>
-      </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
-          {blog.headline}
-        </h3>
-        
-        <p className="text-gray-300 mb-4 line-clamp-3">
-          {blog.description}
-        </p>
-        
-        <div className="flex items-center justify-between text-sm text-gray-400">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <User className="w-4 h-4 mr-1" />
-              {blog.author}
-            </div>
-            <div className="flex items-center">
-              <Calendar className="w-4 h-4 mr-1" />
-              {new Date(blog.date).toLocaleDateString()}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-1" />
-            {blog.readTime}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-
-
-export const BlogDetail = ({ blog, onBack, onNavigate, currentIndex, totalBlogs }) => {
-  const [recentlyViewed, setRecentlyViewed] = useState([]);
-
-  if (!blog || !blog.content) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-cyan-100 bg-[#085056]">
-        Loading article...
-      </div>
-    );
-  }
-
-  useEffect(() => {
-    const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-    const filtered = viewed.filter((item) => item.id !== blog.id);
-    const updated = [{ id: blog.id, headline: blog.headline, date: new Date().toISOString() }, ...filtered].slice(0, 5);
-    setRecentlyViewed(updated);
-    localStorage.setItem("recentlyViewed", JSON.stringify(updated));
-  }, [blog]);
-
-  const handlePrevious = () => {
-    if (currentIndex > 0) onNavigate(currentIndex - 1);
-  };
-
-  const handleNext = () => {
-    if (currentIndex < totalBlogs - 1) onNavigate(currentIndex + 1);
-  };
-
-  return (
-    <>
-      {/* Hide scrollbar */}
-      <style>{`
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
-
-      <div className="w-full min-h-screen bg-[#085056] text-white font-serif">
-        <div className="max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 px-4 sm:px-6 lg:px-8 py-6">
-
-          {/* ───── Sidebar ───── */}
-     
-          {/* ───── Scrollable Article ───── */}
-          <main className="lg:col-span-8 max-h-[calc(100vh-3rem)] overflow-y-auto pr-2 scrollbar-hide">
-            <div className="space-y-6 pb-20">
-
-              {/* Navigation Header */}
-              <div className="flex items-center justify-between">
-                <button onClick={onBack} className="text-cyan-300 hover:text-white">
-                  <ChevronLeft className="inline-block w-4 h-4 mr-1" />
-                  Back to Articles
-                </button>
-                <div className="flex items-center space-x-4 text-sm">
-                  <button
-                    onClick={handlePrevious}
-                    disabled={currentIndex === 0}
-                    className="text-cyan-300 disabled:opacity-40 hover:text-white"
-                  >
-                    <ChevronLeft className="inline-block w-4 h-4 mr-1" />
-                    Previous
-                  </button>
-                  <span className="text-teal-200">{currentIndex + 1} of {totalBlogs}</span>
-                  <button
-                    onClick={handleNext}
-                    disabled={currentIndex === totalBlogs - 1}
-                    className="text-cyan-300 disabled:opacity-40 hover:text-white"
-                  >
-                    Next
-                    <ChevronRight className="inline-block w-4 h-4 ml-1" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">{blog.headline}</h1>
-                <p className="text-sm text-teal-200 mb-4">
-                  {blog.author} · {new Date(blog.date).toLocaleDateString()} · {blog.readTime}
-                </p>
-
-                {blog.image && (
-                  <img
-                    src={blog.image}
-                    alt={blog.headline}
-                    className="w-full object-cover rounded-lg shadow mb-6"
-                  />
-                )}
-
-                <p className="text-lg leading-relaxed mb-8 text-teal-100">{blog.description}</p>
-
-                <div className="space-y-6">
-                  {blog.content.sections.map((section, index) => {
-                    const contentText =
-                      typeof section.content === "string"
-                        ? section.content.replace(/<[^>]*>/g, "")
-                        : "";
-                    switch (section.type) {
-                      case "heading":
-                        return (
-                          <h2
-                            key={index}
-                            id={`section-${index}`}
-                            className="text-2xl font-semibold border-b border-cyan-400/30 pb-2 text-white"
-                          >
-                            {contentText}
-                          </h2>
-                        );
-                      case "subheading":
-                        return <h3 key={index} className="text-xl font-medium text-teal-200">{contentText}</h3>;
-                      case "paragraph":
-                        return <p key={index} className="text-base text-teal-100 leading-relaxed">{contentText}</p>;
-                      case "unordered_list":
-                        return (
-                          <ul key={index} className="list-disc list-inside text-base text-teal-100 space-y-1">
-                            {section.content.map((item, idx) => (
-                              <li key={idx}>{item.replace(/<[^>]*>/g, "")}</li>
-                            ))}
-                          </ul>
-                        );
-                      default:
-                        return null;
-                    }
-                  })}
-                </div>
-
-                {/* Prev/Next */}
-                <div className="flex justify-between pt-10 border-t border-cyan-400/30 mt-10">
-                  <button
-                    onClick={handlePrevious}
-                    disabled={currentIndex === 0}
-                    className="text-cyan-300 hover:text-white disabled:opacity-40"
-                  >
-                    <ChevronLeft className="inline-block w-4 h-4 mr-1" />
-                    Previous Article
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    disabled={currentIndex === totalBlogs - 1}
-                    className="text-cyan-300 hover:text-white disabled:opacity-40"
-                  >
-                    Next Article
-                    <ChevronRight className="inline-block w-4 h-4 ml-1" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </main>
-               <aside className="lg:col-span-4 space-y-6 sticky top-6 self-start h-fit">
-            {recentlyViewed.length > 0 && (
-              <div className="bg-[#0b6068] rounded-xl p-5 border border-cyan-400/30">
-                <h3 className="text-xl font-semibold mb-4">Recently Viewed</h3>
-                <ul className="list-disc list-inside text-teal-100 text-sm space-y-2">
-                  {recentlyViewed.map((item, index) => (
-                    <div key={index}>
-                      <div className="font-medium">{item.headline}</div>
-                      <div className="text-xs text-cyan-200">{new Date(item.date).toLocaleDateString()}</div>
-                    </div>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div >
-              <BlogContact />
-            </div>
-          </aside>
-
-        </div>
-      </div>
-    </>
-  );
-};
-
-// const BlogLayout = () => {
-//   const [currentView, setCurrentView] = useState('list');
-//   const [selectedBlog, setSelectedBlog] = useState(null);
-//   const [selectedIndex, setSelectedIndex] = useState(0);
-//   const [searchQuery, setSearchQuery] = useState('');
-//   const [activeCategory, setActiveCategory] = useState('All');
-//   const [hoveredPost, setHoveredPost] = useState(null);
-//   const [showReferralModal, setShowReferralModal] = useState(false);
-//   const [selectedReferralPost, setSelectedReferralPost] = useState(null);
-
-//   const dataCategories = ['All', ...new Set(blogsData.map(blog => blog.category))];
-
-//   const filteredPosts = blogsData.filter(post => {
-//     const matchesSearch =
-//       post.headline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       post.description.toLowerCase().includes(searchQuery.toLowerCase());
-//     const matchesCategory = activeCategory === 'All' || post.category === activeCategory;
-//     return matchesSearch && matchesCategory;
-//   });
-
-//   const handleBlogClick = blog => {
-//     const index = blogsData.findIndex(b => b.id === blog.id);
-//     setSelectedBlog(blog);
-//     setSelectedIndex(index);
-//     setCurrentView('detail');
-//   };
-
-//   const handleBackToList = () => {
-//     setCurrentView('list');
-//     setSelectedBlog(null);
-//   };
-
-//   const handleNavigate = index => {
-//     setSelectedBlog(blogsData[index]);
-//     setSelectedIndex(index);
-//   };
-
-//   const handleOpenReferralModal = post => {
-//     setSelectedReferralPost(post);
-//     setShowReferralModal(true);
-//   };
-
-//   const handleCloseReferralModal = () => {
-//     setShowReferralModal(false);
-//     setSelectedReferralPost(null);
-//   };
-
-//   const handleReadMore = post => {
-//     handleBlogClick(post);
-//   };
-
-//   // Utility function to create URL-friendly slugs
-//   const slugify = str => {
-//     return str
-//       .toLowerCase()
-//       .replace(/ /g, '-')
-//       .replace(/[^\w-]/g, '');
-//   };
-
-//   // Real-time share function
-//   const handleShare = post => {
-//     const url = `https://yourdomain.com/blog/${slugify(post.headline)}`; // Replace with your real domain
-
-//     if (navigator.share) {
-//       navigator
-//         .share({
-//           title: post.headline,
-//           text: post.description,
-//           url,
-//         })
-//         .then(() => console.log('Shared successfully'))
-//         .catch(error => console.error('Error sharing:', error));
-//     } else {
-//       navigator.clipboard
-//         .writeText(url)
-//         .then(() => alert('Link copied to clipboard!'))
-//         .catch(() => alert('Failed to copy link.'));
-//     }
-//   };
-
-//   if (currentView === 'detail' && selectedBlog) {
-//     return (
-//       <BlogDetail
-//         blog={selectedBlog}
-//         onBack={handleBackToList}
-//         onNavigate={handleNavigate}
-//         currentIndex={selectedIndex}
-//         totalBlogs={blogsData.length}
-//       />
-//     );
-//   }
-
-//   return (
-//     <div
-//       className="min-h-screen px-6 py-8"
-//       style={{ background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)' }}
-//     >
-//       <div className="w-full mx-0">
-//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-//           {/* Sidebar */}
-//           <aside className="lg:col-span-1 space-y-6">
-//             {/* Search Bar */}
-//             <div className="relative group">
-//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
-//                 <div className="relative">
-//                   <input
-//                     type="text"
-//                     value={searchQuery}
-//                     onChange={e => setSearchQuery(e.target.value)}
-//                     placeholder="Search insights..."
-//                     className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm"
-//                   />
-//                   <Search className="absolute right-0 top-0 text-cyan-400 w-4 h-4" />
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* Categories */}
-//             <div className="relative group">
-//               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-//               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
-//                 <div className="flex items-center gap-2 mb-4">
-//                   <TrendingUp className="w-4 h-4 text-cyan-400" />
-//                   <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
-//                 </div>
-//                 <div className="space-y-1">
-//                   {dataCategories.map(cat => (
-//                     <button
-//                       key={cat}
-//                       onClick={() => setActiveCategory(cat)}
-//                       className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${
-//                         activeCategory === cat
-//                           ? 'bg-gradient-to-r from-cyan-500/25 to-teal-500/25 text-cyan-100 shadow-lg border border-cyan-400/40'
-//                           : 'text-cyan-300/70 hover:text-cyan-200 hover:bg-cyan-500/10'
-//                       }`}
-//                     >
-//                       {cat}
-//                     </button>
-//                   ))}
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* Contact Form - Show only on sm and larger */}
-//             <div className="hidden sm:block">
-//               <BlogContact />
-//             </div>
-//           </aside>
-
-//           {/* Main Content */}
-//           <main className="lg:col-span-3">
-//             {/* Header */}
-//             <div className="mb-8">
-//               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-//                 <div>
-//                   <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
-//                     Our Blog
-//                   </h1>
-//                   <p className="text-cyan-200/70 text-sm">Latest insights and tutorials from the development world</p>
-//                 </div>
-//                 <div className="text-left lg:text-right">
-//                   <p className="text-teal-300/80 text-sm">{filteredPosts.length} articles</p>
-//                   <p className="text-teal-400/60 text-xs">Updated daily</p>
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* Posts Grid */}
-//             {filteredPosts.length > 0 ? (
-//               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
-//                 {filteredPosts.map((post, idx) => (
-//                   <article
-//                     key={post.id}
-//                     className="group relative h-full w-full"
-//                     onMouseEnter={() => setHoveredPost(idx)}
-//                     onMouseLeave={() => setHoveredPost(null)}
-//                   >
-//                     {/* Glow Effect */}
-//                     <div
-//                       className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500"
-//                       style={{
-//                         background: 'linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)',
-//                       }}
-//                     ></div>
-
-//                     {/* Card */}
-//                     <div className="relative h-full p-2 bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-cyan-400/20 group-hover:border-cyan-400/40 overflow-hidden transition-all duration-500 flex flex-col">
-//                       {/* Image */}
-//                       <div
-//                         className="relative aspect-video overflow-hidden cursor-pointer"
-//                         onClick={() => handleBlogClick(post)}
-//                       >
-//                         <img
-//                           src={post.image}
-//                           alt={post.headline}
-//                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-//                         />
-//                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-
-//                         {/* Badges */}
-//                         <div className="absolute top-3 left-3 flex gap-2">
-//                           {post.trending && (
-//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-500/90 to-cyan-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
-//                               <TrendingUp className="w-3 h-3" />
-//                               Trending
-//                             </span>
-//                           )}
-//                           {post.featured && (
-//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-cyan-500/90 to-teal-500/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-cyan-400/50">
-//                               <Star className="w-3 h-3" />
-//                               Featured
-//                             </span>
-//                           )}
-//                           {post.hot && (
-//                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-teal-600/90 to-cyan-600/90 backdrop-blur-sm rounded-full text-xs font-medium text-white border border-teal-400/50">
-//                               <Flame className="w-3 h-3" />
-//                               Hot
-//                             </span>
-//                           )}
-//                         </div>
-
-//                         {/* Views */}
-//                         <div className="absolute top-3 right-3">
-//                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-full text-xs text-cyan-200">
-//                             <Eye className="w-3 h-3" />
-//                             {post.views || '1.2k'}
-//                           </span>
-//                         </div>
-//                       </div>
-
-//                       {/* Content */}
-//                       <div className="p-5 flex flex-col flex-grow">
-//                         {/* Meta */}
-//                         <div className="flex items-center mb-3 justify-end">
-//                           <div className="flex items-center gap-1 text-xs text-teal-400/80">
-//                             <Calendar className="w-3 h-3" />
-//                             {new Date(post.date).toLocaleDateString()}
-//                           </div>
-//                         </div>
-
-//                         {/* Title */}
-//                         <h3
-//                           className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-300 group-hover:to-teal-300 transition-all duration-300 mb-3 line-clamp-2 flex-grow cursor-pointer"
-//                           onClick={() => handleBlogClick(post)}
-//                         >
-//                           {post.headline}
-//                         </h3>
-
-//                         {/* Excerpt */}
-//                         <p className="text-sm text-gray-300 group-hover:text-cyan-100/90 line-clamp-3 mb-4 flex-grow transition-colors duration-300">
-//                           {post.description}
-//                         </p>
-
-//                         {/* Footer */}
-//                         <div className="flex items-center justify-between pt-3 border-t border-cyan-700/30 mt-auto">
-//                           <button
-//                             onClick={() => handleReadMore(post)}
-//                             className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-all duration-300 group-hover:translate-x-1"
-//                           >
-//                             Read More
-//                             <ArrowRight className="w-4 h-4" />
-//                           </button>
-
-//                           <button
-//                             onClick={() => handleShare(post)}
-//                             title="Share Article"
-//                             type="button"
-//                             className="rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white p-2 text-white"
-//                           >
-//                             <Share2 className="w-5 h-5" />
-//                           </button>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </article>
-//                 ))}
-//               </div>
-//             ) : (
-//               <div className="text-center py-12">
-//                 <h3 className="text-xl text-cyan-400 mb-2">No articles found</h3>
-//                 <p className="text-cyan-300/60">Try adjusting your search terms or filters</p>
-//               </div>
-//             )}
-
-//             {/* Contact Form - Show only on mobile */}
-//             <div className="block sm:hidden mt-10">
-//               <BlogContact />
-//             </div>
-
-//             {/* Referral Modal */}
-//             {showReferralModal && selectedReferralPost && (
-//               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-//                 <div className="bg-gradient-to-br from-cyan-950/90 to-teal-950/80 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-6 max-w-md w-full">
-//                   <h3 className="text-xl font-bold text-cyan-100 mb-4">Share Article</h3>
-//                   <p className="text-cyan-200/80 mb-4">Share this article with others:</p>
-//                   <p className="text-sm text-teal-300 bg-teal-950/50 p-3 rounded-lg mb-4 break-all">
-//                     {selectedReferralPost.headline}
-//                   </p>
-//                   <div className="flex gap-3">
-//                     <button
-//                       onClick={() => {
-//                         navigator.clipboard.writeText(selectedReferralPost.headline);
-//                         alert('Link copied to clipboard!');
-//                       }}
-//                       className="flex-1 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white py-2 px-4 rounded-lg transition-all duration-300"
-//                     >
-//                       Copy Link
-//                     </button>
-//                     <button
-//                       onClick={handleCloseReferralModal}
-//                       className="px-4 py-2 border border-cyan-400/30 text-cyan-300 rounded-lg hover:bg-cyan-500/10 transition-all duration-300"
-//                     >
-//                       Close
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//             )}
-//           </main>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BlogLayout;
-
-
-
-
-
-export const BlogDetailPage = () => {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-
-  // Convert slug back to blog post
-  const slugify = (str) =>
-    str.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
-
-  const index = blogsData.findIndex((b) => slugify(b.headline) === slug);
-  const blog = blogsData[index];
-
-  const handleNavigate = (newIndex) => {
-    const newSlug = slugify(blogsData[newIndex].headline);
-    navigate(`/blog/${newSlug}`);
-  };
-
-  if (!blog) {
-    return <div className="text-center py-10 text-red-600">Blog not found</div>;
-  }
-
-  return (
-    <BlogDetail
-      blog={blog}
-      currentIndex={index}
-      totalBlogs={blogsData.length}
-      onBack={() => navigate("/blog")}
-      onNavigate={handleNavigate}
-    />
-  );
-};
-
 const BlogLayout = () => {
-  /* ───────────── local state ───────────── */
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-
-  /* ───────────── router ───────────── */
   const navigate = useNavigate();
-
-  /* ───────────── helpers ───────────── */
   const slugify = (str) =>
     str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]/g, "");
-
   const handleCardClick = (post) => {
     navigate(`/blog/${slugify(post.headline)}`);
   };
 
-  const handleShare = (post) => {
-    const url = `${window.location.origin}/blog/${slugify(post.headline)}`;
-    if (navigator.share) {
-      navigator
-        .share({ title: post.headline, text: post.description, url })
-        .catch(() => {});
-    } else {
-      navigator.clipboard.writeText(url).then(() => alert("Link copied!"));
-    }
-  };
-
-  /* ───────────── derived data ───────────── */
   const categories = ["All", 'Blockchain', 'Market Trends', 'DeFi', 'NFTs',"Cryto News",  ...new Set(blogsData.map((b) => b.category))];
 
   const filteredPosts = blogsData.filter((post) => {
@@ -1800,8 +1073,6 @@ const BlogLayout = () => {
     const matchesCat = activeCategory === "All" || post.category === activeCategory;
     return matchesSearch && matchesCat;
   });
-
-  /* ───────────── render ───────────── */
   return (
     <div
       className="min-h-screen px-6 py-8"
@@ -1812,9 +1083,7 @@ const BlogLayout = () => {
     >
       <div className="w-full mx-0">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* ───────── sidebar ───────── */}
           <aside className="lg:col-span-1 space-y-6">
-            {/* search */}
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
@@ -1830,16 +1099,14 @@ const BlogLayout = () => {
                 </div>
               </div>
             </div>
-
-            {/* categories */}
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+            <div className="relative group min-h-screen">
+              <div className="min-h-screen absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
               <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <TrendingUp className="w-4 h-4 text-cyan-400" />
-                  <h3 className="font-semibold text-cyan-100 text-sm">Categories</h3>
+                  <h3 className="font-semibold text-cyan-100 text-sm ">Categories</h3>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1 min-h-screen">
                   {categories.map((cat) => (
                     <button
                       key={cat}
@@ -1857,22 +1124,16 @@ const BlogLayout = () => {
               </div>
             </div>
 
-            {/* contact (desktop) */}
-            <div className="hidden sm:block">
-              <BlogContact />
-            </div>
+           
           </aside>
-
-          {/* ───────── main content ───────── */}
           <main className="lg:col-span-3">
-            {/* header */}
             <div className="mb-8">
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
                 <div>
-                  <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
+                  <h1 className="text-3xl lg:text-4xl font-bold text-white bg-clip-text bg-gradient-to-r from-cyan-200 via-teal-200 to-cyan-300 mb-2">
                     Our Blog
                   </h1>
-                  <p className="text-cyan-200/70 text-sm">
+                  <p className="text-white text-sm">
                     Latest insights and tutorials from the development world
                   </p>
                 </div>
@@ -1975,7 +1236,7 @@ const BlogLayout = () => {
                             <ArrowRight className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => handleShare(post)}
+                            
                             className="rounded hover:bg-white/20 p-2 text-white"
                           >
                             <Share2 className="w-5 h-5" />
@@ -1997,7 +1258,6 @@ const BlogLayout = () => {
 
             {/* contact (mobile) */}
             <div className="block sm:hidden mt-10">
-              <BlogContact />
             </div>
           </main>
         </div>

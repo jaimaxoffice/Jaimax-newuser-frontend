@@ -225,7 +225,8 @@ import {
   useVerifyOtpMutation,
 } from "./authApiSlice";
 import { MailIcon, ArrowLeft, CheckCircle, AlertCircle, LockKeyhole, ShieldCheck } from "lucide-react";
-import logo from "../assets/Images/jaimaxcoin.png";
+// import logo from "../assets/Images/jaimaxcoin.png";
+import logo from '../assets/Images/greencoin.png'
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
@@ -313,7 +314,7 @@ return (
 
     {/* Branding Section - full width on mobile, 1/2 on desktop */}
     <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#085358] via-teal-600 to-green-900 text-white p-8 lg:p-12">
-      <img src={logo} alt="Logo" className="w-40 h-40 mb-6" />
+      <img src={logo} alt="Logo" className="w-48 h-48 mb-6" />
       <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent mb-2">
         Forgot Password?
       </h2>

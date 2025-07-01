@@ -1739,27 +1739,9 @@ const HomeAbout = () => {
           <div className="flex justify-center mb-12">
             <div className="relative">
               <img src={logo} alt="" width="500px" />
-              {/* <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-pulse"></div> */}
             </div>
           </div>
-
-          {/* Stats Cards */}
-          {/*    
-<div className="mb-12">
-  <img
-    src="https://cdn.dribbble.com/users/1787323/screenshots/17509856/media/13f8ac5374e47b9a108d08912b97e2ae.png?compress=1&resize=1200x900"
-    alt="Crypto Illustration"
-    className="w-full max-w-4xl mx-auto rounded-3xl shadow-xl"
-  />
-</div> */}
-          {/* Main Content */}
           <div className="text-center">
-            {/* Heading */}
-            {/* <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1ac0c7] uppercase mb-8 leading-tight">
-  About Jaimax
-</h2> */}
-
-
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-500 uppercase mb-8 leading-tight">
               About Jaimax
             </h2>

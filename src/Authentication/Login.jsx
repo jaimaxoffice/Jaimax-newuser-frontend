@@ -3510,9 +3510,9 @@ export default function AuthContainer() {
               </svg>
             </div>
 
-            <div className="text-center text-white px-8">
-              <div className="mb-12 relative">
-                <div className="relative w-58 h-58 mx-auto mb-6 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
+            {/* <div className="text-center text-white px-8">
+              <div className="mb-14 relative">
+                <div className="relative w-58 h-58 mx-auto mb-0 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
                   <img src={icon} alt="" width={300} />
 
                   <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
@@ -3531,7 +3531,26 @@ export default function AuthContainer() {
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
+            <div className="text-center text-white px-8 flex flex-col items-center justify-center h-full">
+  <div className="relative w-56 h-56 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
+    <img src={icon} alt="Icon" className="w-full h-full object-contain" />
+    <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
+    <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-700"></div>
+    <div className="absolute top-1/2 -right-4 w-2 h-2 bg-green-400 rounded-full animate-ping delay-500"></div>
+  </div>
+  <div className="relative mt-6">
+    <h2 className={`text-4xl font-bold mb-4 transition-all duration-700 transform bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
+      {isLogin ? 'Welcome Back!' : 'Join Us Today!'}
+    </h2>
+    <p className={`text-teal-50 text-lg leading-relaxed transition-all duration-700 transform ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
+      {isLogin
+        ? 'Trade, Earn, Grow — All from One Jaimax Account.'
+        : 'The Next-Gen Crypto Platform Built for You. Register Today.'}
+    </p>
+  </div>
+</div>
+
           </div>
         </div>
 

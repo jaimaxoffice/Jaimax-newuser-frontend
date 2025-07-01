@@ -101,7 +101,7 @@ function Sidebar({ onLogoutClick }) {
     transition-all duration-300 ease-in-out shadow-lg border-r  border-teal-600/20 bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
     ${isMobile 
       ? `${isOpen ? 'translate-x-0' : '-translate-x-full'} w-72` 
-      : `${isOpen ? 'w-80' : 'w-20'} relative mt-6 ml-3 mb-6 rounded-lg`
+      : `${isOpen ? 'w-60' : 'w-20'} relative mt-6 ml-3 mb-6 rounded-lg`
     }
   `}
 >

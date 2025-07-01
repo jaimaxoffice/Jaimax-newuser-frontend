@@ -743,9 +743,9 @@ const BuyHistory = () => {
         </div>
 
         {/* Desktop Table View */}
-        <div className="hidden lg:block min-h-screen">
+        <div className=" min-h-screen hidden lg:block min-h-screen">
           <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-lg">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto min-h-screen">
               <table className="w-full table-auto">
                 <thead className="bg-[#1d8e85]">
                   <tr className="text-white text-xs">

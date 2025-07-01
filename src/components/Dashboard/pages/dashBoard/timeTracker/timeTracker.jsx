@@ -172,7 +172,7 @@ const ActiveSlabContent = ({ slab, isActive }) => {
 
           <button
             onClick={handleProceedToPay}
-            className="w-full rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-full text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
+            className="w-full rounded-full bg-[#2cdacc] hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 text-white py-2 px-4 rounded-full text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-1 relative overflow-hidden group"
 
           >
             <div className="absolute inset-0  group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
@@ -407,7 +407,7 @@ const SlabTabs = () => {
                 key={slab.id}
                 onClick={() => handleTabClick(index)}
                 className={`px-3 py-1 text-sm rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${activeTab === index
-                  ? "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white shadow-lg shadow-emerald-500/25 scale-105"
+                  ? "bg-[#2cdacc] text-white shadow-lg shadow-emerald-500/25 scale-105"
                   : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
                   }`}
               >

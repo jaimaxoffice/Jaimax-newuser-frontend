@@ -891,7 +891,7 @@ const LocationsSectionContent = () => {
             },
           }}
         >
-          {/* {countryFlags.map((flagUrl, index) => (
+          {countryFlags.map((flagUrl, index) => (
             <motion.div
               key={index}
               className="w-16 h-16 sm:w-20 sm:h-20 bg-teal-900 rounded-full flex items-center justify-center p-2 shadow-2xl"
@@ -900,7 +900,7 @@ const LocationsSectionContent = () => {
             >
               <img src={flagUrl} alt={`Country Flag ${index + 1}`} className="rounded-full w-full h-full object-cover" />
             </motion.div>
-          ))} */}
+          ))}
         </motion.div>
       </div>
     </section>

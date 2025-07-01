@@ -955,15 +955,11 @@ const ShareholderCard = () => {
       `}</style>
 
       <div
-        className="min-h-screen bg-teal-900 relative overflow-hidden py-2 px-0 sm:px-5 lg:px-10"
+        className="min-h-screen relative overflow-hidden py-2 px-0 sm:px-5 lg:px-10"
       >
-        {/* Background decorative elements */}
-        <div className="absolute top-1/10 left-5 w-24 h-24 bg-radial-gradient-emerald-circle rounded-full animate-pulse"></div>
-        <div className="absolute bottom-1/5 right-10 w-36 h-36 bg-radial-gradient-dark-emerald-circle rounded-full animate-pulse-slow"></div>
-
-        {/* Enhanced Header */}
+       
         <div className="text-center mb-12 mt-2">
-          <div className="inline-block bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 rounded-full border-2 border-emerald-400/30 backdrop-blur-lg px-2 py-1 sm:px-4 sm:py-2">
+          <div className="inline-block bg-gradient-to-br from-teal-900 to-teal-600 rounded-full border-2 border-emerald-400/30 backdrop-blur-lg px-2 py-1 sm:px-4 sm:py-2">
             <h3 className="m-0 text-white text-xl sm:text-2xl font-semibold">
               Our Elite Shareholders
             </h3>

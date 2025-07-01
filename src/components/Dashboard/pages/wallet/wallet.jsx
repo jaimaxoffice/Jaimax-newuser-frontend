@@ -2163,9 +2163,9 @@ export default function WalletDashboard() {
               </div>
             )}
           </div>
-          <div className="hidden md:block overflow-x-auto">
+          <div className="hidden md:block overflow-x-auto min-h-screen">
             {paginatedTransactions.length > 0 ? (
-              <table className="min-w-full divide-y divide-teal-100">
+              <table className="min-w-full divide-y divide-teal-100 ">
                 <thead className="bg-teal-600 text-xs font-semibold text-white">
                   <tr>
                     <th scope="col" className="px-3 py-3    text-white uppercase">S.No</th>

@@ -210,8 +210,8 @@ import Home from "./pages/home/Home";
 import JaimaxComponent from "./components/About/About";
 import Contact from "./components/contact/Contact";
 import FeaturesSection from "./pages/home/HomeFeatures";
-import BlogLayout, { BlogDetailPage } from "./pages/home/Blog";
-import BlogDetail from "./pages/home/Blog"      // ✅ NEW
+import BlogLayout from "./pages/home/Blog";
+import BlogDetailPage from "./pages/home/Article"; // ✅ NEW    // ✅ NEW
 import CryptoServicesFlipCards from "./components/Services/services";
 import SupportPage from "./global/SupportPage";
 import RefundPolicy from "./global/RefundPolicy";

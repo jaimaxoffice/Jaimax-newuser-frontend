@@ -909,7 +909,7 @@ export default function GrowthPlanTimeline() {
         <div className="text-center max-w-4xl mx-auto mb-10 px-2 sm:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight">
             Company&nbsp;’s Growth Plan Outlook{" "}
-            <span className="text-yellow-400">(2024 – 2026)</span>
+            {/* <span className="text-yellow-400">(2024 – 2026)</span> */}
           </h2>
         
         </div>
