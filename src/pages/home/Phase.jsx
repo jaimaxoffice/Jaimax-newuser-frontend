@@ -837,6 +837,245 @@
 // }
 
 
+// import React, { useRef, useState } from "react";
+// import { CheckCircle, Clock, TrendingUp } from "lucide-react";
+
+// import { useNavigate } from "react-router-dom";   // ⬅️ NEW
+
+// const phaseData = [
+//   {
+//     status: "Live",
+//     phaseNo: "Phase 1",
+//     tokens: "10 Billion Tokens",
+//     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
+//     button: "Buy Now",
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 2",
+//     tokens: "20 Billion Tokens",
+//     price: "Price INR 0.05 - 0.50 Paisa (0.00061-0.0061 USD)",
+//     button: "Coming Soon",
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 3",
+//     tokens: "25 Billion Tokens",
+//     price: "Price INR 0.60 - 1.53 Paisa (0.0071-0.018 USD)",
+//     button: "Coming Soon",
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 4",
+//     tokens: "30 Billion Tokens",
+//     price: "Price INR 1.60 - 3.00 Paisa (0.019-0.036 USD)",
+//     button: "Coming Soon",
+//   },
+//   {
+//     status: "Upcoming",
+//     phaseNo: "Phase 5",
+//     tokens: "25 Billion Tokens",
+//     price: "Price INR 3.15 - 4.10 Paisa (0.037-0.049 USD)",
+//     button: "Coming Soon",
+//   },
+// ];
+
+// export default function GrowthPlanTimeline() {
+//   const cardRefs = useRef([]);
+//   const [hoveredIndex, setHoveredIndex] = useState(null);
+//   const [activeIndex, setActiveIndex] = useState(null);
+//   const navigate = useNavigate();                        // ⬅️ NEW
+
+//   // Snap-scroll to a card when its circular icon is clicked
+//   const handleIconClick = (index) => {
+//     if (cardRefs.current[index]) {
+//       cardRefs.current[index].scrollIntoView({ behavior: "smooth", inline: "center" });
+//       setActiveIndex(index);
+//       setTimeout(() => setActiveIndex(null), 300);
+//     }
+//   };
+
+//   // Navigate to the register page on *Live* cards
+//   const handleBuyNow = (item) => {
+//     if (item.status === "Live") navigate("/register");
+//   };
+
+
+//   return (
+//     <>
+
+//       <section className=" text-white px-4 sm:px-8 md:px-10 lg:px-10 font-sans">
+//         {/* Heading */}
+//         <div className="text-center max-w-4xl mx-auto mb-10 px-2 sm:px-6">
+//           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight">
+//             Company&nbsp;’s Growth Plan Outlook{" "}
+//             {/* <span className="text-yellow-400">(2024 – 2026)</span> */}
+//           </h2>
+        
+//         </div>
+
+//         {/* Horizontal timeline line (desktop) */}
+//         <div className="relative">
+//           <div
+//             className=" md:block absolute left-0 right-0 h-1 bg-teal-600"
+//             style={{ top: "28px" }}
+//             aria-hidden="true"
+//           />
+//           <div
+//             className="
+          
+//     flex flex-nowrap gap-6 overflow-x-auto snap-x snap-mandatory
+//     scroll-smooth scrollbar-hide pb-20 w-full pl-8
+//   "
+//             role="list"
+//           >
+//             {phaseData.map((item, idx) => {
+//               const { status, phaseNo, tokens, price, button } = item;
+//               const shouldBlurContent = status !== "Live";
+//               const isActive = idx === activeIndex;
+
+//               return (
+//                 <div
+//                   key={idx}
+//                   ref={(el) => (cardRefs.current[idx] = el)}
+//                   tabIndex={0}
+//                   role="listitem"
+//                   className={`
+                    
+//           relative flex-shrink-0 snap-center
+//           min-w-[280px] max-w-[280px] sm:max-w-xs
+//           flex flex-col items-center focus:outline-none cursor-pointer
+//           transition-transform duration-300
+//           ${isActive ? "scale-110 z-30" : "scale-100"}
+//         `}
+//                   onMouseEnter={() => setHoveredIndex(idx)}
+//                   onMouseLeave={() => setHoveredIndex(null)}
+//                 >
+//                   <button
+//                     onClick={() => handleIconClick(idx)}
+//                     className={`
+//             flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14
+//             rounded-full shadow-lg transition-transform duration-200
+            
+//             ${status === "Live" ? "bg-green-400" : "bg-white"}
+//           `}
+//                     aria-label={`Navigate to ${phaseNo}`}
+//                     type="button"
+//                   >
+//                     {status === "Live" ? (
+//                       <CheckCircle className="w-5 h-5 sm:w-7 sm:h-7 text-teal-800" />
+//                     ) : (
+//                       <Clock className="w-5 h-5 sm:w-7 sm:h-7 text-teal-800" />
+//                     )}
+//                   </button>
+//                   <div
+//                     className={`
+//     hidden md:block absolute top-[56px] text-yellow-300 font-semibold text-center
+//     mt-2 w-24 sm:w-32 opacity-0 pointer-events-none transition-opacity duration-300
+//     ${hoveredIndex === idx ? "opacity-100 pointer-events-auto" : ""}
+//   `}
+//                     style={{ left: "50%", transform: "translateX(-50%)" }}
+//                   >
+//                     {phaseNo}
+//                   </div>
+
+
+//                   <span
+//                     className="
+//             mt-3 sm:mt-4 md:mt-0 md:rotate-90 md:absolute md:top-1/2
+//             md:-translate-y-1/2 font-semibold text-xs sm:text-sm
+//             tracking-widest text-teal-100 select-none
+//           "
+//                     style={{ left: "-36px", zIndex: "1000" }}
+//                   >
+//                     {phaseNo}
+//                   </span>
+
+//                   <article
+//                     className="mt-4 sm:mt-6 md:mt-16 bg-teal-700   bg-[#1c984a] rounded-lg p-4 pt-5 pb-6 sm:p-6 shadow-md relative w-full flex flex-col justify-between"
+//                     style={{ minHeight: "230px", width: "250px", maxWidth: "100%" }}
+//                   >
+//                     <div className="relative mb-2">
+//                       <p
+//                         className={`
+//                 text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full inline-flex items-center gap-1 font-semibold
+//                 ${status === "Live"
+//                             ? "bg-green-500 text-white animate-pulse"
+//                             : "bg-[#b8cc26] text-black absolute right-2"}
+//               `}
+//                         style={
+//                           status !== "Live"
+//                             ? { width: "max-content", top: "-30px", left: "90px" }
+//                             : {}
+//                         }
+//                       >
+//                         {status === "Live" ? (
+//                           <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+//                         ) : (
+//                           <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
+//                         )}
+//                         <span>{status}</span>
+//                       </p>
+//                     </div>
+
+//                     <div
+//                       style={{
+//                         filter: shouldBlurContent ? "blur(4px)" : "none",
+//                         pointerEvents: shouldBlurContent ? "none" : "auto",
+//                         marginTop: status !== "Live" ? "2.2rem" : "0",
+//                       }}
+//                       className="flex flex-col gap-2"
+//                     >
+
+//                       {/* <p className="text-xs sm:text-sm text-yellow   leading-tight">
+//                         <strong>Tokens:</strong> {tokens}
+//                       </p>
+//                       <p className="text-xs sm:text-sm text-white leading-tight">
+//                         <strong>Price:</strong> {price}
+//                       </p> */}
+//                       <p className="text-xl sm:text-lg leading-tight text-white font-bold" >
+//   {tokens}
+// </p>
+// <p className="text-lg sm:text-base text-black leading-tight font-semibold">
+//   <span className="font-bold"></span> {price}
+// </p>
+
+//                       <div className="mt-3">
+//                         <button
+//                           onClick={() => handleBuyNow(item)}
+//                           className={`
+//                   px-6 sm:px-6 py-3 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold
+//                   ${status === "Live"
+//                               ? "bg-[#1f954a] text-white hover:opacity-90"
+//                               : "bg-gray-400 text-gray-700 cursor-not-allowed"}
+//                 `}
+//                           disabled={status !== "Live"}
+//                         >
+//                           {button}
+//                         </button>
+//                       </div>
+//                     </div>
+//                   </article>
+
+//                   {/* {idx < phaseData.length - 1 && (
+//                     <div className="hidden md:block absolute -bottom-8 w-1 h-16 bg-teal-600" aria-hidden="true" />
+//                   )} */}
+
+//                 </div>
+//               );
+//             })}
+//           </div>
+
+//         </div>
+//       </section>
+
+
+//     </>
+//   );
+// }
+
+
+
 import React, { useRef, useState } from "react";
 import { CheckCircle, Clock, TrendingUp } from "lucide-react";
 
@@ -884,7 +1123,7 @@ export default function GrowthPlanTimeline() {
   const cardRefs = useRef([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
-  const navigate = useNavigate();                        // ⬅️ NEW
+  const navigate = useNavigate();
 
   // Snap-scroll to a card when its circular icon is clicked
   const handleIconClick = (index) => {
@@ -900,35 +1139,30 @@ export default function GrowthPlanTimeline() {
     if (item.status === "Live") navigate("/register");
   };
 
-
   return (
     <>
-
-      <section className=" text-white px-4 sm:px-8 md:px-10 lg:px-10 font-sans">
+      <section className="text-white px-2 sm:px-4 md:px-8 lg:px-10 xl:px-12 font-sans">
         {/* Heading */}
-        <div className="text-center max-w-4xl mx-auto mb-10 px-2 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-tight">
-            Company&nbsp;’s Growth Plan Outlook{" "}
-            {/* <span className="text-yellow-400">(2024 – 2026)</span> */}
+        <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8 md:mb-10 px-2 sm:px-4 md:px-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
+            Company's Growth Plan Outlook
           </h2>
-        
         </div>
 
-        {/* Horizontal timeline line (desktop) */}
+        {/* Horizontal timeline line (all screens) */}
         <div className="relative">
           <div
-            className="hidden md:block absolute left-0 right-0 h-1 bg-teal-600"
-            style={{ top: "28px" }}
+            className="absolute left-0 right-0 h-0.5 sm:h-1 bg-teal-600"
+            style={{ top: "24px" }}
             aria-hidden="true"
           />
-
-          {/* Scrollable card rail */}
+          
           <div
             className="
-          
-    flex flex-nowrap gap-6 overflow-x-auto snap-x snap-mandatory
-    scroll-smooth scrollbar-hide pb-20 w-full pl-8
-  "
+              flex flex-nowrap gap-3 sm:gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory
+              scroll-smooth scrollbar-hide pb-12 sm:pb-16 md:pb-20 w-full 
+              pl-4 sm:pl-6 md:pl-8 pr-4 sm:pr-6 md:pr-8
+            "
             role="list"
           >
             {phaseData.map((item, idx) => {
@@ -943,114 +1177,130 @@ export default function GrowthPlanTimeline() {
                   tabIndex={0}
                   role="listitem"
                   className={`
-                    
-          relative flex-shrink-0 snap-center
-          min-w-[260px] max-w-[280px] sm:max-w-xs
-          flex flex-col items-center focus:outline-none cursor-pointer
-          transition-transform duration-300
-          ${isActive ? "scale-110 z-30" : "scale-100"}
-        `}
+                    relative flex-shrink-0 snap-center
+                    min-w-[240px] sm:min-w-[260px] md:min-w-[280px]
+                    max-w-[240px] sm:max-w-[260px] md:max-w-[280px]
+                    flex flex-col items-center focus:outline-none cursor-pointer
+                    transition-transform duration-300
+                    ${isActive ? "scale-105 sm:scale-110 z-30" : "scale-100"}
+                  `}
                   onMouseEnter={() => setHoveredIndex(idx)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
+                  {/* Circular icon */}
                   <button
                     onClick={() => handleIconClick(idx)}
                     className={`
-            flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14
-            rounded-full shadow-lg transition-transform duration-200
-            
-            ${status === "Live" ? "bg-green-400" : "bg-white"}
-          `}
+                      flex items-center justify-center 
+                      w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14
+                      rounded-full shadow-lg transition-transform duration-200
+                      ${status === "Live" ? "bg-green-400" : "bg-white"}
+                    `}
                     aria-label={`Navigate to ${phaseNo}`}
                     type="button"
                   >
                     {status === "Live" ? (
-                      <CheckCircle className="w-5 h-5 sm:w-7 sm:h-7 text-teal-800" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 text-teal-800" />
                     ) : (
-                      <Clock className="w-5 h-5 sm:w-7 sm:h-7 text-teal-800" />
+                      <Clock className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 text-teal-800" />
                     )}
                   </button>
+
+                  {/* Phase label on hover (desktop only) */}
                   <div
                     className={`
-    hidden md:block absolute top-[56px] text-yellow-300 font-semibold text-center
-    mt-2 w-24 sm:w-32 opacity-0 pointer-events-none transition-opacity duration-300
-    ${hoveredIndex === idx ? "opacity-100 pointer-events-auto" : ""}
-  `}
+                      hidden lg:block absolute top-[48px] sm:top-[56px] md:top-[64px] 
+                      text-yellow-300 font-semibold text-center text-sm sm:text-base
+                      mt-2 w-20 sm:w-24 md:w-32 opacity-0 pointer-events-none 
+                      transition-opacity duration-300
+                      ${hoveredIndex === idx ? "opacity-100 pointer-events-auto" : ""}
+                    `}
                     style={{ left: "50%", transform: "translateX(-50%)" }}
                   >
                     {phaseNo}
                   </div>
 
-
+                  {/* Phase label (mobile/tablet) */}
                   <span
                     className="
-            mt-3 sm:mt-4 md:mt-0 md:rotate-90 md:absolute md:top-1/2
-            md:-translate-y-1/2 font-semibold text-xs sm:text-sm
-            tracking-widest text-teal-100 select-none
-          "
-                    style={{ left: "-36px", zIndex: "1000" }}
+                      mt-2 sm:mt-3 md:mt-4 lg:mt-0 lg:rotate-90 lg:absolute lg:top-1/2
+                      lg:-translate-y-1/2 font-semibold text-xs sm:text-sm
+                      tracking-widest text-teal-100 select-none
+                    "
+                    style={{ left: "-32px", zIndex: "1000" }}
                   >
                     {phaseNo}
                   </span>
 
+                  {/* Card content */}
                   <article
-                    className="mt-4 sm:mt-6 md:mt-16 bg-teal-700   bg-[#1c984a] rounded-lg p-4 pt-5 pb-6 sm:p-6 shadow-md relative w-full flex flex-col justify-between"
-                    style={{ minHeight: "230px", width: "250px", maxWidth: "100%" }}
+                    className={`
+                      mt-3 sm:mt-4 md:mt-6 lg:mt-16 bg-[#1c984a] rounded-lg 
+                      p-3 sm:p-4 md:p-6 shadow-md relative w-full 
+                      flex flex-col justify-between
+                    `}
+                    style={{ 
+                      minHeight: "200px", 
+                      width: "100%", 
+                      maxWidth: "100%" 
+                    }}
                   >
+                    {/* Status badge */}
                     <div className="relative mb-2">
                       <p
                         className={`
-                text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full inline-flex items-center gap-1 font-semibold
-                ${status === "Live"
+                          text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full 
+                          inline-flex items-center gap-1 font-semibold w-fit
+                          ${status === "Live"
                             ? "bg-green-500 text-white animate-pulse"
-                            : "bg-[#b8cc26] text-black absolute right-2"}
-              `}
+                            : "bg-[#b8cc26] text-black absolute right-0 sm:right-2"}
+                        `}
                         style={
                           status !== "Live"
-                            ? { width: "max-content", top: "-30px", left: "90px" }
+                            ? { top: "-24px", right: "0" }
                             : {}
                         }
                       >
                         {status === "Live" ? (
-                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                          <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
                         ) : (
-                          <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
+                          <Clock className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-black" />
                         )}
-                        <span>{status}</span>
+                        <span className="text-xs sm:text-sm">{status}</span>
                       </p>
                     </div>
 
+                    {/* Content */}
                     <div
                       style={{
-                        filter: shouldBlurContent ? "blur(4px)" : "none",
+                        filter: shouldBlurContent ? "blur(3px)" : "none",
                         pointerEvents: shouldBlurContent ? "none" : "auto",
-                        marginTop: status !== "Live" ? "2.2rem" : "0",
+                        marginTop: status !== "Live" ? "1.5rem" : "0",
                       }}
-                      className="flex flex-col gap-2"
+                      className="flex flex-col gap-2 sm:gap-3 flex-1"
                     >
-
-                      {/* <p className="text-xs sm:text-sm text-yellow   leading-tight">
-                        <strong>Tokens:</strong> {tokens}
+                      {/* Tokens */}
+                      <p className="text-base sm:text-lg md:text-xl leading-tight text-white font-bold">
+                        {tokens}
                       </p>
-                      <p className="text-xs sm:text-sm text-white leading-tight">
-                        <strong>Price:</strong> {price}
-                      </p> */}
-                      <p className="text-xl sm:text-lg leading-tight text-white font-bold" >
-  {tokens}
-</p>
-<p className="text-lg sm:text-base text-black leading-tight font-semibold">
-  <span className="font-bold"></span> {price}
-</p>
+                      
+                      {/* Price */}
+                      <p className="text-sm sm:text-base md:text-lg text-black leading-tight font-semibold">
+                        {price}
+                      </p>
 
-                      <div className="mt-3">
+                      {/* Button */}
+                      <div className="mt-2 sm:mt-3">
                         <button
                           onClick={() => handleBuyNow(item)}
                           className={`
-                  px-6 sm:px-6 py-3 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold
-                  ${status === "Live"
+                            px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 
+                            rounded-full text-xs sm:text-sm font-semibold
+                            w-full sm:w-auto transition-opacity duration-200
+                            ${status === "Live"
                               ? "bg-[#1f954a] text-white hover:opacity-90"
                               : "bg-gray-400 text-gray-700 cursor-not-allowed"}
-                `}
+                          `}
                           disabled={status !== "Live"}
                         >
                           {button}
@@ -1058,20 +1308,12 @@ export default function GrowthPlanTimeline() {
                       </div>
                     </div>
                   </article>
-
-                  {/* {idx < phaseData.length - 1 && (
-                    <div className="hidden md:block absolute -bottom-8 w-1 h-16 bg-teal-600" aria-hidden="true" />
-                  )} */}
-
                 </div>
               );
             })}
           </div>
-
         </div>
       </section>
-
-
     </>
   );
 }

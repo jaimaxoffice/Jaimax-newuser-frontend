@@ -2074,227 +2074,48 @@
 
 
 
-// import React, { useEffect, useRef, useState } from 'react';
-// import jaicoins from "../../assets/Images/jaicoins.svg";
-// import frameTwo from "../../assets/Images/securitymeasure.svg";
-// import access from "../../assets/Images/accessToprofit.svg";
-// import rocket2 from '../../assets/Images/rocket2.svg';
-// import eye from "../../assets/Images/eye.svg";
-
-// const ServicesSection = () => {
-//   const [visibleItems, setVisibleItems] = useState(new Set());
-//   const observerRef = useRef(null);
-
-//   // Your services data
-//   const services = [
-//     {
-//       title: "Security Measures",
-//       icon: frameTwo, // Security measure icon
-//       description: "KYC verification and Google Authenticator fortify your account from unauthorized access. Trust Jaimax to protect your digital assets.",
-//       // gradient: "from-[#bbcf28] to-[#1d974a]",
-//     },
-//     {
-//       title: "Secure Crypto Wallet",
-//       icon: jaicoins, // Jaicoins icon for wallet
-//       description: "Your crypto is protected with top-tier encryption and real-time monitoring. Manage your assets securely from anywhere.",
-//       // gradient: "from-[#1d974a] to-[#bbcf28]",
-//     },
-//     {
-//       title: "Access to Profits",
-//       icon: access, // Access to profits icon
-//       description: "Convert your crypto into real-world gains. Flexible, fast, and built for your financial success.",
-//       // gradient: "from-[#045c61] to-[#1d974a]",
-//     },
-//     {
-//       title: "Financial Growth",
-//       icon: rocket2, // Rocket icon for growth
-//       description: "Tailored plans aligned with your goals. Grow your portfolio with strategic crypto investments.",
-//       // gradient: "from-[#bbcf28] to-[#095659]",
-//     },
-//     {
-//       title: "Funds Management",
-//       icon: eye, // Eye icon for monitoring/management
-//       description: "Add, withdraw, and monitor investments effortlessly. Stay in control of your capital anytime, anywhere.",
-//       // gradient: "from-[#bbcf28] to-[#095659]",
-//     },
-//   ];
-
-//   useEffect(() => {
-//     observerRef.current = new IntersectionObserver(
-//       (entries) => {
-//         entries.forEach((entry) => {
-//           if (entry.isIntersecting) {
-//             const itemId = parseInt(entry.target.dataset.itemId);
-//             setVisibleItems(prev => new Set([...prev, itemId]));
-//           }
-//         });
-//       },
-//       {
-//         threshold: 0.1,
-//         rootMargin: '0px 0px -50px 0px'
-//       }
-//     );
-
-//     // Small delay to ensure DOM is ready
-//     const timer = setTimeout(() => {
-//       const items = document.querySelectorAll('[data-item-id]');
-//       items.forEach(item => {
-//         if (observerRef.current) {
-//           observerRef.current.observe(item);
-//         }
-//       });
-//     }, 100);
-
-//     return () => {
-//       clearTimeout(timer);
-//       if (observerRef.current) {
-//         observerRef.current.disconnect();
-//       }
-//     };
-//   }, []);
-
-//   const getAnimationClasses = (itemId, side) => {
-//     const isVisible = visibleItems.has(itemId);
-    
-//     if (!isVisible) {
-//       return side === 'left' 
-//         ? '-translate-x-20 opacity-0'
-//         : 'translate-x-20 opacity-0';
-//     }
-    
-//     return 'translate-x-0 opacity-100';
-//   };
-
-//   return (
-//     <div className="py-10 lg:py-12 overflow-hidden" style={{
-//       backgroundImage: "url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/cases-bg.png')",
-//       backgroundRepeat: 'no-repeat',
-//       backgroundPosition: 'center',
-//     }}>
-//       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-//         {/* Header */}
-//         <div className="text-center mb-10">
-//           <h4 className="text-slate-400 text-sm font-medium tracking-wider uppercase mb-4">
-//             OUR SERVICES
-//           </h4>
-//           <h2 className="text-4xl lg:text-5xl font-bold text-white">
-//             What We Offer
-//           </h2>
-//         </div>
-
-//         {/* Services Grid */}
-//         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-//           {services.map((service, index) => {
-//             const side = index % 2 === 0 ? 'left' : 'right';
-//             return (
-//               <div
-//                 key={index}
-//                 data-item-id={index}
-//                 className={`flex items-start space-x-6 group transition-all duration-1000 ease-out ${getAnimationClasses(index, side)}`}
-//                 style={{
-//                   transitionDelay: `${index * 150}ms`
-//                 }}
-//               >
-//                 {/* Icon Circle with Custom Gradient */}
-//                 <div className="flex-shrink-0">
-//                   <div className={`w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br ${service.gradient} rounded-full border-2 border-white/20 flex items-center justify-center text-white text-2xl lg:text-3xl group-hover:border-white/40 group-hover:scale-110 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:shadow-black/30`}>
-//                     {/* Using actual SVG icons */}
-//                     <img 
-//                       src={service.icon} 
-//                       alt={service.title}
-//                       className="w-12 h-12 lg:w-14 lg:h-14 object-contain"
-//                     />
-//                   </div>
-//                 </div>
-                
-//                 {/* Content */}
-//                 <div className="flex-1 pt-2">
-//                   <h3 className="text-xl lg:text-2xl font-bold text-white mb-4 group-hover:text-[#bbcf28] transition-colors duration-300">
-//                     {service.title}
-//                   </h3>
-//                   <p className="text-slate-400 leading-relaxed text-base lg:text-lg">
-//                     {service.description}
-//                   </p>
-//                 </div>
-//               </div>
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ServicesSection;
-
 import React, { useEffect, useRef, useState } from 'react';
+import jaicoins from "../../assets/Images/jaicoins.svg";
+import frameTwo from "../../assets/Images/securitymeasure.svg";
+import access from "../../assets/Images/accessToprofit.svg";
+import rocket2 from '../../assets/Images/rocket2.svg';
+import eye from "../../assets/Images/eye.svg";
 
 const ServicesSection = () => {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const observerRef = useRef(null);
 
-  // Mock icons - replace these with your actual imported icons
-  const SecurityIcon = () => (
-    <svg className="w-12 h-12 lg:w-14 lg:h-14" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-    </svg>
-  );
-
-  const WalletIcon = () => (
-    <svg className="w-12 h-12 lg:w-14 lg:h-14" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-    </svg>
-  );
-
-  const ProfitIcon = () => (
-    <svg className="w-12 h-12 lg:w-14 lg:h-14" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
-    </svg>
-  );
-
-  const RocketIcon = () => (
-    <svg className="w-12 h-12 lg:w-14 lg:h-14" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 0C17.5 0 22 2.5 22 2.5S19.5 7 12 7 2 2.5 2 2.5 6.5 0 12 0zm0 24c-5.5 0-10-2.5-10-2.5S4.5 17 12 17s10 4.5 10 4.5-4.5 2.5-10 2.5zm-2-14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-    </svg>
-  );
-
-  const EyeIcon = () => (
-    <svg className="w-12 h-12 lg:w-14 lg:h-14" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-    </svg>
-  );
-
   // Your services data
   const services = [
     {
       title: "Security Measures",
-      icon: SecurityIcon,
+      icon: frameTwo, // Security measure icon
       description: "KYC verification and Google Authenticator fortify your account from unauthorized access. Trust Jaimax to protect your digital assets.",
-      gradient: "from-[#bbcf28] to-[#1d974a]",
+      // gradient: "from-[#bbcf28] to-[#1d974a]",
     },
     {
       title: "Secure Crypto Wallet",
-      icon: WalletIcon,
+      icon: jaicoins, // Jaicoins icon for wallet
       description: "Your crypto is protected with top-tier encryption and real-time monitoring. Manage your assets securely from anywhere.",
-      gradient: "from-[#1d974a] to-[#bbcf28]",
+      // gradient: "from-[#1d974a] to-[#bbcf28]",
     },
     {
       title: "Access to Profits",
-      icon: ProfitIcon,
+      icon: access, // Access to profits icon
       description: "Convert your crypto into real-world gains. Flexible, fast, and built for your financial success.",
-      gradient: "from-[#045c61] to-[#1d974a]",
+      // gradient: "from-[#045c61] to-[#1d974a]",
     },
     {
       title: "Financial Growth",
-      icon: RocketIcon,
+      icon: rocket2, // Rocket icon for growth
       description: "Tailored plans aligned with your goals. Grow your portfolio with strategic crypto investments.",
-      gradient: "from-[#bbcf28] to-[#095659]",
+      // gradient: "from-[#bbcf28] to-[#095659]",
     },
     {
       title: "Funds Management",
-      icon: EyeIcon,
+      icon: eye, // Eye icon for monitoring/management
       description: "Add, withdraw, and monitor investments effortlessly. Stay in control of your capital anytime, anywhere.",
-      gradient: "from-[#bbcf28] to-[#095659]",
+      // gradient: "from-[#bbcf28] to-[#095659]",
     },
   ];
 
@@ -2337,57 +2158,61 @@ const ServicesSection = () => {
     
     if (!isVisible) {
       return side === 'left' 
-        ? '-translate-x-8 sm:-translate-x-20 opacity-0'
-        : 'translate-x-8 sm:translate-x-20 opacity-0';
+        ? '-translate-x-20 opacity-0'
+        : 'translate-x-20 opacity-0';
     }
     
     return 'translate-x-0 opacity-100';
   };
 
   return (
-    <div className="py-8 sm:py-10 lg:py-12 overflow-hidden" style={{
+    <div className="py-10 lg:py-12 overflow-hidden" style={{
       backgroundImage: "url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/cases-bg.png')",
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
     }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-10">
-          <h4 className="text-slate-400 text-xs sm:text-sm font-medium tracking-wider uppercase mb-3 sm:mb-4">
+        <div className="text-center mb-10">
+          <h4 className="text-slate-400 text-sm font-medium tracking-wider uppercase mb-4">
             OUR SERVICES
           </h4>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white">
             What We Offer
           </h2>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {services.map((service, index) => {
             const side = index % 2 === 0 ? 'left' : 'right';
-            const IconComponent = service.icon;
             return (
               <div
                 key={index}
                 data-item-id={index}
-                className={`flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 lg:space-x-6 group transition-all duration-1000 ease-out ${getAnimationClasses(index, side)}`}
+                className={`flex items-start space-x-6 group transition-all duration-1000 ease-out ${getAnimationClasses(index, side)}`}
                 style={{
                   transitionDelay: `${index * 150}ms`
                 }}
               >
                 {/* Icon Circle with Custom Gradient */}
                 <div className="flex-shrink-0">
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br ${service.gradient} rounded-full border-2 border-white/20 flex items-center justify-center text-white text-2xl lg:text-3xl group-hover:border-white/40 group-hover:scale-110 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:shadow-black/30`}>
-                    <IconComponent />
+                  <div className={`w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br ${service.gradient} rounded-full border-2 border-white/20 flex items-center justify-center text-white text-2xl lg:text-3xl group-hover:border-white/40 group-hover:scale-110 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:shadow-black/30`}>
+                    {/* Using actual SVG icons */}
+                    <img 
+                      src={service.icon} 
+                      alt={service.title}
+                      className="w-12 h-12 lg:w-14 lg:h-14 object-contain"
+                    />
                   </div>
                 </div>
                 
                 {/* Content */}
-                <div className="flex-1 pt-0 sm:pt-2 text-center sm:text-left">
-                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 sm:mb-4 group-hover:text-[#bbcf28] transition-colors duration-300">
+                <div className="flex-1 pt-2">
+                  <h3 className="text-xl lg:text-2xl font-bold text-white mb-4 group-hover:text-[#bbcf28] transition-colors duration-300">
                     {service.title}
                   </h3>
-                  <p className="text-slate-400 leading-relaxed text-sm sm:text-base lg:text-lg">
+                  <p className="text-slate-400 leading-relaxed text-base lg:text-lg">
                     {service.description}
                   </p>
                 </div>
@@ -2401,3 +2226,4 @@ const ServicesSection = () => {
 };
 
 export default ServicesSection;
+
