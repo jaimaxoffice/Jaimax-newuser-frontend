@@ -1806,35 +1806,110 @@ export default function Profile3DForm() {
     setShowPassword(!showPassword);
   };
 
-  const validateForm = () => {
-    let formErrors = {};
-    const phoneRegex = /^[0-9]{6,12}$/;
+  // const validateForm = () => {
+  //   let formErrors = {};
+  //   const phoneRegex = /^[0-9]{6,12}$/;
 
-    if (!state.name.trim()) {
-      formErrors.name = "Name is required";
-    }
+  //   if (!state.name.trim()) {
+  //     formErrors.name = "Name is required";
+  //   }
 
-    if (!state.phone.toString().trim()) {
-      formErrors.phone = "Mobile number is required";
-    } else if (!phoneRegex.test(state.phone)) {
-      formErrors.phone = "Invalid mobile number format";
-    }
-    if (!state.address.trim()) {
-      formErrors.address = "Address is required";
-    }
-    if (!state.city.trim()) {
-      formErrors.city = "City is required";
-    }
-    if (!state.country.trim()) {
-      formErrors.country = "Country is required";
-    }
-    if (!state.state.trim()) {
-      formErrors.state = "State is required";
-    }
+  //   if (!state.phone.toString().trim()) {
+  //     formErrors.phone = "Mobile number is required";
+  //   } else if (!phoneRegex.test(state.phone)) {
+  //     formErrors.phone = "Invalid mobile number format";
+  //   }
+  //   if (!state.address.trim()) {
+  //     formErrors.address = "Address is required";
+  //   }
+  //   if (!state.city.trim()) {
+  //     formErrors.city = "City is required";
+  //   }
+  //   if (!state.country.trim()) {
+  //     formErrors.country = "Country is required";
+  //   }
+  //   if (!state.state.trim()) {
+  //     formErrors.state = "State is required";
+  //   }
 
-    return formErrors;
-  };
+  //   return formErrors;
+  // };
+const validateForm = () => {
+  let formErrors = {};
 
+  // Regex for common phone number patterns (flexible, but consider libphonenumber for global)
+  // This regex allows for optional leading +, digits, spaces, hyphens, and parentheses.
+  // It's still a simplified approach compared to a dedicated library.
+  const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/; // Adjusted min length and added allowed characters
+
+  // Regex for names (letters, spaces, hyphens, apostrophes)
+  const nameRegex = /^[a-zA-Z\s'-]+$/;
+
+  // Regex for addresses (alphanumeric, spaces, common punctuation like #, -, , .)
+  const addressRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])?[a-zA-Z0-9\s.,'#-]+$/;
+
+  // --- Name Validation ---
+  if (!state.name.trim()) {
+    formErrors.name = "Name is required.";
+  } else if (state.name.trim().length < 2) {
+    formErrors.name = "Name must be at least 2 characters long.";
+  } else if (state.name.trim().length > 50) {
+    formErrors.name = "Name cannot exceed 50 characters.";
+  } else if (!nameRegex.test(state.name.trim())) {
+    formErrors.name = "Name can only contain letters, spaces, hyphens, and apostrophes.";
+  }
+
+  // --- Phone Validation ---
+  if (!state.phone) { // Check for null, undefined, or empty string
+    formErrors.phone = "Mobile number is required.";
+  } else if (typeof state.phone !== 'string' && typeof state.phone !== 'number') {
+    formErrors.phone = "Invalid mobile number format."; // Ensure it's a string or number
+  } else if (!String(state.phone).trim()) { // Convert to string for trim()
+    formErrors.phone = "Mobile number is required.";
+  } else if (!phoneRegex.test(String(state.phone))) {
+    formErrors.phone = "Invalid mobile number format. Please enter 7-20 digits, optionally with +, spaces, -, or ().";
+  }
+
+  // --- Address Validation ---
+  if (!state.address.trim()) {
+    formErrors.address = "Address is required.";
+  } else if (state.address.trim().length < 5) {
+    formErrors.address = "Address must be at least 5 characters long.";
+  } else if (state.address.trim().length > 100) {
+    formErrors.address = "Address cannot exceed 100 characters.";
+  } else if (!addressRegex.test(state.address.trim())) {
+    formErrors.address = "Address contains invalid characters.";
+  }
+
+  // --- City Validation ---
+  if (!state.city.trim()) {
+    formErrors.city = "City is required.";
+  } else if (state.city.trim().length < 2) {
+    formErrors.city = "City must be at least 2 characters long.";
+  } else if (state.city.trim().length > 50) {
+    formErrors.city = "City cannot exceed 50 characters.";
+  } else if (!/^[a-zA-Z\s-]+$/.test(state.city.trim())) { // Only letters, spaces, hyphens
+    formErrors.city = "City can only contain letters, spaces, and hyphens.";
+  }
+
+  // --- State Validation ---
+  if (!state.state.trim()) {
+    formErrors.state = "State is required.";
+  } else if (state.state.trim().length < 2) {
+    formErrors.state = "State must be at least 2 characters long.";
+  } else if (state.state.trim().length > 50) {
+    formErrors.state = "State cannot exceed 50 characters.";
+  } else if (!/^[a-zA-Z\s-]+$/.test(state.state.trim())) { // Only letters, spaces, hyphens
+    formErrors.state = "State can only contain letters, spaces, and hyphens.";
+  }
+
+  // --- Country Validation ---
+  if (!state.country.trim()) {
+    formErrors.country = "Country is required.";
+  } 
+
+  return formErrors;
+};
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
