@@ -2261,10 +2261,573 @@
 
 
 
-import React, { useState, useEffect } from 'react';
-import { Users, Search, Copy, TrendingUp, UserCheck, Calendar, Mail, Award, Filter, ChevronDown } from 'lucide-react';
+// import React, { useState, useEffect } from 'react';
+// import { Users, Search, Copy, TrendingUp, UserCheck, Calendar, Mail, Award, Filter, ChevronDown } from 'lucide-react';
+
+// const MyTotalTeam = () => {
+//   const [state, setState] = useState({
+//     currentPage: 1,
+//     perPage: 8,
+//     search: "",
+//     sortBy: 'name',
+//     filterStatus: 'all'
+//   });
+//   const [copiedCode, setCopiedCode] = useState(false);
+//   const [loading, setLoading] = useState(false);
+//   const [showFilters, setShowFilters] = useState(false);
+
+//   // Enhanced sample data
+//   const staticData = [
+//     {
+//       name: "John Smith",
+//       username: "johnsmith123",
+//       email: "john.smith@example.com",
+//       totalChainReferrals: 25,
+//       createdAt: "2024-01-15T10:30:00Z",
+//       isActive: true,
+//       avatar: "JS"
+//     },
+//     {
+//       name: "Sarah Johnson",
+//       username: "sarahj456",
+//       email: "sarah.johnson@example.com",
+//       totalChainReferrals: 18,
+//       createdAt: "2024-02-20T14:22:00Z",
+//       isActive: true,
+//       avatar: "SJ"
+//     },
+//     {
+//       name: "Michael Brown",
+//       username: "mikebrown",
+//       email: "mike.brown@example.com",
+//       totalChainReferrals: 32,
+//       createdAt: "2024-01-08T09:15:00Z",
+//       isActive: false,
+//       avatar: "MB"
+//     },
+//     {
+//       name: "Emily Davis",
+//       username: "emilyd789",
+//       email: "emily.davis@example.com",
+//       totalChainReferrals: 12,
+//       createdAt: "2024-03-05T16:45:00Z",
+//       isActive: true,
+//       avatar: "ED"
+//     },
+//     {
+//       name: "David Wilson",
+//       username: "davidw321",
+//       email: "david.wilson@example.com",
+//       totalChainReferrals: 8,
+//       createdAt: "2024-02-28T11:30:00Z",
+//       isActive: true,
+//       avatar: "DW"
+//     },
+//     {
+//       name: "Lisa Anderson",
+//       username: "lisaa654",
+//       email: "lisa.anderson@example.com",
+//       totalChainReferrals: 41,
+//       createdAt: "2024-01-22T13:20:00Z",
+//       isActive: false,
+//       avatar: "LA"
+//     },
+//     {
+//       name: "Robert Taylor",
+//       username: "robtaylor",
+//       email: "robert.taylor@example.com",
+//       totalChainReferrals: 15,
+//       createdAt: "2024-03-12T08:10:00Z",
+//       isActive: true,
+//       avatar: "RT"
+//     },
+//     {
+//       name: "Jennifer Lee",
+//       username: "jenlee987",
+//       email: "jennifer.lee@example.com",
+//       totalChainReferrals: 23,
+//       createdAt: "2024-02-14T12:05:00Z",
+//       isActive: true,
+//       avatar: "JL"
+//     }
+//   ];
+
+//   const userData = {
+//     data: {
+//       username: "JAIMAX156VODZ",
+//       name: "Demo User"
+//     }
+//   };
+
+//   const totalUsers = staticData.length;
+//   const totalChainUsers = 85;
+//   const activeUsers = staticData.filter(user => user.isActive).length;
+
+//   // Enhanced filtering and sorting
+//   const filteredData = staticData
+//     .filter(item => {
+//       const matchesSearch = item.name?.toLowerCase().includes(state.search.toLowerCase()) ||
+//         item.username?.toLowerCase().includes(state.search.toLowerCase()) ||
+//         item.email?.toLowerCase().includes(state.search.toLowerCase());
+      
+//       const matchesStatus = state.filterStatus === 'all' || 
+//         (state.filterStatus === 'active' && item.isActive) ||
+//         (state.filterStatus === 'inactive' && !item.isActive);
+      
+//       return matchesSearch && matchesStatus;
+//     })
+//     .sort((a, b) => {
+//       switch (state.sortBy) {
+//         case 'name':
+//           return a.name.localeCompare(b.name);
+//         case 'referrals':
+//           return b.totalChainReferrals - a.totalChainReferrals;
+//         case 'date':
+//           return new Date(b.createdAt) - new Date(a.createdAt);
+//         default:
+//           return 0;
+//       }
+//     });
+
+//   // Paginate filtered data
+//   const paginatedData = filteredData.slice(
+//     (state.currentPage - 1) * state.perPage,
+//     state.currentPage * state.perPage
+//   );
+
+//   // Handle copy referral code
+//   const handleCopyReferralCode = async () => {
+//     try {
+//       await navigator.clipboard.writeText(userData?.data?.username || "DEMO123");
+//       setCopiedCode(true);
+//       setTimeout(() => setCopiedCode(false), 2000);
+//     } catch (err) {
+//       console.error('Failed to copy referral code');
+//     }
+//   };
+
+//   // Enhanced search with debounce
+//   const handleSearch = (e) => {
+//     const value = e.target.value;
+//     setState(prev => ({ ...prev, search: value, currentPage: 1 }));
+//   };
+
+//   const infoBoxes = [
+//     {
+//       title: "Total Members",
+//       value: totalUsers,
+//       description: `${activeUsers} active members`,
+//       icon: <Users className="w-6 h-6" />,
+//       gradient: "from-teal-500 via-teal-600 to-teal-700",
+//       change: "+12%",
+//       trend: "up"
+//     },
+//     {
+//       title: "Foundation",
+//       value: totalChainUsers,
+//       description: "Foundation network",
+//       icon: <TrendingUp className="w-6 h-6" />,
+//       gradient: "from-teal-500 via-teal-600 to-teal-700",
+//       change: "+8%",
+//       trend: "up"
+//     },
+//     {
+//       title: "Referral Code",
+//       value: userData?.data?.username || "JAIAMX156VODZ",
+//       description: "Your unique code",
+//       icon: <Award className="w-6 h-6" />,
+//       gradient: "from-teal-500 via-teal-600 to-teal-700",
+//       isReferral: true
+//     }
+//   ];
+
+//   const totalPages = Math.ceil(filteredData.length / state.perPage);
+
+//   // Enhanced Pagination Component
+//   const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+//     if (totalPages <= 1) return null;
+
+//     const getVisiblePages = () => {
+//       const delta = 1;
+//       const range = [];
+      
+//       for (let i = Math.max(1, currentPage - delta); i <= Math.min(totalPages, currentPage + delta); i++) {
+//         range.push(i);
+//       }
+      
+//       return range;
+//     };
+
+//     return (
+//       <div className="flex items-center justify-between mt-6 px-2">
+//         <div className="text-sm text-gray-600">
+//           Showing {((currentPage - 1) * state.perPage) + 1} to {Math.min(currentPage * state.perPage, filteredData.length)} of {filteredData.length} results
+//         </div>
+        
+//         <div className="flex items-center space-x-2">
+//           <button
+//             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+//             disabled={currentPage === 1}
+//             className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+//           >
+//             Previous
+//           </button>
+          
+//           {getVisiblePages().map((page) => (
+//             <button
+//               key={page}
+//               onClick={() => onPageChange(page)}
+//               className={`px-3 py-2 text-sm rounded-lg transition-all duration-200 ${
+//                 page === currentPage
+//                   ? 'bg-blue-600 text-white shadow-lg'
+//                   : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+//               }`}
+//             >
+//               {page}
+//             </button>
+//           ))}
+          
+//           <button
+//             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+//             disabled={currentPage === totalPages}
+//             className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+//           >
+//             Next
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-[#1d8d84] p-3 sm:p-4 lg:p-2">
+//       {/* Header Section */}
+//       <div className="mb-2 sm:mb-8">
+        
+
+//         {/* Stats Cards */}
+//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+//           {infoBoxes.map((box, idx) => (
+//             <div
+//               key={idx}
+//               className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-white/80 backdrop-blur-sm p-4 sm:p-6 shadow-lg border border-white/50 hover:shadow-2xl hover:scale-105 transition-all duration-500 cursor-pointer"
+//             >
+//               {/* Background gradient */}
+//               <div className={`absolute inset-0 bg-gradient-to-br ${box.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-500`}></div>
+              
+//               {/* Floating elements */}
+//               <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-gradient-to-br from-white/20 to-transparent blur-xl group-hover:scale-110 transition-transform duration-500"></div>
+              
+//               <div className="relative z-10">
+//                 {box.isReferral ? (
+//                   <div className="space-y-4">
+//                     <div className="flex items-center justify-between">
+//                       <div className="flex items-center gap-3">
+//                         <div className={`p-3 rounded-xl bg-gradient-to-br ${box.gradient} text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+//                           {box.icon}
+//                         </div>
+//                         <div>
+//                           <h3 className="font-semibold text-gray-800 text-xs sm:text-base">
+//                             {box.title}
+//                           </h3>
+//                           <p className="text-xs sm:text-sm text-gray-600">
+//                             {box.description}
+//                           </p>
+//                         </div>
+//                       </div>
+//                       <button
+//                         onClick={handleCopyReferralCode}
+//                         className={`p-2 rounded-full bg-gradient-to-br ${box.gradient} text-white hover:shadow-lg transition-all duration-200 ${copiedCode ? 'scale-110' : ''}`}
+//                         title="Copy referral code"
+//                       >
+//                         <Copy className="w-4 h-4" />
+//                       </button>
+//                     </div>
+//                     <div className="bg-gradient-to-r from-teal-50 to-white rounded-xl p-3 sm:p-4 border border-teal-200">
+//                       <div className="flex items-center justify-between">
+//                         <code className="text-xs sm:text-xl font-bold text-teal-800 truncate">
+//                           {box.value}
+//                         </code>
+//                         <span className="text-xs text-teal-600 ml-2">
+//                           {copiedCode ? '✓ Copied!' : 'Click to copy'}
+//                         </span>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ) : (
+//                   <div className="space-y-4">
+//                     <div className="flex items-center justify-between">
+//                       <div className="flex items-center gap-3">
+//                         <div className={`p-3 rounded-xl bg-gradient-to-br ${box.gradient} text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+//                           {box.icon}
+//                         </div>
+//                         <div>
+//                           <h3 className="font-semibold text-gray-800 text-sm sm:text-base">
+//                             {box.title}
+//                           </h3>
+//                           <p className="text-xs sm:text-sm text-gray-600">
+//                             {box.description}
+//                           </p>
+//                         </div>
+//                       </div>
+//                       {box.change && (
+//                         <div className="text-right">
+//                           <span className="text-green-600 text-xs sm:text-sm font-bold">
+//                             {box.change}
+//                           </span>
+//                           <div className="text-xs text-gray-500">vs last month</div>
+//                         </div>
+//                       )}
+//                     </div>
+//                     <div className="text-2xl sm:text-3xl lg:text-2xl font-bold text-gray-800">
+//                       {typeof box.value === 'number' ? box.value.toLocaleString() : box.value}
+//                     </div>
+//                   </div>
+//                 )}
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Team Data Section */}
+//       <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-white/50 p-4 sm:p-6 lg:p-8">
+//         {/* Header with Search and Filters */}
+//         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+//           <div>
+//             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">
+//               Team Members
+//             </h2>
+//             <p className="text-gray-600 text-sm sm:text-base">
+//               {filteredData.length} of {totalUsers} members
+//             </p>
+//           </div>
+
+//           <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+//             {/* Search Bar */}
+//             <div className="relative flex-1 lg:w-80">
+//               <input
+//                 type="text"
+//                 placeholder="Search members..."
+//                 className="w-full bg-gray-50/80 backdrop-blur-sm border border-gray-200 text-gray-800 rounded-xl py-3 pl-12 pr-4 placeholder-gray-500 focus:outline-none focus:border-teal-500 focus:bg-white/90 transition-all duration-200"
+//                 onChange={handleSearch}
+//                 value={state.search}
+//               />
+//               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+//             </div>
+
+//             {/* Filter Button */}
+//             <button
+//               onClick={() => setShowFilters(!showFilters)}
+//               className="flex items-center gap-2 px-4 py-3 bg-teal-50 text-teal-700 rounded-xl hover:bg-teal-100 transition-colors duration-200 border border-teal-200"
+//             >
+//               <Filter className="w-4 h-4" />
+//               <span className="hidden sm:inline">Filters</span>
+//               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showFilters ? 'rotate-180' : ''}`} />
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Filters Panel */}
+//         {showFilters && (
+//           <div className="mb-6 p-4 bg-gray-50/80 rounded-xl border border-gray-200">
+//             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-700 mb-2">Sort by</label>
+//                 <select
+//                   value={state.sortBy}
+//                   onChange={(e) => setState(prev => ({ ...prev, sortBy: e.target.value }))}
+//                   className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-teal-500"
+//                 >
+//                   <option value="name">Name (A-Z)</option>
+//                   <option value="referrals">Referrals (High to Low)</option>
+//                   <option value="date">Join Date (Newest)</option>
+//                 </select>
+//               </div>
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+//                 <select
+//                   value={state.filterStatus}
+//                   onChange={(e) => setState(prev => ({ ...prev, filterStatus: e.target.value, currentPage: 1 }))}
+//                   className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-teal-500"
+//                 >
+//                   <option value="all">All Members</option>
+//                   <option value="active">Active Only</option>
+//                   <option value="inactive">Inactive Only</option>
+//                 </select>
+//               </div>
+//             </div>
+//           </div>
+//         )}
+
+//         {/* Mobile Cards */}
+//         <div className="grid gap-4 lg:hidden">
+//           {paginatedData.length === 0 ? (
+//             <div className="text-center py-12 sm:py-16">
+//               <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+//                 <Users className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400" />
+//               </div>
+//               <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">No members found</h3>
+//               <p className="text-gray-600 text-sm sm:text-base">Try adjusting your search or filters</p>
+//             </div>
+//           ) : (
+//             paginatedData.map((data, i) => (
+//               <div
+//                 key={i}
+//                 className="bg-gradient-to-r from-white to-teal-50/50 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-teal-100 hover:border-teal-200 hover:shadow-lg transition-all duration-300 group"
+//               >
+//                 <div className="flex items-start gap-4 mb-4">
+//                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-semibold text-sm sm:text-base group-hover:scale-110 transition-transform duration-300">
+//                     {data.avatar}
+//                   </div>
+//                   <div className="flex-1 min-w-0">
+//                     <h3 className="font-semibold text-gray-800 text-base sm:text-lg mb-1 truncate">
+//                       {data.name || "N/A"}
+//                     </h3>
+//                     {/* <p className="text-teal-600 text-sm truncate">
+//                       @{data.username || "N/A"}
+//                     </p> */}
+//                   </div>
+//                   <span
+//                     className={`px-3 py-1 rounded-full text-xs font-medium ${
+//                       data.isActive
+//                         ? "bg-green-100 text-green-700 border border-green-200"
+//                         : "bg-red-100 text-red-700 border border-red-200"
+//                     }`}
+//                   >
+//                     {data.isActive ? "Active" : "Inactive"}
+//                   </span>
+//                 </div>
+
+//                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+//                   <div className="flex items-center gap-2">
+//                     <Mail className="w-4 h-4 text-gray-400" />
+//                     <span className="text-gray-600 truncate">{data.email || "N/A"}</span>
+//                   </div>
+//                   <div className="flex items-center gap-2">
+//                     <Award className="w-4 h-4 text-gray-400" />
+//                     <span className="text-teal-700 font-medium">{data.totalChainReferrals || 0} referrals</span>
+//                   </div>
+//                   <div className="flex items-center gap-2 sm:col-span-2">
+//                     <Calendar className="w-4 h-4 text-gray-400" />
+//                     <span className="text-gray-600">
+//                       Joined {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : "N/A"}
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+//             ))
+//           )}
+//         </div>
+
+//         {/* Desktop Table */}
+//         <div className="hidden lg:block overflow-x-auto rounded-xl border border-gray-200">
+//           <table className="w-full text-sm">
+//             <thead>
+//               <tr className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
+//                 <th className="text-left py-4 px-6 font-semibold rounded-tl-xl">Member</th>
+//                 <th className="text-left py-4 px-6 font-semibold">Contact</th>
+//                 <th className="text-left py-4 px-6 font-semibold">Referrals</th>
+//                 <th className="text-left py-4 px-6 font-semibold">Join Date</th>
+//                 <th className="text-left py-4 px-6 font-semibold rounded-tr-xl">Status</th>
+//               </tr>
+//             </thead>
+//             <tbody className="bg-white">
+//               {paginatedData.length === 0 ? (
+//                 <tr>
+//                   <td colSpan="5" className="text-center py-16">
+//                     <div className="flex flex-col items-center">
+//                       <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+//                         <Users className="w-12 h-12 text-gray-400" />
+//                       </div>
+//                       <h3 className="text-xl font-semibold text-gray-800 mb-2">No members found</h3>
+//                       <p className="text-gray-600">Try adjusting your search or filters</p>
+//                     </div>
+//                   </td>
+//                 </tr>
+//               ) : (
+//                 paginatedData.map((data, i) => (
+//                   <tr
+//                     key={i}
+//                     className="border-b border-gray-100 hover:bg-teal-50/50 transition-colors duration-200 group"
+//                   >
+//                     <td className="py-4 px-6">
+//                       <div className="flex items-center gap-3">
+//                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-medium text-sm group-hover:scale-110 transition-transform duration-300">
+//                           {data.avatar}
+//                         </div>
+//                         <div>
+//                           <div className="font-medium text-gray-800">{data.name || "N/A"}</div>
+//                           {/* <div className="text-sm text-teal-600">@{data.username || "N/A"}</div> */}
+//                         </div>
+//                       </div>
+//                     </td>
+//                     <td className="py-4 px-6 text-gray-700">{data.email || "N/A"}</td>
+//                     <td className="py-4 px-6">
+//                       <span className=" text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+//                         {data.totalChainReferrals || 0}
+//                       </span>
+//                     </td>
+//                     <td className="py-4 px-6 text-gray-700">
+//                       {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : "N/A"}
+//                     </td>
+//                     <td className="py-4 px-6">
+//                       <span
+//                         className={`px-3 py-1 rounded-full text-xs font-medium ${
+//                           data.isActive
+//                             ? "bg-green-100 text-green-700 border border-green-200"
+//                             : "bg-red-100 text-red-700 border border-red-200"
+//                         }`}
+//                       >
+//                         {data.isActive ? "Active" : "Inactive"}
+//                       </span>
+//                     </td>
+//                   </tr>
+//                 ))
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
+
+//         {/* Pagination */}
+//         <Pagination
+//           currentPage={state.currentPage}
+//           totalPages={totalPages}
+//           onPageChange={(page) => setState(prev => ({ ...prev, currentPage: page }))}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default MyTotalTeam;
+
+
+
+import React, { useEffect, useState } from "react";
+import { Select, MenuItem } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Users, Search, Copy, TrendingUp, UserCheck, Calendar, Mail, Award, Filter, ChevronDown, Share2 } from 'lucide-react';
+// import members from "../../assets/members.svg";
+// import referral from "../../assets/referral.svg";
+import Pagination from "../../../pagination/pagination";
+// import DashboardLayout from "../../Layout/DashboardLayout";
+import { useUserDetailsQuery } from "./myTotatTeamApliSlice";
+// import search from "../../assets/search.svg";
+// import CopyToClipboardButton from "../../components/CopyToClipboard";
+import ReferralModal from "../../modals/referalModal";
+// import ....... from "../../components/.......";
+// import Loader from "../../components/Loader";
+const Loader = () => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
+  </div>
+);
 
 const MyTotalTeam = () => {
+  const [isTokenVerified, setIsTokenVerified] = useState(false);
+  const navigate = useNavigate();
   const [state, setState] = useState({
     currentPage: 1,
     perPage: 8,
@@ -2272,99 +2835,46 @@ const MyTotalTeam = () => {
     sortBy: 'name',
     filterStatus: 'all'
   });
-  const [copiedCode, setCopiedCode] = useState(false);
+  
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const [showReferralModal, setShowReferralModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Enhanced sample data
-  const staticData = [
-    {
-      name: "John Smith",
-      username: "johnsmith123",
-      email: "john.smith@example.com",
-      totalChainReferrals: 25,
-      createdAt: "2024-01-15T10:30:00Z",
-      isActive: true,
-      avatar: "JS"
-    },
-    {
-      name: "Sarah Johnson",
-      username: "sarahj456",
-      email: "sarah.johnson@example.com",
-      totalChainReferrals: 18,
-      createdAt: "2024-02-20T14:22:00Z",
-      isActive: true,
-      avatar: "SJ"
-    },
-    {
-      name: "Michael Brown",
-      username: "mikebrown",
-      email: "mike.brown@example.com",
-      totalChainReferrals: 32,
-      createdAt: "2024-01-08T09:15:00Z",
-      isActive: false,
-      avatar: "MB"
-    },
-    {
-      name: "Emily Davis",
-      username: "emilyd789",
-      email: "emily.davis@example.com",
-      totalChainReferrals: 12,
-      createdAt: "2024-03-05T16:45:00Z",
-      isActive: true,
-      avatar: "ED"
-    },
-    {
-      name: "David Wilson",
-      username: "davidw321",
-      email: "david.wilson@example.com",
-      totalChainReferrals: 8,
-      createdAt: "2024-02-28T11:30:00Z",
-      isActive: true,
-      avatar: "DW"
-    },
-    {
-      name: "Lisa Anderson",
-      username: "lisaa654",
-      email: "lisa.anderson@example.com",
-      totalChainReferrals: 41,
-      createdAt: "2024-01-22T13:20:00Z",
-      isActive: false,
-      avatar: "LA"
-    },
-    {
-      name: "Robert Taylor",
-      username: "robtaylor",
-      email: "robert.taylor@example.com",
-      totalChainReferrals: 15,
-      createdAt: "2024-03-12T08:10:00Z",
-      isActive: true,
-      avatar: "RT"
-    },
-    {
-      name: "Jennifer Lee",
-      username: "jenlee987",
-      email: "jennifer.lee@example.com",
-      totalChainReferrals: 23,
-      createdAt: "2024-02-14T12:05:00Z",
-      isActive: true,
-      avatar: "JL"
-    }
-  ];
+  const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
+  const referralContent = `
+  🚀 Join the Jaimax Coin Revolution! 🚀
+  
+  Hey there! 🌟
+  
+  I'm excited to introduce you to Jaimax Coin – the future of cryptocurrency! 💰✨ It's a fast, secure, and innovative digital currency that offers amazing opportunities for everyone. Whether you're new to crypto or a seasoned investor, Jaimax Coin is designed to bring you great value. 🌍🔗
+  
+  Don't miss out on this chance to be part of something BIG! 💥
+  
+  👉 ${REGISTER_REFERAL + userData?.data?.username}
+  
+  #JaimaxCoin #CryptoRevolution #JoinUs #FutureOfFinance`;
 
-  const userData = {
-    data: {
-      username: "JAIMAX156VODZ",
-      name: "Demo User"
-    }
-  };
+  const queryParams = `limit=${state?.perPage || ""}&page=${
+    state?.currentPage || ""
+  }&search=${state?.search || ""}`;
+  
+  const {
+    data: userDetails,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useUserDetailsQuery(queryParams);
 
-  const totalUsers = staticData.length;
-  const totalChainUsers = 85;
-  const activeUsers = staticData.filter(user => user.isActive).length;
+  const TableData = userDetails?.data?.withdrawRequests || [];
+  const totalUsers = userDetails?.data?.pagination?.total || 0;
+  const totalChainUsers = userDetails?.data?.pagination?.chainTotal || 0;
+  const activeUsers = TableData.filter(user => user.isActive).length;
 
   // Enhanced filtering and sorting
-  const filteredData = staticData
+  const filteredData = TableData
     .filter(item => {
       const matchesSearch = item.name?.toLowerCase().includes(state.search.toLowerCase()) ||
         item.username?.toLowerCase().includes(state.search.toLowerCase()) ||
@@ -2379,9 +2889,9 @@ const MyTotalTeam = () => {
     .sort((a, b) => {
       switch (state.sortBy) {
         case 'name':
-          return a.name.localeCompare(b.name);
+          return (a.name || '').localeCompare(b.name || '');
         case 'referrals':
-          return b.totalChainReferrals - a.totalChainReferrals;
+          return (b.totalChainReferrals || 0) - (a.totalChainReferrals || 0);
         case 'date':
           return new Date(b.createdAt) - new Date(a.createdAt);
         default:
@@ -2389,16 +2899,25 @@ const MyTotalTeam = () => {
       }
     });
 
-  // Paginate filtered data
-  const paginatedData = filteredData.slice(
-    (state.currentPage - 1) * state.perPage,
-    state.currentPage * state.perPage
-  );
+  // Handle PerChange
+  const handlePageChange = (e) => {
+    setLoading(true);
+    setState({ ...state, currentPage: e });
+  };
+
+  // Function for handling search with delay
+  let searchTimeout;
+  const handleSearch = (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      setState({ ...state, search: e.target.value, currentPage: 1 });
+    }, 1000);
+  };
 
   // Handle copy referral code
   const handleCopyReferralCode = async () => {
     try {
-      await navigator.clipboard.writeText(userData?.data?.username || "DEMO123");
+      await navigator.clipboard.writeText(userData?.data?.username || "");
       setCopiedCode(true);
       setTimeout(() => setCopiedCode(false), 2000);
     } catch (err) {
@@ -2406,15 +2925,49 @@ const MyTotalTeam = () => {
     }
   };
 
-  // Enhanced search with debounce
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setState(prev => ({ ...prev, search: value, currentPage: 1 }));
-  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const verifyToken = async () => {
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+      setIsTokenVerified(true);
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (isTokenVerified) {
+      const debounce = setTimeout(() => {
+        if (error?.data?.status_code === 400) {
+          localStorage.clear();
+          navigate("/login");
+          toast.error(error?.data?.message, {
+            position: "top-center",
+          });
+        }
+      }, 2000);
+
+      return () => clearTimeout(debounce);
+    }
+  }, [isTokenVerified, error, navigate]);
+
+  useEffect(() => {
+    refetch();
+    return () => {
+      clearTimeout(searchTimeout);
+    };
+  }, []);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [userDetails?.data?.withdrawRequests]);
 
   const infoBoxes = [
     {
-      title: "Total Members",
+      title: "Total Active Members",
       value: totalUsers,
       description: `${activeUsers} active members`,
       icon: <Users className="w-6 h-6" />,
@@ -2433,7 +2986,7 @@ const MyTotalTeam = () => {
     },
     {
       title: "Referral Code",
-      value: userData?.data?.username || "JAIAMX156VODZ",
+      value: userData?.data?.username || "",
       description: "Your unique code",
       icon: <Award className="w-6 h-6" />,
       gradient: "from-teal-500 via-teal-600 to-teal-700",
@@ -2441,100 +2994,47 @@ const MyTotalTeam = () => {
     }
   ];
 
-  const totalPages = Math.ceil(filteredData.length / state.perPage);
+  const totalPages = Math.ceil(totalUsers / state.perPage);
 
-  // Enhanced Pagination Component
-  const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    if (totalPages <= 1) return null;
-
-    const getVisiblePages = () => {
-      const delta = 1;
-      const range = [];
-      
-      for (let i = Math.max(1, currentPage - delta); i <= Math.min(totalPages, currentPage + delta); i++) {
-        range.push(i);
-      }
-      
-      return range;
-    };
-
-    return (
-      <div className="flex items-center justify-between mt-6 px-2">
-        <div className="text-sm text-gray-600">
-          Showing {((currentPage - 1) * state.perPage) + 1} to {Math.min(currentPage * state.perPage, filteredData.length)} of {filteredData.length} results
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-            className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-          >
-            Previous
-          </button>
-          
-          {getVisiblePages().map((page) => (
-            <button
-              key={page}
-              onClick={() => onPageChange(page)}
-              className={`px-3 py-2 text-sm rounded-lg transition-all duration-200 ${
-                page === currentPage
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-          
-          <button
-            onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-            disabled={currentPage === totalPages}
-            className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-          >
-            Next
-          </button>
-        </div>
-      </div>
-    );
+  // Generate avatar initials
+  const getAvatarInitials = (name) => {
+    if (!name) return "NA";
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
 
   return (
-    <div className="min-h-screen bg-[#1d8d84] p-3 sm:p-4 lg:p-2">
-      {/* Header Section */}
-      <div className="mb-2 sm:mb-8">
-        
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {infoBoxes.map((box, idx) => (
-            <div
-              key={idx}
-              className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-white/80 backdrop-blur-sm p-4 sm:p-6 shadow-lg border border-white/50 hover:shadow-2xl hover:scale-105 transition-all duration-500 cursor-pointer"
-            >
-              {/* Background gradient */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${box.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-500`}></div>
-              
-              {/* Floating elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-gradient-to-br from-white/20 to-transparent blur-xl group-hover:scale-110 transition-transform duration-500"></div>
-              
-              <div className="relative z-10">
-                {box.isReferral ? (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-3 rounded-xl bg-gradient-to-br ${box.gradient} text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
-                          {box.icon}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-800 text-xs sm:text-base">
-                            {box.title}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-gray-600">
-                            {box.description}
-                          </p>
-                        </div>
+    <div className="min-h-screen bg-[#1d8d84] p-4">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {infoBoxes.map((box, idx) => (
+          <div
+            key={idx}
+            className="group relative overflow-hidden rounded-3xl bg-white/80 backdrop-blur-sm p-6 shadow-lg border border-white/50 hover:shadow-2xl hover:scale-105 transition-all duration-500 cursor-pointer"
+          >
+            {/* Background gradient */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${box.gradient} opacity-5 group-hover:opacity-10 transition-opacity duration-500`}></div>
+            
+            {/* Floating elements */}
+            <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-gradient-to-br from-white/20 to-transparent blur-xl group-hover:scale-110 transition-transform duration-500"></div>
+            
+            <div className="relative z-10">
+              {box.isReferral ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-3 rounded-xl bg-gradient-to-br ${box.gradient} text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+                        {box.icon}
                       </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 text-base">
+                          {box.title}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {box.description}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
                       <button
                         onClick={handleCopyReferralCode}
                         className={`p-2 rounded-full bg-gradient-to-br ${box.gradient} text-white hover:shadow-lg transition-all duration-200 ${copiedCode ? 'scale-110' : ''}`}
@@ -2542,64 +3042,71 @@ const MyTotalTeam = () => {
                       >
                         <Copy className="w-4 h-4" />
                       </button>
-                    </div>
-                    <div className="bg-gradient-to-r from-teal-50 to-white rounded-xl p-3 sm:p-4 border border-teal-200">
-                      <div className="flex items-center justify-between">
-                        <code className="text-xs sm:text-xl font-bold text-teal-800 truncate">
-                          {box.value}
-                        </code>
-                        <span className="text-xs text-teal-600 ml-2">
-                          {copiedCode ? '✓ Copied!' : 'Click to copy'}
-                        </span>
-                      </div>
+                      <button
+                        onClick={() => setShowReferralModal(true)}
+                        className={`p-2 rounded-full bg-gradient-to-br ${box.gradient} text-white hover:shadow-lg transition-all duration-200`}
+                        title="Share referral"
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-4">
+                  <div className="bg-gradient-to-r from-teal-50 to-white rounded-xl p-4 border border-teal-200">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-3 rounded-xl bg-gradient-to-br ${box.gradient} text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
-                          {box.icon}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-800 text-sm sm:text-base">
-                            {box.title}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-gray-600">
-                            {box.description}
-                          </p>
-                        </div>
-                      </div>
-                      {box.change && (
-                        <div className="text-right">
-                          <span className="text-green-600 text-xs sm:text-sm font-bold">
-                            {box.change}
-                          </span>
-                          <div className="text-xs text-gray-500">vs last month</div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-2xl sm:text-3xl lg:text-2xl font-bold text-gray-800">
-                      {typeof box.value === 'number' ? box.value.toLocaleString() : box.value}
+                      <code className="text-xl font-bold text-teal-800 truncate">
+                        {box.value}
+                      </code>
+                      <span className="text-xs text-teal-600 ml-2">
+                        {copiedCode ? '✓ Copied!' : 'Click to copy'}
+                      </span>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-3 rounded-xl bg-gradient-to-br ${box.gradient} text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+                        {box.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 text-base">
+                          {box.title}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {box.description}
+                        </p>
+                      </div>
+                    </div>
+                    {box.change && (
+                      <div className="text-right">
+                        <span className="text-green-600 text-sm font-bold">
+                          {box.change}
+                        </span>
+                        <div className="text-xs text-gray-500">vs last month</div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-3xl font-bold text-gray-800">
+                    {typeof box.value === 'number' ? box.value.toLocaleString() : box.value}
+                  </div>
+                </div>
+              )}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       {/* Team Data Section */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl border border-white/50 p-4 sm:p-6 lg:p-8">
+      <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-8">
         {/* Header with Search and Filters */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
           <div>
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">
-              Team Members
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              Total Team Details
             </h2>
-            <p className="text-gray-600 text-sm sm:text-base">
-              {filteredData.length} of {totalUsers} members
+            <p className="text-gray-600">
+              {totalUsers} total members
             </p>
           </div>
 
@@ -2611,7 +3118,6 @@ const MyTotalTeam = () => {
                 placeholder="Search members..."
                 className="w-full bg-gray-50/80 backdrop-blur-sm border border-gray-200 text-gray-800 rounded-xl py-3 pl-12 pr-4 placeholder-gray-500 focus:outline-none focus:border-teal-500 focus:bg-white/90 transition-all duration-200"
                 onChange={handleSearch}
-                value={state.search}
               />
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             </div>
@@ -2631,7 +3137,7 @@ const MyTotalTeam = () => {
         {/* Filters Panel */}
         {showFilters && (
           <div className="mb-6 p-4 bg-gray-50/80 rounded-xl border border-gray-200">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Sort by</label>
                 <select
@@ -2656,37 +3162,73 @@ const MyTotalTeam = () => {
                   <option value="inactive">Inactive Only</option>
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Per Page</label>
+                <Select
+                  value={state.perPage}
+                  onChange={(e) => {
+                    setState({
+                      ...state,
+                      perPage: e.target.value,
+                      currentPage: 1,
+                    });
+                  }}
+                  className="w-full"
+                  size="small"
+                >
+                  <MenuItem value={8}>8</MenuItem>
+                  <MenuItem value={10}>10</MenuItem>
+                  <MenuItem value={30}>30</MenuItem>
+                  <MenuItem value={50}>50</MenuItem>
+                </Select>
+              </div>
             </div>
           </div>
         )}
 
         {/* Mobile Cards */}
         <div className="grid gap-4 lg:hidden">
-          {paginatedData.length === 0 ? (
-            <div className="text-center py-12 sm:py-16">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-                <Users className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400" />
+          {isLoading ? (
+            [...Array(5)].map((_, i) => (
+              <div key={i} className="bg-white rounded-xl p-4 border border-gray-200 animate-pulse">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+                  <div className="flex-1">
+                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-3 bg-gray-200 rounded"></div>
+                  <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                </div>
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">No members found</h3>
-              <p className="text-gray-600 text-sm sm:text-base">Try adjusting your search or filters</p>
+            ))
+          ) : TableData.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                <Users className="w-12 h-12 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">No members found</h3>
+              <p className="text-gray-600">No team members to display</p>
             </div>
           ) : (
-            paginatedData.map((data, i) => (
+            TableData.map((data, i) => (
               <div
                 key={i}
-                className="bg-gradient-to-r from-white to-teal-50/50 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-teal-100 hover:border-teal-200 hover:shadow-lg transition-all duration-300 group"
+                className="bg-gradient-to-r from-white to-teal-50/50 rounded-2xl p-5 border border-teal-100 hover:border-teal-200 hover:shadow-lg transition-all duration-300 group"
               >
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-semibold text-sm sm:text-base group-hover:scale-110 transition-transform duration-300">
-                    {data.avatar}
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-semibold group-hover:scale-110 transition-transform duration-300">
+                    {getAvatarInitials(data.name)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-800 text-base sm:text-lg mb-1 truncate">
+                    <h3 className="font-semibold text-gray-800 text-lg mb-1 truncate">
                       {data.name || "N/A"}
                     </h3>
-                    {/* <p className="text-teal-600 text-sm truncate">
+                    <p className="text-teal-600 text-sm truncate">
                       @{data.username || "N/A"}
-                    </p> */}
+                    </p>
                   </div>
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -2711,7 +3253,7 @@ const MyTotalTeam = () => {
                   <div className="flex items-center gap-2 sm:col-span-2">
                     <Calendar className="w-4 h-4 text-gray-400" />
                     <span className="text-gray-600">
-                      Joined {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : "N/A"}
+                      Joined {data.createdAt ? data.createdAt.slice(0, 10).split("-").reverse().join("-") : "N/A"}
                     </span>
                   </div>
                 </div>
@@ -2725,51 +3267,62 @@ const MyTotalTeam = () => {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
-                <th className="text-left py-4 px-6 font-semibold rounded-tl-xl">Member</th>
-                <th className="text-left py-4 px-6 font-semibold">Contact</th>
-                <th className="text-left py-4 px-6 font-semibold">Referrals</th>
+                <th className="text-left py-4 px-6 font-semibold rounded-tl-xl">S.No</th>
+                <th className="text-left py-4 px-6 font-semibold">Name</th>
+                <th className="text-left py-4 px-6 font-semibold">Email</th>
+                <th className="text-left py-4 px-6 font-semibold">User Name</th>
+                <th className="text-left py-4 px-6 font-semibold">No of Referral</th>
                 <th className="text-left py-4 px-6 font-semibold">Join Date</th>
                 <th className="text-left py-4 px-6 font-semibold rounded-tr-xl">Status</th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {paginatedData.length === 0 ? (
+              {isLoading ? (
+                [...Array(state.perPage)].map((_, i) => (
+                  <tr key={i} className="border-b border-gray-100">
+                    <td className="py-4 px-6">.......</td>
+                    <td className="py-4 px-6">....... </td>
+                    <td className="py-4 px-6">....... </td>
+                    <td className="py-4 px-6">....... </td>
+                    <td className="py-4 px-6">....... </td>
+                    <td className="py-4 px-6">....... </td>
+                    <td className="py-4 px-6">....... </td>
+                  </tr>
+                ))
+              ) : TableData.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="text-center py-16">
+                  <td colSpan="7" className="text-center py-16">
                     <div className="flex flex-col items-center">
                       <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
                         <Users className="w-12 h-12 text-gray-400" />
                       </div>
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">No members found</h3>
-                      <p className="text-gray-600">Try adjusting your search or filters</p>
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">No data found</h3>
+                      <p className="text-gray-600">No team members to display</p>
                     </div>
                   </td>
                 </tr>
               ) : (
-                paginatedData.map((data, i) => (
+                TableData.map((data, i) => (
                   <tr
                     key={i}
                     className="border-b border-gray-100 hover:bg-teal-50/50 transition-colors duration-200 group"
                   >
+                    <td className="py-4 px-6 text-gray-700">
+                      {state?.currentPage * state?.perPage - (state?.perPage - 1) + i}
+                    </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-medium text-sm group-hover:scale-110 transition-transform duration-300">
-                          {data.avatar}
+                          {getAvatarInitials(data.name)}
                         </div>
-                        <div>
-                          <div className="font-medium text-gray-800">{data.name || "N/A"}</div>
-                          {/* <div className="text-sm text-teal-600">@{data.username || "N/A"}</div> */}
-                        </div>
+                        <div className="font-medium text-gray-800">{data.name || "N/A"}</div>
                       </div>
                     </td>
                     <td className="py-4 px-6 text-gray-700">{data.email || "N/A"}</td>
-                    <td className="py-4 px-6">
-                      <span className=" text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
-                        {data.totalChainReferrals || 0}
-                      </span>
-                    </td>
+                    <td className="py-4 px-6 text-gray-700">{data.username || "N/A"}</td>
+                    <td className="py-4 px-6 text-gray-700">{data.totalChainReferrals || 0}</td>
                     <td className="py-4 px-6 text-gray-700">
-                      {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : "N/A"}
+                      {data.createdAt ? data.createdAt.slice(0, 10).split("-").reverse().join("-") : "N/A"}
                     </td>
                     <td className="py-4 px-6">
                       <span
@@ -2790,12 +3343,24 @@ const MyTotalTeam = () => {
         </div>
 
         {/* Pagination */}
-        <Pagination
-          currentPage={state.currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setState(prev => ({ ...prev, currentPage: page }))}
-        />
+        <div className="flex justify-end mt-6">
+          <Pagination
+            currentPage={state?.currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
+
+      {/* Modals and Loaders */}
+      {showReferralModal && (
+        <ReferralModal
+          show={showReferralModal}
+          onHide={() => setShowReferralModal(false)}
+          userData={userData}
+        />
+      )}
+      {(isLoading || loading) && <Loader />}
     </div>
   );
 };
