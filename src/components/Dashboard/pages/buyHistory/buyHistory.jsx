@@ -1012,86 +1012,93 @@ const BuyHistory = () => {
             </div>
           ) : (
             TableData.map((data, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
-                {/* Header with S.No and Status */}
-                <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-100">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                    <Hash className="w-4 h-4 text-emerald-600" />
-                    <span>#{(state?.currentPage - 1) * parseInt(state?.perPage) + i + 1}</span>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusClasses(data?.status)}`}>
-                    {data?.status}
-                  </span>
-                </div>
+<div key={i} className="bg-white rounded-xl p-4 md:p-5 border border-gray-200 hover:shadow-xl hover:border-blue-300 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group">
+  {/* Subtle background gradient */}
+  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-emerald-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  
+  {/* Content */}
+  <div className="relative z-10">
+    {/* Header - Compact */}
+    <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
+      <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+        
+        <span>{(state?.currentPage - 1) * parseInt(state?.perPage) + i + 1}</span>
+      </div>
+      <span className={`px-3 py-1 rounded-lg text-xs font-semibold ${getStatusClasses(data?.status)}`}>
+        {data?.status}
+      </span>
+    </div>
 
-                <div className="space-y-3">
-                  {/* Transaction ID */}
-                  <div className="flex flex-col">
-                    <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1 flex items-center gap-1">
-                      <CreditCard className="w-3.5 h-3.5 text-emerald-600" /> Transaction ID
-                    </span>
-                    <p className="text-gray-800 font-mono text-sm break-all leading-snug">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
-                  </div>
+    {/* Transaction ID - Inline */}
+    <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+      <CreditCard className="w-4 h-4 text-blue-500 flex-shrink-0" />
+      <div className="min-w-0 flex-1">
+        <span className="text-xs text-gray-500 font-medium block">Transaction ID</span>
+        <p className="text-sm text-gray-800 font-mono truncate">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
+      </div>
+    </div>
 
-                  {/* Payment Mode & Currency */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">Payment Mode</span>
-                      <p className="text-gray-800 text-sm capitalize font-semibold">{data?.modeOfPayment || "N/A"}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1 flex items-center gap-1">
-                        <Globe className="w-3.5 h-3.5 text-emerald-600" /> Currency
-                      </span>
-                      <p className="text-gray-800 text-sm font-bold">{data?.currency || "N/A"}</p>
-                    </div>
-                  </div>
+    {/* Info Grid - Compact */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+      <div className="text-center p-2">
+        <div className="w-6 h-6 bg-purple-500 rounded-md mx-auto mb-1 flex items-center justify-center">
+          <div className="w-2 h-2 bg-white rounded-full"></div>
+        </div>
+        <span className="text-xs text-gray-500 block">Payment</span>
+        <p className="text-sm font-semibold text-gray-800 capitalize truncate">{data?.modeOfPayment || "N/A"}</p>
+      </div>
+      
+      <div className="text-center p-2">
+        <div className="w-6 h-6 bg-orange-500 rounded-md mx-auto mb-1 flex items-center justify-center">
+          <Globe className="w-3 h-3 text-white" />
+        </div>
+        <span className="text-xs text-gray-500 block">Currency</span>
+        <p className="text-sm font-semibold text-gray-800">{data?.currency || "N/A"}</p>
+      </div>
 
-                  {/* JaiMax Coin & Round */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1 flex items-center gap-1">
-                        <TrendingUp className="w-3.5 h-3.5 text-emerald-600" /> JaiMax Coin
-                      </span>
-                      <p className="text-gray-800 text-sm font-bold">{data?.jaimax?.toFixed(3) || "N/A"}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">Round</span>
-                      <p className="text-gray-800 text-sm font-semibold">{data?.round || "N/A"}</p>
-                    </div>
-                  </div>
+      <div className="text-center p-2">
+        <div className="w-6 h-6 bg-emerald-500 rounded-md mx-auto mb-1 flex items-center justify-center">
+          <TrendingUp className="w-3 h-3 text-white" />
+        </div>
+        <span className="text-xs text-gray-500 block">JaiMax</span>
+        <p className="text-sm font-semibold text-emerald-600">{data?.jaimax?.toFixed(3) || "N/A"}</p>
+      </div>
 
-                  {/* Prices */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">INR Price</span>
-                      <p className="text-gray-800 text-sm font-semibold">{data?.atPriceInr || "N/A"}</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">USD Price</span>
-                      <p className="text-gray-800 text-sm font-semibold">{data?.atPriceUsdt || "N/A"}</p>
-                    </div>
-                  </div>
+      <div className="text-center p-2">
+        <span className="text-xs text-gray-500 block">Round</span>
+        <p className="text-sm font-semibold text-gray-800">{data?.round || "N/A"}</p>
+      </div>
 
-                  {/* Amount */}
-                  <div className="flex flex-col">
-                    <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1 flex items-center gap-1">
-                      <DollarSign className="w-3.5 h-3.5 text-emerald-600" /> Amount
-                    </span>
-                    <p className="text-emerald-700 text-lg font-extrabold">
-                      {data.currency === "INR" ? `₹${data.amount?.toFixed(2) || "0.00"}` : `$${data.amount?.toFixed(2) || "0.00"}`}
-                    </p>
-                  </div>
+      <div className="text-center p-2">
+        <span className="text-xs text-gray-500 block">INR Price</span>
+        <p className="text-sm font-semibold text-gray-800">{data?.atPriceInr || "N/A"}</p>
+      </div>
 
-                  {/* Purchase Date */}
-                  <div className="flex flex-col">
-                    <span className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1 flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-emerald-600" /> Purchase Date
-                    </span>
-                    <p className="text-gray-800 text-sm leading-snug">{data?.createdAt ? formatDateWithAmPm(data?.createdAt) : "N/A"}</p>
-                  </div>
-                </div>
-              </div>
+      <div className="text-center p-2">
+        <span className="text-xs text-gray-500 block">USD Price</span>
+        <p className="text-sm font-semibold text-gray-800">{data?.atPriceUsdt || "N/A"}</p>
+      </div>
+    </div>
+
+    {/* Amount - Highlighted but compact */}
+    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg mb-3">
+      <div className="flex items-center gap-2">
+        {/* <DollarSign className="w-5 h-5 text-white" /> */}
+        <span className="text-sm font-semibold text-white">Amount</span>
+      </div>
+      <p className="text-xl font-bold text-white">
+        {data.currency === "INR" ? `₹${data.amount?.toFixed(2) || "0.00"}` : `$${data.amount?.toFixed(2) || "0.00"}`}
+      </p>
+    </div>
+
+    {/* Date - Inline */}
+    <div className="flex items-center gap-2 text-sm text-gray-600">
+      <Calendar className="w-4 h-4 text-gray-400" />
+      <span className="text-xs text-gray-500">Purchase Date:</span>
+      <span className="font-medium">{data?.createdAt ? formatDateWithAmPm(data?.createdAt) : "N/A"}</span>
+    </div>
+  </div>
+</div>
             ))
           )}
         </div>

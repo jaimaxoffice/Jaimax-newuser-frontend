@@ -1127,114 +1127,526 @@
 
 
 
-import React from "react";
-import { Gift, Award, ArrowRightCircle, Trophy, Sparkles, Star } from "lucide-react";
+// import React from "react";
+// import { Gift, Award, ArrowRightCircle, Trophy, Sparkles, Star } from "lucide-react";
 
-const levels = Array.from({ length: 10 }, (_, i) => ({
-  level: i + 1,
-  progress: i < 3 ? "100%" : "0%",
-  status: i < 3 ? "completed" : "locked",
-}));
+// const levels = Array.from({ length: 10 }, (_, i) => ({
+//   level: i + 1,
+//   progress: i < 3 ? "100%" : "0%",
+//   status: i < 3 ? "completed" : "locked",
+// }));
 
-const VictoryScreen = () => {
+// const VictoryScreen = () => {
+//   const allLevelsCompleted = levels.every((lvl) => lvl.status === "completed");
+//   const completedLevelsCount = levels.filter((lvl) => lvl.status === "completed").length;
+//   const nextLevelToUnlock = levels.find((lvl) => lvl.status === "locked");
+
+//   const sortedLevels = [...levels].sort((a, b) => {
+//     if (a.status === "completed" && b.status !== "completed") {
+//       return 1;
+//     }
+//     if (a.status !== "completed" && b.status === "completed") {
+//       return -1;
+//     }
+//     return a.level - b.level;
+//   });
+
+//   return (
+//     <div className="min-h-screen bg-[#1d8d84] relative overflow-hidden">
+//       {/* Main Content */}
+//       <div className="relative z-10 container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 max-w-7xl">
+//         {/* Victory Header */}
+//         <div className="text-center mb-6 sm:mb-8">
+//           <div className="relative inline-block mb-3 sm:mb-4">
+//             <div className="relative w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center shadow-2xl shadow-teal-500/50">
+//               <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+//             </div>
+//           </div>
+          
+//           <div className="relative">
+//             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent mb-2 drop-shadow-2xl">
+//               VICTORY!
+//             </h1>
+//             <div className="absolute -inset-2 bg-gradient-to-r from-transparent via-teal-400/30 to-transparent blur-sm"></div>
+//           </div>
+          
+//           <p className="text-base sm:text-lg text-teal-100 font-light tracking-wide px-4">
+//             Mission Accomplished 
+//           </p>
+//         </div>
+
+//         {/* Stats Cards with 3D Effect */}
+//         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+//           {/* Levels Card */}
+//           <div className="group relative">
+//             <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
+//             <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+//               <div className="flex items-center justify-between mb-3 sm:mb-4">
+//                 <div className="flex items-center space-x-2 sm:space-x-3">
+//                   <div className="relative">
+//                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl flex items-center justify-center shadow-lg">
+//                       <Award className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+//                     </div>
+//                     <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-teal-400 rounded-full animate-ping"></div>
+//                   </div>
+//                   <span className="text-teal-700 font-semibold uppercase tracking-wider text-xs sm:text-sm">Levels Achieved</span>
+//                 </div>
+//               </div>
+              
+//               <div className="text-2xl sm:text-3xl font-black text-teal-800 mb-2 sm:mb-3">
+//                 {completedLevelsCount} <span className="text-teal-400 text-xl sm:text-2xl">/ {levels.length}</span>
+//               </div>
+              
+//               <div className="relative w-full h-2 sm:h-3 bg-teal-100 rounded-full overflow-hidden shadow-inner">
+//                 <div 
+//                   className="absolute top-0 left-0 h-full bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 rounded-full shadow-sm transition-all duration-1000 ease-out"
+//                   style={{ width: `${(completedLevelsCount / levels.length) * 100}%` }}
+//                 >
+//                   <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
+//                 </div>
+//               </div>
+              
+//               <p className="text-teal-600 text-xs sm:text-sm mt-2 font-medium">Excellent progress!</p>
+//             </div>
+//           </div>
+
+//           {/* Time Card */}
+//           <div className="group relative">
+//             <div className="absolute -inset-1 bg-gradient-to-r from-teal-600 to-teal-400 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
+//             <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+//               <div className="flex items-center justify-between mb-3 sm:mb-4">
+//                 <div className="flex items-center space-x-2 sm:space-x-3">
+//                   <div className="relative">
+//                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl flex items-center justify-center shadow-lg">
+//                       <span className="text-white text-base sm:text-lg">⏱</span>
+//                     </div>
+//                     <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full animate-ping"></div>
+//                   </div>
+//                   <span className="text-teal-700 font-semibold uppercase tracking-wider text-xs sm:text-sm">Time Left</span>
+//                 </div>
+//               </div>
+              
+//               <div className="text-2xl sm:text-3xl font-black text-teal-800 mb-2 sm:mb-3">4hr</div>
+              
+//               <div className="relative w-full h-2 sm:h-3 bg-teal-100 rounded-full overflow-hidden shadow-inner">
+//                 <div className="absolute top-0 left-0 h-full w-3/4 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 rounded-full shadow-sm">
+//                   <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
+//                 </div>
+//               </div>
+              
+//               <p className="text-teal-600 text-xs sm:text-sm mt-2 font-medium">Stay focused!</p>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Status Section */}
+//         {allLevelsCompleted ? (
+//           <div className="relative mb-6 sm:mb-8">
+//             <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400 via-teal-400 to-yellow-400 rounded-3xl blur opacity-30 animate-pulse"></div>
+//             <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/30 text-center shadow-2xl">
+//               <div className="relative mb-4 sm:mb-6">
+//                 <Gift className="w-12 h-12 sm:w-16 sm:h-16 text-teal-600 mx-auto animate-bounce" />
+//                 <div className="absolute inset-0 bg-teal-400 blur-xl opacity-30 animate-pulse"></div>
+//               </div>
+              
+//               <h2 className="text-xl sm:text-2xl font-black text-teal-800 mb-2 sm:mb-3">
+//                 🎉 Perfect Victory! 🎉
+//               </h2>
+//               <p className="text-base sm:text-lg text-teal-700 mb-4 sm:mb-6 px-2">
+//                 You've achieved <span className="font-black text-teal-800">complete mastery</span> of all challenges!
+//               </p>
+              
+//               <div className="inline-flex items-center space-x-2 sm:space-x-3 bg-gradient-to-r from-teal-50 to-white border-2 border-teal-300 rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg">
+//                 <Star className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600 animate-spin" />
+//                 <span className="text-teal-700 font-bold tracking-wide text-sm sm:text-base">LEGENDARY STATUS</span>
+//                 <Star className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600 animate-spin" />
+//               </div>
+//             </div>
+//           </div>
+//         ) : (
+//           <div className="relative mb-6 sm:mb-8">
+//             <div className="absolute -inset-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-3xl blur opacity-20"></div>
+//             <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/30 text-center shadow-2xl">
+//               <h2 className="text-xl sm:text-2xl font-black text-teal-800 mb-2 sm:mb-3">
+//                 The Adventure Continues!
+//               </h2>
+//               <p className="text-base sm:text-lg text-teal-700 mb-4 sm:mb-6 px-2">
+//                 Your next <span className="font-black text-teal-800">epic challenge</span> awaits!
+//               </p>
+              
+//               {nextLevelToUnlock && (
+//                 <div className="inline-flex items-center space-x-3 sm:space-x-4 bg-gradient-to-r from-teal-50 to-white border-2 border-teal-300 rounded-xl sm:rounded-2xl px-4 sm:px-8 py-3 sm:py-4 hover:from-teal-100 hover:to-teal-50 hover:scale-105 transition-all duration-300 cursor-pointer group shadow-lg">
+//                   <div className="text-left">
+//                     <p className="text-teal-600 text-xs sm:text-sm font-semibold uppercase tracking-wider">Next Challenge</p>
+//                     <h3 className="text-lg sm:text-xl font-black text-teal-800">Level {nextLevelToUnlock.level}</h3>
+//                   </div>
+//                   <ArrowRightCircle className="w-6 h-6 sm:w-7 sm:h-7 text-teal-600 group-hover:translate-x-2 transition-transform duration-300" />
+//                 </div>
+//               )}
+//             </div>
+//           </div>
+//         )}
+
+//         {/* Enhanced Leaderboard */}
+//         <div>
+//           <div className="text-center mb-4 sm:mb-6">
+//             <h3 className="text-xl sm:text-2xl font-black text-white mb-2 flex items-center justify-center space-x-3">
+//               <span className="bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent">
+//                 Global Leaderboard
+//               </span>
+//             </h3>
+//             <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-transparent via-teal-400 to-transparent mx-auto"></div>
+//           </div>
+          
+//           <div className="relative">
+//             <div className="absolute -inset-2 bg-gradient-to-r from-teal-400/20 to-teal-600/20 rounded-3xl blur"></div>
+//             <div className="relative bg-gradient-to-br from-white/90 to-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/30 shadow-2xl">
+//               <div className="space-y-2 sm:space-y-3">
+//                 {sortedLevels.map((lvl, index) => (
+//                   <div
+//                     key={lvl.level}
+//                     className={`group relative overflow-hidden rounded-xl sm:rounded-2xl transition-all duration-500 hover:scale-102
+//                       ${lvl.status === "locked"
+//                         ? "bg-gradient-to-r from-gray-50 to-gray-100 opacity-50"
+//                         : "bg-gradient-to-r from-teal-50 to-white hover:from-teal-100 hover:to-teal-50 shadow-md hover:shadow-lg"
+//                       }`}
+//                   >
+//                     <div className="flex items-center justify-between p-3 sm:p-4">
+//                       <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+//                         <div className="relative flex-shrink-0">
+//                           <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center font-black text-white shadow-lg transform transition-transform group-hover:scale-110 text-sm sm:text-base
+//                             ${index === 0 ? "bg-gradient-to-br from-yellow-400 to-orange-500" :
+//                               index === 1 ? "bg-gradient-to-br from-gray-300 to-gray-500" :
+//                               index === 2 ? "bg-gradient-to-br from-amber-400 to-yellow-600" :
+//                               "bg-gradient-to-br from-teal-500 to-teal-700"}`}
+//                           >
+//                             {lvl.level}
+//                           </div>
+                          
+//                           {index < 3 && lvl.status === "completed" && (
+//                             <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center animate-pulse">
+//                               <Star className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
+//                             </div>
+//                           )}
+//                         </div>
+                        
+//                         <div className="flex-1 min-w-0">
+//                           <h4 className="font-black text-teal-800 text-base sm:text-lg truncate">Level {lvl.level}</h4>
+//                           <div className="flex items-center space-x-1 sm:space-x-2 flex-wrap">
+//                             <span className="text-xs sm:text-sm text-teal-600 font-medium">Progress:</span>
+//                             <span className="font-bold text-teal-700 text-xs sm:text-sm">{lvl.progress}</span>
+//                             <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm
+//                               ${lvl.status === "completed" 
+//                                 ? "bg-gradient-to-r from-teal-200 to-teal-300 text-teal-800 border border-teal-400" 
+//                                 : "bg-gradient-to-r from-gray-200 to-gray-300 text-gray-600 border border-gray-400"}`}
+//                             >
+//                               {lvl.status}
+//                             </span>
+//                           </div>
+//                         </div>
+//                       </div>
+                      
+//                       {lvl.status === "completed" && (
+//                         <div className="flex items-center space-x-1 sm:space-x-2 text-teal-600 flex-shrink-0 ml-2">
+//                           <Star className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
+//                           <span className="font-black text-xs sm:text-sm hidden sm:inline">CLEARED!</span>
+//                         </div>
+//                       )}
+//                     </div>
+                    
+//                     {/* Subtle glow effect for completed levels */}
+//                     {lvl.status === "completed" && (
+//                       <div className="absolute inset-0 bg-gradient-to-r from-teal-400/10 to-transparent pointer-events-none"></div>
+//                     )}
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Enhanced Animations */}
+//       <style jsx>{`
+//         @keyframes float {
+//           0%, 100% {
+//             transform: translateY(0px) translateX(0px);
+//           }
+//           33% {
+//             transform: translateY(-10px) translateX(5px);
+//           }
+//           66% {
+//             transform: translateY(5px) translateX(-5px);
+//           }
+//         }
+        
+//         .animate-float {
+//           animation: float 8s ease-in-out infinite;
+//         }
+        
+//         .hover\\:scale-102:hover {
+//           transform: scale(1.02);
+//         }
+        
+//         .delay-500 {
+//           animation-delay: 500ms;
+//         }
+        
+//         .delay-1000 {
+//           animation-delay: 1000ms;
+//         }
+
+//         @media (max-width: 640px) {
+//           .hover\\:scale-102:hover {
+//             transform: scale(1.01);
+//           }
+//         }
+//       `}</style>
+//     </div>
+//   );
+// };
+
+// export default VictoryScreen;
+
+
+
+import React, { useState, useEffect } from "react";
+import { Gift, Award, ArrowRightCircle, Trophy, Sparkles, Star, Loader2, RefreshCw } from "lucide-react";
+
+// Mock API hook for demonstration - replace with your actual hook
+const useGetTodayEarningStatusMutation = () => {
+  const [trigger, { data, isLoading, error, isSuccess }] = [
+    async (params) => {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return {
+        data: {
+          success: true,
+          levels: Array.from({ length: 10 }, (_, i) => ({
+            level: i + 1,
+            progress: i < 4 ? 100 : Math.random() * 80,
+            status: i < 4 ? "completed" : i === 4 ? "current" : "locked",
+            earned: i < 4 ? (i + 1) * 150 : 0,
+            timeSpent: i < 4 ? Math.floor(Math.random() * 30) + 10 : 0
+          })),
+          totalEarnings: 900,
+          timeRemaining: 4 * 60, // 4 hours in minutes
+          completedLevels: 4,
+          currentStreak: 3,
+          bestStreak: 7
+        }
+      };
+    },
+    {
+      data: null,
+      isLoading: false,
+      error: null,
+      isSuccess: false
+    }
+  ];
+  
+  return [trigger, { data, isLoading, error, isSuccess }];
+};
+
+const VictoryScreen = ({ userId = "demo-user" }) => {
+  const [getTodayEarningStatus, { data: apiData, isLoading, error, isSuccess }] = useGetTodayEarningStatusMutation();
+  const [localData, setLocalData] = useState(null);
+
+  useEffect(() => {
+    if (userId) {
+      handleFetchData();
+    }
+  }, [userId]);
+
+  const handleFetchData = async () => {
+    try {
+      const result = await getTodayEarningStatus({ id: userId });
+      if (result.data) {
+        setLocalData(result.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch earning status:", err);
+    }
+  };
+
+  // Use API data or fallback to demo data
+  const gameData = localData || {
+    levels: Array.from({ length: 10 }, (_, i) => ({
+      level: i + 1,
+      progress: i < 3 ? 100 : 0,
+      status: i < 3 ? "completed" : "locked",
+      earned: i < 3 ? (i + 1) * 100 : 0,
+      timeSpent: i < 3 ? Math.floor(Math.random() * 20) + 5 : 0
+    })),
+    totalEarnings: 600,
+    timeRemaining: 240, // minutes
+    completedLevels: 3,
+    currentStreak: 2,
+    bestStreak: 5
+  };
+
+  const { levels, totalEarnings, timeRemaining, completedLevels, currentStreak, bestStreak } = gameData;
+  
   const allLevelsCompleted = levels.every((lvl) => lvl.status === "completed");
-  const completedLevelsCount = levels.filter((lvl) => lvl.status === "completed").length;
-  const nextLevelToUnlock = levels.find((lvl) => lvl.status === "locked");
+  const nextLevelToUnlock = levels.find((lvl) => lvl.status === "locked" || lvl.status === "current");
+  const completionPercentage = (completedLevels / levels.length) * 100;
+  
+  // Format time remaining
+  const formatTime = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+  };
 
   const sortedLevels = [...levels].sort((a, b) => {
-    if (a.status === "completed" && b.status !== "completed") {
-      return 1;
-    }
-    if (a.status !== "completed" && b.status === "completed") {
-      return -1;
-    }
+    if (a.status === "completed" && b.status !== "completed") return 1;
+    if (a.status !== "completed" && b.status === "completed") return -1;
     return a.level - b.level;
   });
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-teal-600 via-teal-500 to-teal-700 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-white animate-spin mx-auto mb-4" />
+          <p className="text-white text-lg font-semibold">Loading your victory status...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#1d8d84] relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-teal-600 via-teal-500 to-teal-700 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-300/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white/3 rounded-full blur-2xl animate-ping"></div>
+      </div>
+
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 max-w-7xl">
         {/* Victory Header */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="relative inline-block mb-3 sm:mb-4">
-            <div className="relative w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center shadow-2xl shadow-teal-500/50">
-              <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-white to-teal-100 rounded-full flex items-center justify-center shadow-2xl shadow-teal-900/50 animate-bounce">
+              <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-teal-600" />
             </div>
+            <div className="absolute -inset-2 bg-white/20 rounded-full blur-sm animate-pulse"></div>
           </div>
           
-          <div className="relative">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent mb-2 drop-shadow-2xl">
+          <div className="relative mb-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent mb-2 drop-shadow-2xl animate-pulse">
               VICTORY!
             </h1>
-            <div className="absolute -inset-2 bg-gradient-to-r from-transparent via-teal-400/30 to-transparent blur-sm"></div>
+            <div className="absolute -inset-4 bg-gradient-to-r from-transparent via-white/20 to-transparent blur-lg opacity-50"></div>
           </div>
           
-          <p className="text-base sm:text-lg text-teal-100 font-light tracking-wide px-4">
-            Mission Accomplished 
+          <p className="text-lg sm:text-xl text-white/90 font-light tracking-wide px-4 mb-2">
+            Mission Accomplished ✨
           </p>
+          
+          {/* Refresh Button */}
+          <button
+            onClick={handleFetchData}
+            disabled={isLoading}
+            className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full px-4 py-2 transition-all duration-300 border border-white/30 hover:border-white/50"
+          >
+            <RefreshCw className={`w-4 h-4 text-white ${isLoading ? 'animate-spin' : ''}`} />
+            <span className="text-white text-sm font-medium">Refresh</span>
+          </button>
         </div>
 
-        {/* Stats Cards with 3D Effect */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          {/* Levels Card */}
-          <div className="group relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
-            <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <div className="relative">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl flex items-center justify-center shadow-lg">
-                      <Award className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-teal-400 rounded-full animate-ping"></div>
+        {/* Enhanced Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          {/* Levels Progress Card */}
+          <div className="group relative col-span-1 md:col-span-2 lg:col-span-1">
+            <div className="absolute -inset-1 bg-gradient-to-r from-white/30 to-white/10 rounded-2xl blur opacity-50 group-hover:opacity-70 transition duration-500"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 h-full">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="relative">
+                  <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <Award className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-teal-700 font-semibold uppercase tracking-wider text-xs sm:text-sm">Levels Achieved</span>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-teal-400 rounded-full animate-ping"></div>
+                </div>
+                <div>
+                  <p className="text-teal-700 font-semibold uppercase tracking-wider text-xs">Levels</p>
+                  <p className="text-teal-600 text-xs">Completed</p>
                 </div>
               </div>
               
-              <div className="text-2xl sm:text-3xl font-black text-teal-800 mb-2 sm:mb-3">
-                {completedLevelsCount} <span className="text-teal-400 text-xl sm:text-2xl">/ {levels.length}</span>
+              <div className="text-3xl font-black text-teal-800 mb-3">
+                {completedLevels} <span className="text-teal-500 text-xl">/ {levels.length}</span>
               </div>
               
-              <div className="relative w-full h-2 sm:h-3 bg-teal-100 rounded-full overflow-hidden shadow-inner">
+              <div className="relative w-full h-3 bg-teal-100 rounded-full overflow-hidden shadow-inner mb-2">
                 <div 
                   className="absolute top-0 left-0 h-full bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 rounded-full shadow-sm transition-all duration-1000 ease-out"
-                  style={{ width: `${(completedLevelsCount / levels.length) * 100}%` }}
+                  style={{ width: `${completionPercentage}%` }}
                 >
                   <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
                 </div>
               </div>
               
-              <p className="text-teal-600 text-xs sm:text-sm mt-2 font-medium">Excellent progress!</p>
+              <p className="text-teal-600 text-sm font-medium">{Math.round(completionPercentage)}% Complete</p>
             </div>
           </div>
 
-          {/* Time Card */}
+          {/* Total Earnings Card */}
           <div className="group relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-teal-600 to-teal-400 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
-            <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <div className="relative">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-base sm:text-lg">⏱</span>
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full animate-ping"></div>
-                  </div>
-                  <span className="text-teal-700 font-semibold uppercase tracking-wider text-xs sm:text-sm">Time Left</span>
+            <div className="absolute -inset-1 bg-gradient-to-r from-white/30 to-white/10 rounded-2xl blur opacity-50 group-hover:opacity-70 transition duration-500"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 h-full">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold">₹</span>
+                </div>
+                <div>
+                  <p className="text-teal-700 font-semibold uppercase tracking-wider text-xs">Total</p>
+                  <p className="text-teal-600 text-xs">Earnings</p>
                 </div>
               </div>
               
-              <div className="text-2xl sm:text-3xl font-black text-teal-800 mb-2 sm:mb-3">4hr</div>
-              
-              <div className="relative w-full h-2 sm:h-3 bg-teal-100 rounded-full overflow-hidden shadow-inner">
-                <div className="absolute top-0 left-0 h-full w-3/4 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 rounded-full shadow-sm">
-                  <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
+              <div className="text-3xl font-black text-teal-800 mb-2">₹{totalEarnings}</div>
+              <p className="text-teal-600 text-sm font-medium">Outstanding!</p>
+            </div>
+          </div>
+
+          {/* Time Remaining Card */}
+          <div className="group relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-white/30 to-white/10 rounded-2xl blur opacity-50 group-hover:opacity-70 transition duration-500"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 h-full">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-white text-lg">⏱</span>
+                </div>
+                <div>
+                  <p className="text-teal-700 font-semibold uppercase tracking-wider text-xs">Time</p>
+                  <p className="text-teal-600 text-xs">Remaining</p>
                 </div>
               </div>
               
-              <p className="text-teal-600 text-xs sm:text-sm mt-2 font-medium">Stay focused!</p>
+              <div className="text-3xl font-black text-teal-800 mb-2">{formatTime(timeRemaining)}</div>
+              <p className="text-teal-600 text-sm font-medium">Keep going!</p>
+            </div>
+          </div>
+
+          {/* Current Streak Card */}
+          <div className="group relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-white/30 to-white/10 rounded-2xl blur opacity-50 group-hover:opacity-70 transition duration-500"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/30 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 h-full">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-teal-700 font-semibold uppercase tracking-wider text-xs">Current</p>
+                  <p className="text-teal-600 text-xs">Streak</p>
+                </div>
+              </div>
+              
+              <div className="text-3xl font-black text-teal-800 mb-2">{currentStreak}</div>
+              <p className="text-teal-600 text-sm font-medium">Best: {bestStreak}</p>
             </div>
           </div>
         </div>
@@ -1242,45 +1654,45 @@ const VictoryScreen = () => {
         {/* Status Section */}
         {allLevelsCompleted ? (
           <div className="relative mb-6 sm:mb-8">
-            <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400 via-teal-400 to-yellow-400 rounded-3xl blur opacity-30 animate-pulse"></div>
-            <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/30 text-center shadow-2xl">
-              <div className="relative mb-4 sm:mb-6">
-                <Gift className="w-12 h-12 sm:w-16 sm:h-16 text-teal-600 mx-auto animate-bounce" />
+            <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400/30 via-white/20 to-yellow-400/30 rounded-3xl blur opacity-50 animate-pulse"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-white/30 text-center shadow-2xl">
+              <div className="relative mb-6">
+                <Gift className="w-16 h-16 text-teal-600 mx-auto animate-bounce" />
                 <div className="absolute inset-0 bg-teal-400 blur-xl opacity-30 animate-pulse"></div>
               </div>
               
-              <h2 className="text-xl sm:text-2xl font-black text-teal-800 mb-2 sm:mb-3">
-                🎉 Perfect Victory! 🎉
+              <h2 className="text-2xl sm:text-3xl font-black text-teal-800 mb-3">
+                🎉 LEGENDARY VICTORY! 🎉
               </h2>
-              <p className="text-base sm:text-lg text-teal-700 mb-4 sm:mb-6 px-2">
+              <p className="text-lg text-teal-700 mb-6 px-2">
                 You've achieved <span className="font-black text-teal-800">complete mastery</span> of all challenges!
               </p>
               
-              <div className="inline-flex items-center space-x-2 sm:space-x-3 bg-gradient-to-r from-teal-50 to-white border-2 border-teal-300 rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg">
-                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600 animate-spin" />
-                <span className="text-teal-700 font-bold tracking-wide text-sm sm:text-base">LEGENDARY STATUS</span>
-                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600 animate-spin" />
+              <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-teal-50 to-white border-2 border-teal-300 rounded-full px-6 py-3 shadow-lg">
+                <Star className="w-5 h-5 text-teal-600 animate-spin" />
+                <span className="text-teal-700 font-bold tracking-wide">MASTER STATUS</span>
+                <Star className="w-5 h-5 text-teal-600 animate-spin" />
               </div>
             </div>
           </div>
         ) : (
           <div className="relative mb-6 sm:mb-8">
-            <div className="absolute -inset-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-3xl blur opacity-20"></div>
-            <div className="relative bg-gradient-to-br from-white/95 to-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/30 text-center shadow-2xl">
-              <h2 className="text-xl sm:text-2xl font-black text-teal-800 mb-2 sm:mb-3">
+            <div className="absolute -inset-2 bg-gradient-to-r from-white/20 to-white/10 rounded-3xl blur opacity-50"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-white/30 text-center shadow-2xl">
+              <h2 className="text-2xl font-black text-teal-800 mb-3">
                 The Adventure Continues!
               </h2>
-              <p className="text-base sm:text-lg text-teal-700 mb-4 sm:mb-6 px-2">
+              <p className="text-lg text-teal-700 mb-6 px-2">
                 Your next <span className="font-black text-teal-800">epic challenge</span> awaits!
               </p>
               
               {nextLevelToUnlock && (
-                <div className="inline-flex items-center space-x-3 sm:space-x-4 bg-gradient-to-r from-teal-50 to-white border-2 border-teal-300 rounded-xl sm:rounded-2xl px-4 sm:px-8 py-3 sm:py-4 hover:from-teal-100 hover:to-teal-50 hover:scale-105 transition-all duration-300 cursor-pointer group shadow-lg">
+                <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-teal-50 to-white border-2 border-teal-300 rounded-2xl px-8 py-4 hover:from-teal-100 hover:to-teal-50 hover:scale-105 transition-all duration-300 cursor-pointer group shadow-lg">
                   <div className="text-left">
-                    <p className="text-teal-600 text-xs sm:text-sm font-semibold uppercase tracking-wider">Next Challenge</p>
-                    <h3 className="text-lg sm:text-xl font-black text-teal-800">Level {nextLevelToUnlock.level}</h3>
+                    <p className="text-teal-600 text-sm font-semibold uppercase tracking-wider">Next Challenge</p>
+                    <h3 className="text-xl font-black text-teal-800">Level {nextLevelToUnlock.level}</h3>
                   </div>
-                  <ArrowRightCircle className="w-6 h-6 sm:w-7 sm:h-7 text-teal-600 group-hover:translate-x-2 transition-transform duration-300" />
+                  <ArrowRightCircle className="w-7 h-7 text-teal-600 group-hover:translate-x-2 transition-transform duration-300" />
                 </div>
               )}
             </div>
@@ -1289,74 +1701,132 @@ const VictoryScreen = () => {
 
         {/* Enhanced Leaderboard */}
         <div>
-          <div className="text-center mb-4 sm:mb-6">
-            <h3 className="text-xl sm:text-2xl font-black text-white mb-2 flex items-center justify-center space-x-3">
+          <div className="text-center mb-6">
+            <h3 className="text-2xl sm:text-3xl font-black text-white mb-2 flex items-center justify-center space-x-3">
+              <Trophy className="w-8 h-8 text-white" />
               <span className="bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent">
-                Global Leaderboard
+                Progress Leaderboard
               </span>
+              <Trophy className="w-8 h-8 text-white" />
             </h3>
-            <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-transparent via-teal-400 to-transparent mx-auto"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent mx-auto"></div>
           </div>
           
           <div className="relative">
-            <div className="absolute -inset-2 bg-gradient-to-r from-teal-400/20 to-teal-600/20 rounded-3xl blur"></div>
-            <div className="relative bg-gradient-to-br from-white/90 to-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/30 shadow-2xl">
-              <div className="space-y-2 sm:space-y-3">
+            <div className="absolute -inset-2 bg-gradient-to-r from-white/10 to-white/5 rounded-3xl blur opacity-50"></div>
+            <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl p-6 border border-white/30 shadow-2xl">
+              <div className="space-y-3">
                 {sortedLevels.map((lvl, index) => (
                   <div
                     key={lvl.level}
-                    className={`group relative overflow-hidden rounded-xl sm:rounded-2xl transition-all duration-500 hover:scale-102
+                    className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-102 border-2
                       ${lvl.status === "locked"
-                        ? "bg-gradient-to-r from-gray-50 to-gray-100 opacity-50"
-                        : "bg-gradient-to-r from-teal-50 to-white hover:from-teal-100 hover:to-teal-50 shadow-md hover:shadow-lg"
+                        ? "bg-gradient-to-r from-gray-50 to-gray-100 opacity-50 border-gray-200"
+                        : lvl.status === "current"
+                        ? "bg-gradient-to-r from-teal-100 to-teal-50 hover:from-teal-200 hover:to-teal-100 shadow-lg hover:shadow-xl border-teal-300 ring-2 ring-teal-400/50"
+                        : "bg-gradient-to-r from-white to-teal-50 hover:from-teal-50 hover:to-teal-100 shadow-md hover:shadow-lg border-teal-200"
                       }`}
                   >
-                    <div className="flex items-center justify-between p-3 sm:p-4">
-                      <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+                    <div className="flex items-center justify-between p-4">
+                      <div className="flex items-center space-x-4 flex-1 min-w-0">
                         <div className="relative flex-shrink-0">
-                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center font-black text-white shadow-lg transform transition-transform group-hover:scale-110 text-sm sm:text-base
+                          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white shadow-lg transform transition-transform group-hover:scale-110
                             ${index === 0 ? "bg-gradient-to-br from-yellow-400 to-orange-500" :
                               index === 1 ? "bg-gradient-to-br from-gray-300 to-gray-500" :
                               index === 2 ? "bg-gradient-to-br from-amber-400 to-yellow-600" :
+                              lvl.status === "current" ? "bg-gradient-to-br from-teal-400 to-teal-600 animate-pulse" :
                               "bg-gradient-to-br from-teal-500 to-teal-700"}`}
                           >
                             {lvl.level}
                           </div>
                           
-                          {index < 3 && lvl.status === "completed" && (
-                            <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center animate-pulse">
-                              <Star className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
+                          {lvl.status === "completed" && (
+                            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center animate-pulse">
+                              <Star className="w-3 h-3 text-white" />
+                            </div>
+                          )}
+                          
+                          {lvl.status === "current" && (
+                            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center animate-bounce">
+                              <span className="text-white text-xs">•</span>
                             </div>
                           )}
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-black text-teal-800 text-base sm:text-lg truncate">Level {lvl.level}</h4>
-                          <div className="flex items-center space-x-1 sm:space-x-2 flex-wrap">
-                            <span className="text-xs sm:text-sm text-teal-600 font-medium">Progress:</span>
-                            <span className="font-bold text-teal-700 text-xs sm:text-sm">{lvl.progress}</span>
-                            <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm
-                              ${lvl.status === "completed" 
-                                ? "bg-gradient-to-r from-teal-200 to-teal-300 text-teal-800 border border-teal-400" 
-                                : "bg-gradient-to-r from-gray-200 to-gray-300 text-gray-600 border border-gray-400"}`}
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="font-black text-teal-800 text-lg">Level {lvl.level}</h4>
+                            {lvl.status === "current" && (
+                              <span className="bg-teal-500 text-white px-2 py-1 rounded-full text-xs font-bold animate-pulse">
+                                ACTIVE
+                              </span>
+                            )}
+                          </div>
+                          
+                          <div className="flex items-center space-x-4 flex-wrap">
+                            <div className="flex items-center space-x-2">
+                              <span className="text-sm text-teal-600 font-medium">Progress:</span>
+                              <span className="font-bold text-teal-700">{Math.round(lvl.progress)}%</span>
+                            </div>
+                            
+                            {lvl.earned > 0 && (
+                              <div className="flex items-center space-x-1">
+                                <span className="text-sm text-green-600 font-medium">Earned:</span>
+                                <span className="font-bold text-green-700">₹{lvl.earned}</span>
+                              </div>
+                            )}
+                            
+                            {lvl.timeSpent > 0 && (
+                              <div className="flex items-center space-x-1">
+                                <span className="text-sm text-purple-600 font-medium">Time:</span>
+                                <span className="font-bold text-purple-700">{lvl.timeSpent}m</span>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Progress bar */}
+                          <div className="relative w-full h-2 bg-teal-100 rounded-full overflow-hidden shadow-inner mt-2">
+                            <div 
+                              className={`absolute top-0 left-0 h-full rounded-full shadow-sm transition-all duration-1000 ease-out
+                                ${lvl.status === "completed" 
+                                  ? "bg-gradient-to-r from-green-400 via-green-500 to-green-600" 
+                                  : lvl.status === "current"
+                                  ? "bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600"
+                                  : "bg-gradient-to-r from-gray-300 to-gray-400"
+                                }`}
+                              style={{ width: `${lvl.progress}%` }}
                             >
-                              {lvl.status}
-                            </span>
+                              <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
+                            </div>
                           </div>
                         </div>
                       </div>
                       
-                      {lvl.status === "completed" && (
-                        <div className="flex items-center space-x-1 sm:space-x-2 text-teal-600 flex-shrink-0 ml-2">
-                          <Star className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
-                          <span className="font-black text-xs sm:text-sm hidden sm:inline">CLEARED!</span>
-                        </div>
-                      )}
+                      <div className="flex items-center space-x-2 text-teal-600 flex-shrink-0 ml-4">
+                        {lvl.status === "completed" && (
+                          <>
+                            <Star className="w-5 h-5 animate-pulse text-green-600" />
+                            <span className="font-black text-sm text-green-700">CLEARED!</span>
+                          </>
+                        )}
+                        {lvl.status === "current" && (
+                          <>
+                            <div className="w-3 h-3 bg-teal-500 rounded-full animate-ping"></div>
+                            <span className="font-black text-sm text-teal-700">IN PROGRESS</span>
+                          </>
+                        )}
+                        {lvl.status === "locked" && (
+                          <span className="font-bold text-sm text-gray-500">LOCKED</span>
+                        )}
+                      </div>
                     </div>
                     
-                    {/* Subtle glow effect for completed levels */}
+                    {/* Enhanced glow effect */}
                     {lvl.status === "completed" && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-teal-400/10 to-transparent pointer-events-none"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 to-transparent pointer-events-none"></div>
+                    )}
+                    {lvl.status === "current" && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-transparent pointer-events-none animate-pulse"></div>
                     )}
                   </div>
                 ))}
@@ -1369,37 +1839,18 @@ const VictoryScreen = () => {
       {/* Enhanced Animations */}
       <style jsx>{`
         @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) translateX(0px);
-          }
-          33% {
-            transform: translateY(-10px) translateX(5px);
-          }
-          66% {
-            transform: translateY(5px) translateX(-5px);
-          }
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          33% { transform: translateY(-10px) translateX(5px); }
+          66% { transform: translateY(5px) translateX(-5px); }
         }
         
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
-        }
-        
-        .hover\\:scale-102:hover {
-          transform: scale(1.02);
-        }
-        
-        .delay-500 {
-          animation-delay: 500ms;
-        }
-        
-        .delay-1000 {
-          animation-delay: 1000ms;
-        }
+        .animate-float { animation: float 8s ease-in-out infinite; }
+        .hover\\:scale-102:hover { transform: scale(1.02); }
+        .delay-500 { animation-delay: 500ms; }
+        .delay-1000 { animation-delay: 1000ms; }
 
         @media (max-width: 640px) {
-          .hover\\:scale-102:hover {
-            transform: scale(1.01);
-          }
+          .hover\\:scale-102:hover { transform: scale(1.01); }
         }
       `}</style>
     </div>
