@@ -361,7 +361,7 @@ const App = () => {
       <Route path="/profile" element={<DashboardLayout />}>
         <Route index element={<Profile />} />
       </Route>
-      <Route path="/kyc" element={<DashboardLayout />}>
+      <Route path="/kyc-information" element={<DashboardLayout />}>
         <Route index element={<Kyc />} />
       </Route>
       <Route path="/withdrawal" element={<DashboardLayout />}>

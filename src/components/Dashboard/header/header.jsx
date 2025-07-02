@@ -388,7 +388,7 @@ const routeTitles = {
   "/buy-history": "Buy History",
   "/security": "Security",
   "/profile": "Profile",
-  "/kyc": "Kyc",
+  "/kyc": "kyc-information",
   "/withdrawal": "With Drawal",
   "/support": "Support",
   "/logout": "Logout",
