@@ -430,7 +430,7 @@ function Header() {
   }, [isDropdownOpen]);
 
   return (
-    <header className="relative p-3 rounded-xl text-white border-r border-teal-600/20 bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
+    <header className="relative p-4 rounded-xl text-white border-r border-teal-600/20 bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
                        sm:px-6 lg:px-8">
       {/* Title - Visible on medium screens and up */}
       <h1 className="invisible md:visible text-xl text-start sm:text-2xl md:text-3xl font-extrabold">

@@ -2715,9 +2715,8 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
 
   return (
     <div
-      className={`w-full max-w-md transition-all duration-500 transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
+      className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
     >
       {notification && (
         <Notification
@@ -2745,9 +2744,8 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
             value={formData.email}
             onChange={handleChange}
             placeholder="Email"
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-              errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
-            }`}
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
+              }`}
           />
           {errors.email && (
             <div className="text-red-500 text-sm mt-1">{errors.email}</div>
@@ -2764,9 +2762,8 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
             value={formData.password}
             onChange={handleChange}
             placeholder="Password"
-            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-              errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
-            }`}
+            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
+              }`}
           />
           <button
             type="button"
@@ -2816,8 +2813,569 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
     </div>
   );
 };
+// const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
+//   const navigate = useNavigate();
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+//   const [otpSent, setOtpSent] = useState(false);
+//   const [selectedCode, setSelectedCode] = useState('🇮🇳');
+//   const [notification, setNotification] = useState(null);
+//   const [isOtpSending, setIsOtpSending] = useState(false);
+//   const [timer, setTimer] = useState(0);
+//   const [canResendOtp, setCanResendOtp] = useState(false);
+
+//   const [formData, setFormData] = useState({
+//     name: '',
+//     phone: '',
+//     email: '',
+//     password: '',
+//     confirmPassword: '',
+//     referralId: '',
+//     otp: ''
+//   });
+//   const [errors, setErrors] = useState({});
+
+//   const [register, { isLoading: isRegisterLoading, error: registerError }] = useRegisterMutation();
+//   const [verify, { isLoading: isVerifyLoading, error: verifyError }] = useVerifyMutation();
+//   const [OTPresent, { isLoading: isOTPresentLoading, error: OTPresentError }] = useOTPresentMutation();
+
+//   const [userDataFromVerify, setUserDataFromVerify] = useState(null);
+
+//   const getErrorMessage = (error) => {
+//     if (error) {
+//       if (error.data && error.data.message) {
+//         return error.data.message;
+//       } else if (error.error) {
+//         return error.error;
+//       } else if (error.status) {
+//         if (error.status === 400) return `Bad Request: ${error.data?.message || 'Please check your input.'}`;
+//         if (error.status === 401) return `Unauthorized: ${error.data?.message || 'Invalid credentials.'}`;
+//         if (error.status === 409) return `Conflict: ${error.data?.message || 'User already exists or other conflict.'}`;
+//         if (error.status >= 500) return `Server Error: ${error.data?.message || 'Please try again later.'}`;
+//         return `Error ${error.status}: ${error.data?.message || 'An API error occurred.'}`;
+//       }
+//     }
+//     return 'An unexpected error occurred. Please try again.';
+//   };
+
+//   useEffect(() => {
+//     if (registerError) {
+//       console.error("Register API Error:", registerError);
+//       setNotification({ type: 'error', message: getErrorMessage(registerError) });
+//     }
+//   }, [registerError]);
+
+//   useEffect(() => {
+//     if (verifyError) {
+//       console.error("Verify OTP API Error:", verifyError);
+//       setNotification({ type: 'error', message: getErrorMessage(verifyError) });
+//     }
+//   }, [verifyError]);
+
+//   useEffect(() => {
+//     if (OTPresentError) {
+//       console.error("OTPresent API Error:", OTPresentError);
+//       setNotification({ type: 'error', message: getErrorMessage(OTPresentError) });
+//     }
+//   }, [OTPresentError]);
+
+//   useEffect(() => {
+//     let interval;
+//     if (otpSent && timer > 0) {
+//       interval = setInterval(() => {
+//         setTimer((prev) => prev - 1);
+//       }, 1000);
+//     } else if (timer === 0) {
+//       setCanResendOtp(true);
+//       clearInterval(interval);
+//     }
+//     return () => clearInterval(interval);
+//   }, [otpSent, timer]);
+
+//   const validate = () => {
+//     const newErrors = {};
+//     const emailRegex = /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/;
+//     const referralIdRegex = /^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/;
+//     if (!formData.name.trim()) {
+//       newErrors.name = 'Name is required';
+//     } else if (formData.name.length < 2) {
+//       newErrors.name = 'Name must be at least 2 characters';
+//     }
+//     const currentCountry = countrycodes.find(c => c.flag === selectedCode);
+//     const minPhoneLength = 7;
+//     const maxPhoneLength = currentCountry ? currentCountry.phone_length : 15;
+
+//     if (!formData.phone.trim()) {
+//       newErrors.phone = 'Phone number is required';
+//     } else if (!/^\d*$/.test(formData.phone)) {
+//       newErrors.phone = 'Phone number can only contain digits';
+//     } else if (formData.phone.length < minPhoneLength || formData.phone.length > maxPhoneLength) {
+//       newErrors.phone = `Phone number must be ${minPhoneLength}-${maxPhoneLength} digits long`;
+//     }
+
+//     if (!formData.email.trim()) {
+//       newErrors.email = 'Email is required';
+//     } else if (!emailRegex.test(formData.email)) {
+//       newErrors.email = 'Invalid email(must contain at least one letter)';
+//     }
+
+//     if (!formData.password) {
+//       newErrors.password = 'Password is required';
+//     } else if (formData.password.length < 8) {
+//       newErrors.password = 'Password must be at least 8 characters';
+//     } else if (!/[a-z]/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one lowercase letter';
+//     } else if (!/[A-Z]/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one uppercase letter';
+//     } else if (!/\d/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one number';
+//     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one special character';
+//     }
+
+//     if (!formData.confirmPassword) {
+//       newErrors.confirmPassword = 'Please confirm your password';
+//     } else if (formData.confirmPassword !== formData.password) {
+//       newErrors.confirmPassword = 'Passwords must match';
+//     }
+
+//     if (formData.referralId && !referralIdRegex.test(formData.referralId)) {
+//       newErrors.referralId = 'Referral ID can only contain letters and numbers length 13';
+//     }
+
+//     if (otpSent) {
+//       if (!formData.otp.trim()) {
+//         newErrors.otp = 'OTP is required';
+//       } else if (!/^\d{4}$/.test(formData.otp)) {
+//         newErrors.otp = 'OTP must be 4 digits';
+//       }
+//     }
+
+//     return newErrors;
+//   };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+
+//     if (name === "phone" && !/^\d*$/.test(value)) {
+//       return;
+//     }
+//     if (name === "name" && !/^[a-zA-Z\s]*$/.test(value)) {
+//       return;
+//     }
+//     if (name === "referralId" && !/^[A-Za-z0-9]*$/.test(value)) {
+//       return;
+//     }
+//     if (name === "otp" && !/^[0-9]*$/.test(value)) {
+//       return;
+//     }
+
+//     if (name === "countryCode") {
+//       setSelectedCode(value);
+//     } else {
+//       setFormData(prev => ({
+//         ...prev,
+//         [name]: value,
+//       }));
+//     }
+//     setErrors(validate());
+//   };
+
+//   const handleBlur = (e) => {
+//     const { name } = e.target;
+//     const currentErrors = validate();
+//     setErrors(currentErrors);
+//   };
+
+//   const handleVerify = async (e) => {
+//     e.preventDefault();
+//     setNotification(null);
+
+//     const validationErrors = validate();
+//     setErrors(validationErrors);
+
+//     const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
+
+//     if (formErrorsExceptOtp) {
+//       setNotification({
+//         type: 'error',
+//         message: "Please fill all required details correctly."
+//       });
+//       return;
+//     }
+
+//     setIsOtpSending(true);
+
+//     try {
+//       const currentCountry = countrycodes.find(item => item.flag === selectedCode);
+//       const phoneWithCode = (currentCountry?.code || selectedCode) + formData.phone.replace(/\s/g, '');
+
+//       const payload = {
+//         name: formData.name,
+//         phone: phoneWithCode,
+//         email: formData.email,
+//         password: formData.password,
+//         confirmPassword: formData.confirmPassword,
+//         referralId: formData.referralId || undefined,
+//         otpType: "register",
+//         country: currentCountry?.country || '',
+//         countryCode: currentCountry?.code || selectedCode
+//       };
+
+//       const result = await register(payload).unwrap();
+
+//       localStorage.setItem("username", result?.data?.username || formData.email);
+
+//       setOtpSent(true);
+//       setTimer(120);
+//       setCanResendOtp(false);
+//       setNotification({ type: 'success', message: "OTP sent to your email!" });
+
+//     } catch (err) {
+//       console.error("handleVerify (Register/OTPresent) Error:", err);
+//       if (err?.data?.message === "User verification pending") {
+//         try {
+//           const ress = await OTPresent({ email: formData.email, otpType: "register" }).unwrap();
+//           setOtpSent(true);
+//           setTimer(120);
+//           setCanResendOtp(false);
+//           setNotification({ type: 'success', message: "OTP resent to your email!" });
+//         } catch (otpErr) {
+//           console.error("OTPresent (Resend OTP) Error:", otpErr);
+//           setNotification({ type: 'error', message: getErrorMessage(otpErr) });
+//         }
+//       } else {
+//         setNotification({ type: 'error', message: getErrorMessage(err) });
+//       }
+//     } finally {
+//       setIsOtpSending(false);
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setNotification(null);
+
+//     const validationErrors = validate();
+//     setErrors(validationErrors);
+
+//     if (Object.keys(validationErrors).length > 0) {
+//       setNotification({
+//         type: 'error',
+//         message: "Please correct the highlighted fields."
+//       });
+//       return;
+//     }
+
+//     if (!otpSent) {
+//       setNotification({
+//         type: 'error',
+//         message: 'Please send OTP and verify your phone number first.'
+//       });
+//       return;
+//     }
+//     if (!formData.otp.trim()) {
+//       setNotification({
+//         type: 'error',
+//         message: 'OTP is required to complete registration.'
+//       });
+//       setErrors(prev => ({ ...prev, otp: 'OTP is required' }));
+//       return;
+//     }
+
+//     try {
+//       const verifyPayload = {
+//         email: formData.email,
+//         otp: Number(formData.otp),
+//         otpType: "register",
+//       };
+
+//       const res = await verify(verifyPayload).unwrap();
+
+//       if (!res.success) {
+//         setNotification({
+//           type: 'error',
+//           message: res.message || 'OTP verification failed. Please try again.'
+//         });
+//         return;
+//       }
+
+//       setUserDataFromVerify(res.data);
+
+//       localStorage.setItem("token", res?.data?.token || res.token);
+//       localStorage.setItem("userData", JSON.stringify(res?.data || res));
+
+//       setNotification({
+//         type: 'success',
+//         message: res?.message || 'Registration completed successfully!'
+//       });
+
+//       setTimeout(() => {
+//         navigate("/dashboard");
+//       }, 1000);
+
+//     } catch (err) {
+//       console.error("handleSubmit (Verify OTP) Error:", err);
+//       setNotification({ type: 'error', message: getErrorMessage(err) });
+//     }
+//   };
+
+//   return (
+//     <div className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+
+//       <div className="text-center mb-2">
+//         <h1 className="text-3xl font-bold text-gray-800 mb-1">REGISTER</h1>
+//         <p className="text-gray-600">Create a new account to get started</p>
+//       </div>
+
+//       <div className="space-y-6">
+//         <div className="relative mb-5">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <User className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="text"
+//             name="name"
+//             value={formData.name}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Full Name"
+//             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//               }`}
+//           />
+//           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+//             {errors.name && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.name}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="relative mb-5">
+//           <div className={`flex rounded-lg border transition-all duration-200 overflow-hidden ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500'
+//             }`}>
+//             <CountryCodeDropdown
+//               value={selectedCode}
+//               onChange={setSelectedCode}
+//               className="bg-gray-50 py-3 px-3 border-r border-gray-200 hover:bg-gray-100"
+//               countryCodes={countrycodes}
+//             />
+//             <div className="relative flex-1">
+//               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                 <Phone className="h-5 w-5 text-gray-400" />
+//               </div>
+//               <input
+//                 type="tel"
+//                 name="phone"
+//                 value={formData.phone}
+//                 onChange={handleInputChange}
+//                 onBlur={handleBlur}
+//                 placeholder="Phone Number"
+//                 className="w-full pl-10 pr-4 py-3 border-0 bg-transparent outline-none"
+//               />
+//             </div>
+//           </div>
+//           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+//             {errors.phone && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.phone}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="relative mb-5">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Mail className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Email"
+//             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//               }`}
+//           />
+//           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+//             {errors.email && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.email}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="relative mb-5">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Lock className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type={showPassword ? "text" : "password"}
+//             name="password"
+//             value={formData.password}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Password"
+//             className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//               }`}
+//           />
+//           <button
+//             type="button"
+//             onClick={() => setShowPassword(!showPassword)}
+//             className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors"
+//           >
+//             {showPassword ? (
+//               <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             ) : (
+//               <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             )}
+//           </button>
+//           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+//             {errors.password && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.password}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="relative mb-5">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Lock className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type={showConfirmPassword ? "text" : "password"}
+//             name="confirmPassword"
+//             value={formData.confirmPassword}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Confirm Password"
+//             className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//               }`}
+//           />
+//           <button
+//             type="button"
+//             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+//             className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors"
+//           >
+//             {showConfirmPassword ? (
+//               <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             ) : (
+//               <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+//             )}
+//           </button>
+//           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+//             {errors.confirmPassword && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.confirmPassword}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="relative mb-5">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Users className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="text"
+//             name="referralId"
+//             value={formData.referralId}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Referral ID (Optional)"
+//             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.referralId ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//               }`}
+//           />
+//           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+//             {errors.referralId && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.referralId}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div className="relative mb-5">
+//           <div className="flex gap-3">
+//             <div className="relative flex-1">
+//               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                 <Shield className="h-5 w-5 text-gray-400" />
+//               </div>
+//               <input
+//                 type="text"
+//                 name="otp"
+//                 value={formData.otp}
+//                 onChange={handleInputChange}
+//                 onBlur={handleBlur}
+//                 placeholder="Enter 6-digit OTP"
+//                 maxLength="6"
+//                 className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//                   }`}
+//               />
+//             </div>
+
+//             <button
+//               type="button"
+//               onClick={handleVerify}
+//               disabled={isRegisterLoading || isOTPresentLoading || otpSent || Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0}
+//               className={`px-4 py-3 rounded-full font-semibold whitespace-nowrap transition-all duration-200 ${otpSent && timer > 0
+//                 ? 'bg-green-100 text-green-700 cursor-default'
+//                 : (isRegisterLoading || isOTPresentLoading)
+//                   ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+//                   : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
+//                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+//                     : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105 shadow-md'
+//                 }`}
+//             >
+//               {isRegisterLoading || isOTPresentLoading ? 'Sending...' : otpSent && timer > 0 ? `Sent (${timer}s)` : 'Send OTP'}
+//             </button>
+//           </div>
+//           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+//             {errors.otp && (
+//               <div className="text-red-500 text-sm animate-fadeIn">{errors.otp}</div>
+//             )}
+//           </div>
+//         </div>
+
+//         {otpSent && timer === 0 && (
+//           <div className="text-center mt-2">
+//             <button
+//               type="button"
+//               onClick={() => {
+//                 setCanResendOtp(false);
+//                 handleVerify();
+//               }}
+//               disabled={isOTPresentLoading || timer > 0}
+//               className="text-teal-600 hover:text-teal-700 font-semibold text-sm"
+//             >
+//               {isOTPresentLoading ? 'Resending...' : 'Resend OTP'}
+//             </button>
+//           </div>
+//         )}
+
+//         <button
+//           type="submit"
+//           onClick={handleSubmit}
+//           disabled={isVerifyLoading || !otpSent || Object.keys(errors).length > 0 || !formData.otp.trim()}
+//           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+//         >
+//           {isVerifyLoading ? 'Verifying OTP...' : 'REGISTER'}
+//         </button>
+//       </div>
+
+//       <div className="mt-4 text-center">
+//         <p className="text-gray-600">
+//           Already have an account?{' '}
+//           <button onClick={onToggleMode} className="text-teal-600 hover:text-teal-700 font-semibold">
+//             Sign in
+//           </button>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
 const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -2827,13 +3385,17 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
   const [timer, setTimer] = useState(0);
   const [canResendOtp, setCanResendOtp] = useState(false);
 
+  // Get referral code from URL if present
+  const queryParams = new URLSearchParams(location.search);
+  const referralID = queryParams.get("referralCode");
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
     password: '',
     confirmPassword: '',
-    referralId: '',
+    referralId: referralID || '', // Initialize with URL parameter
     otp: ''
   });
   const [errors, setErrors] = useState({});
@@ -2898,59 +3460,58 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
   const validate = () => {
     const newErrors = {};
     const emailRegex = /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/;
-    const referralIdRegex = /^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/;
+    const referralIdRegex = /^[A-Z0-9]*$/; // Updated to match first code's validation
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
-    } else if (formData.name.length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
+    } else if (formData.name.length < 3) { // Updated to match first code
+      newErrors.name = 'Name must be at least 3 characters';
     }
+
     const currentCountry = countrycodes.find(c => c.flag === selectedCode);
-    const minPhoneLength = 7;
-    const maxPhoneLength = currentCountry ? currentCountry.phone_length : 15;
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
     } else if (!/^\d*$/.test(formData.phone)) {
       newErrors.phone = 'Phone number can only contain digits';
-    } else if (formData.phone.length < minPhoneLength || formData.phone.length > maxPhoneLength) {
-      newErrors.phone = `Phone number must be ${minPhoneLength}-${maxPhoneLength} digits long`;
+    } else {
+      // Custom phone validation based on country code (matching first code)
+      if (currentCountry?.code === "+91" && formData.phone.length !== 10) {
+        newErrors.phone = "Phone number must be 10 digits for India";
+      } else if (
+        currentCountry?.code !== "+91" &&
+        (formData.phone.length < 4 || formData.phone.length > 15)
+      ) {
+        newErrors.phone = "Phone number must be between 4 to 15 digits for other countries";
+      }
     }
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Invalid email(must contain at least one letter)';
+      newErrors.email = 'Invalid email format';
     }
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/[a-z]/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one lowercase letter';
-    } else if (!/[A-Z]/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one uppercase letter';
-    } else if (!/\d/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one number';
-    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one special character';
+    } else if (formData.password.length < 6) { // Updated to match first code
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.confirmPassword !== formData.password) {
-      newErrors.confirmPassword = 'Passwords must match';
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
+    // Updated referral ID validation to match first code
     if (formData.referralId && !referralIdRegex.test(formData.referralId)) {
-      newErrors.referralId = 'Referral ID can only contain letters and numbers length 13';
+      newErrors.referralId = 'Referral ID can only contain uppercase letters and numbers';
     }
 
     if (otpSent) {
       if (!formData.otp.trim()) {
-        newErrors.otp = 'OTP is required';
-      } else if (!/^\d{4}$/.test(formData.otp)) {
-        newErrors.otp = 'OTP must be 4 digits';
+        newErrors.otp = 'Please enter the OTP';
       }
     }
 
@@ -2963,14 +3524,25 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     if (name === "phone" && !/^\d*$/.test(value)) {
       return;
     }
-    if (name === "name" && !/^[a-zA-Z\s]*$/.test(value)) {
+    if (name === "name" && !/^[a-zA-Z0-9\s]*$/.test(value)) { // Updated to match first code
       return;
     }
-    if (name === "referralId" && !/^[A-Za-z0-9]*$/.test(value)) {
+    if (name === "referralId" && !/^[A-Z0-9]*$/.test(value)) { // Updated to match first code
       return;
     }
     if (name === "otp" && !/^[0-9]*$/.test(value)) {
       return;
+    }
+
+    // Phone number length validation (matching first code)
+    if (name === "phone") {
+      const currentCountry = countrycodes.find(c => c.flag === selectedCode);
+      if (currentCountry?.code === "+91" && value.length > 10) {
+        return; // Max 10 digits for India
+      }
+      if (currentCountry?.code !== "+91" && value.length > 15) {
+        return; // Max 15 digits for other countries
+      }
     }
 
     if (name === "countryCode") {
@@ -2981,13 +3553,17 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
         [name]: value,
       }));
     }
-    setErrors(validate());
   };
 
   const handleBlur = (e) => {
     const { name } = e.target;
-    const currentErrors = validate();
-    setErrors(currentErrors);
+    const fieldErrors = validate();
+
+    // Update only the specific field error (matching first code)
+    setErrors((prev) => ({
+      ...prev,
+      [name]: fieldErrors[name] || null,
+    }));
   };
 
   const handleVerify = async (e) => {
@@ -2995,14 +3571,13 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     setNotification(null);
 
     const validationErrors = validate();
-    setErrors(validationErrors);
 
-    const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
-
-    if (formErrorsExceptOtp) {
+    // Check for validation errors (excluding OTP)
+    if (Object.keys(validationErrors).filter(key => key !== 'otp').length > 0) {
+      setErrors(validationErrors);
       setNotification({
         type: 'error',
-        message: "Please fill all required details correctly."
+        message: "Please fill in all required fields correctly"
       });
       return;
     }
@@ -3011,24 +3586,27 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
 
     try {
       const currentCountry = countrycodes.find(item => item.flag === selectedCode);
-      const phoneWithCode = (currentCountry?.code || selectedCode) + formData.phone.replace(/\s/g, '');
 
+      // Create payload WITHOUT referenceId for registration (matching first code)
       const payload = {
         name: formData.name,
-        phone: phoneWithCode,
+        phone: formData.phone,
         email: formData.email,
         password: formData.password,
-        confirmPassword: formData.confirmPassword,
-        referralId: formData.referralId || undefined,
-        otpType: "register",
+        confirmPwd: formData.confirmPassword, // Updated to match first code API
+        countryCode: currentCountry?.code || selectedCode,
         country: currentCountry?.country || '',
-        countryCode: currentCountry?.code || selectedCode
+        // referenceId is removed from here (matching first code logic)
       };
 
       const result = await register(payload).unwrap();
 
-      localStorage.setItem("username", result?.data?.username || formData.email);
+      // Store username for later use
+      if (result?.data?.username) {
+        localStorage.setItem("username", result.data.username);
+      }
 
+      // Update OTP-related states
       setOtpSent(true);
       setTimer(120);
       setCanResendOtp(false);
@@ -3036,9 +3614,11 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
 
     } catch (err) {
       console.error("handleVerify (Register/OTPresent) Error:", err);
+
+      // Handle "User verification pending" specially (matching first code)
       if (err?.data?.message === "User verification pending") {
         try {
-          const ress = await OTPresent({ email: formData.email, otpType: "register" }).unwrap();
+          await OTPresent({ email: formData.email }).unwrap();
           setOtpSent(true);
           setTimer(120);
           setCanResendOtp(false);
@@ -3059,13 +3639,17 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     e.preventDefault();
     setNotification(null);
 
+    // Final validation
     const validationErrors = validate();
-    setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+
+      // Show first error as toast (matching first code)
+      const firstError = Object.values(validationErrors)[0];
       setNotification({
         type: 'error',
-        message: "Please correct the highlighted fields."
+        message: firstError
       });
       return;
     }
@@ -3073,54 +3657,56 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     if (!otpSent) {
       setNotification({
         type: 'error',
-        message: 'Please send OTP and verify your phone number first.'
+        message: 'Please send OTP first.'
       });
-      return;
-    }
-    if (!formData.otp.trim()) {
-      setNotification({
-        type: 'error',
-        message: 'OTP is required to complete registration.'
-      });
-      setErrors(prev => ({ ...prev, otp: 'OTP is required' }));
       return;
     }
 
     try {
+      // Include referenceId in the verification payload (matching first code)
       const verifyPayload = {
         email: formData.email,
         otp: Number(formData.otp),
         otpType: "register",
+        referenceId: formData.referralId, // Include referenceId here for verification
       };
 
       const res = await verify(verifyPayload).unwrap();
 
-      if (!res.success) {
-        setNotification({
-          type: 'error',
-          message: res.message || 'OTP verification failed. Please try again.'
-        });
-        return;
-      }
+      // Prepare user data for context and storage (matching first code)
+      const userRegisterData = {
+        ...res,
+        email: formData.email,
+        name: formData.name,
+        username: localStorage.getItem("username"),
+      };
 
       setUserDataFromVerify(res.data);
 
-      localStorage.setItem("token", res?.data?.token || res.token);
-      localStorage.setItem("userData", JSON.stringify(res?.data || res));
+      localStorage.setItem("token", res?.data?.token);
+      localStorage.setItem("userRegisterData", JSON.stringify(userRegisterData)); // Updated to match first code
 
       setNotification({
         type: 'success',
-        message: res?.message || 'Registration completed successfully!'
+        message: res?.message || 'Registration successful!'
       });
 
+      // Navigate to home after successful registration (matching first code)
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/dashboard"); // Updated to match first code
       }, 1000);
 
     } catch (err) {
       console.error("handleSubmit (Verify OTP) Error:", err);
       setNotification({ type: 'error', message: getErrorMessage(err) });
     }
+  };
+
+  // Format timer to MM:SS (matching first code)
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? `0${secs}` : secs}`;
   };
 
   return (
@@ -3297,68 +3883,62 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
           </div>
         </div>
 
-        <div className="relative mb-5">
-          <div className="flex gap-3">
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Shield className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                name="otp"
-                value={formData.otp}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                placeholder="Enter 6-digit OTP"
-                maxLength="6"
-                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                  }`}
-              />
+        {/* OTP Button */}
+        <button
+          type="button"
+          onClick={handleVerify}
+          disabled={isRegisterLoading || isOTPresentLoading || (otpSent && !canResendOtp)}
+          className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${otpSent && !canResendOtp
+              ? 'bg-green-100 text-green-700 cursor-not-allowed'
+              : (isRegisterLoading || isOTPresentLoading)
+                ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-[1.02] shadow-md'
+            }`}
+        >
+          {isRegisterLoading || isOTPresentLoading
+            ? "Sending..."
+            : otpSent && !canResendOtp
+              ? `Resend OTP in ${formatTime(timer)}`
+              : otpSent && canResendOtp
+                ? "Resend OTP"
+                : "Send OTP"}
+        </button>
+
+        {/* OTP Input - only shown after OTP is sent */}
+        {otpSent && (
+          <div className="relative mb-5">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Shield className="h-5 w-5 text-gray-400" />
             </div>
-
-            <button
-              type="button"
-              onClick={handleVerify}
-              disabled={isRegisterLoading || isOTPresentLoading || otpSent || Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0}
-              className={`px-4 py-3 rounded-full font-semibold whitespace-nowrap transition-all duration-200 ${otpSent && timer > 0
-                ? 'bg-green-100 text-green-700 cursor-default'
-                : (isRegisterLoading || isOTPresentLoading)
-                  ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                  : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105 shadow-md'
+            <input
+              type="text"
+              name="otp"
+              value={formData.otp}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              placeholder="Enter OTP"
+              inputMode="numeric"
+              autoComplete="off"
+              className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
                 }`}
-            >
-              {isRegisterLoading || isOTPresentLoading ? 'Sending...' : otpSent && timer > 0 ? `Sent (${timer}s)` : 'Send OTP'}
-            </button>
-          </div>
-          <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
-            {errors.otp && (
-              <div className="text-red-500 text-sm animate-fadeIn">{errors.otp}</div>
-            )}
-          </div>
-        </div>
-
-        {otpSent && timer === 0 && (
-          <div className="text-center mt-2">
-            <button
-              type="button"
-              onClick={() => {
-                setCanResendOtp(false);
-                handleVerify();
+              maxLength={6}
+              style={{
+                WebkitUserSelect: "text",
+                WebkitAppearance: "none",
               }}
-              disabled={isOTPresentLoading || timer > 0}
-              className="text-teal-600 hover:text-teal-700 font-semibold text-sm"
-            >
-              {isOTPresentLoading ? 'Resending...' : 'Resend OTP'}
-            </button>
+            />
+            <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
+              {errors.otp && (
+                <div className="text-red-500 text-sm animate-fadeIn">{errors.otp}</div>
+              )}
+            </div>
           </div>
         )}
 
         <button
           type="submit"
           onClick={handleSubmit}
-          disabled={isVerifyLoading || !otpSent || Object.keys(errors).length > 0 || !formData.otp.trim()}
+          disabled={isVerifyLoading || !otpSent || !formData.otp}
           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-4"
         >
           {isVerifyLoading ? 'Verifying OTP...' : 'REGISTER'}
@@ -3376,7 +3956,6 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     </div>
   );
 };
-
 export default function AuthContainer() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -3475,40 +4054,58 @@ export default function AuthContainer() {
           {/* Enhanced Icon Section */}
           <div className="flex items-center justify-center w-full h-full relative z-10">
             {/* Inline SVG Backgrounds */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-              {/* Place SVG */}
-              <svg className="absolute top-12 left-12 w-28 h-28 opacity-10" viewBox="0 0 24 24" fill="white">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
-              </svg>
+<div className="absolute inset-0 z-0 pointer-events-none">
+  {/* Marker/Location SVG */}
+  <svg className="absolute top-8 left-10 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
+  </svg>
 
-              {/* Coins SVG */}
-              <svg className="absolute bottom-16 left-16 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
-                <path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.97 0 8 1.64 8 2s-3.03 2-8 2-8-1.64-8-2 3.03-2 8-2zm0 14c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V16c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V12c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V10c0 .36-3.03 2-8 2z" />
-              </svg>
+  {/* Document/Code SVG */}
+  <svg className="absolute top-16 left-24 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M6 3h12v2H6v2h7c.55 0 1 .45 1 1s-.45 1-1 1H6v2h7.5c.83 0 1.5.67 1.5 1.5S14.33 14 13.5 14H6v2h5l5 5h-3l-4-4H6v-2H5v-2h1v-2H5V9h1V7H5V5h1V3z" />
+  </svg>
 
-              {/* User SVG */}
-              <svg className="absolute top-1/2 right-16 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
-                <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
-              </svg>
+  {/* Currency Loop SVG */}
+  <svg className="absolute top-12 right-16 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M12 1v2.05c-2.83.49-5 2.94-5 5.95h2c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4h-1v2h1c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4H7c0 3.01 2.17 5.46 5 5.95V23h2v-2.05c2.83-.49 5-2.94 5-5.95s-2.17-5.46-5-5.95V7.95C17.83 7.46 20 5.01 20 2h-2c0 2.21-1.79 4-4 4s-4-1.79-4-4H9c0 3.01 2.17 5.46 5 5.95V1h-2z" />
+  </svg>
 
-              {/* Share/Network SVG */}
-              <svg className="absolute bottom-8 right-10 w-16 h-16 opacity-10" viewBox="0 0 24 24" fill="white">
-                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.018 3.018 0 0 0 0-1.39l7.05-4.11a2.99 2.99 0 1 0-.96-1.72L8 9.59a3 3 0 1 0 0 4.83l7.05 4.11c.12.62.45 1.17.95 1.56.5.39 1.14.61 1.8.61a3 3 0 1 0 0-6z" />
-              </svg>
-              <svg className="absolute top-8 right-12 w-20 h-20 opacity-10 rotate-12" viewBox="0 0 24 24" fill="white">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-              </svg>
+  {/* Printer SVG */}
+  <svg className="absolute top-1/2 left-16 w-24 h-24 opacity-10 -translate-y-1/2" viewBox="0 0 24 24" fill="white">
+    <path d="M16.2 9.6c.9-.9 1.2-2.4.6-3.6-.6-1.3-2.1-2-3.6-1.9V2h-2v2h-2V2H7v2H5v2h1v10H5v2h2v2h2v-2h2v2h2v-2c2.1 0 4-1.3 4-3.5 0-1.4-.7-2.5-1.8-3.1zM10 7h3c.6 0 1 .4 1 1s-.4 1-1 1h-3V7zm3.5 8H10v-2h3.5c.6 0 1 .4 1 1s-.4 1-1 1z" />
+  </svg>
 
-              {/* 🌱 Plant SVG */}
-              <svg className="absolute bottom-12 left-6 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
-                <path d="M12 2C10.34 2 9 3.34 9 5c0 .66.26 1.26.68 1.7L12 9l2.32-2.3A2.5 2.5 0 0 0 15 5c0-1.66-1.34-3-3-3zm6 7c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 9c-2.33 0-7 1.17-7 3.5V22h14v-1.5c0-2.33-4.67-3.5-7-3.5z" />
-              </svg>
+  {/* Coins SVG */}
+  <svg className="absolute bottom-24 left-20 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.97 0 8 1.64 8 2s-3.03 2-8 2-8-1.64-8-2 3.03-2 8-2zm0 14c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V16c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V12c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V10c0 .36-3.03 2-8 2z" />
+  </svg>
 
-              {/* 👥 Group SVG */}
-              <svg className="absolute top-1/4 right-8 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
-                <path d="M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h8v-1c0-.76.32-1.45.84-1.94C11.03 16.35 13.94 16 16 16s4.97.35 6.16.56c.52.49.84 1.18.84 1.94v1h-8v-1.5c0-2.33-4.67-3.5-7-3.5z" />
-              </svg>
-            </div>
+  {/* User SVG */}
+  <svg className="absolute top-2/3 right-24 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+  </svg>
+
+  {/* Share SVG */}
+  <svg className="absolute bottom-8 right-16 w-16 h-16 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.018 3.018 0 0 0 0-1.39l7.05-4.11a2.99 2.99 0 1 0-.96-1.72L8 9.59a3 3 0 1 0 0 4.83l7.05 4.11c.12.62.45 1.17.95 1.56.5.39 1.14.61 1.8.61a3 3 0 1 0 0-6z" />
+  </svg>
+
+  {/* Arrow SVG */}
+  <svg className="absolute top-6 right-10 w-16 h-16 opacity-10 rotate-12" viewBox="0 0 24 24" fill="white">
+    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+  </svg>
+
+  {/* Plant SVG */}
+  <svg className="absolute bottom-10 left-10 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M12 2C10.34 2 9 3.34 9 5c0 .66.26 1.26.68 1.7L12 9l2.32-2.3A2.5 2.5 0 0 0 15 5c0-1.66-1.34-3-3-3zm6 7c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 9c-2.33 0-7 1.17-7 3.5V22h14v-1.5c0-2.33-4.67-3.5-7-3.5z" />
+  </svg>
+
+  {/* Group SVG */}
+  <svg className="absolute top-1/3 right-8 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+    <path d="M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h8v-1c0-.76.32-1.45.84-1.94C11.03 16.35 13.94 16 16 16s4.97.35 6.16.56c.52.49.84 1.18.84 1.94v1h-8v-1.5c0-2.33-4.67-3.5-7-3.5z" />
+  </svg>
+</div>
+
 
             {/* <div className="text-center text-white px-8">
               <div className="mb-14 relative">
@@ -3533,23 +4130,23 @@ export default function AuthContainer() {
               </div>
             </div> */}
             <div className="text-center text-white px-8 flex flex-col items-center justify-center h-full">
-  <div className="relative w-56 h-56 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
-    <img src={icon} alt="Icon" className="w-full h-full object-contain" />
-    <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
-    <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-700"></div>
-    <div className="absolute top-1/2 -right-4 w-2 h-2 bg-green-400 rounded-full animate-ping delay-500"></div>
-  </div>
-  <div className="relative mt-6">
-    <h2 className={`text-4xl font-bold mb-4 transition-all duration-700 transform bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
-      {isLogin ? 'Welcome Back!' : 'Join Us Today!'}
-    </h2>
-    <p className={`text-teal-50 text-lg leading-relaxed transition-all duration-700 transform ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
-      {isLogin
-        ? 'Trade, Earn, Grow — All from One Jaimax Account.'
-        : 'The Next-Gen Crypto Platform Built for You. Register Today.'}
-    </p>
-  </div>
-</div>
+              <div className="relative w-56 h-56 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
+                <img src={icon} alt="Icon" className="w-full h-full object-contain" />
+                <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
+                <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-700"></div>
+                <div className="absolute top-1/2 -right-4 w-2 h-2 bg-green-400 rounded-full animate-ping delay-500"></div>
+              </div>
+              <div className="relative mt-6">
+                <h2 className={`text-4xl font-bold mb-4 transition-all duration-700 transform bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
+                  {isLogin ? 'Welcome Back!' : 'Join Us Today!'}
+                </h2>
+                <p className={`text-teal-50 text-lg leading-relaxed transition-all duration-700 transform ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
+                  {isLogin
+                    ? 'Trade, Earn, Grow — All from One Jaimax Account.'
+                    : 'The Next-Gen Crypto Platform Built for You. Register Today.'}
+                </p>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -3598,7 +4195,7 @@ export default function AuthContainer() {
               <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
             </svg>
 
-           
+
 
             <svg className="absolute top-8 right-12 w-20 h-20 opacity-10 rotate-12" viewBox="0 0 24 24" fill="white">
               <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />

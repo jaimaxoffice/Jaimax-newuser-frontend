@@ -3,7 +3,7 @@ import { Crown, Trophy, Zap, Clock, Medal, Star, Percent, Check, ChevronRight, S
 import { useGetTodayEarningStatusMutation } from './userEarningApiSlice';
 // import DashboardLayout from '../../Layout/DashboardLayout';
 import Loader from "../../../Loader/loader";
-import ReferralModal from '../../modals/referalModal'
+import ReferralModal from '../../modals/referalModal';
 
 const VictoryLeaderboard = () => {
   const [getTodayEarningStatus, { data: apiData, isLoading, error }] = useGetTodayEarningStatusMutation();
@@ -112,14 +112,14 @@ const VictoryLeaderboard = () => {
 
   const getRankIcon = (rank, status) => {
     if (status === 'completed') {
-      return <Check size={16} className="text-teal-600" />;
+      return <Check size={16} className="text-white" />;
     }
 
     switch (rank) {
-      case 1: return <Crown size={16} className="text-teal-400" />;
-      case 2: return <Medal size={16} className="text-gray-300" />;
-      case 3: return <Medal size={16} className="text-yellow-500" />;
-      default: return <Star size={14} className="text-gray-400" />;
+      case 1: return <Crown size={16} className="text-white" />;
+      case 2: return <Medal size={16} className="text-white" />;
+      case 3: return <Medal size={16} className="text-white" />;
+      default: return <Star size={14} className="text-white" />;
     }
   };
 
@@ -190,7 +190,7 @@ const VictoryLeaderboard = () => {
   const encouragingMessage = getEncouragingMessage(nextLevel, completedCount, totalTasks);
 
   const SkeletonCard = () => (
-    <div className="text-center p-2 sm:p-3 rounded-lg bg-gradient-to-br from-teal-500/10 to-teal-400/5 border border-teal-500/30 min-h-[70px] sm:min-h-[80px] animate-pulse">
+    <div className="text-center p-2 sm:p-3 rounded-lg bg-white/10 border border-white/20 min-h-[70px] sm:min-h-[80px] animate-pulse">
       <div className="w-5 h-5 bg-white/20 rounded-full mx-auto mb-1 animate-pulse"></div>
       <div className="w-10 h-3 bg-white/20 rounded mx-auto mb-1 animate-pulse"></div>
       <div className="w-8 h-4 bg-white/20 rounded mx-auto animate-pulse"></div>
@@ -200,7 +200,7 @@ const VictoryLeaderboard = () => {
   const SkeletonVictoryHeader = () => (
     <div className="text-center mb-3 md:mb-4">
       <div className="inline-block relative w-full max-w-md">
-        <div className="relative p-3 sm:p-4 rounded-2xl border border-teal-500 bg-gradient-to-br from-teal-500/15 to-teal-400/8 shadow-lg shadow-teal-500/20 animate-pulse">
+        <div className="relative p-3 sm:p-4 rounded-2xl border border-white/20 bg-white/10 animate-pulse">
           <div className="flex items-center justify-center mb-3">
             <div className="w-8 h-8 bg-white/20 rounded-full mr-2 animate-pulse"></div>
             <div className="w-30 h-8 bg-white/20 rounded animate-pulse"></div>
@@ -211,8 +211,8 @@ const VictoryLeaderboard = () => {
   );
 
   const SkeletonLeaderboardItem = () => (
-    <div className="flex items-center p-2 sm:p-3 rounded-lg mb-2 bg-gradient-to-br from-teal-500/8 to-teal-400/5 border border-teal-500/30 animate-pulse">
-      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-teal-500/20 rounded-full mr-2 sm:mr-3 animate-pulse"></div>
+    <div className="flex items-center p-2 sm:p-3 rounded-lg mb-2 bg-white/10 border border-white/20 animate-pulse">
+      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full mr-2 sm:mr-3 animate-pulse"></div>
       <div className="flex-grow">
         <div className="flex items-center justify-between">
           <div className="flex-grow mr-2">
@@ -234,8 +234,8 @@ const VictoryLeaderboard = () => {
   if (isLoading) {
     return (
       <>
-        
-          <div className="bg-gray-900">
+
+          <div className="bg-[#1d8d84]">
             <div className="container mx-auto px-2 sm:px-3">
               <div className="flex justify-center">
                 <div className="w-full xl:w-10/12">
@@ -255,7 +255,7 @@ const VictoryLeaderboard = () => {
                     </div>
 
                     <div className="text-center mt-3 md:mt-4">
-                      <div className="inline-flex items-center px-3 py-2 rounded-full bg-gradient-to-br from-teal-500/12 to-teal-400/8 border border-teal-500/30 w-38 h-10 animate-pulse"></div>
+                      <div className="inline-flex items-center px-3 py-2 rounded-full bg-white/10 border border-white/20 w-38 h-10 animate-pulse"></div>
                     </div>
                   </div>
                 </div>
@@ -269,6 +269,7 @@ const VictoryLeaderboard = () => {
 
   return (
     <>
+
         <div className="bg-[#1d8d84] min-h-screen">
           <div className="container mx-auto px-1 sm:px-3">
             <div className="flex justify-center">
@@ -277,10 +278,10 @@ const VictoryLeaderboard = () => {
                   {/* VICTORY Header */}
                   <div className="text-center mb-3 md:mb-4">
                     <div className="inline-block relative w-1/2">
-                      <div className="relative p-3 sm:p-4 rounded-2xl border border-teal-500 bg-gradient-to-br from-teal-500/15 to-teal-400/8 shadow-lg shadow-teal-500/20">
+                      <div className="relative p-3 sm:p-4 rounded-2xl border border-white/30 bg-white/20">
                         <div className="flex items-center justify-center mb-3">
-                          <Crown size={window.innerWidth < 576 ? 24 : 32} className="mr-2 text-teal-400" />
-                          <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-teal-500 to-teal-400 bg-clip-text text-transparent">
+                          <Crown size={window.innerWidth < 576 ? 24 : 32} className="mr-2 text-white" />
+                          <h1 className="text-2xl sm:text-4xl font-bold text-white">
                             VICTORY
                           </h1>
                         </div>
@@ -290,22 +291,22 @@ const VictoryLeaderboard = () => {
 
                   {/* Stats Cards Row */}
                   <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-3 md:mb-4">
-                    <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-gradient-to-br from-teal-500/20 to-teal-400/10 border border-teal-500/40 min-h-[70px] sm:min-h-[80px] backdrop-blur-sm cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:shadow-teal-500/40 hover:border-teal-400/60">
+                    <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-white/20 border border-white/30 min-h-[70px] sm:min-h-[80px] cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:bg-white/25 hover:border-white/40">
                       <div className="mb-1">
-                        <Crown size={window.innerWidth < 576 ? 16 : 20} className="text-teal-500 mx-auto" />
+                        <Crown size={window.innerWidth < 576 ? 16 : 20} className="text-white mx-auto" />
                       </div>
                       <div>
-                        <p className="text-xs sm:text-sm font-medium mb-0 text-teal-500">Levels Achieved</p>
+                        <p className="text-xs sm:text-sm font-medium mb-0 text-white/80">Levels Achieved</p>
                         <p className="text-base sm:text-xl font-bold mb-0">{data.earnings.completedLevels}</p>
                       </div>
                     </div>
 
-                    <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-gradient-to-br from-teal-500/20 to-teal-400/10 border border-teal-500/40 min-h-[70px] sm:min-h-[80px] backdrop-blur-sm cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:shadow-teal-500/40 hover:border-teal-400/60">
+                    <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-white/20 border border-white/30 min-h-[70px] sm:min-h-[80px] cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:bg-white/25 hover:border-white/40">
                       <div className="mb-1">
-                        <Clock size={window.innerWidth < 576 ? 16 : 20} className="text-teal-500 mx-auto" />
+                        <Clock size={window.innerWidth < 576 ? 16 : 20} className="text-white mx-auto" />
                       </div>
                       <div>
-                        <p className="text-xs sm:text-sm font-medium mb-0 text-teal-500">Time Left</p>
+                        <p className="text-xs sm:text-sm font-medium mb-0 text-white/80">Time Left</p>
                         <p className="text-base sm:text-xl font-bold mb-0">{data.validityWindow.hoursRemaining}h</p>
                       </div>
                     </div>
@@ -313,7 +314,7 @@ const VictoryLeaderboard = () => {
 
                   {allLevelsCompleted ? (
                     <div className="mb-4 text-center">
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-teal-500/40 to-teal-400/20 border-2 border-teal-400 shadow-lg shadow-teal-400/50 overflow-hidden">
+                      <div className="p-4 rounded-xl bg-white/25 border-2 border-white/40 overflow-hidden">
                         <div className="relative">
                           <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">
                             You've done it!
@@ -321,7 +322,7 @@ const VictoryLeaderboard = () => {
                           <p className="text-lg font-medium text-gray-200 mb-0">
                             {encouragingMessage}
                           </p>
-                          <Gift size={36} className="mt-3 text-teal-500 mx-auto" />
+                          <Gift size={36} className="mt-3 text-white mx-auto" />
                         </div>
                       </div>
                     </div>
@@ -330,24 +331,24 @@ const VictoryLeaderboard = () => {
                       <div className="mb-4">
                         <div className={`next-level-card relative p-4 rounded-xl overflow-hidden cursor-pointer transition-all duration-400 hover:transform hover:-translate-y-1.5 ${
                           nextLevel.status === 'active'
-                            ? 'bg-gradient-to-br from-teal-400/30 to-teal-500/15 border-2 border-teal-400 shadow-lg shadow-teal-400/40'
+                            ? 'bg-white/25 border-2 border-white/40'
                             : nextLevel.status === 'pending'
-                              ? 'bg-gradient-to-br from-yellow-500/20 to-teal-400/10 border-2 border-teal-400 shadow-lg shadow-yellow-500/30'
-                              : 'bg-gradient-to-br from-teal-500/25 to-teal-400/15 border-2 border-teal-500/60 shadow-lg shadow-teal-500/30'
+                              ? 'bg-white/20 border-2 border-white/35'
+                              : 'bg-white/20 border-2 border-white/30'
                         }`}>
                           {/* Animated background effect */}
                           <div className={`absolute top-0 left-0 w-full h-full animate-pulse ${
                             nextLevel.status === 'active'
-                              ? 'bg-gradient-to-45 from-transparent via-teal-400/15 to-transparent'
+                              ? 'bg-white/5'
                               : nextLevel.status === 'pending'
-                                ? 'bg-gradient-to-45 from-transparent via-yellow-500/10 to-transparent'
-                                : 'bg-gradient-to-45 from-transparent via-teal-500/10 to-transparent'
+                                ? 'bg-white/3'
+                                : 'bg-white/3'
                           }`}></div>
 
                           <div className="relative">
                             {/* Encouraging Message */}
                             <div className="text-center mb-3">
-                              <p className="font-medium mb-2 text-teal-400 text-base drop-shadow-sm">
+                              <p className="font-medium mb-2 text-white text-base drop-shadow-sm">
                                 {encouragingMessage}
                               </p>
                             </div>
@@ -367,9 +368,7 @@ const VictoryLeaderboard = () => {
                                       {nextLevel.status}
                                     </span>
                                     {nextLevel.commissionRate && (
-                                      <span className={`font-bold text-sm ${
-                                        nextLevel.status === 'active' ? 'text-teal-400' : 'text-teal-500'
-                                      }`}>
+                                      <span className={`font-bold text-sm text-white`}>
                                         {nextLevel.commissionRate} Commission
                                       </span>
                                     )}
@@ -379,7 +378,7 @@ const VictoryLeaderboard = () => {
                               <ChevronRight
                                 size={28}
                                 className={`${
-                                  nextLevel.status === 'active' ? 'text-teal-400 animate-bounce' : 'text-teal-500'
+                                  nextLevel.status === 'active' ? 'text-white animate-bounce' : 'text-white'
                                 } cursor-pointer`}
                                 onClick={() => setShowReferralModal(true)}
                               />
@@ -388,7 +387,7 @@ const VictoryLeaderboard = () => {
                             {/* Earnings and Progress Info */}
                             <div className="grid grid-cols-2 gap-3">
                               <div className="text-center">
-                                <span className="font-bold text-teal-400 text-xl block">
+                                <span className="font-bold text-white text-xl block">
                                   ₹{nextLevel.commissionRate || ''}
                                 </span>
                                 <span className="text-sm text-white/80">
@@ -396,7 +395,7 @@ const VictoryLeaderboard = () => {
                                 </span>
                               </div>
                               <div className="text-center">
-                                <span className="font-bold text-teal-500 text-xl block">
+                                <span className="font-bold text-white text-xl block">
                                   {completedCount}/{data.progress.totalTasks}
                                 </span>
                                 <span className="text-sm text-white/80">
@@ -408,7 +407,7 @@ const VictoryLeaderboard = () => {
                             {/* Action Button */}
                             {nextLevel.status === 'active' && (
                               <div className="text-center mt-3">
-                                <button className="btn font-bold px-4 py-2 rounded-full bg-teal-400 text-gray-900 border-none text-base transition-all duration-300 shadow-lg shadow-teal-400/40 hover:transform hover:-translate-y-0.5 hover:shadow-xl hover:shadow-teal-400/60">
+                                <button className="btn font-bold px-4 py-2 rounded-full bg-white text-[#1d8d84] border-none text-base transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:bg-gray-100">
                                   🚀 Complete Level Now!
                                 </button>
                               </div>
@@ -426,22 +425,20 @@ const VictoryLeaderboard = () => {
                     {data.leaderboard.map((player) => (
                       <div
                         key={player.id}
-                        className={`leaderboard-item flex items-center p-2 sm:p-3 rounded-lg mb-2 cursor-pointer transition-all duration-300 hover:transform hover:translate-x-2 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-500/30 hover:border-teal-400/50 ${
+                        className={`leaderboard-item flex items-center p-2 sm:p-3 rounded-lg mb-2 cursor-pointer transition-all duration-300 hover:transform hover:translate-x-2 hover:-translate-y-0.5 hover:bg-white/15 hover:border-white/40 ${
                           player.status === 'completed'
-                            ? 'bg-gradient-to-br from-teal-500/25 to-teal-400/15 border-2 border-teal-500 transform scale-102 shadow-md shadow-teal-500/30'
+                            ? 'bg-white/25 border-2 border-white/40 transform scale-102'
                             : player.originalIndex === 0
-                              ? 'bg-gradient-to-br from-teal-400/15 to-teal-500/10 border border-teal-400'
-                              : 'bg-gradient-to-br from-teal-500/8 to-teal-400/5 border border-teal-500/30'
+                              ? 'bg-white/20 border border-white/35'
+                              : 'bg-white/15 border border-white/30'
                         } ${
-                          player.status === 'locked' ? 'opacity-60' : 'opacity-100'
-                        } ${
-                          (player.status === 'locked' || player.status === 'pending') ? 'blur-sm' : ''
+                          player.status === 'locked' ? 'opacity-70 blur-[1px]' : 'opacity-100'
                         }`}
                       >
                         <div className={`flex items-center justify-center rounded-full mr-2 sm:mr-3 w-8 h-8 sm:w-10 sm:h-10 ${
                           player.status === 'completed'
-                            ? 'bg-teal-500/30'
-                            : player.originalIndex === 0 ? 'bg-teal-400/20' : 'bg-teal-500/20'
+                            ? 'bg-white/30'
+                            : player.originalIndex === 0 ? 'bg-white/25' : 'bg-white/20'
                         }`}>
                           <div className="flex items-center">
                             {getRankIcon(player.originalIndex + 1, player.status)}
@@ -457,10 +454,7 @@ const VictoryLeaderboard = () => {
                               </h3>
                               <div className="flex items-center flex-wrap">
                                 {player.commissionRate && (
-                                  <span className={`mr-2 font-bold text-xs sm:text-sm ${
-                                    player.status === 'completed' ? 'text-teal-500' : 
-                                    player.status === 'pending' ? 'text-yellow-500' : 'text-teal-500'
-                                  }`}>
+                                  <span className={`mr-2 font-bold text-xs sm:text-sm text-white`}>
                                     {player.commissionRate}
                                   </span>
                                 )}

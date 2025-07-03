@@ -5,7 +5,7 @@ import {
   useAvailableBalanceQuery,
   useWalletTransactionsListQuery,
 } from "./walletApiSlice";
-
+import Loader from '../../../Loader/loader';
 const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
 
 // Referral Modal Component
@@ -98,15 +98,7 @@ const CopyToClipboardButton = ({ textToCopy, styles = {} }) => {
   );
 };
 
-// Loader Component
-const Loader = () => (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white rounded-lg p-6">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
-      <p className="mt-4 text-teal-800 font-medium">Loading...</p>
-    </div>
-  </div>
-);
+
 
 export default function WalletDashboard() {
   const [state, setState] = useState({
