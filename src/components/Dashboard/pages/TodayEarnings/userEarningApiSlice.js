@@ -1,4 +1,4 @@
-import { apiSlice } from "../../services/api/jaiMaxApi";
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
 
 export const userEarningApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

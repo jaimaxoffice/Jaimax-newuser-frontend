@@ -892,6 +892,33 @@ const staticSlabsData = [
     type: "upcoming",
     prices: { usd: 0.00059, inr: 0.05 },
     totalCoins: "20000000000"
+  },
+  {
+    id: 3,
+    title: "3rd ICO Slab",
+    status: "Upcoming",
+    statusColor: "bg-amber-500",
+    type: "upcoming",
+    prices: { usd: 0.00710, inr: 0.60000 },
+    totalCoins: "25000000000"
+  },
+  {
+    id: 4,
+    title: "4th ICO Slab",
+    status: "Upcoming",
+    statusColor: "bg-amber-500",
+    type: "upcoming",
+    prices: { usd: 0.01893, inr: 1.60000 },
+    totalCoins: "30000000000"
+  },
+  {
+    id: 5,
+    title: "5th ICO Slab",
+    status: "Upcoming",
+    statusColor: "bg-amber-500",
+    type: "upcoming",
+    prices: { usd: 0.00189, inr: 0.159 },
+    totalCoins: "23000000000"
   }
 ];
 

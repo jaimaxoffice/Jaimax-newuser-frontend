@@ -13,6 +13,7 @@ import digiLocker from "../../../../assets/digilocker.jpg";
 import DigiLockerModal from './DigiLockerModal';
 
 import Loader from '../../../Loader/loader';
+
 const KycInformation = () => {
   const { data } = MyContext(MyContext);
   const { data: userData } = useUserDataQuery();
@@ -67,14 +68,9 @@ const KycInformation = () => {
     return countryName?.country_name || "NA";
   };
 
-  /**
-   * This method is used to change the input fields & also check the files format
-   * @param {*} e
-   */
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    // Validate IFSC Code
     if (name === "ifsc_code" && !/^[a-zA-Z0-9]*$/.test(value)) {
       return;
     }
@@ -84,8 +80,6 @@ const KycInformation = () => {
     if (name === "upi_id" && !/^[0-9]*$/.test(value)) {
       return;
     }
-
-    // Validate Bank Name: Allow only alphabetic characters (a-z, A-Z)
     if (name === "bank_name" && !/^[a-zA-Z\s]*$/.test(value)) {
       return;
     }
@@ -122,16 +116,11 @@ const KycInformation = () => {
 
   const handleChangeMobileNumber = (e) => {
     const { name, value } = e.target;
-
     if (value.startsWith(`+${userData?.data?.countryCode} `)) {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  /**
-   * This method will return the maxlength including country code based on the user's country code
-   * @return {*}
-   */
   const getMaxLength = () => {
     let maxLength = 0;
     if (isCountryCodeIndia) {
@@ -142,13 +131,9 @@ const KycInformation = () => {
     return maxLength;
   };
 
-  /**
-   * This method is used to check the mobile number after prefix
-   * @param {*} input
-   */
   const checkTextAfterPrefix = (input) => {
     let splitString = input.split(`+${userData?.data?.countryCode} `);
-    return !splitString[1]?.trim().length > 0;
+    return !splitString[1].trim().length > 0;
   };
 
   const handleSubmit = async () => {
@@ -203,21 +188,21 @@ const KycInformation = () => {
         data.append("passport_doc_back", formData.passport_doc_back);
       }
     } else {
-      if (docFrontRef.current?.value) {
+      if (docFrontRef.current.value) {
         if (isCountryCodeIndia) {
           data.append("aadhar_doc_front", formData.aadhar_doc_front);
         } else {
           data.append("dl_doc_front", formData.dl_doc_front);
         }
       }
-      if (docBackRef.current?.value) {
+      if (docBackRef.current.value) {
         if (isCountryCodeIndia) {
           data.append("aadhar_doc_back", formData.aadhar_doc_back);
         } else {
           data.append("dl_doc_back", formData.dl_doc_back);
         }
       }
-      if (doc1FrontRef.current?.value) {
+      if (doc1FrontRef.current.value) {
         if (isCountryCodeIndia) {
           data.append("pan_doc_front", formData.pan_doc_front);
         } else {
@@ -292,10 +277,10 @@ const KycInformation = () => {
       bank_account: "",
       address: "",
     });
-    if (docFrontRef.current) docFrontRef.current.value = null;
-    if (doc1FrontRef.current) doc1FrontRef.current.value = null;
-    if (docBackRef.current) docBackRef.current.value = null;
-    if (!isCountryCodeIndia && doc1BackRef.current) {
+    docFrontRef.current.value = null;
+    doc1FrontRef.current.value = null;
+    docBackRef.current.value = null;
+    if (!isCountryCodeIndia) {
       doc1BackRef.current.value = "";
     }
   };
@@ -303,7 +288,6 @@ const KycInformation = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const extractedCode = queryParams.get("code");
-    // Remove all query parameters from the URL
     const newUrl =
       window.location.protocol +
       "//" +
@@ -311,7 +295,7 @@ const KycInformation = () => {
       window.location.pathname;
     window.history.replaceState(null, "", newUrl);
     if (extractedCode && !localStorage.getItem("processed")) {
-      localStorage.setItem("processed", "true"); // Guard condition
+      localStorage.setItem("processed", "true");
 
       const payload = {
         code: extractedCode,
@@ -349,11 +333,11 @@ const KycInformation = () => {
 
       postTokenRequest();
     }
-  }, [getKycData, location.search]);
+  }, []);
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, []);
 
   useEffect(() => {
     if (kycdata?.success == 1) {
@@ -371,7 +355,8 @@ const KycInformation = () => {
         ifsc_code: kycdata?.data?.ifsc_code || "",
         applicantName: kycdata?.data.name || userData?.data?.name,
         mobile_number:
-          `${`+${userData?.data?.countryCode} `}${kycdata?.data?.mobile_number
+          `${`+${userData?.data?.countryCode} `}${
+            kycdata?.data?.mobile_number
           }` || "",
         upi_id: kycdata?.data?.upi_id || "",
         bank_account: kycdata?.data?.bank_account || "",
@@ -379,7 +364,6 @@ const KycInformation = () => {
         dob: kycdata?.data.dob || "",
         panNumber: kycdata?.data.panNumber || "",
       });
-      console.log(kycdata?.data?.name, "kycdata");
       if (
         isCountryCodeIndia &&
         kycdata?.data?.status === "reject" &&
@@ -395,12 +379,8 @@ const KycInformation = () => {
       }
       resetForm();
     }
-  }, [userData, kycdata, isLoading, loading, isCountryCodeIndia]);
+  }, [userData, kycdata]);
 
-  /**
-   * This method is used to show the image
-   * @param {*} imageURL
-   */
   const onClickImage = (imageURL) => {
     const link = document.createElement("a");
     link.href = imageURL;
@@ -409,21 +389,14 @@ const KycInformation = () => {
     link.click();
   };
 
-  /**
-   * This method is used to update the state to edit the fields when the status is approve
-   */
   const onClickEdit = () => {
     setIsEditClicked(true);
   };
 
-  /**
-   * Function to generate the code verifier
-   * @return {*}
-   */
   const generateCodeVerifier = async () => {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
-    const length = Math.floor(Math.random() * (128 - 43 + 1)) + 43; // Random length between 43 and 128
+    const length = Math.floor(Math.random() * (128 - 43 + 1)) + 43;
     let verifier = "";
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
@@ -434,76 +407,82 @@ const KycInformation = () => {
 
   const generateCodeChallenge = (verifier) => {
     console.log("generateCodeChallenge");
-
-    // Hash the verifier using SHA-256
     const hash = CryptoJS.SHA256(verifier);
-
-    // Convert the hash to Base64 and make it URL-safe
     const base64Url = CryptoJS.enc.Base64.stringify(hash)
       .replace(/\+/g, "-")
       .replace(/\//g, "_")
       .replace(/=+$/, "");
-
     return base64Url;
   };
+
   const handleButtonClick = async () => {
-    console.log("handleButtonClick");
+    console.log("🚀 DigiLocker handleButtonClick triggered");
+    console.log("🔍 Current state:", { 
+      loading, 
+      showModal, 
+      isCountryCodeIndia,
+      origin: window.location.origin 
+    });
+    
     setLoading(true);
     setErrors({});
 
     try {
-      // Step 1: Generate code verifier
       const verifier = await generateCodeVerifier();
+      console.log("✅ Code verifier generated:", verifier?.substring(0, 10) + "...");
+      
       localStorage.removeItem("processed");
-
-      // Step 2: Generate code challenge
       const challenge = await generateCodeChallenge(verifier);
-      console.log("challenge", challenge);
-      console.log("window.location.origin", window.location.origin);
-
+      console.log("✅ Code challenge generated:", challenge?.substring(0, 10) + "...");
+      console.log("🌐 Window origin:", window.location.origin);
+      
       let origin = window.location.origin;
       let redirectURI;
       let clientId;
-
-      // Fixed environment configuration - replace with your actual values
-      if (origin.includes("5173") || origin.includes("5174")) {
+      
+      if (origin && (origin.includes("5173") || origin.includes("5174"))) {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_DEV;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_DEV;
-      } else if (origin === "https://jaimax.com") {
+        console.log("🔧 Using DEV environment");
+      } else if (window.location.origin === "https://jaimax.com") {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_PROD;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_PROD;
+        console.log("🔧 Using PROD environment");
       } else {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_QA;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_QA;
+        console.log("🔧 Using QA environment");
       }
 
+      console.log("🔑 Environment config:", { redirectURI, clientId: clientId?.substring(0, 10) + "..." });
+
+      if (!redirectURI || !clientId) {
+        throw new Error("❌ Missing DigiLocker environment configuration");
+      }
 
       localStorage.setItem("verifier", verifier);
-
-      // Step 3: Construct the URL with query parameters (FIXED)
-      const apiUrl = new URL(`https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize?response_type=code
-&client_id=${clientId}&state=oidc_flow&
-redirect_uri=${redirectURI}&
-code_challenge=${challenge}&
-code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile 
-&amr=pan+all+aadhaar&scope=files.issueddocs+files.uploadeddocs&pla=Y`);
-
-      console.log("Final URL:", apiUrl);
-
-      // Step 4: Open the API URL in the same tab
-      window.open(apiUrl, "_self");
+      
+      const apiUrl = new URL(`https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize?response_type=code&client_id=${clientId}&state=oidc_flow&redirect_uri=${redirectURI}&code_challenge=${challenge}&code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile&amr=pan+all+aadhaar&scope=files.issueddocs+files.uploadeddocs&pla=Y`);
+      
+      console.log("🔗 DigiLocker URL generated:", apiUrl.toString());
+      console.log("🚀 Opening DigiLocker in same tab...");
+      
+      // Close modal before navigating
+      setShowModal(false);
+      
+      window.open(apiUrl.toString(), "_self");
     } catch (err) {
-      console.error("Error in handleButtonClick:", err);
-      setErrors(err.message);
-      toast.error(err.message, {
+      console.error("❌ DigiLocker error:", err);
+      toast.error(`DigiLocker Error: ${err.message}`, {
         position: "top-center",
       });
+      setErrors(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-
+  // Helper functions for modern UI
   const isFieldDisabled = () => {
     return (!enableFields && isCountryCodeIndia) ||
       kycdata?.data?.status === "open" ||
@@ -535,7 +514,7 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
   const { statusText, statusColor } = getKYCStatusDisplay();
 
   // Input Field Component
-  const InputField = ({ label, name, value, onChange, onBlur, placeholder, type = 'text', required = false, error, disabled = false, maxLength, onKeyPress, readOnly = false }) => (
+  const InputField = ({ label, name, value, onChange, placeholder, type = 'text', required = false, error, disabled = false, maxLength, onKeyPress, readOnly = false }) => (
     <div className="mb-4 relative">
       <label htmlFor={name} className="block text-gray-700 text-sm font-medium mb-2">
         {label}{required && <span className="text-red-500 ml-1">*</span>}
@@ -546,7 +525,6 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
         name={name}
         value={value}
         onChange={onChange}
-        onBlur={onBlur}
         onKeyPress={onKeyPress}
         placeholder={placeholder}
         required={required}
@@ -598,10 +576,10 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
           {showImageButton && (
             <button
               type="button"
-              className="ml-2 text-teal-600 hover:text-teal-800"
+              className="ml-2 text-teal-600 hover:text-teal-800 text-xs"
               onClick={onShowImage}
             >
-              👁️ View
+              <img alt="showIcon" src={showIcon} className="inline w-4 h-4" />
             </button>
           )}
         </label>
@@ -673,310 +651,314 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
   );
 
   return (
-
-
-    <div className="min-h-screen bg-[#1d8d84] py-6 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-                KYC Information
-              </h1>
-              <p className="text-gray-600">
-                {kycdata?.data?.status !== "approve" && "Fill up information and verify your KYC."}
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex items-center text-gray-700 font-medium">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Country: {!userData?.data?.country || userData?.data?.country === "N/A" ? getCountryName() : userData?.data?.country}
+      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-50 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+                  KYC Information
+                </h1>
+                <p className="text-gray-600">
+                  {kycdata?.data?.status !== "approve" && "Fill up information and verify your KYC."}
+                </p>
               </div>
-              {isCountryCodeIndia && ((kycdata?.data?.status !== "open" && kycdata?.data?.status !== "approve") || (kycdata?.data?.status == "approve" && isEditClicked)) && (
-                <button
-                  type="button"
-                  onClick={handleButtonClick}
-                  disabled={loading}
-                  className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xs hover:bg-blue-700 transition-colors disabled:opacity-50"
-                >
-                  <img src={digiLocker} alt="DigiLocker" className="w-8 h-8" />
-                </button>
-              )}
-            </div>
-          </div>
 
-          {/* KYC Status */}
-          <div className="flex justify-between items-center mt-6">
-            <div className="flex items-center gap-4">
-              {kycdata?.data?.status === "approve" && (
-                <button
-                  type="button"
-                  onClick={onClickEdit}
-                  className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
-                >
-                  <img src={editIcon} alt="Edit" className="w-4 h-4" />
-                  Edit
-                </button>
-              )}
-              <div className="inline-flex items-center px-4 py-2 rounded-full" style={{ backgroundColor: `${statusColor === 'green' ? '#dcfce7' : statusColor === 'red' ? '#fee2e2' : statusColor === 'blue' ? '#dbeafe' : '#fed7aa'}` }}>
-                <div className={`w-2 h-2 rounded-full mr-2 ${statusColor === 'green' ? 'bg-green-500' : statusColor === 'red' ? 'bg-red-500' : statusColor === 'blue' ? 'bg-blue-500' : 'bg-orange-500'} ${statusColor === 'orange' ? 'animate-pulse' : ''}`}></div>
-                <span className={`font-medium ${statusColor === 'green' ? 'text-green-700' : statusColor === 'red' ? 'text-red-700' : statusColor === 'blue' ? 'text-blue-700' : 'text-orange-700'}`}>
-                  KYC Status: {statusText}
-                </span>
-              </div>
-              {kycdata?.data?.status === "reject" && kycdata?.data?.reason && (
-                <div className="text-red-600 font-medium">
-                  Reason: {kycdata.data.reason}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="flex items-center text-gray-700 font-medium">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Country: {!userData?.data?.country || userData?.data?.country === "N/A" ? getCountryName() : userData?.data?.country}
                 </div>
-              )}
+                {isCountryCodeIndia && ((kycdata?.data?.status !== "open" && kycdata?.data?.status !== "approve") || (kycdata?.data?.status == "approve" && isEditClicked)) && (
+                  <button
+                    type="button"
+                    onClick={handleButtonClick}
+                    disabled={loading}
+                    className="bg-transparent border-0 p-2 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
+                  >
+                    <img
+                      src={digiLocker}
+                      alt="digiLockerIcon"
+                      className="w-12 h-12"
+                    />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* KYC Status */}
+            <div className="flex justify-between items-center mt-6">
+              <div className="flex items-center gap-4">
+                {kycdata?.data?.status === "approve" && (
+                  <button
+                    type="button"
+                    onClick={onClickEdit}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                  >
+                    <img alt="edit" src={editIcon} className="w-4 h-4" />
+                    Edit
+                  </button>
+                )}
+                <div className="inline-flex items-center px-4 py-2 rounded-full" style={{ backgroundColor: `${statusColor === 'green' ? '#dcfce7' : statusColor === 'red' ? '#fee2e2' : statusColor === 'blue' ? '#dbeafe' : '#fed7aa'}` }}>
+                  <div className={`w-2 h-2 rounded-full mr-2 ${statusColor === 'green' ? 'bg-green-500' : statusColor === 'red' ? 'bg-red-500' : statusColor === 'blue' ? 'bg-blue-500' : 'bg-orange-500'} ${statusColor === 'orange' ? 'animate-pulse' : ''}`}></div>
+                  <span className={`font-medium ${statusColor === 'green' ? 'text-green-700' : statusColor === 'red' ? 'text-red-700' : statusColor === 'blue' ? 'text-blue-700' : 'text-orange-700'}`}>
+                    KYC Status: {statusText}
+                  </span>
+                </div>
+                {kycdata?.data?.status === "reject" && kycdata?.data?.reason && (
+                  <div className="text-red-600 font-medium">
+                    Reason: {kycdata.data.reason}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Form */}
-        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            {/* Section 1: Personal Information */}
-            <SectionCard title="Applicant Info" icon="👤">
-              <div className="space-y-4">
-                <InputField
-                  label="Name of the Applicant"
-                  name="applicantName"
-                  type="text"
-                  value={formData.applicantName || ''}
-                  onChange={handleChange}
-                  placeholder="Enter your full name"
-                  error={errors.applicantName}
-                  disabled={true}
-                  readOnly={true}
-                  required
-                />
-                {isCountryCodeIndia && (
+          {/* Form */}
+          <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* Section 1: Personal Information */}
+              <SectionCard title="Applicant Info" icon="👤">
+                <div className="space-y-4">
                   <InputField
-                    label="Date of Birth"
-                    name="dob"
+                    label="Name of the Applicant"
+                    name="applicantName"
                     type="text"
-                    value={formData.dob || ''}
+                    value={formData.applicantName || ''}
                     onChange={handleChange}
-                    placeholder="Date of Birth"
-                    error={errors.dob}
+                    placeholder="Enter your full name"
+                    error={errors.applicantName}
                     disabled={true}
                     readOnly={true}
                     required
                   />
-                )}
-                <InputField
-                  label="Mobile Number (As per Bank)"
-                  name="mobile_number"
-                  type="tel"
-                  value={formData.mobile_number || ''}
-                  onChange={handleChangeMobileNumber}
-                  placeholder="Enter mobile number"
-                  error={errors.mobile_number}
-                  disabled={isFieldDisabled()}
-                  maxLength={getMaxLength()}
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  required
-                />
-                <InputField
-                  label="Address"
-                  name="address"
-                  type="text"
-                  value={formData.address || ''}
-                  onChange={handleChange}
-                  placeholder="Enter your complete address"
-                  error={errors.address}
-                  disabled={isFieldDisabled()}
-                  required
-                />
-              </div>
-            </SectionCard>
-
-            {/* Section 2: Document Upload */}
-            <SectionCard title="Applicant Proofs" icon="📄">
-              <div className="space-y-4">
-                <FileInput
-                  label={`${isCountryCodeIndia ? "Aadhar" : "Driving License"} Front`}
-                  name={isCountryCodeIndia ? "aadhar_doc_front" : "dl_doc_front"}
-                  onFileChange={handleChange}
-                  error={isCountryCodeIndia ? errors.aadhar_doc_front : errors.dl_doc_front}
-                  disabled={isFieldDisabled()}
-                  showImageButton={!!(kycdata?.success && (kycdata?.data?.aadhar_doc_front || kycdata?.data?.dl_doc_front))}
-                  onShowImage={() => onClickImage(isCountryCodeIndia ? kycdata?.data?.aadhar_doc_front : kycdata?.data?.dl_doc_front)}
-                  inputRef={docFrontRef}
-                  accept=".jpg,.jpeg,.png"
-                  required
-                />
-                <FileInput
-                  label={`${isCountryCodeIndia ? "Aadhar" : "Driving License"} Back`}
-                  name={isCountryCodeIndia ? "aadhar_doc_back" : "dl_doc_back"}
-                  onFileChange={handleChange}
-                  error={isCountryCodeIndia ? errors.aadhar_doc_back : errors.dl_doc_back}
-                  disabled={isFieldDisabled()}
-                  showImageButton={!!(kycdata?.success && (kycdata?.data?.aadhar_doc_back || kycdata?.data?.dl_doc_back))}
-                  onShowImage={() => onClickImage(isCountryCodeIndia ? kycdata?.data?.aadhar_doc_back : kycdata?.data?.dl_doc_back)}
-                  inputRef={docBackRef}
-                  accept=".jpg,.jpeg,.png"
-                  required
-                />
-                <FileInput
-                  label={isCountryCodeIndia ? "PAN" : "Passport Front"}
-                  name={isCountryCodeIndia ? "pan_doc_front" : "passport_doc_front"}
-                  onFileChange={handleChange}
-                  error={isCountryCodeIndia ? errors.pan_doc_front : errors.passport_doc_front}
-                  disabled={isFieldDisabled()}
-                  showImageButton={!!(kycdata?.success && (kycdata?.data?.pan_doc_front || kycdata?.data?.passport_doc_front))}
-                  onShowImage={() => onClickImage(isCountryCodeIndia ? kycdata?.data?.pan_doc_front : kycdata?.data?.passport_doc_front)}
-                  inputRef={doc1FrontRef}
-                  accept=".jpg,.jpeg,.png"
-                  required
-                />
-                {!isCountryCodeIndia && (
-                  <FileInput
-                    label="Passport Back"
-                    name="passport_doc_back"
-                    onFileChange={handleChange}
-                    error={errors.passport_doc_back}
+                  {isCountryCodeIndia && (
+                    <InputField
+                      label="Date of Birth"
+                      name="dob"
+                      type="text"
+                      value={formData.dob || ''}
+                      onChange={handleChange}
+                      placeholder="Date of Birth"
+                      error={errors.dob}
+                      disabled={true}
+                      readOnly={true}
+                      required
+                    />
+                  )}
+                  <InputField
+                    label="Mobile Number (As per Bank)"
+                    name="mobile_number"
+                    type="tel"
+                    value={formData.mobile_number || ''}
+                    onChange={handleChangeMobileNumber}
+                    placeholder="Enter mobile number"
+                    error={errors.mobile_number}
                     disabled={isFieldDisabled()}
-                    showImageButton={!!(kycdata?.success && kycdata?.data?.passport_doc_back)}
-                    onShowImage={() => onClickImage(kycdata?.data?.passport_doc_back)}
-                    inputRef={doc1BackRef}
+                    maxLength={getMaxLength()}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    required
+                  />
+                  <InputField
+                    label="Address"
+                    name="address"
+                    type="text"
+                    value={formData.address || ''}
+                    onChange={handleChange}
+                    placeholder="Enter your complete address"
+                    error={errors.address}
+                    disabled={isFieldDisabled()}
+                    required
+                  />
+                </div>
+              </SectionCard>
+
+              {/* Section 2: Document Upload */}
+              <SectionCard title="Applicant Proofs" icon="📄">
+                <div className="space-y-4">
+                  <FileInput
+                    label={`${isCountryCodeIndia ? "Aadhar" : "Driving License"} Front`}
+                    name={isCountryCodeIndia ? "aadhar_doc_front" : "dl_doc_front"}
+                    onFileChange={handleChange}
+                    error={isCountryCodeIndia ? errors.aadhar_doc_front : errors.dl_doc_front}
+                    disabled={isFieldDisabled()}
+                    showImageButton={!!(kycdata?.success && (kycdata?.data?.aadhar_doc_front || kycdata?.data?.dl_doc_front))}
+                    onShowImage={() => onClickImage(isCountryCodeIndia ? kycdata?.data?.aadhar_doc_front : kycdata?.data?.dl_doc_front)}
+                    inputRef={docFrontRef}
                     accept=".jpg,.jpeg,.png"
                     required
                   />
-                )}
-                {isCountryCodeIndia && (
-                  <InputField
-                    label="PAN Number"
-                    name="panNumber"
-                    type="text"
-                    value={formData.panNumber || ''}
-                    onChange={handleChange}
-                    placeholder="Enter PAN number"
-                    error={errors.panNumber}
-                    disabled={isFieldDisabled() || disableFieldsAfterKYC}
+                  <FileInput
+                    label={`${isCountryCodeIndia ? "Aadhar" : "Driving License"} Back`}
+                    name={isCountryCodeIndia ? "aadhar_doc_back" : "dl_doc_back"}
+                    onFileChange={handleChange}
+                    error={isCountryCodeIndia ? errors.aadhar_doc_back : errors.dl_doc_back}
+                    disabled={isFieldDisabled()}
+                    showImageButton={!!(kycdata?.success && (kycdata?.data?.aadhar_doc_back || kycdata?.data?.dl_doc_back))}
+                    onShowImage={() => onClickImage(isCountryCodeIndia ? kycdata?.data?.aadhar_doc_back : kycdata?.data?.dl_doc_back)}
+                    inputRef={docBackRef}
+                    accept=".jpg,.jpeg,.png"
                     required
                   />
-                )}
-              </div>
-            </SectionCard>
+                  <FileInput
+                    label={isCountryCodeIndia ? "PAN" : "Passport Front"}
+                    name={isCountryCodeIndia ? "pan_doc_front" : "passport_doc_front"}
+                    onFileChange={handleChange}
+                    error={isCountryCodeIndia ? errors.pan_doc_front : errors.passport_doc_front}
+                    disabled={isFieldDisabled()}
+                    showImageButton={!!(kycdata?.success && (kycdata?.data?.pan_doc_front || kycdata?.data?.passport_doc_front))}
+                    onShowImage={() => onClickImage(isCountryCodeIndia ? kycdata?.data?.pan_doc_front : kycdata?.data?.passport_doc_front)}
+                    inputRef={doc1FrontRef}
+                    accept=".jpg,.jpeg,.png"
+                    required
+                  />
+                  {!isCountryCodeIndia && (
+                    <FileInput
+                      label="Passport Back"
+                      name="passport_doc_back"
+                      onFileChange={handleChange}
+                      error={errors.passport_doc_back}
+                      disabled={isFieldDisabled()}
+                      showImageButton={!!(kycdata?.success && kycdata?.data?.passport_doc_back)}
+                      onShowImage={() => onClickImage(kycdata?.data?.passport_doc_back)}
+                      inputRef={doc1BackRef}
+                      accept=".jpg,.jpeg,.png"
+                      required
+                    />
+                  )}
+                  {isCountryCodeIndia && (
+                    <InputField
+                      label="PAN Number"
+                      name="panNumber"
+                      type="text"
+                      value={formData.panNumber || ''}
+                      onChange={handleChange}
+                      placeholder="Enter PAN number"
+                      error={errors.panNumber}
+                      disabled={isFieldDisabled() || disableFieldsAfterKYC}
+                      required
+                    />
+                  )}
+                </div>
+              </SectionCard>
 
-            {/* Section 3: Banking Details */}
-            <SectionCard title="Bank Details" icon="🏦">
-              <div className="space-y-4">
-                {isCountryCodeIndia && (
+              {/* Section 3: Banking Details */}
+              <SectionCard title="Bank Details" icon="🏦">
+                <div className="space-y-4">
+                  {isCountryCodeIndia && (
+                    <InputField
+                      label="UPI Number"
+                      name="upi_id"
+                      type="text"
+                      value={formData.upi_id || ''}
+                      onChange={handleChange}
+                      placeholder="Enter UPI number"
+                      error={errors.upi_id}
+                      disabled={isFieldDisabled()}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                    />
+                  )}
                   <InputField
-                    label="UPI Number"
-                    name="upi_id"
+                    label="Bank Account Number"
+                    name="bank_account"
                     type="text"
-                    value={formData.upi_id || ''}
+                    value={formData.bank_account || ''}
                     onChange={handleChange}
-                    placeholder="Enter UPI number"
-                    error={errors.upi_id}
+                    placeholder="Enter bank account number"
+                    error={errors.bank_account}
                     disabled={isFieldDisabled()}
                     onKeyPress={(event) => {
                       if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
+                    required
                   />
-                )}
-                <InputField
-                  label="Bank Account Number"
-                  name="bank_account"
-                  type="text"
-                  value={formData.bank_account || ''}
-                  onChange={handleChange}
-                  placeholder="Enter bank account number"
-                  error={errors.bank_account}
-                  disabled={isFieldDisabled()}
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  required
-                />
-                <InputField
-                  label="Bank Name"
-                  name="bank_name"
-                  type="text"
-                  value={formData.bank_name || ''}
-                  onChange={handleChange}
-                  placeholder="Enter bank name"
-                  error={errors.bank_name}
-                  disabled={isFieldDisabled()}
-                  required
-                />
-                <InputField
-                  label={`Bank ${isCountryCodeIndia ? "IFSC" : ""} Code`}
-                  name="ifsc_code"
-                  type="text"
-                  value={toUpperCase(formData.ifsc_code || '')}
-                  onChange={handleChange}
-                  placeholder="Enter bank code"
-                  error={errors.ifsc_code}
-                  disabled={isFieldDisabled()}
-                  required
-                />
-              </div>
-            </SectionCard>
-          </div>
+                  <InputField
+                    label="Bank Name"
+                    name="bank_name"
+                    type="text"
+                    value={formData.bank_name || ''}
+                    onChange={handleChange}
+                    placeholder="Enter bank name"
+                    error={errors.bank_name}
+                    disabled={isFieldDisabled()}
+                    required
+                  />
+                  <InputField
+                    label={`Bank ${isCountryCodeIndia ? "IFSC" : ""} Code`}
+                    name="ifsc_code"
+                    type="text"
+                    value={toUpperCase(formData.ifsc_code || '')}
+                    onChange={handleChange}
+                    placeholder="Enter bank code"
+                    error={errors.ifsc_code}
+                    disabled={isFieldDisabled()}
+                    required
+                  />
+                </div>
+              </SectionCard>
+            </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-end">
-            {(kycdata?.success !== 1 || kycdata?.data?.status === "reject" || (kycdata?.data?.status === "approve" && isEditClicked)) && (
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-12 py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-full font-semibold text-lg
+            {/* Submit Button */}
+            <div className="flex justify-end">
+              {(kycdata?.success !== 1 || kycdata?.data?.status === "reject" || (kycdata?.data?.status === "approve" && isEditClicked)) && (
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-12 py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-full font-semibold text-lg
                              shadow-lg hover:from-teal-600 hover:to-teal-700 hover:shadow-xl 
                              transform hover:scale-105 transition-all duration-300 ease-in-out
                              disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none
                              flex items-center gap-3"
-              >
-                {loading && (
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                )}
-                {loading
-                  ? 'Processing...'
-                  : (kycdata?.success !== 1 ? 'Submit' : 'Update')
-                }
-                {!loading && (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-              </button>
-            )}
-          </div>
-        </form>
+                >
+                  {loading && (
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  )}
+                  {loading
+                    ? 'Processing...'
+                    : (kycdata?.success !== 1 ? 'Submit' : 'Update')
+                  }
+                  {!loading && (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+              )}
+            </div>
+          </form>
 
-        {/* DigiLocker Modal */}
-        {showModal && (
-          <DigiLockerModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            onClickDigiLocker={handleButtonClick}
-          />
-        )}
+          {/* DigiLocker Modal */}
+          {showModal && (
+            <DigiLockerModal
+              show={showModal}
+              onHide={() => setShowModal(false)}
+              onClickDigiLocker={handleButtonClick}
+            />
+          )}
 
-        {/* Loading Overlay */}
-        {(loading || isLoading) && <Loader />}
+         
+
+          {/* Loading Overlay */}
+          {(loading || isLoading) && <Loader />}
+        </div>
       </div>
-    </div>
 
   );
 };
