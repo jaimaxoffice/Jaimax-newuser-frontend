@@ -129,27 +129,27 @@ const PrivacyPolicy = () => {
   ];
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-black/20 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-9xl mx-auto px-6 py-8">
+      <div className="">
+        <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-purple-500/20 rounded-xl">
-              <Shield className="w-8 h-8 text-purple-400" />
+            <div className="p-3 bg-white/20 rounded-xl">
+              <Shield className="w-8 h-8 text-white" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-white">Privacy Policy</h1>
-              <p className="text-purple-300">Your privacy is our priority</p>
+              <p className="text-white/80">Your privacy is our priority</p>
             </div>
           </div>
           
           {/* Quick Summary */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <div className="bg-white/10 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-purple-400" />
+              <HelpCircle className="w-5 h-5 text-white" />
               Quick Summary
             </h2>
-            <p className="text-gray-300 leading-relaxed">
+            <p className="text-white/90 leading-relaxed">
               We collect only necessary data to provide our services, keep it secure with industry-standard 
               protection, and give you control over your privacy preferences. We don't sell your data and 
               only share it with trusted partners for essential services like payments and verification.
@@ -159,15 +159,15 @@ const PrivacyPolicy = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-9xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="space-y-8">
           {sections.map((section, index) => (
             <div key={section.id} className="group">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden hover:bg-white/8 transition-all duration-300">
+              <div className="bg-white/10 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300">
                 {/* Section Header */}
-                <div className="p-6 border-b border-white/10">
+                <div className="p-6">
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-purple-500/20 rounded-xl text-purple-400">
+                    <div className="flex items-center justify-center w-10 h-10 bg-white/20 rounded-xl text-white">
                       {section.icon}
                     </div>
                     <div>
@@ -182,7 +182,7 @@ const PrivacyPolicy = () => {
                 <div className="p-6">
                   <div className="space-y-4">
                     {section.content.map((paragraph, pIndex) => (
-                      <p key={pIndex} className="text-gray-300 leading-relaxed">
+                      <p key={pIndex} className="text-white/90 leading-relaxed">
                         {paragraph}
                       </p>
                     ))}
@@ -192,16 +192,16 @@ const PrivacyPolicy = () => {
                         {section.subsections.map((subsection, sIndex) => (
                           <div key={sIndex} className="ml-4">
                             <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-                              <ChevronRight className="w-4 h-4 text-purple-400" />
+                              <ChevronRight className="w-4 h-4 text-white/80" />
                               {subsection.title}
                             </h3>
                             <div className="space-y-3">
                               {subsection.items.map((item, iIndex) => (
-                                <div key={iIndex} className="bg-white/5 rounded-xl p-4 border border-white/5">
-                                  <h4 className="font-medium text-purple-300 mb-2">
+                                <div key={iIndex} className="bg-white/10 rounded-xl p-4">
+                                  <h4 className="font-medium text-white mb-2">
                                     {item.label}
                                   </h4>
-                                  <p className="text-gray-400 text-sm leading-relaxed">
+                                  <p className="text-white/80 text-sm leading-relaxed">
                                     {item.description}
                                   </p>
                                 </div>
@@ -219,22 +219,22 @@ const PrivacyPolicy = () => {
         </div>
 
         {/* Contact Section */}
-        <div className="mt-12 bg-gradient-to-r from-purple-500/10 to-blue-500/10 backdrop-blur-sm rounded-2xl border border-white/20 p-8">
+        <div className="mt-12 bg-white/15 rounded-2xl p-8">
           <div className="text-center">
             <div className="flex justify-center mb-4">
-              <div className="p-3 bg-purple-500/20 rounded-xl">
-                <Mail className="w-8 h-8 text-purple-400" />
+              <div className="p-3 bg-white/20 rounded-xl">
+                <Mail className="w-8 h-8 text-white" />
               </div>
             </div>
             <h2 className="text-2xl font-bold text-white mb-3">Questions About Your Privacy?</h2>
-            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            <p className="text-white/90 mb-6 max-w-2xl mx-auto">
               If you have questions, concerns, or requests regarding this policy, we're here to help.
             </p>
             <a 
               href="https://Jaimax.com/support" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-medium transition-colors duration-200"
+              className="inline-flex items-center gap-2 bg-white text-teal-600 hover:bg-white/90 px-8 py-3 rounded-xl font-medium transition-colors duration-200"
             >
               Contact Support
               <ChevronRight className="w-4 h-4" />
@@ -244,7 +244,7 @@ const PrivacyPolicy = () => {
 
         {/* Footer Note */}
         <div className="mt-8 text-center">
-          <p className="text-gray-500 text-sm">
+          <p className="text-white/60 text-sm">
             Last updated: {new Date().toLocaleDateString('en-US', { 
               year: 'numeric', 
               month: 'long', 

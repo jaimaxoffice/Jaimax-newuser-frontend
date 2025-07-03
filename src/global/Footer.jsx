@@ -385,7 +385,7 @@ const Footer = () => {
                 {[
                   {
                     name: 'Twitter',
-                    url: '#',
+                    url: 'https://x.com/jaimax_official',
                     hoverBg: 'hover:bg-black',
                     svg: (
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -396,7 +396,7 @@ const Footer = () => {
                   },
                   {
                     name: 'Telegram',
-                    url: '#',
+                    url: 'https://t.me/Jaimaxfoundation',
                     hoverBg: 'hover:bg-[#229ED9]',
                     svg: (
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -404,6 +404,28 @@ const Footer = () => {
                       </svg>
                     )
                   },
+                  {
+                    name: 'Pinterest',
+                    url: 'https://www.pinterest.com/jaimax_foundation/', // Replace with your actual profile if different
+                    hoverBg: 'hover:bg-[#E60023]',
+                    svg: (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-4 h-4" viewBox="0 0 24 24">
+                        <path d="M12.04 2C6.5 2 2 6.05 2 11.27c0 3.68 2.11 6.77 5.48 7.95-.08-.68-.15-1.72.03-2.46.16-.7 1.04-4.45 1.04-4.45s-.27-.54-.27-1.33c0-1.25.73-2.18 1.65-2.18.78 0 1.15.59 1.15 1.3 0 .79-.51 1.97-.78 3.06-.22.92.46 1.66 1.37 1.66 1.65 0 2.91-1.74 2.91-4.26 0-2.23-1.6-3.79-3.89-3.79-2.65 0-4.21 1.99-4.21 4.04 0 .8.31 1.66.7 2.13.08.1.09.19.07.29-.07.31-.24.98-.28 1.12-.05.22-.17.27-.4.17-1.49-.69-2.42-2.83-2.42-4.55 0-3.72 2.7-7.13 7.79-7.13 4.09 0 7.26 2.92 7.26 6.83 0 4.06-2.56 7.34-6.11 7.34-1.19 0-2.31-.62-2.69-1.35l-.73 2.8c-.27 1.03-1 2.33-1.49 3.12 1.12.35 2.3.54 3.53.54 5.54 0 10.04-4.05 10.04-9.27C22 6.05 17.54 2 12.04 2z" />
+                      </svg>
+                    )
+                  },
+                  {
+                    name: 'Threads',
+                    url: 'https://www.threads.net/@jaimax_foundation', // Replace if your handle differs
+                    hoverBg: 'hover:bg-black',
+                    svg: (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.29 2 11.7c0 5.32 4.48 9.6 10 9.6s10-4.28 10-9.6C22 6.29 17.52 2 12 2zm.55 14.2c-.84 0-1.5-.66-1.5-1.5v-1.14c0-.72-.58-1.3-1.3-1.3s-1.3.58-1.3 1.3c0 2.22 1.81 4.03 4.03 4.03 2.07 0 3.75-1.68 3.75-3.75 0-1.41-.58-2.24-1.52-2.8-.47-.29-1.01-.49-1.58-.6V9.2c.42.12.81.31 1.15.56.3.21.72.13.93-.18.21-.3.13-.72-.18-.93-.55-.39-1.17-.66-1.82-.8V7.3c0-.4-.33-.72-.73-.72s-.72.32-.72.72v.74c-1.47.24-2.58 1.52-2.58 3.02 0 .84.66 1.5 1.5 1.5s1.5-.66 1.5-1.5c0-.53.43-.96.96-.96s.96.43.96.96c0 1.11-.9 2.01-2.01 2.01z" />
+                      </svg>
+                    )
+                  }
+                  ,
+
                   {
                     name: 'Discord',
                     url: '#',
@@ -416,7 +438,7 @@ const Footer = () => {
                   },
                   {
                     name: 'LinkedIn',
-                    url: '#',
+                    url: 'https://www.linkedin.com/company/jaimax-software-solutions-private-limited/',
                     hoverBg: 'hover:bg-[#0077B5]',
                     svg: (
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -428,7 +450,7 @@ const Footer = () => {
                   },
                   {
                     name: 'YouTube',
-                    url: '#',
+                    url: 'https://www.youtube.com/@jaimax_foundation',
                     hoverBg: 'hover:bg-[#FF0000]',
                     svg: (
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -439,7 +461,7 @@ const Footer = () => {
                   },
                   {
                     name: 'Instagram',
-                    url: '#',
+                    url: 'https://www.instagram.com/jaimax_foundation/',
                     hoverBg: 'hover:bg-gradient-to-r hover:from-[#feda75] hover:via-[#fa7e1e] hover:via-[#d62976] hover:via-[#962fbf] hover:to-[#4f5bd5]',
                     svg: (
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -457,6 +479,8 @@ const Footer = () => {
                     style={{ WebkitBackdropFilter: 'blur(4px)' }}
                     title={social.name}
                     aria-label={`Follow us on ${social.name}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {social.svg}
                   </a>
