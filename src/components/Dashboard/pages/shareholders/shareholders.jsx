@@ -1078,7 +1078,7 @@ const ShareholderEligibility = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userData") || "{}");
-    const username = user.username || 'JAIMAX433PHEUe'; // fallback for demo
+    const username = user.username || 'JAIMAX433PHEUe'; 
     console.log("Username:", username);
     if (username) {
       setLoading(true);

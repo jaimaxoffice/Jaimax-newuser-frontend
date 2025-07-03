@@ -2278,24 +2278,24 @@ import {
   useLoginMutation,
   useOTPresentMutation
 } from './authApiSlice';
-
-const countrycodes = [
-  { code: '+1', country: 'United States', flag: '🇺🇸', name: 'US' },
-  { code: '+91', country: 'India', flag: '🇮🇳', name: 'IN' },
-  { code: '+44', country: 'United Kingdom', flag: '🇬🇧', name: 'UK' },
-  { code: '+49', country: 'Germany', flag: '🇩🇪', name: 'DE' },
-  { code: '+33', country: 'France', flag: '🇫🇷', name: 'FR' },
-  { code: '+86', country: 'China', flag: '🇨🇳', name: 'CN' },
-  { code: '+81', country: 'Japan', flag: '🇯🇵', name: 'JP' },
-  { code: '+82', country: 'South Korea', flag: '🇰🇷', name: 'KR' },
-  { code: '+61', country: 'Australia', flag: '🇦🇺', name: 'AU' },
-  { code: '+7', country: 'Russia', flag: '🇷🇺', name: 'RU' },
-  { code: '+55', country: 'Brazil', flag: '🇧🇷', name: 'BR' },
-  { code: '+34', country: 'Spain', flag: '🇪🇸', name: 'ES' },
-  { code: '+39', country: 'Italy', flag: '🇮🇹', name: 'IT' },
-  { code: '+31', country: 'Netherlands', flag: '🇳🇱', name: 'NL' },
-  { code: '+46', country: 'Sweden', flag: '🇸🇪', name: 'SE' }
-];
+import countrycodes from './countryCodes.json'
+// const countrycodes = [
+//   { code: '+1', country: 'United States', flag: '🇺🇸', name: 'US' },
+//   { code: '+91', country: 'India', flag: '🇮🇳', name: 'IN' },
+//   { code: '+44', country: 'United Kingdom', flag: '🇬🇧', name: 'UK' },
+//   { code: '+49', country: 'Germany', flag: '🇩🇪', name: 'DE' },
+//   { code: '+33', country: 'France', flag: '🇫🇷', name: 'FR' },
+//   { code: '+86', country: 'China', flag: '🇨🇳', name: 'CN' },
+//   { code: '+81', country: 'Japan', flag: '🇯🇵', name: 'JP' },
+//   { code: '+82', country: 'South Korea', flag: '🇰🇷', name: 'KR' },
+//   { code: '+61', country: 'Australia', flag: '🇦🇺', name: 'AU' },
+//   { code: '+7', country: 'Russia', flag: '🇷🇺', name: 'RU' },
+//   { code: '+55', country: 'Brazil', flag: '🇧🇷', name: 'BR' },
+//   { code: '+34', country: 'Spain', flag: '🇪🇸', name: 'ES' },
+//   { code: '+39', country: 'Italy', flag: '🇮🇹', name: 'IT' },
+//   { code: '+31', country: 'Netherlands', flag: '🇳🇱', name: 'NL' },
+//   { code: '+46', country: 'Sweden', flag: '🇸🇪', name: 'SE' }
+// ];
 
 const Notification = ({ type, message, onClose }) => {
   useEffect(() => {
@@ -3457,66 +3457,93 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
     return () => clearInterval(interval);
   }, [otpSent, timer]);
 
-  const validate = () => {
-    const newErrors = {};
-    const emailRegex = /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/;
-    const referralIdRegex = /^[A-Z0-9]*$/; // Updated to match first code's validation
+  const validate = (formData, selectedCode, countrycodes, otpSent) => {
+  const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    } else if (formData.name.length < 3) { // Updated to match first code
-      newErrors.name = 'Name must be at least 3 characters';
+  // Name Validation
+  if (!formData.name || !formData.name.trim()) {
+    newErrors.name = 'Name is required';
+  } else if (formData.name.length < 2) {
+    newErrors.name = 'Name must be at least 2 characters';
+  } else if (formData.name.length > 50) { // Added max length
+    newErrors.name = 'Name cannot exceed 50 characters';
+  } else if (!/^[a-zA-Z\s.-]+$/.test(formData.name)) { // Allows hyphen and period for names like "Jean-Luc" or "Dr. Smith"
+    newErrors.name = 'Name can only contain letters, spaces, hyphens, and periods';
+  }
+
+  // Phone Number Validation
+  const currentCountry = countrycodes.find(c => c.code === selectedCode);
+  const minPhoneLength = currentCountry ? currentCountry.min_phone_length : 7; // Assuming min_phone_length in countrycodes
+  const maxPhoneLength = currentCountry ? currentCountry.max_phone_length : 15; // Assuming max_phone_length in countrycodes
+
+  if (!formData.phone || !formData.phone.trim()) {
+    newErrors.phone = 'Phone number is required';
+  } else if (!/^\+?\d+$/.test(formData.phone)) { // Allows optional '+' for international format
+    newErrors.phone = 'Phone number can only contain digits (and an optional leading +)';
+  } else {
+    // Remove non-digit characters for length check, especially if allowing '+'
+    const digitsOnlyPhone = formData.phone.replace(/\D/g, '');
+    if (digitsOnlyPhone.length < minPhoneLength || digitsOnlyPhone.length > maxPhoneLength) {
+      newErrors.phone = `Phone number must be between ${minPhoneLength} and ${maxPhoneLength} digits long`;
     }
+    // Consider adding a more specific country-based regex for phone numbers if `countrycodes` has this data.
+    // Example: if (currentCountry && currentCountry.phone_regex && !new RegExp(currentCountry.phone_regex).test(formData.phone)) { ... }
+  }
 
-    const currentCountry = countrycodes.find(c => c.flag === selectedCode);
+  // Email Validation
+  if (!formData.email || !formData.email.trim()) {
+    newErrors.email = 'Email is required';
+  } else if (!emailRegex.test(formData.email)) {
+    newErrors.email = 'Invalid email address. Please use a valid format (e.g., user@example.com)';
+  } else if (formData.email.length > 254) { // Max length for email addresses (RFC 3696)
+    newErrors.email = 'Email address is too long';
+  }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d*$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number can only contain digits';
-    } else {
-      // Custom phone validation based on country code (matching first code)
-      if (currentCountry?.code === "+91" && formData.phone.length !== 10) {
-        newErrors.phone = "Phone number must be 10 digits for India";
-      } else if (
-        currentCountry?.code !== "+91" &&
-        (formData.phone.length < 4 || formData.phone.length > 15)
-      ) {
-        newErrors.phone = "Phone number must be between 4 to 15 digits for other countries";
-      }
+  // Password Validation
+  if (!formData.password) {
+    newErrors.password = 'Password is required';
+  } else if (formData.password.length < 8) {
+    newErrors.password = 'Password must be at least 8 characters long';
+  } else if (formData.password.length > 18) { // Added max length for security
+    newErrors.password = 'Password cannot exceed 18 characters';
+  } else if (!/[a-z]/.test(formData.password)) {
+    newErrors.password = 'Password must contain at least one lowercase letter';
+  } else if (!/[A-Z]/.test(formData.password)) {
+    newErrors.password = 'Password must contain at least one uppercase letter';
+  } else if (!/\d/.test(formData.password)) {
+    newErrors.password = 'Password must contain at least one number';
+  } else if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~` ]/.test(formData.password)) {
+    newErrors.password = 'Password must contain at least one special character (e.g., !@#$%)';
+  }
+
+  // Confirm Password Validation
+  if (!formData.confirmPassword) {
+    newErrors.confirmPassword = 'Please confirm your password';
+  } else if (formData.confirmPassword !== formData.password) {
+    newErrors.confirmPassword = 'Passwords do not match';
+  }
+
+  // Referral ID Validation (Optional and conditional)
+  if (formData.referralId) { // Only validate if a referral ID is provided
+    if (!/^[A-Za-z0-9]{5,20}$/.test(formData.referralId)) { // Example: 5-20 alphanumeric characters
+      newErrors.referralId = 'Referral ID can only contain letters and numbers, and be between 5 and 20 characters long';
     }
+  }
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
+  // OTP Validation (Conditional)
+  if (otpSent) {
+    if (!formData.otp || !formData.otp.trim()) {
+      newErrors.otp = 'OTP is required';
+    } else if (!/^\d{4,8}$/.test(formData.otp)) { // Allows for 4-8 digit OTPs, common in real-world scenarios
+      newErrors.otp = 'OTP must be 4 to 8 digits long';
     }
+  }
 
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) { // Updated to match first code
-      newErrors.password = 'Password must be at least 6 characters';
-    }
+  // General form data presence checks (if applicable to other fields)
+  // Example: if (formData.termsAccepted !== true) { newErrors.termsAccepted = 'You must accept the terms and conditions'; }
 
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.confirmPassword !== formData.password) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    // Updated referral ID validation to match first code
-    if (formData.referralId && !referralIdRegex.test(formData.referralId)) {
-      newErrors.referralId = 'Referral ID can only contain uppercase letters and numbers';
-    }
-
-    if (otpSent) {
-      if (!formData.otp.trim()) {
-        newErrors.otp = 'Please enter the OTP';
-      }
-    }
-
-    return newErrors;
-  };
+  return newErrors;
+};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
