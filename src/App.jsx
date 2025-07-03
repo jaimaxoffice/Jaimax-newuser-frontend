@@ -326,6 +326,7 @@ const App = () => {
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="wallet" element={<Wallet />} />
+        <Route path="wallet/add-funds" element={<AddMoneyToWallet />} />
         <Route path="my-team" element={<MyTotalTeam />} />
         <Route path="shareholders" element={<Shareholders />} />
         <Route path="buy-history" element={<BuyHistory />} />
@@ -349,7 +350,7 @@ const App = () => {
       <Route path="/earnings" element={<DashboardLayout />}>
         <Route index element={<TodayEarning />} />
       </Route>
-      <Route path="/add-funds" element={<DashboardLayout />}>
+      <Route path="wallet/add-funds" element={<DashboardLayout />}>
         <Route index element={<AddMoneyToWallet />} />
       </Route>
       <Route path="/buy-history" element={<DashboardLayout />}>

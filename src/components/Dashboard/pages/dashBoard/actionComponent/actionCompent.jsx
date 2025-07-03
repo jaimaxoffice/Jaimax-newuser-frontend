@@ -1,6 +1,6 @@
 // import React, { useState, useEffect, useContext } from "react";
 // import { useNavigate } from "react-router-dom";
-// import { FaShareAlt, FaDownload } from "react-icons/fa";
+// import { FaShareAlt, FaDownload, FaUser } from "react-icons/fa";
 // import { TextField, InputAdornment } from "@mui/material";
 // import { toast } from "react-toastify";
 // import assets from "../../../../../assets/assets";
@@ -9,8 +9,6 @@
 //   useUserDataQuery,
 //   useGetAdminSettingsQuery
 // } from "../DashboardApliSlice";
-
-
 // import ReferralModal from "../../../modals/referalModal";
 
 // const ActionButtons = () => {
@@ -83,6 +81,7 @@
 //       refetchAdminSetting();
 //     }
 //   }, [isTokenVerified, refetch, refetchAdminSetting]);
+
 //   const handleOpenReferralModal = () => {
 //     setShowReferralModal(true);
 //   };
@@ -102,85 +101,96 @@
 //       return userData.data.name.toUpperCase();
 //     }
 //     if (userData?.data?.username) {
-//       return userData.data.username.substring(0, 2).toUpperCase();
+//       return userData.data.username.toUpperCase();
 //     }
-//     return "JM";
+//     return "jaimax";
 //   };
 
 //   return (
 //     <>
-//       <div className="rounded-lg shadow-md z-10 p-2  w-full">
+//       <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-5">
 //         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-//           <div className="flex gap-4 p-2 items-center">
-//             <img
-//               src={userData?.data?.profile || assets.welcomeDraw}
-//               alt="profile"
-//               className="w-14 h-14 object-cover rounded-full"
-//             />
+          
+//           {/* Profile Section */}
+//           <div className="flex items-center gap-4">
+//             <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-teal-100">
+//               {userData?.data?.profile ? (
+//                 <img
+//                   src={userData.data.profile}
+//                   alt="Profile"
+//                   className="w-full h-full object-cover"
+//                 />
+//               ) : (
+//                 <div className="w-full h-full bg-teal-50 flex items-center justify-center">
+//                   <FaUser className="text-teal-600 text-lg" />
+//                 </div>
+//               )}
+//             </div>
+            
 //             <div>
-//               <h2 className="text-xl text-white font-semibold">
+//               <h3 className="text-lg font-semibold text-gray-900">
 //                 {getUserDisplayName()}
-//               </h2>
-//               <h1 className="text-2xl font-bold text-white">Welcome to Jaimax</h1>
+//               </h3>
+//               <p className="text-sm text-gray-600">Welcome to Jaimax</p>
 //             </div>
 //           </div>
 
-//           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
-//             <TextField
-//               label="Referral Code"
-//               value={userData?.data?.username || "Loading..."}
-//               InputProps={{
-//                 readOnly: true,
-//                 endAdornment: (
-//                   <InputAdornment position="end">
-//                     <button
-//                       onClick={handleOpenReferralModal}
-//                       title="Share Referral Code"
-//                       type="button"
-//                       className="p-1 rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
-//                       style={{ color: 'white', display: 'flex', alignItems: 'center' }}
-//                     >
-//                       <FaShareAlt size={18} />
-//                     </button>
-
-//                   </InputAdornment>
-//                 ),
-//               }}
-//               variant="outlined"
-//               size="small"
-//               sx={{
-//                 input: { color: 'white' },
-//                 label: { color: 'white' },
-//                 '& .MuiOutlinedInput-root': {
-//                   '& fieldset': {
-//                     borderColor: '#4caf50',
+//           {/* Actions Section */}
+//           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto">
+            
+//             {/* Referral Code Input */}
+//             <div className="min-w-[260px] shadow-xl rounded-full">
+//               <TextField
+//                 label="Referral Code"
+//                 value={userData?.data?.username || "JAIMAXXXXXXXX"}
+//                 size="small"
+//                 fullWidth
+//                 InputProps={{
+//                   readOnly: true,
+//                   endAdornment: (
+//                     <InputAdornment position="end">
+//                       <button
+//                         onClick={handleOpenReferralModal}
+//                         className="p-1.5 rounded-full hover:bg-teal-50 text-teal-600 hover:text-teal-700 transition-colors duration-200"
+//                         title="Share Referral Code"
+//                       >
+//                         <FaShareAlt size={16} />
+//                       </button>
+//                     </InputAdornment>
+//                   ),
+//                 }}
+//                 sx={{
+//                   '& .MuiOutlinedInput-root': {
+//                     backgroundColor: '#f8fafc',
+//                     '& fieldset': {
+//                       borderColor: '#e2e8f0',
+//                     },
+//                     '&:hover fieldset': {
+//                       borderColor: '#e2e8f0',
+//                     },
+//                     '&.Mui-focused fieldset': {
+//                       // borderColor: '#14b8a6',
+//                     },
 //                   },
-//                   '&:hover fieldset': {
-//                     borderColor: '#81c784',
+//                   '& .MuiInputLabel-root': {
+//                     // color: '#64748b',
+//                     '&.Mui-focused': {
+//                       color: '#14b8a6',
+//                     },
 //                   },
-//                   '&.Mui-focused fieldset': {
-//                     borderColor: '#66bb6a',
-//                   },
-//                 },
-//               }}
-//             />
-
-//             <button
-//               className="bg-white flex items-center px-4 py-2 rounded-full text-sm font-medium shadow hover:bg-gray-100 transition"
-//               onClick={handleImportData}
-//             >
-//               <FaDownload className="mr-2" /> Import Data
-//             </button>
+//                 }}
+//               />
+//             </div>
+            
 //           </div>
 //         </div>
 //       </div>
+
 //       <ReferralModal
 //         show={showReferralModal}
 //         onHide={() => setShowReferralModal(false)}
 //         userData={userData}
 //       />
-
-
 //     </>
 //   );
 // };
@@ -188,10 +198,9 @@
 // export default ActionButtons;
 
 
-
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaShareAlt, FaDownload, FaUser } from "react-icons/fa";
+import { FaShareAlt, FaUser } from "react-icons/fa";
 import { TextField, InputAdornment } from "@mui/material";
 import { toast } from "react-toastify";
 import assets from "../../../../../assets/assets";
@@ -281,12 +290,6 @@ Don't miss out on this chance to be part of something BIG! 💥
     setShowReferralModal(false);
   };
 
-  const handleImportData = () => {
-    toast.info('Import data functionality coming soon!', {
-      position: "top-center",
-    });
-  };
-
   const getUserDisplayName = () => {
     if (userData?.data?.name) {
       return userData.data.name.toUpperCase();
@@ -294,7 +297,7 @@ Don't miss out on this chance to be part of something BIG! 💥
     if (userData?.data?.username) {
       return userData.data.username.toUpperCase();
     }
-    return "jaimax";
+    return "JAIMAX";
   };
 
   return (
@@ -320,7 +323,7 @@ Don't miss out on this chance to be part of something BIG! 💥
             
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
-                {getUserDisplayName()}
+                Hi {getUserDisplayName()}
               </h3>
               <p className="text-sm text-gray-600">Welcome to Jaimax</p>
             </div>
@@ -333,7 +336,7 @@ Don't miss out on this chance to be part of something BIG! 💥
             <div className="min-w-[260px] shadow-xl rounded-full">
               <TextField
                 label="Referral Code"
-                value={userData?.data?.username || "JAIMAXXXXXXXX"}
+                value={userData?.data?.username || "Loading..."}
                 size="small"
                 fullWidth
                 InputProps={{
@@ -360,11 +363,11 @@ Don't miss out on this chance to be part of something BIG! 💥
                       borderColor: '#e2e8f0',
                     },
                     '&.Mui-focused fieldset': {
-                      // borderColor: '#14b8a6',
+                      borderColor: '#14b8a6',
                     },
                   },
                   '& .MuiInputLabel-root': {
-                    // color: '#64748b',
+                    color: '#64748b',
                     '&.Mui-focused': {
                       color: '#14b8a6',
                     },
