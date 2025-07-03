@@ -32,7 +32,7 @@
 //           totalCount: 15,
 //         }
 //       };
-      
+
 //       const searchParam = new URLSearchParams(queryParams).get("searchParam")?.toLowerCase() || "";
 //       const filteredResponse = mockData.data.response.filter(ticket =>
 //         ticket.title.toLowerCase().includes(searchParam) ||
@@ -53,7 +53,7 @@
 //       });
 //       setIsLoading(false);
 //     }, 500);
-    
+
 //     return () => clearTimeout(fetchData);
 //   }, [queryParams]);
 
@@ -235,7 +235,7 @@
 //                     <X size={16} />
 //                   </button>
 //                 </div>
-                
+
 //                 <div className="flex items-center gap-3">
 //                   <span className="text-teal-200 text-sm">Items per page:</span>
 //                   <div className="relative flex-1">
@@ -413,7 +413,7 @@
 //                           )}
 //                         </>
 //                       )}
-                      
+
 //                       {[state.currentPage - 1, state.currentPage, state.currentPage + 1]
 //                         .filter(page => page >= 1 && page <= totalPages)
 //                         .map((page) => (
@@ -430,7 +430,7 @@
 //                           </button>
 //                         ))
 //                       }
-                      
+
 //                       {state.currentPage < totalPages - 1 && (
 //                         <>
 //                           {state.currentPage < totalPages - 2 && (
@@ -545,7 +545,7 @@
 //   const handleTicket = async (e) => {
 //     e.preventDefault();
 //     if (!validate()) return;
-    
+
 //     try {
 //       const submitFormData = new FormData();
 //       submitFormData.SupprtMAinend('title', formData.title);
@@ -553,7 +553,7 @@
 //       submitFormData.SupprtMAinend('content', formData.content);
 //       submitFormData.SupprtMAinend('priority', formData.priority.toLowerCase());
 //       submitFormData.SupprtMAinend('image', formData.image);
-      
+
 //       const { data } = await createTicket(submitFormData);
 //       if (data?.success === 1) {
 //         toast.success(data.message, { position: 'top-center' });
@@ -576,7 +576,7 @@
 //   const onChangeFile = (e) => {
 //     const file = e.target.files?.[0];
 //     if (!file) return;
-    
+
 //     const accepted = ['image/png', 'image/jpeg', 'image/jpg'];
 //     if (!accepted.includes(file.type)) {
 //       toast.warning('Only JPG / PNG files are allowed', { position: 'top-center' });
@@ -921,7 +921,7 @@
 //                     <X size={16} />
 //                   </button>
 //                 </div>
-                
+
 //                 <div className="flex items-center gap-3">
 //                   <span className="text-gray-600">Items per page:</span>
 //                   <div className="relative flex-1">
@@ -1103,7 +1103,7 @@
 //                           )}
 //                         </>
 //                       )}
-                      
+
 //                       {[state.currentPage - 1, state.currentPage, state.currentPage + 1]
 //                         .filter(page => page >= 1 && page <= totalPages)
 //                         .map((page) => (
@@ -1120,7 +1120,7 @@
 //                           </button>
 //                         ))
 //                       }
-                      
+
 //                       {state.currentPage < totalPages - 1 && (
 //                         <>
 //                           {state.currentPage < totalPages - 2 && (
@@ -1275,12 +1275,12 @@
 //     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100">
 //       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
 //         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Ticket Detail View</h1>
-        
+
 //         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 //           {/* Ticket Details */}
 //           <div className="bg-white rounded-xl p-6 shadow-lg">
 //             <h2 className="text-xl font-bold text-gray-800 mb-4">Ticket Details</h2>
-            
+
 //             <div className="space-y-4">
 //               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 //                 <div>
@@ -1301,7 +1301,7 @@
 //                   <p className="text-gray-800">{chartData?.data?.ticket.author_email}</p>
 //                 </div>
 //               </div>
-              
+
 //               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 //                 <div>
 //                   <label className="block text-sm font-medium text-gray-600 mb-1">Title</label>
@@ -1320,7 +1320,7 @@
 //                   </p>
 //                 </div>
 //               </div>
-              
+
 //               <div>
 //                 <label className="block text-sm font-medium text-gray-600 mb-1">Content</label>
 //                 <p className="text-gray-800">{chartData?.data?.ticket.content}</p>
@@ -1372,7 +1372,7 @@
 //                           {item?.commented_by?.name}
 //                         </span>
 //                       </div>
-                      
+
 //                       <div
 //                         className={`rounded-lg p-3 ${
 //                           isAdmin
@@ -1390,7 +1390,7 @@
 //                           />
 //                         )}
 //                       </div>
-                      
+
 //                       <p className={`text-xs text-gray-500 mt-1 ${isAdmin ? "text-right" : "text-left"}`}>
 //                         {formatDateWithAmPm(item?.created_at)}
 //                       </p>
@@ -1417,7 +1417,7 @@
 //                   </button>
 //                 </div>
 //               )}
-              
+
 //               <div className="flex items-center gap-3">
 //                 <input
 //                   type="text"
@@ -1433,14 +1433,14 @@
 //                     }
 //                   }}
 //                 />
-                
+
 //                 <button
 //                   onClick={handleUpload}
 //                   className="p-2 text-gray-600 hover:text-teal-600 transition-colors"
 //                 >
 //                   <Paperclip size={20} />
 //                 </button>
-                
+
 //                 <button
 //                   onClick={sendComment}
 //                   disabled={commentLoading}
@@ -1553,7 +1553,7 @@ const CreateTicketModal = ({ show, setShow }) => {
 
   const [createTicket, { isLoading }] = useCreateTicketMutation();
   const { data: catgetData, isLoading: categoriesLoading, error: categoriesError } = useCategoryGetQuery();
-console.log('hello',catgetData)
+  console.log('hello', catgetData)
   const priorities = [
     { value: 'high', label: 'High' },
     { value: 'medium', label: 'Medium' },
@@ -1580,7 +1580,7 @@ console.log('hello',catgetData)
   const handleTicket = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    
+
     try {
       const submitFormData = new FormData();
       submitFormData.append('title', formData.title);
@@ -1588,7 +1588,7 @@ console.log('hello',catgetData)
       submitFormData.append('content', formData.content);
       submitFormData.append('priority', formData.priority.toLowerCase());
       submitFormData.append('image', formData.image);
-      
+
       const { data } = await createTicket(submitFormData);
       if (data?.success === 1) {
         toast.success(data.message, { position: 'top-center' });
@@ -1610,7 +1610,7 @@ console.log('hello',catgetData)
   const onChangeFile = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     const accepted = ['image/png', 'image/jpeg', 'image/jpg'];
     if (!accepted.includes(file.type)) {
       toast.warning('Only JPG / PNG files are allowed', { position: 'top-center' });
@@ -1649,12 +1649,20 @@ console.log('hello',catgetData)
             </label>
             <input
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) => {
+                const allowedRegex = /^[a-zA-Z0-9\s.!@]*$/;
+                const value = e.target.value;
+
+                if (allowedRegex.test(value)) {
+                  setFormData({ ...formData, title: value });
+                }
+              }}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
               placeholder="Enter ticket title"
             />
             {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title}</p>}
           </div>
+
 
           {/* Priority & Category */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1696,7 +1704,7 @@ console.log('hello',catgetData)
               )}
               {errors.priority && <p className="text-sm text-red-500 mt-1">{errors.priority}</p>}
             </div>
-            
+
 
             {/* Category */}
             <div className="relative">
@@ -1769,12 +1777,21 @@ console.log('hello',catgetData)
             <textarea
               rows={4}
               value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+              onChange={(e) => {
+                const allowedRegex = /^[a-zA-Z0-9\s.!@]*$/;
+                const value = e.target.value;
+
+                // Only update state if value matches allowed characters
+                if (allowedRegex.test(value)) {
+                  setFormData({ ...formData, content: value });
+                }
+              }}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
               placeholder="Describe your issue in detail"
             />
             {errors.content && <p className="text-sm text-red-500 mt-1">{errors.content}</p>}
           </div>
+
 
           {/* Attachment */}
           <div>
@@ -1976,7 +1993,7 @@ const SupportList = () => {
                     <X size={16} />
                   </button>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <span className="text-gray-600">Items per page:</span>
                   <div className="relative flex-1">
@@ -2055,7 +2072,7 @@ const SupportList = () => {
 
                   {/* Card Action */}
                   <div className="flex justify-end pt-4 border-t border-gray-200">
-                    <button 
+                    <button
                       onClick={() => window.location.href = `/support/support-chat/${item.id}`}
                       className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
                     >
@@ -2134,11 +2151,10 @@ const SupportList = () => {
                       <button
                         key={page}
                         onClick={() => handlePageChange(page)}
-                        className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${
-                          state.currentPage === page
-                            ? "bg-teal-600 text-white shadow-lg"
-                            : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
-                        }`}
+                        className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${state.currentPage === page
+                          ? "bg-teal-600 text-white shadow-lg"
+                          : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                          }`}
                       >
                         {page}
                       </button>
@@ -2158,24 +2174,23 @@ const SupportList = () => {
                           )}
                         </>
                       )}
-                      
+
                       {[state.currentPage - 1, state.currentPage, state.currentPage + 1]
                         .filter(page => page >= 1 && page <= totalPages)
                         .map((page) => (
                           <button
                             key={page}
                             onClick={() => handlePageChange(page)}
-                            className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${
-                              state.currentPage === page
-                                ? "bg-teal-600 text-white shadow-lg"
-                                : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
-                            }`}
+                            className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${state.currentPage === page
+                              ? "bg-teal-600 text-white shadow-lg"
+                              : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                              }`}
                           >
                             {page}
                           </button>
                         ))
                       }
-                      
+
                       {state.currentPage < totalPages - 1 && (
                         <>
                           {state.currentPage < totalPages - 2 && (
@@ -2330,12 +2345,12 @@ const SupportChat = ({ ticketId = "1" }) => {
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Ticket Detail View</h1>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Ticket Details */}
           <div className="bg-white rounded-xl p-6 shadow-lg">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Ticket Details</h2>
-            
+
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -2343,11 +2358,11 @@ const SupportChat = ({ ticketId = "1" }) => {
                   <p className="text-gray-800">
                     {chartData?.data?.ticket?.author_name
                       ? chartData.data.ticket.author_name
-                          .charAt(0)
-                          .toUpperCase() +
-                        chartData.data.ticket.author_name
-                          .slice(1)
-                          .toLowerCase()
+                        .charAt(0)
+                        .toUpperCase() +
+                      chartData.data.ticket.author_name
+                        .slice(1)
+                        .toLowerCase()
                       : ""}
                   </p>
                 </div>
@@ -2356,7 +2371,7 @@ const SupportChat = ({ ticketId = "1" }) => {
                   <p className="text-gray-800">{chartData?.data?.ticket.author_email}</p>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-1">Title</label>
@@ -2364,18 +2379,17 @@ const SupportChat = ({ ticketId = "1" }) => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-600 mb-1">Priority</label>
-                  <p className={`text-capitalize ${
-                    chartData?.data?.ticket.priority === "low"
-                      ? "text-blue-600"
-                      : chartData?.data?.ticket.priority === "medium"
+                  <p className={`text-capitalize ${chartData?.data?.ticket.priority === "low"
+                    ? "text-blue-600"
+                    : chartData?.data?.ticket.priority === "medium"
                       ? "text-yellow-600"
                       : "text-red-600"
-                  }`}>
+                    }`}>
                     {chartData?.data?.ticket.priority}
                   </p>
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1">Content</label>
                 <p className="text-gray-800">{chartData?.data?.ticket.content}</p>
@@ -2427,13 +2441,12 @@ const SupportChat = ({ ticketId = "1" }) => {
                           {item?.commented_by?.name}
                         </span>
                       </div>
-                      
+
                       <div
-                        className={`rounded-lg p-3 ${
-                          isAdmin
-                            ? "bg-teal-600 text-white rounded-br-none"
-                            : "bg-gray-100 text-gray-800 rounded-bl-none"
-                        }`}
+                        className={`rounded-lg p-3 ${isAdmin
+                          ? "bg-teal-600 text-white rounded-br-none"
+                          : "bg-gray-100 text-gray-800 rounded-bl-none"
+                          }`}
                       >
                         <p className="text-sm">{item.comment}</p>
                         {item?.image && (
@@ -2445,7 +2458,7 @@ const SupportChat = ({ ticketId = "1" }) => {
                           />
                         )}
                       </div>
-                      
+
                       <p className={`text-xs text-gray-500 mt-1 ${isAdmin ? "text-right" : "text-left"}`}>
                         {formatDateWithAmPm(item?.created_at)}
                       </p>
@@ -2472,7 +2485,7 @@ const SupportChat = ({ ticketId = "1" }) => {
                   </button>
                 </div>
               )}
-              
+
               <div className="flex items-center gap-3">
                 <input
                   type="text"
@@ -2488,14 +2501,14 @@ const SupportChat = ({ ticketId = "1" }) => {
                     }
                   }}
                 />
-                
+
                 <button
                   onClick={handleUpload}
                   className="p-2 text-gray-600 hover:text-teal-600 transition-colors"
                 >
                   <Paperclip size={20} />
                 </button>
-                
+
                 <button
                   onClick={sendComment}
                   disabled={commentLoading}

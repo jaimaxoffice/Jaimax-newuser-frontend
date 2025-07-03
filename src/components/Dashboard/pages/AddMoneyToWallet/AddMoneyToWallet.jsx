@@ -1207,7 +1207,7 @@ const AddMoneyToWallet = () => {
       <div className="flex pt-6 gap-6">
         <div className="flex items-center">
           <input
-            className="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500 cursor-pointer"
+            className="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500 cursor-pointer ml-4"
             type="radio"
             name="currency"
             id="currency"

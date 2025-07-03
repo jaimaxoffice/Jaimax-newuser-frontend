@@ -101,6 +101,9 @@ const validationSchema = Yup.object({
   email: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
+  phone: Yup.string()
+    .email('Invalid Mobile Number')
+    .required('Phone is required'),
   message: Yup.string()
     .min(10, 'Message must be at least 10 characters')
     .required('Message is required'),
@@ -114,6 +117,7 @@ const ContactSection = () => {
     initialValues: {
       name: '',
       email: '',
+      Phone: '',
       message: ''
     },
     validationSchema: validationSchema,
@@ -121,10 +125,10 @@ const ContactSection = () => {
       try {
         // Call the RTK Query mutation
         await submitEnquiry(values).unwrap();
-        
+
         // Reset form on success
         resetForm();
-        
+
         // Optional: Show success message
         // alert('Message sent successfully!');
       } catch (err) {
@@ -144,22 +148,22 @@ const ContactSection = () => {
             <span className="block">Let's get</span>
             <span className="block">in touch</span>
           </h2>
-          
+
           <p className="mt-6 sm:mt-8 lg:mt-10 text-lg sm:text-xl lg:text-2xl text-[#c4d72d] font-semibold">
             We are glad to hear from you!
           </p>
-          
+
           <div className="mt-8 sm:mt-10 lg:mt-12 space-y-5 sm:space-y-6 text-base sm:text-lg lg:text-xl text-white/90">
             <div>
               <p className="font-semibold text-white">Phone</p>
               <p>(+91) 6303008654</p>
             </div>
-            
+
             <div>
               <p className="font-semibold text-white">Email</p>
               <p>info@jaimax.com</p>
             </div>
-            
+
             <div>
               <p className="font-semibold text-white">Office</p>
               <p>
@@ -176,7 +180,7 @@ const ContactSection = () => {
             <h3 className="text-[#c4d72d] text-xl sm:text-2xl font-semibold mb-6 sm:mb-8">
               Contact
             </h3>
-            
+
             <div onSubmit={formik.handleSubmit} className="space-y-4 sm:space-y-6">
               {/* Error Message Display */}
               {isError && (
@@ -202,11 +206,10 @@ const ContactSection = () => {
                     value={formik.values.name}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full bg-transparent border-b py-2 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none transition-colors ${
-                      formik.errors.name && formik.touched.name 
-                        ? 'border-red-400 focus:border-red-400' 
+                    className={`w-full bg-transparent border-b py-2 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none transition-colors ${formik.errors.name && formik.touched.name
+                        ? 'border-red-400 focus:border-red-400'
                         : 'border-white/40 focus:border-[#fff799]'
-                    }`}
+                      }`}
                   />
                   {formik.errors.name && formik.touched.name && (
                     <div className="absolute -bottom-5 left-0 text-xs text-red-400">
@@ -214,7 +217,7 @@ const ContactSection = () => {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="relative">
                   <input
                     type="email"
@@ -223,11 +226,10 @@ const ContactSection = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full bg-transparent border-b py-2 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none transition-colors ${
-                      formik.errors.email && formik.touched.email 
-                        ? 'border-red-400 focus:border-red-400' 
+                    className={`w-full bg-transparent border-b py-2 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none transition-colors ${formik.errors.email && formik.touched.email
+                        ? 'border-red-400 focus:border-red-400'
                         : 'border-white/40 focus:border-[#fff799]'
-                    }`}
+                      }`}
                   />
                   {formik.errors.email && formik.touched.email && (
                     <div className="absolute -bottom-5 left-0 text-xs text-red-400">
@@ -236,7 +238,26 @@ const ContactSection = () => {
                   )}
                 </div>
               </div>
-              
+              <div className="relative">
+                  <input
+                    type="phone"
+                    name="phone"
+                    placeholder="phone"
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={`w-full bg-transparent border-b py-2 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none transition-colors ${formik.errors.email && formik.touched.email
+                        ? 'border-red-400 focus:border-red-400'
+                        : 'border-white/40 focus:border-[#fff799]'
+                      }`}
+                  />
+                  {formik.errors.phone && formik.touched.phone && (
+                    <div className="absolute -bottom-5 left-0 text-xs text-red-400">
+                      {formik.errors.phone}
+                    </div>
+                  )}
+                </div>
+
               {/* Message */}
               <div className="relative mt-8">
                 <textarea
@@ -246,11 +267,10 @@ const ContactSection = () => {
                   value={formik.values.message}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full resize-none bg-transparent border-b py-2 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none transition-colors ${
-                    formik.errors.message && formik.touched.message 
-                      ? 'border-red-400 focus:border-red-400' 
+                  className={`w-full resize-none bg-transparent border-b py-2 sm:py-3 text-sm sm:text-base text-white placeholder-white/60 focus:outline-none transition-colors ${formik.errors.message && formik.touched.message
+                      ? 'border-red-400 focus:border-red-400'
                       : 'border-white/40 focus:border-[#fff799]'
-                  }`}
+                    }`}
                 />
                 {formik.errors.message && formik.touched.message && (
                   <div className="absolute -bottom-5 left-0 text-xs text-red-400">
@@ -258,18 +278,17 @@ const ContactSection = () => {
                   </div>
                 )}
               </div>
-              
+
               {/* CTA */}
               <div className="pt-4">
                 <button
                   type="button"
                   onClick={formik.handleSubmit}
                   disabled={isLoading || !formik.isValid}
-                  className={`w-full rounded-full sm:w-auto px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-colors ${
-                    isLoading || !formik.isValid
+                  className={`w-full rounded-full sm:w-auto px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-colors ${isLoading || !formik.isValid
                       ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
                       : 'bg-[#b9cd27] text-[#095259] hover:bg-[#fce66d]'
-                  }`}
+                    }`}
                 >
                   {isLoading ? 'Sending...' : 'Send to us'}
                 </button>

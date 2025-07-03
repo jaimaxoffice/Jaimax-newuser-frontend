@@ -1571,15 +1571,32 @@ const SlabTabs = () => {
     setPaymentMethod(method);
   };
 
-  const onProceedOrder = async (e) => {
-    e?.preventDefault();
-    if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
-      return;
-    }
+ const onProceedOrder = async (e) => {
+  e?.preventDefault();
+  if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
+    return;
+  }
 
-    setShowModal(true);
-    setIsAddOrderError("");
-  };
+  // Create breakdown data directly without API call
+  const currentSlab = slabsData[activeTab];
+  const price = currency === "INR" ? currentSlab.atPriceInr : currentSlab.atPriceUsdt;
+  const coins = Math.floor(+amount / price);
+  
+  setPurchaseCoinsBreakup({
+    shortageResolution: [{
+      round: currentSlab.round,
+      resolvedPriceInr: currentSlab.atPriceInr,
+      resolvedPriceUsdt: currentSlab.atPriceUsdt,
+      amount: +amount,
+      resolvedQty: coins
+    }],
+    totalCoins: coins.toLocaleString(),
+    totalAmount: +amount,
+  });
+  
+  // Show breakdown modal instead of payment modal
+  setShowPurchaseCoinsModal(true);
+};
 
   const onSubmitBuy = async () => {
     if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
