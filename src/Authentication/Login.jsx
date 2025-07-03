@@ -3663,7 +3663,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
         email: formData.email,
         otp: Number(formData.otp),
         otpType: "register",
-        // referenceId: formData.referralId, // Include referralId here for verification
+        referenceId: formData.referralId, // Include referralId here for verification
       };
 
       const res = await verify(verifyPayload).unwrap();
@@ -3682,6 +3682,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
         email: formData.email,
         name: formData.name,
         username: localStorage.getItem("username"),
+        
       };
 
       // setData(userRegisterData)
@@ -3915,7 +3916,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible }) => {
             >
               {isRegisterLoading || isOTPresentLoading ? 'Sending...' :
                 otpSent && !canResendOtp ? `Sent (${timer}s)` :
-                  canResendOtp ? 'Resend OTP' : 'Send OTP'}
+                  canResendOtp ? 'Send OTP' : 'ReSend OTP'}
             </button>
           </div>
           <div className="absolute top-full left-0 right-0 min-h-[20px] pt-1">
