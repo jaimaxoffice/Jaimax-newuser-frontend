@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Crown, Trophy, Zap, Clock, Medal, Star, Percent, Check, ChevronRight, Sparkles, Target, TrendingUp, Gift } from 'lucide-react';
 import { useGetTodayEarningStatusMutation } from './userEarningApiSlice';
-// import DashboardLayout from '../../Layout/DashboardLayout';
 import Loader from "../../../Loader/loader";
 import ReferralModal from '../../modals/referalModal';
 

@@ -686,7 +686,6 @@ import {
   useCreatePaypalWalletOrderMutation,
   useTransferAvailableBalanceMutation,
 } from "../wallet/walletApiSlice";
-// import DashboardLayout from "../../Layout/DashboardLayout";
 import Tesseract from "tesseract.js";
 // import scan from "../../assets/Images/SignUp/scan.png";
 import scan from "../../../../assets/Images/SignUp/newQr.jpg";
