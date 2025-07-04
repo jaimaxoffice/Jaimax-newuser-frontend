@@ -491,7 +491,7 @@ const KycInformation = () => {
 
   const getKYCStatusDisplay = () => {
     const status = kycdata?.data?.status;
-    let statusText = "Pending Verification";
+    let statusText = "N/A";
     let statusColor = "orange";
 
     if (status === "approve") {
