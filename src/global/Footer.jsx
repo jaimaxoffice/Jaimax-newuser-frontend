@@ -333,10 +333,11 @@
 
 // Footer.jsx
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate } from "react-router-dom";
 import Logo from "../assets/Images/logo.svg";
 
 const Footer = () => {
+  const navigate=useNavigate();
   return (
     <footer
       className="relative backdrop-blur-[16px] border-t border-white/10"
@@ -590,20 +591,13 @@ const Footer = () => {
                   type="submit"
                   className="w-full rounded-full bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] text-[#0e0b0b] border border-white/20 px-4 sm:px-6 py-2 sm:py-3 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#b8cc26] hover:to-[#c5d82e] text-sm active:scale-95"
                   style={{ WebkitBackdropFilter: 'blur(4px)' }}
+                  onClick={() => navigate("/login")}
                 >
                   Subscribe Now
                 </button>
               </form>
 
-              {/* Special highlight box */}
-              <div className="mt-4 sm:mt-6 p-3 sm:p-4 rounded-xl bg-gradient-to-r from-[#c5d82e]/10 to-[#b8cc26]/10 border border-[#c5d82e]/20 backdrop-blur-[4px] max-w-xs mx-auto sm:mx-0">
-                <div className="text-[#c5d82e] text-xs font-semibold uppercase tracking-wider mb-1">
-                  Earn More
-                </div>
-                <div className="text-white text-sm font-medium">
-                  Join our referral program and earn 10% commission on every successful referral!
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
