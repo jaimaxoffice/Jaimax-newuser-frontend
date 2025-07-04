@@ -96,16 +96,18 @@ function Sidebar({ onLogoutClick }) {
       )}
 {/* bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#000000] */}
       {/* Sidebar */}
-      <div
+<div
   className={`
-    fixed top-0 left-0 min-h-screen  flex-col z-40 
-    transition-all duration-300 ease-in-out shadow-lg border-r  border-teal-600/20 bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
+    fixed top-0 left-0 min-h-screen flex flex-col z-40
+    transition-all duration-300 ease-in-out shadow-lg border-r border-teal-600/20
+    bg-gradient-to-br from-[#085358] via-[#085358] to-[#085358]
     ${isMobile 
       ? `${isOpen ? 'translate-x-0' : '-translate-x-full'} w-72` 
       : `${isOpen ? 'w-60' : 'w-20'} relative mt-6 ml-3 mb-6 rounded-lg`
     }
   `}
 >
+
 
         {/* Header */}
         <div className={`flex items-center justify-between p-4 border-b border-teal-600/30 bg-gradient-to-r from-teal-700/20 to-transparent`}>
@@ -129,7 +131,7 @@ function Sidebar({ onLogoutClick }) {
         </div>
 
         {/* Navigation */}
-        <nav className=" overflow-y-auto space-y-1 p-4">
+        <nav className=" flex-1 overflow-y-auto max-h-[calc(100vh-4rem)] space-y-1 p-4">
           {(isOpen || isMobile) && (
             <p className="text-xs text-white uppercase font-semibold mb-4 select-none tracking-wider">
               Menu
