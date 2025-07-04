@@ -3,7 +3,8 @@
    ────────────────────────────────────────────────────────────── */
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation, Outlet } from "react-router-dom";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 /* ── Global layout / shared UI ─────────────────────────────── */
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
@@ -132,6 +133,7 @@ const App = () => {
   if (showSplash) return <JaimaxSplash />;
 
   return (
+    <>
     <Routes>
       {/* ───────────────── Private / Dashboard Routes ─────────────── */}
       <Route path="/dashboard" element={<DashboardLayout />}>
@@ -221,6 +223,20 @@ const App = () => {
       {/* ───────────────── 404 Fallback (optional) ──────────────── */}
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
+    <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        style={{ zIndex: 9999 }}
+      />
+    </>
   );
 };
 

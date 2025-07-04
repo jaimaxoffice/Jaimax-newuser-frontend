@@ -1571,33 +1571,83 @@ const SlabTabs = () => {
     setPaymentMethod(method);
   };
 
+//  const onProceedOrder = async (e) => {
+//   e?.preventDefault();
+//   if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
+//     return;
+//   }
+
+//   // Create breakdown data directly without API call
+//   const currentSlab = slabsData[activeTab];
+//   const price = currency === "INR" ? currentSlab.atPriceInr : currentSlab.atPriceUsdt;
+//   const coins = Math.floor(+amount / price);
+  
+//   setPurchaseCoinsBreakup({
+//     shortageResolution: [{
+//       round: currentSlab.round,
+//       resolvedPriceInr: currentSlab.atPriceInr,
+//       resolvedPriceUsdt: currentSlab.atPriceUsdt,
+//       amount: +amount,
+//       resolvedQty: coins
+//     }],
+//     totalCoins: coins.toLocaleString(),
+//     totalAmount: +amount,
+//   });
+  
+//   // Show breakdown modal instead of payment modal
+//   setShowPurchaseCoinsModal(true);
+// };
  const onProceedOrder = async (e) => {
-  e?.preventDefault();
-  if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
-    return;
-  }
+    e?.preventDefault();
+    if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
+      return;
+    }
 
-  // Create breakdown data directly without API call
-  const currentSlab = slabsData[activeTab];
-  const price = currency === "INR" ? currentSlab.atPriceInr : currentSlab.atPriceUsdt;
-  const coins = Math.floor(+amount / price);
-  
-  setPurchaseCoinsBreakup({
-    shortageResolution: [{
-      round: currentSlab.round,
-      resolvedPriceInr: currentSlab.atPriceInr,
-      resolvedPriceUsdt: currentSlab.atPriceUsdt,
+    const payload = {
       amount: +amount,
-      resolvedQty: coins
-    }],
-    totalCoins: coins.toLocaleString(),
-    totalAmount: +amount,
-  });
-  
-  // Show breakdown modal instead of payment modal
-  setShowPurchaseCoinsModal(true);
-};
+      currency: currency,
+    };
 
+    try {
+      const response = await proceedOrder(payload).unwrap();
+      if (response.status_code === 200) {
+        if (response.data.shortageResolved) {
+          setPurchaseCoinsBreakup({
+            shortageResolution: response.data.shortageData,
+            totalCoins: response.data.totalCoins,
+            totalAmount: response.data.totalAmount,
+          });
+          setShowPurchaseCoinsModal(true);
+        } else {
+          setIsToastShown(true);
+          if (!isToastShown) {
+            toast.error("Insufficient coins available in ICO Rounds", {
+              position: "top-center",
+            });
+          } else {
+            toast.dismiss();
+            toast.error("Insufficient coins available in ICO Rounds", {
+              position: "top-center",
+            });
+          }
+        }
+      }
+    } catch (error) {
+      setPurchaseCoinsBreakup({});
+      setShowPurchaseCoinsModal(false);
+      setIsToastShown(true);
+      if (!isToastShown) {
+        toast.error(`${error?.data?.message}`, {
+          position: "top-center",
+        });
+      } else {
+        toast.dismiss();
+        toast.error(`${error?.data?.message}`, {
+          position: "top-center",
+        });
+      }
+    }
+  };
   const onSubmitBuy = async () => {
     if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
       return;
@@ -1750,12 +1800,13 @@ const SlabTabs = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
                   <span className="relative z-10">
                     {slab.id}
-                    {getOrdinalSuffix(slab.id)} Slab
+                     &ensp; Slab
                   </span>
                 </button>
               ))}
             </div>
           </div>
+          
 
           {/* Mobile Tabs */}
           <div className="flex md:hidden justify-start mb-4 overflow-x-auto no-scrollbar">
@@ -1765,12 +1816,13 @@ const SlabTabs = () => {
                   key={slab.id}
                   onClick={() => handleTabClick(index)}
                   className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${activeTab === index
-                    ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
-                    : "bg-gradient-to-r from-slate-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
+                    ? "bg-gradient-to-r from-teal-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
+                    : "bg-gradient-to-r from-teal-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
                     }`}
                 >
                   {slab.id}
-                  {getOrdinalSuffix(slab.id)} Slab
+                  {/* {getOrdinalSuffix(slab.id)} */}.
+                   Slab
                 </button>
               ))}
             </div>

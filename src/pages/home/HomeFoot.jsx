@@ -293,15 +293,16 @@ import applestore from '../../assets/Images/appleStore.svg'
 
 import React, { useState, useEffect } from 'react';
 import { Smartphone, Download, Rocket, Sparkles, ArrowRight, Play, Apple, Waves, Shield, TrendingUp } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 export default function HomeFooter() {
   const [isIframeSupported, setIsIframeSupported] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
+  const navigate=useNavigate();
   
   const onClickNavigateToLogin = () => {
     console.log("Navigate to register");
+    navigate('/login')
   };
 
   const checkWebGL2Support = () => {
@@ -511,7 +512,7 @@ export default function HomeFooter() {
                   boxShadow: "0 25px 50px rgba(78, 205, 196, 0.4), 0 0 0 1px rgba(78, 205, 196, 0.2)",
                 }}
               >
-                <span className="truncate">Join the Revolution</span>
+                <button className="truncate" onClick={()=>navigate('/login')}>Join the Revolution</button>
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-transform duration-300 group-hover:translate-x-2 flex-shrink-0" />
 
                 {/* Active click effect */}
