@@ -10,7 +10,7 @@ export const homePageApiSlice = apiSlice.injectEndpoints({
     }),
     submitEnquiry: builder.mutation({
       query: (data) => ({
-        url: "/support/enquiry",
+        url: "/support/genral-enquiry",
         method: "POST",
         body: { ...data },
         
