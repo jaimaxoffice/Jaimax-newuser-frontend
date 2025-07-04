@@ -51,7 +51,7 @@ import LogoutModal from "./components/Dashboard/pages/logout/logout";
 import Shareholders from "./components/Dashboard/pages/shareholders/shareholders";
 import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet";
 import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarning";
-
+import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
 /* ─────────────────────────────────────────────────────────────
    DashboardLayout (sidebar + header wrapper)
    ──────────────────────────────────────────────────────────── */
@@ -66,11 +66,14 @@ const DashboardLayout = () => {
 
   return (
 <div className="relative flex h-screen  bg-white overflow-hidden"> {/* This is your main layout container */}
+  <div className="overflow-auto">
+
   <Sidebar
     isOpen={sidebarOpen}
     setIsOpen={setSidebarOpen}
     onLogoutClick={() => setShowLogoutModal(true)}
   />
+  </div>
 
   <div
     className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
@@ -178,6 +181,9 @@ const App = () => {
       </Route>
       <Route path="/support" element={<DashboardLayout />}>
         <Route index element={<Support />} />
+      </Route>
+      <Route path="/meetings" element={<DashboardLayout />}>
+        <Route index element={<UserMeetingsShowcase />} />
       </Route>
 
       {/* ───────────────── Public Routes ─────────────────────────── */}

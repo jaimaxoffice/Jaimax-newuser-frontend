@@ -42,6 +42,7 @@ const navItems = [
   { name: "KYC", path: "/kyc-information", icon: <HiOutlineIdentification /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },
   { name: "Support", path: "/support", icon: <HiOutlineChatAlt2 /> },
+  { name: "Meetings", path: "/meetings", icon: <HiOutlineChatAlt2 /> },
   { name: "Logout", icon: <HiOutlineLogout /> },
 ];
 function Sidebar({ onLogoutClick }) {
