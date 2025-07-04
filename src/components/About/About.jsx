@@ -560,6 +560,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import Seo from '../../SeoContent/Seo'
 // import about from '../../assets/Images/future.png'
 const about='https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg'
 // SVG Icons as React Components (These remain the same as they are functional)
@@ -840,6 +841,7 @@ const JaimaxOverview = () => {
 
   return (
     <div className="relative min-h-screen text-white overflow-hidden">
+      <Seo page="about" />
       <FloatingParticles />
 
       {/* This outer div now only handles the background and particle effect */}

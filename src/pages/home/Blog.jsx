@@ -1271,7 +1271,7 @@ import Blog5 from '../../../public/images/Blog5poster.jpg'
 
 import { ChevronLeft, TrendingUp, Share2, Flame, Eye, ArrowRight, ChevronRight, Calendar, User, Clock, Search, Phone, Mail, MapPin, Star, Filter, X, Copy, Check } from 'lucide-react';
 import { useNavigate, useParams } from "react-router-dom";
-
+import Seo from '../../SeoContent/Seo'
 const BlogLayout = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -1387,6 +1387,7 @@ const BlogLayout = () => {
           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
       }}
     >
+      <Seo page="blog" />
       <div className="w-full mx-auto max-w-9xl">
         {/* Mobile Header */}
         <div className="block lg:hidden mb-6">

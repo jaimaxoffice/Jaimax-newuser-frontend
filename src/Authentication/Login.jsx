@@ -9,7 +9,7 @@ import {
   useLoginMutation,
   useOTPresentMutation
 } from './authApiSlice';
-
+import Seo from '../SeoContent/Seo'
 import countrycodes from './countrycodes.json';
 import TermsConditionsModal from './TermsAndConditions';
 const Notification = ({ type, message, onClose }) => {
@@ -236,6 +236,7 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
       className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
     >
+      <Seo page="login" />
       {notification && (
         <Notification
           type={notification.type}
@@ -703,7 +704,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
           onClose={() => setNotification(null)}
         />
       )}
-
+<Seo page="register" />
       <div className="text-center mb-4 sm:mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">REGISTER</h1>
         <p className="text-sm text-gray-600">Create a new account to get started</p>

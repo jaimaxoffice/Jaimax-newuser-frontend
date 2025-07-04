@@ -271,7 +271,8 @@ import HomeContact from './HomeContact';
 import RealTimeTicker from './scroll';
 import JaimaxRoadmap from './RoadmapDup';
 import CreativePartnersComponent from './Partners';
-
+import Seo from '../../SeoContent/Seo';
+import { Helmet } from 'react-helmet';
 const Home = () => {
   const [currentBg, setCurrentBg] = useState('');
   const navigate = useNavigate();
@@ -300,8 +301,11 @@ const Home = () => {
   };
 
   return (
+    <>
+    <Seo page="homePage" /> {/* ✅ passing prop */}
+      {/* <h1>Welcome to Jaimax</h1> */}
     <div className="outer-container">
-      {/* Hero Section - Mobile First Design */}
+     
       <div className="relative min-h-screen flex flex-col justify-center">
         {/* Background Image with proper mobile optimization */}
         <div className="absolute inset-0 w-full h-full">
@@ -317,10 +321,10 @@ const Home = () => {
         {/* Content Container - Mobile First */}
         <div className="relative z-10 px-4 py-4 mx-auto w-full max-w-9xl
                         ">
-          
+
           {/* Main Content */}
           <div className="max-w-9xl sm:max-w-8xl md:max-w-9xl lg:max-w-7xl">
-            
+
             {/* Headline - Optimized for mobile reading */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -377,11 +381,11 @@ const Home = () => {
                           md:min-w-[200px] md:px-8 md:py-4 md:text-xl
                           lg:min-w-[220px] lg:px-10 lg:py-5 lg:text-xl
                           touch-manipulation"
-                
+
               >
                 Start Building
               </button>
-              
+
               {/* Secondary CTA - Mobile optimized */}
               <button
                 onClick={() => navigate("/blog")}
@@ -395,7 +399,7 @@ const Home = () => {
                           md:min-w-[200px] md:px-10 md:py-4 md:text-xl
                           lg:min-w-[220px] lg:px-12 lg:py-5 lg:text-xl
                           touch-manipulation"
-               
+
               >
                 Explore Resources
               </button>
@@ -417,6 +421,7 @@ const Home = () => {
         <HomeFooter />
       </div>
     </div>
+    </>
   );
 };
 

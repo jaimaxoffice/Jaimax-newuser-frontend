@@ -375,7 +375,7 @@ import icon from '../../assets/Images/loginReg.svg'
 import icon2 from '../../assets/Images/jaicoin.svg'
 import featureImage from "../../assets/websiteicons.png"
 import { useNavigate } from 'react-router-dom';
-
+import Seo from '../../SeoContent/Seo'
 const JaimaxLanding = () => {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate()
@@ -532,6 +532,7 @@ const JaimaxLanding = () => {
   return (
     <div className="min-h-screen text-white">
       {/* Hero Section */}
+      <Seo page="features" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2 p-4 sm:p-5 items-center">
           

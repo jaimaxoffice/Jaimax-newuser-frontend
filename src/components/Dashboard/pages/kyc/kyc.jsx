@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CryptoJS from 'crypto-js';
-import MyContext from '../../../../Authentication/authContext';
 import { useKycaddMutation, useGetkycDetailsQuery, useGetKycDataMutation } from './kycApiSlice';
 import { useUserDataQuery } from '../../../Dashboard/pages/dashBoard/DashboardApliSlice';
 import countryCodes from '../../../../Authentication/countryCodes.json';
@@ -15,7 +14,6 @@ import DigiLockerModal from './DigiLockerModal';
 import Loader from '../../../Loader/loader';
 
 const KycInformation = () => {
-  const { data } = MyContext(MyContext);
   const { data: userData } = useUserDataQuery();
 
   const isCountryCodeIndia = userData && userData?.data?.countryCode === 91;

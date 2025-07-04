@@ -314,91 +314,45 @@
 // export default UserMeetingsShowcase;
 
 
-
 import React, { useState, useEffect } from "react";
 import { Play, Calendar, Clock, Users, Filter, Search } from "lucide-react";
+import { useGetAllZoomMeetingsQuery } from "./MeetingsApiSlice";
 
 // Mock user layout component
 const UserLayout = ({ children }) => (
-  <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white">
-    <div className="bg-white shadow-lg border-b border-teal-100 px-4 sm:px-6 py-4">
-      <h1 className="text-xl sm:text-2xl font-bold text-teal-900">Learning Portal</h1>
+  <div className="min-h-screen bg-gray-50">
+    <div className="bg-white shadow-sm border-b px-6 py-4">
+      <h1 className="text-2xl font-bold text-gray-900">Learning Portal</h1>
     </div>
-    <div className="p-4 sm:p-6">
+    <div className="p-6">
       {children}
     </div>
   </div>
 );
 
 function UserMeetingsShowcase() {
-  // Mock data for demonstration
-  const mockMeetings = [
-    {
-      _id: "1",
-      title: "Advanced React Patterns",
-      subTitle: "Learn modern React patterns and best practices",
-      type: "zoom meet",
-      videoId: "123456789",
-      url: "https://zoom.us/j/123456789",
-      createdAt: "2024-01-15T10:30:00Z"
-    },
-    {
-      _id: "2",
-      title: "JavaScript Fundamentals",
-      subTitle: "Master the basics of JavaScript programming",
-      type: "youtube",
-      videoId: "abc123def",
-      url: "https://youtube.com/watch?v=abc123def",
-      createdAt: "2024-01-10T14:00:00Z"
-    },
-    {
-      _id: "3",
-      title: "Team Standup Meeting",
-      subTitle: "Daily team synchronization and updates",
-      type: "google meet",
-      videoId: "meet123",
-      url: "https://meet.google.com/meet123",
-      createdAt: "2024-01-12T09:00:00Z"
-    },
-    {
-      _id: "4",
-      title: "UI/UX Design Workshop",
-      subTitle: "Creative design principles and user experience",
-      type: "zoom meet",
-      videoId: "987654321",
-      url: "https://zoom.us/j/987654321",
-      createdAt: "2024-01-08T16:30:00Z"
-    },
-    {
-      _id: "5",
-      title: "Node.js Backend Development",
-      subTitle: "Building scalable server-side applications",
-      type: "youtube",
-      videoId: "xyz789abc",
-      url: "https://youtube.com/watch?v=xyz789abc",
-      createdAt: "2024-01-05T11:15:00Z"
-    },
-    {
-      _id: "6",
-      title: "Project Planning Session",
-      subTitle: "Strategic planning and milestone setting",
-      type: "google meet",
-      videoId: "meet456",
-      url: "https://meet.google.com/meet456",
-      createdAt: "2024-01-03T13:45:00Z"
-    }
-  ];
-
   const [filteredMeetings, setFilteredMeetings] = useState([]);
   const [selectedType, setSelectedType] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [limit, setLimit] = useState(20);
   const meetingsPerPage = 6;
 
-  // Use mock data
-  const meetings = mockMeetings;
+  // Build query parameters
+  const queryParams = new URLSearchParams();
+  queryParams.append('page', currentPage.toString());
+  queryParams.append('limit', limit.toString());
+
+  // API call using your endpoint
+  const {
+    data: meetingsData,
+    isLoading,
+    error,
+    refetch
+  } = useGetAllZoomMeetingsQuery(queryParams.toString());
+
+  const meetings = meetingsData?.data?.videos || [];
+  const pagination = meetingsData?.data?.pagination || {};
 
   // Filter meetings based on type and search term
   useEffect(() => {
@@ -420,6 +374,7 @@ function UserMeetingsShowcase() {
     setFilteredMeetings(filtered);
   }, [meetings, selectedType, searchTerm]);
 
+
   // Pagination for filtered results
   const indexOfLastMeeting = currentPage * meetingsPerPage;
   const indexOfFirstMeeting = indexOfLastMeeting - meetingsPerPage;
@@ -430,13 +385,13 @@ function UserMeetingsShowcase() {
   const getMeetingTypeInfo = (type) => {
     switch (type) {
       case "zoom meet":
-        return { color: "#0d9488", bgColor: "rgba(13, 148, 136, 0.1)", icon: "📹" };
+        return { color: "#0d9488", bgColor: "rgba(13, 148, 136, 0.1)" };
       case "youtube":
-        return { color: "#14b8a6", bgColor: "rgba(20, 184, 166, 0.1)", icon: "🎥" };
+        return { color: "#14b8a6", bgColor: "rgba(20, 184, 166, 0.1)" };
       case "google meet":
-        return { color: "#0f766e", bgColor: "rgba(15, 118, 110, 0.1)", icon: "🎯" };
+        return { color: "#0f766e", bgColor: "rgba(15, 118, 110, 0.1)"};
       default:
-        return { color: "#134e4a", bgColor: "rgba(19, 78, 74, 0.1)", icon: "📱" };
+        return { color: "#134e4a", bgColor: "rgba(19, 78, 74, 0.1)"};
     }
   };
 
@@ -460,7 +415,7 @@ function UserMeetingsShowcase() {
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-900 mb-2">
-            📚 Learning Sessions
+          Learning Sessions
           </h1>
           <p className="text-teal-700 text-base sm:text-lg">
             Join live sessions, watch recordings, and enhance your skills
@@ -554,7 +509,7 @@ function UserMeetingsShowcase() {
             </div>
           </div>
         ) : currentMeetings.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {currentMeetings.map((meeting) => {
               const typeInfo = getMeetingTypeInfo(meeting.type);
               return (

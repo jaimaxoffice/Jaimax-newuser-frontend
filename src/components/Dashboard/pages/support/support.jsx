@@ -1922,7 +1922,7 @@ const SupportList = () => {
             </div>
 
             {/* Controls Section */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row   gap-4">
               {/* Create Ticket Button */}
               <button
                 onClick={() => setShow(true)}
@@ -2051,7 +2051,7 @@ const SupportList = () => {
                   </div>
 
                   {/* Card Details */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2  gap-3 mb-4 text-sm">
                     <div>
                       <span className="text-teal-600 font-medium block mb-1">Type</span>
                       <span className="text-gray-700">{item.type}</span>
