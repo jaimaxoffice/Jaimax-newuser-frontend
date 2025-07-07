@@ -3065,12 +3065,12 @@ const TransactionTable = ({ transactions, state, setState, selectedStatus, setSe
                 />
                 <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
               </div>
-            </div>
-            
             <button className="w-full sm:w-auto px-4 py-2 bg-[#1d8e85] text-white rounded-md text-sm hover:bg-[#166f67] focus:ring-2 focus:ring-[#1d8e85] focus:ring-offset-2 flex items-center justify-center gap-2 transition-colors">
               <Download className="w-4 h-4" />
               Export
             </button>
+            </div>
+            
           </div>
         </div>
       </div>
