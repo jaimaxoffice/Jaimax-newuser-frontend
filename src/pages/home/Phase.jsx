@@ -1321,7 +1321,7 @@
 
 import React, { useRef, useState } from "react";
 import { CheckCircle, Clock, TrendingUp } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 const phaseData = [
   {
     status: "Live",
@@ -1362,47 +1362,15 @@ const phaseData = [
 
 export default function GrowthPlanTimeline() {
   const cardRefs = useRef([]);
+  const navigate=useNavigate();
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
-
-  // Observe which phase is currently in view
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let maxRatio = 0;
-        let activeIndex = 0;
-        
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio > maxRatio) {
-            maxRatio = entry.intersectionRatio;
-            const index = cardRefs.current.indexOf(entry.target);
-            if (index !== -1) {
-              activeIndex = index;
-            }
-          }
-        });
-        
-        if (maxRatio > 0.3) {
-          setCurrentPhaseIndex(activeIndex);
-        }
-      },
-      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] }
-    );
-
-    cardRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   // Snap-scroll to a card when its circular icon is clicked
   const handleIconClick = (index) => {
     if (cardRefs.current[index]) {
       cardRefs.current[index].scrollIntoView({ behavior: "smooth", inline: "center" });
       setActiveIndex(index);
-      setCurrentPhaseIndex(index);
       setTimeout(() => setActiveIndex(null), 300);
     }
   };
@@ -1410,134 +1378,157 @@ export default function GrowthPlanTimeline() {
   // Navigate to the register page on *Live* cards
   const handleBuyNow = (item) => {
     if (item.status === "Live") {
-      // navigate("/register");
+      navigate("/register");
       console.log("Navigate to register page");
     }
   };
 
   return (
-    <div className="min-h-screen py-12 px-4">
-      <section className="text-white font-sans max-w-7xl mx-auto">
+    <div className=" min-h-screen py-12">
+      <section className="text-white px-2 sm:px-4 md:px-8 lg:px-10 xl:px-12 font-sans">
         {/* Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+        <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8 md:mb-10 px-2 sm:px-4 md:px-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-tight text-white drop-shadow-lg">
             Company's Growth Plan Outlook
           </h2>
-          <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
-            Join our revolutionary token phases and be part of the future
-          </p>
         </div>
 
-        {/* Timeline Container */}
+        {/* Horizontal timeline line (all screens) */}
         <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-0 right-0 h-1 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 top-16 rounded-full shadow-lg" />
+          <div
+            className="absolute left-0 right-0 h-0.5 sm:h-1 bg-teal-600"
+            style={{ top: "24px" }}
+            aria-hidden="true"
+          />
           
-          {/* Cards Container */}
-          <div className="flex flex-nowrap gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 px-4 scrollbar-none"
-               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            <style jsx>{`
-              div::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
+          <div
+            className="
+              flex flex-nowrap gap-3 sm:gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory
+              scroll-smooth scrollbar-hide pb-12 sm:pb-16 md:pb-20 w-full 
+              pl-4 sm:pl-6 md:pl-8 pr-4 sm:pr-6 md:pr-8
+            "
+            role="list"
+          >
             {phaseData.map((item, idx) => {
               const { status, phaseNo, tokens, price, button } = item;
               const shouldBlurContent = status !== "Live";
               const isActive = idx === activeIndex;
-              const isHovered = idx === hoveredIndex;
 
               return (
                 <div
                   key={idx}
                   ref={(el) => (cardRefs.current[idx] = el)}
+                  tabIndex={0}
+                  role="listitem"
                   className={`
                     relative flex-shrink-0 snap-center
-                    w-80 h-96 flex flex-col items-center
-                    transition-all duration-300 ease-out
-                    ${isActive ? "scale-105 z-30" : "scale-100"}
-                    ${isHovered ? "transform -translate-y-2" : ""}
+                    w-64 sm:w-72 md:w-80 lg:w-80
+                    flex flex-col items-center focus:outline-none cursor-pointer
+                    transition-transform duration-300
+                    ${isActive ? "scale-105 sm:scale-110 z-30" : "scale-100"}
                   `}
                   onMouseEnter={() => setHoveredIndex(idx)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  {/* Circular Timeline Icon */}
+                  {/* Circular icon */}
                   <button
                     onClick={() => handleIconClick(idx)}
                     className={`
-                      relative z-10 flex items-center justify-center 
-                      w-16 h-16 rounded-full shadow-xl transition-all duration-300
-                      ${status === "Live" 
-                        ? "bg-gradient-to-r from-emerald-500 to-green-500 shadow-emerald-500/50" 
-                        : "bg-gradient-to-r from-slate-200 to-white shadow-slate-400/50"}
-                      ${isHovered ? "scale-110 shadow-2xl" : ""}
+                      flex items-center justify-center 
+                      w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14
+                      rounded-full shadow-lg transition-transform duration-200
+                      ${status === "Live" ? "bg-green-400" : "bg-white"}
                     `}
                     aria-label={`Navigate to ${phaseNo}`}
+                    type="button"
                   >
                     {status === "Live" ? (
-                      <CheckCircle className="w-8 h-8 text-white drop-shadow-lg" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 text-teal-800" />
                     ) : (
-                      <Clock className="w-8 h-8 text-slate-700 drop-shadow-lg" />
+                      <Clock className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 text-teal-800" />
                     )}
                   </button>
 
-                  {/* Phase Label */}
-                  <div className="mt-4 mb-6">
-                    <span className="text-emerald-300 font-bold text-lg tracking-wide">
-                      {phaseNo}
-                    </span>
+                  {/* Phase label on hover (desktop only) */}
+                  <div
+                    className={`
+                      hidden lg:block absolute top-[48px] sm:top-[56px] md:top-[64px] 
+                      text-yellow-300 font-semibold text-center text-sm sm:text-base
+                      mt-2 w-20 sm:w-24 md:w-32 opacity-0 pointer-events-none 
+                      transition-opacity duration-300 drop-shadow-lg
+                      ${hoveredIndex === idx ? "opacity-100 pointer-events-auto" : ""}
+                    `}
+                    style={{ left: "50%", transform: "translateX(-50%)" }}
+                  >
+                    {phaseNo}
                   </div>
 
-                  {/* Card Content - Fixed Height */}
+                  {/* Phase label (mobile/tablet) */}
+                  <span
+                    className="
+                      mt-2 sm:mt-3 md:mt-4 lg:mt-0 lg:rotate-90 lg:absolute lg:top-1/2
+                      lg:-translate-y-1/2 font-semibold text-xs sm:text-sm
+                      tracking-widest text-teal-100 select-none drop-shadow-lg
+                    "
+                    style={{ left: "-32px", zIndex: "1000" }}
+                  >
+                    {phaseNo}
+                  </span>
+
+                  {/* Card content - Fixed height for even sizing */}
                   <article
                     className={`
-                      w-full h-80 bg-gradient-to-br from-slate-800 to-slate-900 
-                      rounded-2xl p-6 shadow-2xl border border-slate-700
-                      flex flex-col justify-between relative overflow-hidden
-                      transition-all duration-300
-                      ${isHovered ? "shadow-emerald-500/20 border-emerald-500/30" : ""}
+                      mt-3 sm:mt-4 md:mt-6 lg:mt-16 bg-gradient-to-br from-[#1c984a] to-[#166a34] rounded-lg 
+                      p-4 sm:p-5 md:p-6 shadow-xl relative w-full 
+                      flex flex-col justify-between border border-teal-700/30
+                      h-64 sm:h-72 md:h-80
                     `}
                   >
-                    {/* Decorative background pattern */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent" />
-                    
-                    {/* Status Badge */}
-                    <div className="relative z-10 mb-4">
-                      <div
+                    {/* Status badge */}
+                    <div className="relative mb-3">
+                      <p
                         className={`
-                          inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm
+                          text-xs sm:text-sm px-3 sm:px-4 py-1.5 rounded-full 
+                          inline-flex items-center gap-1.5 font-semibold w-fit
+                          shadow-lg
                           ${status === "Live"
-                            ? "bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg animate-pulse"
-                            : "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg"}
+                            ? "bg-green-500 text-white animate-pulse"
+                            : "bg-[#b8cc26] text-black absolute right-0 sm:right-2"}
                         `}
+                        style={
+                          status !== "Live"
+                            ? { top: "-24px", right: "0" }
+                            : {}
+                        }
                       >
                         {status === "Live" ? (
-                          <CheckCircle className="w-4 h-4" />
+                          <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
                         ) : (
-                          <Clock className="w-4 h-4" />
+                          <Clock className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-black" />
                         )}
-                        <span>{status}</span>
-                      </div>
+                        <span className="text-xs sm:text-sm font-bold">{status}</span>
+                      </p>
                     </div>
 
                     {/* Content */}
                     <div
-                      className={`
-                        relative z-10 flex flex-col gap-4 flex-1
-                        ${shouldBlurContent ? "blur-sm" : ""}
-                      `}
+                      style={{
+                        filter: shouldBlurContent ? "blur(3px)" : "none",
+                        pointerEvents: shouldBlurContent ? "none" : "auto",
+                        marginTop: status !== "Live" ? "1.5rem" : "0",
+                      }}
+                      className="flex flex-col gap-3 sm:gap-4 flex-1 justify-between"
                     >
                       {/* Tokens */}
-                      <div className="space-y-2">
-                        <h3 className="text-2xl font-bold text-white leading-tight">
+                      <div className="text-center">
+                        <p className="text-lg sm:text-xl md:text-2xl leading-tight text-white font-bold drop-shadow-lg">
                           {tokens}
-                        </h3>
-                        <div className="w-16 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" />
+                        </p>
                       </div>
                       
                       {/* Price */}
-                      <div className="space-y-2 flex-1">
-                        <p className="text-slate-300 text-sm font-medium leading-relaxed">
+                      <div className="text-center bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                        <p className="text-sm sm:text-base md:text-lg text-white leading-tight font-semibold drop-shadow-lg">
                           {price}
                         </p>
                       </div>
@@ -1547,48 +1538,24 @@ export default function GrowthPlanTimeline() {
                         <button
                           onClick={() => handleBuyNow(item)}
                           className={`
-                            w-full py-3 px-6 rounded-xl font-semibold text-sm
-                            transition-all duration-200 shadow-lg
+                            px-6 sm:px-7 md:px-8 py-3 sm:py-3.5 md:py-4
+                            rounded-full text-sm sm:text-base font-bold
+                            w-full transition-all duration-200 shadow-lg
                             ${status === "Live"
-                              ? "bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-500 hover:to-green-500 hover:shadow-emerald-500/30 hover:scale-105"
-                              : "bg-gradient-to-r from-slate-600 to-slate-700 text-slate-300 cursor-not-allowed"}
+                              ? "bg-[#1d8d84] text-white hover:from-green-600 hover:to-green-700 hover:shadow-xl transform hover:scale-105"
+                              : "bg-gradient-to-r from-gray-400 to-gray-500 text-gray-200 cursor-not-allowed"}
                           `}
                           disabled={status !== "Live"}
                         >
-                          {button}
+                          <span className="drop-shadow-sm">{button}</span>
                         </button>
                       </div>
                     </div>
-
-                    {/* Blur overlay for upcoming phases */}
-                    {shouldBlurContent && (
-                      <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] rounded-2xl flex items-center justify-center">
-                        <div className="bg-slate-800/90 px-4 py-2 rounded-lg border border-slate-600">
-                          <span className="text-slate-300 font-medium">Coming Soon</span>
-                        </div>
-                      </div>
-                    )}
                   </article>
                 </div>
               );
             })}
           </div>
-        </div>
-
-        {/* Progress indicators */}
-        <div className="flex justify-center mt-8 gap-2">
-          {phaseData.map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleIconClick(idx)}
-              className={`
-                w-3 h-3 rounded-full transition-all duration-300
-                ${idx === currentPhaseIndex 
-                  ? "bg-gradient-to-r from-emerald-500 to-green-500 scale-125 shadow-lg shadow-emerald-500/50" 
-                  : "bg-slate-600 hover:bg-slate-500"}
-              `}
-            />
-          ))}
         </div>
       </section>
     </div>

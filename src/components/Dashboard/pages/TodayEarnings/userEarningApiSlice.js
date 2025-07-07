@@ -32,7 +32,13 @@ export const userEarningApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    getActivePaymentGateway: builder.query({
+      query: () => ({
+        url: `/user/get-active-paymentgateway`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetTodayEarningStatusMutation } = userEarningApiSlice;
+export const { useGetTodayEarningStatusMutation,useGetActivePaymentGatewayQuery } = userEarningApiSlice;
