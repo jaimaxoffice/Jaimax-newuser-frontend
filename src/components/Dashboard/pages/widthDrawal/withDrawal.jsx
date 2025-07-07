@@ -3481,8 +3481,8 @@ const Withdrawal = () => {
                     onClick={clearErrors}
                     className="w-full text-white px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] bg-[#1d8e85]"
                   >
-                    <option className="bg-[#1d8e85]" value="referral">Available Balance</option>
-                    <option className="bg-[#1d8e85]" value="JAIMAX">Purchase Token (JaiMax)</option>
+                    <option className="" value="referral">Available Balance</option>
+                    <option className="" value="JAIMAX">Purchase Token (JaiMax)</option>
                   </select>
                   {errors.balanceType && (
                     <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
@@ -3608,7 +3608,7 @@ const Withdrawal = () => {
                   <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
                     Account Number
                   </label>
-                  <p className="text-gray-900 font-semibold font-mono break-all">
+                  <p className="text-gray-900 font-semibold  break-all">
                     {kycDetails?.data?.bank_account || "Not Available"}
                   </p>
                 </div>

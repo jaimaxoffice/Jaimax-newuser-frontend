@@ -442,9 +442,9 @@ const ShareholderCard = () => {
     if (isLoading) {
       // Handle loading state
     } else if (error) {
-      console.error("❌ Error fetching data:", error);
+      // console.error("❌ Error fetching data:", error);
     } else if (data?.data?.shareholders) {
-      console.log("✅ Fetched data:", data.data.shareholders);
+      // console.log("✅ Fetched data:", data.data.shareholders);
     }
   }, [data, error, isLoading]);
 

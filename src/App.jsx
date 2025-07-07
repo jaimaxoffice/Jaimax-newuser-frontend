@@ -368,7 +368,7 @@ const getAuthToken = () => {
   try {
     return localStorage.getItem('token') || sessionStorage.getItem('token');
   } catch (error) {
-    console.error('Error accessing storage:', error);
+    // console.error('Error accessing storage:', error);
     return null;
   }
 };
@@ -382,7 +382,7 @@ const getLastSplashTime = () => {
   try {
     return localStorage.getItem('lastSplashTime');
   } catch (error) {
-    console.error('Error accessing storage:', error);
+    // console.error('Error accessin/g storage:', error);
     return null;
   }
 };
@@ -391,7 +391,7 @@ const setLastSplashTime = () => {
   try {
     localStorage.setItem('lastSplashTime', Date.now().toString());
   } catch (error) {
-    console.error('Error setting last splash time:', error);
+    // console.error('Error setting last splash time:', error);
   }
 };
 

@@ -556,7 +556,7 @@ const ShareholderEligibility = () => {
                           <div className="font-semibold text-gray-800 text-sm group-hover:text-teal-700 transition-colors duration-200">{referral.name}</div>
                         </td>
                         <td className="px-4 xl:px-6 py-3 sm:py-4">
-                          <span className="text-gray-600 font-mono text-xs bg-gray-50 px-2 py-1 rounded-lg">{referral.username}</span>
+                          <span className="text-gray-600 text-xs bg-gray-50 px-2 py-1 rounded-lg">{referral.username}</span>
                         </td>
                         <td className="px-4 xl:px-6 py-3 sm:py-4 text-center">
                           <span className="text-gray-600 text-xs font-semibold px-2 sm:px-3 py-1 sm:py-2 rounded-xl min-w-[32px] inline-block">
@@ -670,7 +670,7 @@ const ShareholderEligibility = () => {
                           </div>
                           <div className="min-w-0 flex-1">
                             <h6 className="font-bold text-gray-800 text-sm sm:text-base group-hover:text-teal-700 transition-colors duration-200 truncate">{referral.name}</h6>
-                            <span className="text-gray-500 font-mono text-xs bg-gray-50 px-2 py-1 rounded-lg inline-block mt-1">{referral.username}</span>
+                            <span className="text-gray-500  text-xs bg-gray-50 px-2 py-1 rounded-lg inline-block mt-1">{referral.username}</span>
                           </div>
                         </div>
 

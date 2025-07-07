@@ -923,7 +923,7 @@ const ShareholderForm = () => {
       }
 
     } catch (error) {
-      console.error("Update error:", error);
+      // console.error("Update error:", error);
       setSubmitStatus({
         success: false,
         message: error?.data?.message || error?.message || "Shareholder is not eligible to update profile",

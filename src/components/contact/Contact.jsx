@@ -756,7 +756,7 @@ const ContactInformationSectionContent = () => {
         resetForm();
         alert('Your message has been sent successfully!');
       } catch (err) {
-        console.error('Error submitting enquiry:', err);
+        // console.error('Error submitting enquiry:', err);
         alert('There was an error sending your message. Please try again.');
       } finally {
         setSubmitting(false);

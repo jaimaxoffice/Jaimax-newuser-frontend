@@ -866,7 +866,7 @@ const AddMoneyToWallet = () => {
       if (reader.result) {
         Tesseract.recognize(reader.result, "eng")
           .then(({ data: { text } }) => {
-            console.log(text, "extracted");
+            // console.log(text, "extracted");
 
             // Hard coded values to be expected from the screenshot to be valid
             const expectedUpiId = "jaimaxcoin2024@upi";
@@ -885,7 +885,7 @@ const AddMoneyToWallet = () => {
               /UPI Ref(?:\.|erence)? No[:\s]*([\d\s]+)(?=\D|$)/i
             );
 
-            console.log(upiRefNoMatch, "upiRefNoMatch");
+            // console.log(upiRefNoMatch, "upiRefNoMatch");
 
             // Extract and clean up the UPI reference number
             const upiRefNo = upiRefNoMatch
@@ -915,7 +915,7 @@ const AddMoneyToWallet = () => {
             }
           })
           .catch((error) => {
-            console.error("Error during OCR:", error);
+            // console.error("Error during OCR:", error);
             setIsLoading(false);
           });
       }
@@ -983,7 +983,7 @@ const AddMoneyToWallet = () => {
         navigate("/wallet");
       }
     } catch (error) {
-      console.log("Error submitting form:", error);
+      // console.log("Error submitting form:", error);
       setIsToastShown(true);
       if (!isToastShown) {
         toast.error(error.data.message || "Form submission failed.");
@@ -1076,7 +1076,7 @@ const AddMoneyToWallet = () => {
       const res = await createPaypalWalletOrder(payload).unwrap();
       window.location.href = res?.data?.forwardLink;
     } catch (error) {
-      console.error("Error while creating PayPal wallet order:", error);
+      // console.error("Error while creating PayPal wallet order:", error);
     } finally {
       setLoading(false);
     }
@@ -1148,7 +1148,7 @@ const AddMoneyToWallet = () => {
       // Step 1: Get and parse user data from localStorage
       const userDataRaw = localStorage.getItem("userData");
       if (!userDataRaw) {
-        console.error("User not found in localStorage");
+        // console.error("User not found in localStorage");
         alert("User not logged in. Please login and try again.");
         return;
       }
@@ -1158,7 +1158,7 @@ const AddMoneyToWallet = () => {
       const name = userData?.data?.name;
 
       if (!userId || !name) {
-        console.error("User data is incomplete");
+        // console.error("User data is incomplete");
         alert("User details are missing. Please contact support.");
         return;
       }
@@ -1206,7 +1206,7 @@ const AddMoneyToWallet = () => {
         paymentWindow.focus(); // optional: bring the tab into focus
       }
     } catch (error) {
-      console.error("Error in onClickAddMoney:", error);
+      // console.error("Error in onClickAddMoney:", error);
       alert("Something went wrong. Please try again or contact support.");
     }
   };

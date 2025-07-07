@@ -12,7 +12,7 @@
 	<priority>1.0</priority>
 </url>
 <url>
-	<loc>https://jaimax.com/support-page</loc>
+	<loc>https://jaimax.com/contact</loc>
 	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
 	<priority>1.0</priority>
 </url>
@@ -52,7 +52,7 @@
 	<priority>1.0</priority>
 </url>
 <url>
-	<loc>https://jaimax.com/pieChart</loc>
+	<loc>https://jaimax.com/services</loc>
 	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
 	<priority>1.0</priority>
 </url>
@@ -92,7 +92,7 @@
 	<priority>1.0</priority>
 </url>
 <url>
-	<loc>https://jaimax.com/my-total-team</loc>
+	<loc>https://jaimax.com/my-team</loc>
 	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
 	<priority>1.0</priority>
 </url>
@@ -117,17 +117,12 @@
 	<priority>1.0</priority>
 </url>
 <url>
-	<loc>https://jaimax.com/withdrawal-history</loc>
+	<loc>https://jaimax.com/earnings</loc>
 	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
 	<priority>1.0</priority>
 </url>
 <url>
-	<loc>https://jaimax.com/withdrawal-request</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/2fa</loc>
+	<loc>https://jaimax.com/shareholders</loc>
 	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
 	<priority>1.0</priority>
 </url>

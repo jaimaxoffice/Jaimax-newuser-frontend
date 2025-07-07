@@ -28,7 +28,7 @@ export const userEarningApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           // console.debug("Mutation success:", data);
         } catch (error) {
-          console.error("Mutation failed:", error);
+          // console.error("Mutation failed:", error);
         }
       },
     }),

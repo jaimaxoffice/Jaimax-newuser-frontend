@@ -53,7 +53,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
     window.location.href = "/login";
     localStorage.clear();
     // Handle logout or other custom logic
-    console.error("Unauthorized: Logging out");
+    // console.error("Unauthorized: Logging out");
     // Optionally dispatch an action or navigate the user
   }
 

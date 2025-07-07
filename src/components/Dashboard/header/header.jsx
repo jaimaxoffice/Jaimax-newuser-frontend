@@ -556,7 +556,11 @@ function Header() {
   
   // Use API data instead of localStorage
   const { data: userData, isLoading, error } = useUserDataQuery();
-  
+  const name=JSON.parse(localStorage.getItem("userData"));
+  const id=name?.data?.name;
+  const mail=name?.data?.email;
+  console.log(id);
+  console.log(mail);
   // Extract user information from API response
   const username = userData?.data?.name || "User";
   const email = userData?.data?.email || "email";
@@ -621,8 +625,8 @@ function Header() {
         </h1>
         <div className="absolute top-3 right-2 sm:right-3 flex items-center space-x-2">
           <div className="flex flex-col text-right">
-            <p className="text-sm font-semibold">Error loading user</p>
-            <p className="text-xs text-gray-300">Please refresh</p>
+            <p className="text-sm font-semibold">{id}</p>
+            <p className="text-xs text-gray-300">{mail}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-red-300/30 flex items-center justify-center">
             <FaUser className="text-red-600 text-xl" />
@@ -644,8 +648,8 @@ function Header() {
       {/* Adjusted positioning for mobile: use 'right-2' for smaller screens, then 'sm:right-3' for larger */}
       <div className="absolute top-3 right-2 sm:right-3 flex items-center space-x-2 ">
         <div className="flex flex-col text-right">
-          <p className="text-sm font-semibold">{username}</p>
-          <p className="text-xs text-gray-300">{email}</p>
+          <p className="text-sm font-semibold">{id}</p>
+          <p className="text-xs text-gray-300">{mail}</p>
         </div>
 
         {/* Avatar and Dropdown Container */}

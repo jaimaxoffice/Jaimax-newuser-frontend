@@ -191,7 +191,7 @@ const RegisterPage = () => {
       });
       
     } catch (error) {
-      console.error('Registration error:', error);
+      // console.error('Registration error:', error);
       
       // Handle specific error messages from the API
       let errorMessage = 'Registration failed. Please try again.';
@@ -227,7 +227,7 @@ const RegisterPage = () => {
         otpType: "register", // Match the same value as verification
       };
 
-      console.log('Resend OTP data being sent:', otpData); // Debug log
+      // console.log('Resend OTP data being sent:', otpData); // Debug log
       
       await resendOtp(otpData).unwrap();
       
@@ -243,7 +243,7 @@ const RegisterPage = () => {
       });
       
     } catch (error) {
-      console.error('Resend OTP error:', error);
+      // console.error('Resend OTP error:', error);
       
       Swal.fire({
         icon: 'error',
@@ -296,7 +296,7 @@ const RegisterPage = () => {
         otpType: "register",
       };
 
-      console.log('Verification payload being sent:', payload); // Debug log
+      // console.log('Verification payload being sent:', payload); // Debug log
 
       // Call the verify API
       const res = await verify(payload).unwrap();
@@ -333,7 +333,7 @@ const RegisterPage = () => {
       });
       
     } catch (err) {
-      console.error('Verification error:', err);
+      // console.error('Verification error:', err);
       
       let errorMessage = 'Verification failed. Please try again.';
       

@@ -305,7 +305,7 @@ const KycInformation = () => {
       const postTokenRequest = async () => {
         try {
           const response = await getKycData(payload).unwrap();
-          console.log(response, "res");
+          // console.log(response, "res");
           if (response.data) {
             setFormData((prev) => ({
               ...prev,
@@ -321,7 +321,7 @@ const KycInformation = () => {
             setShowModal(false);
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         } finally {
           setLoading(false);
           localStorage.removeItem("code");
@@ -404,7 +404,7 @@ const KycInformation = () => {
   };
 
   const generateCodeChallenge = (verifier) => {
-    console.log("generateCodeChallenge");
+    // console.log("generateCodeChallenge");
     const hash = CryptoJS.SHA256(verifier);
     const base64Url = CryptoJS.enc.Base64.stringify(hash)
       .replace(/\+/g, "-")
@@ -414,25 +414,25 @@ const KycInformation = () => {
   };
 
   const handleButtonClick = async () => {
-    console.log("🚀 DigiLocker handleButtonClick triggered");
-    console.log("🔍 Current state:", { 
-      loading, 
-      showModal, 
-      isCountryCodeIndia,
-      origin: window.location.origin 
-    });
+    // console.log("🚀 DigiLocker handleButtonClick triggered");
+    // console.log("🔍 Current state:", { 
+    //   loading, 
+    //   showModal, 
+    //   isCountryCodeIndia,
+    //   origin: window.location.origin 
+    // });
     
     setLoading(true);
     setErrors({});
 
     try {
       const verifier = await generateCodeVerifier();
-      console.log("✅ Code verifier generated:", verifier?.substring(0, 10) + "...");
+      // console.log("✅ Code verifier generated:", verifier?.substring(0, 10) + "...");
       
       localStorage.removeItem("processed");
       const challenge = await generateCodeChallenge(verifier);
-      console.log("✅ Code challenge generated:", challenge?.substring(0, 10) + "...");
-      console.log("🌐 Window origin:", window.location.origin);
+      // console.log("✅ Code challenge generated:", challenge?.substring(0, 10) + "...");
+      // console.log("🌐 Window origin:", window.location.origin);
       
       let origin = window.location.origin;
       let redirectURI;
@@ -441,18 +441,18 @@ const KycInformation = () => {
       if (origin && (origin.includes("5173") || origin.includes("5174"))) {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_DEV;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_DEV;
-        console.log("🔧 Using DEV environment");
+        // console.log("🔧 Using DEV environment");
       } else if (window.location.origin === "https://jaimax.com") {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_PROD;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_PROD;
-        console.log("🔧 Using PROD environment");
+        // console.log("🔧 Using PROD environment");
       } else {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_QA;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_QA;
-        console.log("🔧 Using QA environment");
+        // console.log("🔧 Using QA environment");
       }
 
-      console.log("🔑 Environment config:", { redirectURI, clientId: clientId?.substring(0, 10) + "..." });
+      // console.log("🔑 Environment config:", { redirectURI, clientId: clientId?.substring(0, 10) + "..." });
 
       if (!redirectURI || !clientId) {
         throw new Error("❌ Missing DigiLocker environment configuration");
@@ -462,15 +462,15 @@ const KycInformation = () => {
       
       const apiUrl = new URL(`https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize?response_type=code&client_id=${clientId}&state=oidc_flow&redirect_uri=${redirectURI}&code_challenge=${challenge}&code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile&amr=pan+all+aadhaar&scope=files.issueddocs+files.uploadeddocs&pla=Y`);
       
-      console.log("🔗 DigiLocker URL generated:", apiUrl.toString());
-      console.log("🚀 Opening DigiLocker in same tab...");
+      // console.log("🔗 DigiLocker URL generated:", apiUrl.toString());
+      // console.log("🚀 Opening DigiLocker in same tab...");
       
       // Close modal before navigating
       setShowModal(false);
       
       window.open(apiUrl.toString(), "_self");
     } catch (err) {
-      console.error("❌ DigiLocker error:", err);
+      // console.error("❌ DigiLocker error:", err);
       toast.error(`DigiLocker Error: ${err.message}`, {
         position: "top-center",
       });

@@ -1068,7 +1068,7 @@ const PurchaseCoinsBreakupModal = ({ show, onHide, purchaseCoinsBreakup, currenc
       setIsProcessing(true);
       await onSubmitBuy();
     } catch (error) {
-      console.error("Error during operation:", error);
+      // console.error("Error during operation:", error);
       toast.error(`Error: ${error.message || "An unknown error occurred"}`, {
         position: "top-center",
       });
@@ -1449,10 +1449,10 @@ const SlabTabs = () => {
   // Get user data
   const userDataTopasID = localStorage.getItem("userData");
   const parsedUserData = JSON.parse(userDataTopasID || '{}');
-  console.log(parsedUserData.data)
+  // console.log(parsedUserData.data)
   const userDataTopassid = parsedUserData?.data?._id;
 
-  console.log(userDataTopassid)
+  // console.log(userDataTopassid)
 
   // API hooks
   const { data: apiData, refetch: refetchRounds } = useGetRoundQuery();
@@ -1744,7 +1744,7 @@ const SlabTabs = () => {
       // doPayment(paymentSessionId);
       
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast.error(`${error?.data?.message}`, {
         position: "top-center",
       });

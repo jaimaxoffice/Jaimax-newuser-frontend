@@ -503,7 +503,7 @@ import ReferralModal from '../../modals/referalModal';
 
 const VictoryLeaderboard = () => {
   const [getTodayEarningStatus, { data: apiData, isLoading, error }] = useGetTodayEarningStatusMutation();
-  console.log("API Data:", apiData);
+  // console.log("API Data:", apiData);
 
   const [data, setData] = useState({
     earnings: {
@@ -538,7 +538,7 @@ const VictoryLeaderboard = () => {
     if (userId) {
       getTodayEarningStatus({ id: userId });
     } else {
-      console.error("User ID not found in localStorage.");
+      // console.error("User ID not found in localStorage.");
     }
   }, [getTodayEarningStatus]);
 
@@ -805,10 +805,10 @@ const VictoryLeaderboard = () => {
                 {/* VICTORY Header */}
                 <div className="text-center mb-3 md:mb-4">
                   <div className="inline-block relative w-1/2">
-                    <div className="relative p-3 sm:p-4 rounded-2xl border border-white/30 bg-white/20">
+                    <div className="relative p-3 sm:p-4 rounded-2xl border border-white/30 bg-white">
                       <div className="flex items-center justify-center mb-3">
                         <Crown size={window.innerWidth < 576 ? 24 : 32} className="mr-2 text-white" />
-                        <h1 className="text-2xl sm:text-4xl font-bold text-white">
+                        <h1 className="text-2xl sm:text-4xl font-bold text-[#1d8d84]">
                           VICTORY
                         </h1>
                       </div>
@@ -818,38 +818,38 @@ const VictoryLeaderboard = () => {
 
                 {/* Stats Cards Row */}
                 <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-3 md:mb-4">
-                  <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-white/20 border border-white/30 min-h-[70px] sm:min-h-[80px] cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:bg-white/25 hover:border-white/40">
+                  <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-white border border-white/30 min-h-[70px] sm:min-h-[80px] cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105  hover:border-white/40">
                     <div className="mb-1">
-                      <Crown size={window.innerWidth < 576 ? 16 : 20} className="text-white mx-auto" />
+                      <Crown size={window.innerWidth < 576 ? 16 : 20} className="text-[#1d8d84] mx-auto" />
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm font-medium mb-0 text-white/80">Levels Achieved</p>
-                      <p className="text-base sm:text-xl font-bold mb-0">{data.earnings.completedLevels}</p>
+                      <p className="text-xs sm:text-sm font-medium mb-0 text-[#1d8d84]">Levels Achieved</p>
+                      <p className="text-base text-[#1d8d84] sm:text-xl font-bold mb-0">{data.earnings.completedLevels}</p>
                     </div>
                   </div>
 
-                  <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-white/20 border border-white/30 min-h-[70px] sm:min-h-[80px] cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:bg-white/25 hover:border-white/40">
+                  <div className="stat-card text-center text-white p-2 sm:p-3 rounded-lg bg-white border border-white/30 min-h-[70px] sm:min-h-[80px] cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:bg-white hover:border-white/40">
                     <div className="mb-1">
-                      <Clock size={window.innerWidth < 576 ? 16 : 20} className="text-white mx-auto" />
+                      <Clock size={window.innerWidth < 576 ? 16 : 20} className="text-[#1d8d84] mx-auto" />
                     </div>
                     <div>
-                      <p className="text-xs sm:text-sm font-medium mb-0 text-white/80">Time Left</p>
-                      <p className="text-base sm:text-xl font-bold mb-0">{data.validityWindow.hoursRemaining}h</p>
+                      <p className="text-xs sm:text-sm font-medium mb-0 text-[#1d8d84]">Time Left</p>
+                      <p className="text-base sm:text-xl text-[#1d8d84] font-bold mb-0">{data.validityWindow.hoursRemaining}h</p>
                     </div>
                   </div>
                 </div>
 
                 {allLevelsCompleted ? (
                   <div className="mb-4 text-center">
-                    <div className="p-4 rounded-xl bg-white/25 border-2 border-white/40 overflow-hidden">
+                    <div className="p-4 rounded-xl bg-white border-2 border-white/40 overflow-hidden">
                       <div className="relative">
-                        <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">
+                        <h3 className="text-3xl font-bold text-[#1d8d84] mb-2 drop-shadow-lg">
                           You've done it!
                         </h3>
                         <p className="text-lg font-medium text-gray-200 mb-0">
                           {encouragingMessage}
                         </p>
-                        <Gift size={36} className="mt-3 text-white mx-auto" />
+                        <Gift size={36} className="mt-3 text-[#1d8d84] mx-auto" />
                       </div>
                     </div>
                   </div>
@@ -858,10 +858,10 @@ const VictoryLeaderboard = () => {
                     <div className="mb-4">
                       <div className={`next-level-card relative p-4 rounded-xl overflow-hidden cursor-pointer transition-all duration-400 hover:transform hover:-translate-y-1.5 ${
                         nextLevel.status === 'active'
-                          ? 'bg-white/25 border-2 border-white/40'
+                          ? 'bg-white border-2 border-white/40'
                           : nextLevel.status === 'pending'
-                            ? 'bg-white/20 border-2 border-white/35'
-                            : 'bg-white/20 border-2 border-white/30'
+                            ? 'bg-white border-2 border-white/35'
+                            : 'bg-white border-2 border-white/30'
                       }`}>
                         {/* Animated background effect */}
                         <div className={`absolute top-0 left-0 w-full h-full animate-pulse ${
@@ -875,7 +875,7 @@ const VictoryLeaderboard = () => {
                         <div className="relative">
                           {/* Encouraging Message */}
                           <div className="text-center mb-3">
-                            <p className="font-medium mb-2 text-white text-base drop-shadow-sm">
+                            <p className="font-medium mb-2 text-[#1d8d84] text-base drop-shadow-sm">
                               {encouragingMessage}
                             </p>
                           </div>
@@ -884,7 +884,7 @@ const VictoryLeaderboard = () => {
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center">
                               <div>
-                                <h3 className="text-xl font-bold text-white mb-1">
+                                <h3 className="text-xl font-bold text-[#1d8d84] mb-1">
                                   {nextLevel.status === 'active' && " Complete Now: "}
                                   {nextLevel.status === 'pending' && " In Progress: "}
                                   {nextLevel.status === 'locked' && " Up Next: "}
@@ -895,7 +895,7 @@ const VictoryLeaderboard = () => {
                                     {nextLevel.status}
                                   </span>
                                   {nextLevel.commissionRate && (
-                                    <span className={`font-bold text-sm text-white`}>
+                                    <span className={`font-bold text-sm text-[#1d8d84]`}>
                                       {nextLevel.commissionRate} Commission
                                     </span>
                                   )}
@@ -905,7 +905,7 @@ const VictoryLeaderboard = () => {
                             <ChevronRight
                               size={28}
                               className={`${
-                                nextLevel.status === 'active' ? 'text-white animate-bounce' : 'text-white'
+                                nextLevel.status === 'active' ? 'text-[#1d8d84] animate-bounce' : 'text-[#1d8d84]'
                               } cursor-pointer`}
                               onClick={() => setShowReferralModal(true)}
                             />
@@ -914,18 +914,18 @@ const VictoryLeaderboard = () => {
                           {/* Earnings and Progress Info */}
                           <div className="grid grid-cols-2 gap-3">
                             <div className="text-center">
-                              <span className="font-bold text-white text-xl block">
+                              <span className="font-bold text-[#1d8d84] text-xl block">
                                 ₹{nextLevel.commissionRate || ''}
                               </span>
-                              <span className="text-sm text-white/80">
+                              <span className="text-sm text-[#1d8d84]">
                                 Potential Earnings
                               </span>
                             </div>
                             <div className="text-center">
-                              <span className="font-bold text-white text-xl block">
+                              <span className="font-bold text-[#1d8d84] text-xl block">
                                 {completedCount}/{data.progress.totalTasks}
                               </span>
-                              <span className="text-sm text-white/80">
+                              <span className="text-sm text-[#1d8d84]">
                                 Levels Complete
                               </span>
                             </div>
@@ -952,12 +952,12 @@ const VictoryLeaderboard = () => {
                   {data.leaderboard.map((player) => (
                     <div
                       key={player.id}
-                      className={`leaderboard-item flex items-center p-2 sm:p-3 rounded-lg mb-2 cursor-pointer transition-all duration-300 hover:transform hover:translate-x-2 hover:-translate-y-0.5 hover:bg-white/15 hover:border-white/40 ${
+                      className={`leaderboard-item flex items-center p-2 sm:p-3 rounded-lg mb-2 cursor-pointer transition-all duration-300 hover:transform hover:translate-x-2 hover:-translate-y-0.5  hover:border-white/40 ${
                         player.status === 'completed'
-                          ? 'bg-white/25 border-2 border-white/40 transform scale-102'
+                          ? 'bg-white border-2 border-white/40 transform scale-102'
                           : player.originalIndex === 0
-                            ? 'bg-white/20 border border-white/35'
-                            : 'bg-white/15 border border-white/30'
+                            ? 'bg-white border border-white/35'
+                            : 'bg-white border border-white/30'
                       } ${
                         player.status === 'locked' ? 'opacity-70 blur-[1px]' : 'opacity-100'
                       }`}
@@ -965,23 +965,23 @@ const VictoryLeaderboard = () => {
                       <div className={`flex items-center justify-center rounded-full mr-2 sm:mr-3 w-8 h-8 sm:w-10 sm:h-10 ${
                         player.status === 'completed'
                           ? 'bg-white/30'
-                          : player.originalIndex === 0 ? 'bg-white/25' : 'bg-white/20'
+                          : player.originalIndex === 0 ? 'bg-white' : 'bg-white'
                       }`}>
                         <div className="flex items-center">
                           {getRankIcon(player.originalIndex + 1, player.status)}
-                          <span className="font-bold text-white ml-1 text-xs sm:text-sm">{player.originalIndex + 1}</span>
+                          <span className="font-bold text-[#1d8d84] ml-1 text-xs sm:text-sm">{player.originalIndex + 1}</span>
                         </div>
                       </div>
 
                       <div className="flex-grow">
                         <div className="flex items-center justify-between">
                           <div className="flex-grow mr-2">
-                            <h3 className="font-semibold text-white mb-1 text-sm sm:text-base">
+                            <h3 className="font-semibold text-[#1d8d84] mb-1 text-sm sm:text-base">
                               {player.name}
                             </h3>
                             <div className="flex items-center flex-wrap">
                               {player.commissionRate && (
-                                <span className={`mr-2 font-bold text-xs sm:text-sm text-white`}>
+                                <span className={`mr-2 font-bold text-xs sm:text-sm text-[#1d8d84]`}>
                                   {player.commissionRate}
                                 </span>
                               )}

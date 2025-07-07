@@ -1379,7 +1379,7 @@ export default function GrowthPlanTimeline() {
   const handleBuyNow = (item) => {
     if (item.status === "Live") {
       navigate("/register");
-      console.log("Navigate to register page");
+      // console.log("Navigate to register page");
     }
   };
 

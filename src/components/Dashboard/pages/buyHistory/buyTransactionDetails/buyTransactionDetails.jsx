@@ -595,7 +595,7 @@ const TransactionDetails = () => {
                     <CreditCard className="w-4 h-4" style={{color: '#1d8e85'}} />
                     <span className="text-xs text-gray-500 uppercase tracking-wide">Transaction ID</span>
                   </div>
-                  <p className="text-gray-800 font-mono text-sm break-all">
+                  <p className="text-gray-800 text-sm break-all">
                     {data?.paypalTransactionId || data?.transactionId || "N/A"}
                   </p>
                 </div>
@@ -713,7 +713,7 @@ const TransactionDetails = () => {
                         <td className="px-6 py-4">
                           {state?.currentPage * state?.perPage - (state?.perPage - 1) + i}
                         </td>
-                        <td className="px-6 py-4 font-mono text-sm">
+                        <td className="px-6 py-4  text-sm">
                           {data?.paypalTransactionId || data?.transactionId || "N/A"}
                         </td>
                         <td className="px-6 py-4 capitalize">{data?.modeOfPayment || "N/A"}</td>

@@ -301,7 +301,7 @@ export default function HomeFooter() {
   const navigate=useNavigate();
   
   const onClickNavigateToLogin = () => {
-    console.log("Navigate to register");
+    // console.log("Navigate to register");
     navigate('/login')
   };
 

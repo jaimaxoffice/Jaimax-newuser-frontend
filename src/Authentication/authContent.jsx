@@ -12,7 +12,7 @@ const ContextProvider = ({ children }) => {
       const savedData = localStorage.getItem("userData");
       return savedData ? JSON.parse(savedData) : null;
     } catch (error) {
-      console.error("Error parsing JSON from localStorage:", error);
+      // console.error("Error parsing JSON from localStorage:", error);
       return null; // Handle gracefully if parsing fails
     }
   });

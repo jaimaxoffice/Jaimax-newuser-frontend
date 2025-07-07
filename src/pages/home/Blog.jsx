@@ -1300,7 +1300,7 @@ const shareToSocial = (platform, post) => {
       instagram: url // We'll copy the URL for Instagram
     };
 
-    console.log(`Sharing to ${platform}:`, shareUrls[platform]); // Debug log
+//     console.log(`Sharing to ${platform}:`, shareUrls[platform]); // Debug log
 
     if (platform === 'instagram') {
       copyToClipboard(url, post.id);
@@ -1313,7 +1313,7 @@ const shareToSocial = (platform, post) => {
           window.location.href = shareUrls[platform];
         }
       } catch (err) {
-        console.error('Failed to open share window:', err);
+//         console.error('Failed to open share window:', err);
         // Fallback: copy URL and show message
         copyToClipboard(url, post.id);
         alert(`Please manually share this link on ${platform}: ${url}`);
@@ -1363,7 +1363,7 @@ const shareToSocial = (platform, post) => {
           setCopiedPostId(postId);
           setTimeout(() => setCopiedPostId(null), 2000);
         } catch (err) {
-          console.error('Fallback copy failed:', err);
+          // console.error('Fallback copy failed:', err);
           alert('Copy failed. Please copy the link manually: ' + text);
         } finally {
           document.body.removeChild(textArea);
@@ -1371,7 +1371,7 @@ const shareToSocial = (platform, post) => {
       }
       setActiveShareDropdown(null);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      // console.error('Failed to copy text: ', err);
       alert('Copy failed. Please copy the link manually: ' + text);
       setActiveShareDropdown(null);
     }

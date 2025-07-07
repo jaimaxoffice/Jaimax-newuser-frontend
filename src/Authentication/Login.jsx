@@ -72,7 +72,7 @@ const CountryCodeDropdown = ({ value, onChange, className, countryCodes }) => {
       <button
         type="button"
         onClick={() => {
-          console.log('Dropdown button clicked, isOpen:', !isOpen);
+          // console.log('Dropdown button clicked, isOpen:', !isOpen);
           setIsOpen(!isOpen);
         }}
         className={`${className} flex items-center justify-between min-w-[120px] hover:bg-teal-50 transition-colors duration-200`}
@@ -102,7 +102,7 @@ const CountryCodeDropdown = ({ value, onChange, className, countryCodes }) => {
               placeholder="Search countries..."
               value={searchTerm}
               onChange={(e) => {
-                console.log('Search term:', e.target.value);
+                // console.log('Search term:', e.target.value);
                 setSearchTerm(e.target.value);
               }}
               className="w-full px-3 py-2 text-sm border border-gray-200 rounded-md focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
@@ -111,17 +111,17 @@ const CountryCodeDropdown = ({ value, onChange, className, countryCodes }) => {
           </div>
 
           <div className="max-h-48 overflow-y-auto bg-white">
-            {console.log('Rendering countries, count:', filteredCountries.length)}
+            {/* {console.log('Rendering countries, count:', filteredCountries.length)} */}
             {filteredCountries.length > 0 ? (
               filteredCountries.map((country, index) => {
-                console.log('Rendering country:', country.country_name);
+                // console.log('Rendering country:', country.country_name);
                 return (
                   <button
                     key={`${country.country_code}-${country.country_code_alpha3}-${index}`}
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log('Selected country:', country);
+                      // console.log('Selected country:', country);
                       onChange(country.country_code);
                       setIsOpen(false);
                       setSearchTerm('');
@@ -299,7 +299,7 @@ const CountryCodeDropdown = ({ value, onChange, className, countryCodes }) => {
 //             <div className="text-red-500 text-sm mt-1">{errors.password}</div>
 //           )}
 //         </div>
-          
+
 //         <div className="text-right mt-4">
 //           <button
 //             onClick={() => navigate("/forgot-password")}
@@ -472,7 +472,7 @@ import { toast } from "react-toastify";
 //       }`}
 //     >
 //       <Seo page="login" />
-      
+
 //       {notification && (
 //         <Notification
 //           type={notification.type}
@@ -742,12 +742,11 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
 
   return (
     <div
-      className={`w-full max-w-md transition-all duration-500 transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      }`}
+      className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
     >
       <Seo page="login" />
-      
+
       {notification && (
         <Notification
           type={notification.type}
@@ -783,9 +782,8 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
               onKeyDown={handleKeyDown}
               placeholder="Enter your email"
               autoComplete="off"
-              className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
-              }`}
+              className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
+                }`}
             />
           </div>
           {errors.email && (
@@ -810,9 +808,8 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
               onKeyDown={handleKeyDown}
               placeholder="Enter your password"
               autoComplete="off"
-              className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
-              }`}
+              className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
+                }`}
             />
             <button
               type="button"
@@ -916,39 +913,39 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
     const country = countrycodes.find(item => item.country_code === selectedCode);
     return country;
   };
-const handleKeyDown = (e) => {
-  if (e.key === 'Enter' && !isVerifyLoading && !isRegisterLoading && !isOTPresentLoading) {
-    e.preventDefault();
-    
-    // If OTP is not sent yet, try to send OTP
-    if (!otpSent) {
-      const validationErrors = validate();
-      const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
-      
-      if (!formErrorsExceptOtp) {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !isVerifyLoading && !isRegisterLoading && !isOTPresentLoading) {
+      e.preventDefault();
+
+      // If OTP is not sent yet, try to send OTP
+      if (!otpSent) {
+        const validationErrors = validate();
+        const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
+
+        if (!formErrorsExceptOtp) {
+          handleVerify(e);
+        }
+      }
+      // If OTP is sent and form is complete, submit the form
+      else if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
+        handleSubmit(e);
+      }
+    }
+  };
+  const handleOtpKeyDown = (e) => {
+    if (e.key === 'Enter' && !isVerifyLoading) {
+      e.preventDefault();
+
+      // If form is complete and OTP is entered, submit
+      if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
+        handleSubmit(e);
+      }
+      // If OTP field has 4 digits and can resend, allow sending OTP
+      else if (!otpSent || (canResendOtp && formData.otp.length === 4)) {
         handleVerify(e);
       }
-    } 
-    // If OTP is sent and form is complete, submit the form
-    else if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
-      handleSubmit(e);
     }
-  }
-};
-const handleOtpKeyDown = (e) => {
-  if (e.key === 'Enter' && !isVerifyLoading) {
-    e.preventDefault();
-    
-    // If form is complete and OTP is entered, submit
-    if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
-      handleSubmit(e);
-    }
-    // If OTP field has 4 digits and can resend, allow sending OTP
-    else if (!otpSent || (canResendOtp && formData.otp.length === 4)) {
-      handleVerify(e);
-    }
-  }
-};
+  };
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked;
 
@@ -994,21 +991,21 @@ const handleOtpKeyDown = (e) => {
 
   useEffect(() => {
     if (registerError) {
-      console.error("Register API Error:", registerError);
+      // console.error("Register API Error:", registerError);
       setNotification({ type: 'error', message: getErrorMessage(registerError) });
     }
   }, [registerError]);
 
   useEffect(() => {
     if (verifyError) {
-      console.error("Verify OTP API Error:", verifyError);
+      // console.error("Verify OTP API Error:", verifyError);
       setNotification({ type: 'error', message: getErrorMessage(verifyError) });
     }
   }, [verifyError]);
 
   useEffect(() => {
     if (OTPresentError) {
-      console.error("OTPresent API Error:", OTPresentError);
+      // console.error("OTPresent API Error:", OTPresentError);
       setNotification({ type: 'error', message: getErrorMessage(OTPresentError) });
     }
   }, [OTPresentError]);
@@ -1163,7 +1160,7 @@ const handleOtpKeyDown = (e) => {
       setNotification({ type: 'success', message: "OTP sent to your email!" });
 
     } catch (err) {
-      console.error("handleVerify (Register/OTPresent) Error:", err);
+      // console.error("handleVerify (Register/OTPresent) Error:", err);
       if (err?.data?.message === "User verification pending") {
         try {
           const otpPayload = {
@@ -1176,7 +1173,7 @@ const handleOtpKeyDown = (e) => {
           setCanResendOtp(false);
           setNotification({ type: 'success', message: "OTP resent to your email!" });
         } catch (otpErr) {
-          console.error("OTPresent (Resend OTP) Error:", otpErr);
+          // console.error("OTPresent (Resend OTP) Error:", otpErr);
           setNotification({ type: 'error', message: getErrorMessage(otpErr) });
         }
       } else {
@@ -1271,7 +1268,7 @@ const handleOtpKeyDown = (e) => {
       }, 1000);
 
     } catch (err) {
-      console.error("handleSubmit (Verify OTP) Error:", err);
+      // console.error("handleSubmit (Verify OTP) Error:", err);
       setNotification({ type: 'error', message: getErrorMessage(err) });
     }
   };
@@ -1476,7 +1473,7 @@ const handleOtpKeyDown = (e) => {
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
-                
+
                 placeholder="Enter 4-digit OTP"
                 maxLength="4"
                 className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
@@ -1488,12 +1485,12 @@ const handleOtpKeyDown = (e) => {
               onClick={handleVerify}
               disabled={isRegisterLoading || isOTPresentLoading || (otpSent && !canResendOtp) || Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0}
               className={`px-3 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap transition-all duration-200 flex-shrink-0 ${(otpSent && !canResendOtp)
-                  ? 'bg-green-100 text-green-700 cursor-default'
-                  : (isRegisterLoading || isOTPresentLoading)
-                    ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                    : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105'
+                ? 'bg-green-100 text-green-700 cursor-default'
+                : (isRegisterLoading || isOTPresentLoading)
+                  ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                  : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105'
                 }`}
             >
               {isRegisterLoading || isOTPresentLoading ? 'Sending...' :
@@ -1597,11 +1594,11 @@ export default function AuthContainer() {
   }, [cluster]); // This is already correct, but make sure cluster is being extracted properly
 
   const handleLoginSubmit = (values) => {
-    console.log('Login submitted:', values);
+    // console.log('Login submitted:', values);
   };
 
   const handleRegisterSubmit = (values) => {
-    console.log('Register submitted:', values);
+    // console.log('Register submitted:', values);
   };
 
   // ADD: Terms modal handlers at AuthContainer level
@@ -1741,7 +1738,13 @@ export default function AuthContainer() {
 
             {/* ────── Main Content ────── */}
             <div className="relative w-56 h-56 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
-              <img src={icon} alt="Icon" className="w-full h-full object-contain" />
+              <img
+                src={icon}
+                alt="Secure Crypto Wallet Icon - Fast and Reliable Digital Payments"
+                title="Secure Crypto Wallet Icon - Jaimax Digital Payment"
+                className="w-full h-full object-contain"
+                loading="lazy"
+              />
               <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
               <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-700"></div>
               <div className="absolute top-1/2 -right-4 w-2 h-2 bg-green-400 rounded-full animate-ping delay-500"></div>

@@ -654,9 +654,9 @@ const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(textToCopy);
-      console.log('Text copied to clipboard!');
+      // console.log('Text copied to clipboard!');
     } catch (error) {
-      console.error('Failed to copy text:', error);
+      // console.error('Failed to copy text:', error);
     }
   };
 
@@ -835,70 +835,88 @@ export default function WalletDashboard() {
   };
 
   // Mobile transaction card component
-  const TransactionCard = ({ transaction, index }) => (
-    <div className="bg-white rounded-lg shadow-md p-3 sm:p-4 border border-teal-100 hover:shadow-lg transition-shadow duration-200">
-      <div className="flex justify-between items-start mb-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-teal-800 text-sm mb-1">
-            Transaction #{(state.currentPage - 1) * state.perPage + index + 1}
+const TransactionCard = ({ transaction, index }) => (
+  <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-teal-100 overflow-hidden group hover:border-teal-200">
+    {/* Compact Header */}
+    <div className="bg-gradient-to-r from-teal-50 to-teal-100 px-3 py-2 border-b border-teal-100">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center space-x-2 flex-1 min-w-0">
+          <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
+          <h3 className="font-semibold text-teal-800 text-sm truncate">
+            Transaction {(state.currentPage - 1) * state.perPage + index + 1}
           </h3>
-          <div className="flex items-center space-x-2">
-            <p className="text-xs text-gray-600 font-mono truncate">
-              {transaction.transactionId || "N/A"}
-            </p>
-            {transaction.screenshotUrl && (
-              <a 
-                href={transaction.screenshotUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-teal-600 hover:text-teal-800 flex-shrink-0"
-              >
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            )}
-          </div>
+          {transaction.screenshotUrl && (
+            <a
+              href={transaction.screenshotUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-teal-600 hover:text-teal-800 transition-colors"
+            >
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
         </div>
-        <div className="flex-shrink-0 ml-2">
-          <StatusBadge status={transaction.transactionStatus} />
-        </div>
+        <StatusBadge status={transaction.transactionStatus} />
       </div>
+    </div>
 
-      <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-3 text-sm">
-        <div className="col-span-1">
-          <span className="text-gray-600 text-xs">Amount:</span>
-          <p className="font-semibold text-teal-700 truncate">
-            {formatCurrency(transaction.transactionAmount)}
-          </p>
+    {/* Amount Section */}
+    <div className="px-3 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white">
+      <div className="text-center">
+        <p className="text-lg font-bold">
+          {formatCurrency(transaction.transactionAmount)}
+        </p>
+      </div>
+    </div>
+
+    {/* Compact Details */}
+    <div className="p-3 space-y-2">
+      <div className="grid grid-cols-2 gap-2 text-xs">
+        <div className="bg-teal-50 rounded px-2 py-1">
+          <span className="text-teal-600 font-medium">Type:</span>
+          <p className="font-semibold text-teal-800 truncate">{transaction.transactionType || "N/A"}</p>
         </div>
-        <div className="col-span-1">
-          <span className="text-gray-600 text-xs">Type:</span>
-          <p className="font-medium truncate">{transaction.transactionType || "N/A"}</p>
+        <div className="bg-teal-50 rounded px-2 py-1">
+          <span className="text-teal-600 font-medium">Payment:</span>
+          <p className="font-semibold text-teal-800 truncate">{transaction.paymentMode || "N/A"}</p>
         </div>
-        <div className="col-span-1">
-          <span className="text-gray-600 text-xs">Payment:</span>
-          <p className="font-medium truncate">{transaction.paymentMode || "N/A"}</p>
-        </div>
-        <div className="col-span-1">
-          <span className="text-gray-600 text-xs">Currency:</span>
-          <p className="font-medium">{transaction.currency || "N/A"}</p>
+        <div className="bg-teal-50 rounded px-2 py-1">
+          <span className="text-teal-600 font-medium">Currency:</span>
+          <p className="font-semibold text-teal-800">{transaction.currency || "N/A"}</p>
         </div>
         {countryCode !== 91 && (
-          <div className="col-span-1 xs:col-span-2">
-            <span className="text-gray-600 text-xs">Fee:</span>
-            <p className="font-medium">${(transaction.transactionFee || 0).toFixed(2)}</p>
+          <div className="bg-teal-50 rounded px-2 py-1">
+            <span className="text-teal-600 font-medium">Fee:</span>
+            <p className="font-semibold text-teal-800">${(transaction.transactionFee || 0).toFixed(2)}</p>
           </div>
         )}
       </div>
 
-      <div className="mt-3 pt-3 border-t border-gray-100">
-        <div className="text-xs text-gray-600 space-y-1">
-          <p><strong>Date:</strong> {formatDateWithAmPm(transaction.transactionDate)}</p>
-          <p><strong>Reason:</strong> <span className="break-words">{transaction.reason || "N/A"}</span></p>
-          <p><strong>Updated by:</strong> {transaction.updatedBy?.name || "N/A"}</p>
+      {/* Bottom Info */}
+      <div className="pt-2 border-t border-gray-100 space-y-1 text-xs">
+        <div className="flex justify-between">
+          <span className="text-gray-600">Date:</span>
+          <span className="font-medium text-gray-800">{formatDateWithAmPm(transaction.transactionDate)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">ID:</span>
+          <span className="font-mono text-gray-800 text-xs truncate ml-2">{transaction.transactionId || "N/A"}</span>
+        </div>
+        <div>
+          <span className="text-gray-600">Reason:</span>
+          <p className="text-gray-800 break-words mt-1">{transaction.reason || "N/A"}</p>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Updated by:</span>
+          <span className="font-medium text-gray-800">{transaction.updatedBy?.name || "N/A"}</span>
         </div>
       </div>
     </div>
-  );
+
+    {/* Bottom Accent */}
+    <div className="h-0.5 bg-gradient-to-r from-teal-400 to-teal-600"></div>
+  </div>
+);
 
   // Loading skeleton component
   const SkeletonRow = () => (
@@ -1062,7 +1080,7 @@ export default function WalletDashboard() {
                         <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
                           {(state.currentPage - 1) * state.perPage + index + 1}
                         </td>
-                        <td className="px-2 xl:px-3 py-3 whitespace-nowrap font-mono text-gray-900">
+                        <td className="px-2 xl:px-3 py-3 whitespace-nowrap  text-gray-900">
                           {transaction.screenshotUrl ? (
                             <a 
                               href={transaction.screenshotUrl} 

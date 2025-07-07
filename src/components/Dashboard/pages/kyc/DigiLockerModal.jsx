@@ -136,7 +136,7 @@ function DigiLockerModal({ show, onHide, onClickDigiLocker }) {
       // Call the parent's DigiLocker handler
       await onClickDigiLocker();
     } catch (error) {
-      console.error("DigiLocker error:", error);
+      // console.error("DigiLocker error:", error);
     } finally {
       // Reset loading state after the operation
       setStaticLoading(false);

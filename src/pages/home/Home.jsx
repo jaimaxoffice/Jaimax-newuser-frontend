@@ -384,7 +384,6 @@ const Home = () => {
                           md:min-w-[200px] md:px-8 md:py-4 md:text-xl
                           lg:min-w-[220px] lg:px-10 lg:py-5 lg:text-xl
                           touch-manipulation"
-
                 >
                   Start Building
                 </button>

@@ -1034,7 +1034,7 @@ const BuyHistory = () => {
       <CreditCard className="w-4 h-4 text-blue-500 flex-shrink-0" />
       <div className="min-w-0 flex-1">
         <span className="text-xs text-gray-500 font-medium block">Transaction ID</span>
-        <p className="text-sm text-gray-800 font-mono truncate">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
+        <p className="text-sm text-gray-800 truncate">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
       </div>
     </div>
 
@@ -1147,7 +1147,7 @@ const BuyHistory = () => {
                     <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-2">
                       <CreditCard className="w-4 h-4 text-emerald-600" /> Transaction ID
                     </span>
-                    <p className="text-gray-800 font-mono text-base break-all leading-relaxed">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
+                    <p className="text-gray-800  text-base break-all leading-relaxed">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
                   </div>
 
                   {/* Payment Mode */}
@@ -1257,7 +1257,7 @@ const BuyHistory = () => {
                         <td className="px-3 py-4 text-sm font-medium">
                           {(state?.currentPage - 1) * parseInt(state.perPage) + i + 1}
                         </td>
-                        <td className="px-3 py-4 font-mono text-sm max-w-[200px] break-words">
+                        <td className="px-3 py-4  text-sm max-w-[200px] break-words">
                           {data?.paypalTransactionId || data?.transactionId || "N/A"}
                         </td>
                         <td className="px-3 py-4 font-semibold capitalize text-sm whitespace-nowrap">{data?.modeOfPayment || "N/A"}</td>

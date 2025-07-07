@@ -136,7 +136,7 @@ const ContactSection = () => {
         // alert('Message sent successfully!');
       } catch (err) {
         // Error handling is done through RTK Query state
-        console.error('Failed to submit enquiry:', err);
+        // console.error('Failed to submit enquiry:', err);
       }
     }
   });
