@@ -1,20 +1,17 @@
+// src/routes/PublicRoute.jsx
 import React from "react";
-
 import { Navigate, Outlet } from "react-router-dom";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 
-const PublicRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
+const PublicRoute = () => {
+  const token = localStorage.getItem("token"); // or from Redux
+
+  // If logged in, redirect to dashboard
   if (token) {
-    return <Navigate to="/home" />;
-  } else {
-    return (
-      <>
-        <Outlet />
-      </>
-    );
+    return <Navigate to="/dashboard" />;
   }
-  return children;
+
+  // Else, allow access to login/register
+  return <Outlet />;
 };
+
 export default PublicRoute;

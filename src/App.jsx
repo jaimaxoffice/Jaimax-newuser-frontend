@@ -306,9 +306,15 @@
 
 // export default App;
 
-
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useLocation, Outlet, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  Outlet,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -320,6 +326,7 @@ import JaimaxSplash from "./global/Splashscreen";
 /* ── Auth / User pages ─────────────────────────────────────── */
 import AuthContainer from "./Authentication/Login";
 import ForgotPassword from "./Authentication/ForgotPassword";
+// import PublicRoute from "./Authentication/PublicRoute"; // Commented out due to import error
 
 /* ── Public pages ──────────────────────────────────────────── */
 import Home from "./pages/home/Home";
@@ -360,62 +367,91 @@ import Shareholders from "./components/Dashboard/pages/shareholders/shareholders
 import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet";
 import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarning";
 import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
+import ProtectedRoute from "./router/PrivateRoute";
+import FloatingNavButton from "./global/FlottingToggle";
+// import PublicRoute from "./router/PublicRoute";
 
-/* ─────────────────────────────────────────────────────────────
-   Authentication Helper Functions
-   ──────────────────────────────────────────────────────────── */
+// Enhanced authentication helper functions
 const getAuthToken = () => {
   try {
-    return localStorage.getItem('token') || sessionStorage.getItem('token');
+    return localStorage.getItem("token");
   } catch (error) {
-    console.error('Error accessing storage:', error);
+    console.error("Error accessing storage:", error);
     return null;
+  }
+};
+
+const isValidToken = (token) => {
+  if (!token) return false;
+
+  try {
+    // If you're using JWT, you can decode and check expiration
+    // For now, just check if token exists and is not empty
+    return token.length > 0;
+
+    // Uncomment below if you're using JWT:
+    /*
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const currentTime = Date.now() / 1000;
+    return payload.exp > currentTime;
+    */
+  } catch (error) {
+    console.error("Invalid token:", error);
+    return false;
   }
 };
 
 const isAuthenticated = () => {
   const token = getAuthToken();
-  return token !== null && token !== undefined && token !== '';
+  return isValidToken(token);
+};
+
+// Updated PublicRoute Component
+const PublicRoute = () => {
+  const userIsAuthenticated = isAuthenticated();
+
+  console.log("PublicRoute - Is Authenticated:", userIsAuthenticated);
+
+  // If user is authenticated, redirect to dashboard
+  if (userIsAuthenticated) {
+    console.log("User is authenticated, redirecting to dashboard");
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // Allow access to auth routes (login, register, forgot-password)
+  return <Outlet />;
 };
 
 const getLastSplashTime = () => {
   try {
-    return localStorage.getItem('lastSplashTime');
+    return localStorage.getItem("lastSplashTime");
   } catch (error) {
-    console.error('Error accessing storage:', error);
+    console.error("Error accessing storage:", error);
     return null;
   }
 };
 
 const setLastSplashTime = () => {
   try {
-    localStorage.setItem('lastSplashTime', Date.now().toString());
+    localStorage.setItem("lastSplashTime", Date.now().toString());
   } catch (error) {
-    console.error('Error setting last splash time:', error);
+    console.error("Error setting last splash time:", error);
   }
 };
 
 const shouldShowSplash = () => {
   const lastSplashTime = getLastSplashTime();
   if (!lastSplashTime) return true;
-  
+
   const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
   const timeSinceLastSplash = Date.now() - parseInt(lastSplashTime);
-  
+
   return timeSinceLastSplash >= oneHour;
 };
 
 /* ─────────────────────────────────────────────────────────────
-   Protected Route Component
+   Dashboard Layout Component
    ──────────────────────────────────────────────────────────── */
-const ProtectedRoute = ({ children }) => {
-  if (!isAuthenticated()) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-};
-
-
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -427,27 +463,26 @@ const DashboardLayout = () => {
   // Initialize position on component mount
   useEffect(() => {
     const updatePosition = () => {
-      // Position in bottom-right corner with some padding
-      const x = window.innerWidth - 80; // 64px button width + 16px padding
-      const y = window.innerHeight - 80; // 64px button height + 16px padding
+      const x = window.innerWidth - 80;
+      const y = window.innerHeight - 80;
       setNavPosition({ x, y });
     };
 
     updatePosition();
-    window.addEventListener('resize', updatePosition);
-    return () => window.removeEventListener('resize', updatePosition);
+    window.addEventListener("resize", updatePosition);
+    return () => window.removeEventListener("resize", updatePosition);
   }, []);
 
   const handleLogout = () => {
     try {
-      // Using variables instead of localStorage for compatibility
-      window.tempTokenStorage = null;
-      window.tempSplashStorage = null;
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
+      localStorage.removeItem("lastSplashTime");
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error("Error during logout:", error);
     }
     setShowLogoutModal(false);
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   const handleNavigation = (path) => {
@@ -455,29 +490,33 @@ const DashboardLayout = () => {
     window.location.href = path;
   };
 
-  // Handle drag functionality
   const handleMouseDown = (e) => {
     setIsDragging(true);
     const rect = e.currentTarget.getBoundingClientRect();
     setDragOffset({
       x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      y: e.clientY - rect.top,
     });
   };
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    
-    const buttonSize = 64; // Approximate button size
-    const padding = 16; // Padding from screen edges
-    
+
+    const buttonSize = 64;
+    const padding = 16;
+
     let newX = e.clientX - dragOffset.x;
     let newY = e.clientY - dragOffset.y;
-    
-    // Constrain within screen bounds
-    newX = Math.max(padding, Math.min(newX, window.innerWidth - buttonSize - padding));
-    newY = Math.max(padding, Math.min(newY, window.innerHeight - buttonSize - padding));
-    
+
+    newX = Math.max(
+      padding,
+      Math.min(newX, window.innerWidth - buttonSize - padding)
+    );
+    newY = Math.max(
+      padding,
+      Math.min(newY, window.innerHeight - buttonSize - padding)
+    );
+
     setNavPosition({ x: newX, y: newY });
   };
 
@@ -485,241 +524,100 @@ const DashboardLayout = () => {
     setIsDragging(false);
   };
 
-  // Add global mouse event listeners for dragging
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
       };
     }
   }, [isDragging, dragOffset]);
 
-  // Calculate positions for bottom semicircle around main button
   const getBottomSemicirclePosition = (index, total) => {
-    const radius = 90; // Distance from center of main button
-    
-    // Create semicircle on bottom side only (from left to right across the bottom)
-    const startAngle = Math.PI; // Start from left (180 degrees)
-    const endAngle = 2 * Math.PI; // End at right (360 degrees/0 degrees)
-    
-    // Calculate angle for each item
+    const radius = 90;
+    const startAngle = Math.PI;
+    const endAngle = 2 * Math.PI;
     const angle = startAngle + (index * (endAngle - startAngle)) / (total - 1);
-    
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
-    
     return { x, y };
   };
 
-  const navigationItems = [
-    { 
-      label: "About", 
-      path: "/about", 
-      icon: "info", 
-      color: "from-blue-500 to-blue-600",
-      iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-    },
-    { 
-      label: "Services", 
-      path: "/services", 
-      icon: "settings", 
-      color: "from-purple-500 to-purple-600",
-      iconPath: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-    },
-    { 
-      label: "Features", 
-      path: "/features", 
-      icon: "star", 
-      color: "from-amber-500 to-amber-600",
-      iconPath: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-    },
-    { 
-      label: "Contact", 
-      path: "/contact", 
-      icon: "phone", 
-      color: "from-emerald-500 to-emerald-600",
-      iconPath: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-    }
-  ];
-
   return (
-    <ProtectedRoute>
-      <div className="relative flex h-screen bg-white overflow-hidden">
-        {/* Main layout container */}
-        <div className="overflow-auto"style={{ scrollbarWidth: "none" }}>
-          <Sidebar
-            isOpen={sidebarOpen}
-            setIsOpen={setSidebarOpen}
-            onLogoutClick={() => setShowLogoutModal(true)}
-          />
+    <div className="relative flex h-screen bg-white overflow-hidden">
+      {/* Sidebar */}
+      <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
+        <Sidebar
+          isOpen={sidebarOpen}
+          setIsOpen={setSidebarOpen}
+          onLogoutClick={() => setShowLogoutModal(true)}
+        />
+      </div>
+
+      {/* Main Content */}
+      <div
+        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${
+          sidebarOpen ? "lg:ml-64" : "lg:ml-2"
+        } h-screen overflow-hidden`}
+      >
+        <div className="mt-6 mb-1">
+          <Header />
         </div>
 
         <div
-          className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${
-            sidebarOpen ? "lg:ml-64" : "lg:ml-2"
-          } h-screen overflow-hidden`}
+          className="flex-1 overflow-y-auto bg-[#f2f2f2] rounded-xl scrollbar-hide mb-3 mt-1"
+          style={{ scrollbarWidth: "none" }}
         >
-          <div className="mt-6 mb-1">
-            <Header />
-          </div>
-
-          <div className="flex-1 overflow-y-auto bg-[#f2f2f2] rounded-xl scrollbar-hide mb-3 mt-1" style={{ scrollbarWidth: "none" }}>
-            <Outlet />
-          </div>
+          <Outlet />
         </div>
-
-        {/* Draggable Floating Navigation Button */}
-        <div 
-          className="fixed z-50"
-          style={{
-            left: `${navPosition.x}px`,
-            top: `${navPosition.y}px`,
-            cursor: isDragging ? 'grabbing' : 'grab'
-          }}
-        >
-          <div className="relative">
-            {/* Main Navigation Button */}
-            <button
-              onMouseDown={handleMouseDown}
-              onClick={() => !isDragging && setShowNavMenu(!showNavMenu)}
-              className={`
-                relative group overflow-hidden
-                w-16 h-16 rounded-full shadow-2xl
-                bg-gradient-to-br from-green-600 via-teal-600 to-yellow-600
-                
-                transform transition-all duration-300 ease-out
-                hover:scale-105 hover:rotate-3 hover:shadow-3xl
-                focus:outline-none focus:ring-4 focus:ring-purple-300/50
-                active:scale-95 select-none
-                ${showNavMenu ? 'rotate-45 scale-105' : ''}
-                ${isDragging ? 'scale-110 shadow-3xl' : ''}
-              `}
-              aria-label="Navigation menu"
-            >
-              {/* Animated background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full"></div>
-              
-              {/* Icon */}
-              <div className="relative z-10 flex items-center justify-center h-full">
-                {showNavMenu ? (
-                  <svg className="w-8 h-8 text-white drop-shadow-lg transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="w-8 h-8 text-white drop-shadow-lg transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
-              </div>
-
-              {/* Ripple effect */}
-              <div className="absolute inset-0 rounded-full bg-white/10 scale-0 group-active:scale-100 transition-transform duration-150"></div>
-              
-              {/* Drag indicator */}
-              <div className="absolute bottom-1 right-1 w-2 h-2 bg-white/30 rounded-full"></div>
-            </button>
-
-            {/* Bottom Semicircle Navigation Menu */}
-            {showNavMenu && (
-              <>
-                <style>{`
-                  @keyframes expandFromCenter {
-                    from {
-                      opacity: 0;
-                      transform: scale(0) translate(var(--translate-x), var(--translate-y));
-                    }
-                    to {
-                      opacity: 1;
-                      transform: scale(1) translate(var(--translate-x), var(--translate-y));
-                    }
-                  }
-                  .animate-expand-from-center {
-                    animation: expandFromCenter 0.3s ease-out forwards;
-                  }
-                `}</style>
-                
-                {navigationItems.map((item, index) => {
-                  const position = getBottomSemicirclePosition(index, navigationItems.length);
-                  return (
-                    <div
-                      key={index}
-                      className="absolute animate-expand-from-center"
-                      style={{
-                        '--translate-x': `${position.x}px`,
-                        '--translate-y': `${position.y}px`,
-                        transform: `translate(${position.x}px, ${position.y}px)`,
-                        transformOrigin: 'center',
-                        animationDelay: `${index * 0.1}s`
-                      }}
-                    >
-                      <button
-                        onClick={() => handleNavigation(item.path)}
-                        className={`
-                          group relative overflow-hidden
-                          w-12 h-12 rounded-full shadow-xl
-                          bg-gradient-to-r ${item.color}
-                          hover:shadow-2xl hover:scale-110
-                          transform transition-all duration-200 ease-out
-                          focus:outline-none focus:ring-3 focus:ring-white/50
-                          active:scale-95
-                          flex items-center justify-center
-                        `}
-                        title={item.label}
-                      >
-                        {/* Background effects */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full"></div>
-                        <div className="absolute inset-0 bg-white/10 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full"></div>
-                        
-                        {/* Icon */}
-                        <div className="relative z-10">
-                          <svg className="w-5 h-5 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.iconPath} />
-                          </svg>
-                        </div>
-
-                        {/* Shine effect */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"></div>
-                      </button>
-                      
-                      {/* Label tooltip */}
-                      <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
-                        <span className="text-xs text-white bg-black/80 px-3 py-1 rounded-lg whitespace-nowrap shadow-lg">
-                          {item.label}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Backdrop for closing menu */}
-        {showNavMenu && (
-          <div
-            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
-            onClick={() => setShowNavMenu(false)}
-          />
-        )}
-
-        {showLogoutModal && (
-          <LogoutModal
-            onCancel={() => setShowLogoutModal(false)}
-            onConfirm={handleLogout}
-          />
-        )}
       </div>
-    </ProtectedRoute>
+
+      <FloatingNavButton />
+
+      {/* Backdrop */}
+      {showNavMenu && (
+        <div
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
+          onClick={() => setShowNavMenu(false)}
+        />
+      )}
+
+      {/* Logout Modal */}
+      {showLogoutModal && (
+        <LogoutModal
+          onCancel={() => setShowLogoutModal(false)}
+          onConfirm={handleLogout}
+        />
+      )}
+    </div>
   );
 };
+
+/* ─────────────────────────────────────────────────────────────
+   Public Layout Component
+   ──────────────────────────────────────────────────────────── */
+// Updated PublicLayout Component
 const PublicLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
+  // Check authentication and redirect if needed
+  useEffect(() => {
+    const userIsAuthenticated = isAuthenticated();
+
+    console.log("PublicLayout - Location:", location.pathname);
+    console.log("PublicLayout - Is Authenticated:", userIsAuthenticated);
+
+    // If user is authenticated and trying to access home page, redirect to dashboard
+    if (userIsAuthenticated && location.pathname === "/") {
+      console.log("Authenticated user on home page, redirecting to dashboard");
+      navigate("/dashboard", { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -732,36 +630,61 @@ const PublicLayout = () => {
   );
 };
 
+// const isAuthenticated = () => {
+//   const token = getAuthToken();
+//   return token !== null && token !== undefined && token !== "";
+// };
+// const PublicLayout = () => {
+//   const location = useLocation();
+//   const navigate = useNavigate();
+//   const isAuthenticated = isAuthenticated(); // Use the helper function to check auth status
+//   const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
+//   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+//   // Redirect authenticated users to dashboard from home page
+//   useEffect(() => {
+//     if (isAuthenticated && location.pathname === "/") {
+//       navigate("/dashboard", { replace: true });
+//     }
+//   }, [isAuthenticated, location.pathname, navigate]);
+
+//   return (
+//     <div className="min-h-screen flex flex-col">
+//       {!shouldHideNavbar && <Navbar />}
+//       <main className="flex-1">
+//         <Outlet />
+//       </main>
+//       {!shouldHideNavbar && <Footer />}
+//     </div>
+//   );
+// };
+
 /* ─────────────────────────────────────────────────────────────
-   App Component
+   Main App Component
    ──────────────────────────────────────────────────────────── */
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  /* Splash screen logic */
   useEffect(() => {
     const checkSplashScreen = () => {
       if (isInitialLoad) {
-        // Always show splash on initial load
         setShowSplash(true);
         setIsInitialLoad(false);
-        
+
         const timer = setTimeout(() => {
           setShowSplash(false);
           setLastSplashTime();
         }, 4000);
-        
+
         return () => clearTimeout(timer);
       } else if (shouldShowSplash()) {
-        // Show splash if an hour has passed
         setShowSplash(true);
-        
+
         const timer = setTimeout(() => {
           setShowSplash(false);
           setLastSplashTime();
         }, 4000);
-        
+
         return () => clearTimeout(timer);
       } else {
         setShowSplash(false);
@@ -771,18 +694,17 @@ const App = () => {
     checkSplashScreen();
   }, [isInitialLoad]);
 
-  /* Check for hourly splash screen */
   useEffect(() => {
     const interval = setInterval(() => {
       if (shouldShowSplash() && !showSplash) {
         setShowSplash(true);
-        
+
         setTimeout(() => {
           setShowSplash(false);
           setLastSplashTime();
         }, 4000);
       }
-    }, 60000); // Check every minute
+    }, 60000);
 
     return () => clearInterval(interval);
   }, [showSplash]);
@@ -790,9 +712,9 @@ const App = () => {
   if (showSplash) return <JaimaxSplash />;
 
   return (
-    <>
-      <Routes>
-        {/* ───────────────── Private / Dashboard Routes ─────────────── */}
+    <Routes>
+      {/* ─────── Protected Routes (Dashboard) ─────── */}
+      <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="wallet" element={<Wallet />} />
@@ -807,7 +729,7 @@ const App = () => {
           <Route path="support" element={<Support />} />
         </Route>
 
-        {/* Additional dashboard aliases (all protected) */}
+        {/* Additional protected routes with DashboardLayout */}
         <Route path="/wallet" element={<DashboardLayout />}>
           <Route index element={<Wallet />} />
         </Route>
@@ -819,9 +741,6 @@ const App = () => {
         </Route>
         <Route path="/earnings" element={<DashboardLayout />}>
           <Route index element={<TodayEarning />} />
-        </Route>
-        <Route path="wallet/add-funds" element={<DashboardLayout />}>
-          <Route index element={<AddMoneyToWallet />} />
         </Route>
         <Route path="/buy-history" element={<DashboardLayout />}>
           <Route index element={<BuyHistory />} />
@@ -844,53 +763,47 @@ const App = () => {
         <Route path="/meetings" element={<DashboardLayout />}>
           <Route index element={<UserMeetingsShowcase />} />
         </Route>
+      </Route>
 
-        {/* ───────────────── Public Routes ─────────────────────────── */}
-        <Route path="/" element={<PublicLayout />}>
-          <Route index element={<Home />} />
+      {/* ─────── Public Routes ─────── */}
+      <Route path="/" element={<PublicLayout />}>
+        <Route index element={<Home />} />
+
+        {/* Auth Routes - Protected from logged-in users */}
+        <Route element={<PublicRoute />}>
           <Route path="login" element={<AuthContainer />} />
           <Route path="register" element={<AuthContainer />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="about" element={<JaimaxComponent />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="features" element={<FeaturesSection />} />
-
-          {/* Blog routes */}
-          <Route path="blog">
-            <Route index element={<BlogLayout />} />
-            <Route path=":slug" element={<BlogDetailPage />} />
-          </Route>
-
-          {/* Services & info */}
-          <Route path="services" element={<CryptoServicesFlipCards />} />
-          <Route path="supporthome" element={<SupportPage />} />
-          <Route path="privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="support-page" element={<SupportPage />} />
-          <Route path="terms-and-conditions" element={<TermsConditions />} />
-          <Route path="refund-policy" element={<RefundPolicy />} />
-          <Route path="disclaimer" element={<Disclaimer />} />
-          <Route path="Margintrading" element={<Margintrading />} />
-          <Route path="ApiTrading" element={<ApiTrading />} />
-          <Route path="SpotTrading" element={<SpotTrading />} />
-          <Route path="FuturesTrading" element={<FuturesTrading />} />
-          <Route path="PreSale" element={<PreSale />} />
-          <Route path="ReferEarn" element={<ReferEarn />} />
         </Route>
-      </Routes>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        style={{ zIndex: 9999 }}
-      />
-    </>
+
+        {/* Public pages */}
+        <Route path="about" element={<JaimaxComponent />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="features" element={<FeaturesSection />} />
+
+        <Route path="blog">
+          <Route index element={<BlogLayout />} />
+          <Route path=":slug" element={<BlogDetailPage />} />
+        </Route>
+
+        <Route path="services" element={<CryptoServicesFlipCards />} />
+        <Route path="supporthome" element={<SupportPage />} />
+        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="support-page" element={<SupportPage />} />
+        <Route path="terms-and-conditions" element={<TermsConditions />} />
+        <Route path="refund-policy" element={<RefundPolicy />} />
+        <Route path="disclaimer" element={<Disclaimer />} />
+        <Route path="Margintrading" element={<Margintrading />} />
+        <Route path="ApiTrading" element={<ApiTrading />} />
+        <Route path="SpotTrading" element={<SpotTrading />} />
+        <Route path="FuturesTrading" element={<FuturesTrading />} />
+        <Route path="PreSale" element={<PreSale />} />
+        <Route path="ReferEarn" element={<ReferEarn />} />
+      </Route>
+
+      {/* Catch all route - redirect to home */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 };
 
