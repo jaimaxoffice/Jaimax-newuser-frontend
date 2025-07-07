@@ -645,77 +645,9 @@ import {
   useWalletTransactionsListQuery,
 } from "./walletApiSlice";
 import Loader from '../../../Loader/loader';
-
+import ReferralModal from '../../modals/referalModal';
 const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
 
-// Referral Modal Component
-const ReferralModal = ({ show, onHide, userData, referralContent }) => {
-  if (!show) return null;
-
-  const handleCopyContent = async () => {
-    try {
-      await navigator.clipboard.writeText(referralContent);
-      console.log('Referral content copied to clipboard!');
-    } catch (error) {
-      console.error('Failed to copy referral content:', error);
-    }
-  };
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Join Jaimax Coin',
-          text: referralContent,
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.error('Failed to share:', error);
-      }
-    } else {
-      handleCopyContent();
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white rounded-lg max-w-md w-full mx-2 sm:mx-4 p-4 sm:p-6 max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-teal-800">Share Referral</h3>
-          <button 
-            onClick={onHide}
-            className="text-gray-500 hover:text-gray-700 text-xl p-1"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="mb-4">
-          <textarea 
-            value={referralContent}
-            readOnly
-            className="w-full h-32 p-3 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-        </div>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={handleCopyContent}
-            className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors flex items-center justify-center space-x-2"
-          >
-            <Copy className="w-4 h-4" />
-            <span>Copy Content</span>
-          </button>
-          <button
-            onClick={handleShare}
-            className="flex-1 bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors flex items-center justify-center space-x-2"
-          >
-            <Share2 className="w-4 h-4" />
-            <span>Share</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // Copy to Clipboard Button Component
 const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {

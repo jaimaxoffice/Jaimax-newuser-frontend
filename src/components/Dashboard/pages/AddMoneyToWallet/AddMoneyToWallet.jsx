@@ -422,7 +422,7 @@
 //                 {/* Transaction Details */}
 //                 <div className="bg-teal-50 rounded-lg p-4 mb-6 border border-teal-200">
 //                   <h3 className="text-teal-700 font-medium mb-4">Transaction Details</h3>
-                  
+
 //                   {/* Transaction ID */}
 //                   <div className="mb-4">
 //                     <label className="block text-gray-900 text-sm font-medium mb-2">Transaction ID</label>
@@ -484,7 +484,7 @@
 //             ) : selectedMethod === 'currency' && countryCode !== 91 ? (
 //               <div className="bg-white rounded-xl p-6 border border-teal-200 shadow-sm">
 //                 <h2 className="text-xl font-semibold mb-6 text-gray-900">Add Funds via PayPal</h2>
-                
+
 //                 <div className="mb-4">
 //                   <label className="block text-gray-900 text-sm font-medium mb-2">
 //                     Enter Amount <span className="text-red-600">*</span>
@@ -564,7 +564,7 @@
 //                   <Download size={16} className="mr-2" />
 //                   Download QR Code for Future Payments
 //                 </button>
-                
+
 //                 <div className="bg-teal-50 p-4 rounded-lg inline-block mb-4 border border-teal-200">
 //                   <img
 //                     src={scan}
@@ -572,7 +572,7 @@
 //                     className="w-48 h-48 sm:w-56 sm:h-56 rounded-lg"
 //                   />
 //                 </div>
-                
+
 //                 <p className="text-gray-900 text-sm mb-4">
 //                   <span className="text-gray-600">UPI ID:</span><br />
 //                   <span className="font-bold text-teal-700">jaimaxcoin2024@upi</span>
@@ -609,7 +609,7 @@
 //             <div className="lg:col-span-4">
 //               <div className="bg-white rounded-xl p-6 border border-teal-200 shadow-sm">
 //                 <h2 className="text-xl font-semibold mb-6 text-gray-900">Bank Details</h2>
-                
+
 //                 <div className="space-y-4">
 //                   {[
 //                     ['Bank Holder Name', defaultFormData.bankAccountHolderName],
@@ -696,7 +696,7 @@ import CopyToClipboardButton from "../../../../pages/home/CopyToClipboard";
 // import loaderImage from "../../assets/Images/loader.svg";
 import Loader from "../../../Loader/loader";
 import CryptoJS from "crypto-js";
-
+import { useGetActivePaymentGatewayQuery } from "../TodayEarnings/userEarningApiSlice";
 /**
  * This component is used to add funds to wallet by different payment methods UPI, Paypal & Transfer Available Balance
  * @return {*}
@@ -727,7 +727,11 @@ const AddMoneyToWallet = () => {
   const [transferAvailableBalance] = useTransferAvailableBalanceMutation();
   const { data: userData, refetch } = useUserDataQuery();
   const [isToastShown, setIsToastShown] = useState(false);
+  const { data: activePaymentGateway } = useGetActivePaymentGatewayQuery();
 
+  const isPaymentGatewayActive =
+    activePaymentGateway?.data?.length > 0 &&
+    activePaymentGateway.data[0].isActive;
   const countryCode = userData?.data?.countryCode;
   const transactionPercentageValue = 3;
 
@@ -891,8 +895,8 @@ const AddMoneyToWallet = () => {
             const transactionID = extractedTransactionID
               ? extractedTransactionID[1]
               : upiRefNo
-              ? upiRefNo
-              : null;
+                ? upiRefNo
+                : null;
 
             if (!transactionID) {
               setIsLoading(false);
@@ -1208,7 +1212,7 @@ const AddMoneyToWallet = () => {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen">
+    <div className=" min-h-screen ">
       {/* Payment Method Selection */}
       <div className="flex pt-6 gap-6">
         <div className="flex items-center">
@@ -1277,7 +1281,7 @@ const AddMoneyToWallet = () => {
                   {/* Transaction Details */}
                   <div className="bg-slate-50 rounded-lg p-4">
                     <h3 className="text-teal-700 font-semibold mb-4">Transaction Details</h3>
-                    
+
                     {/* Transaction ID */}
                     <div className="mb-4">
                       <label className="block text-slate-600 font-medium mb-2">
@@ -1365,7 +1369,7 @@ const AddMoneyToWallet = () => {
                     Download QR Code for Future Payments
                   </button>
                 </div>
-                
+
                 <div className="bg-white rounded-xl shadow-lg p-6 text-center">
                   <p className="text-slate-700 font-semibold mb-4">
                     Jaisvik Software Solutions Pvt Ltd.
@@ -1385,27 +1389,31 @@ const AddMoneyToWallet = () => {
                 </div>
 
                 {/* Card Payment Section */}
-                <div className="bg-white rounded-xl shadow-lg p-6 text-center mt-6">
-                  <h3 className="text-slate-700 font-bold text-lg mb-4">
-                    Pay through the cards
-                  </h3>
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Credit_or_Debit_Card_Flat_Icon_Vector.svg/2048px-Credit_or_Debit_Card_Flat_Icon_Vector.svg.png"
-                    className="mx-auto mb-4 w-32 h-20 object-contain"
-                    alt="Card Payment"
-                  />
-                  <p className="text-slate-600 text-sm mb-4">
-                    For payments above <strong className="text-slate-700">₹25,000,</strong> ensure your card
-                    has sufficient limit and is enabled for high-value online transactions.
-                  </p>
-                  <button
-                    onClick={onClickAddMoney}
-                    className="w-3/5 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-                  >
-                    Pay Now
-                  </button>
-                </div>
+                {isPaymentGatewayActive && (
+                  <div className="bg-white rounded-xl shadow-lg p-6 text-center mt-6">
+                    <h3 className="text-slate-700 font-bold text-lg mb-4">
+                      Pay through the cards
+                    </h3>
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Credit_or_Debit_Card_Flat_Icon_Vector.svg/2048px-Credit_or_Debit_Card_Flat_Icon_Vector.svg.png"
+                      className="mx-auto mb-4 w-32 h-20 object-contain"
+                      alt="Card Payment"
+                    />
+                    <p className="text-slate-600 text-sm mb-4">
+                      For payments above <strong className="text-slate-700">₹25,000,</strong> ensure your card
+                      has sufficient limit and is enabled for high-value online transactions.
+                    </p>
+                    <button
+                      onClick={onClickAddMoney}
+                      className="w-3/5 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                    >
+                      Pay Now
+                    </button>
+                  </div>
+                )}
+
               </div>
+
 
               {/* Bank Details Section */}
               <div className="lg:col-span-1">
@@ -1413,7 +1421,7 @@ const AddMoneyToWallet = () => {
                   <h3 className="text-slate-700 font-bold text-xl mb-6">
                     Bank Details
                   </h3>
-                  
+
                   {/* Bank Holder Name */}
                   <div className="flex justify-between items-start mb-6">
                     <div className="flex-1">
@@ -1485,7 +1493,7 @@ const AddMoneyToWallet = () => {
             <div className="lg:col-span-3">
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-slate-700 mb-6">Add Funds</h2>
-                
+
                 <div className="max-w-md">
                   <div className="mb-4">
                     <label className="block text-slate-600 font-medium mb-2">
@@ -1593,7 +1601,7 @@ const AddMoneyToWallet = () => {
           )}
         </div>
       </div>
-      
+
       {(isLoading || loading) && <Loader />}
     </div>
   );

@@ -1,5 +1,4 @@
 
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { Sling as Hamburger } from "hamburger-react";
 import {
@@ -13,7 +12,8 @@ import {
   HiOutlineCash,
   HiOutlineChatAlt2,
   HiOutlineLogout,
-  HiOutlineClock
+  HiOutlineClock,
+  HiOutlineVideoCamera
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { FaHandshake } from "react-icons/fa";
@@ -42,7 +42,7 @@ const navItems = [
   { name: "KYC", path: "/kyc-information", icon: <HiOutlineIdentification /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },
   { name: "Support", path: "/support", icon: <HiOutlineChatAlt2 /> },
-  { name: "Meetings", path: "/meetings", icon: <HiOutlineChatAlt2 /> },
+  { name: "Meetings", path: "/meetings", icon: <HiOutlineVideoCamera/> },
   { name: "Logout", icon: <HiOutlineLogout /> },
 ];
 function Sidebar({ onLogoutClick }) {
@@ -50,7 +50,6 @@ function Sidebar({ onLogoutClick }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;

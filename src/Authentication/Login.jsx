@@ -334,7 +334,7 @@ const CountryCodeDropdown = ({ value, onChange, className, countryCodes }) => {
 // };
 
 import { toast } from "react-toastify";
-import Loader from "../components/Loader/loader";
+// import Loader from "../components/Loader/loader";
 
 // const LoginComponent = ({ onToggleMode, isVisible }) => {
 //   const navigate = useNavigate();
@@ -714,9 +714,9 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
         });
 
         // Show toast notification
-        toast.success(`${response?.message}`, {
-          position: "top-center",
-        });
+        // toast.success(`${response?.message}`, {
+        //   position: "top-center",
+        // });
 
         // Redirect after delay
         setTimeout(() => {
@@ -734,9 +734,9 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
         type: "error",
         message: errorMessage,
       });
-      toast.error(errorMessage, {
-        position: "top-center",
-      });
+      // toast.error(errorMessage, {
+      //   position: "top-center",
+      // });
     }
   };
 
@@ -878,7 +878,7 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
       </div>
 
       {/* Loading Overlay */}
-      {isLoading && <Loader />}
+      {/* {isLoading && <Loader />} */}
     </div>
   );
 };

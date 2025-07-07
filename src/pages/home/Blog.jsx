@@ -1288,7 +1288,40 @@ const BlogLayout = () => {
   };
 
 
+const shareToSocial = (platform, post) => {
+    const baseUrl = window.location.origin || 'https://yoursite.com';
+    const url = `${baseUrl}/blog/${slugify(post.headline)}`;
+    const text = post.headline;
+    
+    const shareUrls = {
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}\n\n${url}`)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+      instagram: url // We'll copy the URL for Instagram
+    };
 
+    console.log(`Sharing to ${platform}:`, shareUrls[platform]); // Debug log
+
+    if (platform === 'instagram') {
+      copyToClipboard(url, post.id);
+      alert('Link copied! Please paste it in your Instagram story or bio.');
+    } else {
+      try {
+        const newWindow = window.open(shareUrls[platform], '_blank', 'noopener,noreferrer,width=600,height=400');
+        if (!newWindow) {
+          // Popup blocked, fallback to current window
+          window.location.href = shareUrls[platform];
+        }
+      } catch (err) {
+        console.error('Failed to open share window:', err);
+        // Fallback: copy URL and show message
+        copyToClipboard(url, post.id);
+        alert(`Please manually share this link on ${platform}: ${url}`);
+      }
+    }
+    
+    setActiveShareDropdown(null);
+  };
   const categories = ["All", 'Blockchain', 'Market Trends', 'DeFi', 'NFTs', "Crypto News", ...new Set(blogsData.map((b) => b.category))];
 
   const filteredPosts = blogsData.filter((post) => {
@@ -1342,41 +1375,6 @@ const BlogLayout = () => {
       alert('Copy failed. Please copy the link manually: ' + text);
       setActiveShareDropdown(null);
     }
-  };
-
-  const shareToSocial = (platform, post) => {
-    const baseUrl = window.location.origin || 'https://yoursite.com';
-    const url = `${baseUrl}/blog/${slugify(post.headline)}`;
-    const text = post.headline;
-    
-    const shareUrls = {
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}\n\n${url}`)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-      instagram: url // We'll copy the URL for Instagram
-    };
-
-    console.log(`Sharing to ${platform}:`, shareUrls[platform]); // Debug log
-
-    if (platform === 'instagram') {
-      copyToClipboard(url, post.id);
-      alert('Link copied! Please paste it in your Instagram story or bio.');
-    } else {
-      try {
-        const newWindow = window.open(shareUrls[platform], '_blank', 'noopener,noreferrer,width=600,height=400');
-        if (!newWindow) {
-          // Popup blocked, fallback to current window
-          window.location.href = shareUrls[platform];
-        }
-      } catch (err) {
-        console.error('Failed to open share window:', err);
-        // Fallback: copy URL and show message
-        copyToClipboard(url, post.id);
-        alert(`Please manually share this link on ${platform}: ${url}`);
-      }
-    }
-    
-    setActiveShareDropdown(null);
   };
 
   return (
@@ -1475,13 +1473,6 @@ const BlogLayout = () => {
           </div>
         )}
 
-        {/* Click outside to close dropdowns */}
-        {activeShareDropdown && (
-          <div 
-            className="fixed inset-0 z-40" 
-            onClick={() => setActiveShareDropdown(null)}
-          />
-        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Desktop Sidebar */}
