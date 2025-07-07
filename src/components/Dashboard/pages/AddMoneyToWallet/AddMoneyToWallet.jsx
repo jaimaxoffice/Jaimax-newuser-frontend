@@ -1212,7 +1212,7 @@ const AddMoneyToWallet = () => {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen ">
+    <div className=" min-h-screen ">
       {/* Payment Method Selection */}
       <div className="flex pt-6 gap-6">
         <div className="flex items-center">

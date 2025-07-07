@@ -967,7 +967,6 @@ const ShareholderForm = () => {
 
       <div className="w-full animate-fadeIn">
         <div className="w-full">
-          {/* Header Section */}
           <div className="text-center mb-3 sm:mb-2 lg:mb-4 animate-slideUp">
             <div className="relative">
               <div className="relative inline-flex items-center justify-center w-10 h-10 sm:w-8 sm:h-8 lg:w-12 lg:h-12 bg-teal-600 rounded-full mb-2 sm:mb-1 lg:mb-3 shadow-lg">

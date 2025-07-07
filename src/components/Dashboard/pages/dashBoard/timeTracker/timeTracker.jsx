@@ -1248,7 +1248,7 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
 
           <button
             onClick={onProceedOrder}
-            className="w-full bg-[#2cdacc] hover:bg-[#25b8ac] text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full bg-[#085553] hover:bg-[#25b8ac] text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
           >
             Proceed to Pay
           </button>
