@@ -131,7 +131,7 @@ function Sidebar({ onLogoutClick }) {
         </div>
 
         {/* Navigation */}
-        <nav className=" flex-1 overflow-y-auto max-h-[calc(100vh-4rem)] space-y-1 p-4">
+        <nav className=" flex-1 overflow-auto  max-h-[calc(100vh-4rem)] space-y-1 p-4" style={{ scrollbarWidth: "none" }}>
           {(isOpen || isMobile) && (
             <p className="text-xs text-white uppercase font-semibold mb-4 select-none tracking-wider">
               Menu

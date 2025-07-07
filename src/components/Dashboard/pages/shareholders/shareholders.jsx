@@ -1069,6 +1069,7 @@ const ShareholderEligibility = () => {
   const [filteredReferrals, setFilteredReferrals] = useState([]);
   const [showShareholders, setShowShareholders] = useState(false);
   const [errormessage, setErrormessage] = useState(null);
+  const [showModal, setShowModal] = useState(true);
   const navigate = useNavigate();
   const [state, setState] = useState({
     currentPage: 1,
@@ -1078,7 +1079,7 @@ const ShareholderEligibility = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userData") || "{}");
-    const username = user.data.username ; 
+    const username = user.data.username;
     console.log("Username:", username);
     if (username) {
       setLoading(true);
@@ -1220,17 +1221,19 @@ const ShareholderEligibility = () => {
   if (data?.data && userData.isEligibleForShareHolder === true && userData.photoVerificationCompleted === false) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-teal-100">
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full mx-4 relative border border-gray-100">
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold transition-colors"
-            >
-              ✕
-            </button>
-            <ShareholderForm />
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl shadow-2xl p-4 max-w-md w-full mx-0 relative border border-gray-100">
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold transition-colors"
+              >
+                ✕
+              </button>
+              <ShareholderForm />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -1386,7 +1389,7 @@ const ShareholderEligibility = () => {
                   </div>
                   {!isLoading && !loading && (
                     <span className={`px-2 py-1 rounded-lg text-xs font-semibold text-white transition-all duration-300 ${eligibilityPercentage >= 100 ? 'bg-green-500' :
-                        eligibilityPercentage > 50 ? 'bg-orange-500' : 'bg-orange-500'
+                      eligibilityPercentage > 50 ? 'bg-orange-500' : 'bg-orange-500'
                       } ${hoveredCard === 'eligibility' ? 'scale-105 shadow-lg' : ''}`}>
                       {eligibilityPercentage}%
                     </span>
@@ -1401,8 +1404,8 @@ const ShareholderEligibility = () => {
                 ) : (
                   <>
                     <div className={`inline-block px-2 sm:px-3 py-1 rounded-lg text-white font-medium text-xs mb-2 transition-all duration-300 ${isEligibleForShareHolder
-                        ? 'bg-green-500'
-                        : 'bg-orange-500'
+                      ? 'bg-green-500'
+                      : 'bg-orange-500'
                       } ${hoveredCard === 'eligibility' ? 'scale-105 shadow-md' : ''}`}>
                       {isEligibleForShareHolder ? "Eligible" : "Not Eligible"}
                     </div>
@@ -1823,8 +1826,8 @@ const ShareholderEligibility = () => {
                     <li>
                       <button
                         className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl border-2 transition-all duration-300 ${state.currentPage === 1
-                            ? 'bg-gray-50 text-gray-400 cursor-not-allowed border-gray-200'
-                            : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
+                          ? 'bg-gray-50 text-gray-400 cursor-not-allowed border-gray-200'
+                          : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
                           }`}
                         onClick={() => handlePageChange(state.currentPage - 1)}
                         disabled={state.currentPage === 1}
@@ -1841,8 +1844,8 @@ const ShareholderEligibility = () => {
                           <li key={index}>
                             <button
                               className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl border-2 transition-all duration-300 font-bold text-xs sm:text-sm ${isActive
-                                  ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
-                                  : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
+                                ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
+                                : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
                                 }`}
                               onClick={() => handlePageChange(pageNum)}
                             >
@@ -1856,8 +1859,8 @@ const ShareholderEligibility = () => {
                         <li>
                           <button
                             className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl border-2 transition-all duration-300 font-bold text-xs sm:text-sm ${state.currentPage === 1
-                                ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
-                                : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
+                              ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
+                              : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
                               }`}
                             onClick={() => handlePageChange(1)}
                           >
@@ -1886,8 +1889,8 @@ const ShareholderEligibility = () => {
                               <li key={index}>
                                 <button
                                   className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl border-2 transition-all duration-300 font-bold text-xs sm:text-sm ${isActive
-                                      ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
-                                      : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
+                                    ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
+                                    : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
                                     }`}
                                   onClick={() => handlePageChange(pageNum)}
                                 >
@@ -1910,8 +1913,8 @@ const ShareholderEligibility = () => {
                         <li>
                           <button
                             className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl border-2 transition-all duration-300 font-bold text-xs sm:text-sm ${state.currentPage === totalPages
-                                ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
-                                : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
+                              ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white border-teal-500 shadow-lg scale-110'
+                              : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
                               }`}
                             onClick={() => handlePageChange(totalPages)}
                           >
@@ -1924,8 +1927,8 @@ const ShareholderEligibility = () => {
                     <li>
                       <button
                         className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl border-2 transition-all duration-300 ${state.currentPage === totalPages
-                            ? 'bg-gray-50 text-gray-400 cursor-not-allowed border-gray-200'
-                            : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
+                          ? 'bg-gray-50 text-gray-400 cursor-not-allowed border-gray-200'
+                          : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 border-gray-200 hover:border-teal-300 hover:shadow-md transform hover:-translate-y-0.5'
                           }`}
                         onClick={() => handlePageChange(state.currentPage + 1)}
                         disabled={state.currentPage === totalPages}

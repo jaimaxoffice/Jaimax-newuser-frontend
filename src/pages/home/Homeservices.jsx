@@ -2078,7 +2078,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import jaicoins from "../../assets/Images/jaicoins.svg";
 import frameTwo from "../../assets/Images/securitymeasure.svg";
 import access from "../../assets/Images/accessToprofit.svg";
-import rocket2 from '../../assets/Images/rocket2.svg';
+import rocket2 from '../../assets/Images/framefour.svg';
 import eye from "../../assets/Images/eye.svg";
 
 const ServicesSection = () => {

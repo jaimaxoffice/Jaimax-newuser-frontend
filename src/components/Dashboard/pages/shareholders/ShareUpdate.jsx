@@ -813,26 +813,22 @@
 
 import React, { useState } from "react";
 import { Upload, User, Check, AlertTriangle, Camera, CheckCircle, XCircle } from "lucide-react";
+import { useUpdateShareholderProfileMutation } from "./ShareholderUpdatioApiSlice";
 
 const ShareholderForm = () => {
   const [formData, setFormData] = useState({
     profileImage: null,
   });
   const [previewImage, setPreviewImage] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [updateShareholderProfile, { isLoading: isSubmitting }] = useUpdateShareholderProfileMutation();
   const [submitStatus, setSubmitStatus] = useState({
     success: false,
     message: "",
   });
 
-  // Mock user data - replace with actual user data in real implementation
-  const user = {
-    data: {
-      username: "shareholder123",
-      name: "John Doe"
-    }
-  };
+  // Get user data from localStorage (API data)
+  const user = JSON.parse(localStorage.getItem("userData") || "{}");
   const username = user?.data?.username;
   const currentNameFromLocalStorage = user?.data?.name;
 
@@ -900,7 +896,6 @@ const ShareholderForm = () => {
       return;
     }
 
-    setIsSubmitting(true);
     try {
       const base64Image = await fileToBase64(formData.profileImage);
 
@@ -909,187 +904,220 @@ const ShareholderForm = () => {
         profileImage: base64Image,
       };
 
-      // Simulate API call with delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulate successful response
-      const response = { status_code: 200, message: "Profile updated successfully!" };
+      // Call the actual API
+      const response = await updateShareholderProfile(payload).unwrap();
 
       if (response?.status_code === 200) {
         setSubmitStatus({
           success: true,
           message: response.message || "Profile updated successfully!",
         });
-        // Remove the reload in demo
-        // window.location.reload();
+        
+        // Clear form and reload page after successful update
+        setFormData({ profileImage: null });
+        setPreviewImage(null);
+        
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
 
-      setFormData({ profileImage: null });
-      setPreviewImage(null);
     } catch (error) {
+      console.error("Update error:", error);
       setSubmitStatus({
         success: false,
-        message: error.message || "Shareholder is not eligible to update profile",
+        message: error?.data?.message || error?.message || "Shareholder is not eligible to update profile",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-100 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-emerald-600 rounded-full mb-4 sm:mb-6 shadow-lg">
-            <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
-            Update Your Profile
-          </h1>
-          <p className="text-base sm:text-lg text-gray-600 max-w-md mx-auto">
-            Congratulations, elite shareholder! Enhance your profile identity.
-          </p>
-        </div>
+    <>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+        }
+        @keyframes bounce {
+          0%, 20%, 53%, 80%, 100% { transform: translateY(0); }
+          40%, 43% { transform: translateY(-10px); }
+          70% { transform: translateY(-5px); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.8s ease-out;
+        }
+        .animate-slideUp {
+          animation: slideUp 0.6s ease-out 0.2s both;
+        }
+        .animate-pulse {
+          animation: pulse 3s ease-in-out infinite;
+        }
+        .animate-bounce {
+          animation: bounce 2s infinite;
+        }
+      `}</style>
 
-        {/* Main Form Card */}
-        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-          {/* Card Header */}
-          <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 sm:px-8 py-6 sm:py-8">
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                <User className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-              </div>
-              <div className="text-center sm:text-left">
-                <h2 className="text-lg sm:text-xl font-semibold text-white mb-1">
-                  {currentNameFromLocalStorage || "Shareholder"}
-                </h2>
-                <p className="text-emerald-100 text-sm sm:text-base">
-                  @{username || "username"}
-                </p>
+      <div className="w-full animate-fadeIn">
+        <div className="w-full">
+          {/* Header Section */}
+          <div className="text-center mb-3 sm:mb-2 lg:mb-4 animate-slideUp">
+            <div className="relative">
+              <div className="relative inline-flex items-center justify-center w-10 h-10 sm:w-8 sm:h-8 lg:w-12 lg:h-12 bg-teal-600 rounded-full mb-2 sm:mb-1 lg:mb-3 shadow-lg">
+                <User className="w-5 h-5 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-white" />
               </div>
             </div>
+            <h1 className="text-lg sm:text-base lg:text-2xl font-bold text-gray-900 mb-1 sm:mb-0 lg:mb-2">
+              Update Your Profile
+            </h1>
+            <p className="text-xs sm:text-xs lg:text-sm text-gray-600 hidden sm:block">
+              Enhance your identity
+            </p>
           </div>
 
-          {/* Form Content */}
-          <div className="p-6 sm:p-8 lg:p-10">
-            <div className="space-y-6 sm:space-y-8">
-              {/* File Upload Section */}
-              <div>
-                <div className="block text-sm font-medium text-gray-700 mb-3 sm:mb-4">
-                  Profile Image
+          {/* Main Form Card */}
+          <div className="bg-gray-50 rounded-xl shadow-sm border border-gray-200 overflow-hidden animate-slideUp">
+            {/* Username Display Card */}
+            <div className="bg-teal-50 p-3 border-b border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center shadow-sm">
+                  <User className="w-4 h-4 text-white" />
                 </div>
-                
-                <input
-                  type="file"
-                  id="profileImage"
-                  accept="image/jpeg, image/jpg, image/png, image/webp"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
+                <div>
+                  <div className="text-sm font-semibold text-gray-900">
+                    {currentNameFromLocalStorage || "Shareholder"}
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    @{username || "username"}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                <label
-                  htmlFor="profileImage"
-                  className={`group block w-full cursor-pointer transition-all duration-300 ${
-                    errors.profileImage 
-                      ? 'border-2 border-dashed border-red-300 bg-red-50' 
-                      : 'border-2 border-dashed border-emerald-300 hover:border-emerald-400 bg-emerald-50 hover:bg-emerald-100'
-                  } rounded-xl sm:rounded-2xl p-6 sm:p-8 min-h-[200px] sm:min-h-[240px] flex items-center justify-center relative overflow-hidden`}
-                >
-                  {previewImage ? (
-                    <div className="relative w-full">
-                      <img
-                        src={previewImage}
-                        alt="Profile preview"
-                        className="w-full h-48 sm:h-56 object-cover rounded-lg sm:rounded-xl"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg sm:rounded-xl flex items-center justify-center">
-                        <div className="text-white text-center">
-                          <Camera className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-2" />
-                          <span className="text-sm sm:text-base font-medium">Change Photo</span>
+            {/* Form Content */}
+            <div className="p-4">
+              <div className="space-y-4">
+                {/* File Upload Section */}
+                <div>
+                  <div className="block text-xs lg:text-sm font-medium text-gray-700 mb-1 sm:mb-1 lg:mb-3">
+                    Profile Image
+                  </div>
+                  
+                  <input
+                    type="file"
+                    id="profileImage"
+                    accept="image/jpeg, image/jpg, image/png, image/webp"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+
+                  <label
+                    htmlFor="profileImage"
+                    className={`group block w-full cursor-pointer transition-all duration-300 ${
+                      errors.profileImage 
+                        ? 'border-2 border-dashed border-red-300 bg-red-50 hover:bg-red-100' 
+                        : 'border-2 border-dashed border-teal-300 hover:border-teal-400 bg-teal-50 hover:bg-teal-100'
+                    } rounded-lg p-3 sm:p-2 lg:p-6 min-h-[100px] sm:min-h-[80px] lg:min-h-[160px] flex items-center justify-center relative overflow-hidden`}
+                  >
+                    {previewImage ? (
+                      <div className="relative w-full">
+                        <img
+                          src={previewImage}
+                          alt="Profile preview"
+                          className="w-full h-20 sm:h-16 lg:h-32 object-cover rounded-md lg:rounded-lg"
+                        />
+                        <div className="absolute inset-0 bg-teal-600 bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md lg:rounded-lg flex items-center justify-center">
+                          <div className="text-white text-center">
+                            <Camera className="w-4 h-4 sm:w-3 sm:h-3 lg:w-6 lg:h-6 mx-auto mb-1 lg:mb-2" />
+                            <span className="text-xs lg:text-sm font-medium">Change Photo</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                        <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                    ) : (
+                      <div className="text-center">
+                        <div className="w-8 h-8 sm:w-6 sm:h-6 lg:w-12 lg:h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-1 sm:mb-1 lg:mb-3 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                          <Upload className="w-4 h-4 sm:w-3 sm:h-3 lg:w-6 lg:h-6 text-teal-600" />
+                        </div>
+                        <h3 className="text-xs sm:text-xs lg:text-sm font-semibold text-teal-700 mb-1 lg:mb-2">
+                          Upload Profile Image
+                        </h3>
+                        <p className="text-xs sm:text-xs lg:text-sm text-gray-600 mb-1 lg:mb-1">
+                          Click to select your photo
+                        </p>
+                        <p className="text-xs sm:text-xs lg:text-xs text-gray-500">
+                          JPEG, PNG, WebP up to 5MB
+                        </p>
                       </div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                        Upload Profile Image
-                      </h3>
-                      <p className="text-sm sm:text-base text-gray-500 mb-2">
-                        Click or drag to select your photo
-                      </p>
-                      <p className="text-xs sm:text-sm text-gray-400">
-                        JPEG, PNG, WebP up to 5MB
-                      </p>
+                    )}
+                  </label>
+
+                  {errors.profileImage && (
+                    <div className="mt-1 sm:mt-1 lg:mt-2 flex items-center gap-1 sm:gap-1 lg:gap-2 p-2 sm:p-1 lg:p-3 bg-red-50 border border-red-200 rounded-md lg:rounded-lg">
+                      <AlertTriangle className="w-3 h-3 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-red-500 flex-shrink-0" />
+                      <span className="text-xs sm:text-xs lg:text-sm text-red-700">{errors.profileImage}</span>
                     </div>
                   )}
-                </label>
+                </div>
 
-                {errors.profileImage && (
-                  <div className="mt-3 flex items-center gap-2 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg sm:rounded-xl">
-                    <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                    <span className="text-sm sm:text-base text-red-700">{errors.profileImage}</span>
+                {/* Submit Button */}
+                <button
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className={`w-full flex items-center justify-center gap-2 sm:gap-1 lg:gap-3 px-3 py-2 sm:py-2 lg:py-4 rounded-lg lg:rounded-xl text-xs sm:text-xs lg:text-sm font-semibold transition-all duration-300 ${
+                    isSubmitting
+                      ? 'bg-gray-100 text-teal-600 border border-teal-200 cursor-not-allowed'
+                      : 'bg-teal-600 text-white hover:bg-teal-700 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'
+                  } shadow-sm`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-3 h-3 sm:w-3 sm:h-3 lg:w-4 lg:h-4 border-2 border-teal-600 border-t-transparent rounded-full animate-spin" />
+                      <span>Updating...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-3 h-3 sm:w-3 sm:h-3 lg:w-4 lg:h-4" />
+                      <span>Update Profile</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Status Alert */}
+                {submitStatus.message && (
+                  <div
+                    className={`flex items-center gap-2 sm:gap-1 lg:gap-3 p-2 sm:p-2 lg:p-4 rounded-lg lg:rounded-xl border-l-4 ${
+                      submitStatus.success
+                        ? 'bg-teal-50 border-teal-500 text-teal-800'
+                        : 'bg-red-50 border-red-500 text-red-800'
+                    }`}
+                  >
+                    <div className="flex-shrink-0">
+                      {submitStatus.success ? (
+                        <div className="w-4 h-4 sm:w-3 sm:h-3 lg:w-5 lg:h-5 bg-white rounded-full flex items-center justify-center">
+                          <CheckCircle className="w-2 h-2 sm:w-2 sm:h-2 lg:w-3 lg:h-3 text-teal-600" />
+                        </div>
+                      ) : (
+                        <div className="w-4 h-4 sm:w-3 sm:h-3 lg:w-5 lg:h-5 bg-red-600 rounded-full flex items-center justify-center">
+                          <XCircle className="w-2 h-2 sm:w-2 sm:h-2 lg:w-3 lg:h-3 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-xs sm:text-xs lg:text-sm font-medium">{submitStatus.message}</span>
                   </div>
                 )}
               </div>
-
-              {/* Submit Button */}
-              <button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className={`w-full flex items-center justify-center gap-3 px-6 py-4 sm:py-5 rounded-xl sm:rounded-2xl text-base sm:text-lg font-semibold transition-all duration-300 ${
-                  isSubmitting
-                    ? 'bg-emerald-400 cursor-not-allowed'
-                    : 'bg-emerald-600 hover:bg-emerald-700 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0'
-                } text-white shadow-md`}
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Updating Profile...</span>
-                  </>
-                ) : (
-                  <>
-                    <Check className="w-5 h-5 sm:w-6 sm:h-6" />
-                    <span>Update Profile</span>
-                  </>
-                )}
-              </button>
-
-              {/* Status Alert */}
-              {submitStatus.message && (
-                <div
-                  className={`flex items-center gap-3 p-4 sm:p-5 rounded-xl sm:rounded-2xl border-l-4 ${
-                    submitStatus.success
-                      ? 'bg-emerald-50 border-emerald-500 text-emerald-800'
-                      : 'bg-red-50 border-red-500 text-red-800'
-                  }`}
-                >
-                  <div className="flex-shrink-0">
-                    {submitStatus.success ? (
-                      <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-600" />
-                    ) : (
-                      <XCircle className="w-6 h-6 sm:w-7 sm:h-7 text-red-600" />
-                    )}
-                  </div>
-                  <span className="text-sm sm:text-base font-medium">{submitStatus.message}</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-        <div className="text-center mt-8 sm:mt-12">
-          <p className="text-sm sm:text-base text-gray-500">
-            Secure and encrypted profile management
-          </p>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

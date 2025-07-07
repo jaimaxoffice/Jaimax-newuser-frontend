@@ -143,11 +143,468 @@ const CountryCodeDropdown = ({ value, onChange, className, countryCodes }) => {
         </div>
       )}
 
-      
+
     </div>
   );
 };
 
+// const LoginComponent = ({ onToggleMode, isVisible }) => {
+//   const navigate = useNavigate();
+
+//   const [formData, setFormData] = useState({ email: "", password: "" });
+//   const [errors, setErrors] = useState({});
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [notification, setNotification] = useState(null);
+//   const [login, { isLoading, error: loginError }] = useLoginMutation();
+
+//   useEffect(() => {
+//     if (loginError) {
+//       const message =
+//         loginError?.data?.message || "Login failed. Please try again.";
+//       setNotification({ type: "error", message });
+//     }
+//   }, [loginError]);
+
+//   const validate = () => {
+//     const newErrors = {};
+//     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+//     if (!formData.email.trim()) {
+//       newErrors.email = "Email is required";
+//     } else if (!emailRegex.test(formData.email)) {
+//       newErrors.email = "Invalid email address";
+//     }
+
+//     if (!formData.password) {
+//       newErrors.password = "Password is required";
+//     } else if (formData.password.length < 6) {
+//       newErrors.password = "Password must be at least 6 characters";
+//     }
+
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//     setErrors((prev) => ({ ...prev, [name]: "" }));
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!validate()) {
+//       setNotification({
+//         type: "error",
+//         message: "Please fix the highlighted fields.",
+//       });
+//       return;
+//     }
+
+//     try {
+//       const response = await login({ ...formData, role: 1 }).unwrap();
+
+//       if (response?.success) {
+//         localStorage.setItem("token", response?.data?.token);
+//         localStorage.setItem("userData", JSON.stringify(response));
+
+//         setNotification({
+//           type: "success",
+//           message: response?.message || "Login successful! Redirecting...",
+//         });
+
+//         setTimeout(() => {
+//           navigate("/dashboard");
+//         }, 1000);
+//       } else {
+//         setNotification({
+//           type: "error",
+//           message: response?.message || "Login failed.",
+//         });
+//       }
+//     } catch (err) {
+//       setNotification({
+//         type: "error",
+//         message: err?.data?.message || "Login error",
+//       });
+//     }
+//   };
+
+//   return (
+//     <div
+//       className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+//         }`}
+//     >
+//       <Seo page="login" />
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+
+//       <div className="text-center mb-8">
+//         <h1 className="text-3xl font-bold text-gray-800 mb-2">LOGIN</h1>
+//         <p className="text-gray-600">
+//           Enter your credentials to access your account
+//         </p>
+//       </div>
+
+//       <div className="space-y-4">
+//         <div className="relative mb-6">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+//             <Mail className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleChange}
+//             placeholder="Email"
+//             className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
+//               }`}
+//           />
+//           {errors.email && (
+//             <div className="text-red-500 text-sm mt-1">{errors.email}</div>
+//           )}
+//         </div>
+
+//         <div className="relative mb-6">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+//             <Lock className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type={showPassword ? "text" : "password"}
+//             name="password"
+//             value={formData.password}
+//             onChange={handleChange}
+//             placeholder="Password"
+//             className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
+//               }`}
+//           />
+//           <button
+//             type="button"
+//             onClick={() => setShowPassword(!showPassword)}
+//             className="absolute inset-y-0 right-0 pr-3 flex items-center"
+//           >
+//             {showPassword ? (
+//               <EyeOff className="h-5 w-5 text-gray-400" />
+//             ) : (
+//               <Eye className="h-5 w-5 text-gray-400" />
+//             )}
+//           </button>
+//           {errors.password && (
+//             <div className="text-red-500 text-sm mt-1">{errors.password}</div>
+//           )}
+//         </div>
+          
+//         <div className="text-right mt-4">
+//           <button
+//             onClick={() => navigate("/forgot-password")}
+//             className="text-teal-600 hover:text-teal-700 text-sm font-medium"
+//           >
+//             Forgot Password?
+//           </button>
+//         </div>
+
+//         <button
+//           onClick={handleSubmit}
+//           disabled={isLoading}
+//           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+//         >
+//           {isLoading ? "Signing In..." : "LOGIN"}
+//         </button>
+//       </div>
+
+//       <div className="mt-8 text-center">
+//         <p className="text-gray-600">
+//           Don't have an account?{" "}
+//           <button
+//             onClick={onToggleMode}
+//             className="text-teal-600 hover:text-teal-700 font-semibold"
+//           >
+//             Sign up
+//           </button>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
+
+import { toast } from "react-toastify";
+import Loader from "../components/Loader/loader";
+
+// const LoginComponent = ({ onToggleMode, isVisible }) => {
+//   const navigate = useNavigate();
+
+//   const [formData, setFormData] = useState({ email: "", password: "" });
+//   const [errors, setErrors] = useState({});
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [notification, setNotification] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const [rememberMe, setRememberMe] = useState(false);
+
+//   const [login, { isLoading, error: loginError }] = useLoginMutation();
+
+//   // Handle login error from RTK Query
+//   useEffect(() => {
+//     if (loginError) {
+//       const message =
+//         loginError?.data?.message || "Login failed. Please try again.";
+//       setNotification({ type: "error", message });
+//     }
+//   }, [loginError]);
+
+//   // Load saved email and remember me status
+//   useEffect(() => {
+//     const savedEmail = localStorage.getItem("email");
+//     const savedRememberMe = localStorage.getItem("rememberMe") === "true";
+
+//     if (savedEmail) {
+//       setFormData((prevValues) => ({ ...prevValues, email: savedEmail }));
+//     }
+//     setRememberMe(savedRememberMe);
+//   }, []);
+
+
+
+//   const validate = () => {
+//     const newErrors = {};
+//     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+//     if (!formData.email?.trim()) {
+//       newErrors.email = "Email is required";
+//     } else if (!emailRegex.test(formData.email?.trim())) {
+//       newErrors.email = "Invalid email format";
+//     }
+
+//     if (!formData.password) {
+//       newErrors.password = "Password is required";
+//     } else if (formData.password.length < 6) {
+//       newErrors.password = "Password must be at least 6 characters long";
+//     }
+
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//     setErrors((prev) => ({ ...prev, [name]: "" }));
+//   };
+
+//   const handleRememberMeChange = (e) => {
+//     setRememberMe(e.target.checked);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!validate()) {
+//       setNotification({
+//         type: "error",
+//         message: "Please fix the highlighted fields.",
+//       });
+//       return;
+//     }
+
+//     // Handle remember me functionality
+//     if (rememberMe) {
+//       localStorage.setItem("email", formData.email?.trim());
+//       localStorage.setItem("rememberMe", "true");
+//     } else {
+//       localStorage.removeItem("email");
+//       localStorage.removeItem("rememberMe");
+//     }
+
+//     try {
+//       const response = await login({
+//         email: formData.email?.trim(),
+//         password: formData.password,
+//         role: 1,
+//       }).unwrap();
+
+//       if (response?.success) {
+//         // Store authentication data
+//         localStorage.setItem("token", response?.data?.token);
+//         localStorage.setItem("userData", JSON.stringify(response));
+
+//         // Show success notification
+//         setNotification({
+//           type: "success",
+//           message: response?.message || "Login successful! Redirecting...",
+//         });
+
+//         // Show toast notification
+//         toast.success(`${response?.message}`, {
+//           position: "top-center",
+//         });
+
+//         // Redirect after delay
+//         setTimeout(() => {
+//           navigate("/dashboard");
+//         }, 1000);
+//       } else {
+//         setNotification({
+//           type: "error",
+//           message: response?.message || "Login failed.",
+//         });
+//       }
+//     } catch (err) {
+//       const errorMessage = err?.data?.message || "Login error";
+//       setNotification({
+//         type: "error",
+//         message: errorMessage,
+//       });
+//       toast.error(errorMessage, {
+//         position: "top-center",
+//       });
+//     }
+//   };
+
+//   return (
+//     <div
+//       className={`w-full max-w-md transition-all duration-500 transform ${
+//         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+//       }`}
+//     >
+//       <Seo page="login" />
+      
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+
+//       <div className="text-center mb-8">
+//         <h1 className="text-3xl font-bold text-gray-800 mb-2 uppercase">
+//           Login
+//         </h1>
+//         <p className="text-gray-600">
+//           If you are already a customer, enter your details
+//         </p>
+//       </div>
+
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         {/* Email Field */}
+//         <div className="relative mb-6">
+//           <label className="block text-sm font-medium text-gray-700 mb-2">
+//             Email <span className="text-red-500 ml-1">*</span>
+//           </label>
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+//               <Mail className="h-5 w-5 text-gray-400" />
+//             </div>
+//             <input
+//               type="email"
+//               name="email"
+//               value={formData.email}
+//               onChange={handleChange}
+//               placeholder="Enter your email"
+//               autoComplete="off"
+//               className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//                 errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
+//               }`}
+//             />
+//           </div>
+//           {errors.email && (
+//             <div className="text-red-500 text-sm mt-1">{errors.email}</div>
+//           )}
+//         </div>
+
+//         {/* Password Field */}
+//         <div className="relative mb-6">
+//           <label className="block text-sm font-medium text-gray-700 mb-2">
+//             Password <span className="text-red-500 ml-1">*</span>
+//           </label>
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+//               <Lock className="h-5 w-5 text-gray-400" />
+//             </div>
+//             <input
+//               type={showPassword ? "text" : "password"}
+//               name="password"
+//               value={formData.password}
+//               onChange={handleChange}
+//               placeholder="Enter your password"
+//               autoComplete="off"
+//               className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//                 errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
+//               }`}
+//             />
+//             <button
+//               type="button"
+//               onClick={() => setShowPassword(!showPassword)}
+//               className="absolute inset-y-0 right-0 pr-3 flex items-center"
+//             >
+//               {showPassword ? (
+//                 <EyeOff className="h-5 w-5 text-gray-400" />
+//               ) : (
+//                 <Eye className="h-5 w-5 text-gray-400" />
+//               )}
+//             </button>
+//           </div>
+//           {errors.password && (
+//             <div className="text-red-500 text-sm mt-1">{errors.password}</div>
+//           )}
+//         </div>
+
+//         {/* Remember Me and Forgot Password */}
+//         <div className="flex justify-between items-center mb-6">
+//           <div className="flex items-center">
+//             <input
+//               type="checkbox"
+//               id="rememberMe"
+//               checked={rememberMe}
+//               onChange={handleRememberMeChange}
+//               className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+//             />
+//             <label
+//               htmlFor="rememberMe"
+//               className="ml-2 text-sm text-gray-600 cursor-pointer"
+//             >
+//               Remember me
+//             </label>
+//           </div>
+//           <Link
+//             to="/forgot-password"
+//             className="text-teal-600 hover:text-teal-700 text-sm font-medium"
+//           >
+//             Forgot Password?
+//           </Link>
+//         </div>
+
+//         {/* Submit Button */}
+//         <button
+//           type="submit"
+//           disabled={isLoading}
+//           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6 uppercase"
+//         >
+//           {isLoading ? "Signing In..." : "Login"}
+//         </button>
+//       </form>
+
+//       {/* Register Link */}
+//       <div className="mt-8 text-center">
+//         <p className="text-gray-600 mb-2">Don't have an account?</p>
+//         <button
+//           onClick={onToggleMode}
+//           className="text-teal-600 hover:text-teal-700 font-semibold"
+//         >
+//           Register Now
+//         </button>
+//       </div>
+
+//       {/* Loading Overlay */}
+//       {isLoading && <Loader />}
+//     </div>
+//   );
+// };
 const LoginComponent = ({ onToggleMode, isVisible }) => {
   const navigate = useNavigate();
 
@@ -155,8 +612,12 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
   const [login, { isLoading, error: loginError }] = useLoginMutation();
 
+  // Handle login error from RTK Query
   useEffect(() => {
     if (loginError) {
       const message =
@@ -165,20 +626,31 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
     }
   }, [loginError]);
 
+  // Load saved email and remember me status
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedRememberMe = localStorage.getItem("rememberMe") === "true";
+
+    if (savedEmail) {
+      setFormData((prevValues) => ({ ...prevValues, email: savedEmail }));
+    }
+    setRememberMe(savedRememberMe);
+  }, []);
+
   const validate = () => {
     const newErrors = {};
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (!formData.email.trim()) {
+    if (!formData.email?.trim()) {
       newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Invalid email address";
+    } else if (!emailRegex.test(formData.email?.trim())) {
+      newErrors.email = "Invalid email format";
     }
 
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = "Password must be at least 6 characters long";
     }
 
     setErrors(newErrors);
@@ -189,6 +661,18 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
+
+  // Enhanced keydown handler for Enter key
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !isLoading) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -202,18 +686,39 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
       return;
     }
 
+    // Handle remember me functionality
+    if (rememberMe) {
+      localStorage.setItem("email", formData.email?.trim());
+      localStorage.setItem("rememberMe", "true");
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("rememberMe");
+    }
+
     try {
-      const response = await login({ ...formData, role: 1 }).unwrap();
+      const response = await login({
+        email: formData.email?.trim(),
+        password: formData.password,
+        role: 1,
+      }).unwrap();
 
       if (response?.success) {
+        // Store authentication data
         localStorage.setItem("token", response?.data?.token);
         localStorage.setItem("userData", JSON.stringify(response));
 
+        // Show success notification
         setNotification({
           type: "success",
           message: response?.message || "Login successful! Redirecting...",
         });
 
+        // Show toast notification
+        toast.success(`${response?.message}`, {
+          position: "top-center",
+        });
+
+        // Redirect after delay
         setTimeout(() => {
           navigate("/dashboard");
         }, 1000);
@@ -224,19 +729,25 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
         });
       }
     } catch (err) {
+      const errorMessage = err?.data?.message || "Login error";
       setNotification({
         type: "error",
-        message: err?.data?.message || "Login error",
+        message: errorMessage,
+      });
+      toast.error(errorMessage, {
+        position: "top-center",
       });
     }
   };
 
   return (
     <div
-      className={`w-full max-w-md transition-all duration-500 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
+      className={`w-full max-w-md transition-all duration-500 transform ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
     >
       <Seo page="login" />
+      
       {notification && (
         <Notification
           type={notification.type}
@@ -246,93 +757,131 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
       )}
 
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">LOGIN</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2 uppercase">
+          Login
+        </h1>
         <p className="text-gray-600">
-          Enter your credentials to access your account
+          If you are already a customer, enter your details
         </p>
       </div>
 
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Email Field */}
         <div className="relative mb-6">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
-            <Mail className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Email <span className="text-red-500 ml-1">*</span>
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+              <Mail className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Enter your email"
+              autoComplete="off"
+              className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+                errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
               }`}
-          />
+            />
+          </div>
           {errors.email && (
             <div className="text-red-500 text-sm mt-1">{errors.email}</div>
           )}
         </div>
 
+        {/* Password Field */}
         <div className="relative mb-6">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
-            <Lock className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Password <span className="text-red-500 ml-1">*</span>
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+              <Lock className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Enter your password"
+              autoComplete="off"
+              className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+                errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
               }`}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-          >
-            {showPassword ? (
-              <EyeOff className="h-5 w-5 text-gray-400" />
-            ) : (
-              <Eye className="h-5 w-5 text-gray-400" />
-            )}
-          </button>
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-400" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-400" />
+              )}
+            </button>
+          </div>
           {errors.password && (
             <div className="text-red-500 text-sm mt-1">{errors.password}</div>
           )}
         </div>
 
-        <div className="text-right mt-4">
-          <button
-            onClick={() => navigate("/forgot-password")}
+        {/* Remember Me and Forgot Password */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={handleRememberMeChange}
+              className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+            />
+            <label
+              htmlFor="rememberMe"
+              className="ml-2 text-sm text-gray-600 cursor-pointer"
+            >
+              Remember me
+            </label>
+          </div>
+          <Link
+            to="/forgot-password"
             className="text-teal-600 hover:text-teal-700 text-sm font-medium"
           >
             Forgot Password?
-          </button>
+          </Link>
         </div>
 
+        {/* Submit Button */}
         <button
-          onClick={handleSubmit}
+          type="submit"
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+          className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-3 px-4 rounded-full font-semibold hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6 uppercase"
         >
-          {isLoading ? "Signing In..." : "LOGIN"}
+          {isLoading ? "Signing In..." : "Login"}
+        </button>
+      </form>
+
+      {/* Register Link */}
+      <div className="mt-8 text-center">
+        <p className="text-gray-600 mb-2">Don't have an account?</p>
+        <button
+          onClick={onToggleMode}
+          className="text-teal-600 hover:text-teal-700 font-semibold"
+        >
+          Register Now
         </button>
       </div>
 
-      <div className="mt-8 text-center">
-        <p className="text-gray-600">
-          Don't have an account?{" "}
-          <button
-            onClick={onToggleMode}
-            className="text-teal-600 hover:text-teal-700 font-semibold"
-          >
-            Sign up
-          </button>
-        </p>
-      </div>
+      {/* Loading Overlay */}
+      {isLoading && <Loader />}
     </div>
   );
 };
-
 const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
   onShowModal,
   onCloseModal,
@@ -367,7 +916,39 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
     const country = countrycodes.find(item => item.country_code === selectedCode);
     return country;
   };
-
+const handleKeyDown = (e) => {
+  if (e.key === 'Enter' && !isVerifyLoading && !isRegisterLoading && !isOTPresentLoading) {
+    e.preventDefault();
+    
+    // If OTP is not sent yet, try to send OTP
+    if (!otpSent) {
+      const validationErrors = validate();
+      const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
+      
+      if (!formErrorsExceptOtp) {
+        handleVerify(e);
+      }
+    } 
+    // If OTP is sent and form is complete, submit the form
+    else if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
+      handleSubmit(e);
+    }
+  }
+};
+const handleOtpKeyDown = (e) => {
+  if (e.key === 'Enter' && !isVerifyLoading) {
+    e.preventDefault();
+    
+    // If form is complete and OTP is entered, submit
+    if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
+      handleSubmit(e);
+    }
+    // If OTP field has 4 digits and can resend, allow sending OTP
+    else if (!otpSent || (canResendOtp && formData.otp.length === 4)) {
+      handleVerify(e);
+    }
+  }
+};
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked;
 
@@ -684,7 +1265,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
         "userRegisterData",
         JSON.stringify(userRegisterData)
       );
-      
+
       setTimeout(() => {
         navigate("/dashboard");
       }, 1000);
@@ -704,7 +1285,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
           onClose={() => setNotification(null)}
         />
       )}
-<Seo page="register" />
+      <Seo page="register" />
       <div className="text-center mb-4 sm:mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">REGISTER</h1>
         <p className="text-sm text-gray-600">Create a new account to get started</p>
@@ -722,11 +1303,11 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               name="name"
               value={formData.name}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Full Name"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
-              }`}
+              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                }`}
             />
           </div>
           {errors.name && (
@@ -736,9 +1317,8 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
 
         {/* Phone Field */}
         <div className="space-y-1">
-          <div className={`flex rounded-lg border transition-all duration-200 ${
-            errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500'
-          }`}>
+          <div className={`flex rounded-lg border transition-all duration-200 ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500'
+            }`}>
             <div className="flex-shrink-0">
               <CountryCodeDropdown
                 value={selectedCode}
@@ -756,6 +1336,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
                 placeholder="Phone Number"
                 className="w-full pl-10 pr-3 py-2.5 text-sm border-0 bg-transparent outline-none"
@@ -778,11 +1359,11 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               name="email"
               value={formData.email}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Email"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
-              }`}
+              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                }`}
             />
           </div>
           {errors.email && (
@@ -801,11 +1382,11 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               name="password"
               value={formData.password}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Password"
-              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
-              }`}
+              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                }`}
             />
             <button
               type="button"
@@ -834,12 +1415,12 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               type={showConfirmPassword ? "text" : "password"}
               name="confirmPassword"
               value={formData.confirmPassword}
+              onKeyDown={handleKeyDown}
               onChange={handleInputChange}
               onBlur={handleBlur}
               placeholder="Confirm Password"
-              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300'
-              }`}
+              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                }`}
             />
             <button
               type="button"
@@ -869,11 +1450,11 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               name="referralId"
               value={formData.referralId}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Referral ID (Optional)"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.referralId ? 'border-red-500 bg-red-50' : 'border-gray-300'
-              }`}
+              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.referralId ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                }`}
             />
           </div>
           {errors.referralId && (
@@ -893,27 +1474,27 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
                 name="otp"
                 value={formData.otp}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
+                
                 placeholder="Enter 4-digit OTP"
                 maxLength="4"
-                className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                  errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                }`}
+                className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  }`}
               />
             </div>
             <button
               type="button"
               onClick={handleVerify}
               disabled={isRegisterLoading || isOTPresentLoading || (otpSent && !canResendOtp) || Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0}
-              className={`px-3 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
-                (otpSent && !canResendOtp)
+              className={`px-3 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap transition-all duration-200 flex-shrink-0 ${(otpSent && !canResendOtp)
                   ? 'bg-green-100 text-green-700 cursor-default'
                   : (isRegisterLoading || isOTPresentLoading)
-                  ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                  : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105'
-              }`}
+                    ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                    : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105'
+                }`}
             >
               {isRegisterLoading || isOTPresentLoading ? 'Sending...' :
                 otpSent && !canResendOtp ? `Sent (${timer}s)` :
@@ -958,10 +1539,10 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
         <button
           type="submit"
           disabled={
-            isVerifyLoading || 
-            !otpSent || 
-            !formData.otp.trim() || 
-            !isChecked || 
+            isVerifyLoading ||
+            !otpSent ||
+            !formData.otp.trim() ||
+            !isChecked ||
             !isConfirmAgree ||
             !formData.name.trim() ||
             !formData.phone.trim() ||
@@ -993,13 +1574,13 @@ export default function AuthContainer() {
   const navigate = useNavigate();
   const location = useLocation();
   const { cluster } = useParams();
-const [isLogin, setIsLogin] = useState(() => {
-  // Add fallback for when cluster is undefined initially
-  if (cluster === 'login') return true;
-  if (cluster === 'register') return false;
-  // Default based on current location
-  return window.location.pathname.includes('register') ? false : true;
-});
+  const [isLogin, setIsLogin] = useState(() => {
+    // Add fallback for when cluster is undefined initially
+    if (cluster === 'login') return true;
+    if (cluster === 'register') return false;
+    // Default based on current location
+    return window.location.pathname.includes('register') ? false : true;
+  });
 
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -1007,13 +1588,13 @@ const [isLogin, setIsLogin] = useState(() => {
   const [showModal, setShowModal] = useState(false);
   const [isConfirmAgree, setIsConfirmAgree] = useState(false);
 
-useEffect(() => {
-  if (cluster === 'login') {
-    setIsLogin(true);
-  } else if (cluster === 'register') {
-    setIsLogin(false);
-  }
-}, [cluster]); // This is already correct, but make sure cluster is being extracted properly
+  useEffect(() => {
+    if (cluster === 'login') {
+      setIsLogin(true);
+    } else if (cluster === 'register') {
+      setIsLogin(false);
+    }
+  }, [cluster]); // This is already correct, but make sure cluster is being extracted properly
 
   const handleLoginSubmit = (values) => {
     console.log('Login submitted:', values);
@@ -1101,13 +1682,71 @@ useEffect(() => {
           </div>
 
           {/* Icon Section */}
-          <div className="text-center text-white px-8 flex flex-col items-center justify-center h-full">
+          <div className="relative text-center text-white px-8 flex flex-col items-center justify-center h-full overflow-hidden">
+            {/* ────── Background SVGs ────── */}
+            <svg className="absolute w-16 h-16 text-white opacity-10 top-4 left-8 animate-float-slow" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+              <path d="M12 3v18M3 12h18" />
+            </svg>
+            <svg className="absolute w-20 h-20 text-yellow-300 opacity-20 bottom-8 right-6 animate-spin-slow" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2L15 8H9L12 2Z" /> {/* Profit arrow */}
+            </svg>
+            <svg className="absolute top-8 left-10 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
+            </svg>
+
+            {/* Document/Code SVG */}
+            <svg className="absolute top-16 left-24 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M6 3h12v2H6v2h7c.55 0 1 .45 1 1s-.45 1-1 1H6v2h7.5c.83 0 1.5.67 1.5 1.5S14.33 14 13.5 14H6v2h5l5 5h-3l-4-4H6v-2H5v-2h1v-2H5V9h1V7H5V5h1V3z" />
+            </svg>
+
+            {/* Currency Loop SVG */}
+            <svg className="absolute top-12 right-16 w-24 h-24 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 1v2.05c-2.83.49-5 2.94-5 5.95h2c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4h-1v2h1c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4H7c0 3.01 2.17 5.46 5 5.95V23h2v-2.05c2.83-.49 5-2.94 5-5.95s-2.17-5.46-5-5.95V7.95C17.83 7.46 20 5.01 20 2h-2c0 2.21-1.79 4-4 4s-4-1.79-4-4H9c0 3.01 2.17 5.46 5 5.95V1h-2z" />
+            </svg>
+
+            {/* Printer SVG */}
+            <svg className="absolute top-1/2 left-16 w-24 h-24 opacity-10 -translate-y-1/2" viewBox="0 0 24 24" fill="white">
+              <path d="M16.2 9.6c.9-.9 1.2-2.4.6-3.6-.6-1.3-2.1-2-3.6-1.9V2h-2v2h-2V2H7v2H5v2h1v10H5v2h2v2h2v-2h2v2h2v-2c2.1 0 4-1.3 4-3.5 0-1.4-.7-2.5-1.8-3.1zM10 7h3c.6 0 1 .4 1 1s-.4 1-1 1h-3V7zm3.5 8H10v-2h3.5c.6 0 1 .4 1 1s-.4 1-1 1z" />
+            </svg>
+
+            {/* Coins SVG */}
+            <svg className="absolute bottom-24 left-20 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.97 0 8 1.64 8 2s-3.03 2-8 2-8-1.64-8-2 3.03-2 8-2zm0 14c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V16c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V12c0 .36-3.03 2-8 2zm0-4c-4.97 0-8-1.64-8-2v-1.09c1.87 1.01 5.19 1.59 8 1.59s6.13-.58 8-1.59V10c0 .36-3.03 2-8 2z" />
+            </svg>
+
+            {/* User SVG */}
+            <svg className="absolute top-2/3 right-24 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+            </svg>
+
+            {/* Share SVG */}
+            <svg className="absolute bottom-8 right-16 w-16 h-16 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.018 3.018 0 0 0 0-1.39l7.05-4.11a2.99 2.99 0 1 0-.96-1.72L8 9.59a3 3 0 1 0 0 4.83l7.05 4.11c.12.62.45 1.17.95 1.56.5.39 1.14.61 1.8.61a3 3 0 1 0 0-6z" />
+            </svg>
+
+            {/* Arrow SVG */}
+            <svg className="absolute top-6 right-10 w-16 h-16 opacity-10 rotate-12" viewBox="0 0 24 24" fill="white">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+            </svg>
+
+            {/* Plant SVG */}
+            <svg className="absolute bottom-10 left-10 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C10.34 2 9 3.34 9 5c0 .66.26 1.26.68 1.7L12 9l2.32-2.3A2.5 2.5 0 0 0 15 5c0-1.66-1.34-3-3-3zm6 7c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 9c-2.33 0-7 1.17-7 3.5V22h14v-1.5c0-2.33-4.67-3.5-7-3.5z" />
+            </svg>
+
+            {/* Group SVG */}
+            <svg className="absolute top-1/3 right-8 w-20 h-20 opacity-10" viewBox="0 0 24 24" fill="white">
+              <path d="M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h8v-1c0-.76.32-1.45.84-1.94C11.03 16.35 13.94 16 16 16s4.97.35 6.16.56c.52.49.84 1.18.84 1.94v1h-8v-1.5c0-2.33-4.67-3.5-7-3.5z" />
+            </svg>
+
+            {/* ────── Main Content ────── */}
             <div className="relative w-56 h-56 rounded-full flex items-center justify-center transform transition-all duration-700 hover:scale-110 hover:rotate-3">
               <img src={icon} alt="Icon" className="w-full h-full object-contain" />
               <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
               <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full animate-bounce delay-700"></div>
               <div className="absolute top-1/2 -right-4 w-2 h-2 bg-green-400 rounded-full animate-ping delay-500"></div>
             </div>
+
             <div className="relative mt-6">
               <h2 className={`text-4xl font-bold mb-4 transition-all duration-700 transform bg-gradient-to-r from-white via-teal-100 to-white bg-clip-text text-transparent ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
                 {isLogin ? 'Welcome Back!' : 'Join Us Today!'}
@@ -1119,11 +1758,12 @@ useEffect(() => {
               </p>
             </div>
           </div>
+
         </div>
 
         {/* Right Section - Form */}
         <div className={`absolute inset-y-0 w-1/2 bg-white shadow-2xl transform transition-all duration-1000 ease-out ${isLogin ? 'right-0 translate-x-0' : 'right-1/2 translate-x-0'}`}>
-          <div className="flex items-center justify-center w-full h-full p-12">
+          <div className="flex items-start justify-center w-full h-full p-12">
             <div className="w-full max-w-md">
               {isLogin ? (
                 <LoginComponent

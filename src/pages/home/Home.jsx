@@ -258,7 +258,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import homeBgDesktop from "../../assets/Images/HomeDesktop.jpg";
 import homeBgMobile from "../../assets/Images/HomeMobile.jpg";
-
 const Threads = React.lazy(() => import('../../global/Threads'));
 import Partners from './Partners';
 import HomeFooter from './HomeFoot';
@@ -271,12 +270,13 @@ import HomeContact from './HomeContact';
 import RealTimeTicker from './scroll';
 import JaimaxRoadmap from './RoadmapDup';
 import CreativePartnersComponent from './Partners';
-import Seo from '../../SeoContent/Seo';
-import { Helmet } from 'react-helmet';
+import seoContent from '../../SeoContent/seoContent';
+import { Helmet } from 'react-helmet-async';
 const Home = () => {
-  const [currentBg, setCurrentBg] = useState('');
+  const [currentBg, setCurrentBg] = useState(homeBgDesktop);
   const navigate = useNavigate();
-
+  const { title, description } = seoContent.homePage;
+  
   useEffect(() => {
     const updateBackgroundImage = () => {
       setCurrentBg(window.innerWidth < 768 ? homeBgMobile : homeBgDesktop);
@@ -302,76 +302,79 @@ const Home = () => {
 
   return (
     <>
-    <Seo page="homePage" /> {/* ✅ passing prop */}
-      {/* <h1>Welcome to Jaimax</h1> */}
-    <div className="outer-container">
-     
-      <div className="relative min-h-screen flex flex-col justify-center">
-        {/* Background Image with proper mobile optimization */}
-        <div className="absolute inset-0 w-full h-full">
-          <img
-            src={currentBg}
-            alt="Jaimax Background"
-            className="w-full h-full object-cover object-center"
-          />
-          {/* Enhanced overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
-        </div>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content="Jaimax, crypto, blockchain, India" />
+      </Helmet>
+      <div className="outer-container">
 
-        {/* Content Container - Mobile First */}
-        <div className="relative z-10 px-4 py-4 mx-auto w-full max-w-9xl
+        <div className="relative min-h-screen flex flex-col justify-center">
+          {/* Background Image with proper mobile optimization */}
+          <div className="absolute inset-0 w-full h-full">
+            <img
+              src={currentBg}
+              alt="Jaimax Background"
+              className="w-full h-full object-cover object-center"
+            />
+            {/* Enhanced overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
+          </div>
+
+          {/* Content Container - Mobile First */}
+          <div className="relative z-10 px-4 py-4 mx-auto w-full max-w-9xl
                         ">
 
-          {/* Main Content */}
-          <div className="max-w-9xl sm:max-w-8xl md:max-w-9xl lg:max-w-7xl">
+            {/* Main Content */}
+            <div className="max-w-9xl sm:max-w-8xl md:max-w-9xl lg:max-w-7xl">
 
-            {/* Headline - Optimized for mobile reading */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="font-bold leading-[1.1] mb-3
+              {/* Headline - Optimized for mobile reading */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+                className="font-bold leading-[1.1] mb-3
                          text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]
                          text-3xl
                          sm:text-4xl sm:leading-[1.1] sm:mb-4
                          md:text-5xl md:leading-[1.1] md:mb-6
                          lg:text-6xl lg:leading-[1.1] lg:mb-8"
-            >
-              <span className="block text-[#b8cc26] mb-1 sm:mb-2">Secure Your</span>
-              <span className="block mb-1 sm:mb-2">Financial Tomorrow</span>
-              <span className="block mb-1 sm:mb-2">with Innovation</span>
-              <span className="block">and Trust</span>
-            </motion.h1>
+              >
+                <span className="block text-[#b8cc26] mb-1 sm:mb-2">Secure Your</span>
+                <span className="block mb-1 sm:mb-2">Financial Tomorrow</span>
+                <span className="block mb-1 sm:mb-2">with Innovation</span>
+                <span className="block">and Trust</span>
+              </motion.h1>
 
-            {/* Description - Mobile optimized typography */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="font-semibold leading-relaxed mb-4
+              {/* Description - Mobile optimized typography */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="font-semibold leading-relaxed mb-4
                           text-base
                          text-white sm:text-lg sm:mb-10
                          md:text-xl md:mb-4
                          lg:text-xl lg:mb-6
                          max-w-full sm:max-w-xl md:max-w-2xl"
-            >
-              Our expertly designed platform ensures a seamless and secure investment process,
-              allowing you to capitalize on the dynamic nature of the cryptocurrency market.
-            </motion.p>
+              >
+                Our expertly designed platform ensures a seamless and secure investment process,
+                allowing you to capitalize on the dynamic nature of the cryptocurrency market.
+              </motion.p>
 
-            {/* CTA Buttons - Touch-friendly mobile design */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="flex flex-col gap-4 w-full
+              {/* CTA Buttons - Touch-friendly mobile design */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="flex flex-col gap-4 w-full
                          sm:flex-row sm:gap-6
                          md:gap-8"
-            >
-              {/* Primary CTA - Mobile optimized */}
-              <button
-                onClick={() => navigate("/login")}
-                className="w-full font-bold text-center
+              >
+                {/* Primary CTA - Mobile optimized */}
+                <button
+                  onClick={() => navigate("/login")}
+                  className="w-full font-bold text-center
                           bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
                           text-[#0f1c14] shadow-xl
                           px-6 py-4 text-lg rounded-full
@@ -382,14 +385,14 @@ const Home = () => {
                           lg:min-w-[220px] lg:px-10 lg:py-5 lg:text-xl
                           touch-manipulation"
 
-              >
-                Start Building
-              </button>
+                >
+                  Start Building
+                </button>
 
-              {/* Secondary CTA - Mobile optimized */}
-              <button
-                onClick={() => navigate("/blog")}
-                className="w-full font-semibold text-center
+                {/* Secondary CTA - Mobile optimized */}
+                <button
+                  onClick={() => navigate("/blog")}
+                  className="w-full font-semibold text-center
                           border-2 border-yellow-400 text-white
                           px-6 py-4 text-lg rounded-full
                           hover:bg-white/10 hover:border-yellow-300 
@@ -400,27 +403,27 @@ const Home = () => {
                           lg:min-w-[220px] lg:px-12 lg:py-5 lg:text-xl
                           touch-manipulation"
 
-              >
-                Explore Resources
-              </button>
-            </motion.div>
+                >
+                  Explore Resources
+                </button>
+              </motion.div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Components Section - Proper spacing for mobile */}
-      <div className="w-full">
-        <CryptoStakingSection />
-        <ServicesComponent />
-        <GrowthPlanTimeline />
-        <CreativePartnersComponent />
-        <AnimatedTestimonials />
-        <JaimaxRoadmap />
-        <JaimaxFAQ />
-        <HomeContact />
-        <HomeFooter />
+        {/* Components Section - Proper spacing for mobile */}
+        <div className="w-full">
+          <CryptoStakingSection />
+          <ServicesComponent />
+          <GrowthPlanTimeline />
+          <CreativePartnersComponent />
+          <AnimatedTestimonials />
+          <JaimaxRoadmap />
+          <JaimaxFAQ />
+          <HomeContact />
+          <HomeFooter />
+        </div>
       </div>
-    </div>
     </>
   );
 };

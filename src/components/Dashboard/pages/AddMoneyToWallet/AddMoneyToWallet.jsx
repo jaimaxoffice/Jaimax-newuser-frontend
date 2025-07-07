@@ -1139,7 +1139,6 @@ const AddMoneyToWallet = () => {
   useEffect(() => {
     refetch();
   }, []);
-
   const onClickAddMoney = () => {
     try {
       // Step 1: Get and parse user data from localStorage
@@ -1171,14 +1170,21 @@ const AddMoneyToWallet = () => {
         secretKey
       ).toString();
 
+      const encryptedFrom = CryptoJS.AES.encrypt(
+        "website",
+        secretKey
+      ).toString();
+
       // Step 3: Sign the payload
       const payload = `${encryptedUserId}|${encryptedUserName}`;
       const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
 
       // Step 4: Construct the redirect URL
-      const redirectUrl = `http://localhost:5173/paynow?userId=${encodeURIComponent(
+      const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
         encryptedUserId
-      )}&name=${encodeURIComponent(encryptedUserName)}&signature=${signature}`;
+      )}&name=${encodeURIComponent(
+        encryptedUserName
+      )}&from=${encodeURIComponent(encryptedFrom)}&signature=${signature}`;
 
       // Step 5: Open the payment page in a new tab
       const paymentWindow = window.open(redirectUrl, "_blank");

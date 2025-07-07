@@ -571,6 +571,7 @@ function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem("userData");
+    localStorage.removeItem('token');
     // You might want to also clear any API cache or call a logout API
     window.location.href = "/";
   };

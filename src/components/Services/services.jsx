@@ -3,7 +3,7 @@ import { Shield, Wallet, TrendingUp, PieChart, BarChart3, Coins } from 'lucide-r
 import { useNavigate } from 'react-router-dom';
 import Seo from '../../SeoContent/Seo'
 const CryptoServicesFlipCards = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const mainServices = [
     {
       icon: <Shield size={48} />,
@@ -71,11 +71,10 @@ const CryptoServicesFlipCards = () => {
       <div className="relative w-full h-full transform-style-preserve-3d transition-transform duration-700 group-hover:rotate-y-180">
         {/* Front of card */}
         <div
-          className={`absolute inset-0 backface-hidden ${
-            isPrimary 
-              ? 'bg-gradient-to-br from-green-600 to-teal-700 border-lime-400' 
+          className={`absolute inset-0 backface-hidden ${isPrimary
+              ? 'bg-gradient-to-br from-green-600 to-teal-700 border-lime-400'
               : 'bg-gradient-to-br from-teal-700 via-green-600 to-lime-400 border-teal-700'
-          } rounded-xl shadow-2xl p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center text-center border hover:border-lime-400 transition-all duration-300 hover:shadow-lime-400/30 hover:shadow-2xl`}
+            } rounded-xl shadow-2xl p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center text-center border hover:border-lime-400 transition-all duration-300 hover:shadow-lime-400/30 hover:shadow-2xl`}
         >
           <div className="text-lime-400 mb-4 sm:mb-6 drop-shadow-lg">
             <div className="block sm:hidden">
@@ -152,11 +151,11 @@ const CryptoServicesFlipCards = () => {
           {/* Services Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {mainServices.map((service, index) => (
-              <FlipCard 
-                key={index} 
-                service={service} 
-                index={index} 
-                delay={index * 0.1 + 0.5} 
+              <FlipCard
+                key={index}
+                service={service}
+                index={index}
+                delay={index * 0.1 + 0.5}
               />
             ))}
           </div>
@@ -183,11 +182,11 @@ const CryptoServicesFlipCards = () => {
           {/* Why Choose Us Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {whyChooseUs.map((item, index) => (
-              <FlipCard 
-                key={index + 10} 
-                service={item} 
-                index={index + 10} 
-                delay={index * 0.1 + 1.6} 
+              <FlipCard
+                key={index + 10}
+                service={item}
+                index={index + 10}
+                delay={index * 0.1 + 1.6}
                 isPrimary={item.isPrimary}
               />
             ))}
@@ -205,7 +204,8 @@ const CryptoServicesFlipCards = () => {
             </p>
             <button
               className="px-6 sm:px-8 lg:px-10 py-3 sm:py-4 bg-lime-400 text-teal-700 rounded-full font-bold text-base sm:text-lg hover:bg-white shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
-              onClick={() => navigate("/login")}
+              onClick={() => window.open("https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax", "_blank")}
+
             >
               Launch App
             </button>
