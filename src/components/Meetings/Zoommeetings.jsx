@@ -571,7 +571,7 @@ function UserMeetingsShowcase() {
                     {/* Action Button */}
                     <button
                       onClick={() => handleJoinMeeting(meeting)}
-                      className="w-full flex items-center justify-center gap-2 px-4 sm:px-6 py-3 font-medium text-white rounded-lg transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5 text-sm sm:text-base"
+                      className="w-full flex items-center justify-center gap-2 px-4 sm:px-6 py-3 font-medium text-white rounded-full transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5 text-sm sm:text-base"
                       style={{ backgroundColor: typeInfo.color }}
                     >
                       <Play className="w-4 h-4 sm:w-5 sm:h-5" />

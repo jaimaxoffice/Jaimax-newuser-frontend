@@ -1351,7 +1351,7 @@ const AddMoneyToWallet = () => {
                     <button
                       type="submit"
                       onClick={handleSubmit}
-                      className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                      className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
                     >
                       Submit
                     </button>
@@ -1405,7 +1405,7 @@ const AddMoneyToWallet = () => {
                     </p>
                     <button
                       onClick={onClickAddMoney}
-                      className="w-3/5 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                      className="w-3/5 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
                     >
                       Pay Now
                     </button>
@@ -1540,7 +1540,7 @@ const AddMoneyToWallet = () => {
                       <button
                         type="button"
                         onClick={addMoneyThroughPaypal}
-                        className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                        className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
                       >
                         Add Funds
                       </button>
@@ -1548,7 +1548,7 @@ const AddMoneyToWallet = () => {
                       <button
                         type="button"
                         onClick={proceedPaypalAddMoney}
-                        className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                        className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
                       >
                         Proceed
                       </button>
@@ -1591,7 +1591,7 @@ const AddMoneyToWallet = () => {
                   <button
                     type="button"
                     onClick={onSubmitTransferMoney}
-                    className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                    className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
                   >
                     Transfer
                   </button>

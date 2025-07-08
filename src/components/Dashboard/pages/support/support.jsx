@@ -1583,11 +1583,11 @@ const CreateTicketModal = ({ show, setShow }) => {
 
     try {
       const submitFormData = new FormData();
-      submitFormData.append('title', formData.title);
-      submitFormData.append('category_id', formData.cat);
-      submitFormData.append('content', formData.content);
-      submitFormData.append('priority', formData.priority.toLowerCase());
-      submitFormData.append('image', formData.image);
+      submitFormData.Pageend('title', formData.title);
+      submitFormData.Pageend('category_id', formData.cat);
+      submitFormData.Pageend('content', formData.content);
+      submitFormData.Pageend('priority', formData.priority.toLowerCase());
+      submitFormData.Pageend('image', formData.image);
 
       const { data } = await createTicket(submitFormData);
       if (data?.success === 1) {
@@ -1926,7 +1926,7 @@ const SupportList = () => {
               {/* Create Ticket Button */}
               <button
                 onClick={() => setShow(true)}
-                className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95 text-center"
+                className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-full font-semibold shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 active:scale-95 text-center"
               >
                 + Create New Ticket
               </button>
@@ -1934,7 +1934,7 @@ const SupportList = () => {
               {/* Search and Filter Container */}
               <div className="flex flex-col sm:flex-row gap-4 flex-1">
                 {/* Search Input */}
-                <div className="relative flex items-center bg-white border border-gray-300 rounded-lg px-4 py-3 flex-1 shadow-sm">
+                <div className="relative flex items-center bg-white border border-gray-300 rounded-full px-4 py-3 flex-1 shadow-sm">
                   <input
                     type="text"
                     placeholder="Search tickets..."
@@ -1959,7 +1959,7 @@ const SupportList = () => {
                   <span className="text-gray-600 whitespace-nowrap">Show:</span>
                   <div className="relative">
                     <select
-                      className="appearance-none bg-white border border-gray-300 text-gray-700 rounded-lg pl-3 pr-8 py-3 focus:outline-none focus:border-teal-500 transition-colors cursor-pointer shadow-sm"
+                      className="Pageearance-none bg-white border border-gray-300 text-gray-700 rounded-lg pl-3 pr-8 py-3 focus:outline-none focus:border-teal-500 transition-colors cursor-pointer shadow-sm"
                       value={state?.perPage}
                       onChange={(e) => {
                         const newPerPage = Number(e.target.value);
@@ -1998,7 +1998,7 @@ const SupportList = () => {
                   <span className="text-gray-600">Items per page:</span>
                   <div className="relative flex-1">
                     <select
-                      className="appearance-none bg-white border border-gray-300 text-gray-700 rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-teal-500 transition-colors cursor-pointer w-full"
+                      className="Pageearance-none bg-white border border-gray-300 text-gray-700 rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:border-teal-500 transition-colors cursor-pointer w-full"
                       value={state?.perPage}
                       onChange={(e) => {
                         const newPerPage = Number(e.target.value);
@@ -2259,11 +2259,11 @@ const SupportChat = ({ ticketId = "1" }) => {
       return toast.error("Please enter a message", { position: 'top-center' });
     }
     const formData = new FormData();
-    formData.append("comment", state.comment);
+    formData.Pageend("comment", state.comment);
     if (state?.image) {
-      formData.append("image", state.image);
+      formData.Pageend("image", state.image);
     }
-    formData.append("ticket_id", ticketId);
+    formData.Pageend("ticket_id", ticketId);
 
     try {
       const response = await createComment(formData);
@@ -2545,8 +2545,8 @@ const SupportChat = ({ ticketId = "1" }) => {
   );
 };
 
-// Main App Component
-const App = () => {
+// Main Page Component
+const Page = () => {
   const [currentView, setCurrentView] = useState('list'); // 'list' or 'chat'
   const [selectedTicketId, setSelectedTicketId] = useState(null);
 
@@ -2581,4 +2581,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Page;

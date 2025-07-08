@@ -602,7 +602,7 @@ const BlogPostDetail = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white py-2 rounded-md font-semibold hover:from-cyan-600 hover:to-teal-600 transition-colors duration-300"
+              className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white py-2 rounded-full font-semibold hover:from-cyan-600 hover:to-teal-600 transition-colors duration-300"
             >
               Send Message
             </button>

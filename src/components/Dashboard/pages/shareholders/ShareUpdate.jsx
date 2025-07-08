@@ -1069,7 +1069,7 @@ const ShareholderForm = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className={`w-full flex items-center justify-center gap-2 sm:gap-1 lg:gap-3 px-3 py-2 sm:py-2 lg:py-4 rounded-lg lg:rounded-xl text-xs sm:text-xs lg:text-sm font-semibold transition-all duration-300 ${
+                  className={`w-full flex items-center justify-center gap-2 sm:gap-1 lg:gap-3 px-3 py-2 sm:py-2 lg:py-4 rounded-full lg:rounded-xl text-xs sm:text-xs lg:text-sm font-semibold transition-all duration-300 ${
                     isSubmitting
                       ? 'bg-gray-100 text-teal-600 border border-teal-200 cursor-not-allowed'
                       : 'bg-teal-600 text-white hover:bg-teal-700 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'

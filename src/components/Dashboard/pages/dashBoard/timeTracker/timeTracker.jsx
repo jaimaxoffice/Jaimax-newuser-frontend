@@ -1015,7 +1015,7 @@ const PaymentModal = ({ show, onHide, onConfirmPayment, purchasingAmount, curren
           <h3 className="font-semibold text-gray-700">Choose Payment Method:</h3>
           
           <button
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-lg transition-colors duration-200 disabled:opacity-50"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full transition-colors duration-200 disabled:opacity-50"
             onClick={() => handlePayment('wallet')}
             disabled={loading}
           >
@@ -1025,7 +1025,7 @@ const PaymentModal = ({ show, onHide, onConfirmPayment, purchasingAmount, curren
           {userData?.data?.countryCode !== 91 && (
             <>
               <button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition-colors duration-200 disabled:opacity-50"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full transition-colors duration-200 disabled:opacity-50"
                 onClick={() => handlePayment('cashFree')}
                 disabled={loading}
               >
@@ -1033,7 +1033,7 @@ const PaymentModal = ({ show, onHide, onConfirmPayment, purchasingAmount, curren
               </button>
 
               <button
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-3 rounded-lg transition-colors duration-200 disabled:opacity-50"
+                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-3 rounded-full transition-colors duration-200 disabled:opacity-50"
                 onClick={() => handlePayment('paypal')}
                 disabled={loading}
               >
@@ -1045,7 +1045,7 @@ const PaymentModal = ({ show, onHide, onConfirmPayment, purchasingAmount, curren
 
         <div className="flex justify-end gap-3">
           <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg transition-colors duration-200"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full transition-colors duration-200"
             onClick={onHide}
             disabled={loading}
           >
@@ -1127,7 +1127,7 @@ const PurchaseCoinsBreakupModal = ({ show, onHide, purchaseCoinsBreakup, currenc
 
         <div className="flex justify-center gap-4">
           <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg transition-colors duration-200"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-full transition-colors duration-200"
             onClick={onHide}
             disabled={isProcessing}
           >
@@ -1135,7 +1135,7 @@ const PurchaseCoinsBreakupModal = ({ show, onHide, purchaseCoinsBreakup, currenc
           </button>
           <button
             type="button"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors duration-200 disabled:opacity-50"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full transition-colors duration-200 disabled:opacity-50"
             onClick={onSubmitCoins}
             disabled={isProcessing}
           >
@@ -1248,7 +1248,7 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
 
           <button
             onClick={onProceedOrder}
-            className="w-full bg-[#085553] hover:bg-[#25b8ac] text-white py-2 px-4 rounded-lg text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full bg-[#085553] hover:bg-[#25b8ac] text-white py-2 px-4 rounded-full text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
           >
             Proceed to Pay
           </button>

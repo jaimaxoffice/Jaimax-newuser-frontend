@@ -429,7 +429,7 @@ const RegisterPage = () => {
                     <button
                       type="button"
                       onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                      className="flex items-center gap-2 px-2 py-1 bg-white/10 border border-white/20 rounded-xl hover:border-white/40 transition-all duration-200 backdrop-blur-sm min-w-[80px]"
+                      className="flex items-center gap-2 px-2 py-1 bg-white/10 border border-white/20 rounded-full hover:border-white/40 transition-all duration-200 backdrop-blur-sm min-w-[80px]"
                       disabled={otpSent}
                     >
                       <span className="text-lg">{formData.countryCode}</span>
@@ -619,7 +619,7 @@ const RegisterPage = () => {
                     />
                     <button
                       type="button"
-                      className="px-2 py-1 bg-blue-500 text-white rounded-xl text-xs flex items-center gap-1 disabled:opacity-50 hover:bg-blue-600 transition-colors"
+                      className="px-2 py-1 bg-blue-500 text-white rounded-full text-xs flex items-center gap-1 disabled:opacity-50 hover:bg-blue-600 transition-colors"
                       disabled={!canResend || isResending}
                       onClick={handleResendOTP}
                     >
@@ -643,7 +643,7 @@ const RegisterPage = () => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="px-4 py-1.5 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition disabled:opacity-50"
+                    className="px-4 py-1.5 bg-blue-600 text-white rounded-full text-xs font-bold hover:bg-blue-700 transition disabled:opacity-50"
                     disabled={otpLoading || isRegistering}
                     onClick={handleSendOTP}
                   >
@@ -672,7 +672,7 @@ const RegisterPage = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-1.5 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-black font-bold rounded-xl text-sm hover:from-teal-500 hover:to-indigo-700 transition-all duration-200 disabled:opacity-50"
+                className="w-full py-1.5 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-black font-bold rounded-full text-sm hover:from-teal-500 hover:to-indigo-700 transition-all duration-200 disabled:opacity-50"
                 disabled={loading || isVerifying || !otpSent}
               >
                 {loading || isVerifying ? "Verifying..." : "Submit"}

@@ -12,6 +12,7 @@ import {
 import Seo from '../SeoContent/Seo'
 import countrycodes from './countrycodes.json';
 import TermsConditionsModal from './TermsAndConditions';
+import * as yup from 'yup';
 const Notification = ({ type, message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 5000);
@@ -879,6 +880,695 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
     </div>
   );
 };
+// const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
+//   onShowModal,
+//   onCloseModal,
+//   onAgreeTerms,
+//   isConfirmAgree }) => {
+//   const navigate = useNavigate();
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+//   const [otpSent, setOtpSent] = useState(false);
+//   const [selectedCode, setSelectedCode] = useState('+91');
+//   const [notification, setNotification] = useState(null);
+//   const [isOtpSending, setIsOtpSending] = useState(false);
+//   const [timer, setTimer] = useState(0);
+//   const [canResendOtp, setCanResendOtp] = useState(false);
+//   const [isChecked, setIsChecked] = useState(false);
+//   const [formData, setFormData] = useState({
+//     name: '',
+//     phone: '',
+//     email: '',
+//     password: '',
+//     confirmPassword: '',
+//     referralId: '',
+//     otp: ''
+//   });
+//   const [errors, setErrors] = useState({});
+
+//   const [register, { isLoading: isRegisterLoading, error: registerError }] = useRegisterMutation();
+//   const [verify, { isLoading: isVerifyLoading, error: verifyError }] = useVerifyMutation();
+//   const [OTPresent, { isLoading: isOTPresentLoading, error: OTPresentError }] = useOTPresentMutation();
+
+//   const getCurrentCountry = () => {
+//     const country = countrycodes.find(item => item.country_code === selectedCode);
+//     return country;
+//   };
+//   const handleKeyDown = (e) => {
+//     if (e.key === 'Enter' && !isVerifyLoading && !isRegisterLoading && !isOTPresentLoading) {
+//       e.preventDefault();
+
+//       // If OTP is not sent yet, try to send OTP
+//       if (!otpSent) {
+//         const validationErrors = validate();
+//         const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
+
+//         if (!formErrorsExceptOtp) {
+//           handleVerify(e);
+//         }
+//       }
+//       // If OTP is sent and form is complete, submit the form
+//       else if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
+//         handleSubmit(e);
+//       }
+//     }
+//   };
+//   const handleOtpKeyDown = (e) => {
+//     if (e.key === 'Enter' && !isVerifyLoading) {
+//       e.preventDefault();
+
+//       // If form is complete and OTP is entered, submit
+//       if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
+//         handleSubmit(e);
+//       }
+//       // If OTP field has 4 digits and can resend, allow sending OTP
+//       else if (!otpSent || (canResendOtp && formData.otp.length === 4)) {
+//         handleVerify(e);
+//       }
+//     }
+//   };
+//   const handleCheckboxChange = (e) => {
+//     const isChecked = e.target.checked;
+
+//     if (isChecked) {
+//       // User wants to check the box - show modal first
+//       onShowModal();
+//     } else {
+//       // User unchecked the box - reset everything
+//       setIsChecked(false);
+//     }
+//   };
+
+//   const handleTermsLinkClick = (e) => {
+//     e.preventDefault();
+//     onShowModal();
+//   };
+
+//   // Update checkbox state when terms are confirmed
+//   useEffect(() => {
+//     if (isConfirmAgree) {
+//       setIsChecked(true);
+//     } else {
+//       setIsChecked(false);
+//     }
+//   }, [isConfirmAgree]);
+
+//   const getErrorMessage = (error) => {
+//     if (error) {
+//       if (error.data && error.data.message) {
+//         return error.data.message;
+//       } else if (error.error) {
+//         return error.error;
+//       } else if (error.status) {
+//         if (error.status === 400) return `Bad Request: ${error.data?.message || 'Please check your input.'}`;
+//         if (error.status === 401) return `Unauthorized: ${error.data?.message || 'Invalid credentials.'}`;
+//         if (error.status === 409) return `Conflict: ${error.data?.message || 'User already exists or other conflict.'}`;
+//         if (error.status >= 500) return `Server Error: ${error.data?.message || 'Please try again later.'}`;
+//         return `Error ${error.status}: ${error.data?.message || 'An API error occurred.'}`;
+//       }
+//     }
+//     return 'An unexpected error occurred. Please try again.';
+//   };
+
+//   useEffect(() => {
+//     if (registerError) {
+//       // console.error("Register API Error:", registerError);
+//       setNotification({ type: 'error', message: getErrorMessage(registerError) });
+//     }
+//   }, [registerError]);
+
+//   useEffect(() => {
+//     if (verifyError) {
+//       // console.error("Verify OTP API Error:", verifyError);
+//       setNotification({ type: 'error', message: getErrorMessage(verifyError) });
+//     }
+//   }, [verifyError]);
+
+//   useEffect(() => {
+//     if (OTPresentError) {
+//       // console.error("OTPresent API Error:", OTPresentError);
+//       setNotification({ type: 'error', message: getErrorMessage(OTPresentError) });
+//     }
+//   }, [OTPresentError]);
+
+//   useEffect(() => {
+//     let interval;
+//     if (otpSent && timer > 0) {
+//       interval = setInterval(() => {
+//         setTimer((prev) => prev - 1);
+//       }, 1000);
+//     } else if (timer === 0) {
+//       setCanResendOtp(true);
+//       clearInterval(interval);
+//     }
+//     return () => clearInterval(interval);
+//   }, [otpSent, timer]);
+
+//   const validate = () => {
+//     const newErrors = {};
+//     const emailRegex = /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/;
+//     const referralIdRegex = /^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/;
+
+//     if (!formData.name.trim()) {
+//       newErrors.name = 'Name is required';
+//     } else if (formData.name.length < 2) {
+//       newErrors.name = 'Name must be at least 2 characters';
+//     }
+
+//     const currentCountry = getCurrentCountry();
+//     const exactPhoneLength = currentCountry ? currentCountry.phone_number_length : 10;
+
+//     if (!formData.phone.trim()) {
+//       newErrors.phone = 'Phone number is required';
+//     } else if (!/^\d*$/.test(formData.phone)) {
+//       newErrors.phone = 'Phone number can only contain digits';
+//     } else if (formData.phone.length !== exactPhoneLength) {
+//       newErrors.phone = `Phone number must be exactly ${exactPhoneLength} digits for ${currentCountry?.country_name || 'selected country'}`;
+//     }
+
+//     if (!formData.email.trim()) {
+//       newErrors.email = 'Email is required';
+//     } else if (!emailRegex.test(formData.email)) {
+//       newErrors.email = 'Invalid email(must contain at least one letter)';
+//     }
+
+//     if (!formData.password) {
+//       newErrors.password = 'Password is required';
+//     } else if (formData.password.length < 8) {
+//       newErrors.password = 'Password must be at least 8 characters';
+//     } else if (!/[a-z]/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one lowercase letter';
+//     } else if (!/[A-Z]/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one uppercase letter';
+//     } else if (!/\d/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one number';
+//     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+//       newErrors.password = 'Password must contain at least one special character';
+//     }
+
+//     if (!formData.confirmPassword) {
+//       newErrors.confirmPassword = 'Please confirm your password';
+//     } else if (formData.confirmPassword !== formData.password) {
+//       newErrors.confirmPassword = 'Passwords must match';
+//     }
+
+//     if (formData.referralId && !referralIdRegex.test(formData.referralId)) {
+//       newErrors.referralId = 'Referral ID can only contain letters and numbers length 13';
+//     }
+
+//     if (otpSent) {
+//       if (!formData.otp.trim()) {
+//         newErrors.otp = 'OTP is required';
+//       } else if (!/^\d{4}$/.test(formData.otp)) {
+//         newErrors.otp = 'OTP must be 4 digits';
+//       }
+//     }
+
+//     return newErrors;
+//   };
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+
+//     if (name === "phone" && !/^\d*$/.test(value)) {
+//       return;
+//     }
+//     if (name === "name" && !/^[a-zA-Z\s]*$/.test(value)) {
+//       return;
+//     }
+//     if (name === "referralId" && !/^[A-Za-z0-9]*$/.test(value)) {
+//       return;
+//     }
+//     if (name === "otp" && !/^[0-9]*$/.test(value)) {
+//       return;
+//     }
+
+//     setFormData(prev => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+
+//     setErrors(validate());
+//   };
+
+//   const handleBlur = (e) => {
+//     const { name } = e.target;
+//     const currentErrors = validate();
+//     setErrors(currentErrors);
+//   };
+
+//   const handleVerify = async (e) => {
+//     e.preventDefault();
+//     setNotification(null);
+
+//     const validationErrors = validate();
+//     setErrors(validationErrors);
+
+//     const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
+
+//     if (formErrorsExceptOtp) {
+//       setNotification({
+//         type: 'error',
+//         message: "Please fill all required fields correctly."
+//       });
+//       return;
+//     }
+
+//     setIsOtpSending(true);
+
+//     try {
+//       const currentCountry = getCurrentCountry();
+
+//       const payload = {
+//         name: formData.name,
+//         phone: formData.phone,
+//         email: formData.email,
+//         password: formData.password,
+//         confirmPwd: formData.confirmPassword,
+//         countryCode: currentCountry?.country_code || '+91',
+//         country: currentCountry?.country_name || 'India',
+//       };
+
+//       const result = await register(payload).unwrap();
+
+//       if (result?.data?.username) {
+//         localStorage.setItem("username", result.data.username);
+//       }
+
+//       setOtpSent(true);
+//       setTimer(120);
+//       setCanResendOtp(false);
+//       setNotification({ type: 'success', message: "OTP sent to your email!" });
+
+//     } catch (err) {
+//       // console.error("handleVerify (Register/OTPresent) Error:", err);
+//       if (err?.data?.message === "User verification pending") {
+//         try {
+//           const otpPayload = {
+//             email: formData.email,
+//             otpType: "register"
+//           };
+//           const ress = await OTPresent(otpPayload).unwrap();
+//           setOtpSent(true);
+//           setTimer(120);
+//           setCanResendOtp(false);
+//           setNotification({ type: 'success', message: "OTP resent to your email!" });
+//         } catch (otpErr) {
+//           // console.error("OTPresent (Resend OTP) Error:", otpErr);
+//           setNotification({ type: 'error', message: getErrorMessage(otpErr) });
+//         }
+//       } else {
+//         setNotification({ type: 'error', message: getErrorMessage(err) });
+//       }
+//     } finally {
+//       setIsOtpSending(false);
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setNotification(null);
+
+//     const validationErrors = validate();
+//     setErrors(validationErrors);
+
+//     // Check if terms are accepted
+//     if (!isChecked || !isConfirmAgree) {
+//       setNotification({
+//         type: 'error',
+//         message: 'Please accept the Terms & Conditions and Privacy Policy to continue.'
+//       });
+//       return;
+//     }
+
+//     if (Object.keys(validationErrors).length > 0) {
+//       setNotification({
+//         type: 'error',
+//         message: "Please correct the highlighted fields."
+//       });
+//       return;
+//     }
+
+//     if (!otpSent) {
+//       setNotification({
+//         type: 'error',
+//         message: 'Please send OTP and verify your phone number first.'
+//       });
+//       return;
+//     }
+
+//     if (!formData.otp.trim()) {
+//       setNotification({
+//         type: 'error',
+//         message: 'OTP is required to complete registration.'
+//       });
+//       setErrors(prev => ({ ...prev, otp: 'OTP is required' }));
+//       return;
+//     }
+
+//     try {
+//       const verifyPayload = {
+//         email: formData.email,
+//         otp: Number(formData.otp),
+//         otpType: "register",
+//         referenceId: formData.referralId,
+//       };
+
+//       const res = await verify(verifyPayload).unwrap();
+
+//       if (!res.success) {
+//         setNotification({
+//           type: 'error',
+//           message: res.message || 'OTP verification failed. Please try again.'
+//         });
+//         return;
+//       }
+
+//       const userRegisterData = {
+//         ...res,
+//         email: formData.email,
+//         name: formData.name,
+//         username: localStorage.getItem("username"),
+//       };
+
+//       localStorage.setItem("token", res?.data?.token);
+//       localStorage.setItem("userData", JSON.stringify(res));
+
+//       setNotification({
+//         type: 'success',
+//         message: res?.message || 'Registration completed successfully!'
+//       });
+
+//       localStorage.setItem(
+//         "userRegisterData",
+//         JSON.stringify(userRegisterData)
+//       );
+
+//       setTimeout(() => {
+//         navigate("/dashboard");
+//       }, 1000);
+
+//     } catch (err) {
+//       // console.error("handleSubmit (Verify OTP) Error:", err);
+//       setNotification({ type: 'error', message: getErrorMessage(err) });
+//     }
+//   };
+
+//   return (
+//     <div className={`w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+//       <Seo page="register" />
+//       <div className="text-center mb-1 sm:mb-6">
+//         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">REGISTER</h1>
+//         <p className="text-sm text-gray-600">Create a new account to get started</p>
+//       </div>
+
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         {/* Name Field */}
+//         <div className="space-y-1">
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//               <User className="h-4 w-4 text-gray-400" />
+//             </div>
+//             <input
+//               type="text"
+//               name="name"
+//               value={formData.name}
+//               onChange={handleInputChange}
+//               onKeyDown={handleKeyDown}
+//               onBlur={handleBlur}
+//               placeholder="Full Name"
+//               className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//                 }`}
+//             />
+//           </div>
+//           {errors.name && (
+//             <p className="text-red-500 text-xs pl-1">{errors.name}</p>
+//           )}
+//         </div>
+
+//         {/* Phone Field */}
+//         <div className="space-y-0">
+//           <div className={`flex rounded-lg border transition-all duration-200 ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500'
+//             }`}>
+//             <div className="flex-shrink-0">
+//               <CountryCodeDropdown
+//                 value={selectedCode}
+//                 onChange={setSelectedCode}
+//                 className="bg-gray-50 py-2.5 px-2 text-sm border-r border-gray-200 hover:bg-gray-100 min-w-0"
+//                 countryCodes={countrycodes}
+//               />
+//             </div>
+//             <div className="relative flex-1 min-w-0">
+//               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//                 <Phone className="h-4 w-4 text-gray-400" />
+//               </div>
+//               <input
+//                 type="tel"
+//                 name="phone"
+//                 value={formData.phone}
+//                 onChange={handleInputChange}
+//                 onKeyDown={handleKeyDown}
+//                 onBlur={handleBlur}
+//                 placeholder="Phone Number"
+//                 className="w-full pl-10 pr-3 py-2.5 text-sm border-0 bg-transparent outline-none"
+//               />
+//             </div>
+//           </div>
+//           {errors.phone && (
+//             <p className="text-red-500 text-xs pl-1">{errors.phone}</p>
+//           )}
+//         </div>
+
+//         {/* Email Field */}
+//         <div className="space-y-0">
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//               <Mail className="h-4 w-4 text-gray-400" />
+//             </div>
+//             <input
+//               type="email"
+//               name="email"
+//               value={formData.email}
+//               onChange={handleInputChange}
+//               onKeyDown={handleKeyDown}
+//               onBlur={handleBlur}
+//               placeholder="Email"
+//               className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//                 }`}
+//             />
+//           </div>
+//           {errors.email && (
+//             <p className="text-red-500 text-xs pl-1">{errors.email}</p>
+//           )}
+//         </div>
+
+//         {/* Password Field */}
+//         <div className="space-y-0">
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//               <Lock className="h-4 w-4 text-gray-400" />
+//             </div>
+//             <input
+//               type={showPassword ? "text" : "password"}
+//               name="password"
+//               value={formData.password}
+//               onChange={handleInputChange}
+//               onKeyDown={handleKeyDown}
+//               onBlur={handleBlur}
+//               placeholder="Password"
+//               className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//                 }`}
+//             />
+//             <button
+//               type="button"
+//               onClick={() => setShowPassword(!showPassword)}
+//               className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors z-10"
+//             >
+//               {showPassword ? (
+//                 <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//               ) : (
+//                 <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//               )}
+//             </button>
+//           </div>
+//           {errors.password && (
+//             <p className="text-red-500 text-xs pl-1">{errors.password}</p>
+//           )}
+//         </div>
+
+//         {/* Confirm Password Field */}
+//         <div className="space-y-0">
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//               <Lock className="h-4 w-4 text-gray-400" />
+//             </div>
+//             <input
+//               type={showConfirmPassword ? "text" : "password"}
+//               name="confirmPassword"
+//               value={formData.confirmPassword}
+//               onKeyDown={handleKeyDown}
+//               onChange={handleInputChange}
+//               onBlur={handleBlur}
+//               placeholder="Confirm Password"
+//               className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//                 }`}
+//             />
+//             <button
+//               type="button"
+//               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+//               className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors z-10"
+//             >
+//               {showConfirmPassword ? (
+//                 <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//               ) : (
+//                 <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//               )}
+//             </button>
+//           </div>
+//           {errors.confirmPassword && (
+//             <p className="text-red-500 text-xs pl-1">{errors.confirmPassword}</p>
+//           )}
+//         </div>
+
+//         {/* Referral ID Field */}
+//         <div className="space-y-0">
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//               <Users className="h-4 w-4 text-gray-400" />
+//             </div>
+//             <input
+//               type="text"
+//               name="referralId"
+//               value={formData.referralId}
+//               onChange={handleInputChange}
+//               onKeyDown={handleKeyDown}
+//               onBlur={handleBlur}
+//               placeholder="Referral ID (Optional)"
+//               className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.referralId ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//                 }`}
+//             />
+//           </div>
+//           {errors.referralId && (
+//             <p className="text-red-500 text-xs pl-1">{errors.referralId}</p>
+//           )}
+//         </div>
+
+//         {/* OTP Field */}
+//         <div className="space-y-0">
+//           <div className="flex gap-2">
+//             <div className="relative flex-1">
+//               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//                 <Shield className="h-4 w-4 text-gray-400" />
+//               </div>
+//               <input
+//                 type="text"
+//                 name="otp"
+//                 value={formData.otp}
+//                 onChange={handleInputChange}
+//                 onKeyDown={handleKeyDown}
+//                 onBlur={handleBlur}
+
+//                 placeholder="Enter 4-digit OTP"
+//                 maxLength="4"
+//                 className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
+//                   }`}
+//               />
+//             </div>
+//             <button
+//               type="button"
+//               onClick={handleVerify}
+//               disabled={isRegisterLoading || isOTPresentLoading || (otpSent && !canResendOtp) || Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0}
+//               className={`px-3 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap transition-all duration-200 flex-shrink-0 ${(otpSent && !canResendOtp)
+//                 ? 'bg-green-100 text-green-700 cursor-default'
+//                 : (isRegisterLoading || isOTPresentLoading)
+//                   ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+//                   : Object.keys(validate()).filter(key => !['otp'].includes(key)).length > 0
+//                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+//                     : 'bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105'
+//                 }`}
+//             >
+//               {isRegisterLoading || isOTPresentLoading ? 'Sending...' :
+//                 otpSent && !canResendOtp ? `Sent (${timer}s)` :
+//                   canResendOtp ? 'Send OTP' : 'Resend'}
+//             </button>
+//           </div>
+//           {errors.otp && (
+//             <p className="text-red-500 text-xs pl-1">{errors.otp}</p>
+//           )}
+//         </div>
+
+//         {/* Terms and Conditions */}
+//         <div className="flex items-start gap-2 pt-2">
+//           <input
+//             id="terms_and_conditions"
+//             type="checkbox"
+//             checked={isChecked && isConfirmAgree}
+//             onChange={handleCheckboxChange}
+//             className="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 flex-shrink-0"
+//           />
+//           <label htmlFor="terms_and_conditions" className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+//             I accept the{" "}
+//             <button
+//               type="button"
+//               onClick={handleTermsLinkClick}
+//               className="text-teal-600 hover:underline font-medium"
+//             >
+//               Terms & Conditions
+//             </button>
+//             {" "}and{" "}
+//             <button
+//               type="button"
+//               onClick={handleTermsLinkClick}
+//               className="text-teal-600 hover:underline font-medium"
+//             >
+//               Privacy Policy
+//             </button>
+//           </label>
+//         </div>
+
+//         {/* Register Button */}
+//         <button
+//           type="submit"
+//           disabled={
+//             isVerifyLoading ||
+//             !otpSent ||
+//             !formData.otp.trim() ||
+//             !isChecked ||
+//             !isConfirmAgree ||
+//             !formData.name.trim() ||
+//             !formData.phone.trim() ||
+//             !formData.email.trim() ||
+//             !formData.password ||
+//             !formData.confirmPassword ||
+//             formData.password !== formData.confirmPassword ||
+//             (formData.referralId && !/^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/.test(formData.referralId))
+//           }
+//           className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-2.5 px-4 rounded-full font-medium hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
+//         >
+//           {isVerifyLoading ? 'Verifying OTP...' : 'REGISTER'}
+//         </button>
+//       </form>
+
+//       <div className="mt-4 sm:mt-6 text-center">
+//         <p className="text-sm text-gray-600">
+//           Already have an account?{' '}
+//           <button onClick={onToggleMode} className="text-teal-600 hover:text-teal-700 font-medium">
+//             Sign in
+//           </button>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
+
+
 const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
   onShowModal,
   onCloseModal,
@@ -904,6 +1594,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
     otp: ''
   });
   const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
 
   const [register, { isLoading: isRegisterLoading, error: registerError }] = useRegisterMutation();
   const [verify, { isLoading: isVerifyLoading, error: verifyError }] = useVerifyMutation();
@@ -913,6 +1604,73 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
     const country = countrycodes.find(item => item.country_code === selectedCode);
     return country;
   };
+
+  // Yup validation schema
+  const validationSchema = yup.object({
+    name: yup
+      .string()
+      .required('Name is required')
+      .min(2, 'Name must be at least 2 characters')
+      .matches(/^[a-zA-Z\s]*$/, 'Name can only contain letters and spaces'),
+
+    phone: yup
+      .string()
+      .required('Phone number is required')
+      .matches(/^\d+$/, 'Phone number can only contain digits')
+      .test('phone-length', function (value) {
+        const currentCountry = getCurrentCountry();
+        const exactPhoneLength = currentCountry ? currentCountry.phone_number_length : 10;
+
+        if (value && value.length !== exactPhoneLength) {
+          return this.createError({
+            message: `Phone number must be exactly ${exactPhoneLength} digits for ${currentCountry?.country_name || 'selected country'}`
+          });
+        }
+        return true;
+      }),
+
+    email: yup
+      .string()
+      .required('Email is required')
+      .matches(
+        /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/,
+        'Invalid email(must contain at least one letter)'
+      ),
+
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(6, 'Password must be at least 8 characters')
+      // .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+      // .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      // .matches(/\d/, 'Password must contain at least one number')
+      // .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
+      ,
+
+    confirmPassword: yup
+      .string()
+      .required('Please confirm your password')
+      .oneOf([yup.ref('password')], 'Passwords must match'),
+
+    referralId: yup
+      .string()
+      .nullable()
+      .test('referral-format', 'Referral ID can only contain letters and numbers length 13', function (value) {
+        if (!value) return true; // Optional field
+        return /^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/.test(value);
+      }),
+
+    otp: yup
+      .string()
+      .when('otpSent', {
+        is: true,
+        then: (schema) => schema
+          .required('OTP is required')
+          .matches(/^\d{4}$/, 'OTP must be 4 digits'),
+        otherwise: (schema) => schema.nullable()
+      })
+  });
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !isVerifyLoading && !isRegisterLoading && !isOTPresentLoading) {
       e.preventDefault();
@@ -932,6 +1690,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
       }
     }
   };
+
   const handleOtpKeyDown = (e) => {
     if (e.key === 'Enter' && !isVerifyLoading) {
       e.preventDefault();
@@ -946,6 +1705,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
       }
     }
   };
+
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked;
 
@@ -991,21 +1751,18 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
 
   useEffect(() => {
     if (registerError) {
-      // console.error("Register API Error:", registerError);
       setNotification({ type: 'error', message: getErrorMessage(registerError) });
     }
   }, [registerError]);
 
   useEffect(() => {
     if (verifyError) {
-      // console.error("Verify OTP API Error:", verifyError);
       setNotification({ type: 'error', message: getErrorMessage(verifyError) });
     }
   }, [verifyError]);
 
   useEffect(() => {
     if (OTPresentError) {
-      // console.error("OTPresent API Error:", OTPresentError);
       setNotification({ type: 'error', message: getErrorMessage(OTPresentError) });
     }
   }, [OTPresentError]);
@@ -1023,67 +1780,35 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
     return () => clearInterval(interval);
   }, [otpSent, timer]);
 
+  // Validate single field
+  const validateField = (fieldName, value) => {
+    try {
+      const dataToValidate = { ...formData, [fieldName]: value, otpSent };
+      validationSchema.validateSyncAt(fieldName, dataToValidate);
+      return null;
+    } catch (error) {
+      return error.message;
+    }
+  };
+
+  // Validate all fields
+  const validateAll = () => {
+    try {
+      const dataToValidate = { ...formData, otpSent };
+      validationSchema.validateSync(dataToValidate, { abortEarly: false });
+      return {};
+    } catch (error) {
+      const validationErrors = {};
+      error.inner.forEach((err) => {
+        validationErrors[err.path] = err.message;
+      });
+      return validationErrors;
+    }
+  };
+
+  // Legacy validate function for backward compatibility
   const validate = () => {
-    const newErrors = {};
-    const emailRegex = /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/;
-    const referralIdRegex = /^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/;
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    } else if (formData.name.length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
-    }
-
-    const currentCountry = getCurrentCountry();
-    const exactPhoneLength = currentCountry ? currentCountry.phone_number_length : 10;
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d*$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number can only contain digits';
-    } else if (formData.phone.length !== exactPhoneLength) {
-      newErrors.phone = `Phone number must be exactly ${exactPhoneLength} digits for ${currentCountry?.country_name || 'selected country'}`;
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Invalid email(must contain at least one letter)';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/[a-z]/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one lowercase letter';
-    } else if (!/[A-Z]/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one uppercase letter';
-    } else if (!/\d/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one number';
-    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
-      newErrors.password = 'Password must contain at least one special character';
-    }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.confirmPassword !== formData.password) {
-      newErrors.confirmPassword = 'Passwords must match';
-    }
-
-    if (formData.referralId && !referralIdRegex.test(formData.referralId)) {
-      newErrors.referralId = 'Referral ID can only contain letters and numbers length 13';
-    }
-
-    if (otpSent) {
-      if (!formData.otp.trim()) {
-        newErrors.otp = 'OTP is required';
-      } else if (!/^\d{4}$/.test(formData.otp)) {
-        newErrors.otp = 'OTP must be 4 digits';
-      }
-    }
-
-    return newErrors;
+    return validateAll();
   };
 
   const handleInputChange = (e) => {
@@ -1107,25 +1832,49 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
       [name]: value,
     }));
 
-    setErrors(validate());
+    // Only validate and show error if field was touched
+    if (touched[name]) {
+      const fieldError = validateField(name, value);
+      setErrors(prev => ({
+        ...prev,
+        [name]: fieldError
+      }));
+    }
   };
 
   const handleBlur = (e) => {
-    const { name } = e.target;
-    const currentErrors = validate();
-    setErrors(currentErrors);
+    const { name, value } = e.target;
+
+    // Mark field as touched
+    setTouched(prev => ({
+      ...prev,
+      [name]: true
+    }));
+
+    // Validate only this field on blur
+    const fieldError = validateField(name, value);
+    setErrors(prev => ({
+      ...prev,
+      [name]: fieldError
+    }));
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
     setNotification(null);
 
-    const validationErrors = validate();
-    setErrors(validationErrors);
-
+    const validationErrors = validateAll();
     const formErrorsExceptOtp = Object.keys(validationErrors).filter(key => key !== 'otp').length > 0;
 
     if (formErrorsExceptOtp) {
+      // Mark all fields as touched and show all errors
+      const touchedFields = {};
+      Object.keys(formData).forEach(key => {
+        touchedFields[key] = true;
+      });
+      setTouched(touchedFields);
+      setErrors(validationErrors);
+
       setNotification({
         type: 'error',
         message: "Please fill all required fields correctly."
@@ -1160,7 +1909,6 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
       setNotification({ type: 'success', message: "OTP sent to your email!" });
 
     } catch (err) {
-      // console.error("handleVerify (Register/OTPresent) Error:", err);
       if (err?.data?.message === "User verification pending") {
         try {
           const otpPayload = {
@@ -1173,7 +1921,6 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
           setCanResendOtp(false);
           setNotification({ type: 'success', message: "OTP resent to your email!" });
         } catch (otpErr) {
-          // console.error("OTPresent (Resend OTP) Error:", otpErr);
           setNotification({ type: 'error', message: getErrorMessage(otpErr) });
         }
       } else {
@@ -1188,7 +1935,14 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
     e.preventDefault();
     setNotification(null);
 
-    const validationErrors = validate();
+    // Mark all fields as touched for final validation
+    const touchedFields = {};
+    Object.keys(formData).forEach(key => {
+      touchedFields[key] = true;
+    });
+    setTouched(touchedFields);
+
+    const validationErrors = validateAll();
     setErrors(validationErrors);
 
     // Check if terms are accepted
@@ -1268,7 +2022,6 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
       }, 1000);
 
     } catch (err) {
-      // console.error("handleSubmit (Verify OTP) Error:", err);
       setNotification({ type: 'error', message: getErrorMessage(err) });
     }
   };
@@ -1283,7 +2036,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
         />
       )}
       <Seo page="register" />
-      <div className="text-center mb-4 sm:mb-6">
+      <div className="text-center mb-1 sm:mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">REGISTER</h1>
         <p className="text-sm text-gray-600">Create a new account to get started</p>
       </div>
@@ -1303,18 +2056,18 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Full Name"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
+              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.name && touched.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
                 }`}
             />
           </div>
-          {errors.name && (
+          {errors.name && touched.name && (
             <p className="text-red-500 text-xs pl-1">{errors.name}</p>
           )}
         </div>
 
         {/* Phone Field */}
-        <div className="space-y-1">
-          <div className={`flex rounded-lg border transition-all duration-200 ${errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500'
+        <div className="space-y-0">
+          <div className={`flex rounded-lg border transition-all duration-200 ${errors.phone && touched.phone ? 'border-red-500 bg-red-50' : 'border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500'
             }`}>
             <div className="flex-shrink-0">
               <CountryCodeDropdown
@@ -1340,13 +2093,13 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               />
             </div>
           </div>
-          {errors.phone && (
+          {errors.phone && touched.phone && (
             <p className="text-red-500 text-xs pl-1">{errors.phone}</p>
           )}
         </div>
 
         {/* Email Field */}
-        <div className="space-y-1">
+        <div className="space-y-0">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
               <Mail className="h-4 w-4 text-gray-400" />
@@ -1359,17 +2112,17 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Email"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
+              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.email && touched.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
                 }`}
             />
           </div>
-          {errors.email && (
+          {errors.email && touched.email && (
             <p className="text-red-500 text-xs pl-1">{errors.email}</p>
           )}
         </div>
 
         {/* Password Field */}
-        <div className="space-y-1">
+        <div className="space-y-0">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
               <Lock className="h-4 w-4 text-gray-400" />
@@ -1382,7 +2135,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Password"
-              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
+              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.password && touched.password ? 'border-red-500 bg-red-50' : 'border-gray-300'
                 }`}
             />
             <button
@@ -1397,13 +2150,13 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               )}
             </button>
           </div>
-          {errors.password && (
+          {errors.password && touched.password && (
             <p className="text-red-500 text-xs pl-1">{errors.password}</p>
           )}
         </div>
 
         {/* Confirm Password Field */}
-        <div className="space-y-1">
+        <div className="space-y-0">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
               <Lock className="h-4 w-4 text-gray-400" />
@@ -1416,7 +2169,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               onChange={handleInputChange}
               onBlur={handleBlur}
               placeholder="Confirm Password"
-              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300'
+              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.confirmPassword && touched.confirmPassword ? 'border-red-500 bg-red-50' : 'border-gray-300'
                 }`}
             />
             <button
@@ -1431,13 +2184,13 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               )}
             </button>
           </div>
-          {errors.confirmPassword && (
+          {errors.confirmPassword && touched.confirmPassword && (
             <p className="text-red-500 text-xs pl-1">{errors.confirmPassword}</p>
           )}
         </div>
 
         {/* Referral ID Field */}
-        <div className="space-y-1">
+        <div className="space-y-0">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
               <Users className="h-4 w-4 text-gray-400" />
@@ -1450,17 +2203,17 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Referral ID (Optional)"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.referralId ? 'border-red-500 bg-red-50' : 'border-gray-300'
+              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.referralId && touched.referralId ? 'border-red-500 bg-red-50' : 'border-gray-300'
                 }`}
             />
           </div>
-          {errors.referralId && (
+          {errors.referralId && touched.referralId && (
             <p className="text-red-500 text-xs pl-1">{errors.referralId}</p>
           )}
         </div>
 
         {/* OTP Field */}
-        <div className="space-y-1">
+        <div className="space-y-0">
           <div className="flex gap-2">
             <div className="relative flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
@@ -1473,10 +2226,9 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
-
                 placeholder="Enter 4-digit OTP"
                 maxLength="4"
-                className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp && touched.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
                   }`}
               />
             </div>
@@ -1498,7 +2250,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
                   canResendOtp ? 'Send OTP' : 'Resend'}
             </button>
           </div>
-          {errors.otp && (
+          {errors.otp && touched.otp && (
             <p className="text-red-500 text-xs pl-1">{errors.otp}</p>
           )}
         </div>
@@ -1549,7 +2301,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
             formData.password !== formData.confirmPassword ||
             (formData.referralId && !/^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/.test(formData.referralId))
           }
-          className="w-full bg-gradient-to-r from-teal-500 to-green-600 text-white py-2.5 px-4 rounded-lg font-medium hover:from-teal-600 hover:to-green-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
+          className="w-full  bg-gradient-to-b from-[#0B736F]  to-[#0B736F] text-white py-2.5 px-4 rounded-full font-medium as focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
         >
           {isVerifyLoading ? 'Verifying OTP...' : 'REGISTER'}
         </button>
@@ -1566,7 +2318,6 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
     </div>
   );
 };
-
 export default function AuthContainer() {
   const navigate = useNavigate();
   const location = useLocation();

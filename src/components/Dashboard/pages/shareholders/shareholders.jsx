@@ -214,13 +214,13 @@ const ShareholderEligibility = () => {
             <h3 className="text-xl font-semibold mb-6 text-gray-800">{errormessage}</h3>
             <div className="space-y-3">
               <button
-                className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:from-teal-600 hover:to-teal-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 hover:from-teal-600 hover:to-teal-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 onClick={() => navigate("/dashboard")}
               >
                 Invest Now
               </button>
               <button
-                className="w-full border border-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:bg-gray-50 hover:border-gray-300"
+                className="w-full border border-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-full transition-all duration-300 hover:bg-gray-50 hover:border-gray-300"
                 onClick={handleShareholdersClick}
               >
                 View Shareholders
@@ -266,7 +266,7 @@ const ShareholderEligibility = () => {
             <div className="w-full lg:w-auto">
               <button
                 onClick={handleShareholdersClick}
-                className="w-full lg:w-auto bg-white text-teal-600 hover:bg-gray-50 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full lg:w-auto bg-white text-teal-600 hover:bg-gray-50 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 View Shareholders
               </button>

@@ -227,7 +227,7 @@ function DigiLockerModal({ show, onHide, onClickDigiLocker }) {
             <button
               onClick={onHide}
               disabled={staticLoading}
-              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors duration-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-full hover:bg-gray-100 transition-colors duration-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel
             </button>
