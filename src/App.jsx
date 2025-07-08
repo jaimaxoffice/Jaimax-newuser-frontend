@@ -306,7 +306,6 @@
 
 // export default App;
 
-
 import React, { useState, useEffect } from "react";
 import {
   Routes,
@@ -369,7 +368,7 @@ import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddM
 import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarning";
 import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
 import ProtectedRoute from "./router/PrivateRoute";
-import FloatingNavButton from "./global/FlottingToggle";
+import FloatingNavButton from "./global/FloatingNavButton";
 // import PublicRoute from "./router/PublicRoute";
 
 // Enhanced authentication helper functions
