@@ -15,145 +15,53 @@ import {
 } from "./kycApiSlice";
 // import DashboardLayout from "../Layout/DashboardLayout";
 import Loader from "../../../Loader/loader";
-import Tesseract from "tesseract.js";
+// import Tesseract from "tesseract.js";
 import md5 from "js-md5";
+import { createWorker, PSM } from "tesseract.js";
 
-
+// Tesseract Worker Cache
 let tesseractWorker = null;
-let isInitializing = false;
+
+
 
 const createTesseractWorker = async () => {
-  // Prevent multiple initialization attempts
-  if (isInitializing) {
-    // Wait for current initialization to complete
-    while (isInitializing) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
-    return tesseractWorker;
-  }
-
   if (!tesseractWorker) {
-    try {
-      isInitializing = true;
-      
-      tesseractWorker = await Tesseract.createWorker({
-        logger: (m) => {
-          if (m.status === "recognizing text") {
-            console.log(`OCR Progress: ${Math.round(m.progress * 100)}%`);
-          }
-          // Log other important statuses
-          if (m.status === "loading tesseract core" || 
-              m.status === "initializing tesseract" || 
-              m.status === "loading language traineddata") {
-            console.log(`${m.status}: ${Math.round(m.progress * 100)}%`);
-          }
-        },
-        // Optional: specify core path if needed
-        corePath: 'https://unpkg.com/tesseract.js-core@2.2.0/tesseract-core.js',
-        workerPath: 'https://unpkg.com/tesseract.js@2.1.5/dist/worker.min.js',
-        langPath: 'https://tessdata.projectnaptha.com/4.0.0',
-      });
+    tesseractWorker = createWorker();
 
-      // Load languages (English + Hindi)
-      await tesseractWorker.loadLanguage("eng+hin");
-      await tesseractWorker.initialize("eng+hin");
-      
-      // Set parameters for better OCR performance
-      await tesseractWorker.setParameters({
-        // Character whitelist - you might want to include more characters for Indian documents
-        tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/:., -()[]{}@#$%&*+=<>?!\"'",
-        
-        // Page segmentation mode - SINGLE_BLOCK might be too restrictive
-        tessedit_pageseg_mode: Tesseract.PSM.AUTO, // or PSM.SINGLE_BLOCK if you prefer
-        
-        // Additional useful parameters
-        preserve_interword_spaces: '1',
-        tessedit_do_invert: '0',
-        
-        // For better accuracy with Indian documents
-        load_system_dawg: '0',
-        load_freq_dawg: '0',
-        load_unambig_dawg: '0',
-        load_punc_dawg: '0',
-        load_number_dawg: '0',
-        load_bigram_dawg: '0',
-      });
+    await tesseractWorker.loadLanguage("eng+hin");
+    await tesseractWorker.initialize("eng+hin");
 
-      console.log("Tesseract worker initialized successfully");
-      
-    } catch (error) {
-      console.error("Error creating Tesseract worker:", error);
-      tesseractWorker = null;
-      throw error;
-    } finally {
-      isInitializing = false;
-    }
+    await tesseractWorker.setParameters({
+      tessedit_char_whitelist:
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/:., -",
+      tessedit_pageseg_mode: PSM.SINGLE_BLOCK,
+    });
   }
-  
+
   return tesseractWorker;
 };
 
+const startOCR = async (image) => {
+  const worker = await createTesseractWorker();
+  const { data } = await worker.recognize(image, {
+    logger: (m) => {
+      if (m.status === "recognizing text") {
+        console.log(`OCR Progress: ${Math.round(m.progress * 100)}%`);
+      }
+    },
+  });
+  console.log("OCR Result:", data.text);
+};
+
+
+
+
 const terminateTesseractWorker = async () => {
   if (tesseractWorker) {
-    try {
-      await tesseractWorker.terminate();
-      console.log("Tesseract worker terminated successfully");
-    } catch (error) {
-      console.error("Error terminating Tesseract worker:", error);
-    } finally {
-      tesseractWorker = null;
-      isInitializing = false;
-    }
+    await tesseractWorker.terminate();
+    tesseractWorker = null;
   }
 };
-
-// Usage example with error handling
-const performOCR = async (imageData) => {
-  try {
-    const worker = await createTesseractWorker();
-    
-    const { data: { text, confidence } } = await worker.recognize(imageData);
-    
-    console.log(`OCR completed with confidence: ${confidence}%`);
-    console.log("Extracted text:", text);
-    
-    return { text, confidence };
-  } catch (error) {
-    console.error("OCR failed:", error);
-    throw error;
-  }
-};
-
-// Cleanup function to call when component unmounts or app closes
-const cleanup = async () => {
-  await terminateTesseractWorker();
-};
-// const createTesseractWorker = async () => {
-//   if (!tesseractWorker) {
-//     tesseractWorker = await Tesseract.createWorker({
-//       logger: (m) => {
-//         if (m.status === "recognizing text") {
-//           console.log(`OCR Progress: ${Math.round(m.progress * 100)}%`);
-//         }
-//       },
-//     });
-//     await tesseractWorker.loadLanguage("eng+hin");
-//     await tesseractWorker.initialize("eng+hin");
-//     await tesseractWorker.setParameters({
-//       tessedit_char_whitelist:
-//         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/:., -",
-//       tessedit_pageseg_mode: Tesseract.PSM.SINGLE_BLOCK,
-//     });
-//   }
-//   return tesseractWorker;
-// };
-
-// const terminateTesseractWorker = async () => {
-//   if (tesseractWorker) {
-//     await tesseractWorker.terminate();
-//     tesseractWorker = null;
-//   }
-// };
 
 const detectDocumentType = async (base64Image, expectedDocType = null) => {
   try {
@@ -1128,6 +1036,27 @@ const getStatusColor = (status) => {
       return 'text-red-500';
   }
 };
+export const getAlertClasses= (type) => {
+  switch (type) {
+    case "success":
+      return "bg-green-100 text-green-800 border border-green-300";
+    case "error":
+      return "bg-red-100 text-red-800 border border-red-300";
+    case "warning":
+      return "bg-yellow-100 text-yellow-800 border border-yellow-300";
+    case "info":
+      return "bg-blue-100 text-blue-800 border border-blue-300";
+    default:
+      return "bg-gray-100 text-gray-800 border border-gray-300";
+  }
+};
+export const maskData = (data = "", visibleStart = 2, visibleEnd = 2, maskChar = "*") => {
+  if (!data || data.length <= visibleStart + visibleEnd) return data;
+
+  const maskedSection = maskChar.repeat(data.length - visibleStart - visibleEnd);
+  return data.slice(0, visibleStart) + maskedSection + data.slice(-visibleEnd);
+};
+
 
 const KycInformation = () => {
   // const { data } = useContext(MyContext);
