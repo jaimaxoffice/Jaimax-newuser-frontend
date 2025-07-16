@@ -114,10 +114,10 @@
 // export default DigiLockerModal;
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import digiLocker from "../../../../assets/digilockermodel.svg";
 import Loader from "../../../Loader/loader";
-
+import { useNavigate } from "react-router-dom";
 /**
  * DigiLocker Modal Component
  * @param {*} { show, onHide, onClickDigiLocker }
@@ -125,7 +125,7 @@ import Loader from "../../../Loader/loader";
  */
 function DigiLockerModal({ show, onHide, onClickDigiLocker }) {
   const [staticLoading, setStaticLoading] = useState(false);
-
+  const navigate=useNavigate();
   /**
    * This method is used to navigate to digiLocker when clicked on the image
    * Fixed: Removed premature setStaticLoading(false) and let parent handle loading state
@@ -166,9 +166,9 @@ function DigiLockerModal({ show, onHide, onClickDigiLocker }) {
             </h5>
             {/* Fixed: Close button instead of Link to dashboard */}
             <button
-              onClick={onHide}
+              onClick={()=>{navigate('/dashboard')}}
               className="text-white hover:text-gray-200 transition-colors duration-200 p-1 rounded-md hover:bg-white hover:bg-opacity-20"
-              aria-label="Close modal"
+              
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -222,17 +222,7 @@ function DigiLockerModal({ show, onHide, onClickDigiLocker }) {
             </div>
           </div>
 
-          {/* Footer with Cancel Button */}
-          <div className="flex justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-            <button
-              onClick={onHide}
-              disabled={staticLoading}
-              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-full hover:bg-gray-100 transition-colors duration-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+                  </div>
       </div>
 
       {/* Global Loading Overlay - Keep this for consistency with original implementation */}
