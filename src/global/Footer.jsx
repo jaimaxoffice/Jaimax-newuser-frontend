@@ -360,7 +360,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-8">
 
             {/* Company section */}
-            <div className="sm:col-span-2 lg:col-span-1 text-center sm:text-left">
+            <div className="sm:col-span-2 lg:col-span-1 text-start sm:text-left">
               <NavLink
                 to="/"
                 className="inline-block mb-4 sm:mb-6 transition-transform duration-300 hover:scale-105"
@@ -490,7 +490,7 @@ const Footer = () => {
             </div>
 
             {/* Quick Links */}
-            <div className="text-center sm:text-left">
+            <div className="text-start sm:text-left">
               <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-4 sm:mb-6">
                 Quick Links
               </h3>
@@ -518,7 +518,7 @@ const Footer = () => {
             </div>
 
             {/* Services */}
-            <div className="text-center sm:text-left">
+            <div className="text-start sm:text-left">
               <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-4 sm:mb-6">
                 Services
               </h3>
@@ -545,7 +545,7 @@ const Footer = () => {
             </div>
 
             {/* Support */}
-            <div className="text-center sm:text-left">
+            <div className="text-start sm:text-left">
               <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-4 sm:mb-6">
                 Support
               </h3>
@@ -570,7 +570,7 @@ const Footer = () => {
             </div>
 
             {/* Newsletter signup */}
-            <div className="text-center sm:text-left">
+            <div className="text-start sm:text-left">
               <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-4 sm:mb-6">
                 Stay Updated
               </h3>

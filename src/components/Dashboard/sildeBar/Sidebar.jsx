@@ -118,7 +118,7 @@ function Sidebar({ onLogoutClick }) {
           
           {/* Show hamburger only on desktop or when sidebar is open on mobile */}
           {(!isMobile || isOpen) && (
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 absolute ">
               <Hamburger
                 toggled={isOpen}
                 toggle={setIsOpen}

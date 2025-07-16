@@ -15,7 +15,7 @@ const SupportPage = () => {
       <div className="relative z-10 container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-         
+
           <h1 className="text-6xl md:text-7xl font-bold text-white mb-4">
             Support
           </h1>
@@ -79,7 +79,7 @@ const SupportPage = () => {
                 <p className="text-white/80 leading-relaxed text-lg">
                   Enjoy peace of mind with our always-on support service, available 24/7 to help you navigate any challenges related to your cryptocurrency transactions or account management.
                 </p>
-                
+
                 {/* Contact Buttons */}
                 <div className="space-y-4 pt-6">
                   <h3 className="text-xl font-semibold text-white mb-4">Contact Us:</h3>
@@ -94,12 +94,12 @@ const SupportPage = () => {
                     <div className="w-2 h-2 bg-white rounded-full group-hover:scale-150 transition-transform duration-300"></div>
                   </a>
                   <a
-                    href="mailto:info@jaimax.com"
+                    href="mailto:office@jaimax.com"
                     className="group flex items-center justify-between bg-white/10 hover:bg-white/20 text-white px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105"
                   >
                     <div className="flex items-center">
                       <Mail className="w-5 h-5 mr-3" />
-                      <span className="font-semibold">info@jaimax.com</span>
+                      <span className="font-semibold">office@jaimax.com</span>
                     </div>
                     <div className="w-2 h-2 bg-white rounded-full group-hover:scale-150 transition-transform duration-300"></div>
                   </a>
@@ -148,7 +148,7 @@ const SupportPage = () => {
                 Contact Support
               </a>
               <a
-                href="mailto:info@jaimax.com"
+                href="mailto:office@jaimax.com"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105"
               >
                 General Inquiries

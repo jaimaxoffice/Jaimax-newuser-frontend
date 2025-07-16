@@ -501,12 +501,12 @@ export default function HomeFooter() {
                 className="
                   group relative flex items-center justify-center gap-2 sm:gap-3
                   px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4
-                  rounded-full font-bold text-white text-sm sm:text-base lg:text-lg
+                  rounded-full font-bold text-black text-sm sm:text-base lg:text-lg
                   uppercase tracking-wide
                   transition-all duration-500 transform
                   hover:scale-105 hover:-translate-y-2
                   shadow-2xl border-0 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-none lg:w-auto
-                  bg-gradient-to-r from-yellow-400 to-yellow-500
+                  bg-[#b9cd27]
                 "
                 style={{
                   boxShadow: "0 25px 50px rgba(78, 205, 196, 0.4), 0 0 0 1px rgba(78, 205, 196, 0.2)",

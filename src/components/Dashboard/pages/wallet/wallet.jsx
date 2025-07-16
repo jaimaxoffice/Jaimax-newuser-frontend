@@ -106,11 +106,11 @@
 //     perPage: 10,
 //     search: "",
 //   });
-  
+
 //   const [isLoading, setIsLoading] = useState(false);
 //   const [availableWalletBalance, setAvailableWalletBalance] = useState(0);
 //   const [showReferralModal, setShowReferralModal] = useState(false);
-  
+
 //   const navigate = useNavigate();
 
 //   // Get user data from localStorage
@@ -143,15 +143,15 @@
 //   // Referral content for sharing (from first file)
 //   const referralContent = `
 //   🚀 Join the Jaimax Coin Revolution! 🚀
-  
+
 //   Hey there! 🌟
-  
+
 //   I'm excited to introduce you to Jaimax Coin – the future of cryptocurrency! 💰✨ It's a fast, secure, and innovative digital currency that offers amazing opportunities for everyone. Whether you're new to crypto or a seasoned investor, Jaimax Coin is designed to bring you great value. 🌍🔗
-  
+
 //   Don't miss out on this chance to be part of something BIG! 💥
-  
+
 //   👉 ${REGISTER_REFERAL + userData?.data?.username}
-  
+
 //   #JaimaxCoin #CryptoRevolution #JoinUs #FutureOfFinance`;
 
 //   // Effects
@@ -570,7 +570,7 @@
 //                     <option key={option} value={option}>{option}</option>
 //                   ))}
 //                 </select>
-                
+
 //                 {totalTransactions > 0 && (
 //                   <div className="text-sm text-gray-700">
 //                     Showing {((state.currentPage - 1) * state.perPage) + 1} to {Math.min(state.currentPage * state.perPage, totalTransactions)} of{' '}
@@ -663,11 +663,10 @@ const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
   return (
     <button
       onClick={handleCopy}
-      className={`bg-teal-600 hover:bg-teal-700 text-white transition-colors duration-200 flex items-center space-x-2 shadow-md rounded-full ${
-        isMobile 
-          ? 'text-xs px-3 py-1.5' 
+      className={`bg-teal-600 hover:bg-teal-700 text-white transition-colors duration-200 flex items-center space-x-2 shadow-md rounded-full ${isMobile
+          ? 'text-xs px-3 py-1.5'
           : 'text-xs px-4 py-2'
-      }`}
+        }`}
     >
       <Copy className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'}`} />
       <span className={isMobile ? 'hidden xs:inline' : ''}>Copy</span>
@@ -681,12 +680,12 @@ export default function WalletDashboard() {
     perPage: 10,
     search: "",
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [availableWalletBalance, setAvailableWalletBalance] = useState(0);
   const [showReferralModal, setShowReferralModal] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const navigate = useNavigate();
 
   // Get user data from localStorage
@@ -704,9 +703,9 @@ export default function WalletDashboard() {
     refetch: refetchWalletTransactions,
   } = useWalletTransactionsListQuery(queryParams);
 
-  const { 
-    data: availableBalance, 
-    refetch: refetchAvailableBalance 
+  const {
+    data: availableBalance,
+    refetch: refetchAvailableBalance
   } = useAvailableBalanceQuery();
 
   // Get transaction data from API response
@@ -804,7 +803,7 @@ export default function WalletDashboard() {
 
   // Navigation to add funds
   const onClickAddMoney = () => {
-    navigate("/wallet/add-funds");
+    navigate("/dashboard/wallet/add-funds");
   };
 
   // Handle share referral code
@@ -835,88 +834,88 @@ export default function WalletDashboard() {
   };
 
   // Mobile transaction card component
-const TransactionCard = ({ transaction, index }) => (
-  <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-teal-100 overflow-hidden group hover:border-teal-200">
-    {/* Compact Header */}
-    <div className="bg-gradient-to-r from-teal-50 to-teal-100 px-3 py-2 border-b border-teal-100">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2 flex-1 min-w-0">
-          <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
-          <h3 className="font-semibold text-teal-800 text-sm truncate">
-            Transaction {(state.currentPage - 1) * state.perPage + index + 1}
-          </h3>
-          {transaction.screenshotUrl && (
-            <a
-              href={transaction.screenshotUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-teal-600 hover:text-teal-800 transition-colors"
-            >
-              <ExternalLink className="w-3 h-3" />
-            </a>
+  const TransactionCard = ({ transaction, index }) => (
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border border-teal-100 overflow-hidden group hover:border-teal-200">
+      {/* Compact Header */}
+      <div className="bg-gradient-to-r from-teal-50 to-teal-100 px-3 py-2 border-b border-teal-100">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2 flex-1 min-w-0">
+            <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
+            <h3 className="font-semibold text-teal-800 text-sm truncate">
+              Transaction {(state.currentPage - 1) * state.perPage + index + 1}
+            </h3>
+            {transaction.screenshotUrl && (
+              <a
+                href={transaction.screenshotUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-teal-600 hover:text-teal-800 transition-colors"
+              >
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+          </div>
+          <StatusBadge status={transaction.transactionStatus} />
+        </div>
+      </div>
+
+      {/* Amount Section */}
+      <div className="px-3 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white">
+        <div className="text-center">
+          <p className="text-lg font-bold">
+            {formatCurrency(transaction.transactionAmount)}
+          </p>
+        </div>
+      </div>
+
+      {/* Compact Details */}
+      <div className="p-3 space-y-2">
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="bg-teal-50 rounded px-2 py-1">
+            <span className="text-teal-600 font-medium">Type:</span>
+            <p className="font-semibold text-teal-800 truncate">{transaction.transactionType || "N/A"}</p>
+          </div>
+          <div className="bg-teal-50 rounded px-2 py-1">
+            <span className="text-teal-600 font-medium">Payment:</span>
+            <p className="font-semibold text-teal-800 truncate">{transaction.paymentMode || "N/A"}</p>
+          </div>
+          <div className="bg-teal-50 rounded px-2 py-1">
+            <span className="text-teal-600 font-medium">Currency:</span>
+            <p className="font-semibold text-teal-800">{transaction.currency || "N/A"}</p>
+          </div>
+          {countryCode !== 91 && (
+            <div className="bg-teal-50 rounded px-2 py-1">
+              <span className="text-teal-600 font-medium">Fee:</span>
+              <p className="font-semibold text-teal-800">${(transaction.transactionFee || 0).toFixed(2)}</p>
+            </div>
           )}
         </div>
-        <StatusBadge status={transaction.transactionStatus} />
-      </div>
-    </div>
 
-    {/* Amount Section */}
-    <div className="px-3 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white">
-      <div className="text-center">
-        <p className="text-lg font-bold">
-          {formatCurrency(transaction.transactionAmount)}
-        </p>
-      </div>
-    </div>
-
-    {/* Compact Details */}
-    <div className="p-3 space-y-2">
-      <div className="grid grid-cols-2 gap-2 text-xs">
-        <div className="bg-teal-50 rounded px-2 py-1">
-          <span className="text-teal-600 font-medium">Type:</span>
-          <p className="font-semibold text-teal-800 truncate">{transaction.transactionType || "N/A"}</p>
-        </div>
-        <div className="bg-teal-50 rounded px-2 py-1">
-          <span className="text-teal-600 font-medium">Payment:</span>
-          <p className="font-semibold text-teal-800 truncate">{transaction.paymentMode || "N/A"}</p>
-        </div>
-        <div className="bg-teal-50 rounded px-2 py-1">
-          <span className="text-teal-600 font-medium">Currency:</span>
-          <p className="font-semibold text-teal-800">{transaction.currency || "N/A"}</p>
-        </div>
-        {countryCode !== 91 && (
-          <div className="bg-teal-50 rounded px-2 py-1">
-            <span className="text-teal-600 font-medium">Fee:</span>
-            <p className="font-semibold text-teal-800">${(transaction.transactionFee || 0).toFixed(2)}</p>
+        {/* Bottom Info */}
+        <div className="pt-2 border-t border-gray-100 space-y-1 text-xs">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Date:</span>
+            <span className="font-medium text-gray-800">{formatDateWithAmPm(transaction.transactionDate)}</span>
           </div>
-        )}
+          <div className="flex justify-between">
+            <span className="text-gray-600">ID:</span>
+            <span className="font-mono text-gray-800 text-xs truncate ml-2">{transaction.transactionId || "N/A"}</span>
+          </div>
+          <div>
+            <span className="text-gray-600">Reason:</span>
+            <p className="text-gray-800 break-words mt-1">{transaction.reason || "N/A"}</p>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Updated by:</span>
+            <span className="font-medium text-gray-800">{transaction.updatedBy?.name || "N/A"}</span>
+          </div>
+        </div>
       </div>
 
-      {/* Bottom Info */}
-      <div className="pt-2 border-t border-gray-100 space-y-1 text-xs">
-        <div className="flex justify-between">
-          <span className="text-gray-600">Date:</span>
-          <span className="font-medium text-gray-800">{formatDateWithAmPm(transaction.transactionDate)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">ID:</span>
-          <span className="font-mono text-gray-800 text-xs truncate ml-2">{transaction.transactionId || "N/A"}</span>
-        </div>
-        <div>
-          <span className="text-gray-600">Reason:</span>
-          <p className="text-gray-800 break-words mt-1">{transaction.reason || "N/A"}</p>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">Updated by:</span>
-          <span className="font-medium text-gray-800">{transaction.updatedBy?.name || "N/A"}</span>
-        </div>
-      </div>
+      {/* Bottom Accent */}
+      <div className="h-0.5 bg-gradient-to-r from-teal-400 to-teal-600"></div>
     </div>
-
-    {/* Bottom Accent */}
-    <div className="h-0.5 bg-gradient-to-r from-teal-400 to-teal-600"></div>
-  </div>
-);
+  );
 
   // Loading skeleton component
   const SkeletonRow = () => (
@@ -969,7 +968,7 @@ const TransactionCard = ({ transaction, index }) => (
               </div>
               <div className="flex flex-col sm:text-right">
                 <p className="text-teal-100 text-sm mb-2">Add Money to Wallet</p>
-                <button 
+                <button
                   className="bg-white hover:bg-gray-50 text-teal-700 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-colors duration-200 shadow-md uppercase text-sm"
                   onClick={onClickAddMoney}
                 >
@@ -988,8 +987,8 @@ const TransactionCard = ({ transaction, index }) => (
                   {userData?.data?.username || "N/A"}
                 </span>
                 <div className="flex items-center space-x-2 flex-shrink-0">
-                  <button 
-                    onClick={handleShareReferral} 
+                  <button
+                    onClick={handleShareReferral}
                     className="text-teal-600 hover:text-teal-800 transition-colors duration-200 p-1 rounded-full hover:bg-teal-100"
                   >
                     <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -1082,10 +1081,10 @@ const TransactionCard = ({ transaction, index }) => (
                         </td>
                         <td className="px-2 xl:px-3 py-3 whitespace-nowrap  text-gray-900">
                           {transaction.screenshotUrl ? (
-                            <a 
-                              href={transaction.screenshotUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
+                            <a
+                              href={transaction.screenshotUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="text-teal-600 hover:text-teal-800 flex items-center space-x-1"
                             >
                               <span className="truncate max-w-24 xl:max-w-32">{transaction.transactionId || "N/A"}</span>
@@ -1116,21 +1115,21 @@ const TransactionCard = ({ transaction, index }) => (
                           <span className="truncate max-w-20 xl:max-w-32 block">{formatDateWithAmPm(transaction.transactionDate)}</span>
                         </td>
                         <td className="px-2 xl:px-3 py-3 whitespace-nowrap">
-                          <span 
+                          <span
                             className="text-capitalize font-bold"
                             style={{
                               color: transaction?.transactionStatus?.toLowerCase() === "pending"
                                 ? "#daa520"
                                 : transaction?.transactionStatus === "Completed"
-                                ? "green"
-                                : "red"
+                                  ? "green"
+                                  : "red"
                             }}
                           >
                             {transaction?.transactionStatus}
                           </span>
                         </td>
-                        <td 
-                          className="px-2 xl:px-3 py-3 text-gray-900 max-w-20 xl:max-w-32 truncate" 
+                        <td
+                          className="px-2 xl:px-3 py-3 text-gray-900 max-w-20 xl:max-w-32 truncate"
                           title={transaction?.reason}
                         >
                           {transaction?.reason || "N/A"}
@@ -1173,7 +1172,7 @@ const TransactionCard = ({ transaction, index }) => (
                     ))}
                   </select>
                 </div>
-                
+
                 {totalTransactions > 0 && (
                   <div className="text-sm text-gray-700">
                     <span className="hidden sm:inline">
@@ -1193,11 +1192,10 @@ const TransactionCard = ({ transaction, index }) => (
                   <button
                     onClick={handlePrevPage}
                     disabled={state.currentPage === 1}
-                    className={`flex items-center px-2 sm:px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      state.currentPage === 1
+                    className={`flex items-center px-2 sm:px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${state.currentPage === 1
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-teal-600 text-white hover:bg-teal-700'
-                    }`}
+                      }`}
                   >
                     <ChevronLeft className="w-4 h-4 sm:mr-1" />
                     <span className="hidden sm:inline">Previous</span>
@@ -1211,11 +1209,10 @@ const TransactionCard = ({ transaction, index }) => (
                   <button
                     onClick={handleNextPage}
                     disabled={state.currentPage === totalPages}
-                    className={`flex items-center px-2 sm:px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      state.currentPage === totalPages
+                    className={`flex items-center px-2 sm:px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${state.currentPage === totalPages
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-teal-600 text-white hover:bg-teal-700'
-                    }`}
+                      }`}
                   >
                     <span className="hidden sm:inline">Next</span>
                     <ChevronRight className="w-4 h-4 sm:ml-1" />

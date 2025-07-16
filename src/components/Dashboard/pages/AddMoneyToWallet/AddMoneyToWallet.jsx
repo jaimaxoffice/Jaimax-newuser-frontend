@@ -1316,7 +1316,7 @@ const AddMoneyToWallet = () => {
                       <input
                         type="file"
                         accept=".jpg,.jpeg,.png,.jfif"
-                        className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+                        className="w-full px-4 py-3  border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-1000 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-100 file:text-teal-700 hover:file:bg-teal-100"
                         onChange={handleImageChange}
                         ref={fileInputRef}
                       />

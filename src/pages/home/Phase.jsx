@@ -1384,7 +1384,7 @@ export default function GrowthPlanTimeline() {
   };
 
   return (
-    <div className=" min-h-screen py-12">
+    <div className=" max-h-screen pt-12 pb-2">
       <section className="text-white px-2 sm:px-4 md:px-8 lg:px-10 xl:px-12 font-sans">
         {/* Heading */}
         <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8 md:mb-10 px-2 sm:px-4 md:px-6">

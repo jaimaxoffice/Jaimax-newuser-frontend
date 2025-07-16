@@ -578,7 +578,7 @@ const Navbar = () => {
           <div className="pb-4 pt-2">
             <div className="backdrop-blur-[16px] border border-white/10 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.2)] overflow-hidden mt-2 max-h-[80vh] overflow-y-auto"
                  style={{ 
-                   background: 'linear-gradient(135deg, rgba(8,83,89,0.98) 0%, rgba(8,83,89,0.95) 100%)',
+                   background: 'linear-gradient(135deg, #085359 0%, rgba(8,83,89,0.95) 100%)',
                    WebkitBackdropFilter: 'blur(16px)' 
                  }}>
               <ul className="flex flex-col p-3 sm:p-4 space-y-1">

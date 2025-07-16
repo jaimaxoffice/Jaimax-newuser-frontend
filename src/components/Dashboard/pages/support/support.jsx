@@ -1650,7 +1650,7 @@ const CreateTicketModal = ({ show, setShow }) => {
             <input
               value={formData.title}
               onChange={(e) => {
-                const allowedRegex = /^[a-zA-Z0-9\s.!@]*$/;
+                const allowedRegex = /^[a-zA-Z0-9\s.?!@]*$/;
                 const value = e.target.value;
 
                 if (allowedRegex.test(value)) {
