@@ -559,8 +559,8 @@ function Header() {
   const name=JSON.parse(localStorage.getItem("userData"));
   const id=name?.data?.name;
   const mail=name?.data?.email;
-  console.log(id);
-  console.log(mail);
+  // console.log(id);
+  // console.log(mail);
   // Extract user information from API response
   const username = userData?.data?.name || "User";
   const email = userData?.data?.email || "email";

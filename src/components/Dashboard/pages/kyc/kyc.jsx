@@ -2407,7 +2407,9 @@ return(
                             <button
                               type="button"
                               className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
-                              onClick={() => console.log('Show Aadhaar front')}
+                              onClick={() =>
+                                    onClickImage(kycdata.data?.aadhar_doc_front)
+                                  }
                             >
                               <Eye className="w-3 h-3 text-white" />
                             </button>
@@ -2424,7 +2426,9 @@ return(
                             <button
                               type="button"
                               className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
-                              onClick={() => console.log('Show Aadhaar back')}
+                              onClick={() =>
+                                    onClickImage(kycdata.data?.aadhar_doc_back)
+                                  }
                             >
                               <Eye className="w-3 h-3 text-white" />
                             </button>
@@ -2441,7 +2445,9 @@ return(
                             <button
                               type="button"
                               className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
-                              onClick={() => console.log('Show PAN')}
+                              onClick={() =>
+                                    onClickImage(kycdata.data?.pan_doc_front)
+                                  }
                             >
                               <Eye className="w-3 h-3 text-white" />
                             </button>
