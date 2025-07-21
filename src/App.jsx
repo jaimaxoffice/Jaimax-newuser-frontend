@@ -60,6 +60,7 @@ import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarnin
 import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
 import ProtectedRoute from "./router/PrivateRoute";
 import FloatingNavButton from "./global/FloatingNavButton";
+import SupportChart from "./components/Dashboard/pages/support/supportChat";
 
 const getAuthToken = () => {
   try {
@@ -442,9 +443,14 @@ const App = () => {
         <Route path="/withdrawal" element={<DashboardLayout />}>
           <Route index element={<WithDrawal />} />
         </Route>
-        <Route path="/support" element={<DashboardLayout />}>
+        {/* <Route path="/support" element={<DashboardLayout />}>
           <Route index element={<Support />} />
-        </Route>
+        </Route> */}
+        <Route path="/support" element={<DashboardLayout />}>
+  <Route index element={<Support />} />
+  <Route path="support-chat/:id" element={<SupportChart />} />
+</Route>
+
         <Route path="/meetings" element={<DashboardLayout />}>
           <Route index element={<UserMeetingsShowcase />} />
         </Route>

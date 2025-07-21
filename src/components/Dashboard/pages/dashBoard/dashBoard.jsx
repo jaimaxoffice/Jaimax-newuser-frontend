@@ -76,7 +76,7 @@ const Dashboard = () => {
           <TopCards />
         </div>
       </div>
-<div className="w-full bg-gradient-to-br from-teal-50 to-teal-100 min-h-screen px-4 py-6">
+{/* <div className="w-full bg-gradient-to-br from-teal-50 to-teal-100 min-h-screen px-4 py-6">
   <div className="max-w-7xl mx-auto">
     <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
       <h1 className="text-2xl font-bold text-teal-800 mb-4 sm:mb-0">Total Team Details</h1>
@@ -93,7 +93,7 @@ const Dashboard = () => {
       </div>
     </div>
 
-    {/* Mobile cards */}
+  
     <div className="flex flex-wrap gap-4 lg:hidden">
       {isLoading ? (
         [...Array(3)].map((_, i) => (
@@ -225,7 +225,7 @@ const Dashboard = () => {
           </table>
         </div>
 
-        {/* Conditional Pagination - Only show if there's data and pagination exists */}
+       
         {!isLoading && TableData.length > 0 && data?.data?.pagination?.totalPages > 1 && (
           <div className="mt-3 flex justify-center">
             <Pagination
@@ -238,7 +238,7 @@ const Dashboard = () => {
           </div>
         )}
   </div>
-</div>
+</div> */}
     </div>
   );
 };

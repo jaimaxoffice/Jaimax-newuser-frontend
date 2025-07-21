@@ -2902,7 +2902,7 @@
 
 
 import React, { useState, useEffect } from "react";
-import { AlertTriangle, CheckCircle, Info, Download, Building, CreditCard, Clock, Shield, ArrowRight, Smartphone, Search } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, Download, Building, CreditCard, Clock, Shield, ArrowRight, Smartphone, Search, LogIn } from "lucide-react";
 import Pagination from "../../../pagination/pagination";
 import {useWithdrawHistoryQuery ,useWithdrawRequestListQuery, useWithdrawRequestMutation , useWithdrawCalculateQuery,  useCalculateWithdrawMutation,  useGetSettingQuery} from './withdrawApiSlice'
 import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice"
@@ -3213,10 +3213,22 @@ const Withdrawal = () => {
     refetch: refetchWithdraw,
   } = useWithdrawRequestListQuery(queryParams);
 
+  console.log(withdrawHistory?.data?.withdrawRequests , "withdrawHistory");
+  
   const datafromApi = withdrawHistory?.data?.withdrawRequests || [];
-  const id = localStorage.getItem("userId") || "user123"; // Get actual user ID from localStorage
-  const TableData = datafromApi.filter((item) => item?.userId?._id === id);
+console.log(datafromApi , "datafromApi");
 
+
+  const id = localStorage.getItem("userData") || "user123"; // Get actual user ID from localStorage
+  console.log(id, "_id");
+
+  // const TableData = datafromApi.filter((item) => item?.userId?._id === id.data._id);
+  const userId = id?.data?._id;
+const TableData = datafromApi.filter(item => item?.userId?._id === userId);
+  console.log(TableData , "Table data");
+  
+
+  
   const [previewData, setPreviewData] = useState([
     { heading: "Fees", subHeading: "0" },
     { heading: "Will Get", subHeading: "0" },

@@ -12,7 +12,7 @@ const profileApiSlice = apiSlice.injectEndpoints({
         // })
         updateAddress:builder.mutation({
             query:(credentials) => ({
-                url:"/user/userUpdate",
+                url:"/Auth/userUpdate",
                 method:"PUT",
                 body:credentials
             }),

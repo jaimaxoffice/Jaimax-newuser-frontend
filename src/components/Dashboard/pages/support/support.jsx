@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Search, X, ChevronDown, Paperclip, Upload, Filter, Eye, Send, Image as ImageIcon } from "lucide-react";
+import {
+  Search,
+  X,
+  ChevronDown,
+  Paperclip,
+  Upload,
+  Filter,
+  Eye,
+  Send,
+  Image as ImageIcon,
+} from "lucide-react";
 import { toast } from "react-toastify";
 import { Select, MenuItem } from "@mui/material";
 
@@ -11,6 +21,7 @@ import {
   useChatGetQuery,
   useCreateCommentMutation,
 } from "./supportApiSlice";
+import { useNavigate } from "react-router-dom";
 
 // Loader Component
 const Loader = () => (
@@ -23,38 +34,43 @@ const Loader = () => (
 const CreateTicketModal = ({ show, setShow }) => {
   const imageRef = useRef(null);
   const [formData, setFormData] = useState({
-    title: '',
-    cat: '',
-    content: '',
-    priority: '',
-    image: '',
+    title: "",
+    cat: "",
+    content: "",
+    priority: "",
+    image: "",
   });
   const [attachedFiles, setAttachedFiles] = useState([]);
   const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
   const [errors, setErrors] = useState({});
 
+
   const [createTicket, { isLoading }] = useCreateTicketMutation();
-  const { data: catgetData, isLoading: categoriesLoading, error: categoriesError } = useCategoryGetQuery();
-  console.log('hello', catgetData)
+  const {
+    data: catgetData,
+    isLoading: categoriesLoading,
+    error: categoriesError,
+  } = useCategoryGetQuery();
+  console.log("hello", catgetData);
   const priorities = [
-    { value: 'high', label: 'High' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'low', label: 'Low' },
+    { value: "high", label: "High" },
+    { value: "medium", label: "Medium" },
+    { value: "low", label: "Low" },
   ];
 
   const categories = catgetData?.data?.response || [];
-  console.log('Categories:', categories);
+  console.log("Categories:", categories);
   // Debug log to check categories data
-  console.log('Categories data:', catgetData);
-  console.log('Categories loading:', categoriesLoading);
-  console.log('Categories error:', categoriesError);
+  console.log("Categories data:", catgetData);
+  console.log("Categories loading:", categoriesLoading);
+  console.log("Categories error:", categoriesError);
 
   const validate = () => {
     const errs = {};
-    if (!formData.title) errs.title = 'Title is required';
-    if (!formData.cat) errs.cat = 'Category is required';
-    if (!formData.content) errs.content = 'Content is required';
-    if (!formData.priority) errs.priority = 'Priority is required';
+    if (!formData.title) errs.title = "Title is required";
+    if (!formData.cat) errs.cat = "Category is required";
+    if (!formData.content) errs.content = "Content is required";
+    if (!formData.priority) errs.priority = "Priority is required";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -65,24 +81,26 @@ const CreateTicketModal = ({ show, setShow }) => {
 
     try {
       const submitFormData = new FormData();
-      submitFormData.Pageend('title', formData.title);
-      submitFormData.Pageend('category_id', formData.cat);
-      submitFormData.Pageend('content', formData.content);
-      submitFormData.Pageend('priority', formData.priority.toLowerCase());
-      submitFormData.Pageend('image', formData.image);
+      submitFormData.append("title", formData.title);
+      submitFormData.append("category_id", formData.cat);
+      submitFormData.append("content", formData.content);
+      submitFormData.append("priority", formData.priority.toLowerCase());
+      submitFormData.append("image", formData.image);
 
       const { data } = await createTicket(submitFormData);
       if (data?.success === 1) {
-        toast.success(data.message, { position: 'top-center' });
+        toast.success(data.message, { position: "top-center" });
         handleClose();
       }
     } catch (err) {
-      toast.error(err?.data?.message || "An error occurred", { position: 'top-center' });
+      toast.error(err?.data?.message || "An error occurred", {
+        position: "top-center",
+      });
     }
   };
 
   const handleClose = () => {
-    setFormData({ title: '', cat: '', content: '', priority: '', image: '' });
+    setFormData({ title: "", cat: "", content: "", priority: "", image: "" });
     setAttachedFiles([]);
     setErrors({});
     setShowPriorityDropdown(false);
@@ -93,10 +111,12 @@ const CreateTicketModal = ({ show, setShow }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const accepted = ['image/png', 'image/jpeg', 'image/jpg'];
+    const accepted = ["image/png", "image/jpeg", "image/jpg"];
     if (!accepted.includes(file.type)) {
-      toast.warning('Only JPG / PNG files are allowed', { position: 'top-center' });
-      imageRef.current && (imageRef.current.value = '');
+      toast.warning("Only JPG / PNG files are allowed", {
+        position: "top-center",
+      });
+      imageRef.current && (imageRef.current.value = "");
       return;
     }
     setFormData({ ...formData, image: file });
@@ -105,8 +125,8 @@ const CreateTicketModal = ({ show, setShow }) => {
 
   const removeFile = () => {
     setAttachedFiles([]);
-    setFormData({ ...formData, image: '' });
-    imageRef.current && (imageRef.current.value = '');
+    setFormData({ ...formData, image: "" });
+    imageRef.current && (imageRef.current.value = "");
   };
 
   if (!show) return null;
@@ -117,7 +137,10 @@ const CreateTicketModal = ({ show, setShow }) => {
         {/* Header */}
         <div className="flex justify-between items-center border-b border-gray-200 px-6 py-4 bg-white rounded-t-xl">
           <h2 className="text-xl font-semibold text-gray-800">Create Ticket</h2>
-          <button onClick={handleClose} className="text-gray-500 hover:text-teal-600 transition-colors duration-200">
+          <button
+            onClick={handleClose}
+            className="text-gray-500 hover:text-teal-600 transition-colors duration-200"
+          >
             <X size={20} />
           </button>
         </div>
@@ -142,9 +165,10 @@ const CreateTicketModal = ({ show, setShow }) => {
               className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
               placeholder="Enter ticket title"
             />
-            {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title}</p>}
+            {errors.title && (
+              <p className="text-sm text-red-500 mt-1">{errors.title}</p>
+            )}
           </div>
-
 
           {/* Priority & Category */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -160,10 +184,15 @@ const CreateTicketModal = ({ show, setShow }) => {
                 }}
                 className="w-full flex justify-between items-center rounded-lg border border-gray-300 px-3 py-2 bg-white text-left focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
               >
-                <span className={formData.priority ? 'text-gray-800' : 'text-gray-500'}>
+                <span
+                  className={
+                    formData.priority ? "text-gray-800" : "text-gray-500"
+                  }
+                >
                   {formData.priority
-                    ? priorities.find((p) => p.value === formData.priority)?.label
-                    : 'Set priority'}
+                    ? priorities.find((p) => p.value === formData.priority)
+                        ?.label
+                    : "Set priority"}
                 </span>
                 <ChevronDown size={16} className="text-gray-600" />
               </button>
@@ -184,9 +213,10 @@ const CreateTicketModal = ({ show, setShow }) => {
                   ))}
                 </div>
               )}
-              {errors.priority && <p className="text-sm text-red-500 mt-1">{errors.priority}</p>}
+              {errors.priority && (
+                <p className="text-sm text-red-500 mt-1">{errors.priority}</p>
+              )}
             </div>
-
 
             {/* Category */}
             <div className="relative">
@@ -195,37 +225,39 @@ const CreateTicketModal = ({ show, setShow }) => {
               </label>
               <Select
                 value={formData.cat}
-                onChange={(e) => setFormData({ ...formData, cat: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, cat: e.target.value })
+                }
                 displayEmpty
                 className="w-full"
                 sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '0.5rem',
-                    '& fieldset': {
-                      borderColor: '#d1d5db',
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "0.5rem",
+                    "& fieldset": {
+                      borderColor: "#d1d5db",
                     },
-                    '&:hover fieldset': {
-                      borderColor: '#14b8a6',
+                    "&:hover fieldset": {
+                      borderColor: "#14b8a6",
                     },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#14b8a6',
-                      borderWidth: '2px',
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#14b8a6",
+                      borderWidth: "2px",
                     },
                   },
-                  '& .MuiSelect-select': {
-                    padding: '8px 12px',
-                    fontSize: '0.875rem',
-                  }
+                  "& .MuiSelect-select": {
+                    padding: "8px 12px",
+                    fontSize: "0.875rem",
+                  },
                 }}
                 MenuProps={{
                   disableScrollLock: true,
                   PaperProps: {
                     sx: {
                       maxHeight: 200,
-                      '& .MuiMenuItem-root': {
-                        fontSize: '0.875rem',
-                        '&:hover': {
-                          backgroundColor: '#f0fdfa',
+                      "& .MuiMenuItem-root": {
+                        fontSize: "0.875rem",
+                        "&:hover": {
+                          backgroundColor: "#f0fdfa",
                         },
                       },
                     },
@@ -234,7 +266,9 @@ const CreateTicketModal = ({ show, setShow }) => {
               >
                 <MenuItem value="" disabled>
                   <span className="text-gray-500">
-                    {categoriesLoading ? 'Loading categories...' : 'Choose category'}
+                    {categoriesLoading
+                      ? "Loading categories..."
+                      : "Choose category"}
                   </span>
                 </MenuItem>
                 {catgetData?.data?.response?.map((data) => (
@@ -247,7 +281,9 @@ const CreateTicketModal = ({ show, setShow }) => {
                   </MenuItem>
                 ))}
               </Select>
-              {errors.cat && <p className="text-sm text-red-500 mt-1">{errors.cat}</p>}
+              {errors.cat && (
+                <p className="text-sm text-red-500 mt-1">{errors.cat}</p>
+              )}
             </div>
           </div>
 
@@ -271,13 +307,16 @@ const CreateTicketModal = ({ show, setShow }) => {
               className="w-full rounded-lg border border-gray-300 px-3 py-2 resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
               placeholder="Describe your issue in detail"
             />
-            {errors.content && <p className="text-sm text-red-500 mt-1">{errors.content}</p>}
+            {errors.content && (
+              <p className="text-sm text-red-500 mt-1">{errors.content}</p>
+            )}
           </div>
-
 
           {/* Attachment */}
           <div>
-            <label className="block mb-2 font-medium text-gray-700">Attachment</label>
+            <label className="block mb-2 font-medium text-gray-700">
+              Attachment
+            </label>
             <div className="flex items-center gap-3">
               <input
                 ref={imageRef}
@@ -294,16 +333,22 @@ const CreateTicketModal = ({ show, setShow }) => {
                 <Paperclip size={16} /> Choose File
               </label>
               <span className="text-sm text-gray-500 truncate">
-                {attachedFiles.length ? attachedFiles[0].name : 'No file chosen'}
+                {attachedFiles.length
+                  ? attachedFiles[0].name
+                  : "No file chosen"}
               </span>
             </div>
             {attachedFiles.length > 0 && (
               <div className="mt-2 flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 border">
                 <span className="truncate text-sm text-gray-700">
                   <Upload size={14} className="inline-block mr-2" />
-                  {attachedFiles[0].name} ({(attachedFiles[0].size / 1024).toFixed(1)} KB)
+                  {attachedFiles[0].name} (
+                  {(attachedFiles[0].size / 1024).toFixed(1)} KB)
                 </span>
-                <button onClick={removeFile} className="text-red-500 hover:text-red-700 transition-colors duration-200">
+                <button
+                  onClick={removeFile}
+                  className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                >
                   <X size={16} />
                 </button>
               </div>
@@ -316,7 +361,7 @@ const CreateTicketModal = ({ show, setShow }) => {
             disabled={isLoading}
             className="w-full rounded-lg bg-teal-600 py-3 text-white hover:bg-teal-700 disabled:bg-teal-300 transition-colors duration-200 font-semibold"
           >
-            {isLoading ? 'Submitting…' : 'Submit Ticket'}
+            {isLoading ? "Submitting…" : "Submit Ticket"}
           </button>
         </form>
       </div>
@@ -337,9 +382,19 @@ const SupportList = () => {
     search: "",
   });
 
-  const queryParams = `limit=${state?.perPage || ""}&page=${state?.currentPage || ""}&searchParam=${state?.search || ""}`;
-  const { data: supportData, isLoading, error } = useSupportDataQuery(queryParams);
+    const navigate = useNavigate();
+
+  const queryParams = `limit=${state?.perPage || ""}&page=${
+    state?.currentPage || ""
+  }&searchParam=${state?.search || ""}`;
+  const {
+    data: supportData,
+    isLoading,
+    error,
+  } = useSupportDataQuery(queryParams);
   const TableData = supportData?.data?.response || [];
+  console.log(supportData, "supportData");
+
   const [loading, setLoading] = useState(false);
   const handlePageChange = (page) => {
     setLoading(true);
@@ -364,15 +419,22 @@ const SupportList = () => {
     ticketId: state.currentPage * state.perPage - (state.perPage - 1) + index,
     subject: data.title,
     type: data?.category_id?.category_name || "N/A",
-    status: data.status === "open" ? "Open" : data.status === "inprogress" ? "In Progress" : "Closed",
+    status:
+      data.status === "open"
+        ? "Open"
+        : data.status === "inprogress"
+        ? "In Progress"
+        : "Closed",
     priority: "Medium",
     assignedTo: "Admin",
     createdOn: data.created_at.split("T")[0],
     updatedOn: data.created_at.split("T")[0],
-    originalData: data
+    originalData: data,
   }));
 
-  const totalPages = supportData ? Math.ceil(supportData?.data?.totalCount / state.perPage) : 1;
+  const totalPages = supportData
+    ? Math.ceil(supportData?.data?.totalCount / state.perPage)
+    : 1;
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -421,7 +483,13 @@ const SupportList = () => {
                     type="text"
                     placeholder="Search tickets..."
                     value={state.search}
-                    onChange={(e) => setState({ ...state, search: e.target.value, currentPage: 1 })}
+                    onChange={(e) =>
+                      setState({
+                        ...state,
+                        search: e.target.value,
+                        currentPage: 1,
+                      })
+                    }
                     className="bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none flex-grow"
                   />
                   <Search className="text-gray-500 ml-3" size={20} />
@@ -457,7 +525,10 @@ const SupportList = () => {
                       <option value="25">25</option>
                       <option value="50">50</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={16} />
+                    <ChevronDown
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                      size={16}
+                    />
                   </div>
                 </div>
               </div>
@@ -497,7 +568,10 @@ const SupportList = () => {
                       <option value="25">25</option>
                       <option value="50">50</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={16} />
+                    <ChevronDown
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                      size={16}
+                    />
                   </div>
                 </div>
               </div>
@@ -506,7 +580,7 @@ const SupportList = () => {
         </div>
 
         {/* Content */}
-        {(isLoading || loading) ? (
+        {isLoading || loading ? (
           <div className="flex flex-col items-center justify-center py-20 text-teal-600">
             <Loader />
             <p className="mt-4 text-lg">Loading tickets...</p>
@@ -516,7 +590,10 @@ const SupportList = () => {
             {/* Mobile Cards */}
             <div className="block xl:hidden space-y-4 mb-8">
               {transformedData.map((item, idx) => (
-                <div key={idx} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
+                >
                   {/* Card Header */}
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                     <div className="flex-1 min-w-0">
@@ -527,7 +604,11 @@ const SupportList = () => {
                         {item.subject}
                       </p>
                     </div>
-                    <div className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border ${getStatusColor(item.status)}`}>
+                    <div
+                      className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border ${getStatusColor(
+                        item.status
+                      )}`}
+                    >
                       {item.status}
                     </div>
                   </div>
@@ -535,19 +616,27 @@ const SupportList = () => {
                   {/* Card Details */}
                   <div className="grid grid-cols-1 sm:grid-cols-2  gap-3 mb-4 text-sm">
                     <div>
-                      <span className="text-teal-600 font-medium block mb-1">Type</span>
+                      <span className="text-teal-600 font-medium block mb-1">
+                        Type
+                      </span>
                       <span className="text-gray-700">{item.type}</span>
                     </div>
                     <div>
-                      <span className="text-teal-600 font-medium block mb-1">Priority</span>
+                      <span className="text-teal-600 font-medium block mb-1">
+                        Priority
+                      </span>
                       <span className="text-gray-700">{item.priority}</span>
                     </div>
                     <div>
-                      <span className="text-teal-600 font-medium block mb-1">Assigned To</span>
+                      <span className="text-teal-600 font-medium block mb-1">
+                        Assigned To
+                      </span>
                       <span className="text-gray-700">{item.assignedTo}</span>
                     </div>
                     <div>
-                      <span className="text-teal-600 font-medium block mb-1">Created</span>
+                      <span className="text-teal-600 font-medium block mb-1">
+                        Created
+                      </span>
                       <span className="text-gray-700">{item.createdOn}</span>
                     </div>
                   </div>
@@ -555,7 +644,9 @@ const SupportList = () => {
                   {/* Card Action */}
                   <div className="flex justify-end pt-4 border-t border-gray-200">
                     <button
-                      onClick={() => window.location.href = `/support/support-chat/${item.id}`}
+                      onClick={() =>
+                        (window.location.href = `/support/support-chat/${item.id}`)
+                      }
                       className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
                     >
                       <Eye size={16} />
@@ -571,27 +662,52 @@ const SupportList = () => {
               <table className="w-full text-left">
                 <thead className="bg-teal-600 text-white">
                   <tr>
-                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">S.No</th>
-                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">Type</th>
-                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">Title</th>
-                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">Created</th>
-                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">Action</th>
+                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">
+                      S.No
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">
+                      Type
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">
+                      Title
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">
+                      Created
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {transformedData.map((item) => (
-                    <tr key={item.id} className="hover:bg-gray-50 transition-colors duration-200">
-                      <td className="px-6 py-4 text-gray-800 font-medium">{item.ticketId}</td>
+                    <tr
+                      key={item.id}
+                      className="hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <td className="px-6 py-4 text-gray-800 font-medium">
+                        {item.ticketId}
+                      </td>
                       <td className="px-6 py-4 text-gray-600">{item.type}</td>
-                      <td className="px-6 py-4 text-gray-800 max-w-xs truncate">{item.subject}</td>
-                      <td className="px-6 py-4 text-gray-600">{item.createdOn}</td>
+                      <td className="px-6 py-4 text-gray-800 max-w-xs truncate">
+                        {item.subject}
+                      </td>
+                      <td className="px-6 py-4 text-gray-600">
+                        {item.createdOn}
+                      </td>
                       <td className="px-6 py-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(item.status)}`}>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
+                            item.status
+                          )}`}
+                        >
                           {item.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      {/* <td className="px-6 py-4">
                         <a
                           href={`/support/support-chat/${item.id}`}
                           className="text-teal-600 hover:text-teal-800 transition-colors duration-200 flex items-center gap-1"
@@ -599,7 +715,22 @@ const SupportList = () => {
                           <Eye size={16} />
                           View
                         </a>
-                      </td>
+                        
+                      </td> */}
+
+                     <td className="px-6 py-4">
+  <div
+    onClick={(e) => {
+      e.preventDefault();
+      navigate(`/support/support-chat/${item.id}`);
+    }}
+    className="text-teal-600 hover:text-teal-800 transition-colors duration-200 flex items-center gap-1 cursor-pointer"
+  >
+    <Eye size={16} />
+    View
+  </div>
+</td>
+
                     </tr>
                   ))}
                 </tbody>
@@ -611,7 +742,12 @@ const SupportList = () => {
               {/* Results Info */}
               <div className="text-center sm:text-left order-2 sm:order-1">
                 <span className="text-gray-600">
-                  Showing {((state.currentPage - 1) * state.perPage) + 1} to {Math.min(state.currentPage * state.perPage, supportData?.data?.totalCount || 0)} of {supportData?.data?.totalCount || 0} results
+                  Showing {(state.currentPage - 1) * state.perPage + 1} to{" "}
+                  {Math.min(
+                    state.currentPage * state.perPage,
+                    supportData?.data?.totalCount || 0
+                  )}{" "}
+                  of {supportData?.data?.totalCount || 0} results
                 </span>
               </div>
 
@@ -629,18 +765,21 @@ const SupportList = () => {
                 {/* Page indicators */}
                 <div className="flex items-center gap-1">
                   {totalPages <= 5 ? (
-                    Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${state.currentPage === page
-                          ? "bg-teal-600 text-white shadow-lg"
-                          : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                    Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${
+                            state.currentPage === page
+                              ? "bg-teal-600 text-white shadow-lg"
+                              : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
                           }`}
-                      >
-                        {page}
-                      </button>
-                    ))
+                        >
+                          {page}
+                        </button>
+                      )
+                    )
                   ) : (
                     <>
                       {state.currentPage > 2 && (
@@ -657,21 +796,25 @@ const SupportList = () => {
                         </>
                       )}
 
-                      {[state.currentPage - 1, state.currentPage, state.currentPage + 1]
-                        .filter(page => page >= 1 && page <= totalPages)
+                      {[
+                        state.currentPage - 1,
+                        state.currentPage,
+                        state.currentPage + 1,
+                      ]
+                        .filter((page) => page >= 1 && page <= totalPages)
                         .map((page) => (
                           <button
                             key={page}
                             onClick={() => handlePageChange(page)}
-                            className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${state.currentPage === page
-                              ? "bg-teal-600 text-white shadow-lg"
-                              : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
-                              }`}
+                            className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${
+                              state.currentPage === page
+                                ? "bg-teal-600 text-white shadow-lg"
+                                : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
+                            }`}
                           >
                             {page}
                           </button>
-                        ))
-                      }
+                        ))}
 
                       {state.currentPage < totalPages - 1 && (
                         <>
@@ -704,9 +847,13 @@ const SupportList = () => {
         ) : (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🎫</div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">No tickets found</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              No tickets found
+            </h3>
             <p className="text-gray-600 mb-6">
-              {state.search ? "No tickets match your search criteria" : "Create your first support ticket to get started"}
+              {state.search
+                ? "No tickets match your search criteria"
+                : "Create your first support ticket to get started"}
             </p>
             <button
               onClick={() => setShow(true)}
@@ -727,7 +874,8 @@ const SupportList = () => {
 // Support Chat Component
 const SupportChat = ({ ticketId = "1" }) => {
   const { data: chartData, isLoading, error } = useChatGetQuery(ticketId);
-  const [createComment, { isLoading: commentLoading }] = useCreateCommentMutation();
+  const [createComment, { isLoading: commentLoading }] =
+    useCreateCommentMutation();
   const [state, setState] = useState({
     comment: "",
     image: null,
@@ -738,7 +886,7 @@ const SupportChat = ({ ticketId = "1" }) => {
 
   const sendComment = async () => {
     if (state?.comment == "") {
-      return toast.error("Please enter a message", { position: 'top-center' });
+      return toast.error("Please enter a message", { position: "top-center" });
     }
     const formData = new FormData();
     formData.Pageend("comment", state.comment);
@@ -755,12 +903,15 @@ const SupportChat = ({ ticketId = "1" }) => {
           image: null,
         });
         setDisplayImage("");
-        toast.success("Comment sent successfully", { position: 'top-center' });
+        toast.success("Comment sent successfully", { position: "top-center" });
       } else {
-        toast.error(response?.error?.data?.message || "Failed to send comment", { position: 'top-center' });
+        toast.error(
+          response?.error?.data?.message || "Failed to send comment",
+          { position: "top-center" }
+        );
       }
     } catch (error) {
-      toast.error("Error sending comment", { position: 'top-center' });
+      toast.error("Error sending comment", { position: "top-center" });
     }
   };
 
@@ -774,7 +925,9 @@ const SupportChat = ({ ticketId = "1" }) => {
         const acceptedFormats = ["image/png", "image/jpeg", "image/jpg"];
         const invalidFile = !acceptedFormats.includes(files[0].type);
         if (invalidFile) {
-          toast.warning("Only JPG / PNG files are allowed", { position: 'top-center' });
+          toast.warning("Only JPG / PNG files are allowed", {
+            position: "top-center",
+          });
           return;
         }
       }
@@ -826,64 +979,89 @@ const SupportChat = ({ ticketId = "1" }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Ticket Detail View</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
+          Ticket Detail View
+        </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Ticket Details */}
           <div className="bg-white rounded-xl p-6 shadow-lg">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Ticket Details</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Ticket Details
+            </h2>
 
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Name</label>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Name
+                  </label>
                   <p className="text-gray-800">
                     {chartData?.data?.ticket?.author_name
                       ? chartData.data.ticket.author_name
-                        .charAt(0)
-                        .toUpperCase() +
-                      chartData.data.ticket.author_name
-                        .slice(1)
-                        .toLowerCase()
+                          .charAt(0)
+                          .toUpperCase() +
+                        chartData.data.ticket.author_name.slice(1).toLowerCase()
                       : ""}
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Email</label>
-                  <p className="text-gray-800">{chartData?.data?.ticket.author_email}</p>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Email
+                  </label>
+                  <p className="text-gray-800">
+                    {chartData?.data?.ticket.author_email}
+                  </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Title</label>
-                  <p className="text-gray-800">{chartData?.data?.ticket.title}</p>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Title
+                  </label>
+                  <p className="text-gray-800">
+                    {chartData?.data?.ticket.title}
+                  </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Priority</label>
-                  <p className={`text-capitalize ${chartData?.data?.ticket.priority === "low"
-                    ? "text-blue-600"
-                    : chartData?.data?.ticket.priority === "medium"
-                      ? "text-yellow-600"
-                      : "text-red-600"
-                    }`}>
+                  <label className="block text-sm font-medium text-gray-600 mb-1">
+                    Priority
+                  </label>
+                  <p
+                    className={`text-capitalize ${
+                      chartData?.data?.ticket.priority === "low"
+                        ? "text-blue-600"
+                        : chartData?.data?.ticket.priority === "medium"
+                        ? "text-yellow-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {chartData?.data?.ticket.priority}
                   </p>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Content</label>
-                <p className="text-gray-800">{chartData?.data?.ticket.content}</p>
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Content
+                </label>
+                <p className="text-gray-800">
+                  {chartData?.data?.ticket.content}
+                </p>
               </div>
 
               {chartData?.data?.ticket.image && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Attachments</label>
+                  <label className="block text-sm font-medium text-gray-600 mb-2">
+                    Attachments
+                  </label>
                   <img
                     className="rounded-lg cursor-pointer max-h-64 object-cover border"
                     src={chartData?.data?.ticket.image}
-                    onClick={() => openImageViewer(chartData?.data?.ticket.image)}
+                    onClick={() =>
+                      openImageViewer(chartData?.data?.ticket.image)
+                    }
                     alt="Ticket attachment"
                   />
                 </div>
@@ -907,10 +1085,20 @@ const SupportChat = ({ ticketId = "1" }) => {
                 return (
                   <div
                     key={`${item?._id}-${i}`}
-                    className={`flex ${isAdmin ? "justify-end" : "justify-start"}`}
+                    className={`flex ${
+                      isAdmin ? "justify-end" : "justify-start"
+                    }`}
                   >
-                    <div className={`max-w-xs lg:max-w-md ${isAdmin ? "order-2" : "order-1"}`}>
-                      <div className={`flex items-center gap-2 mb-1 ${isAdmin ? "justify-end" : "justify-start"}`}>
+                    <div
+                      className={`max-w-xs lg:max-w-md ${
+                        isAdmin ? "order-2" : "order-1"
+                      }`}
+                    >
+                      <div
+                        className={`flex items-center gap-2 mb-1 ${
+                          isAdmin ? "justify-end" : "justify-start"
+                        }`}
+                      >
                         <img
                           src={
                             item.commented_by.profile ||
@@ -925,10 +1113,11 @@ const SupportChat = ({ ticketId = "1" }) => {
                       </div>
 
                       <div
-                        className={`rounded-lg p-3 ${isAdmin
-                          ? "bg-teal-600 text-white rounded-br-none"
-                          : "bg-gray-100 text-gray-800 rounded-bl-none"
-                          }`}
+                        className={`rounded-lg p-3 ${
+                          isAdmin
+                            ? "bg-teal-600 text-white rounded-br-none"
+                            : "bg-gray-100 text-gray-800 rounded-bl-none"
+                        }`}
                       >
                         <p className="text-sm">{item.comment}</p>
                         {item?.image && (
@@ -941,7 +1130,11 @@ const SupportChat = ({ ticketId = "1" }) => {
                         )}
                       </div>
 
-                      <p className={`text-xs text-gray-500 mt-1 ${isAdmin ? "text-right" : "text-left"}`}>
+                      <p
+                        className={`text-xs text-gray-500 mt-1 ${
+                          isAdmin ? "text-right" : "text-left"
+                        }`}
+                      >
                         {formatDateWithAmPm(item?.created_at)}
                       </p>
                     </div>
@@ -1029,22 +1222,22 @@ const SupportChat = ({ ticketId = "1" }) => {
 
 // Main Page Component
 const Page = () => {
-  const [currentView, setCurrentView] = useState('list'); // 'list' or 'chat'
+  const [currentView, setCurrentView] = useState("list"); // 'list' or 'chat'
   const [selectedTicketId, setSelectedTicketId] = useState(null);
 
   const handleViewTicket = (ticketId) => {
     setSelectedTicketId(ticketId);
-    setCurrentView('chat');
+    setCurrentView("chat");
   };
 
   const handleBackToList = () => {
-    setCurrentView('list');
+    setCurrentView("list");
     setSelectedTicketId(null);
   };
 
   return (
     <div className="font-sans">
-      {currentView === 'list' ? (
+      {currentView === "list" ? (
         <SupportList onViewTicket={handleViewTicket} />
       ) : (
         <div>

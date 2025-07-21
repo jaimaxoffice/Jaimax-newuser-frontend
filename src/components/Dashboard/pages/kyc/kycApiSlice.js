@@ -23,7 +23,7 @@ export const kycApiSlice = apiSlice.injectEndpoints({
     }),
     getKycData: builder.mutation({
       query: (data) => ({
-        url: `digilocker/getKycData`,
+        url: `/kyc/digilocker`,
         method: "POST",
         body: { ...data },
       }),

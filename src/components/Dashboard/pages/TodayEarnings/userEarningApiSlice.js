@@ -12,7 +12,7 @@ export const userEarningApiSlice = apiSlice.injectEndpoints({
         }
 
         const queryObject = {
-          url: `/user/today-earning-status`,
+          url: `/Auth/user/today-earning-status`,
           method: "POST",
           body: { id },
         };
@@ -34,7 +34,7 @@ export const userEarningApiSlice = apiSlice.injectEndpoints({
     }),
     getActivePaymentGateway: builder.query({
       query: () => ({
-        url: `/user/get-active-paymentgateway`,
+        url: `/admin/payment-gateway/active`,
         method: "GET",
       }),
     }),

@@ -9,13 +9,13 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
     }),
     getAdminSettings: builder.query({
       query: () => ({
-        url: "/Admin/get_settings",
+        url: "/settings",
         method: "GET",
       }),
     }),
     userData: builder.query({
       query: () => ({
-        url: "/user/userDetails",
+        url: "/Auth/userDetails",
         method: "GET",
       }),
       providesTags: ["updateDetails"],

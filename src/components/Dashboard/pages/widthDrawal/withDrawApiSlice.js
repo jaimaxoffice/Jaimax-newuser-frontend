@@ -4,27 +4,27 @@ export const withdrawApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         withdrawHistory: builder.query({
             query: (queryParams) => ({
-              url: `/withdraw/withdrawHistory?${queryParams}`,
+              url: `/payment/withdraw/withdrawHistory?${queryParams}`,
               method: 'GET', 
             }),
           }),
           withdrawRequestList: builder.query({
             query: (queryParams) => ({
-              url: `/withdraw/withdrawList?${queryParams}`,
+              url: `/payment/withdraw/withdrawList?${queryParams}`,
               method: 'GET', 
             }),
           }),
        
           withdrawRequest:builder.mutation({
             query:(data) => ({
-              url: '/withdraw/WithdrawReq',
+              url: '/payment/withdraw/WithdrawReq',
                 method:"POST",
                 body:{...data}
             })
         }),
         calculateWithdraw:builder.mutation({
           query:(data) => ({
-            url: '/withdraw/WithdrawCalculate',
+            url: '/payment/withdraw/WithdrawCalculate',
               method:"POST",
               body:{...data}
           })
@@ -32,7 +32,7 @@ export const withdrawApiSlice = apiSlice.injectEndpoints({
         
         withdrawCalculate: builder.query({
           query: () => ({
-            url: "/withdraw/withdrawCalculate",
+            url: "/payment/withdraw/withdrawCalculate",
             method: "GET",
           }),
         }),
@@ -40,7 +40,7 @@ export const withdrawApiSlice = apiSlice.injectEndpoints({
 
         getSetting: builder.query({
           query: () => ({
-            url: "/Admin/get_settings",
+            url: "/settings",
             method: "GET",
           }),
         }),

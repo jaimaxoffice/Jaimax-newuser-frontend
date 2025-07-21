@@ -3,19 +3,19 @@ export const walletApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     walletTransactionsList: builder.query({
       query: (queryParams) => ({
-        url: `/wallet/transactions?${queryParams}`,
+        url: `/payment/wallet/transactions?${queryParams}`,
         method: "GET",
       }),
     }),
     availableBalance: builder.query({
       query: () => ({
-        url: `/wallet/availableBalance`,
+        url: `/payment/wallet/availableBalance`,
         method: "GET",
       }),
     }),
     addTransaction: builder.mutation({
       query: (data) => ({
-        url: `/wallet/addTransaction`,
+        url: `/payment/wallet/addTransaction`,
         method: "POST",
         body: data,
       }),
@@ -29,7 +29,7 @@ export const walletApiSlice = apiSlice.injectEndpoints({
     }),
     transferAvailableBalance: builder.mutation({
       query: (data) => ({
-        url: `/wallet/transferBalance`,
+        url: `/payment/wallet/transferBalance`,
         method: "POST",
         body: data,
       }),

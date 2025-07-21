@@ -47,7 +47,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { HelmetProvider } from 'react-helmet-async';
+// npm uninstall react-helmet-async
+
 import App from "./App.jsx";
 import { store } from "./services/store.js";
 import "./index.css";
@@ -57,9 +58,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <BrowserRouter>
         <StateProvider>
-            <HelmetProvider>
+            {/* <HelmetProvider> */}
               <App />
-            </HelmetProvider>
+            {/* </HelmetProvider> */}
         </StateProvider>
       </BrowserRouter>
     </Provider>
