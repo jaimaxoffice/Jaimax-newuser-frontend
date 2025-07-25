@@ -19,6 +19,7 @@ import JaimaxRoadmap from './RoadmapDup';
 import CreativePartnersComponent from './Partners';
 import seoContent from '../../SeoContent/seoContent';
 import { Helmet } from 'react-helmet-async';
+import Seo from '../../SeoContent/Seo';
 const Home = () => {
   const [currentBg, setCurrentBg] = useState(homeBgDesktop);
   const navigate = useNavigate();
@@ -49,11 +50,7 @@ const Home = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content="Jaimax, crypto, blockchain, India" />
-      </Helmet>
+      <Seo page="homePage" />
       <div className="outer-container">
 
         <div className="relative min-h-screen flex flex-col justify-center">
@@ -63,7 +60,11 @@ const Home = () => {
               src={currentBg}
               alt="Jaimax Background"
               className="w-full h-full object-cover object-center"
+              loading="lazy"
+              decoding="async"
             />
+
+
             {/* Enhanced overlay for better text readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
           </div>
@@ -90,27 +91,27 @@ const Home = () => {
                 <span className="block">and Trust</span>
               </motion.h1>
               <motion.p
-  initial={{ opacity: 0, x: 30, y: 30 }}
-  animate={{ opacity: 1, x: 0, y: 0 }}
-  transition={{ delay: 0.5, duration: 1 }}
-  className="absolute bottom-6 right-4 sm:bottom-10 sm:right-10
+                initial={{ opacity: 0, x: 30, y: 30 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="absolute bottom-6 right-4 sm:bottom-10 sm:right-10
     text-white text-sm sm:text-base md:text-lg lg:text-xl 
     font-medium max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-lg text-right space-y-4"
->
-  Our expertly designed platform ensures a seamless and secure investment process,
-  allowing you to capitalize on the dynamic nature of the cryptocurrency market.
+              >
+                Our expertly designed platform ensures a seamless and secure investment process,
+                allowing you to capitalize on the dynamic nature of the cryptocurrency market.
 
-  <button
-    onClick={() => navigate("/login")}
-    className="block ml-auto mt-4 font-bold text-center
+                <button
+                  onClick={() => navigate("/login")}
+                  className="block ml-auto mt-4 font-bold text-center
       bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
       text-[#0f1c14] shadow-xl text-sm sm:text-base md:text-lg
       rounded-full hover:scale-105 active:scale-95
       transition-transform duration-300 px-4 py-2"
-  >
-    Start Building
-  </button>
-</motion.p>
+                >
+                  Start Building
+                </button>
+              </motion.p>
 
 
 

@@ -60,7 +60,7 @@ import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarnin
 import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
 import ProtectedRoute from "./router/PrivateRoute";
 import FloatingNavButton from "./global/FloatingNavButton";
-
+import UserDetailsComponent from './components/Dashboard/pages/jwallet/jwallet'
 const getAuthToken = () => {
   try {
     return localStorage.getItem("token");
@@ -138,6 +138,7 @@ const shouldShowSplash = () => {
 /* ─────────────────────────────────────────────────────────────
    Dashboard Layout Component
    ──────────────────────────────────────────────────────────── */
+
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -233,6 +234,18 @@ const DashboardLayout = () => {
 
   return (
     <div className="relative flex h-screen bg-white overflow-hidden">
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       {/* Sidebar */}
       <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
         <Sidebar
@@ -247,12 +260,12 @@ const DashboardLayout = () => {
         className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
           } h-screen overflow-hidden`}
       >
-        <div className="mt-6 mb-1">
+        <div className=" mb-1">
           <Header />
         </div>
 
         <div
-          className="flex-1 overflow-y-auto bg-[#f2f2f2] rounded-xl scrollbar-hide mb-3 mt-1"
+          className="flex-1 overflow-y-auto bg-[#1d8d84] rounded-xl scrollbar-hide mb-3 "
           style={{ scrollbarWidth: "none" }}
         >
           <Outlet />
@@ -402,8 +415,9 @@ const App = () => {
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="wallet/add-funds" element={<AddMoneyToWallet />} />
+          <Route path="wallet" element={<Wallet />}>
+            <Route path="add-funds" element={<AddMoneyToWallet />} />
+          </Route>
           <Route path="my-team" element={<MyTotalTeam />} />
           <Route path="shareholders" element={<Shareholders />} />
           <Route path="buy-history" element={<BuyHistory />} />
@@ -435,6 +449,9 @@ const App = () => {
         </Route>
         <Route path="/profile" element={<DashboardLayout />}>
           <Route index element={<Profile />} />
+        </Route>
+        <Route path="/jwallet" element={<DashboardLayout />}>
+          <Route index element={< UserDetailsComponent />} />
         </Route>
         <Route path="/kyc-information" element={<DashboardLayout />}>
           <Route index element={<Kyc />} />

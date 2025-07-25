@@ -11,7 +11,7 @@ import search from "../../../../assets/search.svg"
 import Loader from "../../../Loader/loader";
 import { ToastContainer } from "react-toastify";
 import Pagination from "../../../pagination/pagination";
-
+import {toast} from "react-toastify"
 const Dashboard = () => {
    const navigate = useNavigate();
    const [loading, setLoading] = useState(false);
@@ -77,7 +77,7 @@ const Dashboard = () => {
         </div>
       </div>
 <div className="w-full bg-gradient-to-br from-teal-50 to-teal-100 min-h-screen px-4 py-6">
-  <div className="max-w-7xl mx-auto">
+  <div className="max-w-9xl mx-auto">
     <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
       <h1 className="text-2xl font-bold text-teal-800 mb-4 sm:mb-0">Total Team Details</h1>
       <div className="relative w-full sm:w-64">

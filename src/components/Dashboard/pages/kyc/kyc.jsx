@@ -2239,7 +2239,7 @@ const KycInformation = () => {
 return(
    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white">
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-9xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             
             {/* Header */}

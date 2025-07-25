@@ -187,9 +187,10 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
 
     if (!formData.email?.trim()) {
       newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email?.trim())) {
+    } else if (!formData.email.includes("@") || !formData.email.includes(".")) {
       newErrors.email = "Invalid email format";
     }
+
 
     if (!formData.password) {
       newErrors.password = "Password is required";
@@ -492,11 +493,11 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
       .string()
       .required('Password is required')
       .min(6, 'Password must be at least 8 characters')
-      // .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-      // .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-      // .matches(/\d/, 'Password must contain at least one number')
-      // .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
-      ,
+    // .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+    // .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    // .matches(/\d/, 'Password must contain at least one number')
+    // .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
+    ,
 
     confirmPassword: yup
       .string()
@@ -517,7 +518,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
         is: true,
         then: (schema) => schema
           .required('OTP is required')
-          .matches(/^\d{4}$/, 'OTP must be 4 digits'),
+          .matches(/^\d{6}$/, 'OTP must be 6 digits'),
         otherwise: (schema) => schema.nullable()
       })
   });
@@ -1077,8 +1078,8 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
-                placeholder="Enter 4-digit OTP"
-                maxLength="4"
+                placeholder="Enter 6-digit OTP"
+                maxLength="6"
                 className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp && touched.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
                   }`}
               />

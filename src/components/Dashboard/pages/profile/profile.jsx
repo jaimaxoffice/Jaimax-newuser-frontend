@@ -2204,10 +2204,10 @@ const validateForm = () => {
     }`;
 
   return (
-    <div className="bg-[#1d8e85] min-h-screen flex items-center justify-center p-2 sm:p-4 lg:p-6">
-      <div className="w-full max-w-7xl bg-white bg-opacity-90 backdrop-blur rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8">
+    <div className="bg-[#1d8e85]  flex items-center justify-center p-2 sm:p-4 lg:p-3">
+      <div className="w-full max-w-9xl bg-white bg-opacity-90 backdrop-blur rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8">
         {/* Mobile-first layout with responsive flex direction */}
-        <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 xl:gap-10">
+        <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 xl:gap-10 max-h-screen">
           
           {/* Profile Form Section */}
           <div className="w-full xl:w-2/3 space-y-4 sm:space-y-6">
