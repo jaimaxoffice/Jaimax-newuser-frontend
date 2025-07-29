@@ -7,6 +7,7 @@ import Pagination from "../../../pagination/pagination";
 import { useUserDetailsQuery } from "./myTotatTeamApliSlice";
 import ReferralModal from "../../modals/referalModal";
 import Loader from "../../../Loader/loader";
+import Cookies from "js-cookie";
 const MyTotalTeam = () => {
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const MyTotalTeam = () => {
     isLoading,
     isError,
     error,
-    refetch,
+    // refetch,
   } = useUserDetailsQuery(queryParams);
 
   const TableData = userDetails?.data?.withdrawRequests || [];
@@ -111,7 +112,7 @@ const MyTotalTeam = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     const verifyToken = async () => {
       if (!token) {
         navigate("/login");
@@ -139,9 +140,9 @@ const MyTotalTeam = () => {
     }
   }, [isTokenVerified, error, navigate]);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
 
   useEffect(() => {
     setLoading(false);

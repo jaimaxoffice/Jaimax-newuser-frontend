@@ -204,7 +204,8 @@ import { FaShareAlt, FaUser } from "react-icons/fa";
 import { TextField, InputAdornment } from "@mui/material";
 import { toast } from "react-toastify";
 import assets from "../../../../../assets/assets";
-import { MyContext } from "../../../../../Authentication/AuthContext";
+import Cookies from "js-cookie";
+// import { MyContext } from "../../../../../Authentication/AuthContext";
 import {
   useUserDataQuery,
   useGetAdminSettingsQuery
@@ -213,10 +214,12 @@ import ReferralModal from "../../../modals/referalModal";
 
 const ActionButtons = () => {
   const navigate = useNavigate();
-  const { data } = useContext(MyContext);
+  // const { data } = useContext(MyContext);
 
-  const token = localStorage.getItem("token");
-  const userDataTopasID = localStorage.getItem("userData");
+  // const token = localStorage.getItem("token");
+  // const userDataTopasID = localStorage.getItem("userData");
+  const token = Cookies.get("token");
+const userDataTopasID = Cookies.get("userData"); // This will be a string
   const parsedUserData = userDataTopasID ? JSON.parse(userDataTopasID) : null;
 
   const [isTokenVerified, setIsTokenVerified] = useState(false);
@@ -267,14 +270,20 @@ Don't miss out on this chance to be part of something BIG! 💥
     }
   }, [userData?.data?.countryCode]);
 
-  useEffect(() => {
-    if (userData?.data?.profile) {
-      localStorage.setItem("profile", userData?.data?.profile);
-    } else {
-      localStorage.removeItem("profile");
-    }
-  }, [userData?.data?.profile]);
-
+  // useEffect(() => {
+  //   if (userData?.data?.profile) {
+  //     localStorage.setItem("profile", userData?.data?.profile);
+  //   } else {
+  //     localStorage.removeItem("profile");
+  //   }
+  // }, [userData?.data?.profile]);
+useEffect(() => {
+  if (userData?.data?.profile) {
+    Cookies.set("profile", userData?.data?.profile);
+  } else {
+    Cookies.remove("profile");
+  }
+}, [userData?.data?.profile]);
   useEffect(() => {
     if (isTokenVerified) {
       refetch();

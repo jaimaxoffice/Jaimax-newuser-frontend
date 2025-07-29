@@ -18,7 +18,7 @@ import RealTimeTicker from './scroll';
 import JaimaxRoadmap from './RoadmapDup';
 import CreativePartnersComponent from './Partners';
 import seoContent from '../../SeoContent/seoContent';
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 import Seo from '../../SeoContent/Seo';
 const Home = () => {
   const [currentBg, setCurrentBg] = useState(homeBgDesktop);

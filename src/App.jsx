@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import {
   Routes,
@@ -15,7 +13,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
 import JaimaxSplash from "./global/Splashscreen";
-
 
 import AuthContainer from "./Authentication/Login";
 import ForgotPassword from "./Authentication/ForgotPassword";
@@ -33,14 +30,12 @@ import TermsConditions from "./global/TermsConditons";
 import PrivacyPolicy from "./global/PrivacyPolicy";
 import Disclaimer from "./global/Disclaimer";
 
-
 import Margintrading from "./services/Margintrading";
 import ApiTrading from "./services/Apitrading";
 import SpotTrading from "./services/Spottrading";
 import FuturesTrading from "./services/Futurestrading";
 import PreSale from "./services/Presale";
 import ReferEarn from "./services/Referearn";
-
 
 import Dashboard from "./components/Dashboard/pages/dashBoard/dashBoard";
 import Wallet from "./components/Dashboard/pages/wallet/wallet";
@@ -58,70 +53,67 @@ import Shareholders from "./components/Dashboard/pages/shareholders/shareholders
 import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet";
 import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarning";
 import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
-import ProtectedRoute from "./router/PrivateRoute";
+import PrivateRoute from "./router/PrivateRoute";
 import FloatingNavButton from "./global/FloatingNavButton";
-import UserDetailsComponent from './components/Dashboard/pages/jwallet/jwallet'
+import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
+import Cookies from "js-cookie";
+import PublicRoute from "./router/PublicRoute";
+// const getAuthToken = () => {
+//   try {
+//     return localStorage.getItem("token") || null; // Switched to localStorage
+//   } catch (error) {
+//     console.error("Error accessing localStorage:", error);
+//     return null;
+//   }
+// };
 const getAuthToken = () => {
   try {
-    return localStorage.getItem("token");
+    return Cookies.get("token") || null;
   } catch (error) {
-    console.error("Error accessing storage:", error);
+    console.error("Error accessing cookies:", error);
     return null;
   }
 };
-
-const isValidToken = (token) => {
-  if (!token) return false;
-
-  try {
-    // If you're using JWT, you can decode and check expiration
-    // For now, just check if token exists and is not empty
-    return token.length > 0;
-
-    // Uncomment below if you're using JWT:
-    /*
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const currentTime = Date.now() / 1000;
-    return payload.exp > currentTime;
-    */
-  } catch (error) {
-    console.error("Invalid token:", error);
-    return false;
-  }
-};
+// const isValidToken = (token) => {
+//   // No need for try/catch here, just check if token is a non-empty string
+//   return typeof token === "string" && token.length > 0;
+// };
 
 const isAuthenticated = () => {
   const token = getAuthToken();
-  return isValidToken(token);
+  return token;
 };
 
-
-const PublicRoute = () => {
-  const userIsAuthenticated = isAuthenticated();
-
-  console.log("PublicRoute - Is Authenticated:", userIsAuthenticated);
-
-  if (userIsAuthenticated) {
-    console.log("User is authenticated, redirecting to dashboard");
-    return <Navigate to="/dashboard" replace />;
-  }
-  return <Outlet />;
-};
+// const PublicRoute = () => {
+//   if (isAuthenticated()) {
+//     return <Navigate to="/dashboard" replace />;
+//   }
+//   return <Outlet />;
+// };
 
 const getLastSplashTime = () => {
   try {
-    return localStorage.getItem("lastSplashTime");
+    const lastTime = localStorage.getItem("lastSplashTime");
+    if (lastTime) {
+      const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+      if (Date.now() - parseInt(lastTime) > oneDay) {
+        localStorage.removeItem("lastSplashTime"); // Remove if expired
+        return null;
+      }
+      return lastTime;
+    }
+    return null;
   } catch (error) {
-    console.error("Error accessing storage:", error);
+    console.error("Error getting last splash time from localStorage:", error);
     return null;
   }
 };
 
 const setLastSplashTime = () => {
   try {
-    localStorage.setItem("lastSplashTime", Date.now().toString());
+    localStorage.setItem("lastSplashTime", Date.now().toString()); // Stores the current timestamp
   } catch (error) {
-    console.error("Error setting last splash time:", error);
+    console.error("Error setting last splash time in localStorage:", error);
   }
 };
 
@@ -135,10 +127,6 @@ const shouldShowSplash = () => {
   return timeSinceLastSplash >= oneHour;
 };
 
-/* ─────────────────────────────────────────────────────────────
-   Dashboard Layout Component
-   ──────────────────────────────────────────────────────────── */
-
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -146,8 +134,6 @@ const DashboardLayout = () => {
   const [navPosition, setNavPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-
-  // Initialize position on component mount
   useEffect(() => {
     const updatePosition = () => {
       const x = window.innerWidth - 80;
@@ -160,18 +146,32 @@ const DashboardLayout = () => {
     return () => window.removeEventListener("resize", updatePosition);
   }, []);
 
-  const handleLogout = () => {
-    try {
-      localStorage.removeItem("token");
-      sessionStorage.removeItem("token");
-      localStorage.removeItem("lastSplashTime");
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-    setShowLogoutModal(false);
-    window.location.href = "/login";
-  };
-
+  // const handleLogout = () => {
+  //   try {
+  //     localStorage.removeItem("token");
+  //     localStorage.removeItem("userData");
+  //     localStorage.removeItem("email");
+  //     localStorage.removeItem("rememberMe");
+  //     localStorage.removeItem("lastSplashTime"); // Already using localStorage, so no change needed here
+  //   } catch (error) {
+  //     console.error("Error during logout:", error);
+  //   }
+  //   setShowLogoutModal(false);
+  //   window.location.href = "/login"; // Note: Consider using navigate for smoother transitions
+  // };
+const handleLogout = () => {
+  try {
+    Cookies.remove("token");
+    Cookies.remove("userData");
+    Cookies.remove("email");
+    Cookies.remove("rememberMe");
+    // localStorage.removeItem("lastSplashTime"); // If you want to keep this in localStorage, leave as is
+  } catch (error) {
+    console.error("Error during logout:", error);
+  }
+  setShowLogoutModal(false);
+  window.location.href = "/login"; // Or use navigate("/login") if using react-router
+};
   const handleNavigation = (path) => {
     setShowNavMenu(false);
     window.location.href = path;
@@ -246,7 +246,6 @@ const DashboardLayout = () => {
         pauseOnHover
         theme="colored"
       />
-      {/* Sidebar */}
       <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
         <Sidebar
           isOpen={sidebarOpen}
@@ -255,10 +254,10 @@ const DashboardLayout = () => {
         />
       </div>
 
-      {/* Main Content */}
       <div
-        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
-          } h-screen overflow-hidden`}
+        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${
+          sidebarOpen ? "lg:ml-64" : "lg:ml-2"
+        } h-screen overflow-hidden`}
       >
         <div className=" mb-1">
           <Header />
@@ -272,9 +271,6 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-      {/* <FloatingNavButton /> */}
-
-      {/* Backdrop */}
       {showNavMenu && (
         <div
           className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300"
@@ -282,7 +278,6 @@ const DashboardLayout = () => {
         />
       )}
 
-      {/* Logout Modal */}
       {showLogoutModal && (
         <LogoutModal
           onCancel={() => setShowLogoutModal(false)}
@@ -292,30 +287,11 @@ const DashboardLayout = () => {
     </div>
   );
 };
-
-/* ─────────────────────────────────────────────────────────────
-   Public Layout Component
-   ──────────────────────────────────────────────────────────── */
-// Updated PublicLayout Component
 const PublicLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
-
-  // Check authentication and redirect if needed
-  useEffect(() => {
-    const userIsAuthenticated = isAuthenticated();
-
-    console.log("PublicLayout - Location:", location.pathname);
-    console.log("PublicLayout - Is Authenticated:", userIsAuthenticated);
-
-    // If user is authenticated and trying to access home page, redirect to dashboard
-    if (userIsAuthenticated && location.pathname === "/") {
-      console.log("Authenticated user on home page, redirecting to dashboard");
-      navigate("/dashboard", { replace: true });
-    }
-  }, [location.pathname, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -328,37 +304,6 @@ const PublicLayout = () => {
   );
 };
 
-// const isAuthenticated = () => {
-//   const token = getAuthToken();
-//   return token !== null && token !== undefined && token !== "";
-// };
-// const PublicLayout = () => {
-//   const location = useLocation();
-//   const navigate = useNavigate();
-//   const isAuthenticated = isAuthenticated(); // Use the helper function to check auth status
-//   const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
-//   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
-//   // Redirect authenticated users to dashboard from home page
-//   useEffect(() => {
-//     if (isAuthenticated && location.pathname === "/") {
-//       navigate("/dashboard", { replace: true });
-//     }
-//   }, [isAuthenticated, location.pathname, navigate]);
-
-//   return (
-//     <div className="min-h-screen flex flex-col">
-//       {!shouldHideNavbar && <Navbar />}
-//       <main className="flex-1">
-//         <Outlet />
-//       </main>
-//       {!shouldHideNavbar && <Footer />}
-//     </div>
-//   );
-// };
-
-/* ─────────────────────────────────────────────────────────────
-   Main App Component
-   ──────────────────────────────────────────────────────────── */
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -400,7 +345,7 @@ const App = () => {
         setTimeout(() => {
           setShowSplash(false);
           setLastSplashTime();
-        }, 4000);
+        }, 500);
       }
     }, 60000);
 
@@ -411,8 +356,7 @@ const App = () => {
 
   return (
     <Routes>
-      {/* ─────── Protected Routes (Dashboard) ─────── */}
-      <Route element={<ProtectedRoute />}>
+      <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="wallet" element={<Wallet />}>
@@ -428,7 +372,6 @@ const App = () => {
           <Route path="support" element={<Support />} />
         </Route>
 
-        {/* Additional protected routes with DashboardLayout */}
         <Route path="/wallet" element={<DashboardLayout />}>
           <Route index element={<Wallet />} />
         </Route>
@@ -451,7 +394,7 @@ const App = () => {
           <Route index element={<Profile />} />
         </Route>
         <Route path="/jwallet" element={<DashboardLayout />}>
-          <Route index element={< UserDetailsComponent />} />
+          <Route index element={<UserDetailsComponent />} />
         </Route>
         <Route path="/kyc-information" element={<DashboardLayout />}>
           <Route index element={<Kyc />} />
@@ -467,18 +410,18 @@ const App = () => {
         </Route>
       </Route>
 
-      {/* ─────── Public Routes ─────── */}
       <Route path="/" element={<PublicLayout />}>
-        <Route index element={<Home />} />
-
-        {/* Auth Routes - Protected from logged-in users */}
+        <Route
+          index
+          element={
+            isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Home />
+          }
+        />
         <Route element={<PublicRoute />}>
           <Route path="login" element={<AuthContainer />} />
           <Route path="register" element={<AuthContainer />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
         </Route>
-
-        {/* Public pages */}
         <Route path="about" element={<JaimaxComponent />} />
         <Route path="contact" element={<Contact />} />
         <Route path="features" element={<FeaturesSection />} />
@@ -503,7 +446,6 @@ const App = () => {
         <Route path="ReferEarn" element={<ReferEarn />} />
       </Route>
 
-      {/* Catch all route - redirect to home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

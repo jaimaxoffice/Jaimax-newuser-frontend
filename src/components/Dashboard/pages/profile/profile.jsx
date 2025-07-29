@@ -1728,13 +1728,13 @@ import {
   useChangePwdReqMutation,
   useVerifyMutation,
 } from "../../../../Authentication/authApiSlice";
-import { MyContext } from '../../../../Authentication/AuthContext';
+// import { MyContext } from '../../../../Authentication/AuthContext';
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
 import { useUpdateAddressMutation } from './profileApiSlice';
 import countryCodes from "../../../../Authentication/countryCodes.json";
 
 export default function Profile3DForm() {
-  const { data } = useContext(MyContext);
+  // const { data } = useContext(MyContext);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     password: "",

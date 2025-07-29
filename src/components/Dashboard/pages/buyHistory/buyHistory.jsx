@@ -843,7 +843,7 @@ import { useNavigate } from "react-router-dom";
 import { useBuyDetailsQuery } from "./buyHistoryApiSlice";
 import { toast } from "react-toastify";
 import Pagination from "../../../pagination/pagination";
-
+import Cookies from "js-cookie";
 const BuyHistory = () => {
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("Completed");
@@ -888,7 +888,8 @@ const BuyHistory = () => {
   }, [searchQuery]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     const verifyToken = async () => {
       if (!token) {
         navigate("/login");
@@ -904,7 +905,7 @@ const BuyHistory = () => {
     if (isTokenVerified) {
       const debounce = setTimeout(() => {
         if (error?.data?.status_code === 400) {
-          localStorage.clear();
+          // localStorage.clear();
           navigate("/login");
           toast.error(error?.data?.message, {
             position: "top-center",

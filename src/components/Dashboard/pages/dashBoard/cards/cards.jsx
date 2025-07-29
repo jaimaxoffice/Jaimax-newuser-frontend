@@ -251,7 +251,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import assets from "../../../../../assets/assets";
 import { useUserDataQuery } from "../DashboardApliSlice";
-import { MyContext } from "../../../../../Authentication/AuthContext";
+// import { MyContext } from "../../../../../Authentication/AuthContext";
 
 const TopCards = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -259,7 +259,7 @@ const TopCards = () => {
   const [currency, setCurrency] = useState("");
   const [currencySymbol, setCurrencySymbol] = useState("");
   
-  const { data } = useContext(MyContext);
+  // const { data } = useContext(MyContext);
   const token = localStorage.getItem("token");
 
   const { data: userData, refetch } = useUserDataQuery(undefined, {

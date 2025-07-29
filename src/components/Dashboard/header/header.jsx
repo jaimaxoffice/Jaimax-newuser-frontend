@@ -535,7 +535,7 @@ import { useLocation, Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
 import { useUserDataQuery } from '../../Dashboard/pages/dashBoard/DashboardApliSlice';
-
+import Cookies from "js-cookie";
 const routeTitles = {
   "/": "Dashboard",
   "/wallet": "Wallet",
@@ -556,15 +556,17 @@ function Header() {
   
   // Use API data instead of localStorage
   const { data: userData, isLoading, error } = useUserDataQuery();
-  const name=JSON.parse(localStorage.getItem("userData"));
-  const id=name?.data?.name;
-  const mail=name?.data?.email;
+  // const name=JSON.parse(localStorage.getItem("userData"));
+  const name = JSON.parse(Cookies.get("userData"));
+  console.log(name?.name , "No user data found");
+  const id=name?.name;
+  const mail=name?.email;
   // console.log(id);
   // console.log(mail);
   // Extract user information from API response
   const username = userData?.data?.name || "User";
   const email = userData?.data?.email || "email";
-  const profileImage = userData?.data?.profile;
+  const profileImage = userData?.profile;
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -574,8 +576,10 @@ function Header() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("userData");
-    localStorage.removeItem('token');
+    // localStorage.removeItem("userData");
+    Cookies.remove("userData");
+    Cookies.remove("token");
+    // localStorage.removeItem('token');
     // You might want to also clear any API cache or call a logout API
     window.location.href = "/";
   };

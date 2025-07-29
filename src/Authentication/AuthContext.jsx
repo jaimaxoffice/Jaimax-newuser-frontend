@@ -1,44 +1,97 @@
+// AuthContext.js
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
+import { AuthUtils } from "../router/AuthUtils";
 
+const AuthContext = createContext();
 
+export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-import { createContext, useState,useEffect  } from "react";
-
-export const MyContext = createContext("");
-const ContextProvider = ({ children }) => {
-  // const [data, setData] = useState([]);
-
-  const [data, setData] = useState(() => {
-    try {
-      const savedData = localStorage.getItem("userData");
-      return savedData ? JSON.parse(savedData) : null;
-    } catch (error) {
-      // console.error("Error parsing JSON from localStorage:", error);
-      return null; // Handle gracefully if parsing fails
-    }
-  });
-  
+  // Initialize auth state
   useEffect(() => {
-    // Save the data to localStorage whenever it changes
-    if (data) {
-      localStorage.setItem('userData', JSON.stringify(data));
-    } else {
-      localStorage.removeItem('userData');
-    }
-  }, [data]);
+    const initializeAuth = async () => {
+      try {
+        const authStatus = AuthUtils.isAuthenticated();
+        const userData = AuthUtils.getUserData();
+        setIsAuthenticated(authStatus);
+        setUser(userData);
+      } catch (error) {
+        console.error("Error initializing auth:", error);
+        setIsAuthenticated(false);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    initializeAuth();
+  }, []);
 
-  const logout = () => {
-    setData(null);
-    localStorage.removeItem("userData");
-    localStorage.removeItem("token");
-  };
+  const login = useCallback(async (token, userData) => {
+    try {
+      const success = AuthUtils.setAuthData(token, userData);
+      if (success) {
+        setIsAuthenticated(true);
+        setUser(userData);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    try {
+      const success = AuthUtils.clearAuthData();
+      setIsAuthenticated(false);
+      setUser(null);
+      return success;
+    } catch (error) {
+      console.error("Logout error:", error);
+      return false;
+    }
+  }, []);
+
+  const refreshAuth = useCallback(() => {
+    const authStatus = AuthUtils.isAuthenticated();
+    const userData = AuthUtils.getUserData();
+    setIsAuthenticated(authStatus);
+    setUser(userData);
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      isAuthenticated,
+      user,
+      isLoading,
+      login,
+      logout,
+      refreshAuth,
+    }),
+    [isAuthenticated, user, isLoading, login, logout, refreshAuth]
+  );
 
   return (
-      <MyContext.Provider value={{ data, setData, logout }}>
-        {children}
-      </MyContext.Provider>
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
-export default ContextProvider;
-
-
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import Cookies from "js-cookie";
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_BASE_URL,
   // credentials: "include",
@@ -11,8 +11,8 @@ const baseQuery = fetchBaseQuery({
       "GET, POST, PUT,PATCH, DELETE, OPTIONS"
     );
 
-    const token = localStorage.getItem("token");
-
+    // const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     // If we have a token set in state, let's assume that we should be passing it.
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
@@ -34,12 +34,12 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
       api,
       extraOptions
     );
-    
+
 
     if (refreshResult?.data) {
       // Store the new token
-      localStorage.setItem("token", refreshResult.data?.data.token);
-
+      // localStorage.setItem("token", refreshResult.data?.data.token);
+      Cookies.set("token", refreshResult.data?.data.token, { expires: 7 });
       // Retry the original query with the new token
       result = await baseQuery(args, api, extraOptions);
     } else {
@@ -51,7 +51,10 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
   // If a 401 error occurs, logout or handle it (custom behavior)
   if (result?.error?.data?.status_code === 401) {
     window.location.href = "/login";
-    localStorage.clear();
+    // localStorage.clear();
+    Object.keys(Cookies.get()).forEach(function(cookieName) {
+  Cookies.remove(cookieName);
+});
     // Handle logout or other custom logic
     // console.error("Unauthorized: Logging out");
     // Optionally dispatch an action or navigate the user
@@ -63,7 +66,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
   baseQuery: baseQueryWithReAuth,
-  tagTypes: ["getComment", "updateDetails", "getTicket","shareholder"],
+  tagTypes: ["getComment", "updateDetails", "getTicket", "shareholder"],
   endpoints: (builder) => ({}),
 });
 
