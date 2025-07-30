@@ -517,7 +517,7 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
         is: true,
         then: (schema) => schema
           .required('OTP is required')
-          .matches(/^\d{4}$/, 'OTP must be 4 digits'),
+          .matches(/^\d{6}$/, 'OTP must be 6 digits'),
         otherwise: (schema) => schema.nullable()
       })
   });
@@ -1077,8 +1077,8 @@ const RegisterComponent = ({ onSubmit, onToggleMode, isVisible, showModal,
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 onBlur={handleBlur}
-                placeholder="Enter 4-digit OTP"
-                maxLength="4"
+                placeholder="Enter 6-digit OTP"
+                maxLength="6"
                 className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${errors.otp && touched.otp ? 'border-red-500 bg-red-50' : 'border-gray-300'
                   }`}
               />
