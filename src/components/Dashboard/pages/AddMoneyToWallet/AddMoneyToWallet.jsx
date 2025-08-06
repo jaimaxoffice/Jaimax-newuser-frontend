@@ -679,7 +679,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import Cookies from 'js-cookie'
 import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice";
 import {
   useAddTransactionMutation,
@@ -980,7 +980,7 @@ const AddMoneyToWallet = () => {
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
-        navigate("/dashboard/wallet/add-funds");
+        navigate("/buy-history");
       }
     } catch (error) {
       // console.log("Error submitting form:", error);
@@ -1146,7 +1146,7 @@ const AddMoneyToWallet = () => {
   const onClickAddMoney = () => {
     try {
       // Step 1: Get and parse user data from localStorage
-      const userDataRaw = localStorage.getItem("userData");
+      const userDataRaw = Cookies.get("userData");
       if (!userDataRaw) {
         // console.error("User not found in localStorage");
         alert("User not logged in. Please login and try again.");

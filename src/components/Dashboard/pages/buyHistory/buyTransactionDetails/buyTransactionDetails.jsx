@@ -377,7 +377,7 @@ import { ChevronDown, Search, Calendar, CreditCard, DollarSign, Hash, TrendingUp
 import { useGetBuyDetailsQuery}  from "../buyHistoryApiSlice"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import Cookies from "js-cookie"
 const TransactionDetails = () => {
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("Completed");
@@ -433,7 +433,7 @@ const TransactionDetails = () => {
 
   // Token verification effect
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     const verifyToken = async () => {
       if (!token) {
         navigate("/login");
@@ -449,7 +449,7 @@ const TransactionDetails = () => {
     if (isTokenVerified) {
       const debounce = setTimeout(() => {
         if (error?.data?.status_code === 400) {
-          localStorage.clear();
+          // localStorage.clear();
           navigate("/login");
           toast.error(error?.data?.message, {
             position: "top-center",
