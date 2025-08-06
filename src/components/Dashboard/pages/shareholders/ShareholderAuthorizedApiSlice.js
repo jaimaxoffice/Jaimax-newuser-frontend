@@ -4,7 +4,7 @@ export const shareholderAuthApiSlice = apiSlice.injectEndpoints({
     shareAuth: builder.query({
       query: () => {
         return {
-          url: `/admin/share-holders/all-authoraized-shareholders`,
+          url: `/admin/share-holders/all-authorized-shareholders`,
           method: "GET",
         };
       },

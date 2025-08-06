@@ -8,7 +8,7 @@ export const userShareApiSlice = apiSlice.injectEndpoints({
         }
       
         return {
-          url: `admin/share-holders/user-eligibilty-shareholder`,
+          url: `admin/share-holders/user-eligibility-shareholder`,
           method: "POST",
           body: { username },
         };

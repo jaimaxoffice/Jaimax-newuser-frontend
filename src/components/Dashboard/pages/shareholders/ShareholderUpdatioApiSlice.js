@@ -3,7 +3,7 @@ export const updateShareholderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     updateShareholderProfile: builder.mutation({
       query: (data) => ({
-        url: "//update-shareholder-profile",
+        url: "/update-shareholder-profile",
         method: "POST",
         body: data,
       }),
