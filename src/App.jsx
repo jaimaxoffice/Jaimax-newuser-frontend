@@ -359,9 +359,7 @@ const App = () => {
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="wallet" element={<Wallet />}>
-            <Route path="add-funds" element={<AddMoneyToWallet />} />
-          </Route>
+          <Route path="wallet" element={<Wallet />}/>
           <Route path="my-team" element={<MyTotalTeam />} />
           <Route path="shareholders" element={<Shareholders />} />
           <Route path="buy-history" element={<BuyHistory />} />
@@ -374,6 +372,9 @@ const App = () => {
 
         <Route path="/wallet" element={<DashboardLayout />}>
           <Route index element={<Wallet />} />
+        </Route>
+        <Route path="/add-funds" element={<DashboardLayout />}>
+          <Route index element={<AddMoneyToWallet />} />
         </Route>
         <Route path="/my-team" element={<DashboardLayout />}>
           <Route index element={<MyTotalTeam />} />

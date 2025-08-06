@@ -26,7 +26,7 @@ const ShareholderEligibility = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userData") || "{}");
-    const username = user.data.username;
+    const username = user?.username;
     console.log("Username:", username);
     if (username) {
       setLoading(true);

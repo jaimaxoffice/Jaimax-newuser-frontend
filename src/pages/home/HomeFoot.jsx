@@ -462,7 +462,7 @@ export default function HomeFooter() {
       {/* Second Section */}
       <div className="w-full relative bg-gradient-to-br from-slate-900 via-teal-900 to-cyan-600 min-h-[50vh] sm:min-h-[60vh]">
         <div 
-          className="relative z-10 container mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-24 text-center"
+          className="relative z-10  mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-24 text-center"
           style={{
             backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${coinsmax}')`,
             backgroundSize: 'cover',

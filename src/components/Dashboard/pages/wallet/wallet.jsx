@@ -6,6 +6,7 @@ import {
   useAvailableBalanceQuery,
   useWalletTransactionsListQuery,
 } from "./walletApiSlice";
+import Cookies from "js-cookie"
 import Loader from '../../../Loader/loader';
 import ReferralModal from '../../modals/referalModal';
 const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
@@ -51,7 +52,7 @@ export default function WalletDashboard() {
   const navigate = useNavigate();
 
   // Get user data from localStorage
-  const userData = localStorage.getItem("userData") && JSON.parse(localStorage.getItem("userData"));
+  const userData = Cookies.get("userData") ;
   const countryCode = userData?.data?.countryCode;
   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
 
@@ -165,7 +166,7 @@ export default function WalletDashboard() {
 
   // Navigation to add funds
   const onClickAddMoney = () => {
-    navigate("/dashboard/wallet/add-funds");
+    navigate("/add-funds");
   };
 
   // Handle share referral code

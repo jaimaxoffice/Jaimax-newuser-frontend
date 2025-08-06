@@ -1,6 +1,7 @@
 // import React, { useState, useEffect, useContext } from "react";
 // import assets from "../../../../../assets/assets";
-// import { useUserDataQuery } from "../DashboardApliSlice"
+// import { 
+//  } from "../DashboardApliSlice"
 // import { MyContext } from "../../../../../Authentication/AuthContext";
 // const TopCards = () => {
 //   const [hoveredCard, setHoveredCard] = useState(null);
@@ -251,6 +252,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import assets from "../../../../../assets/assets";
 import { useUserDataQuery } from "../DashboardApliSlice";
+import Cookies from "js-cookie";
 // import { MyContext } from "../../../../../Authentication/AuthContext";
 
 const TopCards = () => {
@@ -260,11 +262,14 @@ const TopCards = () => {
   const [currencySymbol, setCurrencySymbol] = useState("");
   
   // const { data } = useContext(MyContext);
-  const token = localStorage.getItem("token");
+  const token = Cookies.get("token");
+
 
   const { data: userData, refetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
+
+  console.log("userData", userData);
 
   useEffect(() => {
     const verifyToken = async () => {

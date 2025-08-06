@@ -24,17 +24,17 @@ export const userCryptoApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     exchangeCrypto: builder.mutation({
-      query: ({ userId, tokenName, tokensSent }) => ({
+      query: ({ userId, tokenName, tokensSent, }) => ({
         url: `/order/CryptoExchange`,
         method: "POST",
         body: { userId, tokenName, tokensSent },
       }),
     }),
     awardJmcToUser: builder.mutation({
-      query: ({ userId, eqJMC,swappedTokenCount,swappedTokenType }) => ({
+      query: ({ userId, eqJMC,swappedTokenCount,swappedTokenType,adminTransactionHash }) => ({
         url: `/order/award-jmc`,
         method: "POST",
-        body: { userId, eqJMC,swappedTokenCount ,swappedTokenType},
+        body: { userId, eqJMC,swappedTokenCount ,swappedTokenType,adminTransactionHash},
       }),
     }),
     processBinanceExchange: builder.mutation({

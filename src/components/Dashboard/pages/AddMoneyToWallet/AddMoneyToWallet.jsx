@@ -980,7 +980,7 @@ const AddMoneyToWallet = () => {
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
-        navigate("/wallet");
+        navigate("/dashboard/wallet/add-funds");
       }
     } catch (error) {
       // console.log("Error submitting form:", error);
@@ -1363,7 +1363,7 @@ const AddMoneyToWallet = () => {
               <div className="lg:col-span-1">
                 <div className="text-center mb-4">
                   <button
-                    className="text-teal-600 hover:text-teal-700 font-semibold underline"
+                    className="text-white  font-semibold underline"
                     onClick={handleDownload}
                   >
                     Download QR Code for Future Payments

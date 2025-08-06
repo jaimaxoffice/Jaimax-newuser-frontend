@@ -31,7 +31,6 @@
 
 //   console.log(buyDetails);    // ✅ shows the fetched data
 
-
 //   const TableData = buyDetails?.data?.withdrawRequests || [];
 
 //   // Handle PerChange
@@ -57,7 +56,7 @@
 //   useEffect(() => {
 //     const token = localStorage.getItem("token");
 //     console.log(token)
-//     // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDZjM2FkOWRkZWU1ZTM0OWZiZTk3YSIsImV4cCI6MTc1MDIzMTg0OCwiaWF0IjoxNzUwMjMxMjQ4fQ.LV0PtQ1pVAsuMj_om7Y_HNzUWH_UOiLK6VR0SoIj1PQ" 
+//     // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDZjM2FkOWRkZWU1ZTM0OWZiZTk3YSIsImV4cCI6MTc1MDIzMTg0OCwiaWF0IjoxNzUwMjMxMjQ4fQ.LV0PtQ1pVAsuMj_om7Y_HNzUWH_UOiLK6VR0SoIj1PQ"
 //     const verifyToken = async () => {
 //       if (!token) {
 //         navigate("/login");
@@ -90,12 +89,11 @@
 //     return () => {
 //       clearTimeout(searchTimeout);
 //     };
-//   }, []); 
+//   }, []);
 
 //   useEffect(() => {
 //   refetch();                    // call API again
 // }, [state.currentPage, state.search, selectedStatus, refetch]);
-
 
 //   /**
 //    * This method is used to convert the iso string to date & time format
@@ -486,7 +484,6 @@
 
 // export default BuyHistory;
 
-
 // import React, { useState, useEffect } from "react";
 // import { ChevronDown, Search, Calendar, CreditCard, DollarSign, Hash, TrendingUp, Globe } from "lucide-react";
 // import { useNavigate } from "react-router-dom";
@@ -763,7 +760,6 @@
 //                   </tr>
 //                 </thead>
 
-
 //                 <tbody className="divide-y divide-gray-200">
 //                   {(isLoading || loading) ? (
 //                     [...Array(parseInt(state.perPage))].map((_, i) => (
@@ -835,10 +831,17 @@
 
 // export default BuyHistory;
 
-
-
 import React, { useState, useEffect } from "react";
-import { ChevronDown, Search, Calendar, CreditCard, DollarSign, Hash, TrendingUp, Globe } from "lucide-react";
+import {
+  ChevronDown,
+  Search,
+  Calendar,
+  CreditCard,
+  DollarSign,
+  Hash,
+  TrendingUp,
+  Globe,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useBuyDetailsQuery } from "./buyHistoryApiSlice";
 import { toast } from "react-toastify";
@@ -856,8 +859,9 @@ const BuyHistory = () => {
   const [loading, setLoading] = useState(false);
 
   // Update query parameters
-  const queryParams = `limit=${state?.perPage || ""}&page=${state?.currentPage || ""
-    }&search=${state?.search || ""}&status=${selectedStatus}`;
+  const queryParams = `limit=${state?.perPage || ""}&page=${
+    state?.currentPage || ""
+  }&search=${state?.search || ""}&status=${selectedStatus}`;
 
   const {
     data: buyDetails,
@@ -928,15 +932,17 @@ const BuyHistory = () => {
   const formatDateWithAmPm = (isoString) => {
     const date = new Date(isoString);
     const options = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: true,
-      timeZone: 'UTC' // Assuming UTC date strings from backend
+      timeZone: "UTC", // Assuming UTC date strings from backend
     };
-    return new Intl.DateTimeFormat('en-GB', options).format(date).replace(',', '');
+    return new Intl.DateTimeFormat("en-GB", options)
+      .format(date)
+      .replace(",", "");
   };
 
   useEffect(() => {
@@ -992,10 +998,13 @@ const BuyHistory = () => {
 
         {/* Mobile Cards View (xs to sm) */}
         <div className="block sm:hidden space-y-3">
-          {(isLoading || loading) ? (
+          {isLoading || loading ? (
             // Loading skeleton for mobile
             [...Array(3)].map((_, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 animate-pulse border border-gray-200 shadow-sm">
+              <div
+                key={i}
+                className="bg-white rounded-xl p-4 animate-pulse border border-gray-200 shadow-sm"
+              >
                 <div className="flex justify-between items-start mb-3">
                   <div className="h-4 bg-gray-200 rounded w-20"></div>
                   <div className="h-6 bg-gray-200 rounded-full w-24"></div>
@@ -1009,107 +1018,160 @@ const BuyHistory = () => {
             ))
           ) : TableData.length === 0 ? (
             <div className="bg-white rounded-xl p-6 text-center border border-gray-200 shadow-sm">
-              <p className="text-lg text-gray-600 font-medium">No buy history found.</p>
+              <p className="text-lg text-gray-600 font-medium">
+                No buy history found.
+              </p>
             </div>
           ) : (
             TableData.map((data, i) => (
-<div key={i} className="bg-white rounded-xl p-4 md:p-5 border border-gray-200 hover:shadow-xl hover:border-blue-300 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group">
-  {/* Subtle background gradient */}
-  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-emerald-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-  
-  {/* Content */}
-  <div className="relative z-10">
-    {/* Header - Compact */}
-    <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
-      <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-        
-        <span>{(state?.currentPage - 1) * parseInt(state?.perPage) + i + 1}</span>
-      </div>
-      <span className={`px-3 py-1 rounded-lg text-xs font-semibold ${getStatusClasses(data?.status)}`}>
-        {data?.status}
-      </span>
-    </div>
+              <div
+                key={i}
+                className="bg-white rounded-xl p-4 md:p-5 border border-gray-200 hover:shadow-xl hover:border-blue-300 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group"
+              >
+                {/* Subtle background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-emerald-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-    {/* Transaction ID - Inline */}
-    <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-      <CreditCard className="w-4 h-4 text-blue-500 flex-shrink-0" />
-      <div className="min-w-0 flex-1">
-        <span className="text-xs text-gray-500 font-medium block">Transaction ID</span>
-        <p className="text-sm text-gray-800 truncate">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
-      </div>
-    </div>
+                {/* Content */}
+                <div className="relative z-10">
+                  {/* Header - Compact */}
+                  <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                      <span>
+                        {(state?.currentPage - 1) * parseInt(state?.perPage) +
+                          i +
+                          1}
+                      </span>
+                    </div>
+                    <span
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold ${getStatusClasses(
+                        data?.status
+                      )}`}
+                    >
+                      {data?.status}
+                    </span>
+                  </div>
 
-    {/* Info Grid - Compact */}
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
-      <div className="text-center p-2">
-        <div className="w-6 h-6 bg-purple-500 rounded-md mx-auto mb-1 flex items-center justify-center">
-          <div className="w-2 h-2 bg-white rounded-full"></div>
-        </div>
-        <span className="text-xs text-gray-500 block">Payment</span>
-        <p className="text-sm font-semibold text-gray-800 capitalize truncate">{data?.modeOfPayment || "N/A"}</p>
-      </div>
-      
-      <div className="text-center p-2">
-        <div className="w-6 h-6 bg-orange-500 rounded-md mx-auto mb-1 flex items-center justify-center">
-          <Globe className="w-3 h-3 text-white" />
-        </div>
-        <span className="text-xs text-gray-500 block">Currency</span>
-        <p className="text-sm font-semibold text-gray-800">{data?.currency || "N/A"}</p>
-      </div>
+                  {/* Transaction ID - Inline */}
+                  <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <CreditCard className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <span className="text-xs text-gray-500 font-medium block">
+                        Transaction ID
+                      </span>
+                      <p className="text-sm text-gray-800 truncate">
+                        {data?.paypalTransactionId ||
+                          data?.transactionId ||
+                          "N/A"}
+                      </p>
+                    </div>
+                  </div>
 
-      <div className="text-center p-2">
-        <div className="w-6 h-6 bg-emerald-500 rounded-md mx-auto mb-1 flex items-center justify-center">
-          <TrendingUp className="w-3 h-3 text-white" />
-        </div>
-        <span className="text-xs text-gray-500 block">JaiMax</span>
-        <p className="text-sm font-semibold text-emerald-600">{data?.jaimax?.toFixed(3) || "N/A"}</p>
-      </div>
+                  {/* Info Grid - Compact */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                    <div className="text-center p-2">
+                      <div className="w-6 h-6 bg-purple-500 rounded-md mx-auto mb-1 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                      <span className="text-xs text-gray-500 block">
+                        Payment
+                      </span>
+                      <p className="text-sm font-semibold text-gray-800 capitalize truncate">
+                        {data?.paymentMethod || "N/A"}
+                      </p>
+                    </div>
 
-      <div className="text-center p-2">
-        <span className="text-xs text-gray-500 block">Round</span>
-        <p className="text-sm font-semibold text-gray-800">{data?.round || "N/A"}</p>
-      </div>
+                    <div className="text-center p-2">
+                      <div className="w-6 h-6 bg-orange-500 rounded-md mx-auto mb-1 flex items-center justify-center">
+                        <Globe className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-xs text-gray-500 block">
+                        Currency
+                      </span>
+                      <p className="text-sm font-semibold text-gray-800">
+                        {data?.currency || "N/A"}
+                      </p>
+                    </div>
 
-      <div className="text-center p-2">
-        <span className="text-xs text-gray-500 block">INR Price</span>
-        <p className="text-sm font-semibold text-gray-800">{data?.atPriceInr || "N/A"}</p>
-      </div>
+                    <div className="text-center p-2">
+                      <div className="w-6 h-6 bg-emerald-500 rounded-md mx-auto mb-1 flex items-center justify-center">
+                        <TrendingUp className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-xs text-gray-500 block">
+                        JaiMax
+                      </span>
+                      <p className="text-sm font-semibold text-emerald-600">
+                        {data?.jaimax?.toFixed(3) || "N/A"}
+                      </p>
+                    </div>
 
-      <div className="text-center p-2">
-        <span className="text-xs text-gray-500 block">USD Price</span>
-        <p className="text-sm font-semibold text-gray-800">{data?.atPriceUsdt || "N/A"}</p>
-      </div>
-    </div>
+                    <div className="text-center p-2">
+                      <span className="text-xs text-gray-500 block">Round</span>
+                      <p className="text-sm font-semibold text-gray-800">
+                        {data?.round || "N/A"}
+                      </p>
+                    </div>
 
-    {/* Amount - Highlighted but compact */}
-    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg mb-3">
-      <div className="flex items-center gap-2">
-        {/* <DollarSign className="w-5 h-5 text-white" /> */}
-        <span className="text-sm font-semibold text-white">Amount</span>
-      </div>
-      <p className="text-xl font-bold text-white">
-        {data.currency === "INR" ? `₹${data.amount?.toFixed(2) || "0.00"}` : `$${data.amount?.toFixed(2) || "0.00"}`}
-      </p>
-    </div>
+                    <div className="text-center p-2">
+                      <span className="text-xs text-gray-500 block">
+                        INR Price
+                      </span>
+                      <p className="text-sm font-semibold text-gray-800">
+                        {data?.atPriceInr || "N/A"}
+                      </p>
+                    </div>
 
-    {/* Date - Inline */}
-    <div className="flex items-center gap-2 text-sm text-gray-600">
-      <Calendar className="w-4 h-4 text-gray-400" />
-      <span className="text-xs text-gray-500">Purchase Date:</span>
-      <span className="font-medium">{data?.createdAt ? formatDateWithAmPm(data?.createdAt) : "N/A"}</span>
-    </div>
-  </div>
-</div>
+                    <div className="text-center p-2">
+                      <span className="text-xs text-gray-500 block">
+                        USD Price
+                      </span>
+                      <p className="text-sm font-semibold text-gray-800">
+                        {data?.atPriceUsdt || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Amount - Highlighted but compact */}
+                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg mb-3">
+                    <div className="flex items-center gap-2">
+                      {/* <DollarSign className="w-5 h-5 text-white" /> */}
+                      <span className="text-sm font-semibold text-white">
+                        Amount
+                      </span>
+                    </div>
+                    <p className="text-xl font-bold text-white">
+                      {data.currency === "INR"
+                        ? `₹${data.amount?.toFixed(2) || "0.00"}`
+                        : `$${data.amount?.toFixed(2) || "0.00"}`}
+                    </p>
+                  </div>
+
+                  {/* Date - Inline */}
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Calendar className="w-4 h-4 text-gray-400" />
+                    <span className="text-xs text-gray-500">
+                      Purchase Date:
+                    </span>
+                    <span className="font-medium">
+                      {data?.createdAt
+                        ? formatDateWithAmPm(data?.createdAt)
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
+              </div>
             ))
           )}
         </div>
 
         {/* Tablet Cards View (sm to lg) */}
         <div className="hidden sm:block lg:hidden space-y-4">
-          {(isLoading || loading) ? (
+          {isLoading || loading ? (
             // Loading skeleton for tablet
             [...Array(parseInt(state.perPage))].map((_, i) => (
-              <div key={i} className="bg-white rounded-xl p-6 animate-pulse border border-gray-200 shadow-sm">
+              <div
+                key={i}
+                className="bg-white rounded-xl p-6 animate-pulse border border-gray-200 shadow-sm"
+              >
                 <div className="flex justify-between items-start mb-4">
                   <div className="h-5 bg-gray-200 rounded w-24"></div>
                   <div className="h-7 bg-gray-200 rounded-full w-28"></div>
@@ -1126,18 +1188,32 @@ const BuyHistory = () => {
             ))
           ) : TableData.length === 0 ? (
             <div className="bg-white rounded-xl p-8 text-center border border-gray-200 shadow-sm">
-              <p className="text-xl text-gray-600 font-medium">No buy history found.</p>
+              <p className="text-xl text-gray-600 font-medium">
+                No buy history found.
+              </p>
             </div>
           ) : (
             TableData.map((data, i) => (
-              <div key={i} className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out">
+              <div
+                key={i}
+                className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-200 ease-in-out"
+              >
                 {/* Header with S.No and Status */}
                 <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-100">
                   <div className="flex items-center gap-2 text-base font-semibold text-gray-700">
                     <Hash className="w-5 h-5 text-emerald-600" />
-                    <span>Transaction #{(state?.currentPage - 1) * parseInt(state?.perPage) + i + 1}</span>
+                    <span>
+                      Transaction #
+                      {(state?.currentPage - 1) * parseInt(state?.perPage) +
+                        i +
+                        1}
+                    </span>
                   </div>
-                  <span className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusClasses(data?.status)}`}>
+                  <span
+                    className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusClasses(
+                      data?.status
+                    )}`}
+                  >
                     {data?.status}
                   </span>
                 </div>
@@ -1146,15 +1222,24 @@ const BuyHistory = () => {
                   {/* Transaction ID */}
                   <div className="flex flex-col col-span-2">
                     <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-2">
-                      <CreditCard className="w-4 h-4 text-emerald-600" /> Transaction ID
+                      <CreditCard className="w-4 h-4 text-emerald-600" />{" "}
+                      Transaction ID
                     </span>
-                    <p className="text-gray-800  text-base break-all leading-relaxed">{data?.paypalTransactionId || data?.transactionId || "N/A"}</p>
+                    <p className="text-gray-800  text-base break-all leading-relaxed">
+                      {data?.paypalTransactionId ||
+                        data?.transactionId ||
+                        "N/A"}
+                    </p>
                   </div>
 
                   {/* Payment Mode */}
                   <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">Payment Mode</span>
-                    <p className="text-gray-800 text-base capitalize font-semibold">{data?.modeOfPayment || "N/A"}</p>
+                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">
+                      Payment Mode
+                    </span>
+                    <p className="text-gray-800 text-base capitalize font-semibold">
+                      {data?.paymentMethod || "N/A"}
+                    </p>
                   </div>
 
                   {/* Currency */}
@@ -1162,33 +1247,50 @@ const BuyHistory = () => {
                     <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-2">
                       <Globe className="w-4 h-4 text-emerald-600" /> Currency
                     </span>
-                    <p className="text-gray-800 text-base font-bold">{data?.currency || "N/A"}</p>
+                    <p className="text-gray-800 text-base font-bold">
+                      {data?.currency || "N/A"}
+                    </p>
                   </div>
 
                   {/* JaiMax Coin */}
                   <div className="flex flex-col">
                     <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-emerald-600" /> JaiMax Coin
+                      <TrendingUp className="w-4 h-4 text-emerald-600" /> JaiMax
+                      Coin
                     </span>
-                    <p className="text-gray-800 text-base font-bold">{data?.jaimax?.toFixed(3) || "N/A"}</p>
+                    <p className="text-gray-800 text-base font-bold">
+                      {data?.jaimax?.toFixed(3) || "N/A"}
+                    </p>
                   </div>
 
                   {/* Round */}
                   <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">Round</span>
-                    <p className="text-gray-800 text-base font-semibold">{data?.round || "N/A"}</p>
+                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">
+                      Round
+                    </span>
+                    <p className="text-gray-800 text-base font-semibold">
+                      {data?.round || "N/A"}
+                    </p>
                   </div>
 
                   {/* INR Price */}
                   <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">INR Price</span>
-                    <p className="text-gray-800 text-base font-semibold">{data?.atPriceInr || "N/A"}</p>
+                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">
+                      INR Price
+                    </span>
+                    <p className="text-gray-800 text-base font-semibold">
+                      {data?.atPriceInr || "N/A"}
+                    </p>
                   </div>
 
                   {/* USD Price */}
                   <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">USD Price</span>
-                    <p className="text-gray-800 text-base font-semibold">{data?.atPriceUsdt || "N/A"}</p>
+                    <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2">
+                      USD Price
+                    </span>
+                    <p className="text-gray-800 text-base font-semibold">
+                      {data?.atPriceUsdt || "N/A"}
+                    </p>
                   </div>
 
                   {/* Amount */}
@@ -1197,16 +1299,23 @@ const BuyHistory = () => {
                       <DollarSign className="w-4 h-4 text-emerald-600" /> Amount
                     </span>
                     <p className="text-emerald-700 text-xl font-extrabold">
-                      {data.currency === "INR" ? `₹${data.amount?.toFixed(2) || "0.00"}` : `$${data.amount?.toFixed(2) || "0.00"}`}
+                      {data.currency === "INR"
+                        ? `₹${data.amount?.toFixed(2) || "0.00"}`
+                        : `$${data.amount?.toFixed(2) || "0.00"}`}
                     </p>
                   </div>
 
                   {/* Purchase Date */}
                   <div className="flex flex-col col-span-2">
                     <span className="text-sm text-gray-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-emerald-600" /> Purchase Date
+                      <Calendar className="w-4 h-4 text-emerald-600" /> Purchase
+                      Date
                     </span>
-                    <p className="text-gray-800 text-base leading-relaxed">{data?.createdAt ? formatDateWithAmPm(data?.createdAt) : "N/A"}</p>
+                    <p className="text-gray-800 text-base leading-relaxed">
+                      {data?.createdAt
+                        ? formatDateWithAmPm(data?.createdAt)
+                        : "N/A"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1221,60 +1330,115 @@ const BuyHistory = () => {
               <table className="w-full table-auto">
                 <thead className="bg-[#1d8e85]">
                   <tr className="text-white text-sm">
-                    <th className="px-3 py-4 text-center min-w-[60px] font-semibold">S.No</th>
-                    <th className="px-3 py-4 text-center min-w-[160px] font-semibold">Transaction ID</th>
-                    <th className="px-3 py-4 text-center min-w-[100px] font-semibold">Payment Mode</th>
-                    <th className="px-3 py-4 text-center min-w-[100px] font-semibold">JaiMax Coin</th>
-                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">INR Price</th>
-                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">USD Price</th>
-                    <th className="px-3 py-4 text-center min-w-[70px] font-semibold">Round</th>
-                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">Currency</th>
-                    <th className="px-3 py-4 text-center min-w-[100px] font-semibold">Amount</th>
-                    <th className="px-3 py-4 text-center min-w-[140px] font-semibold">Purchase Date</th>
-                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">Status</th>
+                    <th className="px-3 py-4 text-center min-w-[60px] font-semibold">
+                      S.No
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[160px] font-semibold">
+                      Transaction ID
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[100px] font-semibold">
+                      Payment Mode
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[100px] font-semibold">
+                      JaiMax Coin
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">
+                      INR Price
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">
+                      USD Price
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[70px] font-semibold">
+                      Round
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">
+                      Currency
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[100px] font-semibold">
+                      Amount
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[140px] font-semibold">
+                      Purchase Date
+                    </th>
+                    <th className="px-3 py-4 text-center min-w-[90px] font-semibold">
+                      Status
+                    </th>
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-gray-200">
-                  {(isLoading || loading) ? (
+                  {isLoading || loading ? (
                     [...Array(parseInt(state.perPage))].map((_, i) => (
                       <tr key={i}>
                         {[...Array(11)].map((_, j) => (
                           <td key={j} className="px-3 py-4">
-                            <div className="h-4 bg-gray-100 rounded animate-pulse mx-auto" style={{width: j === 1 ? '120px' : '60px'}}></div>
+                            <div
+                              className="h-4 bg-gray-100 rounded animate-pulse mx-auto"
+                              style={{ width: j === 1 ? "120px" : "60px" }}
+                            ></div>
                           </td>
                         ))}
                       </tr>
                     ))
                   ) : TableData.length === 0 ? (
                     <tr>
-                      <td colSpan="11" className="px-3 py-8 text-center text-gray-500 text-lg">
+                      <td
+                        colSpan="11"
+                        className="px-3 py-8 text-center text-gray-500 text-lg"
+                      >
                         No buy history found.
                       </td>
                     </tr>
                   ) : (
                     TableData.map((data, i) => (
-                      <tr key={i} className="text-gray-800 hover:bg-gray-50 transition-colors duration-150 text-center">
+                      <tr
+                        key={i}
+                        className="text-gray-800 hover:bg-gray-50 transition-colors duration-150 text-center"
+                      >
                         <td className="px-3 py-4 text-sm font-medium">
-                          {(state?.currentPage - 1) * parseInt(state.perPage) + i + 1}
+                          {(state?.currentPage - 1) * parseInt(state.perPage) +
+                            i +
+                            1}
                         </td>
                         <td className="px-3 py-4  text-sm max-w-[200px] break-words">
-                          {data?.paypalTransactionId || data?.transactionId || "N/A"}
+                          {data?.paypalTransactionId ||
+                            data?.transactionId ||
+                            "N/A"}
                         </td>
-                        <td className="px-3 py-4 font-semibold capitalize text-sm whitespace-nowrap">{data?.modeOfPayment || "N/A"}</td>
-                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">{data?.jaimax?.toFixed(3) || "N/A"}</td>
-                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">{data?.atPriceInr || "N/A"}</td>
-                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">{data?.atPriceUsdt || "N/A"}</td>
-                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">{data?.round || "N/A"}</td>
-                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">{data?.currency || "N/A"}</td>
+                        <td className="px-3 py-4 font-semibold capitalize text-sm whitespace-nowrap">
+                          {data?.paymentMethod || "N/A"}
+                        </td>
+                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">
+                          {data?.jaimax?.toFixed(3) || "N/A"}
+                        </td>
+                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">
+                          {data?.atPriceInr || "N/A"}
+                        </td>
+                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">
+                          {data?.atPriceUsdt || "N/A"}
+                        </td>
+                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">
+                          {data?.round || "N/A"}
+                        </td>
+                        <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">
+                          {data?.currency || "N/A"}
+                        </td>
                         <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap text-emerald-700">
-                          {data.currency === "INR" ? `₹${data.amount?.toFixed(2) || "0.00"}` : `$${data.amount?.toFixed(2) || "0.00"}`}
+                          {data.currency === "INR"
+                            ? `₹${data.amount?.toFixed(2) || "0.00"}`
+                            : `$${data.amount?.toFixed(2) || "0.00"}`}
                         </td>
                         <td className="px-3 py-4 text-sm font-medium whitespace-nowrap">
-                          {data?.createdAt ? formatDateWithAmPm(data?.createdAt) : "N/A"}
+                          {data?.createdAt
+                            ? formatDateWithAmPm(data?.createdAt)
+                            : "N/A"}
                         </td>
                         <td className="px-3 py-4">
-                          <span className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getStatusClasses(data?.status)}`}>
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${getStatusClasses(
+                              data?.status
+                            )}`}
+                          >
                             {data?.status}
                           </span>
                         </td>

@@ -219,16 +219,7 @@ import logo from "../../../assets/Images/jaimaxlogo1.svg"
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: <HiOutlineViewGrid /> },
-  {
-    name: "Wallet",
-    path: "/dashboard/wallet",
-    icon: <HiOutlineClipboardList />,
-    subItems: [
-      { name: "Add Funds", path: "/dashboard/wallet/add-funds" },
-      { name: "Transactions", path: "/dashboard/wallet/transactions" },
-    ],
-  },
-  // { name: "Wallet", path: "/wallet", icon: <HiOutlineClipboardList /> },
+  { name: "Wallet", path: "/wallet", icon: <HiOutlineClipboardList /> },
   { name: "My Total Team", path: "/my-team", icon: <HiOutlineCalendar /> },
   { name: "Share Holders", path: "/shareholders", icon: <FaHandshake /> },
   // { name: "Todays Earnings", path: "/earnings", icon: <HiOutlineClock /> },

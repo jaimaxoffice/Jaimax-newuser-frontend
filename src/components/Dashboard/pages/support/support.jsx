@@ -441,7 +441,7 @@ const SupportList = () => {
                   <span className="text-gray-600 whitespace-nowrap">Show:</span>
                   <div className="relative">
                     <select
-                      className="Pageearance-none bg-white border border-gray-300 text-gray-700 rounded-lg pl-3 pr-8 py-3 focus:outline-none focus:border-teal-500 transition-colors cursor-pointer shadow-sm"
+                      className="Pageearance-none bg-white border border-gray-300 text-gray-700 rounded-lg pl-3 pr-8 py-3 focus:outline-none focus:border-teal-500 transition-colors  shadow-sm"
                       value={state?.perPage}
                       onChange={(e) => {
                         const newPerPage = Number(e.target.value);
@@ -457,7 +457,7 @@ const SupportList = () => {
                       <option value="25">25</option>
                       <option value="50">50</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={16} />
+                    {/* <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={16} /> */}
                   </div>
                 </div>
               </div>
