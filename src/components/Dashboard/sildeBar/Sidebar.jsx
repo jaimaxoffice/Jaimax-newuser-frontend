@@ -266,7 +266,7 @@ function Sidebar({ onLogoutClick }) {
     <>
       {/* Mobile hamburger button - only show on mobile when sidebar is closed */}
       {isMobile && !isOpen && (
-        <div className="fixed top-4 left-4 z-50 bg-[#085358] rounded-lg p-2 shadow-lg">
+        <div className="fixed -top-1 left-4 z-50 rounded-lg p-2 ">
           <Hamburger
             toggled={isOpen}
             toggle={setIsOpen}

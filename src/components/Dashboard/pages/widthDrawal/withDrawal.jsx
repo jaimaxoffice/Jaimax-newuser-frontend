@@ -1,41 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { AlertTriangle, CheckCircle, Info, Download, Building, CreditCard, Clock, Shield, ArrowRight, Smartphone, Search } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  Download,
+  Building,
+  CreditCard,
+  Clock,
+  Shield,
+  ArrowRight,
+  Smartphone,
+  Search,
+} from "lucide-react";
 import Pagination from "../../../pagination/pagination";
-import {useWithdrawHistoryQuery ,useWithdrawRequestListQuery, useWithdrawRequestMutation , useWithdrawCalculateQuery,  useCalculateWithdrawMutation,  useGetSettingQuery} from './withdrawApiSlice'
-import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice"
-import {useGetkycDetailsQuery } from "../../../Dashboard/pages/kyc/kycApiSlice"
+import {
+  useWithdrawHistoryQuery,
+  useWithdrawRequestListQuery,
+  useWithdrawRequestMutation,
+  useWithdrawCalculateQuery,
+  useCalculateWithdrawMutation,
+  useGetSettingQuery,
+} from "./withdrawApiSlice";
+import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice";
+import { useGetkycDetailsQuery } from "../../../Dashboard/pages/kyc/kycApiSlice";
 import { toast } from "react-toastify";
-import Cookies from 'js-cookie'
-const TransactionTable = ({ transactions, state, setState, selectedStatus, setSelectedStatus, handleSearch, handlePageChange, loading }) => {
+import Cookies from "js-cookie";
+const TransactionTable = ({
+  transactions,
+  state,
+  setState,
+  selectedStatus,
+  setSelectedStatus,
+  handleSearch,
+  handlePageChange,
+  loading,
+}) => {
   const [isMobile, setIsMobile] = useState(false);
-  console.log("Transactions:", transactions);
+  // console.log("Transactions:", transactions);
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "1": return 'bg-green-100 text-green-800 border-green-300';
-      case "0": return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      case "2": return 'bg-red-100 text-red-800 border-red-300';
-      default: return 'bg-gray-100 text-gray-800 border-gray-300';
-    }
-  };
+const getStatusColor = (status) => {
+  switch (status) {
+    case 1: return "border-green-500 text-green-600 bg-green-50";
+    case 0: return "border-yellow-500 text-yellow-600 bg-yellow-50";
+    case 2: return "border-red-500 text-red-600 bg-red-50";
+    default: return "border-gray-400 text-gray-500 bg-gray-50";
+  }
+};
 
   const getStatusText = (status) => {
     switch (status) {
-      case "1": return "Approved";
-      case "0": return "Pending";
-      case "2": return "Rejected";
+      case 1: return "Approved";
+      case 0 : return "Pending";
+      case 2: return "Rejected";
       default: return "Unknown";
     }
   };
+
 
   const formatDateWithAmPm = (isoString) => {
     if (!isoString) return "-";
@@ -51,92 +80,214 @@ const TransactionTable = ({ transactions, state, setState, selectedStatus, setSe
     return `${day}-${month}-${year} ${hours}:${minutes} ${amAndPm}`;
   };
 
-  const TransactionCard = ({ transaction, index }) => (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
-      {/* Header with Status and Serial Number */}
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#1d8e85] rounded-lg flex items-center justify-center">
-            <span className="text-white font-semibold text-sm">
-              {(state?.currentPage || 1) * (state?.perPage || 10) - ((state?.perPage || 10) - 1) + index}
-            </span>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 uppercase tracking-wide">Transaction</p>
-            <p className="text-sm font-semibold text-gray-900 truncate max-w-[120px]">
-              {transaction._id ? `...${transaction._id.slice(-8)}` : "-"}
-            </p>
-          </div>
-        </div>
-        <span className={`px-3 py-1 text-xs font-medium rounded-full border ${getStatusColor(transaction.status)}`}>
-          {getStatusText(transaction.status)}
-        </span>
-      </div>
+  // const TransactionCard = ({ transaction, index }) => (
+  //   <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+  //     {/* Header with Status and Serial Number */}
+  //     <div className="flex justify-between items-start mb-4">
+  //       <div className="flex items-center gap-3">
+  //         <div className="w-10 h-10 bg-[#1d8e85] rounded-lg flex items-center justify-center">
+  //           <span className="text-white font-semibold text-sm">
+  //             {(state?.currentPage || 1) * (state?.perPage || 10) -
+  //               ((state?.perPage || 10) - 1) +
+  //               index}
+  //           </span>
+  //         </div>
+  //         <div>
+  //           <p className="text-xs text-gray-500 uppercase ">
+  //             Transaction
+  //           </p>
+  //           <p className="text-sm font-semibold text-gray-900 truncate max-w-[120px]">
+  //             {transaction._id ? `...${transaction._id.slice(-8)}` : "-"}
+  //           </p>
+  //         </div>
+  //       </div>
+  //       <span
+  //         className={`px-3 py-1 text-xs font-medium rounded-full border ${getStatusColor(
+  //           transaction.status
+  //         )}`}
+  //       >
+  //         {getStatusText(transaction.status)}
+  //       </span>
+  //     </div>
 
-      {/* Amount Section */}
-      <div className="bg-gray-50 rounded-lg p-3 mb-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-xs text-gray-500 uppercase tracking-wide">Withdrawal Amount</p>
-            <p className="text-lg font-bold text-gray-900">
-              {transaction.amount ? (
-                transaction.currency === "INR" 
-                  ? `₹${parseFloat(transaction.amount).toFixed(2)}`
-                  : `$${parseFloat(transaction.amount).toFixed(2)}`
-              ) : "-"}
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-xs text-gray-500 uppercase tracking-wide">Admin Fee</p>
-            <p className="text-sm font-semibold text-red-600">
-              {transaction.admin_inr_charges ? (
-                transaction.currency === "INR" 
-                  ? `₹${transaction.admin_inr_charges}`
-                  : `$${transaction.admin_inr_charges}`
-              ) : "-"}
-            </p>
-          </div>
+  //     {/* Amount Section */}
+  //     <div className="bg-gray-50 rounded-lg p-3 mb-4">
+  //       <div className="flex justify-between items-center">
+  //         <div>
+  //           <p className="text-xs text-gray-500 uppercase ">
+  //             Withdrawal Amount
+  //           </p>
+  //           <p className="text-lg font-bold text-gray-900">
+  //             {transaction.amount
+  //               ? transaction.currency === "INR"
+  //                 ? `₹${parseFloat(transaction.amount).toFixed(2)}`
+  //                 : `$${parseFloat(transaction.amount).toFixed(2)}`
+  //               : "-"}
+  //           </p>
+  //         </div>
+  //         <div className="text-right">
+  //           <p className="text-xs text-gray-500 uppercase ">
+  //             Admin Fee
+  //           </p>
+  //           <p className="text-sm font-semibold text-red-600">
+  //             {transaction.admin_inr_charges
+  //               ? transaction.currency === "INR"
+  //                 ? `₹${transaction.admin_inr_charges}`
+  //                 : `$${transaction.admin_inr_charges}`
+  //               : "-"}
+  //           </p>
+  //         </div>
+  //       </div>
+  //     </div>
+
+  //     {/* Details Grid */}
+  //     <div className="grid grid-cols-1 gap-3">
+  //       <div className="flex justify-between items-center py-2 border-b border-gray-100">
+  //         <span className="text-sm text-gray-600">Currency</span>
+  //         <span className="text-sm font-medium text-gray-900">
+  //           {transaction.currency || "-"}
+  //         </span>
+  //       </div>
+
+  //       <div className="flex justify-between items-center py-2 border-b border-gray-100">
+  //         <span className="text-sm text-gray-600">Date & Time</span>
+  //         <span className="text-sm font-medium text-gray-900">
+  //           {formatDateWithAmPm(transaction.created_at)}
+  //         </span>
+  //       </div>
+
+  //       {transaction.reason && (
+  //         <div className="py-2 border-b border-gray-100">
+  //           <p className="text-sm text-gray-600 mb-1">Reason</p>
+  //           <p className="text-sm text-gray-900 break-words">
+  //             {transaction.reason}
+  //           </p>
+  //         </div>
+  //       )}
+
+  //       {transaction.note && (
+  //         <div className="py-2">
+  //           <p className="text-sm text-gray-600 mb-1">Note</p>
+  //           <p className="text-sm text-gray-900 break-words">
+  //             {transaction.note}
+  //           </p>
+  //         </div>
+  //       )}
+  //     </div>
+  //   </div>
+  // );
+const TransactionCard = ({ transaction, index }) => (
+  <div className="bg-white rounded-md overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 group">
+    {/* Decorative top accent */}
+    <div className="h-1 bg-gradient-to-r from-[#1d8e85] via-[#25b5aa] to-[#1d8e85] animate-gradient-x"></div>
+    
+    {/* Header with shine effect */}
+    <div className="relative p-2.5 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between overflow-hidden">
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[linear-gradient(110deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.9)_50%,rgba(255,255,255,0)_100%)] -translate-x-full group-hover:translate-x-full transform transition-transform duration-1500"></div>
+      
+      <div className="flex items-center gap-2.5 z-10">
+        <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-[#1d8e85] to-[#106b64] text-white shadow-sm group-hover:shadow transition-shadow relative">
+          <span className="text-xs font-bold">{index + 1}</span>
+          <span className="absolute inset-0 rounded-full border border-white/30 scale-0 group-hover:scale-100 transition-transform duration-300"></span>
+        </div>
+        <div>
+          <span className="text-[10px] text-gray-500 uppercase tracking-wide block leading-tight font-medium">Transaction ID</span>
+          <span className="text-xs font-bold text-gray-800 truncate block group-hover:text-[#1d8e85] transition-colors">
+            {transaction._id ? `...${transaction._id.slice(-6)}` : "-"}
+          </span>
         </div>
       </div>
-
-      {/* Details Grid */}
-      <div className="grid grid-cols-1 gap-3">
-        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-          <span className="text-sm text-gray-600">Currency</span>
-          <span className="text-sm font-medium text-gray-900">{transaction.currency || "-"}</span>
+      
+      <span className={`text-xs px-2 py-0.5 rounded-full border ${getStatusColor(transaction.status)} transform transition-transform shadow-sm z-10 relative`}>
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-current mr-1 align-middle animate-pulse"></span>
+        {getStatusText(transaction.status)}
+      </span>
+    </div>
+    
+    {/* Amount section with highlight and card-like design */}
+    <div className="p-3 bg-gradient-to-r from-gray-50 to-white border-y border-gray-100 relative overflow-hidden">
+      <div className="absolute -right-3 -top-6 w-12 h-12 rounded-full bg-[#1d8e85]/5 group-hover:bg-[#1d8e85]/10 transition-colors"></div>
+      <div className="absolute -left-3 -bottom-6 w-12 h-12 rounded-full bg-[#1d8e85]/5 group-hover:bg-[#1d8e85]/10 transition-colors"></div>
+      
+      <div className="flex justify-between items-center">
+        <div className="relative">
+          <span className="text-[10px] text-[#1d8e85] uppercase tracking-wide block leading-tight font-medium">Amount</span>
+          <span className="text-sm font-extrabold text-gray-800 group-hover:text-[#1d8e85] transition-colors">
+            {transaction.amount
+              ? transaction.currency === "INR"
+                ? `₹${parseFloat(transaction.amount).toFixed(2)}`
+                : `$${parseFloat(transaction.amount).toFixed(2)}`
+              : "-"}
+          </span>
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#1d8e85] group-hover:w-full transition-all duration-300"></span>
         </div>
-        
-        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-          <span className="text-sm text-gray-600">Date & Time</span>
-          <span className="text-sm font-medium text-gray-900">{formatDateWithAmPm(transaction.created_at)}</span>
+        <div className="relative">
+          <span className="text-[10px] text-red-500 uppercase tracking-wide block leading-tight font-medium text-right">Fee</span>
+          <span className="text-xs font-bold text-red-600 block text-right">
+            {transaction.admin_inr_charges
+              ? transaction.currency === "INR"
+                ? `₹${transaction.admin_inr_charges}`
+                : `$${transaction.admin_inr_charges}`
+              : "-"}
+          </span>
+          <span className="absolute -bottom-1 right-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300"></span>
         </div>
-        
-        {transaction.reason && (
-          <div className="py-2 border-b border-gray-100">
-            <p className="text-sm text-gray-600 mb-1">Reason</p>
-            <p className="text-sm text-gray-900 break-words">{transaction.reason}</p>
-          </div>
-        )}
-        
-        {transaction.note && (
-          <div className="py-2">
-            <p className="text-sm text-gray-600 mb-1">Note</p>
-            <p className="text-sm text-gray-900 break-words">{transaction.note}</p>
-          </div>
-        )}
       </div>
     </div>
-  );
-
+    
+    {/* Details section with refined styling */}
+    <div className="p-2.5 text-xs space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        <div className="rounded bg-gray-50 p-1.5 border border-gray-100 group-hover:border-[#1d8e85]/20 transition-colors">
+          <span className="text-[10px] text-gray-500 uppercase block mb-0.5 font-medium">Currency</span>
+          <span className="font-bold text-gray-800">{transaction.currency || "-"}</span>
+        </div>
+        <div className="rounded bg-gray-50 p-1.5 border border-gray-100 group-hover:border-[#1d8e85]/20 transition-colors">
+          <span className="text-[10px] text-gray-500 uppercase block mb-0.5 font-medium">Date</span>
+          <span className="font-bold text-gray-800 text-[11px]">{formatDateWithAmPm(transaction.created_at)}</span>
+        </div>
+      </div>
+      
+      {(transaction.reason || transaction.note) && (
+        <div className="pt-1 mt-1 border-t border-dashed border-gray-200">
+          {transaction.reason && (
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1 mb-1">
+                <span className="w-1 h-3 bg-[#1d8e85] rounded-full"></span>
+                <span className="text-[10px] text-gray-500 uppercase font-medium">Reason</span>
+              </div>
+              <p className="text-[11px] text-gray-700 bg-gray-50 p-1.5 rounded border border-gray-100 group-hover:border-[#1d8e85]/20 transition-colors">{transaction.reason}</p>
+            </div>
+          )}
+          
+          {transaction.note && (
+            <div>
+              <div className="flex items-center gap-1 mb-1">
+                <span className="w-1 h-3 bg-[#1d8e85] rounded-full"></span>
+                <span className="text-[10px] text-gray-500 uppercase font-medium">Note</span>
+              </div>
+              <p className="text-[11px] text-gray-700 bg-gray-50 p-1.5 rounded border border-gray-100 group-hover:border-[#1d8e85]/20 transition-colors">{transaction.note}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+    
+    {/* Card Footer with shadow effect */}
+    <div className="h-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-70"></div>
+  </div>
+);
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
       <div className="px-4 sm:px-6 py-4 border-b border-gray-200 bg-gray-50">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold text-gray-900">Withdrawal History</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Withdrawal History
+            </h3>
             {isMobile && <Smartphone className="w-4 h-4 text-gray-500" />}
           </div>
-          
+
           {/* Mobile and Tablet Filters */}
           <div className="flex flex-col gap-3">
             <div className="flex flex-col sm:flex-row gap-3">
@@ -144,7 +295,7 @@ const TransactionTable = ({ transactions, state, setState, selectedStatus, setSe
                 value={selectedStatus}
                 onChange={(e) => {
                   setSelectedStatus(e.target.value);
-                  setState(prev => ({ ...prev, currentPage: 1 }));
+                  setState((prev) => ({ ...prev, currentPage: 1 }));
                 }}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] text-gray-700 bg-white"
               >
@@ -153,7 +304,7 @@ const TransactionTable = ({ transactions, state, setState, selectedStatus, setSe
                 <option value="0">Pending</option>
                 <option value="2">Rejected</option>
               </select>
-              
+
               <div className="relative flex-1">
                 <input
                   type="text"
@@ -163,12 +314,11 @@ const TransactionTable = ({ transactions, state, setState, selectedStatus, setSe
                 />
                 <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
               </div>
-            <button className="w-full sm:w-auto px-4 py-2 bg-[#1d8e85] text-white rounded-md text-sm hover:bg-[#166f67] focus:ring-2 focus:ring-[#1d8e85] focus:ring-offset-2 flex items-center justify-center gap-2 transition-colors">
-              <Download className="w-4 h-4" />
-              Export
-            </button>
+              <button className="w-full sm:w-auto px-4 py-2 bg-[#1d8e85] text-white rounded-md text-sm hover:bg-[#166f67] focus:ring-2 focus:ring-[#1d8e85] focus:ring-offset-2 flex items-center justify-center gap-2 transition-colors">
+                <Download className="w-4 h-4" />
+                Export
+              </button>
             </div>
-            
           </div>
         </div>
       </div>
@@ -179,107 +329,251 @@ const TransactionTable = ({ transactions, state, setState, selectedStatus, setSe
           <div className="space-y-4">
             {loading ? (
               [...Array(3)].map((_, i) => (
-                <div key={i} className="bg-gray-200 animate-pulse rounded-xl h-48"></div>
+                <div
+                  key={i}
+                  className="bg-gray-200 animate-pulse rounded-xl h-48"
+                ></div>
               ))
             ) : !transactions || transactions?.length === 0 ? (
               <div className="text-center py-12">
                 <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                   <Building className="w-8 h-8 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No transactions found</h3>
-                <p className="text-gray-500">Your withdrawal history will appear here</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No transactions found
+                </h3>
+                <p className="text-gray-500">
+                  Your withdrawal history will appear here
+                </p>
               </div>
             ) : (
               transactions.map((transaction, index) => (
-                <TransactionCard key={transaction._id || index} transaction={transaction} index={index} />
+                <TransactionCard
+                  key={transaction._id || index}
+                  transaction={transaction}
+                  index={index}
+                />
               ))
             )}
           </div>
         </div>
       ) : (
+        <div className="overflow-x-auto shadow-sm border border-gray-200 rounded-lg">
+  <table className="w-full border-collapse">
+    <thead className="bg-[#1d8e85] text-white sticky top-0 z-10">
+      <tr>
+        <th className="px-2 py-2 text-center text-xs font-medium">#</th>
+        <th className="px-2 py-2 text-left text-xs font-medium">Transaction ID</th>
+        <th className="px-2 py-2 text-center text-xs font-medium">Currency</th>
+        <th className="px-2 py-2 text-right text-xs font-medium">Amount</th>
+        <th className="px-2 py-2 text-right text-xs font-medium">Charges</th>
+        <th className="px-2 py-2 text-center text-xs font-medium">Date & Time</th>
+        <th className="px-2 py-2 text-center text-xs font-medium">Status</th>
+        <th className="px-2 py-2 text-left text-xs font-medium">Reason</th>
+        <th className="px-2 py-2 text-left text-xs font-medium">Note</th>
+      </tr>
+    </thead>
+    <tbody className="bg-white divide-y divide-gray-200">
+      {loading ? (
+        [...Array(3)].map((_, i) => (
+          <tr key={i}>
+            {[...Array(9)].map((_, j) => (
+              <td key={j} className="px-2 py-2.5">
+                <div className="bg-gray-200 animate-pulse h-4 w-16 rounded"></div>
+              </td>
+            ))}
+          </tr>
+        ))
+      ) : !transactions || transactions?.length === 0 ? (
+        <tr>
+          <td colSpan="9" className="px-2 py-3 text-center text-gray-500">
+            No data found
+          </td>
+        </tr>
+      ) : (
+        transactions.map((transaction, index) => (
+          <tr key={transaction._id || index} className="hover:bg-gray-50">
+            <td className="px-2 py-2.5 text-center text-gray-600 text-xs font-medium">
+              {(state?.currentPage || 1) * (state?.perPage || 10) -
+                ((state?.perPage || 10) - 1) +
+                index}
+            </td>
+            <td className="px-2 py-2.5 text-gray-800 text-xs font-medium">
+              <div className="flex items-center">
+                <span className="truncate max-w-[140px]" title={transaction._id || "-"}>
+                  {transaction._id || "-"}
+                </span>
+                {transaction._id && (
+                  <button 
+                    className="ml-1 text-gray-400 hover:text-[#1d8e85]" 
+                    title="Copy ID"
+                    onClick={() => navigator.clipboard.writeText(transaction._id)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </td>
+            <td className="px-2 py-2.5 text-center text-gray-800 text-xs">
+              {transaction.currency || "-"}
+            </td>
+            <td className="px-2 py-2.5 text-right text-gray-800 text-xs font-medium">
+              {transaction.amount
+                ? transaction.currency === "INR"
+                  ? `₹${parseFloat(transaction.amount).toFixed(2)}`
+                  : `$${parseFloat(transaction.amount).toFixed(2)}`
+                : "-"}
+            </td>
+            <td className="px-2 py-2.5 text-center text-gray-700 text-xs font-medium">
+              {transaction.admin_inr_charges
+                ? transaction.currency === "INR"
+                  ? `₹${transaction.admin_inr_charges}`
+                  : `$${transaction.admin_inr_charges}`
+                : "-"}
+            </td>
+            <td className="px-2 py-2.5 text-center text-gray-700 text-xs whitespace-nowrap">
+              {formatDateWithAmPm(transaction.created_at)}
+            </td>
+            <td className="px-2 py-2.5 text-center">
+              <span className={`inline-flex px-1.5 py-0.5 text-xs font-medium rounded-full ${getStatusColor(transaction.status)}`}>
+                {getStatusText(transaction.status)}
+              </span>
+            </td>
+            <td className="px-2 py-2.5 text-gray-700 text-xs max-w-[150px]">
+              <div className="line-clamp-2 hover:line-clamp-none" title={transaction?.reason || "-"}>
+                {transaction?.reason || "-"}
+              </div>
+            </td>
+            <td className="px-2 py-2.5 text-gray-700 text-xs max-w-[150px]">
+              <div className="line-clamp-2 hover:line-clamp-none hover:text-[#1d8e85] cursor-pointer" title={transaction?.note || "-"}>
+                {transaction?.note || "-"}
+              </div>
+            </td>
+          </tr>
+        ))
+      )}
+    </tbody>
+  </table>
+</div>
         // Desktop Table View
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-[#1d8e85] text-white text-sm">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">S.No</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Transaction ID</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Currency Type</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Withdrawal Amount</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Admin Charges</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Date & Time</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Reason</th>
-                <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">Note</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {loading ? (
-                [...Array(5)].map((_, i) => (
-                  <tr key={i}>
-                    {[...Array(9)].map((_, j) => (
-                      <td key={j} className="px-6 py-4">
-                        {console.log(j)}
-                        <div className="bg-gray-200 animate-pulse h-4 rounded"></div>
-                      </td>
-                    ))}
-                    
-                  </tr>
-                ))
-              ) : !transactions || transactions?.length === 0 ? (
-                <tr>
-                  <td colSpan="9" className="px-6 py-8 text-center text-gray-500">
-                    No data found
-                  </td>
-                </tr>
-              ) : (
-                transactions.map((transaction, index) => (
-                  <tr key={transaction._id || index} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {(state?.currentPage || 1) * (state?.perPage || 10) - ((state?.perPage || 10) - 1) + index}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {transaction._id || "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {transaction.currency || "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">
-                      {transaction.amount ? (
-                        transaction.currency === "INR" 
-                          ? `₹${parseFloat(transaction.amount).toFixed(2)}` 
-                          : `$${parseFloat(transaction.amount).toFixed(2)}`
-                      ) : "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {transaction.admin_inr_charges ? (
-                        transaction.currency === "INR" 
-                          ? `₹${transaction.admin_inr_charges}` 
-                          : `$${transaction.admin_inr_charges}`
-                      ) : "-"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDateWithAmPm(transaction.created_at)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${getStatusColor(transaction.status)}`}>
-                        {getStatusText(transaction.status)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500 max-w-24 truncate" title={transaction?.reason}>
-                      {transaction?.reason || "-"}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      <span className="cursor-pointer hover:text-[#1d8e85]" title={transaction?.note}>
-                        {transaction?.note ? "Details" : "-"}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        // <div className="overflow-x-auto">
+        //   <table className="w-full">
+        //     <thead className="bg-[#1d8e85] text-white text-sm">
+        //       <tr>
+        //         <th className="px-2 py-3 text-center text-xs uppercase ">
+        //           S.No
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase ">
+        //           Transaction ID
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase ">
+        //           Currency Type
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase">
+        //           Withdrawal Amount
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase ">
+        //           Admin Charges
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase r">
+        //           Date & Time
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase r">
+        //           Status
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase r">
+        //           Reason
+        //         </th>
+        //         <th className="px-2 py-3 text-center text-xs uppercase ">
+        //           Note
+        //         </th>
+        //       </tr>
+        //     </thead>
+        //     <tbody className="bg-white divide-y divide-gray-200">
+        //       {loading ? (
+        //         [...Array(5)].map((_, i) => (
+        //           <tr key={i}>
+        //             {[...Array(9)].map((_, j) => (
+        //               <td key={j} className="px-2 py-4">
+        //                 <div className="bg-gray-200 animate-pulse h-2 rounded"></div>
+        //               </td>
+        //             ))}
+        //           </tr>
+        //         ))
+        //       ) : !transactions || transactions?.length === 0 ? (
+        //         <tr>
+        //           <td
+        //             colSpan="9"
+        //             className="px-6 py-4 text-center text-gray-500"
+        //           >
+        //             No data found
+        //           </td>
+        //         </tr>
+        //       ) : (
+        //         transactions.map((transaction, index) => (
+        //           <tr
+        //             key={transaction._id || index}
+        //             className="hover:bg-gray-50"
+        //           >
+        //             <td className="px-6 py-4  text-sm text-gray-900">
+        //               {(state?.currentPage || 1) * (state?.perPage || 10) -
+        //                 ((state?.perPage || 10) - 1) +
+        //                 index}
+        //             </td>
+        //             <td className="px-6 py-4  text-xs font-medium text-gray-900">
+        //               {transaction._id || "-"}
+        //             </td>
+        //             <td className="px-2 py-4 whitespace-nowrap text-xs text-gray-900">
+        //               {transaction.currency || "-"}
+        //             </td>
+        //             <td className="px-2 py-4 whitespace-nowrap text-xs text-gray-900 font-medium">
+        //               {transaction.amount
+        //                 ? transaction.currency === "INR"
+        //                   ? `₹${parseFloat(transaction.amount).toFixed(2)}`
+        //                   : `$${parseFloat(transaction.amount).toFixed(2)}`
+        //                 : "-"}
+        //             </td>
+        //             <td className="px-2 py-4 whitespace-nowrap text-xs text-gray-900">
+        //               {transaction.admin_inr_charges
+        //                 ? transaction.currency === "INR"
+        //                   ? `₹${transaction.admin_inr_charges}`
+        //                   : `$${transaction.admin_inr_charges}`
+        //                 : "-"}
+        //             </td>
+        //             <td className="px-2 py-4 whitespace-nowrap text-xs text-gray-900">
+        //               {formatDateWithAmPm(transaction.created_at)}
+        //             </td>
+        //             <td className="px-2 py-4 whitespace-nowrap">
+        //               <span
+        //                 className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${getStatusColor(
+        //                   transaction.status
+        //                 )}`}
+        //               >
+        //                 {getStatusText(transaction.status)}
+        //               </span>
+        //             </td>
+        //             <td
+        //               className="px-2 py-4 text-xs text-gray-900 max-w-20 "
+        //               title={transaction?.reason}
+        //             >
+        //               {transaction?.reason || "-"}
+        //             </td>
+        //             <td className="px-2 py-4 text-xs text-gray-900">
+        //               <span
+        //                 className="cursor-pointer hover:text-[#1d8e85]"
+        //                 title={transaction?.note}
+        //               >
+        //                 {transaction?.note }
+        //               </span>
+        //             </td>
+        //           </tr>
+        //         ))
+        //       )}
+        //     </tbody>
+        //   </table>
+        // </div>
       )}
     </div>
   );
@@ -305,8 +599,10 @@ const Withdrawal = () => {
     search: "",
   });
 
-  const queryParams = `limit=${state?.perPage || ""}&page=${state?.currentPage || ""}&search=${state?.search || ""}&status=${selectedStatus}`;
-  
+  const queryParams = `limit=${state?.perPage || ""}&page=${
+    state?.currentPage || ""
+  }&search=${state?.search || ""}&status=${selectedStatus}`;
+
   const {
     data: withdrawHistory,
     isLoading: isLoadingWithdraw,
@@ -314,8 +610,10 @@ const Withdrawal = () => {
   } = useWithdrawRequestListQuery(queryParams);
 
   const datafromApi = withdrawHistory?.data?.withdrawRequests || [];
-  const id = Cookies.get("userData") ; 
-  const userid=id?.data?._id
+  const id = JSON.parse(Cookies.get("userData"));
+  // console.log(id)
+  const userid = id?._id;
+  console.log(userid);
   const TableData = datafromApi.filter((item) => item?.userId?._id === userid);
 
   const [previewData, setPreviewData] = useState([
@@ -384,16 +682,26 @@ const Withdrawal = () => {
 
     const parsedAmount = parseFloat(amount);
     let Fees;
-    
+
     if (paymentCurrency === "INR") {
-      if (parsedAmount < min_withdrawal_inr || parsedAmount > max_withdrawal_inr) {
-        toast(`Withdrawal amount should be between ${min_withdrawal_inr} and ${max_withdrawal_inr}.`);
+      if (
+        parsedAmount < min_withdrawal_inr ||
+        parsedAmount > max_withdrawal_inr
+      ) {
+        toast(
+          `Withdrawal amount should be between ${min_withdrawal_inr} and ${max_withdrawal_inr}.`
+        );
         return;
       }
       Fees = (parsedAmount * withdrawal_commission_inr) / 100;
     } else {
-      if (parsedAmount < min_withdrawal_usd || parsedAmount > max_withdrawal_usd) {
-        toast(`Withdrawal amount should be between ${min_withdrawal_usd} and ${max_withdrawal_usd}.`);
+      if (
+        parsedAmount < min_withdrawal_usd ||
+        parsedAmount > max_withdrawal_usd
+      ) {
+        toast(
+          `Withdrawal amount should be between ${min_withdrawal_usd} and ${max_withdrawal_usd}.`
+        );
         return;
       }
       Fees = (parsedAmount * withdrawal_commission_usd) / 100;
@@ -404,11 +712,23 @@ const Withdrawal = () => {
     setPreviewData([
       {
         heading: "Fees",
-        subHeading: `${Fees.toFixed(2)} ${paymentCurrency === "USD" ? "USD" : paymentCurrency === "INR" ? "INR" : "Jaimax"}`,
+        subHeading: `${Fees.toFixed(2)} ${
+          paymentCurrency === "USD"
+            ? "USD"
+            : paymentCurrency === "INR"
+            ? "INR"
+            : "Jaimax"
+        }`,
       },
       {
         heading: "Will Get",
-        subHeading: `${Will_Get.toFixed(2)} ${paymentCurrency === "USD" ? "USD" : paymentCurrency === "INR" ? "INR" : "Jaimax"}`,
+        subHeading: `${Will_Get.toFixed(2)} ${
+          paymentCurrency === "USD"
+            ? "USD"
+            : paymentCurrency === "INR"
+            ? "INR"
+            : "Jaimax"
+        }`,
       },
     ]);
   };
@@ -457,7 +777,7 @@ const Withdrawal = () => {
           ? { amount: parseFloat(amount), currency: balanceType }
           : ""
       );
-      
+
       if (response.success) {
         setFormData({
           balanceType: "referral",
@@ -529,324 +849,723 @@ const Withdrawal = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      {/* <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-4 sm:py-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-[#1d8e85] rounded-lg shadow-lg">
-                <Building className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+    <div className="min-h-screen bg-gray-50 py-4">
+  <div className="max-w-7xl mx-auto px-3 sm:px-4">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 auto-rows-auto">
+      {/* Left Column - Withdrawal Form */}
+      <div className="lg:col-span-4 h-full">
+        <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm h-full">
+          <div className="mb-4">
+            <h2 className="text-base font-semibold text-gray-900 mb-3">
+              Withdrawal Request
+            </h2>
+
+            {/* Balance Display */}
+            <div className="bg-gradient-to-r from-[#1d8e85] to-[#16a085] rounded-lg p-3 text-white mb-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs opacity-90">Available Balance</p>
+                  <p className="text-lg font-bold">
+                    ₹{userData?.data?.Inr?.toLocaleString("en-IN") || "0"}
+                  </p>
+                </div>
+                <CreditCard className="w-5 h-5 opacity-80" />
               </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label
+                htmlFor="balanceType"
+                className="block text-xs font-medium text-gray-700 mb-1"
+              >
+                Source Account
+              </label>
+              <select
+                id="balanceType"
+                name="balanceType"
+                value={formData.balanceType}
+                onChange={onChangeBalanceType}
+                onClick={clearErrors}
+                className="w-full text-white px-2.5 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] bg-[#1d8e85]"
+              >
+                <option value="referral">Available Balance</option>
+                <option value="JAIMAX">Purchase Token (JaiMax)</option>
+              </select>
+              {errors.balanceType && (
+                <p className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" />
+                  {errors.balanceType}
+                </p>
+              )}
+              {formData.balanceType === "referral" && (
+                <p className="text-gray-600 mt-1 text-xs">
+                  Total Available: ₹{userData?.data?.Inr?.toFixed(2) || "0.00"}
+                </p>
+              )}
+            </div>
+
+            {formData.balanceType === "referral" && (
+              <>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Currency
+                    </label>
+                    <div className="px-2.5 py-1.5 bg-gray-100 border border-gray-300 rounded text-gray-900 font-medium text-center text-sm">
+                      {formData.paymentCurrency ||
+                        (userData?.data?.countryCode === 91 ? "INR" : "USD")}
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="amount"
+                      className="block text-xs font-medium text-gray-700 mb-1"
+                    >
+                      Amount *
+                    </label>
+                    <input
+                      id="amount"
+                      type="text"
+                      placeholder={`Enter Amount ${addSymbolPlaceholder(
+                        formData.paymentCurrency
+                      )}`}
+                      value={formData.amount}
+                      onChange={handleInputChange}
+                      onBlur={onBlurAmount}
+                      onClick={clearErrors}
+                      name="amount"
+                      autoComplete="off"
+                      className={`w-full px-2.5 py-1.5 text-sm border rounded focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] ${
+                        errors.amount
+                          ? "border-red-300 bg-red-50"
+                          : "border-gray-300"
+                      }`}
+                    />
+                  </div>
+                </div>
+                {errors.amount && (
+                  <p className="text-xs text-red-600 flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3" />
+                    {errors.amount}
+                  </p>
+                )}
+
+                {/* Transaction Summary */}
+                {formData.amount && (
+                  <div className="border border-gray-200 rounded p-3 bg-gray-50">
+                    <h3 className="text-xs font-medium text-gray-900 mb-2">
+                      Transaction Summary
+                    </h3>
+                    <div className="space-y-1.5 text-xs">
+                      {previewData.map((data, i) => (
+                        <div key={i} className="flex justify-between">
+                          <span
+                            className={
+                              data.heading === "Fees"
+                                ? "text-red-600"
+                                : "text-gray-600"
+                            }
+                          >
+                            {data.heading}
+                          </span>
+                          <span
+                            className={
+                              data.heading === "Will Get"
+                                ? "text-[#1d8e85] font-semibold"
+                                : "font-medium"
+                            }
+                          >
+                            {data.subHeading}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {formData.balanceType === "JAIMAX" && (
+              <div className="text-center py-4">
+                <h5 className="text-gray-600 text-sm font-medium">
+                  Coming Soon
+                </h5>
+                <p className="text-gray-500 text-xs mt-1">
+                  JaiMax token withdrawal will be available soon
+                </p>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={isLoading || formData.balanceType === "JAIMAX"}
+              className="w-full bg-[#1d8e85] text-white py-2 px-3 text-sm rounded font-medium hover:bg-[#166f67] focus:ring-2 focus:ring-[#1d8e85] focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 transition-colors"
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Submit Withdrawal
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column - Bank Details & Terms */}
+      <div className="lg:col-span-8 space-y-4 flex flex-col">
+        {/* Bank Details */}
+        <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold text-gray-900">
+              Destination Account
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+            <div>
+              <label className="block text-xs font-medium text-gray-500 uppercase mb-0.5">
+                Account Holder
+              </label>
+              <p className="text-sm text-gray-900 font-medium">
+                {kycDetails?.data?.name || "Not Available"}
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-500 uppercase mb-0.5">
+                Account Number
+              </label>
+              <p className="text-sm text-gray-900 font-medium break-all">
+                {kycDetails?.data?.bank_account || "Not Available"}
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-500 uppercase mb-0.5">
+                {userData?.data?.countryCode === 91 ? "IFSC" : "Bank"} Code
+              </label>
+              <p className="text-sm text-gray-900 font-medium">
+                {kycDetails?.data?.ifsc_code || "Not Available"}
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-500 uppercase mb-0.5">
+                Bank Name
+              </label>
+              <p className="text-sm text-gray-900 font-medium">
+                {kycDetails?.data?.bank_name || "Not Available"}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Processing Information */}
+        <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+          <h2 className="text-base font-semibold text-gray-900 mb-3">
+            Terms & Conditions
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+            <div className="flex items-center gap-2 p-2 bg-blue-50 rounded border border-blue-200">
+              <Clock className="w-4 h-4 text-blue-600 flex-shrink-0" />
               <div>
-                <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Fund Withdrawal</h1>
-                <p className="text-xs sm:text-sm text-gray-600">Secure transfer to your registered bank account</p>
+                <p className="text-xs font-medium text-blue-900">
+                  Processing Time
+                </p>
+                <p className="text-[10px] text-blue-700">Within 24 hours</p>
               </div>
             </div>
-          </div>
-        </div>
-      </div> */}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-          {/* Left Column - Withdrawal Form */}
-          <div className="lg:col-span-5 xl:col-span-4">
-            <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm">
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Withdrawal Request</h2>
-                
-                {/* Balance Display */}
-                <div className="bg-gradient-to-r from-[#1d8e85] to-[#16a085] rounded-xl p-4 text-white mb-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm opacity-90">Available Balance</p>
-                      <p className="text-xl sm:text-2xl font-bold">
-                        ₹{userData?.data?.Inr?.toLocaleString('en-IN') || '0'}
-                      </p>
-                    </div>
-                    <CreditCard className="w-6 h-6 sm:w-8 sm:h-8 opacity-80" />
-                  </div>
-                </div>
+            <div className="flex items-center gap-2 p-2 bg-green-50 rounded border border-green-200">
+              <Shield className="w-4 h-4 text-green-600 flex-shrink-0" />
+              <div>
+                <p className="text-xs font-medium text-green-900">
+                  Working Hours
+                </p>
+                <p className="text-[10px] text-green-700">
+                  Mon-Fri, 10 AM - 4 PM
+                </p>
               </div>
+            </div>
 
-              <div className="space-y-6">
-                <div>
-                  <label htmlFor="balanceType" className="block text-sm font-medium text-gray-700 mb-2">
-                    Source Account
-                  </label>
-                  <select
-                    id="balanceType"
-                    name="balanceType"
-                    value={formData.balanceType}
-                    onChange={onChangeBalanceType}
-                    onClick={clearErrors}
-                    className="w-full text-white px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] bg-[#1d8e85]"
-                  >
-                    <option className="" value="referral">Available Balance</option>
-                    <option className="" value="JAIMAX">Purchase Token (JaiMax)</option>
-                  </select>
-                  {errors.balanceType && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
-                      <AlertTriangle className="w-4 h-4" />
-                      {errors.balanceType}
-                    </p>
-                  )}
-                  {formData.balanceType === "referral" && (
-                    <p className="text-gray-600 mt-2 text-sm">
-                      Total Available Balance: ₹{userData?.data?.Inr?.toFixed(2) || '0.00'}
-                    </p>
-                  )}
-                </div>
-
-                {formData.balanceType === "referral" && (
-                  <>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Currency
-                        </label>
-                        <div className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium text-center">
-                          {formData.paymentCurrency || (userData?.data?.countryCode === 91 ? "INR" : "USD")}
-                        </div>
-                      </div>
-                      <div>
-                        <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-2">
-                          Amount *
-                        </label>
-                        <input
-                          id="amount"
-                          type="text"
-                          placeholder={`Enter Amount ${addSymbolPlaceholder(formData.paymentCurrency)}`}
-                          value={formData.amount}
-                          onChange={handleInputChange}
-                          onBlur={onBlurAmount}
-                          onClick={clearErrors}
-                          name="amount"
-                          autoComplete="off"
-                          className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] ${
-                            errors.amount ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                          }`}
-                        />
-                      </div>
-                    </div>
-                    {errors.amount && (
-                      <p className="text-sm text-red-600 flex items-center gap-1">
-                        <AlertTriangle className="w-4 h-4" />
-                        {errors.amount}
-                      </p>
-                    )}
-
-                    {/* Transaction Summary */}
-                    {formData.amount && (
-                      <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                        <h3 className="text-sm font-medium text-gray-900 mb-3">Transaction Summary</h3>
-                        <div className="space-y-2 text-sm">
-                          {previewData.map((data, i) => (
-                            <div key={i} className="flex justify-between">
-                              <span className={data.heading === "Fees" ? "text-red-600" : "text-gray-600"}>
-                                {data.heading}
-                              </span>
-                              <span className={data.heading === "Will Get" ? "text-[#1d8e85] font-semibold" : "font-medium"}>
-                                {data.subHeading}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {formData.balanceType === "JAIMAX" && (
-                  <div className="text-center py-8">
-                    <h5 className="text-gray-600 text-lg font-medium">Coming Soon</h5>
-                    <p className="text-gray-500 text-sm mt-2">JaiMax token withdrawal will be available soon</p>
-                  </div>
-                )}
-
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  disabled={isLoading || formData.balanceType === "JAIMAX"}
-                  className="w-full bg-[#1d8e85] text-white py-3 px-4 rounded-md font-medium hover:bg-[#166f67] focus:ring-2 focus:ring-[#1d8e85] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors"
-                >
-                  {isLoading ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Processing Request...
-                    </>
-                  ) : (
-                    <>
-                      Submit Withdrawal
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
+            <div className="flex items-center gap-2 p-2 bg-orange-50 rounded border border-orange-200">
+              <Info className="w-4 h-4 text-orange-600 flex-shrink-0" />
+              <div>
+                <p className="text-xs font-medium text-orange-900">
+                  Processing Fee
+                </p>
+                <p className="text-[10px] text-orange-700">
+                  {getSetting?.data?.withdrawal_commission_inr || "0.5"}%
+                  per transaction
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Right Column - Bank Details & Terms */}
-          <div className="lg:col-span-7 xl:col-span-8 space-y-4 sm:space-y-6">
-            {/* Bank Details */}
-            <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-                <h2 className="text-lg font-semibold text-gray-900">Destination Account</h2>
-                
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
-                    Account Holder
-                  </label>
-                  <p className="text-gray-900 font-semibold">
-                    {kycDetails?.data?.name || "Not Available"}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
-                    Account Number
-                  </label>
-                  <p className="text-gray-900 font-semibold  break-all">
-                    {kycDetails?.data?.bank_account || "Not Available"}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
-                    {userData?.data?.countryCode === 91 ? "IFSC" : "Bank"} Code
-                  </label>
-                  <p className="text-gray-900 font-semibold">
-                    {kycDetails?.data?.ifsc_code || "Not Available"}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
-                    Bank Name
-                  </label>
-                  <p className="text-gray-900 font-semibold">
-                    {kycDetails?.data?.bank_name || "Not Available"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Processing Information */}
-            <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Terms & Conditions</h2>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                  <Clock className="w-5 h-5 text-blue-600 flex-shrink-2" />
-                  <div>
-                    <p className="text-sm font-medium text-blue-900">Processing Time</p>
-                    <p className="text-xs text-blue-700">Within 24 hours</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
-                  <Shield className="w-5 h-5 text-green-600 flex-shrink-2" />
-                  <div>
-                    <p className="text-sm font-medium text-green-900">Working Hours</p>
-                    <p className="text-xs text-green-700">Mon-Fri, 10 AM - 4 PM</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
-                  <Info className="w-5 h-5 text-orange-600 flex-shrink-2" />
-                  <div>
-                    <p className="text-sm font-medium text-orange-900">Processing Fee</p>
-                    <p className="text-xs text-orange-700">
-                      {getSetting?.data?.withdrawal_commission_inr || "0.5"}% per transaction
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <div className="flex gap-3">
-                  <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="text-sm font-semibold text-yellow-800">Important Notes</h3>
-                    <ul className="text-sm text-yellow-700 mt-2 space-y-1">
-                      <li>• You have to complete the KYC and get approved status; then you can start the withdrawal process.</li>
-                      <li>• The withdrawal department works only during banking hours (10 AM to 4 PM) from Monday to Friday.</li>
-                      <li>• When you initiate the withdrawal process, the funds will be credited to your account within 24 hours.</li>
-                      <li>• We are not responsible if you provide the wrong bank details. Please check them carefully before initiating the withdrawal process.</li>
-                    </ul>
-                  </div>
-                </div>
+          <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
+            <div className="flex gap-2">
+              <AlertTriangle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="text-xs font-semibold text-yellow-800">
+                  Important Notes
+                </h3>
+                <ul className="text-xs text-yellow-700 mt-1.5 space-y-1">
+                  <li>• Complete KYC and get approved status before withdrawal</li>
+                  <li>• Banking hours: 10 AM to 4 PM (Mon-Fri)</li>
+                  <li>• Funds credited within 24 hours of withdrawal request</li>
+                  <li>• Please verify bank details before initiating withdrawal</li>
+                </ul>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Transaction History */}
-        <div className="mt-6 sm:mt-8">
-          <TransactionTable 
-            transactions={TableData}
-            state={state}
-            setState={setState}
-            selectedStatus={selectedStatus}
-            setSelectedStatus={setSelectedStatus}
-            handleSearch={handleSearch}
-            handlePageChange={handlePageChange}
-            loading={isLoadingWithdraw || loading}
-          />
-          
-          {/* Pagination - Only show if there's data */}
-          {withdrawHistory?.data?.pagination?.total > 0 && (
-            <div className="mt-6 bg-white rounded-lg border border-gray-200 shadow-sm">
-              <div className="p-4">
-                <div className="flex flex-col gap-4">
-                  {/* Entries selector and results info */}
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-gray-700">Show</span>
-                      <select
-                        value={state?.perPage}
-                        onChange={(e) => {
-                          const newPerPage = e.target.value;
-                          setState({
-                            ...state,
-                            perPage: newPerPage,
-                            currentPage: 1,
-                          });
-                        }}
-                        className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85]"
-                      >
-                        <option value="10">10</option>
-                        <option value="30">30</option>
-                        <option value="50">50</option>
-                      </select>
-                      <span className="text-gray-700">entries</span>
-                    </div>
-                    
-                   
-                  </div>
-                  
-                  {/* Pagination controls - Only show if more than 1 page */}
-                  {Math.ceil(withdrawHistory.data.pagination.total / (state?.perPage || 10)) > 1 && (
-                    <div className="flex justify-center">
-                      <Pagination
-                        currentPage={state?.currentPage || 1}
-                        totalPages={Math.ceil(withdrawHistory.data.pagination.total / (state?.perPage || 10))}
-                        onPageChange={handlePageChange}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
+
+    {/* Transaction History */}
+    <div className="mt-4">
+      <TransactionTable
+        transactions={TableData}
+        state={state}
+        setState={setState}
+        selectedStatus={selectedStatus}
+        setSelectedStatus={setSelectedStatus}
+        handleSearch={handleSearch}
+        handlePageChange={handlePageChange}
+        loading={isLoadingWithdraw || loading}
+      />
+
+      {/* Pagination - Only show if there's data */}
+      {withdrawHistory?.data?.pagination?.total > 0 && (
+        <div className="mt-3 bg-white rounded border border-gray-200 shadow-sm">
+          <div className="p-3">
+            <div className="flex flex-col gap-3">
+              {/* Entries selector and results info */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="text-gray-700">Show</span>
+                  <select
+                    value={state?.perPage}
+                    onChange={(e) => {
+                      const newPerPage = e.target.value;
+                      setState({
+                        ...state,
+                        perPage: newPerPage,
+                        currentPage: 1,
+                      });
+                    }}
+                    className="px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#1d8e85] focus:border-[#1d8e85]"
+                  >
+                    <option value="10">10</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                  </select>
+                  <span className="text-gray-700">entries</span>
+                </div>
+              </div>
+
+              {/* Pagination controls - Only show if more than 1 page */}
+              {Math.ceil(
+                withdrawHistory.data.pagination.total /
+                  (state?.perPage || 10)
+              ) > 1 && (
+                <div className="flex justify-center">
+                  <Pagination
+                    currentPage={state?.currentPage || 1}
+                    totalPages={Math.ceil(
+                      withdrawHistory.data.pagination.total /
+                        (state?.perPage || 10)
+                    )}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+    // <div className="min-h-screen bg-gray-50">
+    //   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-4 sm:py-6">
+    //     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+    //       {/* Left Column - Withdrawal Form */}
+    //       <div className="lg:col-span-5 xl:col-span-4">
+    //         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm">
+    //           <div className="mb-6">
+    //             <h2 className="text-lg font-semibold text-gray-900 mb-4">
+    //               Withdrawal Request
+    //             </h2>
+
+    //             {/* Balance Display */}
+    //             <div className="bg-gradient-to-r from-[#1d8e85] to-[#16a085] rounded-xl p-4 text-white mb-6">
+    //               <div className="flex items-center justify-between">
+    //                 <div>
+    //                   <p className="text-sm opacity-90">Available Balance</p>
+    //                   <p className="text-xl sm:text-2xl font-bold">
+    //                     ₹{userData?.data?.Inr?.toLocaleString("en-IN") || "0"}
+    //                   </p>
+    //                 </div>
+    //                 <CreditCard className="w-6 h-6 sm:w-8 sm:h-8 opacity-80" />
+    //               </div>
+    //             </div>
+    //           </div>
+
+    //           <div className="space-y-6">
+    //             <div>
+    //               <label
+    //                 htmlFor="balanceType"
+    //                 className="block text-sm font-medium text-gray-700 mb-2"
+    //               >
+    //                 Source Account
+    //               </label>
+    //               <select
+    //                 id="balanceType"
+    //                 name="balanceType"
+    //                 value={formData.balanceType}
+    //                 onChange={onChangeBalanceType}
+    //                 onClick={clearErrors}
+    //                 className="w-full text-white px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] bg-[#1d8e85]"
+    //               >
+    //                 <option className="" value="referral">
+    //                   Available Balance
+    //                 </option>
+    //                 <option className="" value="JAIMAX">
+    //                   Purchase Token (JaiMax)
+    //                 </option>
+    //               </select>
+    //               {errors.balanceType && (
+    //                 <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+    //                   <AlertTriangle className="w-4 h-4" />
+    //                   {errors.balanceType}
+    //                 </p>
+    //               )}
+    //               {formData.balanceType === "referral" && (
+    //                 <p className="text-gray-600 mt-2 text-sm">
+    //                   Total Available Balance: ₹
+    //                   {userData?.data?.Inr?.toFixed(2) || "0.00"}
+    //                 </p>
+    //               )}
+    //             </div>
+
+    //             {formData.balanceType === "referral" && (
+    //               <>
+    //                 <div className="grid grid-cols-2 gap-3">
+    //                   <div>
+    //                     <label className="block text-sm font-medium text-gray-700 mb-2">
+    //                       Currency
+    //                     </label>
+    //                     <div className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-900 font-medium text-center">
+    //                       {formData.paymentCurrency ||
+    //                         (userData?.data?.countryCode === 91
+    //                           ? "INR"
+    //                           : "USD")}
+    //                     </div>
+    //                   </div>
+    //                   <div>
+    //                     <label
+    //                       htmlFor="amount"
+    //                       className="block text-sm font-medium text-gray-700 mb-2"
+    //                     >
+    //                       Amount *
+    //                     </label>
+    //                     <input
+    //                       id="amount"
+    //                       type="text"
+    //                       placeholder={`Enter Amount ${addSymbolPlaceholder(
+    //                         formData.paymentCurrency
+    //                       )}`}
+    //                       value={formData.amount}
+    //                       onChange={handleInputChange}
+    //                       onBlur={onBlurAmount}
+    //                       onClick={clearErrors}
+    //                       name="amount"
+    //                       autoComplete="off"
+    //                       className={`w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] ${
+    //                         errors.amount
+    //                           ? "border-red-300 bg-red-50"
+    //                           : "border-gray-300"
+    //                       }`}
+    //                     />
+    //                   </div>
+    //                 </div>
+    //                 {errors.amount && (
+    //                   <p className="text-sm text-red-600 flex items-center gap-1">
+    //                     <AlertTriangle className="w-4 h-4" />
+    //                     {errors.amount}
+    //                   </p>
+    //                 )}
+
+    //                 {/* Transaction Summary */}
+    //                 {formData.amount && (
+    //                   <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+    //                     <h3 className="text-sm font-medium text-gray-900 mb-3">
+    //                       Transaction Summary
+    //                     </h3>
+    //                     <div className="space-y-2 text-sm">
+    //                       {previewData.map((data, i) => (
+    //                         <div key={i} className="flex justify-between">
+    //                           <span
+    //                             className={
+    //                               data.heading === "Fees"
+    //                                 ? "text-red-600"
+    //                                 : "text-gray-600"
+    //                             }
+    //                           >
+    //                             {data.heading}
+    //                           </span>
+    //                           <span
+    //                             className={
+    //                               data.heading === "Will Get"
+    //                                 ? "text-[#1d8e85] font-semibold"
+    //                                 : "font-medium"
+    //                             }
+    //                           >
+    //                             {data.subHeading}
+    //                           </span>
+    //                         </div>
+    //                       ))}
+    //                     </div>
+    //                   </div>
+    //                 )}
+    //               </>
+    //             )}
+
+    //             {formData.balanceType === "JAIMAX" && (
+    //               <div className="text-center py-8">
+    //                 <h5 className="text-gray-600 text-lg font-medium">
+    //                   Coming Soon
+    //                 </h5>
+    //                 <p className="text-gray-500 text-sm mt-2">
+    //                   JaiMax token withdrawal will be available soon
+    //                 </p>
+    //               </div>
+    //             )}
+
+    //             <button
+    //               type="button"
+    //               onClick={handleSubmit}
+    //               disabled={isLoading || formData.balanceType === "JAIMAX"}
+    //               className="w-full bg-[#1d8e85] text-white py-3 px-4 rounded-md font-medium hover:bg-[#166f67] focus:ring-2 focus:ring-[#1d8e85] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors"
+    //             >
+    //               {isLoading ? (
+    //                 <>
+    //                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+    //                   Processing Request...
+    //                 </>
+    //               ) : (
+    //                 <>
+    //                   Submit Withdrawal
+    //                   <ArrowRight className="w-4 h-4" />
+    //                 </>
+    //               )}
+    //             </button>
+    //           </div>
+    //         </div>
+    //       </div>
+
+    //       {/* Right Column - Bank Details & Terms */}
+    //       <div className="lg:col-span-7 xl:col-span-8 space-y-4 sm:space-y-6">
+    //         {/* Bank Details */}
+    //         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm">
+    //           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+    //             <h2 className="text-lg font-semibold text-gray-900">
+    //               Destination Account
+    //             </h2>
+    //           </div>
+
+    //           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+    //             <div>
+    //               <label className="block text-xs font-medium text-gray-500 uppercase  mb-1">
+    //                 Account Holder
+    //               </label>
+    //               <p className="text-gray-900 font-semibold">
+    //                 {kycDetails?.data?.name || "Not Available"}
+    //               </p>
+    //             </div>
+
+    //             <div>
+    //               <label className="block text-xs font-medium text-gray-500 uppercase  mb-1">
+    //                 Account Number
+    //               </label>
+    //               <p className="text-gray-900 font-semibold  break-all">
+    //                 {kycDetails?.data?.bank_account || "Not Available"}
+    //               </p>
+    //             </div>
+
+    //             <div>
+    //               <label className="block text-xs font-medium text-gray-500 uppercase  mb-1">
+    //                 {userData?.data?.countryCode === 91 ? "IFSC" : "Bank"} Code
+    //               </label>
+    //               <p className="text-gray-900 font-semibold">
+    //                 {kycDetails?.data?.ifsc_code || "Not Available"}
+    //               </p>
+    //             </div>
+
+    //             <div>
+    //               <label className="block text-xs font-medium text-gray-500 uppercase  mb-1">
+    //                 Bank Name
+    //               </label>
+    //               <p className="text-gray-900 font-semibold">
+    //                 {kycDetails?.data?.bank_name || "Not Available"}
+    //               </p>
+    //             </div>
+    //           </div>
+    //         </div>
+
+    //         {/* Processing Information */}
+    //         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm">
+    //           <h2 className="text-lg font-semibold text-gray-900 mb-4">
+    //             Terms & Conditions
+    //           </h2>
+
+    //           <div className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+    //             <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+    //               <Clock className="w-5 h-5 text-blue-600 flex-shrink-2" />
+    //               <div>
+    //                 <p className="text-sm font-medium text-blue-900">
+    //                   Processing Time
+    //                 </p>
+    //                 <p className="text-xs text-blue-700">Within 24 hours</p>
+    //               </div>
+    //             </div>
+
+    //             <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200">
+    //               <Shield className="w-5 h-5 text-green-600 flex-shrink-2" />
+    //               <div>
+    //                 <p className="text-sm font-medium text-green-900">
+    //                   Working Hours
+    //                 </p>
+    //                 <p className="text-xs text-green-700">
+    //                   Mon-Fri, 10 AM - 4 PM
+    //                 </p>
+    //               </div>
+    //             </div>
+
+    //             <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
+    //               <Info className="w-5 h-5 text-orange-600 flex-shrink-2" />
+    //               <div>
+    //                 <p className="text-sm font-medium text-orange-900">
+    //                   Processing Fee
+    //                 </p>
+    //                 <p className="text-xs text-orange-700">
+    //                   {getSetting?.data?.withdrawal_commission_inr || "0.5"}%
+    //                   per transaction
+    //                 </p>
+    //               </div>
+    //             </div>
+    //           </div>
+
+    //           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+    //             <div className="flex gap-3">
+    //               <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+    //               <div>
+    //                 <h3 className="text-sm font-semibold text-yellow-800">
+    //                   Important Notes
+    //                 </h3>
+    //                 <ul className="text-sm text-yellow-700 mt-2 space-y-1">
+    //                   <li>
+    //                     • You have to complete the KYC and get approved status;
+    //                     then you can start the withdrawal process.
+    //                   </li>
+    //                   <li>
+    //                     • The withdrawal department works only during banking
+    //                     hours (10 AM to 4 PM) from Monday to Friday.
+    //                   </li>
+    //                   <li>
+    //                     • When you initiate the withdrawal process, the funds
+    //                     will be credited to your account within 24 hours.
+    //                   </li>
+    //                   <li>
+    //                     • We are not responsible if you provide the wrong bank
+    //                     details. Please check them carefully before initiating
+    //                     the withdrawal process.
+    //                   </li>
+    //                 </ul>
+    //               </div>
+    //             </div>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+
+    //     {/* Transaction History */}
+    //     <div className="mt-6 sm:mt-8">
+    //       <TransactionTable
+    //         transactions={TableData}
+    //         state={state}
+    //         setState={setState}
+    //         selectedStatus={selectedStatus}
+    //         setSelectedStatus={setSelectedStatus}
+    //         handleSearch={handleSearch}
+    //         handlePageChange={handlePageChange}
+    //         loading={isLoadingWithdraw || loading}
+    //       />
+
+    //       {/* Pagination - Only show if there's data */}
+    //       {withdrawHistory?.data?.pagination?.total > 0 && (
+    //         <div className="mt-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+    //           <div className="p-4">
+    //             <div className="flex flex-col gap-4">
+    //               {/* Entries selector and results info */}
+    //               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+    //                 <div className="flex items-center gap-2 text-sm">
+    //                   <span className="text-gray-700">Show</span>
+    //                   <select
+    //                     value={state?.perPage}
+    //                     onChange={(e) => {
+    //                       const newPerPage = e.target.value;
+    //                       setState({
+    //                         ...state,
+    //                         perPage: newPerPage,
+    //                         currentPage: 1,
+    //                       });
+    //                     }}
+    //                     className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85]"
+    //                   >
+    //                     <option value="10">10</option>
+    //                     <option value="30">30</option>
+    //                     <option value="50">50</option>
+    //                   </select>
+    //                   <span className="text-gray-700">entries</span>
+    //                 </div>
+    //               </div>
+
+    //               {/* Pagination controls - Only show if more than 1 page */}
+    //               {Math.ceil(
+    //                 withdrawHistory.data.pagination.total /
+    //                   (state?.perPage || 10)
+    //               ) > 1 && (
+    //                 <div className="flex justify-center">
+    //                   <Pagination
+    //                     currentPage={state?.currentPage || 1}
+    //                     totalPages={Math.ceil(
+    //                       withdrawHistory.data.pagination.total /
+    //                         (state?.perPage || 10)
+    //                     )}
+    //                     onPageChange={handlePageChange}
+    //                   />
+    //                 </div>
+    //               )}
+    //             </div>
+    //           </div>
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 
 export default Withdrawal;
-
