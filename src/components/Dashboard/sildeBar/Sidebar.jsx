@@ -266,7 +266,7 @@ function Sidebar({ onLogoutClick }) {
     <>
       {/* Mobile hamburger button - only show on mobile when sidebar is closed */}
       {isMobile && !isOpen && (
-        <div className="fixed -top-1 left-4 z-50 rounded-lg p-2 ">
+        <div className="fixed -top-1 left-4 z-50 rounded-lg p-2 lg">
           <Hamburger
             toggled={isOpen}
             toggle={setIsOpen}
@@ -371,7 +371,7 @@ function Sidebar({ onLogoutClick }) {
 
                 {/* Tooltip for collapsed state */}
                 {!isOpen && !isMobile && (
-                  <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                  <div className="absolute left-full ml-2 px-2 py-1 bg-white text-white text-sm rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
                     {item.name}
                   </div>
                 )}

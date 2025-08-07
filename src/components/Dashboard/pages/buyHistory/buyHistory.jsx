@@ -165,112 +165,136 @@ const BuyHistory = () => {
 
         {/* Mobile Cards View (xs to sm) */}
         <div className="block lg:hidden space-y-4">
-  {isLoading || loading ? (
-    [...Array(3)].map((_, i) => (
-      <div
-        key={i}
-        className="bg-gradient-to-br from-teal-50 to-white border border-teal-100 rounded-xl p-4 shadow-md flex flex-col gap-3 animate-pulse"
-      >
-        <div className="flex justify-between items-center">
-          <div className="h-4 w-16 bg-gray-200 rounded"></div>
-          <div className="h-4 w-20 bg-gray-200 rounded"></div>
+          {isLoading || loading ? (
+            [...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-gradient-to-br from-teal-50 to-white border border-teal-100 rounded-xl p-4 shadow-md flex flex-col gap-3 animate-pulse"
+              >
+                <div className="flex justify-between items-center">
+                  <div className="h-4 w-16 bg-gray-200 rounded"></div>
+                  <div className="h-4 w-20 bg-gray-200 rounded"></div>
+                </div>
+                <div className="h-3 w-2/3 bg-gray-200 rounded"></div>
+                <div className="h-3 w-1/2 bg-gray-200 rounded"></div>
+              </div>
+            ))
+          ) : TableData.length === 0 ? (
+            <div className="bg-gradient-to-br from-teal-50 to-white border border-teal-100 rounded-xl p-6 text-center shadow-md">
+              <p className="text-base text-teal-700 font-semibold">
+                No buy history found.
+              </p>
+            </div>
+          ) : (
+            TableData.map((data, i) => (
+              <div
+                key={i}
+                className="relative bg-gradient-to-br from-white via-teal-50 to-white border border-teal-200 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-200 group overflow-hidden"
+              >
+                {/* Decorative accent bar */}
+                <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-teal-400 to-teal-600 opacity-80"></div>
+
+                {/* Card Content */}
+                <div className="relative z-10">
+                  {/* Header */}
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs font-bold text-teal-700 tracking-wide">
+                      #
+                      {(state?.currentPage - 1) * parseInt(state?.perPage) +
+                        i +
+                        1}
+                    </span>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${getStatusClasses(
+                        data?.status
+                      )}`}
+                    >
+                      {data?.status}
+                    </span>
+                  </div>
+
+                  {/* Transaction ID */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+                      <CreditCard className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-xs text-gray-500">Txn:</span>
+                    <span className="text-xs font-medium text-gray-800 truncate">
+                      {data?.paypalTransactionId ||
+                        data?.transactionId ||
+                        "N/A"}
+                    </span>
+                  </div>
+
+                  {/* Info Grid */}
+                  <div className="grid grid-cols-2 gap-2 text-xs mb-2">
+                    <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
+                      <span className="text-teal-700 font-semibold">Pay:</span>
+                      <span className="text-gray-800">
+                        {data?.paymentMethod || "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
+                      <span className="text-teal-700 font-semibold">Cur:</span>
+                      <span className="text-gray-800">
+                        {data?.currency || "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
+                      <TrendingUp className="w-3 h-3 text-emerald-600" />
+                      <span className="text-emerald-700 font-semibold">
+                        {data?.jaimax?.toFixed(3) || "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
+                      <span className="text-teal-700 font-semibold">
+                        Round:
+                      </span>
+                      <span className="text-gray-800">
+                        {data?.round || "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
+                      <span className="text-teal-700 font-semibold">INR:</span>
+                      <span className="text-gray-800">
+                        {data?.atPriceInr || "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
+                      <span className="text-teal-700 font-semibold">USD:</span>
+                      <span className="text-gray-800">
+                        {data?.atPriceUsdt || "N/A"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Amount */}
+                  <div className="flex items-center justify-between p-3 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-lg mb-2 shadow">
+                    <span className="text-xs font-semibold text-white">
+                      Amount
+                    </span>
+                    <span className="text-lg font-bold text-white">
+                      {data.currency === "INR"
+                        ? `₹${data.amount?.toFixed(2) || "0.00"}`
+                        : `$${data.amount?.toFixed(2) || "0.00"}`}
+                    </span>
+                  </div>
+
+                  {/* Date */}
+                  <div className="flex items-center gap-2 text-xs text-teal-700 mt-1">
+                    <Calendar className="w-4 h-4 text-teal-400" />
+                    <span>
+                      {data?.createdAt
+                        ? formatDateWithAmPm(data?.createdAt)
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
-        <div className="h-3 w-2/3 bg-gray-200 rounded"></div>
-        <div className="h-3 w-1/2 bg-gray-200 rounded"></div>
-      </div>
-    ))
-  ) : TableData.length === 0 ? (
-    <div className="bg-gradient-to-br from-teal-50 to-white border border-teal-100 rounded-xl p-6 text-center shadow-md">
-      <p className="text-base text-teal-700 font-semibold">No buy history found.</p>
-    </div>
-  ) : (
-    TableData.map((data, i) => (
-      <div
-        key={i}
-        className="relative bg-gradient-to-br from-white via-teal-50 to-white border border-teal-200 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-200 group overflow-hidden"
-      >
-        {/* Decorative accent bar */}
-        <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-teal-400 to-teal-600 opacity-80"></div>
-
-        {/* Card Content */}
-        <div className="relative z-10">
-          {/* Header */}
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-bold text-teal-700 tracking-wide">
-              #{(state?.currentPage - 1) * parseInt(state?.perPage) + i + 1}
-            </span>
-            <span
-              className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${getStatusClasses(
-                data?.status
-              )}`}
-            >
-              {data?.status}
-            </span>
-          </div>
-
-          {/* Transaction ID */}
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
-              <CreditCard className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-xs text-gray-500">Txn:</span>
-            <span className="text-xs font-medium text-gray-800 truncate">
-              {data?.paypalTransactionId || data?.transactionId || "N/A"}
-            </span>
-          </div>
-
-          {/* Info Grid */}
-          <div className="grid grid-cols-2 gap-2 text-xs mb-2">
-            <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
-              <span className="text-teal-700 font-semibold">Pay:</span>
-              <span className="text-gray-800">{data?.paymentMethod || "N/A"}</span>
-            </div>
-            <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
-              <span className="text-teal-700 font-semibold">Cur:</span>
-              <span className="text-gray-800">{data?.currency || "N/A"}</span>
-            </div>
-            <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
-              <TrendingUp className="w-3 h-3 text-emerald-600" />
-              <span className="text-emerald-700 font-semibold">{data?.jaimax?.toFixed(3) || "N/A"}</span>
-            </div>
-            <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
-              <span className="text-teal-700 font-semibold">Round:</span>
-              <span className="text-gray-800">{data?.round || "N/A"}</span>
-            </div>
-            <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
-              <span className="text-teal-700 font-semibold">INR:</span>
-              <span className="text-gray-800">{data?.atPriceInr || "N/A"}</span>
-            </div>
-            <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
-              <span className="text-teal-700 font-semibold">USD:</span>
-              <span className="text-gray-800">{data?.atPriceUsdt || "N/A"}</span>
-            </div>
-          </div>
-
-          {/* Amount */}
-          <div className="flex items-center justify-between p-3 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-lg mb-2 shadow">
-            <span className="text-xs font-semibold text-white">Amount</span>
-            <span className="text-lg font-bold text-white">
-              {data.currency === "INR"
-                ? `₹${data.amount?.toFixed(2) || "0.00"}`
-                : `$${data.amount?.toFixed(2) || "0.00"}`}
-            </span>
-          </div>
-
-          {/* Date */}
-          <div className="flex items-center gap-2 text-xs text-teal-700 mt-1">
-            <Calendar className="w-4 h-4 text-teal-400" />
-            <span>
-              {data?.createdAt ? formatDateWithAmPm(data?.createdAt) : "N/A"}
-            </span>
-          </div>
-        </div>
-      </div>
-    ))
-  )}
-</div>
         {/* Tablet Cards View (sm to lg) */}
-       
 
         {/* Desktop Table View (lg and above) */}
         <div className="hidden lg:block">

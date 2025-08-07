@@ -1,257 +1,271 @@
-import React, { useEffect } from "react";
-import { Shield, Lock, Eye, Users, Globe, FileText, Settings, HelpCircle, Mail, ChevronRight } from "lucide-react";
+import React from "react";
 
 const PrivacyPolicy = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const sections = [
-    {
-      id: "introduction",
-      title: "Introduction",
-      icon: <FileText className="w-5 h-5" />,
-      content: [
-        "In this policy, we, us, our, and Jaimax refer to Jaimax. For more information about us and how to contact us, see Section 10.",
-        "We respect your privacy and are committed to protecting it through our compliance with this Policy.",
-        "This privacy policy applies when we are acting as a data controller with respect to the personal data of our users. This Policy describes how we collect, use, and share personal data across our services.",
-        "Please read this Policy carefully to understand our policies and practices regarding your personal data and how we will treat it.",
-        "This Policy may change from time to time. Your continued use of the Services after we make changes is deemed to be acceptance of those changes."
-      ]
-    },
-    {
-      id: "data-collection",
-      title: "Personal Data We Collect",
-      icon: <Eye className="w-5 h-5" />,
-      content: [
-        "We collect only the data necessary for each specific purpose, ensuring we adhere to the principles of data minimization and purpose limitation."
-      ],
-      subsections: [
-        {
-          title: "Information You Give to Us",
-          items: [
-            {
-              label: "Account Data",
-              description: "Personal identification information such as your name, date of birth, age, nationality, gender, phone number, home address, and email address."
-            },
-            {
-              label: "Payment Information", 
-              description: "Financial information such as bank account, credit card, or PayPal information to facilitate payment processing."
-            }
-          ]
-        },
-        {
-          title: "Information We Automatically Collect",
-          items: [
-            {
-              label: "Usage Data",
-              description: "Information about your device, usage patterns, and transactional data to improve user experience and functionality."
-            }
-          ]
-        },
-        {
-          title: "Information from Third Parties",
-          items: [
-            {
-              label: "Verification Data",
-              description: "Information from public databases, credit bureaus, ID verification partners, and social media platforms for identity verification."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "retention",
-      title: "Data Retention & Deletion",
-      icon: <FileText className="w-5 h-5" />,
-      content: [
-        "We retain personal data only for as long as necessary to fulfill contractual obligations or comply with legal obligations.",
-        "Financial data may be retained for up to 7 years after a transaction to meet auditing requirements.",
-        "Users may request the deletion of their data if it is no longer needed for the purposes it was collected."
-      ]
-    },
-    {
-      id: "transfers",
-      title: "International Data Transfers",
-      icon: <Globe className="w-5 h-5" />,
-      content: [
-        "We may transfer, store, and process your data outside the EEA, including countries where our affiliates and third-party service providers are located.",
-        "Appropriate safeguards, such as Standard Contractual Clauses (SCCs) or adequacy decisions, are in place to ensure adequate data protection."
-      ]
-    },
-    {
-      id: "sharing",
-      title: "Third-Party Data Sharing",
-      icon: <Users className="w-5 h-5" />,
-      content: [
-        "We may share data with specific third parties, such as payment processors, ID verification services, and analytics providers.",
-        "Data sharing with each third party is limited to the purpose required, such as processing payments or verifying identity."
-      ]
-    },
-    {
-      id: "security",
-      title: "Data Security",
-      icon: <Lock className="w-5 h-5" />,
-      content: [
-        "We employ a combination of technical and organizational measures to secure your data, including encryption standards, multi-factor authentication, and monitoring practices.",
-        "Only authorized personnel can access your information, and all data is securely stored on Amazon AWS servers.",
-        "Despite our security measures, internet transmission of data carries some risks, so transmission is at the user's discretion."
-      ]
-    },
-    {
-      id: "preferences",
-      title: "Managing Data & Marketing Preferences",
-      icon: <Settings className="w-5 h-5" />,
-      content: [
-        "Users have the option to manage their data preferences through a privacy preferences center.",
-        "You can opt-out of certain types of data processing or third-party sharing.",
-        "Contact support for assistance or use the provided link for immediate preference management."
-      ]
-    },
-    {
-      id: "automated",
-      title: "Automated Decision-Making",
-      icon: <Shield className="w-5 h-5" />,
-      content: [
-        "Where automated systems are used for profiling (e.g., fraud detection or targeted marketing), we provide transparency regarding the impact on the user.",
-        "Users can request more information or opt out of profiling if desired."
-      ]
-    },
-    {
-      id: "updates",
-      title: "Policy Updates",
-      icon: <FileText className="w-5 h-5" />,
-      content: [
-        "This policy is reviewed annually to remain compliant with evolving legal requirements and industry standards.",
-        "Significant changes to the policy will be communicated to users via email or in-app notification."
-      ]
-    }
-  ];
-
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <div className="">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-white/20 rounded-xl">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white">Privacy Policy</h1>
-              <p className="text-white/80">Your privacy is our priority</p>
-            </div>
-          </div>
-          
-          {/* Quick Summary */}
-          <div className="bg-white/10 rounded-2xl p-6">
-            <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-white" />
-              Quick Summary
-            </h2>
-            <p className="text-white/90 leading-relaxed">
-              We collect only necessary data to provide our services, keep it secure with industry-standard 
-              protection, and give you control over your privacy preferences. We don't sell your data and 
-              only share it with trusted partners for essential services like payments and verification.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="space-y-8">
-          {sections.map((section, index) => (
-            <div key={section.id} className="group">
-              <div className="bg-white/10 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300">
-                {/* Section Header */}
-                <div className="p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 bg-white/20 rounded-xl text-white">
-                      {section.icon}
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-semibold text-white">
-                        {index + 1}. {section.title}
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section Content */}
-                <div className="p-6">
-                  <div className="space-y-4">
-                    {section.content.map((paragraph, pIndex) => (
-                      <p key={pIndex} className="text-white/90 leading-relaxed">
-                        {paragraph}
-                      </p>
-                    ))}
-                    
-                    {section.subsections && (
-                      <div className="mt-6 space-y-6">
-                        {section.subsections.map((subsection, sIndex) => (
-                          <div key={sIndex} className="ml-4">
-                            <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-                              <ChevronRight className="w-4 h-4 text-white/80" />
-                              {subsection.title}
-                            </h3>
-                            <div className="space-y-3">
-                              {subsection.items.map((item, iIndex) => (
-                                <div key={iIndex} className="bg-white/10 rounded-xl p-4">
-                                  <h4 className="font-medium text-white mb-2">
-                                    {item.label}
-                                  </h4>
-                                  <p className="text-white/80 text-sm leading-relaxed">
-                                    {item.description}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Contact Section */}
-        <div className="mt-12 bg-white/15 rounded-2xl p-8">
-          <div className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="p-3 bg-white/20 rounded-xl">
-                <Mail className="w-8 h-8 text-white" />
-              </div>
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-3">Questions About Your Privacy?</h2>
-            <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-              If you have questions, concerns, or requests regarding this policy, we're here to help.
-            </p>
-            <a 
-              href="https://Jaimax.com/support" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white text-teal-600 hover:bg-white/90 px-8 py-3 rounded-xl font-medium transition-colors duration-200"
-            >
-              Contact Support
-              <ChevronRight className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-
-        {/* Footer Note */}
-        <div className="mt-8 text-center">
-          <p className="text-white/60 text-sm">
-            Last updated: {new Date().toLocaleDateString('en-US', { 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            })}
+    <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto space-y-8">
+        <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">
+          <h2 className="text-2xl font-bold text-teal-700 mb-2 flex items-center gap-2">
+            Privacy Policy
+            <span className="text-lg" role="img" aria-label="lock">🔒</span>
+          </h2>
+          <p className="text-teal-800 mb-2">
+            <span className="font-semibold">Effective Date:</span> June 2024
           </p>
-        </div>
+
+          {/* Policy Summary */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">Policy Summary (At a Glance)</h3>
+            <p className="text-teal-900">
+              At Jaimax, we are committed to protecting your privacy and personal data. We collect and use data to provide secure, legally compliant cryptocurrency services, including KYC, transaction processing, and wallet access. Your data is encrypted, securely stored, and never sold. As a decentralized wallet provider, we do not store your private keys. You control your wallet and its recovery details. This policy explains how your data is handled, your rights, and how you can manage your privacy preferences.
+            </p>
+          </div>
+
+          {/* 1. Introduction */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">1. Introduction</h3>
+            <p className="text-teal-900">
+              Welcome to Jaimax! We are committed to protecting your personal data and respecting your privacy. This Privacy Policy explains how we collect, use, store, and protect your information when you use our services, including but not limited to our official website (<a href="https://www.jaimax.com" className="text-teal-600 underline">www.jaimax.com</a>), mobile applications, blockchain platforms, and related services.
+              <br />
+              This policy is designed in accordance with global privacy standards, such as:
+            </p>
+            <ul className="list-disc list-inside text-teal-900 mt-1 space-y-1">
+              <li>The General Data Protection Regulation (GDPR – EU/EEA)</li>
+              <li>India’s Information Technology Act, 2000 and rules thereunder</li>
+              <li>California Consumer Privacy Act (CCPA) (if applicable)</li>
+              <li>Financial Action Task Force (FATF) compliance for AML/CTF practices</li>
+            </ul>
+          </div>
+
+          {/* 2. Definitions */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">2. Definitions</h3>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li><span className="font-semibold">"Jaimax", "we", "us", "our"</span> – Refers to the official cryptocurrency project and its affiliated teams.</li>
+              <li><span className="font-semibold">"User", "you"</span> – Any individual or entity accessing or using Jaimax’s services.</li>
+              <li><span className="font-semibold">"Services"</span> – Includes the website, wallet, exchange, staking features, smart contracts, and mobile/web applications.</li>
+              <li><span className="font-semibold">"Personal Data"</span> – Any information that identifies or can be used to identify an individual.</li>
+              <li><span className="font-semibold">"Third Parties"</span> – Includes cloud providers, compliance vendors, analytics tools, or government agencies when required.</li>
+            </ul>
+          </div>
+
+          {/* 3. Information We Collect */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">3. Information We Collect</h3>
+            <p className="text-teal-900 font-semibold mb-1">3.1 Personally Identifiable Information (PII)</p>
+            <ul className="list-disc list-inside text-teal-900 mb-2 space-y-1">
+              <li>Full Name</li>
+              <li>Email Address</li>
+              <li>Mobile Number</li>
+              <li>Residential Address and Proof</li>
+              <li>Government-Issued IDs (e.g., Aadhaar, PAN, Passport)</li>
+              <li>Biometric verification (if applicable)</li>
+              <li>Tax Identification Number (if applicable)</li>
+            </ul>
+            <p className="text-teal-900 font-semibold mb-1">3.2 Blockchain and Financial Information</p>
+            <ul className="list-disc list-inside text-teal-900 mb-2 space-y-1">
+              <li>Wallet address (public blockchain address)</li>
+              <li>On-chain transaction logs</li>
+              <li>Trading history</li>
+              <li>Fiat-to-crypto conversion data</li>
+            </ul>
+            <p className="text-teal-900 font-semibold mb-1">3.3 Technical Data</p>
+            <ul className="list-disc list-inside text-teal-900 mb-2 space-y-1">
+              <li>IP address and geolocation</li>
+              <li>Browser type and device identifiers</li>
+              <li>Access timestamps and session durations</li>
+              <li>Operating system and network data</li>
+            </ul>
+            <p className="text-teal-900 font-semibold mb-1">3.4 Cookies and Tracking</p>
+            <p className="text-teal-900">
+              We use cookies (session, analytics, marketing) to improve performance and user experience. You can control cookie preferences via your browser or refer to our Cookie Policy for full details.
+            </p>
+          </div>
+
+          {/* 4. How We Use Your Data */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">4. How We Use Your Data</h3>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li>KYC / AML verification</li>
+              <li>Transaction processing and order fulfillment</li>
+              <li>Compliance with financial regulations</li>
+              <li>Platform security and fraud detection</li>
+              <li>Customer support and technical troubleshooting</li>
+              <li>System optimization and analytics</li>
+              <li>Optional marketing communication (with opt-in)</li>
+            </ul>
+          </div>
+
+          {/* 5. AML & CTF */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">5. Anti-Money Laundering (AML) &amp; Counter-Terrorist Financing (CTF)</h3>
+            <p className="text-teal-900 font-semibold mb-1">5.1 Regulatory Compliance</p>
+            <ul className="list-disc list-inside text-teal-900 mb-2 space-y-1">
+              <li>FATF recommendations</li>
+              <li>RBI guidelines (India)</li>
+              <li>Global AML/CTF laws</li>
+            </ul>
+            <p className="text-teal-900 font-semibold mb-1">5.2 Know Your Customer (KYC)</p>
+            <ul className="list-disc list-inside text-teal-900 mb-2 space-y-1">
+              <li>Valid government ID</li>
+              <li>Proof of address</li>
+              <li>Biometric or liveness checks</li>
+              <li>Screening against PEP/sanctions lists</li>
+            </ul>
+            <p className="text-teal-900 font-semibold mb-1">5.3 Monitoring and Reporting</p>
+            <ul className="list-disc list-inside text-teal-900 mb-2 space-y-1">
+              <li>Automated alerts for suspicious transactions</li>
+              <li>Real-time transaction flagging</li>
+              <li>Filing of Suspicious Activity Reports (SARs)</li>
+            </ul>
+            <p className="text-teal-900 font-semibold mb-1">5.4 Recordkeeping</p>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li>KYC/transaction data retained as per regulation</li>
+              <li>User-deletion requests honored unless data is needed for legal compliance</li>
+            </ul>
+          </div>
+
+          {/* 6. Data Sharing and Third Parties */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">6. Data Sharing and Third Parties</h3>
+            <p className="text-teal-900">
+              We may share data with:
+            </p>
+            <ul className="list-disc list-inside text-teal-900 mt-1 space-y-1">
+              <li>Service providers (e.g., AWS, DigiLocker, payment gateways)</li>
+              <li>Regulators and legal authorities (if mandated)</li>
+              <li>Business partners during corporate transfers or audits</li>
+              <li>Analytics and KYC vendors (e.g., Google Analytics, Onfido)</li>
+            </ul>
+            <p className="text-teal-900 mt-1">
+              All third parties are bound by confidentiality, data protection agreements, and security obligations.
+            </p>
+          </div>
+
+          {/* 7. Data Security Measures */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">7. Data Security Measures</h3>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li>AES 256-bit and TLS encryption</li>
+              <li>Multi-factor authentication (MFA)</li>
+              <li>Hardware-level cold storage for crypto assets</li>
+              <li>Regular penetration testing and code audits</li>
+              <li>Role-based access controls</li>
+            </ul>
+          </div>
+
+          {/* 8. Data Retention */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">8. Data Retention</h3>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li>Active accounts: Retained until account is closed</li>
+              <li>Closed accounts: Data deleted within 30 days of request</li>
+              <li>Blockchain records: Retained permanently (due to immutability)</li>
+              <li>Technical logs: Retained up to 2 years</li>
+            </ul>
+          </div>
+
+          {/* 9. Legal Basis for Processing (GDPR Compliance) */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">9. Legal Basis for Processing (GDPR Compliance)</h3>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li>Your consent (e.g., marketing or optional features)</li>
+              <li>Contractual necessity (e.g., service delivery)</li>
+              <li>Legal obligations (e.g., KYC, AML compliance)</li>
+              <li>Legitimate interests (e.g., fraud prevention, platform optimization)</li>
+            </ul>
+          </div>
+
+          {/* 10. International Data Transfers */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">10. International Data Transfers</h3>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li>Standard Contractual Clauses (SCCs)</li>
+              <li>Certified secure hosting platforms (e.g., AWS)</li>
+              <li>Strong internal controls and access governance</li>
+            </ul>
+          </div>
+
+          {/* 11. Your Rights and Choices */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">11. Your Rights and Choices</h3>
+            <ul className="list-disc list-inside text-teal-900 space-y-1">
+              <li>Access or correct your personal data</li>
+              <li>Delete or restrict processing</li>
+              <li>Withdraw consent at any time</li>
+              <li>Request portability of data</li>
+              <li>Object to profiling or automated decisions</li>
+              <li>Lodge a complaint with a Data Protection Authority (EU)</li>
+            </ul>
+            <p className="text-teal-900 mt-1">
+              Submit any privacy requests to: <a href="mailto:privacy@jaimax.com" className="text-teal-600 underline">privacy@jaimax.com</a>
+            </p>
+          </div>
+
+          {/* 12. Data Breach Notification */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">12. Data Breach Notification</h3>
+            <p className="text-teal-900">
+              If a data breach occurs:
+              <ul className="list-disc list-inside text-teal-900 mt-1 space-y-1">
+                <li>We will notify affected users and authorities within 72 hours (as required)</li>
+                <li>The notification will include scope, impact, and remedial steps</li>
+              </ul>
+            </p>
+          </div>
+
+          {/* 13. Children’s Privacy */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">13. Children’s Privacy</h3>
+            <p className="text-teal-900">
+              Our services are not directed to individuals under 18. If such data is inadvertently collected, it will be deleted promptly.
+            </p>
+          </div>
+
+          {/* 14. Nominee & Inheritance Policy */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">14. Nominee &amp; Inheritance Policy</h3>
+            <p className="text-teal-900">
+              Jaimax Wallet is decentralized and does not support nominee or inheritance systems. We do not store private keys or recovery phrases.
+              <br />
+              In case of death, disability, or loss of credentials:
+            </p>
+            <ul className="list-disc list-inside text-teal-900 mt-1 space-y-1">
+              <li>Only users with access to the recovery phrase can access funds</li>
+              <li>We strongly recommend storing your recovery phrase securely, sharing it with a trusted individual, or including it in a legal will</li>
+              <li>Jaimax assumes no liability for unclaimed or lost assets without user-defined inheritance planning.</li>
+            </ul>
+          </div>
+
+          {/* 15. Governing Law & Jurisdiction */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">15. Governing Law &amp; Jurisdiction</h3>
+            <p className="text-teal-900">
+              This Privacy Policy is governed by the laws of India. All disputes will be subject to the exclusive jurisdiction of the courts in Hyderabad, Telangana.
+            </p>
+          </div>
+
+          {/* 16. Changes to This Policy */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">16. Changes to This Policy</h3>
+            <p className="text-teal-900">
+              This Privacy Policy may be updated periodically. Major changes will be communicated via email or app notifications. The latest version will always be published on our website.
+              <br />
+              <span className="font-semibold">Effective Date:</span> June 2024
+            </p>
+          </div>
+
+          {/* 17. Contact Information */}
+          <div>
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">17. Contact Information</h3>
+            <ul className="list-none text-teal-900 mt-1">
+              <li><span className="font-semibold">Privacy Officer – Jaimax</span></li>
+              <li>📧 Email: <a href="mailto:privacy@jaimax.com" className="text-teal-600 underline">privacy@jaimax.com</a></li>
+              <li>🌐 Website: <a href="https://www.jaimax.com" className="text-teal-600 underline">www.jaimax.com</a></li>
+              <li>🏢 Address: Survey No:18, India Building, Vaishnavi's Cynosure, 4th Floor, Gachibowli, Hyderabad, India</li>
+            </ul>
+          </div>
+        </section>
       </div>
     </div>
   );

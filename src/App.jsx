@@ -29,14 +29,14 @@ import RefundPolicy from "./global/RefundPolicy";
 import TermsConditions from "./global/TermsConditons";
 import PrivacyPolicy from "./global/PrivacyPolicy";
 import Disclaimer from "./global/Disclaimer";
-
+import AmlCtfPolicy from './global/Aml_Ctf'
 import Margintrading from "./services/Margintrading";
 import ApiTrading from "./services/Apitrading";
 import SpotTrading from "./services/Spottrading";
 import FuturesTrading from "./services/Futurestrading";
 import PreSale from "./services/Presale";
 import ReferEarn from "./services/Referearn";
-
+import KycPmlaPolicy from './global/Kyc_Pmla'
 import Dashboard from "./components/Dashboard/pages/dashBoard/dashBoard";
 import Wallet from "./components/Dashboard/pages/wallet/wallet";
 import MyTotalTeam from "./components/Dashboard/pages/myTotalTeam/myTotalTeam";
@@ -444,6 +444,9 @@ const App = () => {
         <Route path="SpotTrading" element={<SpotTrading />} />
         <Route path="FuturesTrading" element={<FuturesTrading />} />
         <Route path="PreSale" element={<PreSale />} />
+        <Route path="Kyc_Pmla" element={<KycPmlaPolicy />} />
+        
+        <Route path="AML_CTF" element={<AmlCtfPolicy  />} />
         <Route path="ReferEarn" element={<ReferEarn />} />
       </Route>
 

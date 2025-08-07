@@ -43,103 +43,81 @@
 
 
 import React, { useEffect } from "react";
-import { AlertTriangle, Shield, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Disclaimer = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="min-h-screen ">
-
-
-      <div className="relative z-10 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white">
+      <div className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-9xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-lg">
-              <AlertTriangle className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Important Disclaimer
+          {/* Header */}
+          <header className="mb-12 text-center">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-teal-700 mb-2 tracking-tight">
+              Disclaimer
             </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto rounded-full"></div>
-          </div>
+            <p className="text-teal-500 text-base md:text-lg">
+              Please read this important notice before using our platform.
+            </p>
+            <div className="w-16 h-1 bg-teal-300 mx-auto mt-4 rounded-full" />
+          </header>
 
           {/* Main Content */}
-          <div className=" rounded-3xl   p-8 md:p-12">
-            <div className="space-y-8">
-              {/* Risk Warning Section */}
-              <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-2xl border border-red-500/30">
-                <div className="flex-shrink-0">
-                  <Shield className="w-8 h-8 text-red-400 mt-1" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-3 flex items-center">
-                    Trading Risks
-                  </h3>
-                  <p className="text-gray-200 leading-relaxed text-lg">
-                    Trading in cryptocurrencies involves significant market, technical, and legal risks. 
-                    Prices can fluctuate dramatically based on local demand and supply conditions, 
-                    potentially resulting in substantial financial losses.
-                  </p>
-                </div>
-              </div>
-
-              {/* Regulatory Warning Section */}
-              <div className="flex items-start space-x-4 p-6  rounded-2xl border border-yellow-500/30">
-                <div className="flex-shrink-0">
-                  <Info className="w-8 h-8 text-yellow-400 mt-1" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    Regulatory Notice
-                  </h3>
-                  <p className="text-gray-200 leading-relaxed text-lg">
-                    Crypto products and NFTs are unregulated and can be highly risky investments. 
-                    There is no regulatory recourse available for any losses incurred from such transactions. 
-                    You should only invest what you can afford to lose entirely.
-                  </p>
-                </div>
-              </div>
-
-              {/* Information Accuracy Section */}
-              <div className="p-6  rounded-2xl border border-blue-500/30">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  Information Accuracy
-                </h3>
-                <p className="text-gray-200 leading-relaxed text-lg">
-                  The information and materials provided here are subject to change without prior notice. 
-                  Prices and market data may vary significantly based on current market conditions and 
-                  should not be considered as financial advice.
-                </p>
-              </div>
-
-              {/* Call to Action */}
-              <div className="text-center pt-8 border-t border-white/20">
-                <p className="text-gray-300 text-lg mb-6">
-                  Please ensure you fully understand the risks before proceeding with any cryptocurrency transactions.
-                </p>
-                <div className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full text-white font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                  <Shield className="w-5 h-5" />
-                  <button
-                  onClick={() => navigate("/blog")}
-                  ><span>Acknowledge & Continue</span></button>
-                </div>
-              </div>
+          <section className="bg-white border border-teal-100 rounded-2xl shadow-sm p-6 md:p-10 space-y-8">
+            {/* Trading Risks */}
+            <div>
+              <h2 className="text-lg font-semibold text-teal-700 mb-2">
+                Trading Risks
+              </h2>
+              <p className="text-teal-900 text-base leading-relaxed">
+                Trading in cryptocurrencies involves significant market, technical, and legal risks. Prices can fluctuate dramatically based on local demand and supply conditions, potentially resulting in substantial financial losses.
+              </p>
             </div>
-          </div>
+
+            {/* Regulatory Notice */}
+            <div>
+              <h2 className="text-lg font-semibold text-teal-700 mb-2">
+                Regulatory Notice
+              </h2>
+              <p className="text-teal-900 text-base leading-relaxed">
+                Crypto products and NFTs are unregulated and can be highly risky investments. There is no regulatory recourse available for any losses incurred from such transactions. You should only invest what you can afford to lose entirely.
+              </p>
+            </div>
+
+            {/* Information Accuracy */}
+            <div>
+              <h2 className="text-lg font-semibold text-teal-700 mb-2">
+                Information Accuracy
+              </h2>
+              <p className="text-teal-900 text-base leading-relaxed">
+                The information and materials provided here are subject to change without prior notice. Prices and market data may vary significantly based on current market conditions and should not be considered as financial advice.
+              </p>
+            </div>
+
+            {/* Call to Action */}
+            <div className="pt-6 border-t border-teal-100 text-center">
+              <p className="text-teal-700 text-base mb-6">
+                Please ensure you fully understand the risks before proceeding with any cryptocurrency transactions.
+              </p>
+              <button
+                onClick={() => navigate("/blog")}
+                className="px-8 py-3 bg-teal-600 rounded-full text-white font-semibold hover:bg-teal-700 transition-colors duration-200 shadow-sm"
+              >
+                Acknowledge &amp; Continue
+              </button>
+            </div>
+          </section>
 
           {/* Footer */}
-          <div className="text-center mt-12">
-            <p className="text-gray-400 text-sm">
+          <footer className="text-center mt-10">
+            <p className="text-teal-400 text-xs">
               Last updated: {new Date().toLocaleDateString()}
             </p>
-          </div>
+          </footer>
         </div>
       </div>
     </div>

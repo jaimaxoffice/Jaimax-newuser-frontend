@@ -554,7 +554,9 @@ const Footer = () => {
                   { name: '24/7 Support', path: '/supporthome' },
                   { name: 'Refund Policy', path: '/refund-policy' },
                   { name: 'Terms and Conditions', path: '/terms-and-conditions' },
-                  { name: 'Privacy Policy for JAIMAX', path: '/privacy-policy' }
+                  { name: 'Privacy Policy', path: '/privacy-policy' },
+                  { name: 'KYC_PMLA', path: '/Kyc_pmla' },
+                  { name: 'AML_CTF', path: '/Aml_Ctf' }
                 ].map((link) => (
                   <li key={link.name}>
                     <NavLink

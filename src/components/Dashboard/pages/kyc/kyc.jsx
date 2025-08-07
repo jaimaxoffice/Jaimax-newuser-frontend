@@ -5,7 +5,7 @@ import digiLocker from "../../../../assets/digiLocker.svg";
 import editIcon from "../../../../assets/edit.svg";
 import showIcon from "../../../../assets/showIcon.svg";
 import countryCodes from "../../../../Authentication/countryCodes.json";
-import { Camera, Edit, Eye, User, FileText, CreditCard, Upload } from 'lucide-react';
+import { Camera, Edit, Eye, User, FileText, CreditCard, Upload, CheckCircle, Shield ,Phone,MapPin ,Info,DollarSign, Check   } from 'lucide-react';
 import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice";
 import DigiLockerModal from "./DigiLockerModal";
 import {
@@ -2237,256 +2237,457 @@ const KycInformation = () => {
     }
   };
 return(
-   <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white">
-      <div className="container mx-auto px-4 py-6 sm:py-8">
-        <div className="max-w-9xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+
+
+  <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white py-6 px-4">
+  <div className="max-w-9xl mx-auto">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+      
+      {/* Header */}
+      <div className="bg-gradient-to-r from-teal-500 to-teal-600 px-6 py-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h1 className="text-white text-2xl font-bold mb-1">KYC Verification</h1>
+            <p className="text-teal-50 text-sm">
+              {kycdata?.data?.status === "approve" 
+                ? "Your KYC is verified and approved" 
+                : "Complete your identity verification to access all features"}
+            </p>
+          </div>
+          
+          {isCountryCodeIndia && (
+            <button
+              type="button"
+              className="bg-white hover:bg-teal-50 text-teal-700 px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 font-medium shadow-sm"
+              onClick={handleButtonClick}
+            >
+              <img src={digiLocker} alt="" className="h-5" />
+              DigiLocker
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="p-6">
+        {/* Status Banner */}
+        {kycdata?.data?.status && (
+          <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+            kycdata.data.status === "approve" ? "bg-green-50 text-green-800" :
+            kycdata.data.status === "pending" ? "bg-yellow-50 text-yellow-800" :
+            kycdata.data.status === "reject" ? "bg-red-50 text-red-800" : "bg-blue-50 text-blue-800"
+          }`}>
+            {kycdata.data.status === "approve" ? (
+              <CheckCircle className="w-5 h-5" />
+            ) : kycdata.data.status === "pending" ? (
+              <Clock className="w-5 h-5" />
+            ) : kycdata.data.status === "reject" ? (
+              <AlertCircle className="w-5 h-5" />
+            ) : (
+              <Info className="w-5 h-5" />
+            )}
+            <div>
+              <p className="font-medium">
+                Status: <span className="capitalize">{kycdata.data.status}</span>
+              </p>
+              <p className="text-sm mt-0.5">
+                {kycdata.data.status === "approve" ? "Your KYC has been verified and approved." :
+                 kycdata.data.status === "pending" ? "Your KYC is under review. We'll update you soon." :
+                 kycdata.data.status === "reject" ? "Your KYC was rejected. Please update and resubmit." :
+                 "Please complete your KYC verification."}
+              </p>
+            </div>
             
-            {/* Header */}
-            <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-4 sm:px-6 py-4 sm:py-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                  <h1 className="text-white text-xl sm:text-2xl font-bold">
-                    KYC Information
-                  </h1>
-                  {kycdata?.data?.status !== "approve" && (
-                    <p className="text-teal-100 text-sm">
-                      (Fill up information and verify your KYC.)
-                    </p>
-                  )}
+            {kycdata?.data?.status === "approve" && (
+              <button
+                type="button"
+                className="ml-auto bg-green-100 hover:bg-green-200 text-green-800 p-2 rounded-full"
+                onClick={onClickEdit}
+                title="Edit KYC"
+              >
+                <Edit className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Step Indicator */}
+        <div className="flex mb-8 border-b border-gray-200 pb-2">
+          <div className="flex-1 text-center">
+            <div className={`rounded-full w-8 h-8 mx-auto mb-1 flex items-center justify-center ${
+              true ? "bg-teal-600 text-white" : "bg-gray-200 text-gray-600"
+            }`}>1</div>
+            <p className="text-sm font-medium text-teal-800">Personal Info</p>
+          </div>
+          <div className="flex-1 text-center">
+            <div className={`rounded-full w-8 h-8 mx-auto mb-1 flex items-center justify-center ${
+              capturedProfilePicture ? "bg-teal-600 text-white" : "bg-gray-200 text-gray-600"
+            }`}>2</div>
+            <p className="text-sm font-medium text-teal-800">Documents</p>
+          </div>
+          <div className="flex-1 text-center">
+            <div className={`rounded-full w-8 h-8 mx-auto mb-1 flex items-center justify-center ${
+              formData.bank_account ? "bg-teal-600 text-white" : "bg-gray-200 text-gray-600"
+            }`}>3</div>
+            <p className="text-sm font-medium text-teal-800">Bank Details</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            {/* Personal Information */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-teal-800 mb-4 flex items-center gap-2">
+                <User className="w-5 h-5 text-teal-600" />
+                Personal Information
+              </h2>
+              
+              <div className="space-y-4">
+                {/* Profile Picture */}
+                <div>
+                  <label className="block text-teal-800 text-sm font-medium mb-2">
+                    Profile Photo <span className="text-red-500">*</span>
+                  </label>
+                  <div className="flex items-center gap-4">
+                    {capturedProfilePicture ? (
+                      <img
+                        src={`data:image/jpeg;base64,${capturedProfilePicture.imageBase64}`}
+                        alt="Profile"
+                        className="w-20 h-20 object-cover rounded-lg border-2 border-teal-500"
+                      />
+                    ) : (
+                      <div className="w-20 h-20 bg-teal-50 rounded-lg border-2 border-dashed border-teal-300 flex items-center justify-center">
+                        <User className="w-8 h-8 text-teal-300" />
+                      </div>
+                    )}
+                    <CaptureButton 
+                      docType="profile_picture" 
+                      displayName={capturedProfilePicture ? "Retake Photo" : "Take Selfie"} 
+                      className="bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg"
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                  <h6 className="text-teal-100 text-sm">
-                    Country: <span className="ml-1 sm:ml-2 font-semibold text-white">{userData?.data?.country || 'India'}</span>
-                  </h6>
-                  {isCountryCodeIndia && (
-                    <button
-                      type="button"
-                      className="self-start sm:self-auto bg-teal-500 hover:bg-teal-400 p-2 rounded-lg transition-colors duration-200"
-                      onClick={() => console.log('DigiLocker clicked')}
-                    >
-                      {/* <FileText className="w-5 h-5 text-white" /> */}
-                      <img src={digiLocker} alt="" onClick={handleButtonClick} />
-                    </button>
-                  )}
+
+                {/* Name */}
+                <div>
+                  <label htmlFor="applicantName" className="block text-teal-800 text-sm font-medium mb-2">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    name="applicantName"
+                    placeholder="Enter your legal full name"
+                    value={formData.applicantName}
+                    onChange={handleChange}
+                    disabled={isFieldDisabled()}
+                  />
+                </div>
+
+                {/* Date of Birth - India only */}
+                {isCountryCodeIndia && (
+                  <div>
+                    <label htmlFor="dob" className="block text-teal-800 text-sm font-medium mb-2">
+                      Date of Birth <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      name="dob"
+                      value={formData.dob}
+                      onChange={handleChange}
+                      disabled={isFieldDisabled()}
+                    />
+                  </div>
+                )}
+
+                {/* Mobile Number */}
+                <div>
+                  <label htmlFor="mobile_number" className="block text-teal-800 text-sm font-medium mb-2">
+                    Mobile Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    name="mobile_number"
+                    placeholder="Enter mobile number linked to your bank"
+                    value={formData.mobile_number}
+                    onChange={handleChange}
+                    disabled={isFieldDisabled()}
+                  />
+                </div>
+
+                {/* Address */}
+                <div>
+                  <label htmlFor="address" className="block text-teal-800 text-sm font-medium mb-2">
+                    Address <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+                    name="address"
+                    placeholder="Enter your complete residential address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    disabled={isFieldDisabled()}
+                    rows="3"
+                  />
                 </div>
               </div>
             </div>
 
-            <div className="p-4 sm:p-6">
-              {renderVerificationStatus()}
-
-              {/* Form Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                
-                {/* Applicant Info */}
-                <div className="space-y-6">
-                  <div className="flex items-center gap-2 pb-3 border-b border-teal-200">
-                    <User className="w-5 h-5 text-teal-600" />
-                    <h6 className="text-teal-800 text-lg font-semibold">Applicant Info</h6>
-                  </div>
-
-                  {/* Status and Edit */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-3 bg-teal-50 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      {kycdata?.data?.status === "approve" && (
-                        <button
-                          type="button"
-                          className="bg-teal-600 hover:bg-teal-700 p-1 rounded"
-                          onClick={onClickEdit}
-                        >
-                          <Edit className="w-4 h-4 text-white" />
-                        </button>
-                      )}
-                      <p className="text-teal-700 text-sm">
-                        KYC status:{' '}
-                        <span className={`capitalize font-bold ${getStatusColor(kycdata?.data?.status)}`}>
-                          {kycdata?.data?.status || "N/A"}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Profile Picture */}
-                  <div className="space-y-3">
-                    <label className="block text-teal-800 text-sm font-medium">
-                      Profile Picture <span className="text-red-500">*</span>
-                    </label>
-                    <CaptureButton docType="profile_picture" displayName="Selfie" />
-                    {capturedProfilePicture && (
-                      <div className="mt-3">
-                        <img
-                          src={`data:image/jpeg;base64,${capturedProfilePicture.imageBase64}`}
-                          alt="Profile"
-                          className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border-2 border-teal-500"
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Name */}
-                  <div className="space-y-3">
-                    <label htmlFor="applicantName" className="block text-teal-800 text-sm font-medium">
-                      Name of the Applicant <span className="text-red-500">*</span>
+            {/* Bank Details */}
+            <div>
+              <h2 className="text-xl font-semibold text-teal-800 mb-4 flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-teal-600" />
+                Bank Details
+              </h2>
+              
+              <div className="space-y-4">
+                {/* UPI - India only */}
+                {isCountryCodeIndia && (
+                  <div>
+                    <label htmlFor="upi_id" className="block text-teal-800 text-sm font-medium mb-2">
+                      UPI ID
                     </label>
                     <input
                       type="text"
-                      className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      name="applicantName"
-                      placeholder="Enter your full name"
-                      value={formData.applicantName}
+                      className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                      name="upi_id"
+                      placeholder="yourname@upi"
+                      value={formData.upi_id}
                       onChange={handleChange}
                       disabled={isFieldDisabled()}
                     />
+                    <p className="text-xs text-gray-500 mt-1">Optional, but recommended for faster payments</p>
                   </div>
+                )}
 
-                  {/* Date of Birth - India only */}
-                  {isCountryCodeIndia && (
-                    <div className="space-y-3">
-                      <label htmlFor="dob" className="block text-teal-800 text-sm font-medium">
-                        Date of Birth <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="date"
-                        className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                        name="dob"
-                        value={formData.dob}
-                        onChange={handleChange}
-                        disabled={isFieldDisabled()}
-                      />
-                    </div>
-                  )}
-
-                  {/* Mobile Number */}
-                  <div className="space-y-3">
-                    <label htmlFor="mobile_number" className="block text-teal-800 text-sm font-medium">
-                      Mobile Number (As per Bank) <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      name="mobile_number"
-                      placeholder="Enter mobile number"
-                      value={formData.mobile_number}
-                      onChange={handleChange}
-                      disabled={isFieldDisabled()}
-                    />
-                  </div>
-
-                  {/* Address */}
-                  <div className="space-y-3">
-                    <label htmlFor="address" className="block text-teal-800 text-sm font-medium">
-                      Address <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
-                      name="address"
-                      placeholder="Enter your complete address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      disabled={isFieldDisabled()}
-                      rows="3"
-                    />
-                  </div>
+                {/* Bank Account Number */}
+                <div>
+                  <label htmlFor="bank_account" className="block text-teal-800 text-sm font-medium mb-2">
+                    Bank Account Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    name="bank_account"
+                    placeholder="Enter your bank account number"
+                    value={formData.bank_account}
+                    onChange={handleChange}
+                    disabled={isFieldDisabled()}
+                  />
                 </div>
 
-                {/* Applicant Proofs */}
-                <div className="space-y-6">
-                  <div className="flex items-center gap-2 pb-3 border-b border-teal-200">
-                    <FileText className="w-5 h-5 text-teal-600" />
-                    <h6 className="text-teal-800 text-lg font-semibold">Applicant Proofs</h6>
-                  </div>
+                {/* Bank Name */}
+                <div>
+                  <label htmlFor="bank_name" className="block text-teal-800 text-sm font-medium mb-2">
+                    Bank Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    name="bank_name"
+                    placeholder="Enter your bank name"
+                    value={formData.bank_name}
+                    onChange={handleChange}
+                    disabled={isFieldDisabled()}
+                  />
+                </div>
 
-                  {isCountryCodeIndia ? (
-                    <>
-                      {/* Aadhaar Front */}
-                      <div className="space-y-3">
-                        <label className="block text-teal-800 text-sm font-medium">
-                          Aadhaar Front <span className="text-red-500">*</span>
-                          {kycdata?.success && (
-                            <button
-                              type="button"
-                              className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
-                              onClick={() =>
-                                    onClickImage(kycdata.data?.aadhar_doc_front)
-                                  }
-                            >
-                              <Eye className="w-3 h-3 text-white" />
-                            </button>
-                          )}
-                        </label>
-                        <CaptureButton docType="aadhar_doc_front" displayName="Aadhaar Front" />
-                      </div>
+                {/* IFSC Code */}
+                <div>
+                  <label htmlFor="ifsc_code" className="block text-teal-800 text-sm font-medium mb-2">
+                    {isCountryCodeIndia ? "IFSC Code" : "Bank Code"} <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-teal-500 focus:border-transparent uppercase"
+                    name="ifsc_code"
+                    placeholder={isCountryCodeIndia ? "Enter IFSC code (e.g. SBIN0001234)" : "Enter bank code"}
+                    value={formData.ifsc_code}
+                    onChange={handleChange}
+                    disabled={isFieldDisabled()}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-                      {/* Aadhaar Back */}
-                      <div className="space-y-3">
-                        <label className="block text-teal-800 text-sm font-medium">
-                          Aadhaar Back <span className="text-red-500">*</span>
-                          {kycdata?.success && (
-                            <button
-                              type="button"
-                              className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
-                              onClick={() =>
-                                    onClickImage(kycdata.data?.aadhar_doc_back)
-                                  }
-                            >
-                              <Eye className="w-3 h-3 text-white" />
-                            </button>
-                          )}
-                        </label>
-                        <CaptureButton docType="aadhar_doc_back" displayName="Aadhaar Back" />
-                      </div>
+          <div>
+            {/* ID Verification */}
+            <div>
+              <h2 className="text-xl font-semibold text-teal-800 mb-4 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-teal-600" />
+                ID Verification
+              </h2>
+              
+              <div className="bg-teal-50 rounded-lg p-4 mb-6">
+                <p className="text-sm text-teal-800">
+                  Please ensure that your documents are:
+                </p>
+                <ul className="text-sm text-teal-800 list-disc list-inside mt-2 space-y-1">
+                  <li>Clear and legible</li>
+                  <li>Not cropped or cut off</li>
+                  <li>Original documents (not photocopies)</li>
+                  <li>Not expired</li>
+                </ul>
+              </div>
 
-                      {/* PAN */}
-                      <div className="space-y-3">
-                        <label className="block text-teal-800 text-sm font-medium">
-                          PAN <span className="text-red-500">*</span>
-                          {kycdata?.success && (
-                            <button
-                              type="button"
-                              className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
-                              onClick={() =>
-                                    onClickImage(kycdata.data?.pan_doc_front)
-                                  }
-                            >
-                              <Eye className="w-3 h-3 text-white" />
-                            </button>
-                          )}
-                        </label>
-                        <CaptureButton docType="pan_doc_front" displayName="PAN" />
+              <div className="space-y-6">
+                {isCountryCodeIndia ? (
+                  <>
+                    {/* Aadhaar Card */}
+                    <div className="border border-gray-200 rounded-lg p-4">
+                      <h3 className="font-medium text-teal-800 mb-3">Aadhaar Card</h3>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+                        {/* Front */}
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-2">
+                            Front Side <span className="text-red-500">*</span>
+                          </label>
+                          <div className="border-2 border-dashed border-teal-200 rounded-lg bg-teal-50 p-2 flex flex-col items-center justify-center">
+                            {kycdata?.data?.aadhar_doc_front ? (
+                              <div className="relative w-full">
+                                <img 
+                                  src={kycdata.data.aadhar_doc_front} 
+                                  alt="Aadhaar Front" 
+                                  className="w-full h-32 object-cover rounded"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute top-1 right-1 bg-teal-600 hover:bg-teal-700 p-1 rounded-full"
+                                  onClick={() => onClickImage(kycdata.data?.aadhar_doc_front)}
+                                >
+                                  <Eye className="w-3 h-3 text-white" />
+                                </button>
+                              </div>
+                            ) : (
+                              <>
+                                <FileText className="w-8 h-8 text-teal-300 mb-2" />
+                                <p className="text-xs text-teal-600 mb-2">Upload Aadhaar front side</p>
+                              </>
+                            )}
+                            <CaptureButton 
+                              docType="aadhar_doc_front" 
+                              displayName={kycdata?.data?.aadhar_doc_front ? "Retake" : "Capture"} 
+                              className="text-xs bg-teal-600 hover:bg-teal-700 text-white py-1.5 px-3 rounded"
+                            />
+                          </div>
+                        </div>
+                        
+                        {/* Back */}
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-2">
+                            Back Side <span className="text-red-500">*</span>
+                          </label>
+                          <div className="border-2 border-dashed border-teal-200 rounded-lg bg-teal-50 p-2 flex flex-col items-center justify-center">
+                            {kycdata?.data?.aadhar_doc_back ? (
+                              <div className="relative w-full">
+                                <img 
+                                  src={kycdata.data.aadhar_doc_back} 
+                                  alt="Aadhaar Back" 
+                                  className="w-full h-32 object-cover rounded"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute top-1 right-1 bg-teal-600 hover:bg-teal-700 p-1 rounded-full"
+                                  onClick={() => onClickImage(kycdata.data?.aadhar_doc_back)}
+                                >
+                                  <Eye className="w-3 h-3 text-white" />
+                                </button>
+                              </div>
+                            ) : (
+                              <>
+                                <FileText className="w-8 h-8 text-teal-300 mb-2" />
+                                <p className="text-xs text-teal-600 mb-2">Upload Aadhaar back side</p>
+                              </>
+                            )}
+                            <CaptureButton 
+                              docType="aadhar_doc_back" 
+                              displayName={kycdata?.data?.aadhar_doc_back ? "Retake" : "Capture"} 
+                              className="text-xs bg-teal-600 hover:bg-teal-700 text-white py-1.5 px-3 rounded"
+                            />
+                          </div>
+                        </div>
                       </div>
+                    </div>
 
-                      {/* PAN Number */}
-                      <div className="space-y-3">
-                        <label htmlFor="panNumber" className="block text-teal-800 text-sm font-medium">
-                          PAN Number <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent uppercase"
-                          name="panNumber"
-                          placeholder="Enter PAN number"
-                          value={formData.panNumber}
-                          onChange={handleChange}
-                          disabled={isFieldDisabled()}
-                          maxLength="10"
-                        />
+                    {/* PAN Card */}
+                    <div className="border border-gray-200 rounded-lg p-4">
+                      <h3 className="font-medium text-teal-800 mb-3">PAN Card</h3>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* PAN Image */}
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-2">
+                            PAN Card <span className="text-red-500">*</span>
+                          </label>
+                          <div className="border-2 border-dashed border-teal-200 rounded-lg bg-teal-50 p-2 flex flex-col items-center justify-center">
+                            {kycdata?.data?.pan_doc_front ? (
+                              <div className="relative w-full">
+                                <img 
+                                  src={kycdata.data.pan_doc_front} 
+                                  alt="PAN" 
+                                  className="w-full h-32 object-cover rounded"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute top-1 right-1 bg-teal-600 hover:bg-teal-700 p-1 rounded-full"
+                                  onClick={() => onClickImage(kycdata.data?.pan_doc_front)}
+                                >
+                                  <Eye className="w-3 h-3 text-white" />
+                                </button>
+                              </div>
+                            ) : (
+                              <>
+                                <FileText className="w-8 h-8 text-teal-300 mb-2" />
+                                <p className="text-xs text-teal-600 mb-2">Upload PAN card</p>
+                              </>
+                            )}
+                            <CaptureButton 
+                              docType="pan_doc_front" 
+                              displayName={kycdata?.data?.pan_doc_front ? "Retake" : "Capture"} 
+                              className="text-xs bg-teal-600 hover:bg-teal-700 text-white py-1.5 px-3 rounded"
+                            />
+                          </div>
+                        </div>
+                        
+                        {/* PAN Number */}
+                        <div>
+                          <label htmlFor="panNumber" className="block text-sm text-gray-600 mb-2">
+                            PAN Number <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 uppercase"
+                            name="panNumber"
+                            placeholder="Enter PAN number"
+                            value={formData.panNumber}
+                            onChange={handleChange}
+                            disabled={isFieldDisabled()}
+                            maxLength="10"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Format: ABCDE1234F</p>
+                        </div>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      {/* International Documents */}
-                      <div className="space-y-6">
-                        <div className="space-y-3">
-                          <label className="block text-teal-800 text-sm font-medium">
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* International Documents */}
+                    <div className="border border-gray-200 rounded-lg p-4">
+                      <h3 className="font-medium text-teal-800 mb-3">Identity Document</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-2">
                             Driving License Front <span className="text-red-500">*</span>
                           </label>
-                          <div className="flex items-center gap-3">
-                            <Upload className="w-5 h-5 text-teal-600" />
+                          <div className="border-2 border-dashed border-teal-200 rounded-lg bg-teal-50 p-4 flex flex-col items-center justify-center">
+                            <Upload className="w-8 h-8 text-teal-300 mb-2" />
                             <input
                               type="file"
                               accept=".jpg,.jpeg,.png,.pdf"
-                              className="flex-1 text-sm text-teal-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+                              className="text-sm text-teal-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-teal-600 file:text-white hover:file:bg-teal-700"
                               name="dl_doc_front"
                               onChange={handleChange}
                               disabled={isFieldDisabled()}
@@ -2494,881 +2695,138 @@ return(
                           </div>
                         </div>
                       </div>
-                    </>
-                  )}
-                </div>
-
-                {/* Bank Details */}
-                <div className="space-y-6">
-                  <div className="flex items-center gap-2 pb-3 border-b border-teal-200">
-                    <CreditCard className="w-5 h-5 text-teal-600" />
-                    <h6 className="text-teal-800 text-lg font-semibold">Bank Details</h6>
-                  </div>
-
-                  {/* UPI - India only */}
-                  {isCountryCodeIndia && (
-                    <div className="space-y-3">
-                      <label htmlFor="upi_id" className="block text-teal-800 text-sm font-medium">
-                        UPI ID
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                        name="upi_id"
-                        placeholder="Enter UPI ID (e.g., user@upi)"
-                        value={formData.upi_id}
-                        onChange={handleChange}
-                        disabled={isFieldDisabled()}
-                      />
                     </div>
-                  )}
-
-                  {/* Bank Account Number */}
-                  <div className="space-y-3">
-                    <label htmlFor="bank_account" className="block text-teal-800 text-sm font-medium">
-                      Bank Account Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      name="bank_account"
-                      placeholder="Enter bank account number"
-                      value={formData.bank_account}
-                      onChange={handleChange}
-                      disabled={isFieldDisabled()}
-                    />
-                  </div>
-
-                  {/* Bank Name */}
-                  <div className="space-y-3">
-                    <label htmlFor="bank_name" className="block text-teal-800 text-sm font-medium">
-                      Bank Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                      name="bank_name"
-                      placeholder="Enter bank name"
-                      value={formData.bank_name}
-                      onChange={handleChange}
-                      disabled={isFieldDisabled()}
-                    />
-                  </div>
-
-                  {/* IFSC Code */}
-                  <div className="space-y-3">
-                    <label htmlFor="ifsc_code" className="block text-teal-800 text-sm font-medium">
-                      Bank {isCountryCodeIndia ? "IFSC" : ""} Code <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent uppercase"
-                      name="ifsc_code"
-                      placeholder={isCountryCodeIndia ? "Enter IFSC code" : "Enter bank code"}
-                      value={formData.ifsc_code}
-                      onChange={handleChange}
-                      disabled={isFieldDisabled()}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Submit Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-teal-200">
-                {kycdata?.success !== 1 && (
-                  <button
-                    type="button"
-                    className="flex-1 sm:flex-none sm:px-8 py-3 bg-gradient-to-r from-teal-600 to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:from-teal-700 hover:to-teal-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={handleSubmit}
-                    disabled={isCountryCodeIndia && !allDocsVerified}
-                  >
-                    {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Submit KYC"}
-                  </button>
-                )}
-                
-                {(kycdata?.data?.status === "reject" || (kycdata?.data?.status === "approve" && isEditClicked)) && (
-                  <button
-                    type="button"
-                    className="flex-1 sm:flex-none sm:px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-semibold rounded-lg shadow-lg hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={handleSubmit}
-                    disabled={isCountryCodeIndia && !allDocsVerified}
-                  >
-                    {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Update KYC"}
-                  </button>
+                  </>
                 )}
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Submit Buttons */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="flex flex-wrap gap-4 justify-end">
+            {kycdata?.success !== 1 && (
+              <button
+                type="button"
+                className="px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                onClick={handleSubmit}
+                disabled={isCountryCodeIndia && !allDocsVerified}
+              >
+                <CheckCircle className="w-5 h-5" />
+                {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Submit KYC"}
+              </button>
+            )}
+            
+            {(kycdata?.data?.status === "reject" || (kycdata?.data?.status === "approve" && isEditClicked)) && (
+              <button
+                type="button"
+                className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                onClick={handleSubmit}
+                disabled={isCountryCodeIndia && !allDocsVerified}
+              >
+                <RefreshCw className="w-5 h-5" />
+                {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Update KYC"}
+              </button>
+            )}
           </div>
         </div>
       </div>
-      
-      {/* Camera Modal Placeholder */}
-      {showCamera && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h3 className="text-lg font-semibold text-teal-800 mb-4">Camera Capture</h3>
-            <p className="text-teal-600 mb-4">Camera component for {currentDocType}</p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowCamera(false)}
-                className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setShowCamera(false);
-                  console.log('Image captured for:', currentDocType);
-                }}
-                className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
-              >
-                Capture
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      <CameraCapture
-        isOpen={showCamera}
-        onClose={() => setShowCamera(false)}
-        onCapture={handleCameraCapture}
-        docType={currentDocType}
-        title={getDocumentTitle(currentDocType)}
-      />
-      {showModal && (
-        <DigiLockerModal
-          show={showModal}
-          onHide={() => setShowModal(false)}
-          onClickDigiLocker={handleButtonClick}
-        />
-      )}
-      {(isLoading || loading) && <Loader />}
     </div>
-)
-  // return (
-  //   <>
-  //     <section className="profile_section py-4 kycSection">
-  //       <div className="container-fluid">
-  //         <div className="row">
-  //           <div className="col-12">
-  //             <div className="my_total_team_data rounded-3 py-4">
-  //               <div className="d-flex justify-content-between pb-2">
-  //                 <div className="d-flex">
-  //                   <h1 className="text-white m-0 my-auto pe-2">
-  //                     KYC Information
-  //                   </h1>
-  //                   <p className="error my-auto text-white pe-1 pe-md-0 pe-lg-0">
-  //                     {kycdata?.data?.status !== "approve" &&
-  //                       "(Fill up information and verify your KYC.)"}
-  //                   </p>
-  //                 </div>
-  //                 <h6 className="text-white my-auto countryDisplay">
-  //                   Country:{" "}
-  //                   <span className="ps-2">
-  //                     {userData?.data?.country || getCountryName()}
-  //                   </span>
-  //                 </h6>
-  //                 {isCountryCodeIndia &&
-  //                   ((kycdata?.data?.status !== "open" &&
-  //                     kycdata?.data?.status !== "approve") ||
-  //                     (kycdata?.data?.status === "approve" &&
-  //                       isEditClicked)) && (
-  //                     <div>
-  //                       <button
-  //                         type="button"
-  //                         className="border-0 bg-transparent"
-  //                         id="renderBtn"
-  //                         onClick={handleButtonClick}
-  //                       >
-  //                         <img
-  //                           src={digiLocker}
-  //                           alt="digiLockerIcon"
-  //                           className="img-fluid"
-  //                         />
-  //                       </button>
-  //                     </div>
-  //                   )}
-  //               </div>
-
-  //               {renderVerificationStatus()}
-
-  //               <form className="row justify-content-between">
-  //                 <div className="d-flex flex-wrap justify-content-between pb-2">
-  //                   <div className="d-flex">
-  //                     {kycdata?.data?.status === "approve" && (
-  //                       <button
-  //                         type="button"
-  //                         className="bg-transparent border-0 pe-2 mb-0"
-  //                         onClick={onClickEdit}
-  //                       >
-  //                         <img alt="edit" src={editIcon} />
-  //                       </button>
-  //                     )}
-  //                     <p className="m-0 my-auto">
-  //                       KYC status:{" "}
-  //                       <span
-  //                         className="text-capitalize"
-  //                         style={{
-  //                           color:
-  //                             kycdata?.data?.status === "open"
-  //                               ? "#ff8a00"
-  //                               : kycdata?.data?.status === "approve"
-  //                               ? "green"
-  //                               : kycdata?.data?.status === "inprogress"
-  //                               ? "blue"
-  //                               : "red",
-  //                           fontFamily: "MontserratBold",
-  //                         }}
-  //                       >
-  //                         {kycdata?.data?.status || "N/A"}
-  //                       </span>
-  //                     </p>
-  //                     {kycdata?.data?.status === "reject" && (
-  //                       <p className="m-0 my-auto ps-3">
-  //                         Reason:{" "}
-  //                         <span
-  //                           style={{
-  //                             color: "red",
-  //                             fontFamily: "MontserratBold",
-  //                           }}
-  //                         >
-  //                           {kycdata?.data?.reason}
-  //                         </span>
-  //                       </p>
-  //                     )}
-  //                   </div>
-  //                 </div>
-
-  //                 <div className="col-12 col-md-4">
-  //                   <h6 className="m-0 text-white mainTitles pb-2">
-  //                     Applicant Info
-  //                   </h6>
-  //                   <div className="mb-3">
-  //                     <label className="form-label">
-  //                       Profile Picture <span className="error">*</span>
-  //                     </label>
-  //                     <div className="d-flex gap-2 mb-2 align-items-center">
-  //                       <button
-  //                         type="button"
-  //                         className={`btn btn-sm ${
-  //                           captureLoading["profile_picture"]
-  //                             ? "btn-secondary"
-  //                             : "btn-outline-success"
-  //                         }`}
-  //                         onClick={() => openCamera("profile_picture")}
-  //                         disabled={
-  //                           isFieldDisabled() ||
-  //                           captureLoading["profile_picture"]
-  //                         }
-  //                       >
-  //                         {captureLoading["profile_picture"] ? (
-  //                           <>
-  //                             <span
-  //                               className="spinner-border spinner-border-sm me-2"
-  //                               role="status"
-  //                               aria-hidden="true"
-  //                             ></span>
-  //                             Processing...
-  //                           </>
-  //                         ) : (
-  //                           "Capture Selfie"
-  //                         )}
-  //                       </button>
-  //                       {capturedProfilePicture &&
-  //                         !captureLoading["profile_picture"] && (
-  //                           <span className="text-success small">
-  //                             ✓ Profile captured
-  //                           </span>
-  //                         )}
-  //                       {captureLoading["profile_picture"] && (
-  //                         <span className="text-info small">
-  //                           🔄 Processing...
-  //                         </span>
-  //                       )}
-  //                     </div>
-  //                     {capturedProfilePicture && (
-  //                       <div className="mt-2">
-  //                         <img
-  //                           src={`data:image/jpeg;base64,${capturedProfilePicture.imageBase64}`}
-  //                           alt="Profile"
-  //                           style={{
-  //                             width: "100px",
-  //                             height: "100px",
-  //                             objectFit: "cover",
-  //                             borderRadius: "8px",
-  //                             border: "2px solid #28a745",
-  //                           }}
-  //                         />
-  //                       </div>
-  //                     )}
-  //                     {errors.profile_picture && (
-  //                       <p className="error">{errors.profile_picture}</p>
-  //                     )}
-  //                   </div>
-  //                   <div className="mb-3">
-  //                     <label htmlFor="applicantName" className="form-label">
-  //                       Name of the Applicant <span className="error">*</span>
-  //                     </label>
-  //                     <input
-  //                       type="text"
-  //                       className="form-control shadow-none bg-transparent"
-  //                       name="applicantName"
-  //                       value={formData.applicantName}
-  //                       onChange={handleChange}
-  //                       disabled={isFieldDisabled()}
-  //                     />
-  //                     {errors.applicantName && (
-  //                       <p className="error">{errors.applicantName}</p>
-  //                     )}
-  //                   </div>
-  //                   {isCountryCodeIndia && (
-  //                     <div className="mb-3">
-  //                       <label htmlFor="dob" className="form-label">
-  //                         Date of Birth <span className="error">*</span>
-  //                       </label>
-  //                       <input
-  //                         type="text"
-  //                         className="form-control shadow-none bg-transparent"
-  //                         placeholder="Date of Birth"
-  //                         name="dob"
-  //                         value={
-  //                           formData.dob
-  //                             ? "*".repeat(formData.dob.length - 2) +
-  //                               formData.dob.slice(-2)
-  //                             : ""
-  //                         }
-  //                         onChange={handleChange}
-  //                         disabled
-  //                         readOnly
-  //                       />
-  //                       {errors.dob && <p className="error">{errors.dob}</p>}
-  //                     </div>
-  //                   )}
-  //                   <div className="mb-3">
-  //                     <label htmlFor="mobile_number" className="form-label">
-  //                       Mobile Number (As per Bank){" "}
-  //                       <span className="error">*</span>
-  //                     </label>
-  //                     <input
-  //                       type="text"
-  //                       className="form-control shadow-none bg-transparent"
-  //                       name="mobile_number"
-  //                       placeholder="Enter mobile number"
-  //                       // value={formData.mobile_number}
-  //                       value={
-  //                         formData.mobile_number
-  //                           ? "*".repeat(formData.mobile_number.length - 2) +
-  //                             formData.mobile_number.slice(-2)
-  //                           : ""
-  //                       }
-  //                       maxLength={getMaxLength()}
-  //                       disabled={isFieldDisabled()}
-  //                       onChange={handleChangeMobileNumber}
-  //                       onKeyPress={(event) => {
-  //                         if (!/[0-9]/.test(event.key)) event.preventDefault();
-  //                       }}
-  //                       autoComplete="off"
-  //                     />
-  //                     {errors.mobile_number && (
-  //                       <p className="error">{errors.mobile_number}</p>
-  //                     )}
-  //                   </div>
-  //                   <div className="mb-3">
-  //                     <label htmlFor="address" className="form-label">
-  //                       Address <span className="error">*</span>
-  //                     </label>
-  //                     <input
-  //                       type="text"
-  //                       autoComplete="off"
-  //                       className="form-control shadow-none bg-transparent"
-  //                       name="address"
-  //                       placeholder="Enter your address"
-  //                       value={formData.address}
-  //                       onChange={handleChange}
-  //                       disabled={isFieldDisabled()}
-  //                     />
-  //                     {errors.address && (
-  //                       <p className="error">{errors.address}</p>
-  //                     )}
-  //                   </div>
-  //                 </div>
-
-  //                 <div className="col-12 col-md-4">
-  //                   <h6 className="m-0 text-white mainTitles pb-2">
-  //                     Applicant Proofs
-  //                   </h6>
-  //                   {isCountryCodeIndia && (
-  //                     <>
-  //                       <div className="mb-3">
-  //                         <label className="form-label">
-  //                           Aadhaar Front <span className="error">*</span>
-  //                           {kycdata?.success && (
-  //                             <span className="ps-1">
-  //                               <button
-  //                                 type="button"
-  //                                 className="bg-transparent border-0"
-  //                                 onClick={() =>
-  //                                   onClickImage(kycdata.data?.aadhar_doc_front)
-  //                                 }
-  //                               >
-  //                                 <img alt="showIcon" src={showIcon} />
-  //                               </button>
-  //                             </span>
-  //                           )}
-  //                         </label>
-  //                         {renderCaptureButton(
-  //                           "aadhar_doc_front",
-  //                           "Aadhaar Front"
-  //                         )}
-  //                         {errors.aadhar_doc_front && (
-  //                           <p className="error">{errors.aadhar_doc_front}</p>
-  //                         )}
-  //                       </div>
-  //                       <div className="mb-3">
-  //                         <label className="form-label">
-  //                           Aadhaar Back <span className="error">*</span>
-  //                           {kycdata?.success && (
-  //                             <span className="ps-1">
-  //                               <button
-  //                                 type="button"
-  //                                 className="bg-transparent border-0"
-  //                                 onClick={() =>
-  //                                   onClickImage(kycdata.data?.aadhar_doc_back)
-  //                                 }
-  //                               >
-  //                                 <img alt="showIcon" src={showIcon} />
-  //                               </button>
-  //                             </span>
-  //                           )}
-  //                         </label>
-  //                         {renderCaptureButton(
-  //                           "aadhar_doc_back",
-  //                           "Aadhaar Back"
-  //                         )}
-  //                         {errors.aadhar_doc_back && (
-  //                           <p className="error">{errors.aadhar_doc_back}</p>
-  //                         )}
-  //                       </div>
-  //                       <div className="mb-3">
-  //                         <label className="form-label">
-  //                           PAN <span className="error">*</span>
-  //                           {kycdata?.success && (
-  //                             <span className="ps-1">
-  //                               <button
-  //                                 type="button"
-  //                                 className="bg-transparent border-0"
-  //                                 onClick={() =>
-  //                                   onClickImage(kycdata.data?.pan_doc_front)
-  //                                 }
-  //                               >
-  //                                 <img alt="showIcon" src={showIcon} />
-  //                               </button>
-  //                             </span>
-  //                           )}
-  //                         </label>
-  //                         {renderCaptureButton("pan_doc_front", "PAN")}
-  //                         {errors.pan_doc_front && (
-  //                           <p className="error">{errors.pan_doc_front}</p>
-  //                         )}
-  //                       </div>
-  //                     </>
-  //                   )}
-  //                   {!isCountryCodeIndia && (
-  //                     <>
-  //                       <div className="mb-3">
-  //                         <label htmlFor="dl_doc_front" className="form-label">
-  //                           Driving License Front{" "}
-  //                           <span className="error">*</span>
-  //                           {kycdata?.success && (
-  //                             <span className="ps-1">
-  //                               <button
-  //                                 type="button"
-  //                                 className="bg-transparent border-0"
-  //                                 onClick={() =>
-  //                                   onClickImage(kycdata.data?.dl_doc_front)
-  //                                 }
-  //                               >
-  //                                 <img alt="showIcon" src={showIcon} />
-  //                               </button>
-  //                             </span>
-  //                           )}
-  //                         </label>
-  //                         <input
-  //                           type="file"
-  //                           accept=".jpg,.jpeg,.png"
-  //                           className="form-control shadow-none bg-transparent"
-  //                           name="dl_doc_front"
-  //                           onChange={handleChange}
-  //                           disabled={isFieldDisabled()}
-  //                         />
-  //                         {errors.dl_doc_front && (
-  //                           <p className="error">{errors.dl_doc_front}</p>
-  //                         )}
-  //                       </div>
-  //                       <div className="mb-3">
-  //                         <label htmlFor="dl_doc_back" className="form-label">
-  //                           Driving License Back{" "}
-  //                           <span className="error">*</span>
-  //                           {kycdata?.success && (
-  //                             <span className="ps-1">
-  //                               <button
-  //                                 type="button"
-  //                                 className="bg-transparent border-0"
-  //                                 onClick={() =>
-  //                                   onClickImage(kycdata.data?.dl_doc_back)
-  //                                 }
-  //                               >
-  //                                 <img alt="showIcon" src={showIcon} />
-  //                               </button>
-  //                             </span>
-  //                           )}
-  //                         </label>
-  //                         <input
-  //                           type="file"
-  //                           accept=".jpg,.jpeg,.png"
-  //                           className="form-control shadow-none bg-transparent"
-  //                           name="dl_doc_back"
-  //                           onChange={handleChange}
-  //                           disabled={isFieldDisabled()}
-  //                         />
-  //                         {errors.dl_doc_back && (
-  //                           <p className="error">{errors.dl_doc_back}</p>
-  //                         )}
-  //                       </div>
-  //                       <div className="mb-3">
-  //                         <label
-  //                           htmlFor="passport_doc_front"
-  //                           className="form-label"
-  //                         >
-  //                           Passport Front <span className="error">*</span>
-  //                           {kycdata?.success && (
-  //                             <span className="ps-1">
-  //                               <button
-  //                                 type="button"
-  //                                 className="bg-transparent border-0"
-  //                                 onClick={() =>
-  //                                   onClickImage(
-  //                                     kycdata.data?.passport_doc_front
-  //                                   )
-  //                                 }
-  //                               >
-  //                                 <img alt="showIcon" src={showIcon} />
-  //                               </button>
-  //                             </span>
-  //                           )}
-  //                         </label>
-  //                         <input
-  //                           type="file"
-  //                           accept=".jpg,.jpeg,.png"
-  //                           className="form-control shadow-none bg-transparent"
-  //                           name="passport_doc_front"
-  //                           onChange={handleChange}
-  //                           disabled={isFieldDisabled()}
-  //                         />
-  //                         {errors.passport_doc_front && (
-  //                           <p className="error">{errors.passport_doc_front}</p>
-  //                         )}
-  //                       </div>
-  //                       <div className="mb-3">
-  //                         <label
-  //                           htmlFor="passport_doc_back"
-  //                           className="form-label"
-  //                         >
-  //                           Passport Back <span className="error">*</span>
-  //                           {kycdata?.success && (
-  //                             <span className="ps-1">
-  //                               <button
-  //                                 type="button"
-  //                                 className="bg-transparent border-0"
-  //                                 onClick={() =>
-  //                                   onClickImage(
-  //                                     kycdata.data?.passport_doc_back
-  //                                   )
-  //                                 }
-  //                               >
-  //                                 <img alt="showIcon" src={showIcon} />
-  //                               </button>
-  //                             </span>
-  //                           )}
-  //                         </label>
-  //                         <input
-  //                           type="file"
-  //                           accept=".jpg,.jpeg,.png"
-  //                           className="form-control shadow-none bg-transparent"
-  //                           name="passport_doc_back"
-  //                           onChange={handleChange}
-  //                           disabled={isFieldDisabled()}
-  //                         />
-  //                         {errors.passport_doc_back && (
-  //                           <p className="error">{errors.passport_doc_back}</p>
-  //                         )}
-  //                       </div>
-  //                     </>
-  //                   )}
-  //                   {isCountryCodeIndia && (
-  //                     <div className="mb-3">
-  //                       <label htmlFor="panNumber" className="form-label">
-  //                         PAN Number <span className="error">*</span>
-  //                       </label>
-  //                       <input
-  //                         type="text"
-  //                         className="form-control shadow-none bg-transparent"
-  //                         name="panNumber"
-  //                         placeholder="Enter PAN number"
-  //                         // value={formData.panNumber}
-  //                         value={
-  //                           formData.panNumber
-  //                             ? "*".repeat(formData.panNumber.length - 2) +
-  //                               formData.panNumber.slice(-2)
-  //                             : ""
-  //                         }
-  //                         onChange={handleChange}
-  //                         disabled={isFieldDisabled() || disableFieldsAfterKYC}
-  //                       />
-  //                       {errors.panNumber && (
-  //                         <p className="error">{errors.panNumber}</p>
-  //                       )}
-  //                     </div>
-  //                   )}
-  //                 </div>
-
-  //                 <div className="col-12 col-md-4">
-  //                   <h6 className="m-0 text-white mainTitles pb-2">
-  //                     Bank Details
-  //                   </h6>
-  //                   {isCountryCodeIndia && (
-  //                     <div className="mb-3">
-  //                       <label htmlFor="upi_id" className="form-label">
-  //                         UPI Number
-  //                       </label>
-  //                       <input
-  //                         type="text"
-  //                         autoComplete="off"
-  //                         className="form-control shadow-none bg-transparent"
-  //                         name="upi_id"
-  //                         placeholder="Enter UPI number"
-  //                         value={formData.upi_id}
-  //                         onChange={handleChange}
-  //                         disabled={isFieldDisabled()}
-  //                       />
-  //                       {errors.upi_id && (
-  //                         <p className="error">{errors.upi_id}</p>
-  //                       )}
-  //                     </div>
-  //                   )}
-  //                   <div className="mb-3">
-  //                     <label htmlFor="bank_account" className="form-label">
-  //                       Bank Account Number <span className="error">*</span>
-  //                     </label>
-  //                     <input
-  //                       type="text"
-  //                       autoComplete="off"
-  //                       className="form-control shadow-none bg-transparent"
-  //                       name="bank_account"
-  //                       placeholder="Enter bank account number"
-  //                       value={formData.bank_account}
-  //                       onChange={handleChange}
-  //                       disabled={isFieldDisabled()}
-  //                       onKeyPress={(event) => {
-  //                         if (!/[0-9]/.test(event.key)) event.preventDefault();
-  //                       }}
-  //                     />
-  //                     {errors.bank_account && (
-  //                       <p className="error">{errors.bank_account}</p>
-  //                     )}
-  //                   </div>
-  //                   <div className="mb-3">
-  //                     <label htmlFor="bank_name" className="form-label">
-  //                       Bank Name <span className="error">*</span>
-  //                     </label>
-  //                     <input
-  //                       type="text"
-  //                       autoComplete="off"
-  //                       className="form-control shadow-none bg-transparent"
-  //                       name="bank_name"
-  //                       placeholder="Enter bank name"
-  //                       value={formData.bank_name}
-  //                       onChange={handleChange}
-  //                       disabled={isFieldDisabled()}
-  //                     />
-  //                     {errors.bank_name && (
-  //                       <p className="error">{errors.bank_name}</p>
-  //                     )}
-  //                   </div>
-  //                   <div className="mb-4">
-  //                     <label htmlFor="ifsc_code" className="form-label">
-  //                       Bank {isCountryCodeIndia && "IFSC"} Code{" "}
-  //                       <span className="error">*</span>
-  //                     </label>
-  //                     <input
-  //                       type="text"
-  //                       autoComplete="off"
-  //                       className="form-control shadow-none bg-transparent"
-  //                       name="ifsc_code"
-  //                       placeholder="Enter bank code"
-  //                       value={formData.ifsc_code}
-  //                       onChange={handleChange}
-  //                       disabled={isFieldDisabled()}
-  //                     />
-  //                     {errors.ifsc_code && (
-  //                       <p className="error">{errors.ifsc_code}</p>
-  //                     )}
-  //                   </div>
-  //                 </div>
-  //               </form>
-  //               <div className="row justify-content-end">
-  //                 {kycdata?.success !== 1 && (
-  //                   <div className="col-12 col-md-4">
-  //                     <div className="submit_btn text-end">
-  //                       <button
-  //                         type="button"
-  //                         className={`border-0 revolutionBtn ${
-  //                           isCountryCodeIndia && !allDocsVerified
-  //                             ? "opacity-50"
-  //                             : ""
-  //                         }`}
-  //                         onClick={handleSubmit}
-  //                         disabled={isCountryCodeIndia && !allDocsVerified}
-  //                         title={
-  //                           isCountryCodeIndia && !allDocsVerified
-  //                             ? "Please ensure all documents are captured and at least one is verified"
-  //                             : "Submit KYC"
-  //                         }
-  //                       >
-  //                         {isCountryCodeIndia && !allDocsVerified
-  //                           ? "Verify Documents First"
-  //                           : "Submit"}
-  //                       </button>
-  //                     </div>
-  //                   </div>
-  //                 )}
-  //                 {(kycdata?.data?.status === "reject" ||
-  //                   (kycdata?.data?.status === "approve" && isEditClicked)) && (
-  //                   <div className="col-12 col-md-4">
-  //                     <div className="submit_btn text-end">
-  //                       <button
-  //                         type="button"
-  //                         className={`border-0 revolutionBtn w-100 ${
-  //                           isCountryCodeIndia && !allDocsVerified
-  //                             ? "opacity-50"
-  //                             : ""
-  //                         }`}
-  //                         onClick={handleSubmit}
-  //                         disabled={isCountryCodeIndia && !allDocsVerified}
-  //                         title={
-  //                           isCountryCodeIndia && !allDocsVerified
-  //                             ? "Please ensure all documents are captured and at least one is verified"
-  //                             : "Update KYC"
-  //                         }
-  //                       >
-  //                         {isCountryCodeIndia && !allDocsVerified
-  //                           ? "Verify Documents First"
-  //                           : "Update"}
-  //                       </button>
-  //                     </div>
-  //                   </div>
-  //                 )}
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </section>
-  //     <CameraCapture
-  //       isOpen={showCamera}
-  //       onClose={() => setShowCamera(false)}
-  //       onCapture={handleCameraCapture}
-  //       docType={currentDocType}
-  //       title={getDocumentTitle(currentDocType)}
-  //     />
-  //     {showModal && (
-  //       <DigiLockerModal
-  //         show={showModal}
-  //         onHide={() => setShowModal(false)}
-  //         onClickDigiLocker={handleButtonClick}
-  //       />
-  //     )}
-  //     {(isLoading || loading) && <Loader />}
-  //   </>
-  // );
-
-
-  // return (
-  //   <>
-  //     <section className="py-8 bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen">
-  //       <div className="container mx-auto px-4">
-  //         <div className="w-full">
-  //           <div className="bg-gray-800 rounded-lg py-8 px-6 shadow-2xl">
-  //             <div className="flex justify-between items-center pb-4 border-b border-gray-700 mb-6">
-  //               <div className="flex items-center gap-4">
-  //                 <h1 className="text-white text-2xl font-bold m-0">
+  </div>
+  
+  {/* Camera Modal */}
+  <CameraCapture
+    isOpen={showCamera}
+    onClose={() => setShowCamera(false)}
+    onCapture={handleCameraCapture}
+    docType={currentDocType}
+    title={getDocumentTitle(currentDocType)}
+  />
+  
+  {showModal && (
+    <DigiLockerModal
+      show={showModal}
+      onHide={() => setShowModal(false)}
+      onClickDigiLocker={handleButtonClick}
+    />
+  )}
+  
+  {(isLoading || loading) && <Loader />}
+</div>
+  //  <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white">
+  //     <div className="container mx-auto px-4 py-6 sm:py-8">
+  //       <div className="max-w-9xl mx-auto">
+  //         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            
+  //           {/* Header */}
+  //           <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-4 sm:px-6 py-4 sm:py-6">
+  //             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+  //               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+  //                 <h1 className="text-white text-xl sm:text-2xl font-bold">
   //                   KYC Information
   //                 </h1>
   //                 {kycdata?.data?.status !== "approve" && (
-  //                   <p className="text-white text-sm opacity-80">
+  //                   <p className="text-teal-100 text-sm">
   //                     (Fill up information and verify your KYC.)
   //                   </p>
   //                 )}
   //               </div>
-  //               <div className="flex items-center gap-4">
-  //                 <h6 className="text-white text-sm">
-  //                   Country: <span className="ml-2 font-semibold">{userData?.data?.country || getCountryName()}</span>
+  //               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+  //                 <h6 className="text-teal-100 text-sm">
+  //                   Country: <span className="ml-1 sm:ml-2 font-semibold text-white">{userData?.data?.country || 'India'}</span>
   //                 </h6>
-  //                 {isCountryCodeIndia &&
-  //                   ((kycdata?.data?.status !== "open" && kycdata?.data?.status !== "approve") ||
-  //                     (kycdata?.data?.status === "approve" && isEditClicked)) && (
-  //                     <button
-  //                       type="button"
-  //                       className="bg-transparent border-0 p-2 hover:bg-gray-700 rounded"
-  //                       onClick={handleButtonClick}
-  //                     >
-  //                       <img src={digiLocker} alt="digiLockerIcon" className="w-8 h-8" />
-  //                     </button>
-  //                   )}
+  //                 {isCountryCodeIndia && (
+  //                   <button
+  //                     type="button"
+  //                     className="self-start sm:self-auto bg-teal-500 hover:bg-teal-400 p-2 rounded-lg transition-colors duration-200"
+  //                     onClick={() => console.log('DigiLocker clicked')}
+  //                   >
+  //                     {/* <FileText className="w-5 h-5 text-white" /> */}
+  //                     <img src={digiLocker} alt="" onClick={handleButtonClick} />
+  //                   </button>
+  //                 )}
   //               </div>
   //             </div>
+  //           </div>
 
+  //           <div className="p-4 sm:p-6">
   //             {renderVerificationStatus()}
 
-  //             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  //             {/* Form Grid */}
+  //             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                
   //               {/* Applicant Info */}
   //               <div className="space-y-6">
-  //                 <h6 className="text-white text-lg font-semibold pb-2 border-b border-gray-600">
-  //                   Applicant Info
-  //                 </h6>
+  //                 <div className="flex items-center gap-2 pb-3 border-b border-teal-200">
+  //                   <User className="w-5 h-5 text-teal-600" />
+  //                   <h6 className="text-teal-800 text-lg font-semibold">Applicant Info</h6>
+  //                 </div>
 
   //                 {/* Status and Edit */}
-  //                 <div className="flex flex-wrap justify-between pb-4">
-  //                   <div className="flex items-center gap-4">
+  //                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-3 bg-teal-50 rounded-lg">
+  //                   <div className="flex items-center gap-2">
   //                     {kycdata?.data?.status === "approve" && (
   //                       <button
   //                         type="button"
-  //                         className="bg-transparent border-0 p-1 hover:bg-gray-700 rounded"
+  //                         className="bg-teal-600 hover:bg-teal-700 p-1 rounded"
   //                         onClick={onClickEdit}
   //                       >
-  //                         <img alt="edit" src="/edit-icon.png" className="w-5 h-5" />
+  //                         <Edit className="w-4 h-4 text-white" />
   //                       </button>
   //                     )}
-  //                     <p className="text-white text-sm">
+  //                     <p className="text-teal-700 text-sm">
   //                       KYC status:{' '}
   //                       <span className={`capitalize font-bold ${getStatusColor(kycdata?.data?.status)}`}>
   //                         {kycdata?.data?.status || "N/A"}
   //                       </span>
   //                     </p>
-  //                     {kycdata?.data?.status === "reject" && (
-  //                       <p className="text-white text-sm">
-  //                         Reason:{' '}
-  //                         <span className="text-red-500 font-bold">
-  //                           {kycdata?.data?.reason}
-  //                         </span>
-  //                       </p>
-  //                     )}
   //                   </div>
   //                 </div>
 
   //                 {/* Profile Picture */}
   //                 <div className="space-y-3">
-  //                   <label className="block text-white text-sm font-medium">
+  //                   <label className="block text-teal-800 text-sm font-medium">
   //                     Profile Picture <span className="text-red-500">*</span>
   //                   </label>
   //                   <CaptureButton docType="profile_picture" displayName="Selfie" />
@@ -3377,217 +2835,181 @@ return(
   //                       <img
   //                         src={`data:image/jpeg;base64,${capturedProfilePicture.imageBase64}`}
   //                         alt="Profile"
-  //                         className="w-24 h-24 object-cover rounded-lg border-2 border-green-500"
+  //                         className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border-2 border-teal-500"
   //                       />
   //                     </div>
-  //                   )}
-  //                   {errors.profile_picture && (
-  //                     <p className="text-red-500 text-sm">{errors.profile_picture}</p>
   //                   )}
   //                 </div>
 
   //                 {/* Name */}
   //                 <div className="space-y-3">
-  //                   <label htmlFor="applicantName" className="block text-white text-sm font-medium">
+  //                   <label htmlFor="applicantName" className="block text-teal-800 text-sm font-medium">
   //                     Name of the Applicant <span className="text-red-500">*</span>
   //                   </label>
   //                   <input
   //                     type="text"
-  //                     className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                     className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
   //                     name="applicantName"
-  //                     value={formData.applicantName || ''}
+  //                     placeholder="Enter your full name"
+  //                     value={formData.applicantName}
   //                     onChange={handleChange}
   //                     disabled={isFieldDisabled()}
   //                   />
-  //                   {errors.applicantName && (
-  //                     <p className="text-red-500 text-sm">{errors.applicantName}</p>
-  //                   )}
   //                 </div>
 
   //                 {/* Date of Birth - India only */}
   //                 {isCountryCodeIndia && (
   //                   <div className="space-y-3">
-  //                     <label htmlFor="dob" className="block text-white text-sm font-medium">
+  //                     <label htmlFor="dob" className="block text-teal-800 text-sm font-medium">
   //                       Date of Birth <span className="text-red-500">*</span>
   //                     </label>
   //                     <input
-  //                       type="text"
-  //                       className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-  //                       placeholder="Date of Birth"
+  //                       type="date"
+  //                       className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
   //                       name="dob"
-  //                       value={formData.dob ? "*".repeat(formData.dob.length - 2) + formData.dob.slice(-2) : ""}
-  //                       disabled
-  //                       readOnly
+  //                       value={formData.dob}
+  //                       onChange={handleChange}
+  //                       disabled={isFieldDisabled()}
   //                     />
-  //                     {errors.dob && <p className="text-red-500 text-sm">{errors.dob}</p>}
   //                   </div>
   //                 )}
 
   //                 {/* Mobile Number */}
   //                 <div className="space-y-3">
-  //                   <label htmlFor="mobile_number" className="block text-white text-sm font-medium">
+  //                   <label htmlFor="mobile_number" className="block text-teal-800 text-sm font-medium">
   //                     Mobile Number (As per Bank) <span className="text-red-500">*</span>
   //                   </label>
   //                   <input
-  //                     type="text"
-  //                     className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                     type="tel"
+  //                     className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
   //                     name="mobile_number"
   //                     placeholder="Enter mobile number"
-  //                     value={formData.mobile_number ? "*".repeat(formData.mobile_number.length - 2) + formData.mobile_number.slice(-2) : ""}
-  //                     maxLength={getMaxLength()}
+  //                     value={formData.mobile_number}
+  //                     onChange={handleChange}
   //                     disabled={isFieldDisabled()}
-  //                     onChange={handleChangeMobileNumber}
-  //                     onKeyPress={(event) => {
-  //                       if (!/[0-9]/.test(event.key)) event.preventDefault();
-  //                     }}
-  //                     autoComplete="off"
   //                   />
-  //                   {errors.mobile_number && (
-  //                     <p className="text-red-500 text-sm">{errors.mobile_number}</p>
-  //                   )}
   //                 </div>
 
   //                 {/* Address */}
   //                 <div className="space-y-3">
-  //                   <label htmlFor="address" className="block text-white text-sm font-medium">
+  //                   <label htmlFor="address" className="block text-teal-800 text-sm font-medium">
   //                     Address <span className="text-red-500">*</span>
   //                   </label>
-  //                   <input
-  //                     type="text"
-  //                     autoComplete="off"
-  //                     className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                   <textarea
+  //                     className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
   //                     name="address"
-  //                     placeholder="Enter your address"
-  //                     value={formData.address || ''}
+  //                     placeholder="Enter your complete address"
+  //                     value={formData.address}
   //                     onChange={handleChange}
   //                     disabled={isFieldDisabled()}
+  //                     rows="3"
   //                   />
-  //                   {errors.address && (
-  //                     <p className="text-red-500 text-sm">{errors.address}</p>
-  //                   )}
   //                 </div>
   //               </div>
 
   //               {/* Applicant Proofs */}
   //               <div className="space-y-6">
-  //                 <h6 className="text-white text-lg font-semibold pb-2 border-b border-gray-600">
-  //                   Applicant Proofs
-  //                 </h6>
+  //                 <div className="flex items-center gap-2 pb-3 border-b border-teal-200">
+  //                   <FileText className="w-5 h-5 text-teal-600" />
+  //                   <h6 className="text-teal-800 text-lg font-semibold">Applicant Proofs</h6>
+  //                 </div>
 
   //                 {isCountryCodeIndia ? (
   //                   <>
   //                     {/* Aadhaar Front */}
   //                     <div className="space-y-3">
-  //                       <label className="block text-white text-sm font-medium">
+  //                       <label className="block text-teal-800 text-sm font-medium">
   //                         Aadhaar Front <span className="text-red-500">*</span>
   //                         {kycdata?.success && (
   //                           <button
   //                             type="button"
-  //                             className="ml-2 bg-transparent border-0 p-1 hover:bg-gray-700 rounded"
-  //                             onClick={() => onClickImage(kycdata.data?.aadhar_doc_front)}
+  //                             className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
+  //                             onClick={() =>
+  //                                   onClickImage(kycdata.data?.aadhar_doc_front)
+  //                                 }
   //                           >
-  //                             <img alt="showIcon" src="/show-icon.png" className="w-4 h-4" />
+  //                             <Eye className="w-3 h-3 text-white" />
   //                           </button>
   //                         )}
   //                       </label>
   //                       <CaptureButton docType="aadhar_doc_front" displayName="Aadhaar Front" />
-  //                       {errors.aadhar_doc_front && (
-  //                         <p className="text-red-500 text-sm">{errors.aadhar_doc_front}</p>
-  //                       )}
   //                     </div>
 
   //                     {/* Aadhaar Back */}
   //                     <div className="space-y-3">
-  //                       <label className="block text-white text-sm font-medium">
+  //                       <label className="block text-teal-800 text-sm font-medium">
   //                         Aadhaar Back <span className="text-red-500">*</span>
   //                         {kycdata?.success && (
   //                           <button
   //                             type="button"
-  //                             className="ml-2 bg-transparent border-0 p-1 hover:bg-gray-700 rounded"
-  //                             onClick={() => onClickImage(kycdata.data?.aadhar_doc_back)}
+  //                             className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
+  //                             onClick={() =>
+  //                                   onClickImage(kycdata.data?.aadhar_doc_back)
+  //                                 }
   //                           >
-  //                             <img alt="showIcon" src="/show-icon.png" className="w-4 h-4" />
+  //                             <Eye className="w-3 h-3 text-white" />
   //                           </button>
   //                         )}
   //                       </label>
   //                       <CaptureButton docType="aadhar_doc_back" displayName="Aadhaar Back" />
-  //                       {errors.aadhar_doc_back && (
-  //                         <p className="text-red-500 text-sm">{errors.aadhar_doc_back}</p>
-  //                       )}
   //                     </div>
 
   //                     {/* PAN */}
   //                     <div className="space-y-3">
-  //                       <label className="block text-white text-sm font-medium">
+  //                       <label className="block text-teal-800 text-sm font-medium">
   //                         PAN <span className="text-red-500">*</span>
   //                         {kycdata?.success && (
   //                           <button
   //                             type="button"
-  //                             className="ml-2 bg-transparent border-0 p-1 hover:bg-gray-700 rounded"
-  //                             onClick={() => onClickImage(kycdata.data?.pan_doc_front)}
+  //                             className="ml-2 bg-teal-600 hover:bg-teal-700 p-1 rounded"
+  //                             onClick={() =>
+  //                                   onClickImage(kycdata.data?.pan_doc_front)
+  //                                 }
   //                           >
-  //                             <img alt="showIcon" src="/show-icon.png" className="w-4 h-4" />
+  //                             <Eye className="w-3 h-3 text-white" />
   //                           </button>
   //                         )}
   //                       </label>
   //                       <CaptureButton docType="pan_doc_front" displayName="PAN" />
-  //                       {errors.pan_doc_front && (
-  //                         <p className="text-red-500 text-sm">{errors.pan_doc_front}</p>
-  //                       )}
   //                     </div>
 
   //                     {/* PAN Number */}
   //                     <div className="space-y-3">
-  //                       <label htmlFor="panNumber" className="block text-white text-sm font-medium">
+  //                       <label htmlFor="panNumber" className="block text-teal-800 text-sm font-medium">
   //                         PAN Number <span className="text-red-500">*</span>
   //                       </label>
   //                       <input
   //                         type="text"
-  //                         className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                         className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent uppercase"
   //                         name="panNumber"
   //                         placeholder="Enter PAN number"
-  //                         value={formData.panNumber ? "*".repeat(formData.panNumber.length - 2) + formData.panNumber.slice(-2) : ""}
+  //                         value={formData.panNumber}
   //                         onChange={handleChange}
-  //                         disabled={isFieldDisabled() || disableFieldsAfterKYC}
+  //                         disabled={isFieldDisabled()}
+  //                         maxLength="10"
   //                       />
-  //                       {errors.panNumber && (
-  //                         <p className="text-red-500 text-sm">{errors.panNumber}</p>
-  //                       )}
   //                     </div>
   //                   </>
   //                 ) : (
   //                   <>
   //                     {/* International Documents */}
   //                     <div className="space-y-6">
-  //                       {/* Driving License Front */}
   //                       <div className="space-y-3">
-  //                         <label htmlFor="dl_doc_front" className="block text-white text-sm font-medium">
+  //                         <label className="block text-teal-800 text-sm font-medium">
   //                           Driving License Front <span className="text-red-500">*</span>
-  //                           {kycdata?.success && (
-  //                             <button
-  //                               type="button"
-  //                               className="ml-2 bg-transparent border-0 p-1 hover:bg-gray-700 rounded"
-  //                               onClick={() => onClickImage(kycdata.data?.dl_doc_front)}
-  //                             >
-  //                               <img alt="showIcon" src="/show-icon.png" className="w-4 h-4" />
-  //                             </button>
-  //                           )}
   //                         </label>
-  //                         <input
-  //                           type="file"
-  //                           accept=".jpg,.jpeg,.png"
-  //                           className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-  //                           name="dl_doc_front"
-  //                           onChange={handleChange}
-  //                           disabled={isFieldDisabled()}
-  //                         />
-  //                         {errors.dl_doc_front && (
-  //                           <p className="text-red-500 text-sm">{errors.dl_doc_front}</p>
-  //                         )}
+  //                         <div className="flex items-center gap-3">
+  //                           <Upload className="w-5 h-5 text-teal-600" />
+  //                           <input
+  //                             type="file"
+  //                             accept=".jpg,.jpeg,.png,.pdf"
+  //                             className="flex-1 text-sm text-teal-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+  //                             name="dl_doc_front"
+  //                             onChange={handleChange}
+  //                             disabled={isFieldDisabled()}
+  //                           />
+  //                         </div>
   //                       </div>
-
-  //                       {/* Similar structure for other international documents */}
-  //                       {/* Driving License Back, Passport Front, Passport Back */}
   //                     </div>
   //                   </>
   //                 )}
@@ -3595,145 +3017,134 @@ return(
 
   //               {/* Bank Details */}
   //               <div className="space-y-6">
-  //                 <h6 className="text-white text-lg font-semibold pb-2 border-b border-gray-600">
-  //                   Bank Details
-  //                 </h6>
+  //                 <div className="flex items-center gap-2 pb-3 border-b border-teal-200">
+  //                   <CreditCard className="w-5 h-5 text-teal-600" />
+  //                   <h6 className="text-teal-800 text-lg font-semibold">Bank Details</h6>
+  //                 </div>
 
   //                 {/* UPI - India only */}
   //                 {isCountryCodeIndia && (
   //                   <div className="space-y-3">
-  //                     <label htmlFor="upi_id" className="block text-white text-sm font-medium">
-  //                       UPI Number
+  //                     <label htmlFor="upi_id" className="block text-teal-800 text-sm font-medium">
+  //                       UPI ID
   //                     </label>
   //                     <input
   //                       type="text"
-  //                       autoComplete="off"
-  //                       className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                       className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
   //                       name="upi_id"
-  //                       placeholder="Enter UPI number"
-  //                       value={formData.upi_id || ''}
+  //                       placeholder="Enter UPI ID (e.g., user@upi)"
+  //                       value={formData.upi_id}
   //                       onChange={handleChange}
   //                       disabled={isFieldDisabled()}
   //                     />
-  //                     {errors.upi_id && (
-  //                       <p className="text-red-500 text-sm">{errors.upi_id}</p>
-  //                     )}
   //                   </div>
   //                 )}
 
   //                 {/* Bank Account Number */}
   //                 <div className="space-y-3">
-  //                   <label htmlFor="bank_account" className="block text-white text-sm font-medium">
+  //                   <label htmlFor="bank_account" className="block text-teal-800 text-sm font-medium">
   //                     Bank Account Number <span className="text-red-500">*</span>
   //                   </label>
   //                   <input
   //                     type="text"
-  //                     autoComplete="off"
-  //                     className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                     className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
   //                     name="bank_account"
   //                     placeholder="Enter bank account number"
-  //                     value={formData.bank_account || ''}
+  //                     value={formData.bank_account}
   //                     onChange={handleChange}
   //                     disabled={isFieldDisabled()}
-  //                     onKeyPress={(event) => {
-  //                       if (!/[0-9]/.test(event.key)) event.preventDefault();
-  //                     }}
   //                   />
-  //                   {errors.bank_account && (
-  //                     <p className="text-red-500 text-sm">{errors.bank_account}</p>
-  //                   )}
   //                 </div>
 
   //                 {/* Bank Name */}
   //                 <div className="space-y-3">
-  //                   <label htmlFor="bank_name" className="block text-white text-sm font-medium">
+  //                   <label htmlFor="bank_name" className="block text-teal-800 text-sm font-medium">
   //                     Bank Name <span className="text-red-500">*</span>
   //                   </label>
   //                   <input
   //                     type="text"
-  //                     autoComplete="off"
-  //                     className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                     className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
   //                     name="bank_name"
   //                     placeholder="Enter bank name"
-  //                     value={formData.bank_name || ''}
+  //                     value={formData.bank_name}
   //                     onChange={handleChange}
   //                     disabled={isFieldDisabled()}
   //                   />
-  //                   {errors.bank_name && (
-  //                     <p className="text-red-500 text-sm">{errors.bank_name}</p>
-  //                   )}
   //                 </div>
 
   //                 {/* IFSC Code */}
   //                 <div className="space-y-3">
-  //                   <label htmlFor="ifsc_code" className="block text-white text-sm font-medium">
-  //                     Bank {isCountryCodeIndia && "IFSC"} Code <span className="text-red-500">*</span>
+  //                   <label htmlFor="ifsc_code" className="block text-teal-800 text-sm font-medium">
+  //                     Bank {isCountryCodeIndia ? "IFSC" : ""} Code <span className="text-red-500">*</span>
   //                   </label>
   //                   <input
   //                     type="text"
-  //                     autoComplete="off"
-  //                     className="w-full px-3 py-2 bg-transparent border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+  //                     className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 placeholder-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent uppercase"
   //                     name="ifsc_code"
-  //                     placeholder="Enter bank code"
-  //                     value={formData.ifsc_code || ''}
+  //                     placeholder={isCountryCodeIndia ? "Enter IFSC code" : "Enter bank code"}
+  //                     value={formData.ifsc_code}
   //                     onChange={handleChange}
   //                     disabled={isFieldDisabled()}
   //                   />
-  //                   {errors.ifsc_code && (
-  //                     <p className="text-red-500 text-sm">{errors.ifsc_code}</p>
-  //                   )}
   //                 </div>
   //               </div>
   //             </div>
 
   //             {/* Submit Buttons */}
-  //             <div className="flex justify-end mt-8">
+  //             <div className="flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-teal-200">
   //               {kycdata?.success !== 1 && (
-  //                 <div className="w-full md:w-auto">
-  //                   <button
-  //                     type="button"
-  //                     className={`w-full md:w-auto px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 ${isCountryCodeIndia && !allDocsVerified ? "opacity-50 cursor-not-allowed" : ""
-  //                       }`}
-  //                     onClick={handleSubmit}
-  //                     disabled={isCountryCodeIndia && !allDocsVerified}
-  //                     title={
-  //                       isCountryCodeIndia && !allDocsVerified
-  //                         ? "Please ensure all documents are captured and at least one is verified"
-  //                         : "Submit KYC"
-  //                     }
-  //                   >
-  //                     {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Submit"}
-  //                   </button>
-  //                 </div>
+  //                 <button
+  //                   type="button"
+  //                   className="flex-1 sm:flex-none sm:px-8 py-3 bg-gradient-to-r from-teal-600 to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:from-teal-700 hover:to-teal-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+  //                   onClick={handleSubmit}
+  //                   disabled={isCountryCodeIndia && !allDocsVerified}
+  //                 >
+  //                   {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Submit KYC"}
+  //                 </button>
   //               )}
+                
   //               {(kycdata?.data?.status === "reject" || (kycdata?.data?.status === "approve" && isEditClicked)) && (
-  //                 <div className="w-full md:w-auto">
-  //                   <button
-  //                     type="button"
-  //                     className={`w-full px-8 py-3 bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold rounded-lg shadow-lg hover:from-green-700 hover:to-teal-700 transition-all duration-300 ${isCountryCodeIndia && !allDocsVerified ? "opacity-50 cursor-not-allowed" : ""
-  //                       }`}
-  //                     onClick={handleSubmit}
-  //                     disabled={isCountryCodeIndia && !allDocsVerified}
-  //                     title={
-  //                       isCountryCodeIndia && !allDocsVerified
-  //                         ? "Please ensure all documents are captured and at least one is verified"
-  //                         : "Update KYC"
-  //                     }
-  //                   >
-  //                     {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Update"}
-  //                   </button>
-  //                 </div>
+  //                 <button
+  //                   type="button"
+  //                   className="flex-1 sm:flex-none sm:px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-semibold rounded-lg shadow-lg hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+  //                   onClick={handleSubmit}
+  //                   disabled={isCountryCodeIndia && !allDocsVerified}
+  //                 >
+  //                   {isCountryCodeIndia && !allDocsVerified ? "Verify Documents First" : "Update KYC"}
+  //                 </button>
   //               )}
   //             </div>
   //           </div>
   //         </div>
   //       </div>
-  //     </section>
-
-  //     {/* Modals and Components */}
-  //     {/* Note: These would need to be converted to Tailwind as well */}
-  //     {/* CameraCapture Modal */}
-
+  //     </div>
+      
+  //     {/* Camera Modal Placeholder */}
+  //     {showCamera && (
+  //       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  //         <div className="bg-white rounded-lg max-w-md w-full p-6">
+  //           <h3 className="text-lg font-semibold text-teal-800 mb-4">Camera Capture</h3>
+  //           <p className="text-teal-600 mb-4">Camera component for {currentDocType}</p>
+  //           <div className="flex gap-3">
+  //             <button
+  //               onClick={() => setShowCamera(false)}
+  //               className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+  //             >
+  //               Cancel
+  //             </button>
+  //             <button
+  //               onClick={() => {
+  //                 setShowCamera(false);
+  //                 console.log('Image captured for:', currentDocType);
+  //               }}
+  //               className="flex-1 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+  //             >
+  //               Capture
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     )}
   //     <CameraCapture
   //       isOpen={showCamera}
   //       onClose={() => setShowCamera(false)}
@@ -3749,8 +3160,8 @@ return(
   //       />
   //     )}
   //     {(isLoading || loading) && <Loader />}
-  //   </>
-  // );
+  //   </div>
+)
 };
 
 export default KycInformation;
