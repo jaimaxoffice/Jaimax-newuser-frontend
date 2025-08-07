@@ -1777,7 +1777,7 @@ export default function AuthContainer() {
             <div className="mb-6 relative">
               <div className="absolute inset-0 w-32 h-32 mx-auto bg-gradient-to-r from-teal-400 to-green-400 rounded-full blur-2xl opacity-30 animate-pulse"></div>
               <div className="relative w-32 h-32 mx-auto mb-4 rounded-full flex items-center justify-center backdrop-blur-sm shadow-xl transform transition-all duration-500 hover:scale-110">
-                <img src={icon} alt="" width={200} />
+                <img src={icon} alt="" width={200}  loading="lazy"/>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
                 <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-700"></div>
               </div>

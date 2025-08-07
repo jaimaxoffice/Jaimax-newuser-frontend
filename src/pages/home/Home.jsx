@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import homeBgDesktop from "../../assets/Images/HomeDesktop.jpg";
 import homeBgMobile from "../../assets/Images/HomeMobile.jpg";
-const Threads = React.lazy(() => import('../../global/Threads'));
 import Partners from './Partners';
 import HomeFooter from './HomeFoot';
 import JaimaxFAQ from './Faq';
@@ -30,18 +29,18 @@ const Home = () => {
       setCurrentBg(window.innerWidth < 768 ? homeBgMobile : homeBgDesktop);
     };
 
-    const debounceResize = () => {
-      clearTimeout(window.resizeTimeout);
-      window.resizeTimeout = setTimeout(updateBackgroundImage, 150);
-    };
+    // const debounceResize = () => {
+    //   clearTimeout(window.resizeTimeout);
+    //   window.resizeTimeout = setTimeout(updateBackgroundImage, 150);
+    // };
 
-    updateBackgroundImage();
-    window.addEventListener('resize', debounceResize);
+    // updateBackgroundImage();
+    // window.addEventListener('resize', debounceResize);
 
-    return () => {
-      window.removeEventListener('resize', debounceResize);
-      clearTimeout(window.resizeTimeout);
-    };
+    // return () => {
+    //   window.removeEventListener('resize', debounceResize);
+    //   clearTimeout(window.resizeTimeout);
+    // };
   }, []);
 
   const handleJoinRevolution = () => {

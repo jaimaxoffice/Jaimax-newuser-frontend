@@ -136,6 +136,7 @@ function Header() {
                 src={profileImage}
                 alt="Profile"
                 className="w-full h-full object-cover sm:p-3"
+                loading="lazy"
               />
             ) : (
               <div className="w-full h-full bg-teal-50 flex items-center justify-center">

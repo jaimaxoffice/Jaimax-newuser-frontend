@@ -350,7 +350,7 @@
 // Navbar.jsx
 import { React, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import Logo from "../assets/Images/logo.svg";
+import Logo from "../assets/Images/jaimaxlogo1.svg";
 import { Turn as Hamburger } from "hamburger-react";
 
 const Navbar = () => {

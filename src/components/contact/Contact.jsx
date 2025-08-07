@@ -201,7 +201,7 @@ const LocationsSectionContent = () => {
               variants={flagVariants}
               whileHover={{ rotate: 15, scale: 1.1 }} // Hover animation for flags
             >
-              <img src={flagUrl} alt={`Country Flag ${index + 1}`} className="rounded-full w-full h-full object-cover" />
+              <img src={flagUrl} alt={`Country Flag ${index + 1}`} className="rounded-full w-full h-full object-cover"  loading='lazy'/>
             </motion.div>
           ))}
         </motion.div>

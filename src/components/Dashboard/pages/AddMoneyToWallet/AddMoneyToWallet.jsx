@@ -1378,13 +1378,14 @@ const AddMoneyToWallet = () => {
                     src={scan}
                     className="mx-auto mb-4 h-48 object-contain"
                     alt="QR Code"
+                    loading="lazy"
                   />
                   <p className="text-slate-600 mb-4">
                     UPI ID: <span className="text-teal-600 font-semibold">Jaimaxcoin2024@upi</span>
                   </p>
                   <img src={bhumi} className="mx-auto mb-4 h-8" alt="Bhumi" />
                   <div className="mt-4">
-                    <img src={socialMedia} className="mx-auto h-6" alt="Social Media" />
+                    <img src={socialMedia} className="mx-auto h-6" alt="Social Media" loading="lazy" />
                   </div>
                 </div>
 

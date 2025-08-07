@@ -269,7 +269,7 @@ const TopCards = () => {
     skip: !isTokenVerified,
   });
 
-  console.log("userData", userData);
+  // console.log("userData", userData);
 
   useEffect(() => {
     const verifyToken = async () => {

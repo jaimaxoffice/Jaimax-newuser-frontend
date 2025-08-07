@@ -7,7 +7,7 @@ const AmlCtfPolicy = () => {
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">
           <h2 className="text-2xl font-bold text-teal-700 mb-2 flex items-center gap-2">
             Anti-Money Laundering (AML) &amp; Counter-Terrorist Financing (CTF) Policy
-            <span className="text-lg" role="img" aria-label="shield">🛡️</span>
+            {/* <span className="text-lg" role="img" aria-label="shield">🛡️</span> */}
           </h2>
           <p className="text-teal-800 mb-2">
             <span className="font-semibold">Effective Date:</span> June 2024

@@ -8,7 +8,7 @@ const bscUSDTAddress = "0x55d398326f99059fF775485246999027B3197955";
 const JMCTokenAddress = "0x7a766a3ae6e8782Fd70F59a21e942A6582F4Ca60";
 const walletBalance = Cookies.get("userData");
 const parsedUserData = walletBalance?.data?.walletBalance;
-console.log(parsedUserData, "HARDCODED USER DATA");
+// console.log(parsedUserData, "HARDCODED USER DATA");
 const BinanceExchange = () => {
   // State management
   const [contract, setContract] = useState(null);
