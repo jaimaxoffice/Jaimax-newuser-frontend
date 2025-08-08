@@ -13,10 +13,12 @@ import usdtJSON from "./usdt.json";
 import ConnectWallet from "./ConnectWallet.jsx";
 import { useWalletClient, useAccount } from "wagmi";
 import BinanceExchange from "./BinanceExchnage.jsx";
-import CreateWalletPin from "./mpiPin.jsx"; // Adjust path as needed
 import Cookies from "js-cookie";
-import PinEntryModal from "./PinEntryModal.jsx";
-import { ChangePinModal, ForgotPinModal } from "./PinEntryModal.jsx";
+import CreateWalletPin, {
+  ForgotPinModal,
+  ChangePinModal,
+  PinEntryModal,
+} from "./mpiPin.jsx";
 const UserDetailsComponent = () => {
   const [swapMessage, setSwapMessage] = useState("");
   const [showBuyModal, setShowBuyModal] = useState(false);
@@ -49,8 +51,11 @@ const UserDetailsComponent = () => {
   const HARDCODED = Cookies.get("userData");
   const parsedUserData = HARDCODED ? JSON.parse(HARDCODED) : null;
   const HARDCODED_USER_ID = parsedUserData?.data?._id;
+  console.log(HARDCODED_USER_ID);
   const { data: walletClient } = useWalletClient();
-  const token = Cookies.get("token");
+  const tkn = Cookies.get("token");
+  const id = sessionStorage.setItem("tkn", tkn);
+  const token = sessionStorage.getItem("tkn");
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) {
@@ -83,6 +88,7 @@ const UserDetailsComponent = () => {
       const result = await exchangeInrToCrypto({
         inrAmount: parseFloat(buyAmount),
       }).unwrap();
+
       setShowBuyModal(false);
     } catch (err) {
       console.error(err);
@@ -250,20 +256,22 @@ const UserDetailsComponent = () => {
   return (
     <>
       {showPinModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-4">
-            <CreateWalletPin />
-            {/* Optionally, you can add a close button if you want to allow closing */}
-            <button
-              onClick={() => setShowPinModal(false)}
-              className="mt-4 text-teal-600 underline"
-            >
-              Close
-            </button>
+        <div className="fixed inset-0 backdrop-blur-sm bg-teal-900/30 flex items-center justify-center z-50 p-2 overflow-y-auto">
+          <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full my-2 p-3 border border-teal-100/50 animate-fadeIn max-h-[95vh] overflow-y-auto">
+            <div className="max-h-full">
+              <CreateWalletPin />
+              <div className="flex justify-end mt-2 sticky bottom-0 bg-white/80 backdrop-blur-sm py-1">
+                <button
+                  onClick={() => setShowPinModal(false)}
+                  className="px-3 py-1 text-xs sm:text-sm text-teal-600 hover:text-teal-800 border border-teal-200 rounded-lg transition-all hover:bg-teal-50/50"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
-
       {showPinEntry && !isPinVerified && (
         <PinEntryModal
           onSuccess={() => {
@@ -702,7 +710,7 @@ const UserDetailsComponent = () => {
                 </button>
               </div>
             </div>
-
+          
             <div className="p-6">
               <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-6">
                 <h6 className="flex items-center text-teal-700 font-semibold mb-3">

@@ -272,6 +272,7 @@ const handleSubmit = async (e) => {
 
     if (response?.success) {
       Cookies.set("token", response?.data?.token, { expires: 7 });
+      sessionStorage.setItem("token", response?.data?.token);
       Cookies.set("userData", JSON.stringify(response?.data), { expires: 7 });
 
       setNotification({
@@ -280,7 +281,7 @@ const handleSubmit = async (e) => {
       });
 
       setTimeout(() => {
-        navigate("/wallet");
+        navigate("/kyc-information");
         console.log("Redirecting to dashboard");
       }, 1000);
     } else {
