@@ -346,7 +346,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
     setError("");
     const enteredPin = pin.join("");
     if (enteredPin.length < 4) {
-      setError("PIN must be at least 4 digits.");
+      setError("PIN must be at least 6 digits.");
       return;
     }
     try {

@@ -33,6 +33,7 @@ const Loader = () => {
           src={loaderImage}
           alt="Loading JCoin"
           className="w-24 h-24 rounded-full object-cover animate-pulse" // Using Tailwind's default animate-pulse
+          loading="lazy"
         />
       </div>
 

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Search, X, ChevronDown, Paperclip, Upload, Filter, Eye, Send, Image as ImageIcon } from "lucide-react";
+import React, { useState, useEffect, useRef,useCallback  } from "react";
+import { Search, X, ChevronDown, Paperclip, Upload, Filter, Eye, Send,ArrowLeft ,User ,AlertCircle ,MessageSquare ,Clock , Image as ImageIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import { Select, MenuItem } from "@mui/material";
-
+import { useParams,Link  } from 'react-router-dom';
 // Import your actual RTK Query hooks
 import {
   useSupportDataQuery,
@@ -12,14 +12,12 @@ import {
   useCreateCommentMutation,
 } from "./supportApiSlice";
 
-// Loader Component
 const Loader = () => (
   <div className="flex items-center justify-center py-8">
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-500"></div>
   </div>
 );
 
-// Create Ticket Modal Component
 const CreateTicketModal = ({ show, setShow }) => {
   const imageRef = useRef(null);
   const [formData, setFormData] = useState({
@@ -35,7 +33,6 @@ const CreateTicketModal = ({ show, setShow }) => {
 
   const [createTicket, { isLoading }] = useCreateTicketMutation();
   const { data: catgetData, isLoading: categoriesLoading, error: categoriesError } = useCategoryGetQuery();
-  console.log('hello', catgetData)
   const priorities = [
     { value: 'high', label: 'High' },
     { value: 'medium', label: 'Medium' },
@@ -44,8 +41,6 @@ const CreateTicketModal = ({ show, setShow }) => {
 
   const categories = catgetData?.data?.response || [];
   console.log('Categories:', categories);
-  // Debug log to check categories data
-  console.log('Categories data:', catgetData);
   console.log('Categories loading:', categoriesLoading);
   console.log('Categories error:', categoriesError);
 
@@ -327,7 +322,6 @@ const CreateTicketModal = ({ show, setShow }) => {
   );
 };
 
-// Support List Component
 const SupportList = () => {
   const [show, setShow] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -521,7 +515,7 @@ const SupportList = () => {
                   <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg font-bold text-gray-800 mb-1">
-                        Ticket #{item.ticketId}
+                        Ticket #{item._id}
                       </h3>
                       <p className="text-gray-600 text-sm leading-relaxed break-words">
                         {item.subject}
@@ -724,10 +718,12 @@ const SupportList = () => {
   );
 };
 
-// Support Chat Component
-const SupportChat = ({ ticketId = "1" }) => {
-  const { data: chartData, isLoading, error } = useChatGetQuery(ticketId);
-  const [createComment, { isLoading: commentLoading }] = useCreateCommentMutation();
+export const SupportChart = () => {
+  let imageUrl = import.meta.env.VITE_IMAGE_URL;
+  const { id } = useParams();
+  const { data, isLoading, error } = useChatGetQuery(id);
+  const [createComment] = useCreateCommentMutation();
+
   const [state, setState] = useState({
     comment: "",
     image: null,
@@ -735,17 +731,52 @@ const SupportChat = ({ ticketId = "1" }) => {
   const [displayImage, setDisplayImage] = useState("");
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [clickedImage, setClickedImage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [onlineStatus, setOnlineStatus] = useState(true);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    const chatBox = document.getElementById("chat_scroll");
+    if (chatBox) {
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  };
+  
+  useEffect(() => {
+    scrollToBottom();
+  }, [data]);
+
+  // Simulate typing indicator
+  useEffect(() => {
+    if (state.comment.length > 0) {
+      setIsTyping(true);
+      const timer = setTimeout(() => setIsTyping(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [state.comment]);
+
+  const openImageViewer = useCallback((image) => {
+    setClickedImage(image);
+    setIsViewerOpen(true);
+  }, []);
+
+  const closeImageViewer = () => {
+    setIsViewerOpen(false);
+    setClickedImage("");
+  };
 
   const sendComment = async () => {
     if (state?.comment == "") {
-      return toast.error("Please enter a message", { position: 'top-center' });
+      return toast?.error("Please enter a message", {
+        position: "top-center",
+      });
     }
     const formData = new FormData();
-    formData.Pageend("comment", state.comment);
+    formData.append("comment", state.comment);
     if (state?.image) {
-      formData.Pageend("image", state.image);
+      formData.append("image", state.image);
     }
-    formData.Pageend("ticket_id", ticketId);
+    formData.append("ticket_id", id);
 
     try {
       const response = await createComment(formData);
@@ -755,12 +786,22 @@ const SupportChat = ({ ticketId = "1" }) => {
           image: null,
         });
         setDisplayImage("");
-        toast.success("Comment sent successfully", { position: 'top-center' });
       } else {
-        toast.error(response?.error?.data?.message || "Failed to send comment", { position: 'top-center' });
+        toast.error(response?.error?.data?.message, {
+          position: "top-center",
+        });
+        setState({
+          comment: "",
+          image: null,
+        });
+        setDisplayImage("");
       }
     } catch (error) {
-      toast.error("Error sending comment", { position: 'top-center' });
+      if (error.response.status >= 400 && error.response.status <= 500) {
+        toast.error(error.response.data.message, {
+          position: "top-center",
+        });
+      }
     }
   };
 
@@ -774,7 +815,9 @@ const SupportChat = ({ ticketId = "1" }) => {
         const acceptedFormats = ["image/png", "image/jpeg", "image/jpg"];
         const invalidFile = !acceptedFormats.includes(files[0].type);
         if (invalidFile) {
-          toast.warning("Only JPG / PNG files are allowed", { position: 'top-center' });
+          toast.warning("Only JPG / PNG files are allowed", {
+            position: "top-center",
+          });
           return;
         }
       }
@@ -794,240 +837,289 @@ const SupportChat = ({ ticketId = "1" }) => {
 
   const formatDateWithAmPm = (isoString) => {
     const date = new Date(isoString);
-    const day = String(date.getUTCDate()).padStart(2, "0");
-    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-    const year = date.getUTCFullYear();
-    let hours = date.getUTCHours();
-    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-    const amAndPm = hours >= 12 ? "PM" : "AM";
-
-    hours = hours % 12 || 12;
-    return `${day}-${month}-${year} ${hours}:${minutes} ${amAndPm}`;
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffMins < 1440) return `${Math.floor(diffMins / 60)}h ago`;
+    
+    return date.toLocaleDateString();
   };
 
-  const openImageViewer = (imageUrl) => {
-    setClickedImage(imageUrl);
-    setIsViewerOpen(true);
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "low": return "text-blue-400";
+      case "medium": return "text-yellow-400";
+      case "high": return "text-red-400";
+      default: return "text-gray-400";
+    }
   };
 
-  const closeImageViewer = () => {
-    setIsViewerOpen(false);
-    setClickedImage("");
+  const getPriorityIcon = (priority) => {
+    switch (priority) {
+      case "low": return <CheckCircle2 className="w-4 h-4" />;
+      case "medium": return <Clock className="w-4 h-4" />;
+      case "high": return <AlertCircle className="w-4 h-4" />;
+      default: return <AlertCircle className="w-4 h-4" />;
+    }
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100 flex items-center justify-center">
-        <Loader />
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Ticket Detail View</h1>
+<div className="min-h-screen bg-teal-800 text-white">
+  {/* Header */}
+  <div className="border-b border-teal-700 bg-teal-900 shadow-md">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex items-center justify-between h-16">
+        <div className="flex items-center space-x-4">
+          <Link to="/support" className="bg-teal-700 hover:bg-teal-600 p-2 rounded-md transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <h1 className="text-xl font-bold">Support Ticket #{id}</h1>
+        </div>
+        <div className="flex items-center space-x-2">
+          <div className={`w-3 h-3 rounded-full ${onlineStatus ? 'bg-green-400' : 'bg-gray-400'}`}></div>
+          <span className="text-sm font-medium">Status: {onlineStatus ? 'Online' : 'Offline'}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Ticket Details */}
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Ticket Details</h2>
-
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Name</label>
-                  <p className="text-gray-800">
-                    {chartData?.data?.ticket?.author_name
-                      ? chartData.data.ticket.author_name
-                        .charAt(0)
-                        .toUpperCase() +
-                      chartData.data.ticket.author_name
-                        .slice(1)
-                        .toLowerCase()
-                      : ""}
-                  </p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Email</label>
-                  <p className="text-gray-800">{chartData?.data?.ticket.author_email}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Title</label>
-                  <p className="text-gray-800">{chartData?.data?.ticket.title}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1">Priority</label>
-                  <p className={`text-capitalize ${chartData?.data?.ticket.priority === "low"
-                    ? "text-blue-600"
-                    : chartData?.data?.ticket.priority === "medium"
-                      ? "text-yellow-600"
-                      : "text-red-600"
-                    }`}>
-                    {chartData?.data?.ticket.priority}
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">Content</label>
-                <p className="text-gray-800">{chartData?.data?.ticket.content}</p>
-              </div>
-
-              {chartData?.data?.ticket.image && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Attachments</label>
-                  <img
-                    className="rounded-lg cursor-pointer max-h-64 object-cover border"
-                    src={chartData?.data?.ticket.image}
-                    onClick={() => openImageViewer(chartData?.data?.ticket.image)}
-                    alt="Ticket attachment"
-                  />
-                </div>
-              )}
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Ticket Details */}
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-teal-600 px-6 py-4">
+          <h2 className="text-lg font-bold flex items-center">
+            <User className="w-5 h-5 mr-2" />
+            Ticket Details
+          </h2>
+        </div>
+        
+        <div className="p-6 text-teal-900 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-bold text-teal-600 mb-2">Name</label>
+              <p className="bg-gray-100 rounded-md px-4 py-3 font-medium">
+                {data?.data?.ticket?.author_name
+                  ? data.data.ticket.author_name
+                      .charAt(0)
+                      .toUpperCase() +
+                    data.data.ticket.author_name
+                      .slice(1)
+                      .toLowerCase()
+                  : "—"}
+              </p>
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-teal-600 mb-2">Email</label>
+              <p className="bg-gray-100 rounded-md px-4 py-3 font-medium truncate">
+                {data?.data?.ticket?.author_email || "—"}
+              </p>
             </div>
           </div>
-
-          {/* Chat Support */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-[600px]">
-            {/* Chat Header */}
-            <div className="bg-teal-600 text-white p-4">
-              <h3 className="text-lg font-semibold flex items-center gap-2">
-                💬 Chat Support
-              </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-bold text-teal-600 mb-2">Title</label>
+              <p className="bg-gray-100 rounded-md px-4 py-3 font-medium">
+                {data?.data?.ticket?.title || "—"}
+              </p>
             </div>
-
-            {/* Chat Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {chartData?.data?.comments?.map((item, i) => {
-                const isAdmin = item?.commented_by?.role == "0";
-                return (
-                  <div
-                    key={`${item?._id}-${i}`}
-                    className={`flex ${isAdmin ? "justify-end" : "justify-start"}`}
-                  >
-                    <div className={`max-w-xs lg:max-w-md ${isAdmin ? "order-2" : "order-1"}`}>
-                      <div className={`flex items-center gap-2 mb-1 ${isAdmin ? "justify-end" : "justify-start"}`}>
-                        <img
-                          src={
-                            item.commented_by.profile ||
-                            "https://via.placeholder.com/30x30?text=U"
-                          }
-                          className="w-6 h-6 rounded-full"
-                          alt="Profile"
-                        />
-                        <span className="text-sm font-medium text-gray-600">
-                          {item?.commented_by?.name}
-                        </span>
-                      </div>
-
-                      <div
-                        className={`rounded-lg p-3 ${isAdmin
-                          ? "bg-teal-600 text-white rounded-br-none"
-                          : "bg-gray-100 text-gray-800 rounded-bl-none"
-                          }`}
-                      >
-                        <p className="text-sm">{item.comment}</p>
-                        {item?.image && (
-                          <img
-                            className="mt-2 rounded cursor-pointer max-w-full h-20 object-cover"
-                            src={item?.image}
-                            onClick={() => openImageViewer(item.image)}
-                            alt="Chat attachment"
-                          />
-                        )}
-                      </div>
-
-                      <p className={`text-xs text-gray-500 mt-1 ${isAdmin ? "text-right" : "text-left"}`}>
-                        {formatDateWithAmPm(item?.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Chat Input */}
-            <div className="border-t p-4">
-              {displayImage && (
-                <div className="mb-3 relative inline-block">
-                  <img
-                    src={displayImage}
-                    alt="Preview"
-                    className="h-16 w-20 object-cover rounded border"
-                  />
-                  <button
-                    onClick={clearImage}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                  >
-                    ×
-                  </button>
-                </div>
-              )}
-
-              <div className="flex items-center gap-3">
-                <input
-                  type="text"
-                  className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Type your message"
-                  value={state?.comment}
-                  onChange={(e) =>
-                    setState({ ...state, comment: e.target.value })
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      sendComment();
-                    }
-                  }}
-                />
-
-                <button
-                  onClick={handleUpload}
-                  className="p-2 text-gray-600 hover:text-teal-600 transition-colors"
-                >
-                  <Paperclip size={20} />
-                </button>
-
-                <button
-                  onClick={sendComment}
-                  disabled={commentLoading}
-                  className="bg-teal-600 hover:bg-teal-700 disabled:bg-teal-300 text-white p-2 rounded-lg transition-colors"
-                >
-                  <Send size={20} />
-                </button>
+            <div>
+              <label className="block text-sm font-bold text-teal-600 mb-2">Priority</label>
+              <div className="bg-gray-100 rounded-md px-4 py-3 font-medium flex items-center">
+                {getPriorityIcon(data?.data?.ticket?.priority)}
+                <span className="capitalize ml-2">{data?.data?.ticket?.priority || "—"}</span>
               </div>
             </div>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-bold text-teal-600 mb-2">Description</label>
+            <p className="bg-gray-100 rounded-md p-4 leading-relaxed">
+              {data?.data?.ticket?.content || "No description provided."}
+            </p>
+          </div>
+          
+          {data?.data?.ticket?.image && (
+            <div>
+              <label className="block text-sm font-bold text-teal-600 mb-2">Attachment</label>
+              <div className="bg-gray-100 p-2 rounded-md inline-block">
+                <img
+                  className="rounded-md cursor-pointer hover:opacity-90 transition-opacity border border-gray-200 max-w-xs"
+                  src={data?.data?.ticket?.image}
+                  onClick={() => openImageViewer(data?.data?.ticket?.image)}
+                  alt="Ticket attachment"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Chat Section */}
+      <div className="bg-white rounded-lg shadow-lg flex flex-col h-[600px] overflow-hidden">
+        {/* Chat Header */}
+        <div className="bg-teal-600 px-6 py-4 flex items-center justify-between">
+          <h3 className="font-bold flex items-center">
+            <MessageSquare className="w-5 h-5 mr-2" />
+            Live Support
+          </h3>
+          <div className="flex items-center bg-teal-500 px-3 py-1 rounded-full">
+            <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+            <span className="text-sm font-medium">Active</span>
           </div>
         </div>
 
-        {/* Image Viewer Modal */}
-        {isViewerOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4">
-            <div className="relative max-w-4xl max-h-[90vh]">
-              <button
-                onClick={closeImageViewer}
-                className="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors"
-              >
-                <X size={24} />
-              </button>
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50" id="chat_scroll">
+          {!data?.data?.comments?.length ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center text-gray-500">
+                <MessageSquare className="w-12 h-12 mx-auto mb-2 text-teal-500" />
+                <p className="text-lg font-bold">No messages yet</p>
+                <p className="text-sm">Start the conversation below</p>
+              </div>
+            </div>
+          ) : (
+            data?.data?.comments?.map((item, i) => {
+              const isAdmin = item?.commented_by?.role === "0";
+              return (
+                <div
+                  key={`${item?._id}-${i}`}
+                  className={`flex ${isAdmin ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`max-w-xs lg:max-w-md ${isAdmin ? 'order-2' : 'order-1'}`}>
+                    <div className={`flex items-center space-x-2 mb-1 ${isAdmin ? 'justify-end' : 'justify-start'}`}>
+                      <img
+                        src={item.commented_by.profile || "/images/chart-user.png"}
+                        alt="Avatar"
+                        className="w-8 h-8 rounded-full border border-gray-200"
+                      />
+                      <span className="text-sm font-bold text-gray-700">{item?.commented_by?.name}</span>
+                    </div>
+                    
+                    <div className={`rounded-lg p-3 ${
+                      isAdmin 
+                        ? 'bg-teal-600 text-white' 
+                        : 'bg-gray-200 text-gray-800'
+                    }`}>
+                      <p className="text-sm">{item.comment}</p>
+                      
+                      {item?.image && (
+                        <img
+                          className="mt-2 rounded-md cursor-pointer hover:opacity-90 transition-opacity max-w-full border border-gray-200"
+                          src={item.image}
+                          onClick={() => openImageViewer(item.image)}
+                          alt="Message attachment"
+                        />
+                      )}
+                    </div>
+                    
+                    <div className={`text-xs text-gray-500 mt-1 ${isAdmin ? 'text-right' : 'text-left'}`}>
+                      {formatDateWithAmPm(item?.created_at)}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+          
+          {/* Typing indicator */}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="bg-gray-200 rounded-lg p-3">
+                <div className="flex space-x-1">
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: '0.3s'}}></div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Message Input */}
+        <div className="p-4 border-t border-gray-200 bg-white">
+          {displayImage && (
+            <div className="mb-3 relative inline-block">
               <img
-                src={clickedImage}
-                alt="Full size"
-                className="max-w-full max-h-full object-contain rounded-lg"
+                src={displayImage}
+                alt="Upload preview"
+                className="w-16 h-16 rounded-md object-cover border border-gray-300"
+              />
+              <button
+                onClick={clearImage}
+                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+          
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleUpload}
+              className="p-2 text-teal-600 hover:bg-teal-50 rounded-md transition-colors"
+            >
+              <Paperclip className="w-6 h-6" />
+            </button>
+            
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={state?.comment}
+                onChange={(e) => setState({ ...state, comment: e.target.value })}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    sendComment();
+                  }
+                }}
+                placeholder="Type your message..."
+                className="w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-3 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                autoComplete="off"
               />
             </div>
-            <div className="absolute inset-0" onClick={closeImageViewer} />
+            
+            <button
+              onClick={sendComment}
+              disabled={!state?.comment.trim() && !state?.image}
+              className="p-3 bg-teal-600 text-white rounded-md hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            >
+              <Send className="w-5 h-5" />
+            </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
+  </div>
+
+  {/* Image Viewer Modal */}
+  {isViewerOpen && (
+    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+      <div className="relative max-w-4xl max-h-[90vh]">
+        <button
+          onClick={closeImageViewer}
+          className="absolute -top-4 -right-4 w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors z-10"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <img
+          src={clickedImage}
+          alt="Full size view"
+          className="max-w-full max-h-[calc(90vh-2rem)] object-contain rounded-md border-2 border-white"
+        />
+      </div>
+    </div>
+  )}
+</div>
   );
 };
 
-// Main Page Component
 const Page = () => {
   const [currentView, setCurrentView] = useState('list'); // 'list' or 'chat'
   const [selectedTicketId, setSelectedTicketId] = useState(null);

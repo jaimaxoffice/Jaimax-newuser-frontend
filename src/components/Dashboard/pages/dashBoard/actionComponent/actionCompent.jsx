@@ -1,10 +1,10 @@
 // import React, { useState, useEffect, useContext } from "react";
 // import { useNavigate } from "react-router-dom";
-// import { FaShareAlt, FaDownload, FaUser } from "react-icons/fa";
+// import { FaShareAlt, FaUser } from "react-icons/fa";
 // import { TextField, InputAdornment } from "@mui/material";
 // import { toast } from "react-toastify";
 // import assets from "../../../../../assets/assets";
-// import { MyContext } from "../../../../../Authentication/AuthContext";
+// import Cookies from "js-cookie";
 // import {
 //   useUserDataQuery,
 //   useGetAdminSettingsQuery
@@ -13,10 +13,8 @@
 
 // const ActionButtons = () => {
 //   const navigate = useNavigate();
-//   const { data } = useContext(MyContext);
-
-//   const token = localStorage.getItem("token");
-//   const userDataTopasID = localStorage.getItem("userData");
+//   const token = Cookies.get("token");
+// const userDataTopasID = Cookies.get("userData"); // This will be a string
 //   const parsedUserData = userDataTopasID ? JSON.parse(userDataTopasID) : null;
 
 //   const [isTokenVerified, setIsTokenVerified] = useState(false);
@@ -66,15 +64,13 @@
 //       setCurrencySymbol("₹");
 //     }
 //   }, [userData?.data?.countryCode]);
-
-//   useEffect(() => {
-//     if (userData?.data?.profile) {
-//       localStorage.setItem("profile", userData?.data?.profile);
-//     } else {
-//       localStorage.removeItem("profile");
-//     }
-//   }, [userData?.data?.profile]);
-
+// useEffect(() => {
+//   if (userData?.data?.profile) {
+//     Cookies.set("profile", userData?.data?.profile);
+//   } else {
+//     Cookies.remove("profile");
+//   }
+// }, [userData?.data?.profile]);
 //   useEffect(() => {
 //     if (isTokenVerified) {
 //       refetch();
@@ -90,12 +86,6 @@
 //     setShowReferralModal(false);
 //   };
 
-//   const handleImportData = () => {
-//     toast.info('Import data functionality coming soon!', {
-//       position: "top-center",
-//     });
-//   };
-
 //   const getUserDisplayName = () => {
 //     if (userData?.data?.name) {
 //       return userData.data.name.toUpperCase();
@@ -103,7 +93,7 @@
 //     if (userData?.data?.username) {
 //       return userData.data.username.toUpperCase();
 //     }
-//     return "jaimax";
+//     return "JAIMAX";
 //   };
 
 //   return (
@@ -129,7 +119,7 @@
             
 //             <div>
 //               <h3 className="text-lg font-semibold text-gray-900">
-//                 {getUserDisplayName()}
+//                 Hi {getUserDisplayName()}
 //               </h3>
 //               <p className="text-sm text-gray-600">Welcome to Jaimax</p>
 //             </div>
@@ -142,7 +132,7 @@
 //             <div className="min-w-[260px] shadow-xl rounded-full">
 //               <TextField
 //                 label="Referral Code"
-//                 value={userData?.data?.username || "JAIMAXXXXXXXX"}
+//                 value={userData?.data?.username || "Loading..."}
 //                 size="small"
 //                 fullWidth
 //                 InputProps={{
@@ -169,11 +159,11 @@
 //                       borderColor: '#e2e8f0',
 //                     },
 //                     '&.Mui-focused fieldset': {
-//                       // borderColor: '#14b8a6',
+//                       borderColor: '#14b8a6',
 //                     },
 //                   },
 //                   '& .MuiInputLabel-root': {
-//                     // color: '#64748b',
+//                     color: '#64748b',
 //                     '&.Mui-focused': {
 //                       color: '#14b8a6',
 //                     },
@@ -198,29 +188,51 @@
 // export default ActionButtons;
 
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaShareAlt, FaUser } from "react-icons/fa";
 import { TextField, InputAdornment } from "@mui/material";
 import { toast } from "react-toastify";
 import assets from "../../../../../assets/assets";
 import Cookies from "js-cookie";
-// import { MyContext } from "../../../../../Authentication/AuthContext";
 import {
   useUserDataQuery,
   useGetAdminSettingsQuery
 } from "../DashboardApliSlice";
-import ReferralModal from "../../../modals/referalModal";
 
-const ActionButtons = () => {
+// Lazy load the modal component
+const ReferralModal = React.lazy(() => import("../../../modals/referalModal"));
+
+// Extract static styles outside the component
+const textFieldStyles = {
+  '& .MuiOutlinedInput-root': {
+    backgroundColor: '#f8fafc',
+    '& fieldset': {
+      borderColor: '#e2e8f0',
+    },
+    '&:hover fieldset': {
+      borderColor: '#e2e8f0',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#14b8a6',
+    },
+  },
+  '& .MuiInputLabel-root': {
+    color: '#64748b',
+    '&.Mui-focused': {
+      color: '#14b8a6',
+    },
+  },
+};
+
+// Create a memoized component
+const ActionButtons = React.memo(() => {
   const navigate = useNavigate();
-  // const { data } = useContext(MyContext);
-
-  // const token = localStorage.getItem("token");
-  // const userDataTopasID = localStorage.getItem("userData");
   const token = Cookies.get("token");
-const userDataTopasID = Cookies.get("userData"); // This will be a string
-  const parsedUserData = userDataTopasID ? JSON.parse(userDataTopasID) : null;
+  const userDataTopasID = Cookies.get("userData");
+  const parsedUserData = useMemo(() => 
+    userDataTopasID ? JSON.parse(userDataTopasID) : null
+  , [userDataTopasID]);
 
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const [showReferralModal, setShowReferralModal] = useState(false);
@@ -233,9 +245,13 @@ const userDataTopasID = Cookies.get("userData"); // This will be a string
 
   const { data: settings, refetch: refetchAdminSetting } = useGetAdminSettingsQuery();
 
-  const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
+  // Memoize the register referral URL
+  const REGISTER_REFERAL = useMemo(() => 
+    `${window.location.origin}/register?referralCode=`
+  , []);
 
-  const referralContent = `
+  // Memoize the referral content
+  const referralContent = useMemo(() => `
 🚀 Join the Jaimax Coin Revolution! 🚀
 
 Hey there! 🌟
@@ -246,44 +262,37 @@ Don't miss out on this chance to be part of something BIG! 💥
 
 👉 ${REGISTER_REFERAL + userData?.data?.username}
 
-#JaimaxCoin #CryptoRevolution #JoinUs #FutureOfFinance`;
+#JaimaxCoin #CryptoRevolution #JoinUs #FutureOfFinance`
+  , [REGISTER_REFERAL, userData?.data?.username]);
 
+  // Token verification effect
   useEffect(() => {
-    const verifyToken = async () => {
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-      setIsTokenVerified(true);
-    };
-
-    verifyToken();
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    setIsTokenVerified(true);
   }, [token, navigate]);
 
+  // Currency setting effect
   useEffect(() => {
-    setCurrency(userData && userData?.data?.countryCode === 91 ? "INR" : "USD");
-
-    if (userData && userData?.data?.countryCode !== 91) {
-      setCurrencySymbol("$");
-    } else if (userData && userData?.data?.countryCode === 91) {
-      setCurrencySymbol("₹");
+    if (userData?.data?.countryCode !== undefined) {
+      const isIndian = userData.data.countryCode === 91;
+      setCurrency(isIndian ? "INR" : "USD");
+      setCurrencySymbol(isIndian ? "₹" : "$");
     }
   }, [userData?.data?.countryCode]);
 
-  // useEffect(() => {
-  //   if (userData?.data?.profile) {
-  //     localStorage.setItem("profile", userData?.data?.profile);
-  //   } else {
-  //     localStorage.removeItem("profile");
-  //   }
-  // }, [userData?.data?.profile]);
-useEffect(() => {
-  if (userData?.data?.profile) {
-    Cookies.set("profile", userData?.data?.profile);
-  } else {
-    Cookies.remove("profile");
-  }
-}, [userData?.data?.profile]);
+  // Profile cookie effect
+  useEffect(() => {
+    if (userData?.data?.profile) {
+      Cookies.set("profile", userData.data.profile);
+    } else {
+      Cookies.remove("profile");
+    }
+  }, [userData?.data?.profile]);
+
+  // Data fetch effect
   useEffect(() => {
     if (isTokenVerified) {
       refetch();
@@ -291,15 +300,16 @@ useEffect(() => {
     }
   }, [isTokenVerified, refetch, refetchAdminSetting]);
 
-  const handleOpenReferralModal = () => {
+  // Memoize handlers with useCallback
+  const handleOpenReferralModal = useCallback(() => {
     setShowReferralModal(true);
-  };
+  }, []);
 
-  const handleCloseReferralModal = () => {
+  const handleCloseReferralModal = useCallback(() => {
     setShowReferralModal(false);
-  };
+  }, []);
 
-  const getUserDisplayName = () => {
+  const getUserDisplayName = useCallback(() => {
     if (userData?.data?.name) {
       return userData.data.name.toUpperCase();
     }
@@ -307,7 +317,7 @@ useEffect(() => {
       return userData.data.username.toUpperCase();
     }
     return "JAIMAX";
-  };
+  }, [userData?.data?.name, userData?.data?.username]);
 
   return (
     <>
@@ -362,26 +372,7 @@ useEffect(() => {
                     </InputAdornment>
                   ),
                 }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    backgroundColor: '#f8fafc',
-                    '& fieldset': {
-                      borderColor: '#e2e8f0',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: '#e2e8f0',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#14b8a6',
-                    },
-                  },
-                  '& .MuiInputLabel-root': {
-                    color: '#64748b',
-                    '&.Mui-focused': {
-                      color: '#14b8a6',
-                    },
-                  },
-                }}
+                sx={textFieldStyles}
               />
             </div>
             
@@ -389,13 +380,21 @@ useEffect(() => {
         </div>
       </div>
 
-      <ReferralModal
-        show={showReferralModal}
-        onHide={() => setShowReferralModal(false)}
-        userData={userData}
-      />
+      {/* Lazy-loaded modal with Suspense fallback */}
+      {showReferralModal && (
+        <React.Suspense fallback={<div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center">Loading...</div>}>
+          <ReferralModal
+            show={showReferralModal}
+            onHide={handleCloseReferralModal}
+            userData={userData}
+          />
+        </React.Suspense>
+      )}
     </>
   );
-};
+});
+
+// Add display name for better debugging
+ActionButtons.displayName = "ActionButtons";
 
 export default ActionButtons;

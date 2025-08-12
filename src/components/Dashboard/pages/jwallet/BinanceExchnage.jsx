@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useExchangeCryptoMutation } from "./jwalletApiSlice.js";
+import {
+  useExchangeCryptoMutation,
+  useAwardJmcToUserMutation,
+} from "./jwalletApiSlice.js";
 import bscUSDTJSON from "./BSCUSDT.json";
 const bscUSDTAddress = "0x55d398326f99059fF775485246999027B3197955";
 const JMCTokenAddress = "0x7a766a3ae6e8782Fd70F59a21e942A6582F4Ca60";
@@ -29,6 +32,8 @@ const BinanceExchange = () => {
   const [equivalentJMC, setEquivalentJMC] = useState(0);
   const [exchangeCrypto, { isLoading: isExchangeLoading }] =
     useExchangeCryptoMutation();
+  const [awardJmcToUser, { isLoading: isAwarding }] =
+    useAwardJmcToUserMutation();
   const [trxBalance, setTrxBalance] = useState("0.00");
   const [usdcBalance, setUsdcBalance] = useState("0.00");
   const [adaBalance, setAdaBalance] = useState("0.00");
@@ -44,7 +49,8 @@ const BinanceExchange = () => {
   };
   const userData = Cookies.get("userData");
   const parsedUserData = userData ? JSON.parse(userData) : null;
-  const userId = parsedUserData?.data?._id;
+  const userId = parsedUserData?._id;
+  console.log(userId);
   useEffect(() => {
     const connectContract = async () => {
       try {
@@ -58,7 +64,7 @@ const BinanceExchange = () => {
             bscUSDTJSON.abi,
             provider
           );
-          console.log(await usdtContract.name());
+          // console.log(await usdtContract.name());
 
           setContract(usdtContract);
         }
@@ -167,7 +173,7 @@ const BinanceExchange = () => {
         bscUSDTJSON.abi,
         signer
       );
-      console.log(await usdtContract.name());
+      // console.log(await usdtContract.name());
       // const txGasEstimate = await usdtContract.transfer.estimateGas(
       //   "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
       //   ethers.parseUnits(tokenSent, await usdtContract.decimals())
@@ -179,8 +185,16 @@ const BinanceExchange = () => {
       );
       const receipt = await tx.wait();
 
-      if(receipt.status == 1) {
-        console.log(receipt)
+      if (receipt.status == 1) {
+        console.log(receipt);
+        const result = await awardJmcToUser({
+          userId: userId,
+          eqJMC: equivalentJMC,
+          swappedTokenCount: parseFloat(tokenSent),
+          swappedTokenType: selectedToken,
+          adminTransactionHash: receipt.hash,
+          swapType: "bsc-exchange",
+        }).unwrap();
       } else {
         console.log("Transaction failed:", receipt);
       }
@@ -210,7 +224,7 @@ const BinanceExchange = () => {
       try {
         await fetchTokenBalance();
         await fetchBnbBalance();
-        await fetchJMCBalance();
+        // await fetchJMCBalance();
       } catch (error) {
         console.error("Error fetching balances:", error);
       } finally {
@@ -395,10 +409,8 @@ const BinanceExchange = () => {
                 <option value="USDT">USDT</option>
                 <option value="USDC">USDC</option>
                 <option value="TRX">TRX</option>
-                <option value="POL">POL</option>
                 <option value="XRP">XRP</option>
                 <option value="ADA">ADA</option>
-                <option value="ARB">ARB</option>
               </select>
             </div>
           </div>

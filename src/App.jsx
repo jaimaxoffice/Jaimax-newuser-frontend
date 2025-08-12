@@ -25,6 +25,7 @@ import BlogLayout from "./pages/home/Blog";
 import BlogDetailPage from "./pages/home/Article";
 import CryptoServicesFlipCards from "./components/Services/services";
 import SupportPage from "./global/SupportPage";
+import { SupportChart } from "./components/Dashboard/pages/support/support";
 import RefundPolicy from "./global/RefundPolicy";
 import TermsConditions from "./global/TermsConditons";
 import PrivacyPolicy from "./global/PrivacyPolicy";
@@ -58,6 +59,7 @@ import FloatingNavButton from "./global/FloatingNavButton";
 import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
+import ImagesUpload from './components/ImgesAdmin/Images'
 // const getAuthToken = () => {
 //   try {
 //     return localStorage.getItem("token") || null; // Switched to localStorage
@@ -146,26 +148,12 @@ const DashboardLayout = () => {
     return () => window.removeEventListener("resize", updatePosition);
   }, []);
 
-  // const handleLogout = () => {
-  //   try {
-  //     localStorage.removeItem("token");
-  //     localStorage.removeItem("userData");
-  //     localStorage.removeItem("email");
-  //     localStorage.removeItem("rememberMe");
-  //     localStorage.removeItem("lastSplashTime"); // Already using localStorage, so no change needed here
-  //   } catch (error) {
-  //     console.error("Error during logout:", error);
-  //   }
-  //   setShowLogoutModal(false);
-  //   window.location.href = "/login"; // Note: Consider using navigate for smoother transitions
-  // };
 const handleLogout = () => {
   try {
     Cookies.remove("token");
     Cookies.remove("userData");
     Cookies.remove("email");
     Cookies.remove("rememberMe");
-    // localStorage.removeItem("lastSplashTime"); // If you want to keep this in localStorage, leave as is
   } catch (error) {
     console.error("Error during logout:", error);
   }
@@ -368,6 +356,7 @@ const App = () => {
           <Route path="kyc" element={<Kyc />} />
           <Route path="withdrawal" element={<WithDrawal />} />
           <Route path="support" element={<Support />} />
+          
         </Route>
 
         <Route path="/wallet" element={<DashboardLayout />}>
@@ -405,6 +394,9 @@ const App = () => {
         </Route>
         <Route path="/support" element={<DashboardLayout />}>
           <Route index element={<Support />} />
+          
+        <Route path="support-chat/:id" element={<SupportChart />} />
+
         </Route>
         <Route path="/meetings" element={<DashboardLayout />}>
           <Route index element={<UserMeetingsShowcase />} />
@@ -426,6 +418,7 @@ const App = () => {
         <Route path="about" element={<JaimaxComponent />} />
         <Route path="contact" element={<Contact />} />
         <Route path="features" element={<FeaturesSection />} />
+        <Route path="/images" element={<ImagesUpload/>}/>
 
         <Route path="blog">
           <Route index element={<BlogLayout />} />
@@ -436,6 +429,7 @@ const App = () => {
         <Route path="supporthome" element={<SupportPage />} />
         <Route path="privacy-policy" element={<PrivacyPolicy />} />
         <Route path="support-page" element={<SupportPage />} />
+        <Route path="support-chat/:id" element={<SupportChart />} />
         <Route path="terms-and-conditions" element={<TermsConditions />} />
         <Route path="refund-policy" element={<RefundPolicy />} />
         <Route path="disclaimer" element={<Disclaimer />} />
@@ -445,7 +439,6 @@ const App = () => {
         <Route path="FuturesTrading" element={<FuturesTrading />} />
         <Route path="PreSale" element={<PreSale />} />
         <Route path="Kyc_Pmla" element={<KycPmlaPolicy />} />
-        
         <Route path="AML_CTF" element={<AmlCtfPolicy  />} />
         <Route path="ReferEarn" element={<ReferEarn />} />
       </Route>
