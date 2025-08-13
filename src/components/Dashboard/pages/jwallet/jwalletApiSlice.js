@@ -31,10 +31,10 @@ export const userCryptoApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     awardJmcToUser: builder.mutation({
-      query: ({ userId, eqJMC,swappedTokenCount,swappedTokenType,adminTransactionHash,swapType }) => ({
+      query: ({ userId, eqJMC,swappedTokenCount,swappedTokenType,adminTransactionHash,swapType,requestedAmountINR,gasFee }) => ({
         url: `/order/award-jmc`,
         method: "POST",
-        body: { userId, eqJMC,swappedTokenCount ,swappedTokenType,adminTransactionHash,swapType},
+        body: { userId, eqJMC,swappedTokenCount ,swappedTokenType,adminTransactionHash,swapType,requestedAmountINR,gasFee},
       }),
     }),
     processBinanceExchange: builder.mutation({

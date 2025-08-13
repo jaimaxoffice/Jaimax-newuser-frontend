@@ -15,6 +15,8 @@ const parsedUserData = walletBalance?.data?.walletBalance;
 const BinanceExchange = () => {
   // State management
   const [contract, setContract] = useState(null);
+    const [gasFee, setGasFee] = useState(0);
+    const [requestedAmountInr,setrequestedAmountINR]=useState(0);
   const [tokenBalance, setTokenBalance] = useState(0);
   const [tokenSent, setTokenSent] = useState("");
   const [jmcSent, setJMCSent] = useState("");
@@ -135,7 +137,7 @@ const BinanceExchange = () => {
 
       console.log("API response:", response?.data?.equivalentJMC);
       if (response) {
-        setEquivalentJMC(response?.data?.equivalentJMC);
+        setEquivalentJMC(response?.data?.totalCoins);
         console.log("Equivalent JMC calculated:", response.data.equivalentJMC);
       } else {
         setEquivalentJMC(0.0);
@@ -194,6 +196,8 @@ const BinanceExchange = () => {
           swappedTokenType: selectedToken,
           adminTransactionHash: receipt.hash,
           swapType: "bsc-exchange",
+          requestedAmountINR: requestedAmountInr,
+          gasFee: gasFee,
         }).unwrap();
       } else {
         console.log("Transaction failed:", receipt);

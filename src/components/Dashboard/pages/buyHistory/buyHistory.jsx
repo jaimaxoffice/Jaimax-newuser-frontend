@@ -221,7 +221,7 @@ const BuyHistory = () => {
                     <span className="text-xs text-gray-500">Txn:</span>
                     <span className="text-xs font-medium text-gray-800 truncate">
                       {data?.paypalTransactionId ||
-                        data?.transactionId ||
+                        data?.transactionId || data?.orderId ||
                         "N/A"}
                     </span>
                   </div>
@@ -378,6 +378,7 @@ const BuyHistory = () => {
                             data?.transactionId ||
                             "N/A"}
                         </td>
+                        {console.log(data?.transactionId)}
                         <td className="px-3 py-4 font-semibold capitalize text-sm whitespace-nowrap">
                           {data?.paymentMethod || "N/A"}
                         </td>

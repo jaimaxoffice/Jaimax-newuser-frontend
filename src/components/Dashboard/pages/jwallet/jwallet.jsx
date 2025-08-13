@@ -28,6 +28,8 @@ import {
 import testnetUSDTJSON from "./testnetUSDT.json";
 import { toast } from "react-toastify";
 const UserDetailsComponent = () => {
+  const [gasFee, setGasFee] = useState(0);
+  const [requestedAmountInr,setrequestedAmountINR]=useState(0);
   const [swapMessage, setSwapMessage] = useState("");
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [showSwapModal, setShowSwapModal] = useState(false);
@@ -335,7 +337,9 @@ const UserDetailsComponent = () => {
       }).unwrap();
 
       if (result.success === 1) {
-        setEquivalentJMC(result.data.equivalentJMC);
+        setEquivalentJMC(result.data.totalCoins);
+        setGasFee(result.data.gasFee);
+        setrequestedAmountINR(result.data.requestedAmountINR)
       }
     } catch (err) {
       console.error("Failed to calculate equivalent JMC:", err);
@@ -396,11 +400,13 @@ const UserDetailsComponent = () => {
       if (receipt.status === 1) {
         const result = await awardJmcToUser({
           userId: HARDCODED_USER_ID,
-          eqJMC: equivalentJMC,
+          eqJMC: Number(equivalentJMC),
           swappedTokenCount: parseFloat(sellAmount),
           swappedTokenType: sellToken,
           adminTransactionHash: receipt.hash,
           swapType: "swap",
+          requestedAmountINR:requestedAmountInr,
+          gasFee:gasFee,
         }).unwrap();
         console.log(result);
 
@@ -1162,22 +1168,13 @@ const UserDetailsComponent = () => {
                       <input
                         type="radio"
                         name="paymentMethod"
-                        value="UPI"
-                        checked={paymentMethod === "UPI"}
+                        value="Available Balance"
+                        checked={paymentMethod === "Available Balance"}
                         onChange={(e) => setPaymentMethod(e.target.value)}
                       />
-                      <span>UPI</span>
+                      <span>Available Balance</span>
                     </label>
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="CARD"
-                        checked={paymentMethod === "CARD"}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
-                      />
-                      <span>Card</span>
-                    </label>
+                    
                   </div>
                 </div>
               </div>
@@ -1324,7 +1321,7 @@ const UserDetailsComponent = () => {
                           value={
                             isCalculating
                               ? "Calculating..."
-                              : equivalentJMC.toFixed(4)
+                              : equivalentJMC
                           }
                           readOnly
                         />

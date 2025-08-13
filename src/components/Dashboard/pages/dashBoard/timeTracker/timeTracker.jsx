@@ -1,10 +1,25 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Coins, DollarSign, Clock, CheckCircle } from 'lucide-react';
-import { useGetRoundQuery, useAddOrderMutation, useProceedOrderMutation, useCreatePaymentMutation, useCreatePaypalOrderMutation, useGetAdminSettingsQuery, useUserDataQuery } from '../DashboardApliSlice';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Coins,
+  DollarSign,
+  Clock,
+  CheckCircle,
+} from "lucide-react";
+import {
+  useGetRoundQuery,
+  useAddOrderMutation,
+  useProceedOrderMutation,
+  useCreatePaymentMutation,
+  useCreatePaypalOrderMutation,
+  useGetAdminSettingsQuery,
+  useUserDataQuery,
+} from "../DashboardApliSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import jcoin from "../../../../../assets/logo.png";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 // Static fallback data
 const staticSlabsData = [
   {
@@ -14,9 +29,9 @@ const staticSlabsData = [
     statusColor: "bg-emerald-500",
     type: "active",
     prices: { usd: 0.00024, inr: 0.02 },
-    soldPercentage: 20.50,
+    soldPercentage: 20.5,
     totalCoins: "50000000000",
-    description: "Invest in Jaimax 1st ICO slab for your financial future."
+    description: "Invest in Jaimax 1st ICO slab for your financial future.",
   },
   {
     id: 2,
@@ -25,7 +40,7 @@ const staticSlabsData = [
     statusColor: "bg-amber-500",
     type: "upcoming",
     prices: { usd: 0.00059, inr: 0.05 },
-    totalCoins: "20000000000"
+    totalCoins: "20000000000",
   },
   {
     id: 3,
@@ -33,8 +48,8 @@ const staticSlabsData = [
     status: "Upcoming",
     statusColor: "bg-amber-500",
     type: "upcoming",
-    prices: { usd: 0.00710, inr: 0.60000 },
-    totalCoins: "25000000000"
+    prices: { usd: 0.0071, inr: 0.6 },
+    totalCoins: "25000000000",
   },
   {
     id: 4,
@@ -42,8 +57,8 @@ const staticSlabsData = [
     status: "Upcoming",
     statusColor: "bg-amber-500",
     type: "upcoming",
-    prices: { usd: 0.01893, inr: 1.60000 },
-    totalCoins: "30000000000"
+    prices: { usd: 0.01893, inr: 1.6 },
+    totalCoins: "30000000000",
   },
   {
     id: 5,
@@ -52,36 +67,41 @@ const staticSlabsData = [
     statusColor: "bg-amber-500",
     type: "upcoming",
     prices: { usd: 0.00189, inr: 0.159 },
-    totalCoins: "23000000000"
-  }
+    totalCoins: "23000000000",
+  },
 ];
 
 // Helper function to get ordinal numbers
 const getOrdinalNumber = (num) => {
   const suffixes = ["th", "st", "nd", "rd"];
   const remainder = num % 100;
-  const suffix = suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0];
+  const suffix =
+    suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0];
   return `${num}${suffix}`;
 };
 
 // Helper function to transform API data to component format
 const transformApiDataToSlabs = (apiData) => {
   if (!apiData?.data?.rounds) return staticSlabsData;
-  
+
   return apiData.data.rounds.map((round) => {
     const soldPercentage = ((round.soldQty / round.totalQty) * 100).toFixed(2);
     const isActive = round.status === 1;
-    
+
     return {
       id: round.round,
       _id: round._id,
       title: `${getOrdinalNumber(round.round)} ICO Slab`,
       status: isActive ? "Live" : round.status === 2 ? "Sold" : "Upcoming",
-      statusColor: isActive ? "bg-emerald-500" : round.status === 2 ? "bg-red-500" : "bg-amber-500",
+      statusColor: isActive
+        ? "bg-emerald-500"
+        : round.status === 2
+        ? "bg-red-500"
+        : "bg-amber-500",
       type: isActive ? "active" : round.status === 2 ? "sold" : "upcoming",
-      prices: { 
-        usd: round.atPriceUsdt, 
-        inr: round.atPriceInr 
+      prices: {
+        usd: round.atPriceUsdt,
+        inr: round.atPriceInr,
       },
       soldPercentage: parseFloat(soldPercentage),
       totalCoins: round.totalQty.toString(),
@@ -91,17 +111,27 @@ const transformApiDataToSlabs = (apiData) => {
       round: round.round,
       atPriceInr: round.atPriceInr,
       atPriceUsdt: round.atPriceUsdt,
-      description: isActive 
-        ? `Invest in Jaimax ${getOrdinalNumber(round.round)} ICO slab for your financial future.`
-        : round.status === 2 
+      description: isActive
+        ? `Invest in Jaimax ${getOrdinalNumber(
+            round.round
+          )} ICO slab for your financial future.`
+        : round.status === 2
         ? `${getOrdinalNumber(round.round)} ICO slab has been sold out.`
-        : `Get ready for the ${getOrdinalNumber(round.round)} ICO slab launch.`
+        : `Get ready for the ${getOrdinalNumber(round.round)} ICO slab launch.`,
     };
   });
 };
 
 // Payment Modal Component
-const PaymentModal = ({ show, onHide, onConfirmPayment, purchasingAmount, currency, addOrderError, userData }) => {
+const PaymentModal = ({
+  show,
+  onHide,
+  onConfirmPayment,
+  purchasingAmount,
+  currency,
+  addOrderError,
+  userData,
+}) => {
   const [loading, setLoading] = useState(false);
 
   if (!show) return null;
@@ -116,74 +146,120 @@ const PaymentModal = ({ show, onHide, onConfirmPayment, purchasingAmount, curren
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full relative mx-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl p-5 sm:p-6 max-w-3xl w-full mx-3 relative max-h-[85vh] overflow-y-auto border border-teal-200">
+        {/* Close button */}
         <button
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold"
+          className="absolute top-3 right-3 text-teal-500 hover:text-teal-700 text-2xl font-bold transition"
           onClick={onHide}
         >
           ×
         </button>
-        
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Confirm Payment</h2>
-        
-        <div className="mb-6">
-          <p className="text-gray-600 mb-2">
-            You are about to purchase coins worth:
-          </p>
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <span className="text-2xl font-bold text-emerald-600">
-              {currency === "INR" ? "₹" : "$"}{purchasingAmount}
-            </span>
-            <span className="text-gray-500 ml-2">{currency}</span>
-          </div>
+
+        {/* Title */}
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-teal-700">
+          Purchase Coins Breakdown
+        </h2>
+
+        {/* Table */}
+        <div className="overflow-x-auto mb-5">
+          <table className="w-full text-sm border border-teal-100 rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-teal-50">
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Round
+                </th>
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Price ({currency})
+                </th>
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Amount ({currency})
+                </th>
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Coins Qty
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
+                const resolvedPrice =
+                  currency === "INR"
+                    ? item.resolvedPriceInr
+                    : item.resolvedPriceUsdt;
+                return (
+                  <tr
+                    key={item.round}
+                    className={index % 2 === 0 ? "bg-white" : "bg-teal-50/30"}
+                  >
+                    <td className="border border-teal-100 px-3 py-2 text-center">
+                      {item.round}
+                    </td>
+                    <td className="border border-teal-100 px-3 py-2 text-center">
+                      {Number(resolvedPrice).toFixed(5)}
+                    </td>
+                    <td className="border border-teal-100 px-3 py-2 text-right">
+                      {Number(item.amount).toFixed(2)}
+                    </td>
+                    <td className="border border-teal-100 px-3 py-2 text-right">
+                      {Number(item.resolvedQty).toLocaleString()}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              {/* Charges Row */}
+              <tr className="bg-orange-50 font-medium">
+                <td className="border border-teal-100 px-3 py-2 text-center text-orange-700">
+                  Charges
+                </td>
+                <td
+                  className="border border-teal-100 px-3 py-2 text-center text-orange-700"
+                  colSpan={3}
+                >
+                  {(Number(purchaseCoinsBreakup?.charges) || 0).toFixed(2)}{" "}
+                  {currency}
+                </td>
+              </tr>
+
+              {/* Total Row */}
+              <tr className="bg-teal-100 font-bold">
+                <td className="border border-teal-100 px-3 py-2 text-center">
+                  Total
+                </td>
+                <td className="border border-teal-100 px-3 py-2 text-center">
+                  {(
+                    Number(purchaseCoinsBreakup?.requestedAmount) -
+                    Number(purchaseCoinsBreakup?.totalAmount)
+                  ).toFixed(2)}
+                </td>
+                <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
+                  {(Number(purchaseCoinsBreakup?.totalAmount) || 0).toFixed(2)}
+                </td>
+                <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
+                  {Number(purchaseCoinsBreakup?.totalCoins) || 0}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
 
-        {addOrderError && (
-          <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg mb-4">
-            {addOrderError}
-          </div>
-        )}
-
-        <div className="space-y-3 mb-6">
-          <h3 className="font-semibold text-gray-700">Choose Payment Method:</h3>
-          
-          <button
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full transition-colors duration-200 disabled:opacity-50"
-            onClick={() => handlePayment('wallet')}
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : 'Pay with Wallet'}
-          </button>
-
-          {userData?.data?.countryCode !== 91 && (
-            <>
-              <button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full transition-colors duration-200 disabled:opacity-50"
-                onClick={() => handlePayment('cashFree')}
-                disabled={loading}
-              >
-                {loading ? 'Processing...' : 'Pay with CashFree'}
-              </button>
-
-              <button
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-3 rounded-full transition-colors duration-200 disabled:opacity-50"
-                onClick={() => handlePayment('paypal')}
-                disabled={loading}
-              >
-                {loading ? 'Processing...' : 'Pay with PayPal'}
-              </button>
-            </>
-          )}
-        </div>
-
+        {/* Buttons */}
         <div className="flex justify-end gap-3">
           <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full transition-colors duration-200"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm transition"
             onClick={onHide}
-            disabled={loading}
+            disabled={isProcessing}
           >
             Cancel
+          </button>
+          <button
+            type="button"
+            className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm transition disabled:opacity-50"
+            onClick={onSubmitCoins}
+            disabled={isProcessing}
+          >
+            {isProcessing ? "Processing..." : "Proceed"}
           </button>
         </div>
       </div>
@@ -192,12 +268,17 @@ const PaymentModal = ({ show, onHide, onConfirmPayment, purchasingAmount, curren
 };
 
 // Purchase Coins Breakup Modal Component
-const PurchaseCoinsBreakupModal = ({ show, onHide, purchaseCoinsBreakup, currency, onSubmitBuy }) => {
+const PurchaseCoinsBreakupModal = ({
+  show,
+  onHide,
+  purchaseCoinsBreakup,
+  currency,
+  onSubmitBuy,
+}) => {
   const [isProcessing, setIsProcessing] = useState(false);
-
   const onSubmitCoins = useCallback(async () => {
     if (isProcessing) return;
-    
+
     try {
       setIsProcessing(true);
       await onSubmitBuy();
@@ -214,54 +295,111 @@ const PurchaseCoinsBreakupModal = ({ show, onHide, purchaseCoinsBreakup, currenc
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl p-6 max-w-4xl w-full mx-4 relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl p-5 sm:p-6 max-w-3xl w-full mx-3 relative max-h-[85vh] overflow-y-auto border border-teal-200">
+        {/* Close button */}
         <button
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold"
+          className="absolute top-3 right-3 text-teal-500 hover:text-teal-700 text-2xl font-bold transition"
           onClick={onHide}
         >
           ×
         </button>
-        
-        <h2 className="text-xl font-bold mb-6 text-gray-800">Purchase Coins Breakdown</h2>
-        
-        <div className="overflow-x-auto mb-6">
-          <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+
+        {/* Title */}
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-teal-700 flex items-center gap-2">
+          Purchase Coins Breakdown
+        </h2>
+
+        {/* Table */}
+        <div className="overflow-x-auto mb-5">
+          <table className="w-full text-sm border border-teal-100 rounded-lg overflow-hidden">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">Round</th>
-                <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">Price ({currency})</th>
-                <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">Amount ({currency})</th>
-                <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">Coins Quantity</th>
+              <tr className="bg-teal-50">
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Round
+                </th>
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Price ({currency})
+                </th>
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Amount ({currency})
+                </th>
+                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+                  Coins Qty
+                </th>
               </tr>
             </thead>
             <tbody>
               {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
-                const resolvedPrice = currency === "INR" ? item.resolvedPriceInr : item.resolvedPriceUsdt;
+                const resolvedPrice =
+                  currency === "INR"
+                    ? item.resolvedPriceInr
+                    : item.resolvedPriceUsdt;
                 return (
-                  <tr key={item.round} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                    <td className="border border-gray-300 px-4 py-3 text-center font-medium">{item.round}</td>
-                    <td className="border border-gray-300 px-4 py-3 text-center">{resolvedPrice?.toFixed(5)}</td>
-                    <td className="border border-gray-300 px-4 py-3 text-right">{item.amount?.toFixed(2)}</td>
-                    <td className="border border-gray-300 px-4 py-3 text-right">{item.resolvedQty?.toLocaleString()}</td>
+                  <tr
+                    key={item.round}
+                    className={index % 2 === 0 ? "bg-white" : "bg-teal-50/30"}
+                  >
+                    <td className="border border-teal-100 px-3 py-2 text-center">
+                      {item.round}
+                    </td>
+                    <td className="border border-teal-100 px-3 py-2 text-center">
+                      {resolvedPrice?.toFixed(5)}
+                    </td>
+                    <td className="border border-teal-100 px-3 py-2 text-right">
+                      {item.amount?.toFixed(2)}
+                    </td>
+                    <td className="border border-teal-100 px-3 py-2 text-right">
+                      {item.resolvedQty?.toLocaleString()}
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
             <tfoot>
-              <tr className="bg-emerald-50 font-bold">
-                <td className="border border-gray-300 px-4 py-3 text-center">Total</td>
-                <td className="border border-gray-300 px-4 py-3 text-center">-</td>
-                <td className="border border-gray-300 px-4 py-3 text-right text-emerald-700">{purchaseCoinsBreakup?.totalAmount}</td>
-                <td className="border border-gray-300 px-4 py-3 text-right text-emerald-700">{purchaseCoinsBreakup?.totalCoins}</td>
+              {/* Charges Row */}
+              <tr className="bg-orange-50 font-medium">
+                <td className="border border-teal-100 px-3 py-2 text-center text-orange-700">
+                  Charges
+                </td>
+                <td
+                  className="border border-teal-100 px-3 py-2 text-center text-orange-700"
+                  colSpan={3}
+                >
+                  {(
+                    Number(purchaseCoinsBreakup?.requsetedAmount) -
+                    Number(purchaseCoinsBreakup?.totalAmount)
+                  ).toFixed(2)}{" "}
+                  {currency}
+                  
+                </td>
+                {console.log(Number(purchaseCoinsBreakup?.requsetedAmount) -
+                    Number(purchaseCoinsBreakup?.totalAmount))}
+              </tr>
+
+              {/* Total Row */}
+              <tr className="bg-teal-100 font-bold">
+                <td className="border border-teal-100 px-3 py-2 text-center">
+                  Total
+                </td>
+                <td className="border border-teal-100 px-3 py-2 text-center">
+                  —
+                </td>
+                <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
+                  {(Number(purchaseCoinsBreakup?.totalAmount) || 0).toFixed(2)}
+                </td>
+                <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
+                  {purchaseCoinsBreakup?.totalCoins}
+                </td>
               </tr>
             </tfoot>
           </table>
         </div>
 
-        <div className="flex justify-center gap-4">
+        {/* Buttons */}
+        <div className="flex justify-end gap-3">
           <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-full transition-colors duration-200"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm transition"
             onClick={onHide}
             disabled={isProcessing}
           >
@@ -269,21 +407,149 @@ const PurchaseCoinsBreakupModal = ({ show, onHide, purchaseCoinsBreakup, currenc
           </button>
           <button
             type="button"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full transition-colors duration-200 disabled:opacity-50"
+            className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm transition disabled:opacity-50"
             onClick={onSubmitCoins}
             disabled={isProcessing}
           >
-            {isProcessing ? 'Processing...' : 'Proceed with Purchase'}
+            {isProcessing ? "Processing..." : "Proceed"}
           </button>
         </div>
       </div>
     </div>
+
+    // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    //   <div className="bg-white rounded-xl shadow-2xl p-6 max-w-4xl w-full mx-4 relative max-h-[90vh] overflow-y-auto">
+    //     <button
+    //       className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold"
+    //       onClick={onHide}
+    //     >
+    //       ×
+    //     </button>
+
+    //     <h2 className="text-xl font-bold mb-6 text-gray-800">
+    //       Purchase Coins Breakdown
+    //     </h2>
+
+    //     <div className="overflow-x-auto mb-6">
+    //       <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+    //         <thead>
+    //           <tr className="bg-gray-100">
+    //             <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">
+    //               Round
+    //             </th>
+    //             <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">
+    //               Price ({currency})
+    //             </th>
+    //             <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">
+    //               Amount ({currency})
+    //             </th>
+    //             <th className="border border-gray-300 px-4 py-3 text-center font-bold text-gray-700">
+    //               Coins Quantity
+    //             </th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
+    //             const resolvedPrice =
+    //               currency === "INR"
+    //                 ? item.resolvedPriceInr
+    //                 : item.resolvedPriceUsdt;
+    //             return (
+    //               <tr
+    //                 key={item.round}
+    //                 className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+    //               >
+    //                 <td className="border border-gray-300 px-4 py-3 text-center font-medium">
+    //                   {item.round}
+    //                 </td>
+    //                 <td className="border border-gray-300 px-4 py-3 text-center">
+    //                   {resolvedPrice?.toFixed(5)}
+    //                 </td>
+    //                 <td className="border border-gray-300 px-4 py-3 text-right">
+    //                   {item.amount?.toFixed(2)}
+    //                 </td>
+    //                 <td className="border border-gray-300 px-4 py-3 text-right">
+    //                   {item.resolvedQty?.toLocaleString()}
+    //                 </td>
+    //               </tr>
+    //             );
+    //           })}
+    //         </tbody>
+    //         <tfoot>
+    //           <tr className="bg-emerald-50 font-bold">
+    //             <td className="border border-gray-300 px-4 py-3 text-center">
+    //               Total
+    //             </td>
+    //             {console.log(purchaseCoinsBreakup, "hello")}
+    //             {console.log(
+    //               typeof purchaseCoinsBreakup.requestedAmount,
+    //               "requested data"
+    //             )}
+    //             {console.log(
+    //               typeof purchaseCoinsBreakup.totalAmount,
+    //               "requested amount"
+    //             )}
+    //             <td className="border border-gray-300 px-4 py-3 text-center">
+    //               {(
+    //                 Number(purchaseCoinsBreakup?.requestedAmount) -
+    //                 Number(purchaseCoinsBreakup?.totalAmount)
+    //               ).toFixed(2)}
+    //             </td>
+
+    //             <td className="border border-gray-300 px-4 py-3 text-right text-emerald-700">
+    //               {purchaseCoinsBreakup?.totalAmount}
+    //             </td>
+    //             <td className="border border-gray-300 px-4 py-3 text-right text-emerald-700">
+    //               {purchaseCoinsBreakup?.totalCoins}
+    //             </td>
+    //           </tr>
+    //         </tfoot>
+    //       </table>
+    //     </div>
+
+    //     <div className="flex justify-center gap-4">
+    //       <button
+    //         className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-full transition-colors duration-200"
+    //         onClick={onHide}
+    //         disabled={isProcessing}
+    //       >
+    //         Cancel
+    //       </button>
+    //       <button
+    //         type="button"
+    //         className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full transition-colors duration-200 disabled:opacity-50"
+    //         onClick={onSubmitCoins}
+    //         disabled={isProcessing}
+    //       >
+    //         {isProcessing ? "Processing..." : "Proceed with Purchase"}
+    //       </button>
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 
-const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, currency, onChangeCurrency, paymentMethod, onChangePaymentMethod, errors, handleInputChange, handleBlur, userData }) => {
+const ActiveSlabContent = ({
+  slab,
+  isActive,
+  onProceedOrder,
+  amount,
+  setAmount,
+  currency,
+  onChangeCurrency,
+  paymentMethod,
+  onChangePaymentMethod,
+  errors,
+  handleInputChange,
+  handleBlur,
+  userData,
+}) => {
   return (
-    <div className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'}`}>
+    <div
+      className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${
+        isActive ? "scale-100 opacity-100" : "scale-95 opacity-80"
+      }`}
+    >
       <div className="relative z-10">
         {/* Header with Status */}
         <div className="flex justify-between items-center mb-3">
@@ -293,7 +559,9 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
               {slab.title}
             </h3>
           </div>
-          <span className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}>
+          <span
+            className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}
+          >
             <CheckCircle size={12} />
             {slab.status}
           </span>
@@ -301,7 +569,9 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
 
         {/* Currency Selection */}
         <div className="mb-3">
-          <label className="block text-xs font-bold text-gray-700 mb-2">Pay with</label>
+          <label className="block text-xs font-bold text-gray-700 mb-2">
+            Pay with
+          </label>
           <div className="flex gap-3">
             {userData?.data?.countryCode === 91 && (
               <label className="flex items-center gap-2 cursor-pointer text-xs">
@@ -313,7 +583,13 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
                   onChange={() => onChangeCurrency("INR")}
                   className="w-3 h-3"
                 />
-                <span className={`text-xs font-semibold ${currency === "INR" ? 'text-emerald-700' : 'text-gray-500'}`}>INR</span>
+                <span
+                  className={`text-xs font-semibold ${
+                    currency === "INR" ? "text-emerald-700" : "text-gray-500"
+                  }`}
+                >
+                  INR
+                </span>
               </label>
             )}
             <label className="flex items-center gap-2 cursor-pointer text-xs">
@@ -326,14 +602,22 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
                 disabled={userData?.data?.countryCode === 91}
                 className="w-3 h-3"
               />
-              <span className={`text-xs font-semibold ${currency === "USD" ? 'text-emerald-700' : 'text-gray-500'}`}>USD</span>
+              <span
+                className={`text-xs font-semibold ${
+                  currency === "USD" ? "text-emerald-700" : "text-gray-500"
+                }`}
+              >
+                USD
+              </span>
             </label>
           </div>
         </div>
 
         {/* Payment Method Selection */}
         <div className="mb-3">
-          <label className="block text-xs font-bold text-gray-700 mb-2">Payment Method</label>
+          <label className="block text-xs font-bold text-gray-700 mb-2">
+            Payment Method
+          </label>
           <div className="flex gap-3">
             <label className="flex items-center gap-2 cursor-pointer text-xs">
               <input
@@ -344,7 +628,15 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
                 onChange={() => onChangePaymentMethod("wallet")}
                 className="w-3 h-3"
               />
-              <span className={`text-xs font-semibold ${paymentMethod === "wallet" ? 'text-emerald-700' : 'text-gray-500'}`}>Wallet</span>
+              <span
+                className={`text-xs font-semibold ${
+                  paymentMethod === "wallet"
+                    ? "text-emerald-700"
+                    : "text-gray-500"
+                }`}
+              >
+                Wallet
+              </span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer text-xs">
               <input
@@ -355,7 +647,15 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
                 onChange={() => onChangePaymentMethod("Available Balance")}
                 className="w-3 h-3"
               />
-              <span className={`text-xs font-semibold ${paymentMethod === "Available Balance" ? 'text-emerald-700' : 'text-gray-500'}`}>Available Balance</span>
+              <span
+                className={`text-xs font-semibold ${
+                  paymentMethod === "Available Balance"
+                    ? "text-emerald-700"
+                    : "text-gray-500"
+                }`}
+              >
+                Available Balance
+              </span>
             </label>
           </div>
         </div>
@@ -392,17 +692,23 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
         <div className="flex justify-between mb-1 gap-2">
           <div className="flex-1 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-2 border border-emerald-200/50 shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-emerald-700 text-xs font-semibold">INR</span>
+              <span className="text-emerald-700 text-xs font-semibold">
+                INR
+              </span>
               <span className="text-emerald-600 text-xs">↗ +5.2%</span>
             </div>
-            <p className="text-emerald-800 text-sm font-bold">₹{slab.prices.inr.toFixed(5)}</p>
+            <p className="text-emerald-800 text-sm font-bold">
+              ₹{slab.prices.inr.toFixed(5)}
+            </p>
           </div>
           <div className="flex-1 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-2 border border-blue-200/50 shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-blue-700 text-xs font-semibold">USD</span>
               <span className="text-blue-600 text-xs">↗ +3.8%</span>
             </div>
-            <p className="text-blue-800 text-sm font-bold">${slab.prices.usd.toFixed(5)}</p>
+            <p className="text-blue-800 text-sm font-bold">
+              ${slab.prices.usd.toFixed(5)}
+            </p>
           </div>
         </div>
 
@@ -413,7 +719,9 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
               <Coins size={12} className="text-emerald-600" />
               Sold Tokens
             </span>
-            <span className="text-emerald-700 text-sm font-bold">{slab.soldPercentage}%</span>
+            <span className="text-emerald-700 text-sm font-bold">
+              {slab.soldPercentage}%
+            </span>
           </div>
           <div className="w-full bg-gradient-to-r from-gray-200 to-gray-300 rounded-full h-2 overflow-hidden shadow-inner">
             <div
@@ -437,7 +745,11 @@ const ActiveSlabContent = ({ slab, isActive, onProceedOrder, amount, setAmount, 
 };
 
 const UpcomingSlabContent = ({ slab, isActive }) => (
-  <div className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'}`}>
+  <div
+    className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${
+      isActive ? "scale-100 opacity-100" : "scale-95 opacity-80"
+    }`}
+  >
     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-amber-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
     <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-orange-400/15 to-transparent rounded-full translate-y-4 -translate-x-4 blur-lg"></div>
 
@@ -449,7 +761,9 @@ const UpcomingSlabContent = ({ slab, isActive }) => (
             {slab.title}
           </h3>
         </div>
-        <span className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}>
+        <span
+          className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}
+        >
           <Clock size={12} />
           {slab.status}
         </span>
@@ -467,14 +781,18 @@ const UpcomingSlabContent = ({ slab, isActive }) => (
             <span className="text-blue-700 text-xs font-semibold">USD</span>
             <span className="text-blue-600 text-xs">↗ +3.8%</span>
           </div>
-          <p className="text-blue-800 text-sm font-bold">${slab.prices.usd.toFixed(5)}</p>
+          <p className="text-blue-800 text-sm font-bold">
+            ${slab.prices.usd.toFixed(5)}
+          </p>
         </div>
         <div className="flex-1 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-2 border border-emerald-200/50 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-emerald-700 text-xs font-semibold">INR</span>
             <span className="text-emerald-600 text-xs">↗ +5.2%</span>
           </div>
-          <p className="text-emerald-800 text-sm font-bold">₹{slab.prices.inr.toFixed(5)}</p>
+          <p className="text-emerald-800 text-sm font-bold">
+            ₹{slab.prices.inr.toFixed(5)}
+          </p>
         </div>
       </div>
 
@@ -491,16 +809,18 @@ const UpcomingSlabContent = ({ slab, isActive }) => (
       </div>
 
       <div className="text-start bg-gradient-to-r from-amber-50/50 to-orange-50/50 rounded-lg p-2 border border-amber-100">
-        <p className="text-gray-700 text-sm">
-          {slab.description}
-        </p>
+        <p className="text-gray-700 text-sm">{slab.description}</p>
       </div>
     </div>
   </div>
 );
 
 const SoldSlabContent = ({ slab, isActive }) => (
-  <div className={`bg-gradient-to-br from-white via-red-50/30 to-pink-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-red-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-80'}`}>
+  <div
+    className={`bg-gradient-to-br from-white via-red-50/30 to-pink-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-red-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${
+      isActive ? "scale-100 opacity-100" : "scale-95 opacity-80"
+    }`}
+  >
     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-red-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
     <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-pink-400/15 to-transparent rounded-full translate-y-4 -translate-x-4 blur-lg"></div>
 
@@ -512,7 +832,9 @@ const SoldSlabContent = ({ slab, isActive }) => (
             {slab.title}
           </h3>
         </div>
-        <span className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}>
+        <span
+          className={`${slab.statusColor} text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-semibold`}
+        >
           <CheckCircle size={12} />
           {slab.status}
         </span>
@@ -530,14 +852,18 @@ const SoldSlabContent = ({ slab, isActive }) => (
             <span className="text-blue-700 text-xs font-semibold">USD</span>
             <span className="text-blue-600 text-xs">Final Price</span>
           </div>
-          <p className="text-blue-800 text-sm font-bold">${slab.prices.usd.toFixed(5)}</p>
+          <p className="text-blue-800 text-sm font-bold">
+            ${slab.prices.usd.toFixed(5)}
+          </p>
         </div>
         <div className="flex-1 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-2 border border-emerald-200/50 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-emerald-700 text-xs font-semibold">INR</span>
             <span className="text-emerald-600 text-xs">Final Price</span>
           </div>
-          <p className="text-emerald-800 text-sm font-bold">₹{slab.prices.inr.toFixed(5)}</p>
+          <p className="text-emerald-800 text-sm font-bold">
+            ₹{slab.prices.inr.toFixed(5)}
+          </p>
         </div>
       </div>
 
@@ -554,9 +880,7 @@ const SoldSlabContent = ({ slab, isActive }) => (
       </div>
 
       <div className="text-start bg-gradient-to-r from-red-50/50 to-pink-50/50 rounded-lg p-2 border border-red-100">
-        <p className="text-gray-700 text-sm">
-          {slab.description}
-        </p>
+        <p className="text-gray-700 text-sm">{slab.description}</p>
       </div>
     </div>
   </div>
@@ -569,7 +893,7 @@ const SlabTabs = () => {
   // Form states
   const [currency, setCurrency] = useState("INR");
   const [amount, setAmount] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState('wallet');
+  const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [errors, setErrors] = useState({});
   const [isToastShown, setIsToastShown] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -582,9 +906,10 @@ const SlabTabs = () => {
 
   // Get user data
   const userDataTopasID = Cookies.get("userData");
-  const parsedUserData = JSON.parse(userDataTopasID || '{}');
+  const parsedUserData = JSON.parse(userDataTopasID || "{}");
+
   // console.log(parsedUserData.data)
-  const userDataTopassid = parsedUserData?.data?._id;
+  const userDataTopassid = parsedUserData?._id;
 
   // console.log(userDataTopassid)
 
@@ -617,7 +942,9 @@ const SlabTabs = () => {
   const getOrdinalSuffix = (num) => {
     const suffixes = ["th", "st", "nd", "rd"];
     const remainder = num % 100;
-    return suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0];
+    return (
+      suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0]
+    );
   };
 
   // Validation functions
@@ -680,13 +1007,18 @@ const SlabTabs = () => {
             max: settings.data.buy_max_price_jaimax_usd,
           };
 
-      const minAmount = isINR && Boolean(userData?.data.isActive) ? 100 : currencySettings.min;
+      const minAmount =
+        isINR && Boolean(userData?.data.isActive) ? 100 : currencySettings.min;
       const maxAmount = currencySettings.max;
 
       if (value < minAmount) {
-        newErrors.amount = `Minimum amount should be ${isINR ? "₹" : "$"}${minAmount}.`;
+        newErrors.amount = `Minimum amount should be ${
+          isINR ? "₹" : "$"
+        }${minAmount}.`;
       } else if (value > maxAmount) {
-        newErrors.amount = `Maximum amount should be ${isINR ? "₹" : "$"}${maxAmount}.`;
+        newErrors.amount = `Maximum amount should be ${
+          isINR ? "₹" : "$"
+        }${maxAmount}.`;
       }
     }
 
@@ -704,7 +1036,7 @@ const SlabTabs = () => {
   const onChangePaymentMethod = (method) => {
     setPaymentMethod(method);
   };
- const onProceedOrder = async (e) => {
+  const onProceedOrder = async (e) => {
     e?.preventDefault();
     if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
       return;
@@ -713,16 +1045,19 @@ const SlabTabs = () => {
     const payload = {
       amount: +amount,
       currency: currency,
+      userId: userDataTopassid,
     };
 
     try {
       const response = await proceedOrder(payload).unwrap();
+      console.log(response?.data?.requsetedAmount, "response");
       if (response.status_code === 200) {
         if (response.data.shortageResolved) {
           setPurchaseCoinsBreakup({
             shortageResolution: response.data.shortageData,
             totalCoins: response.data.totalCoins,
             totalAmount: response.data.totalAmount,
+            requestedAmount: response.data.requsetedAmount,
           });
           setShowPurchaseCoinsModal(true);
         } else {
@@ -817,7 +1152,7 @@ const SlabTabs = () => {
           position: "top-center",
         });
         handleCloseModal();
-        
+
         if (method === "cashFree") {
           await handleCreatePayment(response?.data?._id);
         } else if (method === "paypal") {
@@ -841,15 +1176,14 @@ const SlabTabs = () => {
       const payload = { order_id: orderId };
       const res = await createPayment(payload).unwrap();
       const paymentSessionId = res?.data?.payment_session_id;
-      
+
       // Initialize payment gateway here
       toast.info("Redirecting to payment gateway...", {
         position: "top-center",
       });
-      
+
       // Add your payment gateway integration here
       // doPayment(paymentSessionId);
-      
     } catch (error) {
       // console.error(error);
       toast.error(`${error?.data?.message}`, {
@@ -899,21 +1233,21 @@ const SlabTabs = () => {
                 <button
                   key={slab.id}
                   onClick={() => handleTabClick(index)}
-                  className={`px-3 py-1 text-sm rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${activeTab === index
-                    ? "bg-[#2cdacc] text-white shadow-lg shadow-emerald-500/25 scale-105"
-                    : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
-                    }`}
+                  className={`px-3 py-1 text-sm rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${
+                    activeTab === index
+                      ? "bg-[#2cdacc] text-white shadow-lg shadow-emerald-500/25 scale-105"
+                      : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
+                  }`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
                   <span className="relative z-10">
                     {slab.id}
-                     &ensp; Slab
+                    &ensp; Slab
                   </span>
                 </button>
               ))}
             </div>
           </div>
-          
 
           {/* Mobile Tabs */}
           <div className="flex md:hidden justify-start mb-4 overflow-x-auto no-scrollbar">
@@ -922,14 +1256,14 @@ const SlabTabs = () => {
                 <button
                   key={slab.id}
                   onClick={() => handleTabClick(index)}
-                  className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${activeTab === index
-                    ? "bg-gradient-to-r from-teal-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
-                    : "bg-gradient-to-r from-teal-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
-                    }`}
+                  className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${
+                    activeTab === index
+                      ? "bg-gradient-to-r from-teal-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
+                      : "bg-gradient-to-r from-teal-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
+                  }`}
                 >
                   {slab.id}
-                  {/* {getOrdinalSuffix(slab.id)} */}.
-                   Slab
+                  {/* {getOrdinalSuffix(slab.id)} */}. Slab
                 </button>
               ))}
             </div>
@@ -941,8 +1275,8 @@ const SlabTabs = () => {
             <div className="flex justify-center">
               <div className="w-full max-w-lg md:max-w-4xl mx-auto">
                 {currentSlab?.type === "active" ? (
-                  <ActiveSlabContent 
-                    slab={currentSlab} 
+                  <ActiveSlabContent
+                    slab={currentSlab}
                     isActive={true}
                     onProceedOrder={onProceedOrder}
                     amount={amount}
@@ -971,10 +1305,11 @@ const SlabTabs = () => {
               <button
                 key={index}
                 onClick={() => handleTabClick(index)}
-                className={`rounded-full transition-all duration-500 shadow-md ${activeTab === index
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 w-6 h-2 shadow-emerald-500/25"
-                  : "bg-gradient-to-r from-slate-400 to-slate-500 w-2 h-2 hover:from-slate-300 hover:to-slate-400 hover:scale-125"
-                  }`}
+                className={`rounded-full transition-all duration-500 shadow-md ${
+                  activeTab === index
+                    ? "bg-gradient-to-r from-emerald-500 to-teal-500 w-6 h-2 shadow-emerald-500/25"
+                    : "bg-gradient-to-r from-slate-400 to-slate-500 w-2 h-2 hover:from-slate-300 hover:to-slate-400 hover:scale-125"
+                }`}
               />
             ))}
           </div>
