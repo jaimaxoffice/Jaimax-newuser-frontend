@@ -13,7 +13,6 @@ export const homePageApiSlice = apiSlice.injectEndpoints({
         url: "/support/genral-enquiry",
         method: "POST",
         body: { ...data },
-        
       }),
     }),
   }),

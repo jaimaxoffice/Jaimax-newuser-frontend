@@ -36,7 +36,7 @@ const Dashboard = () => {
   // Auto logout on token failure
   useEffect(() => {
     if (error?.data?.status_code === 400) {
-      toast.error(error?.data?.message);
+      // toast.error(error?.data?.message);
       localStorage.clear();
       navigate("/login");
     }

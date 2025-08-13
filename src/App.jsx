@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import {
   Routes,
@@ -8,6 +6,7 @@ import {
   Outlet,
   Navigate,
   useNavigate,
+  Router,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
 import JaimaxSplash from "./global/Splashscreen";
-
 
 import AuthContainer from "./Authentication/Login";
 import ForgotPassword from "./Authentication/ForgotPassword";
@@ -33,14 +31,12 @@ import TermsConditions from "./global/TermsConditons";
 import PrivacyPolicy from "./global/PrivacyPolicy";
 import Disclaimer from "./global/Disclaimer";
 
-
 import Margintrading from "./services/Margintrading";
 import ApiTrading from "./services/Apitrading";
 import SpotTrading from "./services/Spottrading";
 import FuturesTrading from "./services/Futurestrading";
 import PreSale from "./services/Presale";
 import ReferEarn from "./services/Referearn";
-
 
 import Dashboard from "./components/Dashboard/pages/dashBoard/dashBoard";
 import Wallet from "./components/Dashboard/pages/wallet/wallet";
@@ -61,6 +57,8 @@ import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
 import ProtectedRoute from "./router/PrivateRoute";
 import FloatingNavButton from "./global/FloatingNavButton";
 import SupportChart from "./components/Dashboard/pages/support/supportChat";
+import ChatAssistant from "./pages/home/chatComponent";
+import ErrorBoundary from "./pages/home/ErrorBoundary";
 
 const getAuthToken = () => {
   try {
@@ -95,7 +93,6 @@ const isAuthenticated = () => {
   const token = getAuthToken();
   return isValidToken(token);
 };
-
 
 const PublicRoute = () => {
   const userIsAuthenticated = isAuthenticated();
@@ -245,8 +242,9 @@ const DashboardLayout = () => {
 
       {/* Main Content */}
       <div
-        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
-          } h-screen overflow-hidden`}
+        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${
+          sidebarOpen ? "lg:ml-64" : "lg:ml-2"
+        } h-screen overflow-hidden`}
       >
         <div className="mt-6 mb-1">
           <Header />
@@ -342,7 +340,27 @@ const PublicLayout = () => {
 //       {!shouldHideNavbar && <Footer />}
 //     </div>
 //   );
+
 // };
+
+//   const getUserDetails = () => {
+//   try {
+//     return JSON.parse(localStorage.getItem("userData"));
+//   } catch (error) {
+//     console.error("Error accessing storage:", error);
+//     return null;
+//   }
+// };
+const getUserDetails = () => {
+  try {
+    const raw = localStorage.getItem("userData");
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    console.error("Error accessing storage:", error);
+    return null;
+  }
+};
+
 
 /* ─────────────────────────────────────────────────────────────
    Main App Component
@@ -350,6 +368,23 @@ const PublicLayout = () => {
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
+  const toggleChat = () => setChatOpen((prev) => !prev);
+  const [userDetails, setUserDetails] = useState(null);
+
+  const hideChatOnPaths = ["/login", "/register", "/forgot-password"];
+  const isSupportChatRoute = location.pathname.startsWith(
+    "/dashboard/support/support-chat"
+  );
+  const showChat =
+    !hideChatOnPaths.includes(location.pathname) && !isSupportChatRoute;
+
+useEffect(() => {
+  const data = getUserDetails(); 
+  console.log("Parsed user data:", data);
+  if (data) setUserDetails(data);
+}, []);
+
 
   useEffect(() => {
     const checkSplashScreen = () => {
@@ -398,103 +433,143 @@ const App = () => {
   if (showSplash) return <JaimaxSplash />;
 
   return (
-    <Routes>
-      {/* ─────── Protected Routes (Dashboard) ─────── */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="wallet/add-funds" element={<AddMoneyToWallet />} />
-          <Route path="my-team" element={<MyTotalTeam />} />
-          <Route path="shareholders" element={<Shareholders />} />
-          <Route path="buy-history" element={<BuyHistory />} />
-          <Route path="security" element={<Security />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="kyc" element={<Kyc />} />
-          <Route path="withdrawal" element={<WithDrawal />} />
-          <Route path="support" element={<Support />} />
-        </Route>
+    <>
+      {showChat && (
+        <>
+          <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center">
+            <button
+              onClick={toggleChat}
+              className="bg-[#aadc32] hover:bg-[#b8cc26] text-[#0f1c14] rounded-full px-4 py-3 shadow-lg
+            flex items-center space-x-2 transition-colors duration-300 focus:outline-none"
+              aria-label="AI Assistant"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <rect x="6" y="8" width="12" height="8" rx="2" ry="2" />
+                <circle cx="9" cy="12" r="1" />
+                <circle cx="15" cy="12" r="1" />
+                <line x1="12" y1="6" x2="12" y2="8" />
+              </svg>
+              <span className="font-semibold text-lg select-none">ASK AI</span>
+            </button>
+          </div>
+          {/* {chatOpen && <ChatAssistant onClose={() => setChatOpen(false)} />} */}
+          {chatOpen && (
+            <ErrorBoundary>
+              <ChatAssistant
+                onClose={() => setChatOpen(false)}
+                // userDetails={userDetails}
+              />
+            </ErrorBoundary>
+          )}
+        </>
+      )}
+      {/* {chatOpen && <ChatAssistant onClose={() => setChatOpen(false)} />} */}
+      <Routes>
+        {/* ─────── Protected Routes (Dashboard) ─────── */}
 
-        {/* Additional protected routes with DashboardLayout */}
-        <Route path="/wallet" element={<DashboardLayout />}>
-          <Route index element={<Wallet />} />
-        </Route>
-        <Route path="/my-team" element={<DashboardLayout />}>
-          <Route index element={<MyTotalTeam />} />
-        </Route>
-        <Route path="/shareholders" element={<DashboardLayout />}>
-          <Route index element={<Shareholders />} />
-        </Route>
-        <Route path="/earnings" element={<DashboardLayout />}>
-          <Route index element={<TodayEarning />} />
-        </Route>
-        <Route path="/buy-history" element={<DashboardLayout />}>
-          <Route index element={<BuyHistory />} />
-        </Route>
-        <Route path="/security" element={<DashboardLayout />}>
-          <Route index element={<Security />} />
-        </Route>
-        <Route path="/profile" element={<DashboardLayout />}>
-          <Route index element={<Profile />} />
-        </Route>
-        <Route path="/kyc-information" element={<DashboardLayout />}>
-          <Route index element={<Kyc />} />
-        </Route>
-        <Route path="/withdrawal" element={<DashboardLayout />}>
-          <Route index element={<WithDrawal />} />
-        </Route>
-        {/* <Route path="/support" element={<DashboardLayout />}>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="wallet" element={<Wallet />} />
+            <Route path="wallet/add-funds" element={<AddMoneyToWallet />} />
+            <Route path="my-team" element={<MyTotalTeam />} />
+            <Route path="shareholders" element={<Shareholders />} />
+            <Route path="buy-history" element={<BuyHistory />} />
+            <Route path="security" element={<Security />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="kyc" element={<Kyc />} />
+            <Route path="withdrawal" element={<WithDrawal />} />
+            <Route path="support" element={<Support />} />
+          </Route>
+
+          {/* Additional protected routes with DashboardLayout */}
+          <Route path="/wallet" element={<DashboardLayout />}>
+            <Route index element={<Wallet />} />
+          </Route>
+          <Route path="/my-team" element={<DashboardLayout />}>
+            <Route index element={<MyTotalTeam />} />
+          </Route>
+          <Route path="/shareholders" element={<DashboardLayout />}>
+            <Route index element={<Shareholders />} />
+          </Route>
+          <Route path="/earnings" element={<DashboardLayout />}>
+            <Route index element={<TodayEarning />} />
+          </Route>
+          <Route path="/buy-history" element={<DashboardLayout />}>
+            <Route index element={<BuyHistory />} />
+          </Route>
+          <Route path="/security" element={<DashboardLayout />}>
+            <Route index element={<Security />} />
+          </Route>
+          <Route path="/profile" element={<DashboardLayout />}>
+            <Route index element={<Profile />} />
+          </Route>
+          <Route path="/kyc-information" element={<DashboardLayout />}>
+            <Route index element={<Kyc />} />
+          </Route>
+          <Route path="/withdrawal" element={<DashboardLayout />}>
+            <Route index element={<WithDrawal />} />
+          </Route>
+          {/* <Route path="/support" element={<DashboardLayout />}>
           <Route index element={<Support />} />
         </Route> */}
-        <Route path="/support" element={<DashboardLayout />}>
-  <Route index element={<Support />} />
-  <Route path="support-chat/:id" element={<SupportChart />} />
-</Route>
+          <Route path="/support" element={<DashboardLayout />}>
+            <Route index element={<Support />} />
+            <Route path="support-chat/:id" element={<SupportChart />} />
+          </Route>
 
-        <Route path="/meetings" element={<DashboardLayout />}>
-          <Route index element={<UserMeetingsShowcase />} />
-        </Route>
-      </Route>
-
-      {/* ─────── Public Routes ─────── */}
-      <Route path="/" element={<PublicLayout />}>
-        <Route index element={<Home />} />
-
-        {/* Auth Routes - Protected from logged-in users */}
-        <Route element={<PublicRoute />}>
-          <Route path="login" element={<AuthContainer />} />
-          <Route path="register" element={<AuthContainer />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="/meetings" element={<DashboardLayout />}>
+            <Route index element={<UserMeetingsShowcase />} />
+          </Route>
         </Route>
 
-        {/* Public pages */}
-        <Route path="about" element={<JaimaxComponent />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="features" element={<FeaturesSection />} />
+        {/* ─────── Public Routes ─────── */}
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<Home />} />
 
-        <Route path="blog">
-          <Route index element={<BlogLayout />} />
-          <Route path=":slug" element={<BlogDetailPage />} />
+          {/* Auth Routes - Protected from logged-in users */}
+          <Route element={<PublicRoute />}>
+            <Route path="login" element={<AuthContainer />} />
+            <Route path="register" element={<AuthContainer />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+          </Route>
+
+          {/* Public pages */}
+          <Route path="about" element={<JaimaxComponent />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="features" element={<FeaturesSection />} />
+
+          <Route path="blog">
+            <Route index element={<BlogLayout />} />
+            <Route path=":slug" element={<BlogDetailPage />} />
+          </Route>
+
+          <Route path="services" element={<CryptoServicesFlipCards />} />
+          <Route path="supporthome" element={<SupportPage />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="support-page" element={<SupportPage />} />
+          <Route path="terms-and-conditions" element={<TermsConditions />} />
+          <Route path="refund-policy" element={<RefundPolicy />} />
+          <Route path="disclaimer" element={<Disclaimer />} />
+          <Route path="Margintrading" element={<Margintrading />} />
+          <Route path="ApiTrading" element={<ApiTrading />} />
+          <Route path="SpotTrading" element={<SpotTrading />} />
+          <Route path="FuturesTrading" element={<FuturesTrading />} />
+          <Route path="PreSale" element={<PreSale />} />
+          <Route path="ReferEarn" element={<ReferEarn />} />
         </Route>
 
-        <Route path="services" element={<CryptoServicesFlipCards />} />
-        <Route path="supporthome" element={<SupportPage />} />
-        <Route path="privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="support-page" element={<SupportPage />} />
-        <Route path="terms-and-conditions" element={<TermsConditions />} />
-        <Route path="refund-policy" element={<RefundPolicy />} />
-        <Route path="disclaimer" element={<Disclaimer />} />
-        <Route path="Margintrading" element={<Margintrading />} />
-        <Route path="ApiTrading" element={<ApiTrading />} />
-        <Route path="SpotTrading" element={<SpotTrading />} />
-        <Route path="FuturesTrading" element={<FuturesTrading />} />
-        <Route path="PreSale" element={<PreSale />} />
-        <Route path="ReferEarn" element={<ReferEarn />} />
-      </Route>
-
-      {/* Catch all route - redirect to home */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Catch all route - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 };
 

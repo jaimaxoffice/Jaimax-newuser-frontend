@@ -2190,6 +2190,13 @@ const KycInformation = () => {
     setIsEditClicked(true);
   };
 
+  function formatDateForInput(dob) {
+  // dob is in dd/mm/yyyy
+  const [day, month, year] = dob.split("/");
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+}
+
+
   const DIGILOCKER_CONFIG = {
     BASE_URL:
       "https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize",
@@ -2341,7 +2348,7 @@ return(
                   </div>
 
                   {/* Date of Birth - India only */}
-                  {isCountryCodeIndia && (
+                  {/* {isCountryCodeIndia && (
                     <div className="space-y-3">
                       <label htmlFor="dob" className="block text-teal-800 text-sm font-medium">
                         Date of Birth <span className="text-red-500">*</span>
@@ -2355,7 +2362,27 @@ return(
                         disabled={isFieldDisabled()}
                       />
                     </div>
-                  )}
+                  )} */}
+
+
+
+                  {isCountryCodeIndia && (
+  <div className="space-y-3">
+    <label htmlFor="dob" className="block text-teal-800 text-sm font-medium">
+      Date of Birth <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="date"
+      className="w-full px-3 py-2 bg-white border border-teal-300 rounded-lg text-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+      name="dob"
+      // Convert dd/mm/yyyy to yyyy-mm-dd before passing to input
+      value={formData.dob ? formatDateForInput(formData.dob) : ""}
+      onChange={handleChange}
+      disabled={isFieldDisabled()}
+    />
+  </div>
+)}
+
 
                   {/* Mobile Number */}
                   <div className="space-y-3">

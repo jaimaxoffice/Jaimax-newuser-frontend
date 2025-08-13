@@ -1,28 +1,31 @@
-
-
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import homeBgDesktop from "../../assets/Images/HomeDesktop.jpg";
 import homeBgMobile from "../../assets/Images/HomeMobile.jpg";
-const Threads = React.lazy(() => import('../../global/Threads'));
-import Partners from './Partners';
-import HomeFooter from './HomeFoot';
-import JaimaxFAQ from './Faq';
-import AnimatedTestimonials from './Testimonals';
-import ServicesComponent from './Homeservices';
-import GrowthPlanTimeline from './Phase';
-import CryptoStakingSection from './HomeAbout';
-import HomeContact from './HomeContact';
-import RealTimeTicker from './scroll';
-import JaimaxRoadmap from './RoadmapDup';
-import CreativePartnersComponent from './Partners';
-import seoContent from '../../SeoContent/seoContent';
+const Threads = React.lazy(() => import("../../global/Threads"));
+import Partners from "./Partners";
+import HomeFooter from "./HomeFoot";
+import JaimaxFAQ from "./Faq";
+import AnimatedTestimonials from "./Testimonals";
+import ServicesComponent from "./Homeservices";
+import GrowthPlanTimeline from "./Phase";
+import CryptoStakingSection from "./HomeAbout";
+import HomeContact from "./HomeContact";
+import RealTimeTicker from "./scroll";
+import JaimaxRoadmap from "./RoadmapDup";
+import CreativePartnersComponent from "./Partners";
+import seoContent from "../../SeoContent/seoContent";
+import ChatAssistant from "./chatComponent";
 // import { Helmet } from 'react-helmet-async';
 const Home = () => {
   const [currentBg, setCurrentBg] = useState(homeBgDesktop);
+  const [chatOpen, setChatOpen] = useState(false);
   const navigate = useNavigate();
+
   const { title, description } = seoContent.homePage;
+
+  const toggleChat = () => setChatOpen((prev) => !prev);
 
   useEffect(() => {
     const updateBackgroundImage = () => {
@@ -35,16 +38,16 @@ const Home = () => {
     };
 
     updateBackgroundImage();
-    window.addEventListener('resize', debounceResize);
+    window.addEventListener("resize", debounceResize);
 
     return () => {
-      window.removeEventListener('resize', debounceResize);
+      window.removeEventListener("resize", debounceResize);
       clearTimeout(window.resizeTimeout);
     };
   }, []);
 
   const handleJoinRevolution = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -55,7 +58,6 @@ const Home = () => {
         <meta name="keywords" content="Jaimax, crypto, blockchain, India" />
       </Helmet> */}
       <div className="outer-container">
-
         <div className="relative min-h-screen flex flex-col justify-center">
           {/* Background Image with proper mobile optimization */}
           <div className="absolute inset-0 w-full h-full">
@@ -69,12 +71,12 @@ const Home = () => {
           </div>
 
           {/* Content Container - Mobile First */}
-          <div className="relative z-10 px-4 py-4 mx-auto w-full max-w-9xl
-                        ">
-
+          <div
+            className="relative z-10 px-4 py-4 mx-auto w-full max-w-9xl
+                        "
+          >
             {/* Main Content */}
             <div className="relative w-full h-[100vh] max-w-8xl mx-auto overflow-hidden px-4 sm:px-6 lg:px-8">
-
               {/* h1 - Top Left */}
               <motion.h1
                 initial={{ opacity: 0, x: -30, y: -30 }}
@@ -90,37 +92,61 @@ const Home = () => {
                 <span className="block">and Trust</span>
               </motion.h1>
               <motion.p
-  initial={{ opacity: 0, x: 30, y: 30 }}
-  animate={{ opacity: 1, x: 0, y: 0 }}
-  transition={{ delay: 0.5, duration: 1 }}
-  className="absolute bottom-6 right-4 sm:bottom-10 sm:right-10
+                initial={{ opacity: 0, x: 30, y: 30 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="absolute bottom-6 right-4 sm:bottom-10 sm:right-10
     text-white text-sm sm:text-base md:text-lg lg:text-xl 
     font-medium max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-lg text-right space-y-4"
->
-  Our expertly designed platform ensures a seamless and secure investment process,
-  allowing you to capitalize on the dynamic nature of the cryptocurrency market.
-
-  <button
-    onClick={() => navigate("/login")}
-    className="block ml-auto mt-4 font-bold text-center
+              >
+                Our expertly designed platform ensures a seamless and secure
+                investment process, allowing you to capitalize on the dynamic
+                nature of the cryptocurrency market.
+                <button
+                  onClick={() => navigate("/login")}
+                  className="block ml-auto mt-4 font-bold text-center
       bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
       text-[#0f1c14] shadow-xl text-sm sm:text-base md:text-lg
       rounded-full hover:scale-105 active:scale-95
       transition-transform duration-300 px-4 py-2"
-  >
-    Start Building
-  </button>
-</motion.p>
-
-
-
+                >
+                  Start Building
+                </button>
+              </motion.p>
             </div>
-
           </div>
         </div>
 
         {/* Components Section - Proper spacing for mobile */}
         <div className="w-full">
+          {/* AI Assistant Button */}
+          <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center">
+            <button
+              onClick={toggleChat}
+              className="bg-[#aadc32] hover:bg-[#b8cc26] text-[#0f1c14] rounded-full px-4 py-3 shadow-lg
+            flex items-center space-x-2 transition-colors duration-300 focus:outline-none"
+              aria-label="AI Assistant"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <rect x="6" y="8" width="12" height="8" rx="2" ry="2" />
+                <circle cx="9" cy="12" r="1" />
+                <circle cx="15" cy="12" r="1" />
+                <line x1="12" y1="6" x2="12" y2="8" />
+              </svg>
+              <span className="font-semibold text-lg select-none">ASK AI</span>
+            </button>
+          </div>
+
+          {/* Show ChatAssistant only if chatOpen is true */}
+          {chatOpen && <ChatAssistant onClose={() => setChatOpen(false)} />}
+
           <CryptoStakingSection />
           <ServicesComponent />
           <GrowthPlanTimeline />
