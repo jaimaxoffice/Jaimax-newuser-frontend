@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
+import adaJSON from './ada.json';
+import xrpjson from './xrp.json';
+import USDTJSON from './usdt.json';
+import trxJSON from './trx.json';
+import USDCJSON from './usdc.json';
+
 import Cookies from "js-cookie";
 import {
   useExchangeCryptoMutation,
@@ -10,13 +16,15 @@ import bscUSDTJSON from "./BSCUSDT.json";
 const bscUSDTAddress = "0x55d398326f99059fF775485246999027B3197955";
 const JMCTokenAddress = "0x7a766a3ae6e8782Fd70F59a21e942A6582F4Ca60";
 const walletBalance = Cookies.get("userData");
+import { toast } from "react-toastify";
+
+import { useUserDataQuery } from "../dashBoard/DashboardApliSlice.js";
 const parsedUserData = walletBalance?.data?.walletBalance;
 // console.log(parsedUserData, "HARDCODED USER DATA");
 const BinanceExchange = () => {
   // State management
+  const [awardJmcToUserPayload, SetawardJmcToUserPayload] = useState({});
   const [contract, setContract] = useState(null);
-    const [gasFee, setGasFee] = useState(0);
-    const [requestedAmountInr,setrequestedAmountINR]=useState(0);
   const [tokenBalance, setTokenBalance] = useState(0);
   const [tokenSent, setTokenSent] = useState("");
   const [jmcSent, setJMCSent] = useState("");
@@ -24,7 +32,34 @@ const BinanceExchange = () => {
   const [userJMC, setUserJMC] = useState(0);
   const [selectedToken, setSelectedToken] = useState("USDT");
   const address = Cookies.get("userData");
+  const [isTokenVerified, setIsTokenVerified] = useState(false);
   const id = address ? JSON.parse(address).data?.walletBalance : "";
+
+  const TOKEN_CONFIG = {
+  USDT: {
+    address: "0x55d398326f99059fF775485246999027B3197955",
+    abi: bscUSDTJSON.abi
+  },
+  USDC: {
+    address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+    abi: USDCJSON.abi
+  },
+  TRX: {
+    address: "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
+    abi: trxJSON.abi
+  },
+
+  XRP: {
+    address: "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+    abi: xrpjson.abi
+  },
+  ADA: {
+    address: "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+    abi: adaJSON.abi
+  },
+
+};
+
   const [walletAddress] = useState(
     "0x450ae9decaB959DBcB36ad12f077DBF50e074969"
   );
@@ -40,7 +75,19 @@ const BinanceExchange = () => {
   const [usdcBalance, setUsdcBalance] = useState("0.00");
   const [adaBalance, setAdaBalance] = useState("0.00");
   const [xrpBalance, setXrpBalance] = useState("0.00");
-
+  const { data: userdata, refetch } = useUserDataQuery(undefined, {
+    skip: !isTokenVerified,
+  });
+  const token = Cookies.get("token");
+  useEffect(() => {
+    const verifyToken = async () => {
+      if (!token) {
+        return;
+      }
+      setIsTokenVerified(true);
+    };
+    verifyToken();
+  }, [token]);
   // Define token data
   const tokens = {
     USDT: { symbol: "USDT", balance: tokenBalance, icon: "₮", color: "teal" },
@@ -53,29 +100,48 @@ const BinanceExchange = () => {
   const parsedUserData = userData ? JSON.parse(userData) : null;
   const userId = parsedUserData?._id;
   console.log(userId);
+  // useEffect(() => {
+  //   const connectContract = async () => {
+  //     try {
+  //       if (window.ethereum) {
+  //         const provider = new ethers.JsonRpcProvider(
+  //           "https://bsc-dataseed.bnbchain.org"
+  //         );
+
+  //         const usdtContract = new ethers.Contract(
+  //           bscUSDTAddress,
+  //           bscUSDTJSON.abi,
+  //           provider
+  //         );
+  //         // console.log(await usdtContract.name());
+
+  //         setContract(usdtContract);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error connecting to contract:", error);
+  //     }
+  //   };
+  //   connectContract();
+  // }, []);
+
+
   useEffect(() => {
-    const connectContract = async () => {
-      try {
-        if (window.ethereum) {
-          const provider = new ethers.JsonRpcProvider(
-            "https://bsc-dataseed.bnbchain.org"
-          );
+  const connectContract = async () => {
+    try {
+      const token = tokenConfig[selectedCoin];
+      if (!token) return;
 
-          const usdtContract = new ethers.Contract(
-            bscUSDTAddress,
-            bscUSDTJSON.abi,
-            provider
-          );
-          // console.log(await usdtContract.name());
+      const provider = new ethers.JsonRpcProvider("https://bsc-dataseed.bnbchain.org");
+      const contract = new ethers.Contract(token.address, token.abi, provider);
+      setContract(contract);
+    } catch (error) {
+      console.error("Error connecting to contract:", error);
+    }
+  };
 
-          setContract(usdtContract);
-        }
-      } catch (error) {
-        console.error("Error connecting to contract:", error);
-      }
-    };
-    connectContract();
-  }, []);
+  connectContract();
+}, [selectedToken]);
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(walletAddress);
     setCopySuccess(true);
@@ -86,24 +152,100 @@ const BinanceExchange = () => {
     event.preventDefault();
     alert(`Deposit ${selectedToken} to your wallet address: ${walletAddress}`);
   };
-  const fetchTokenBalance = async () => {
+  // First, modify your fetchTokenBalance function to update the specific token balance
+const fetchTokenBalance = async (symbol) => {
+  try {
+    setLoading(true);
+    const token = TOKEN_CONFIG[symbol];
+    if (!token) throw new Error(`Token ${symbol} not supported`);
+
+    const BSC_URL = "https://bsc-dataseed.bnbchain.org";
+    const provider = new ethers.JsonRpcProvider(BSC_URL);
+
+    const contract = new ethers.Contract(
+      token.address,
+      token.abi,
+      provider
+    );
+    
+    const balance = await contract.balanceOf(walletAddress);
+    const decimals=await contract.decimals()
+    console.log(await contract.symbol(),"symbol")
+    console.log(decimals)
+    const formattedBalance = parseFloat(ethers.formatUnits(balance, decimals)).toFixed(2);
+    console.log(symbol)
+    
+    // Update the specific token balance
+    switch(symbol) {
+      case "USDT":
+        setTokenBalance(formattedBalance);
+        break;
+      case "USDC":
+        setUsdcBalance(formattedBalance);
+        break;
+      case "TRX":
+        setTrxBalance(formattedBalance);
+        break;
+      case "XRP":
+        setXrpBalance(formattedBalance);
+        break;
+      case "ADA":
+        setAdaBalance(formattedBalance);
+        break;
+    }
+    
+    return formattedBalance;
+  } catch (error) {
+    console.error(`Error fetching ${symbol} balance:`, error);
+    return "0.00";
+  } finally {
+    setLoading(false);
+  }
+};
+
+// Then, add a useEffect to update when the selected token changes
+useEffect(() => {
+  fetchTokenBalance(selectedToken);
+}, [selectedToken]);
+
+// Also, modify your initial fetch to get all token balances
+useEffect(() => {
+  const fetchAllBalances = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const BSC_URL = "https://bsc-dataseed.bnbchain.org";
-      const provider = new ethers.JsonRpcProvider(BSC_URL);
-      const usdtContract = new ethers.Contract(
-        bscUSDTAddress,
-        bscUSDTJSON.abi,
-        provider
-      );
-      const balance = await usdtContract.balanceOf(walletAddress);
-      setTokenBalance(parseFloat(ethers.formatEther(balance)).toFixed(2));
+      await fetchTokenBalance("USDT");
+      await fetchTokenBalance("USDC");
+      await fetchTokenBalance("TRX");
+      await fetchTokenBalance("XRP");
+      await fetchTokenBalance("ADA");
+      await fetchBnbBalance();
     } catch (error) {
-      console.error("Error fetching token balance:", error);
+      console.error("Error fetching balances:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  fetchAllBalances();
+}, []);
+//   const fetchTokenBalance = async () => {
+//     try {
+//       setLoading(true);
+//       const BSC_URL = "https://bsc-dataseed.bnbchain.org";
+//       const provider = new ethers.JsonRpcProvider(BSC_URL);
+//       const usdtContract = new ethers.Contract(
+//         bscUSDTAddress,
+//         bscUSDTJSON.abi,
+//         provider
+//       );
+//       const balance = await usdtContract.balanceOf(walletAddress);
+//       setTokenBalance(parseFloat(ethers.formatEther(balance)).toFixed(2));
+//     } catch (error) {
+//       console.error("Error fetching token balance:", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//  }; 
   const fetchBnbBalance = async () => {
     try {
       const BSC_URL = "https://bsc-dataseed.bnbchain.org";
@@ -137,7 +279,7 @@ const BinanceExchange = () => {
 
       console.log("API response:", response?.data?.equivalentJMC);
       if (response) {
-        setEquivalentJMC(response?.data?.totalCoins);
+        SetawardJmcToUserPayload(response?.data);
         console.log("Equivalent JMC calculated:", response.data.equivalentJMC);
       } else {
         setEquivalentJMC(0.0);
@@ -155,73 +297,134 @@ const BinanceExchange = () => {
     calculateEquivalentJMC();
   }, [tokenSent, selectedToken, userId]);
 
-  // Handle token swap
-  const handleTokenSwap = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+const handleTokenSwap = async (event) => {
+  event.preventDefault();
+  setLoading(true);
 
-    try {
-      console.log(`Started Exchange of ${selectedToken} for JMC`);
-      const provider = new ethers.JsonRpcProvider(
-        "https://bsc-dataseed.bnbchain.org"
-      );
+  try {
+    console.log(`Started Exchange of ${selectedToken} for JMC`);
 
-      const privateKeyToAccount =
-        "0xe06ec359f0aae2db1ad0c76362564aa5fdfad0e0a70c4d46fab3f4894b9e04b8";
-      const signer = new ethers.Wallet(privateKeyToAccount, provider);
-
-      const usdtContract = new ethers.Contract(
-        bscUSDTAddress,
-        bscUSDTJSON.abi,
-        signer
-      );
-      // console.log(await usdtContract.name());
-      // const txGasEstimate = await usdtContract.transfer.estimateGas(
-      //   "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
-      //   ethers.parseUnits(tokenSent, await usdtContract.decimals())
-      // );
-      // console.log(txGasEstimate)
-      const tx = await usdtContract.transfer(
-        "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
-        ethers.parseUnits(tokenSent, await usdtContract.decimals())
-      );
-      const receipt = await tx.wait();
-
-      if (receipt.status == 1) {
-        console.log(receipt);
-        const result = await awardJmcToUser({
-          userId: userId,
-          eqJMC: equivalentJMC,
-          swappedTokenCount: parseFloat(tokenSent),
-          swappedTokenType: selectedToken,
-          adminTransactionHash: receipt.hash,
-          swapType: "bsc-exchange",
-          requestedAmountINR: requestedAmountInr,
-          gasFee: gasFee,
-        }).unwrap();
-      } else {
-        console.log("Transaction failed:", receipt);
-      }
-
-      alert(
-        "For security reasons, the actual swap functionality has been modified to remove sensitive data like private keys. In a production environment, this would connect to a wallet and perform the swap."
-      );
-      setTimeout(() => {
-        alert(
-          `Successfully swapped ${tokenSent} ${selectedToken} for ${equivalentJMC.toFixed(
-            2
-          )} JMC`
-        );
-        setTokenSent("");
-        fetchTokenBalance();
-        setLoading(false);
-      }, 2000);
-    } catch (err) {
-      console.error("Error during token swap:", err);
-      alert("Transaction failed. Please try again.");
-      setLoading(false);
+    const tokenInfo = TOKEN_CONFIG[selectedToken];
+    if (!tokenInfo) {
+      throw new Error(`Unsupported token: ${selectedToken}`);
     }
-  };
+
+    const provider = new ethers.JsonRpcProvider("https://bsc-dataseed.bnbchain.org");
+
+    const privateKeyToAccount = "0xe06ec359f0aae2db1ad0c76362564aa5fdfad0e0a70c4d46fab3f4894b9e04b8"; // ⚠️ In production, NEVER hardcode
+    const signer = new ethers.Wallet(privateKeyToAccount, provider);
+
+    const tokenContract = new ethers.Contract(tokenInfo.address, tokenInfo.abi, signer);
+
+    const decimals = await tokenContract.decimals();
+    const tx = await tokenContract.transfer(
+      "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
+      ethers.parseUnits(tokenSent, decimals)
+    );
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      console.log("Transaction confirmed:", receipt);
+      await awardJmcToUser({
+        userId: userId,
+        swappedTokenCount: parseFloat(tokenSent),
+        swappedTokenType: selectedToken,
+        adminTransactionHash: receipt.hash,
+        swapType: "bsc-exchange",
+        grossInrValue: awardJmcToUserPayload.grossInrValue,
+        platformFee: awardJmcToUserPayload.platformFee,
+        bscTds: awardJmcToUserPayload.bscTds,
+        netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
+        jmcTds: awardJmcToUserPayload.jmcTds,
+        finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
+        equivalentJmc: awardJmcToUserPayload.equivalentJmc,
+      }).unwrap();
+
+      toast(`Successfully swapped ${tokenSent} ${selectedToken} for ${equivalentJMC.toFixed(2)} JMC`);
+      setTokenSent("");
+      fetchTokenBalance();
+    } else {
+      console.error("Transaction failed:", receipt);
+    }
+  } catch (err) {
+    console.error("Error during token swap:", err);
+    alert("Transaction failed. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  // Handle token swap
+  // const handleTokenSwap = async (event) => {
+  //   event.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     console.log(`Started Exchange of ${selectedToken} for JMC`);
+  //     const provider = new ethers.JsonRpcProvider(
+  //       "https://bsc-dataseed.bnbchain.org"
+  //     );
+
+  //     const privateKeyToAccount =
+  //       "0xe06ec359f0aae2db1ad0c76362564aa5fdfad0e0a70c4d46fab3f4894b9e04b8";
+  //     const signer = new ethers.Wallet(privateKeyToAccount, provider);
+
+  //     const usdtContract = new ethers.Contract(
+  //       bscUSDTAddress,
+  //       bscUSDTJSON.abi,
+  //       signer
+  //     );
+  //     // console.log(await usdtContract.name());
+  //     // const txGasEstimate = await usdtContract.transfer.estimateGas(
+  //     //   "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
+  //     //   ethers.parseUnits(tokenSent, await usdtContract.decimals())
+  //     // );
+  //     // console.log(txGasEstimate)
+  //     const tx = await usdtContract.transfer(
+  //       "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
+  //       ethers.parseUnits(tokenSent, await usdtContract.decimals())
+  //     );
+  //     const receipt = await tx.wait();
+
+  //     if (receipt.status == 1) {
+  //       console.log(receipt);
+  //       const result = await awardJmcToUser({
+  //         userId: userId,
+  //         swappedTokenCount: parseFloat(tokenSent),
+  //         swappedTokenType: selectedToken,
+  //         adminTransactionHash: receipt.hash,
+  //         swapType: "bsc-exchange",
+  //         grossInrValue: awardJmcToUserPayload.grossInrValue,
+  //         platformFee: awardJmcToUserPayload.platformFee,
+  //         bscTds: awardJmcToUserPayload.bscTds,
+  //         netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
+  //         jmcTds: awardJmcToUserPayload.jmcTds,
+  //         finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
+  //         equivalentJmc: awardJmcToUserPayload.equivalentJmc,
+  //       }).unwrap();
+  //     } else {
+  //       console.log("Transaction failed:", receipt);
+  //     }
+
+  //     toast(
+  //       "For security reasons, the actual swap functionality has been modified to remove sensitive data like private keys. In a production environment, this would connect to a wallet and perform the swap."
+  //     );
+  //     setTimeout(() => {
+  //       toast(
+  //         `Successfully swapped ${tokenSent} ${selectedToken} for ${equivalentJMC.toFixed(
+  //           2
+  //         )} JMC`
+  //       );
+  //       setTokenSent("");
+  //       fetchTokenBalance();
+  //       setLoading(false);
+  //     }, 2000);
+  //   } catch (err) {
+  //     console.error("Error during token swap:", err);
+  //     alert("Transaction failed. Please try again.");
+  //     setLoading(false);
+  //   }
+  // };
   useEffect(() => {
     const fetchAllBalances = async () => {
       setLoading(true);
@@ -300,7 +503,7 @@ const BinanceExchange = () => {
               </div>
               <p className="text-xs text-teal-700">JMC</p>
             </div>
-            <p className="text-sm font-bold">{userJMC}</p>
+            <p className="text-sm font-bold">{userdata?.data?.walletBalance}</p>
           </div>
         </div>
         <div className="flex-1 bg-teal-50 p-2 rounded-lg border border-teal-100">
@@ -329,43 +532,7 @@ const BinanceExchange = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="flex gap-2 mb-3">
-        <button
-          onClick={depositAlert}
-          className="flex-1 bg-teal-500 text-white py-1.5 px-2 rounded-lg hover:bg-teal-600 text-sm flex items-center justify-center gap-1"
-        >
-          <svg
-            className="w-3 h-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-          <span>Deposit</span>
-        </button>
-        <button className="flex-1 border border-teal-500 text-teal-600 py-1.5 px-2 rounded-lg hover:bg-teal-50 text-sm flex items-center justify-center gap-1">
-          <svg
-            className="w-3 h-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 7l4-4m0 0l4 4m-4-4v18"
-            />
-          </svg>
-          <span>Send</span>
-        </button>
-      </div>
+
 
       {/* Swap Form */}
       <div className="bg-gray-50 p-3 rounded-lg">
@@ -441,18 +608,19 @@ const BinanceExchange = () => {
             <div className="flex justify-between mb-1">
               <label className="text-xs text-gray-600">You receive</label>
               <span className="text-xs text-gray-500">
-                Balance: {userJMC} JMC
+                Balance: {userdata?.data?.walletBalance} JMC
               </span>
             </div>
             <div className="bg-white p-2 border border-gray-200 rounded-lg relative">
               <p className="text-sm font-bold text-gray-800">
                 {isCalculating ? (
                   <span className="text-gray-400">Calculating...</span>
-                ) : equivalentJMC > 0 ? (
-                  equivalentJMC.toFixed(2)
+                ) : awardJmcToUserPayload.equivalentJmc > 0 ? (
+                  awardJmcToUserPayload.equivalentJmc.toFixed(2)
                 ) : (
                   "0.00"
                 )}
+                {console.log(awardJmcToUserPayload.equivalentJmc, "jmc")}
               </p>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <div className="flex items-center gap-1 bg-gray-100 px-1.5 py-0.5 rounded text-xs">
@@ -463,9 +631,28 @@ const BinanceExchange = () => {
                 </div>
               </div>
             </div>
-            <p className="text-xs text-gray-500 text-right mt-1">
-              1 {selectedToken} ≈ {equivalentJMC} (5% fee)
+            <p className="text-xs text-gray-500 mt-1 flex justify-between items-center">
+              <span>
+                1 {selectedToken} = {awardJmcToUserPayload.equivalentJmc}{" "}
+              </span>
+              <br />
+              <span>
+                Charges ={" "}
+                {(
+                  Number(awardJmcToUserPayload.platformFee) +
+                  Number(awardJmcToUserPayload.bscTds) +
+                  Number(awardJmcToUserPayload.jmcTds)
+                ).toFixed(2)}
+                %
+              </span>
             </p>
+
+            {console.log(
+              typeof awardJmcToUserPayload.platformFee,
+              typeof awardJmcToUserPayload.bscTds,
+              typeof awardJmcToUserPayload.jmcTds,
+              "additon of "
+            )}
           </div>
 
           <button

@@ -6,7 +6,6 @@ import {
   useAwardJmcToUserMutation,
 } from "./jwalletApiSlice";
 import abi from "./usdt.json";
-// import { useUserDataQuery } from "../dashBoard/DashboardApliSlice.js";
 import icon from "../../../../assets/Images/jaicoin.svg";
 import { ethers } from "ethers";
 import usdtJSON from "./usdt.json";
@@ -25,20 +24,24 @@ import {
   useUserDataQuery,
   useCreatePaymentMutation,
 } from "../dashBoard/DashboardApliSlice.js";
+import adaJSON from './ada.json';
+import xrpjson from "./xrp.json";
+import USDTJSON from "./usdt.json";
+import trxJSON from "./trx.json";
+import USDCJSON  from "./usdc.json";
 import testnetUSDTJSON from "./testnetUSDT.json";
+import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
 import { toast } from "react-toastify";
 const UserDetailsComponent = () => {
-  const [gasFee, setGasFee] = useState(0);
-  const [requestedAmountInr,setrequestedAmountINR]=useState(0);
+  const [awardJmcToUserPayload, SetawardJmcToUserPayload] = useState({});
   const [swapMessage, setSwapMessage] = useState("");
+  const [sessionChecked, setSessionChecked] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [showBinanceExchange, setShowBinanceExchange] = useState(false);
   const [buyAmount, setBuyAmount] = useState("");
-  const [selectedToken, setSelectedToken] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [isProceedingOrder, setIsProceedingOrder] = useState(false);
   const [isCompletingPurchase, setIsCompletingPurchase] = useState(false);
@@ -47,13 +50,11 @@ const UserDetailsComponent = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [sellAmount, setSellAmount] = useState("");
   const [sellToken, setSellToken] = useState("USDT");
-  const [equivalentJMC, setEquivalentJMC] = useState(0);
+  const [equivalentJmc, setEquivalentJMC] = useState(0);
   const [isSwapProcessing, setIsSwapProcessing] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [showPinEntry, setShowPinEntry] = useState(false);
-  const [enteredPin, setEnteredPin] = useState("");
-  const [pinError, setPinError] = useState("");
   const [isPinVerified, setIsPinVerified] = useState(false);
   const [showForgotPinModal, setShowForgotPinModal] = useState(false);
   const [showChangePinModal, setShowChangePinModal] = useState(false);
@@ -72,11 +73,34 @@ const UserDetailsComponent = () => {
   const HARDCODED = Cookies.get("userData");
   const parsedUserData = HARDCODED ? JSON.parse(HARDCODED) : null;
   const HARDCODED_USER_ID = parsedUserData?._id;
-  // console.log(HARDCODED_USER_ID);
   const { data: walletClient } = useWalletClient();
   const tkn = Cookies.get("token");
   const id = sessionStorage.setItem("tkn", tkn);
   const token = sessionStorage.getItem("tkn");
+  const TOKEN_CONFIG = {
+  USDT: {
+    address: "0x55d398326f99059fF775485246999027B3197955",
+    abi: USDTJSON.abi
+  },
+  USDC: {
+    address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+    abi: USDCJSON.abi
+  },
+  TRX: {
+    address: "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
+    abi: trxJSON.abi
+  },
+
+  XRP: {
+    address: "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+    abi: xrpjson.abi
+  },
+  ADA: {
+    address: "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+    abi: adaJSON.abi
+  },
+
+};
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) {
@@ -89,20 +113,45 @@ const UserDetailsComponent = () => {
   const { data: userData, refetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
-
-  useEffect(() => {
-    if (userData && userData.data) {
-      if (!userData.data.pin) {
-        setShowPinModal(true);
-        setShowPinEntry(false);
-        setIsPinVerified(false);
-      } else {
+useEffect(() => {
+  const pinVerified = sessionStorage.getItem("isPinVerified");
+  if (pinVerified === "true") {
+    setIsPinVerified(true);
+    setShowPinEntry(false);
+  }
+  setSessionChecked(true); // Mark that we've checked the session storage
+}, []);
+useEffect(() => {
+  if (userData && userData.data && sessionChecked) {
+    if (!userData.data.pin) {
+      // User hasn't created a PIN yet
+      setShowPinModal(true);
+      setShowPinEntry(false);
+      setIsPinVerified(false);
+    } else {
+      // User has a PIN, but check if already verified via session
+      const pinVerified = sessionStorage.getItem("isPinVerified");
+      if (pinVerified !== "true") {
         setShowPinModal(false);
         setShowPinEntry(true);
         setIsPinVerified(false);
       }
     }
-  }, [userData]);
+  }
+}, [userData, sessionChecked]);
+  // useEffect(() => {
+  //   if (userData && userData.data) {
+  //     if (!userData.data.pin) {
+  //       setShowPinModal(true);
+  //       setShowPinEntry(false);
+  //       setIsPinVerified(false);
+  //     } else {
+  //       setShowPinModal(false);
+  //       setShowPinEntry(true);
+  //       setIsPinVerified(false);
+  //     }
+  //   }
+  // }, [userData]);
 
   const onProceedOrder = async (e) => {
     e?.preventDefault();
@@ -115,7 +164,7 @@ const UserDetailsComponent = () => {
       return;
     }
 
-    const walletInr = Number(data?.data?.Inr ?? 0);
+    const walletInr = Number(userData?.data?.walletBalance ?? 0);
     if (amountInInr > walletInr) {
       setErrorMessage("Amount exceeds wallet balance");
       return;
@@ -126,6 +175,7 @@ const UserDetailsComponent = () => {
       const res = await proceedOrder({
         amount: amountInInr,
         currency: "INR",
+        userId: HARDCODED_USER_ID,
       }).unwrap();
 
       if (res.status_code !== 200)
@@ -135,18 +185,20 @@ const UserDetailsComponent = () => {
         setErrorMessage("Insufficient coins available in ICO rounds");
         return;
       }
+      console.log(res?.data?.totalCoins, "hello data");
 
       // Trust server values only
       // In your onProceedOrder function
       setPurchaseCoinsBreakup({
         quoteId: res.data.quoteId,
         pricePerJmcInInr: res.data.pricePerJmcInInr,
-        totalCoins: res.data.totalCoins,
+        totalCoins: res?.data?.totalCoins,
         totalAmount: res.data.totalAmount || amountInInr, // Fallback to original amount
         shortageResolution: res.data.shortageData,
         expiresAt: res.data.expiresAt,
+        requsetedAmount: res.data.requsetedAmount,
       });
-
+      console.log(purchaseCoinsBreakup, "purchase token");
       setShowBuyModal(false);
       setShowPurchaseCoinsModal(true);
     } catch (err) {
@@ -162,7 +214,6 @@ const UserDetailsComponent = () => {
     }
   };
 
-  // Second step - Complete the purchase with payment method
   const onSubmitBuy = async (e) => {
     console.log("entering the function");
     e.preventDefault();
@@ -189,14 +240,13 @@ const UserDetailsComponent = () => {
       if (purchaseCoinsBreakup.totalAmount) {
         amount = Number(purchaseCoinsBreakup.totalAmount);
       }
-      console.log("gello submit");
+      console.log(purchaseCoinsBreakup.requsetedAmount, "gello submit");
       const payload = {
         currency: "INR",
         paymentMethod: paymentMethod,
-        amount: amount,
-        id:HARDCODED_USER_ID
+        amount: purchaseCoinsBreakup.requsetedAmount,
+        id: HARDCODED_USER_ID,
       };
-
 
       console.log("Submitting order with payload:", payload);
 
@@ -208,12 +258,15 @@ const UserDetailsComponent = () => {
         });
         console.log(response, "response");
         setShowPurchaseCoinsModal(false);
-        // setBuyAmount("");
-        // setPurchaseCoinsBreakup({});
+
+        // Show Chrome notification
+        showNotification(
+          "JMC Purchase Successful",
+          `You've successfully purchased ${purchaseCoinsBreakup?.totalCoins} JMC tokens!`
+        );
 
         // Refresh data
         refetch();
-        // handleGetUserDetails();
       }
     } catch (error) {
       console.error("Order submission error:", error);
@@ -226,63 +279,7 @@ const UserDetailsComponent = () => {
       setIsCompletingPurchase(false);
     }
   };
-  const onSubmitPayment = async (method) => {
-    setLoading(true);
-    const payload = {
-      amount: amount,
-      currency: currency,
-      paymentMethod: method,
-      id: userDataTopassid,
-    };
 
-    try {
-      const response = await addOrder(payload).unwrap();
-      if (response.status_code === 200) {
-        setIsAddOrderError("");
-        toast.success(`${response?.message}`, {
-          position: "top-center",
-        });
-        handleCloseModal();
-
-        if (method === "cashFree") {
-          await handleCreatePayment(response?.data?._id);
-        } else if (method === "paypal") {
-          await handleCreatePaypalPayment(response?.data?._id);
-        } else {
-          setAmount("");
-          refetchUserData();
-          refetchRounds();
-          navigate("/buy-history");
-        }
-      }
-    } catch (error) {
-      setIsAddOrderError(error?.data?.message || "Payment failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-  const handleCreatePayment = async (orderId) => {
-    try {
-      const payload = { order_id: orderId };
-      const res = await createPayment(payload).unwrap();
-      const paymentSessionId = res?.data?.payment_session_id;
-
-      // Initialize payment gateway here
-      toast.info("Redirecting to payment gateway...", {
-        position: "top-center",
-      });
-
-      // Add your payment gateway integration here
-      // doPayment(paymentSessionId);
-    } catch (error) {
-      // console.error(error);
-      toast.error(`${error?.data?.message}`, {
-        position: "top-center",
-      });
-    } finally {
-      refetchUserData();
-    }
-  };
   const closePurchaseModal = () => {
     setShowPurchaseCoinsModal(false);
     setFormErrors({});
@@ -298,7 +295,47 @@ const UserDetailsComponent = () => {
     }
   };
 
+  const showNotification = (title, body, iconImage = null) => {
+    if (!("Notification" in window)) {
+      console.log("This browser does not support desktop notifications");
+      return;
+    }
+
+    const notificationOptions = {
+      body: body,
+    };
+
+    // Only add icon if we have one
+    if (icon || iconImage) {
+      notificationOptions.icon = iconImage || icon;
+    }
+
+    if (Notification.permission === "granted") {
+      const notification = new Notification(title, notificationOptions);
+
+      notification.onclick = function () {
+        window.focus();
+        this.close();
+      };
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          const notification = new Notification(title, notificationOptions);
+
+          notification.onclick = function () {
+            window.focus();
+            this.close();
+          };
+        }
+      });
+    }
+  };
+
+  // Add this to useEffect to request permission early
   useEffect(() => {
+    if ("Notification" in window && Notification.permission !== "denied") {
+      Notification.requestPermission();
+    }
     handleGetUserDetails();
   }, []);
 
@@ -337,9 +374,7 @@ const UserDetailsComponent = () => {
       }).unwrap();
 
       if (result.success === 1) {
-        setEquivalentJMC(result.data.totalCoins);
-        setGasFee(result.data.gasFee);
-        setrequestedAmountINR(result.data.requestedAmountINR)
+        SetawardJmcToUserPayload(result?.data);
       }
     } catch (err) {
       console.error("Failed to calculate equivalent JMC:", err);
@@ -348,86 +383,200 @@ const UserDetailsComponent = () => {
       setIsCalculating(false);
     }
   };
+  console.log(awardJmcToUserPayload?.equivalentJmc, "hello jmc");
   const testnetContractAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd"; // Testnet USDT address
   const contractAddress = "0x55d398326f99059fF775485246999027B3197955"; //Mainnet USDT address (BSC)
-  const handleCryptoSwap = async () => {
-    console.log("hello");
-    if (!sellAmount || !sellToken || parseFloat(sellAmount) === 0) {
-      setSwapMessage("Please enter amount to swap");
+  // const handleCryptoSwap = async () => {
+  //   console.log("hello");
+  //   if (!sellAmount || !sellToken || parseFloat(sellAmount) === 0) {
+  //     setSwapMessage("Please enter amount to swap");
+  //     return;
+  //   }
+
+  //   setIsSwapProcessing(true);
+  //   setSwapMessage("");
+
+  //   try {
+  //     if (!walletClient) {
+  //       setSwapMessage("Please connect your wallet");
+  //       setIsSwapProcessing(false);
+  //       return;
+  //     }
+
+  //     const provider = new ethers.BrowserProvider(walletClient.transport);
+  //     const signer = await provider.getSigner();
+  //     const userAddress = await signer.getAddress();
+  //     // const contract = new ethers.Contract(contractAddress, abi.abi, signer); // Mainnet USDT contract
+  //     const contract = new ethers.Contract(
+  //       testnetContractAddress,
+  //       testnetUSDTJSON.abi,
+  //       signer
+  //     ); // Testnet USDT contract
+
+  //     // const contract = new ethers.Contract(
+  //     //   "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+  //     //   xrpjson.abi,
+  //     //   signer
+  //     // ); // Mainner XRP contract
+
+  //     const decimals = await contract.decimals(); // get correct decimals dynamically
+  //     const amountInWei = ethers.parseUnits(sellAmount, decimals);
+
+  //     // 🔍 Check balance first
+  //     const balance = await contract.balanceOf(userAddress);
+  //     if (balance < amountInWei) {
+  //       setSwapMessage("Insufficient token balance");
+  //       setIsSwapProcessing(false);
+  //       return;
+  //     }
+
+  //     const ownerAddress = "0xf0E79Eaf6a2290f6fb5E7201d3900456909a6871";
+
+  //     // ✅ Proceed with transfer
+  //     const tx = await contract.transfer(ownerAddress, amountInWei);
+  //     console.log("Transaction sent:", tx.hash);
+
+  //     const receipt = await tx.wait();
+  //     console.log("receipt:", receipt);
+
+  //     if (receipt.status === 1) {
+  //       const result = await awardJmcToUser({
+  //         userId: HARDCODED_USER_ID,
+  //         swappedTokenCount: parseFloat(sellAmount),
+  //         swappedTokenType: sellToken,
+  //         adminTransactionHash: receipt.hash,
+  //         swapType: "swap",
+  //         grossInrValue: awardJmcToUserPayload.grossInrValue,
+  //         platformFee: awardJmcToUserPayload.platformFee,
+  //         bscTds: awardJmcToUserPayload.bscTds,
+  //         netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
+  //         jmcTds: awardJmcToUserPayload.jmcTds,
+  //         finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
+  //         equivalentJmc: awardJmcToUserPayload.equivalentJmc,
+  //       }).unwrap();
+  //       console.log(result);
+
+  //       // if (result.success) {
+  //       // //   setSwapMessage(`Swap successful! You received JMC tokens.`);
+  //       // //   setSellAmount("");
+  //       // //   setEquivalentJMC(0);
+  //       // //   handleGetUserDetails();
+  //       // // } else {
+  //       //   setSwapMessage("Swap successful on-chain, but failed on server.");
+  //       // }
+  //       if (result.success) {
+  //         setSwapMessage(`Swap successful! You received JMC tokens.`);
+  //         setSellAmount("");
+  //         setEquivalentJMC(0);
+  //         handleGetUserDetails();
+
+  //         // Show Chrome notification
+  //         showNotification(
+  //           "Swap Successful",
+  //           `You've successfully swapped ${sellAmount} ${sellToken} for ${awardJmcToUserPayload.equivalentJmc} JMC tokens!`
+  //         );
+  //       }
+  //     } else {
+  //       setSwapMessage("Transaction failed on blockchain.");
+  //     }
+  //   } catch (err) {
+  //     console.error("Swap failed:", err);
+  //     setSwapMessage("Swap failed. Please try again.");
+  //   } finally {
+  //     setIsSwapProcessing(false);
+  //   }
+  // };
+// 🛠 Token contract configuration
+
+
+const handleCryptoSwap = async () => {
+  console.log("hello");
+  if (!sellAmount || !sellToken || parseFloat(sellAmount) === 0) {
+    setSwapMessage("Please enter amount to swap");
+    return;
+  }
+
+  setIsSwapProcessing(true);
+  setSwapMessage("");
+
+  try {
+    if (!walletClient) {
+      setSwapMessage("Please connect your wallet");
+      setIsSwapProcessing(false);
       return;
     }
 
-    setIsSwapProcessing(true);
-    setSwapMessage("");
-
-    try {
-      if (!walletClient) {
-        setSwapMessage("Please connect your wallet");
-        setIsSwapProcessing(false);
-        return;
-      }
-
-      const provider = new ethers.BrowserProvider(walletClient.transport);
-      const signer = await provider.getSigner();
-      const userAddress = await signer.getAddress();
-      // const contract = new ethers.Contract(contractAddress, abi.abi, signer); // Mainnet USDT contract
-      const contract = new ethers.Contract(
-        testnetContractAddress,
-        testnetUSDTJSON.abi,
-        signer
-      ); // Testnet USDT contract
-
-      const decimals = await contract.decimals(); // get correct decimals dynamically
-      const amountInWei = ethers.parseUnits(sellAmount, decimals);
-
-      // 🔍 Check balance first
-      const balance = await contract.balanceOf(userAddress);
-      if (balance < amountInWei) {
-        setSwapMessage("Insufficient token balance");
-        setIsSwapProcessing(false);
-        return;
-      }
-
-      const ownerAddress = "0xf0E79Eaf6a2290f6fb5E7201d3900456909a6871";
-
-      // ✅ Proceed with transfer
-      const tx = await contract.transfer(ownerAddress, amountInWei);
-      console.log("Transaction sent:", tx.hash);
-
-      const receipt = await tx.wait();
-      console.log("receipt:", receipt);
-
-      if (receipt.status === 1) {
-        const result = await awardJmcToUser({
-          userId: HARDCODED_USER_ID,
-          eqJMC: Number(equivalentJMC),
-          swappedTokenCount: parseFloat(sellAmount),
-          swappedTokenType: sellToken,
-          adminTransactionHash: receipt.hash,
-          swapType: "swap",
-          requestedAmountINR:requestedAmountInr,
-          gasFee:gasFee,
-        }).unwrap();
-        console.log(result);
-
-        if (result.success) {
-          setSwapMessage(`Swap successful! You received JMC tokens.`);
-          setSellAmount("");
-          setEquivalentJMC(0);
-          handleGetUserDetails();
-        } else {
-          setSwapMessage("Swap successful on-chain, but failed on server.");
-        }
-      } else {
-        setSwapMessage("Transaction failed on blockchain.");
-      }
-    } catch (err) {
-      console.error("Swap failed:", err);
-      setSwapMessage("Swap failed. Please try again.");
-    } finally {
+    // ✅ Pick token contract dynamically
+    const tokenInfo = TOKEN_CONFIG[sellToken];
+    if (!tokenInfo) {
+      setSwapMessage("Unsupported token selected");
       setIsSwapProcessing(false);
+      return;
     }
-  };
+
+    const provider = new ethers.BrowserProvider(walletClient.transport);
+    const signer = await provider.getSigner();
+    const userAddress = await signer.getAddress();
+
+    const contract = new ethers.Contract(tokenInfo.address, tokenInfo.abi, signer);
+
+    const decimals = await contract.decimals();
+    const amountInWei = ethers.parseUnits(sellAmount, decimals);
+
+    // 🔍 Check balance
+    const balance = await contract.balanceOf(userAddress);
+    if (balance < amountInWei) {
+      setSwapMessage("Insufficient token balance");
+      setIsSwapProcessing(false);
+      return;
+    }
+
+    const ownerAddress = "0xf0E79Eaf6a2290f6fb5E7201d3900456909a6871";
+
+    // ✅ Transfer
+    const tx = await contract.transfer(ownerAddress, amountInWei);
+    console.log("Transaction sent:", tx.hash);
+
+    const receipt = await tx.wait();
+    console.log("receipt:", receipt);
+
+    if (receipt.status === 1) {
+      const result = await awardJmcToUser({
+        userId: HARDCODED_USER_ID,
+        swappedTokenCount: parseFloat(sellAmount),
+        swappedTokenType: sellToken,
+        adminTransactionHash: receipt.hash,
+        swapType: "swap",
+        grossInrValue: awardJmcToUserPayload.grossInrValue,
+        platformFee: awardJmcToUserPayload.platformFee,
+        bscTds: awardJmcToUserPayload.bscTds,
+        netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
+        jmcTds: awardJmcToUserPayload.jmcTds,
+        finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
+        equivalentJmc: awardJmcToUserPayload.equivalentJmc,
+      }).unwrap();
+
+      if (result.success) {
+        setSwapMessage(`Swap successful! You received JMC tokens.`);
+        setSellAmount("");
+        setEquivalentJMC(0);
+        handleGetUserDetails();
+
+        showNotification(
+          "Swap Successful",
+          `You've successfully swapped ${sellAmount} ${sellToken} for ${awardJmcToUserPayload.equivalentJmc} JMC tokens!`
+        );
+      }
+    } else {
+      setSwapMessage("Transaction failed on blockchain.");
+    }
+  } catch (err) {
+    console.error("Swap failed:", err);
+    setSwapMessage("Swap failed. Please try again.");
+  } finally {
+    setIsSwapProcessing(false);
+  }
+};
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -438,10 +587,278 @@ const UserDetailsComponent = () => {
 
     return () => clearTimeout(timeoutId);
   }, [sellAmount, sellToken, showSwapModal]);
+  // Add this inside the UserDetailsComponent function, before the return statement
+  const TransactionHistorySection = () => {
+    // Define a simpler query just for the wallet view
+    const queryParams = `limit=5&page=1&status=Completed`;
 
+    const {
+      data: buyDetails,
+      isLoading,
+      error,
+    } = useBuyDetailsQuery(queryParams);
 
+    const transactions = buyDetails?.data?.withdrawRequests || [];
 
+    // Format date function
+    const formatDateWithAmPm = (isoString) => {
+      const date = new Date(isoString);
+      const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+      };
+      return new Intl.DateTimeFormat("en-GB", options)
+        .format(date)
+        .replace(",", "");
+    };
 
+    // Get status classes
+    const getStatusClasses = (status) => {
+      switch (status) {
+        case "Completed":
+          return "bg-green-100 text-green-700";
+        case "Pending":
+          return "bg-yellow-100 text-yellow-700";
+        case "Cancelled":
+          return "bg-red-100 text-red-700";
+        default:
+          return "bg-gray-100 text-gray-700";
+      }
+    };
+
+    if (isLoading) {
+      return (
+        <div className="p-6">
+          <div className="flex flex-col gap-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="animate-pulse flex space-x-4">
+                <div className="h-3 bg-teal-100 rounded w-1/4"></div>
+                <div className="h-3 bg-teal-100 rounded w-1/4"></div>
+                <div className="h-3 bg-teal-100 rounded w-1/4"></div>
+                <div className="h-3 bg-teal-100 rounded w-1/4"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="text-center py-8 px-4">
+          <p className="text-red-500">Error loading transaction history</p>
+        </div>
+      );
+    }
+
+    if (transactions.length === 0) {
+      return (
+        <div className="text-center py-16 px-4">
+          <div className="relative inline-block">
+            <div className="w-16 h-16 mx-auto rounded-full bg-teal-50 flex items-center justify-center mb-4">
+              <svg
+                className="w-8 h-8 text-teal-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                />
+              </svg>
+            </div>
+          </div>
+          <p className="text-gray-700 font-semibold text-lg mb-2">
+            No transactions yet
+          </p>
+          <p className="text-gray-500 text-sm">
+            Your transaction history will appear here
+          </p>
+        </div>
+      );
+    }
+
+    // Mobile view (cards)
+    return (
+      <>
+        {/* Mobile Cards View */}
+        <div className="block lg:hidden space-y-4 p-4">
+          {transactions.map((data, i) => (
+            <div
+              key={i}
+              className="relative bg-gradient-to-br from-white via-teal-50 to-white border border-teal-200 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-200 group overflow-hidden"
+            >
+              {/* Decorative accent bar */}
+              <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-teal-400 to-teal-600 opacity-80"></div>
+
+              {/* Card Content */}
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-xs font-bold text-teal-700 tracking-wide">
+                    #{i + 1}
+                  </span>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${getStatusClasses(
+                      data?.status
+                    )}`}
+                  >
+                    {data?.status}
+                  </span>
+                </div>
+
+                {/* Transaction ID */}
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-xs text-gray-500">Txn:</span>
+                  <span className="text-xs font-medium text-gray-800 truncate">
+                    {data?.paypalTransactionId ||
+                      data?.transactionId ||
+                      data?.orderId ||
+                      "N/A"}
+                  </span>
+                </div>
+
+                {/* Amount */}
+                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-lg mb-2 shadow">
+                  <span className="text-xs font-semibold text-white">
+                    Amount
+                  </span>
+                  <span className="text-lg font-bold text-white">
+                    {data.currency === "INR"
+                      ? `₹${data.amount?.toFixed(2) || "0.00"}`
+                      : `$${data.amount?.toFixed(2) || "0.00"}`}
+                  </span>
+                </div>
+
+                {/* JMC */}
+                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-teal-50 to-teal-100 rounded-lg mb-2 border border-teal-200">
+                  <span className="text-xs font-semibold text-teal-700">
+                    JMC Received
+                  </span>
+                  <span className="text-base font-bold text-teal-700">
+                    {data?.jaimax?.toFixed(3) || "N/A"}
+                  </span>
+                </div>
+
+                {/* Date */}
+                <div className="flex items-center gap-2 text-xs text-teal-700 mt-1">
+                  <svg
+                    className="w-4 h-4 text-teal-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span>
+                    {data?.createdAt
+                      ? formatDateWithAmPm(data?.createdAt)
+                      : "N/A"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden lg:block">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-teal-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  S.No
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  Transaction ID
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  JMC
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  Amount
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  Date
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {transactions.map((data, i) => (
+                <tr
+                  key={i}
+                  className="hover:bg-teal-50 transition-colors duration-150"
+                >
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {i + 1}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 font-medium truncate max-w-[150px]">
+                    {data?.paypalTransactionId ||
+                      data?.transactionId ||
+                      data?.orderId ||
+                      "N/A"}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-teal-600 font-semibold">
+                    {data?.jaimax?.toFixed(3) || "N/A"}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 font-semibold">
+                    {data.currency === "INR"
+                      ? `₹${data.amount?.toFixed(2) || "0.00"}`
+                      : `$${data.amount?.toFixed(2) || "0.00"}`}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                    {data?.createdAt
+                      ? formatDateWithAmPm(data?.createdAt)
+                      : "N/A"}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span
+                      className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClasses(
+                        data?.status
+                      )}`}
+                    >
+                      {data?.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    );
+  };
   return (
     <>
       {showPinModal && (
@@ -464,13 +881,15 @@ const UserDetailsComponent = () => {
 
       {showPinEntry && !isPinVerified && (
         <PinEntryModal
-          onSuccess={() => {
-            setIsPinVerified(true);
-            setShowPinEntry(false);
-          }}
-          onForgotPin={() => setShowForgotPinModal(true)}
-          onChangePin={() => setShowChangePinModal(true)}
-        />
+      onSuccess={() => {
+        setIsPinVerified(true);
+        setShowPinEntry(false);
+        // Store PIN verification in session storage
+        sessionStorage.setItem("isPinVerified", "true");
+      }}
+      onForgotPin={() => setShowForgotPinModal(true)}
+      onChangePin={() => setShowChangePinModal(true)}
+    />
       )}
 
       {showForgotPinModal && (
@@ -617,7 +1036,7 @@ const UserDetailsComponent = () => {
                           Token Balance
                         </h6>
                         <h3 className="text-2xl md:text-3xl font-bold text-white">
-                          {(data?.data?.tokens)}
+                          {data?.data?.tokens.toFixed(3)}
                         </h3>
                       </div>
                       <div className="relative">
@@ -663,7 +1082,6 @@ const UserDetailsComponent = () => {
                     </div>
                   </div>
                 </div>
-
                 {/* Transaction History */}
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-teal-100">
                   <div className="px-6 py-4 border-b border-teal-100">
@@ -684,173 +1102,29 @@ const UserDetailsComponent = () => {
                         </svg>
                         Transaction History
                       </h5>
-                      <span className="px-3 py-1 bg-teal-100 text-teal-600 rounded-full text-sm font-semibold">
-                        {transactions.length} transactions
-                      </span>
+                      <button
+                        onClick={() => navigate("/buy-history")}
+                        className="px-3 py-1.5 bg-teal-100 text-teal-600 rounded-full text-sm font-semibold hover:bg-teal-200 transition-colors flex items-center gap-1.5"
+                      >
+                        <span>View All</span>
+                        <svg
+                          className="w-3.5 h-3.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto">
-                    {transactions.length === 0 ? (
-                      <div className="text-center py-16 px-4">
-                        <div className="relative inline-block">
-                          <div className="w-16 h-16 mx-auto rounded-full bg-teal-50 flex items-center justify-center mb-4">
-                            <svg
-                              className="w-8 h-8 text-teal-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                        <p className="text-gray-700 font-semibold text-lg mb-2">
-                          No transactions yet
-                        </p>
-                        <p className="text-gray-500 text-sm">
-                          Your transaction history will appear here
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full">
-                          <thead className="bg-teal-50">
-                            <tr>
-                              {[
-                                "Type",
-                                "Token",
-                                "Amount",
-                                "Received",
-                                "Status",
-                                "Date",
-                                "Details",
-                              ].map((header) => (
-                                <th
-                                  key={header}
-                                  className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider"
-                                >
-                                  {header}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-teal-50 bg-white">
-                            {transactions.map((transaction, index) => (
-                              <React.Fragment key={transaction.id}>
-                                <tr className="hover:bg-teal-50/50 transition-colors duration-150">
-                                  <td className="px-4 py-3 whitespace-nowrap">
-                                    <span
-                                      className={`px-2 py-1 text-xs rounded-full font-semibold ${
-                                        transaction.type === "buy"
-                                          ? "bg-teal-100 text-teal-600"
-                                          : "bg-teal-100 text-teal-600"
-                                      }`}
-                                    >
-                                      {transaction.type}
-                                    </span>
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-700">
-                                    {transaction.tokenName}
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
-                                    ₹{transaction.amount}
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
-                                    {(
-                                      parseFloat(
-                                        transaction.receivedAmount ||
-                                          transaction.tokensReceived
-                                      ) || 0
-                                    ).toFixed(4)}{" "}
-                                    JMC
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap">
-                                    <span
-                                      className={`px-2 py-1 text-xs rounded-full font-semibold ${
-                                        transaction.status === "success"
-                                          ? "bg-green-100 text-green-600"
-                                          : "bg-red-100 text-red-600"
-                                      }`}
-                                    >
-                                      {transaction.status}
-                                    </span>
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
-                                    {(transaction.timestamp)}
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm">
-                                    <button
-                                      className="text-teal-500 hover:text-teal-600 transition-colors duration-150"
-                                      onClick={() => {
-                                        const detailsRow =
-                                          document.getElementById(
-                                            `details-${transaction.id}`
-                                          );
-                                        detailsRow.classList.toggle("hidden");
-                                      }}
-                                    >
-                                      <svg
-                                        className="w-5 h-5 transform hover:scale-110 transition-transform"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M19 9l-7 7-7-7"
-                                        />
-                                      </svg>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr
-                                  id={`details-${transaction.id}`}
-                                  className="hidden bg-teal-50/50"
-                                >
-                                  <td colSpan="7" className="px-4 py-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                                      <div className="bg-white rounded-lg p-3 shadow-sm border border-teal-100">
-                                        <strong className="text-teal-600 block mb-1">
-                                          Transaction Hash:
-                                        </strong>
-                                        <p className="text-gray-700 font-mono text-xs break-all">
-                                          {transaction.hash}
-                                        </p>
-                                      </div>
-                                      <div className="bg-white rounded-lg p-3 shadow-sm border border-teal-100">
-                                        <strong className="text-teal-600 block mb-1">
-                                          Block Number:
-                                        </strong>
-                                        <p className="text-gray-700 font-semibold">
-                                          {transaction.blockNumber}
-                                        </p>
-                                      </div>
-                                      <div className="bg-white rounded-lg p-3 shadow-sm border border-teal-100">
-                                        <strong className="text-teal-600 block mb-1">
-                                          Gas Used:
-                                        </strong>
-                                        <p className="text-gray-700 font-semibold">
-                                          {transaction.gasUsed}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </React.Fragment>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
+                  <TransactionHistorySection />
                 </div>
               </div>
             )}
@@ -1019,9 +1293,11 @@ const UserDetailsComponent = () => {
                       You Receive
                     </small>
                     <h5 className="text-lg font-bold text-gray-800">
-                      {buyAmount
-                        ? (parseFloat(buyAmount) / 0.022).toFixed(4)
-                        : "0"}{" "}
+                      {purchaseCoinsBreakup.totalCoins}
+                      {console.log(
+                        purchaseCoinsBreakup.totalCoins,
+                        "amount come from ordwer"
+                      )}
                       JMC
                     </h5>
                   </div>
@@ -1141,11 +1417,27 @@ const UserDetailsComponent = () => {
                 <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 text-sm">
                   <div className="flex justify-between">
                     <span>Amount</span>
-                    <strong>₹{purchaseCoinsBreakup?.totalAmount}</strong>
+                    <strong>₹{purchaseCoinsBreakup?.requsetedAmount}</strong>
                   </div>
                   <div className="flex justify-between">
                     <span>Coins</span>
                     <strong>{purchaseCoinsBreakup?.totalCoins} JMC</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Charges</span>
+                    <strong>
+                      {(
+                        (purchaseCoinsBreakup?.requsetedAmount) -
+                        Number(purchaseCoinsBreakup?.totalAmount) 
+                      ).toFixed(2)}
+                      
+                    </strong>
+                    
+                    
+                  </div>
+                  <div className="flex justify-between">
+                    <span>GrossINr</span>
+                    <strong>{purchaseCoinsBreakup?.totalAmount} </strong>
                   </div>
                 </div>
 
@@ -1174,7 +1466,6 @@ const UserDetailsComponent = () => {
                       />
                       <span>Available Balance</span>
                     </label>
-                    
                   </div>
                 </div>
               </div>
@@ -1282,10 +1573,8 @@ const UserDetailsComponent = () => {
                           <option value="USDT">USDT</option>
                           <option value="USDC">USDC</option>
                           <option value="TRX">TRX</option>
-                          <option value="POL">POL</option>
                           <option value="XRP">XRP</option>
                           <option value="ADA">ADA</option>
-                          <option value="ARB">ARB</option>
                         </select>
                       </div>
                     </div>
@@ -1321,7 +1610,7 @@ const UserDetailsComponent = () => {
                           value={
                             isCalculating
                               ? "Calculating..."
-                              : equivalentJMC
+                              : awardJmcToUserPayload?.equivalentJmc
                           }
                           readOnly
                         />
@@ -1332,14 +1621,14 @@ const UserDetailsComponent = () => {
                     </div>
                   </div>
 
-                  {equivalentJMC > 0 && (
+                  {equivalentJmc > 0 && (
                     <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
                       <div className="flex flex-col sm:flex-row justify-between items-center text-xs gap-1">
                         <span className="text-teal-600">Exchange Rate</span>
                         <strong className="text-gray-800">
                           1 {sellToken} ={" "}
                           {(
-                            equivalentJMC / parseFloat(sellAmount || 1)
+                            equivalentJmc / parseFloat(sellAmount || 1)
                           ).toFixed(4)}{" "}
                           JMC
                         </strong>

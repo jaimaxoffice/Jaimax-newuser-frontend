@@ -60,6 +60,8 @@ import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
 import ImagesUpload from './components/ImgesAdmin/Images'
+import ErrorBoundary from "./pages/chatbot/ErrorBoundary";
+import ChatAssistant from "./pages/chatbot/chatComponent";
 // const getAuthToken = () => {
 //   try {
 //     return localStorage.getItem("token") || null; // Switched to localStorage
@@ -154,6 +156,7 @@ const handleLogout = () => {
     Cookies.remove("userData");
     Cookies.remove("email");
     Cookies.remove("rememberMe");
+    sessionStorage.removeItem("isPinVerified");
   } catch (error) {
     console.error("Error during logout:", error);
   }
@@ -281,6 +284,7 @@ const PublicLayout = () => {
   const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
+
   return (
     <div className="min-h-screen flex flex-col">
       {!shouldHideNavbar && <Navbar />}
@@ -295,7 +299,16 @@ const PublicLayout = () => {
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
+  const toggleChat = () => setChatOpen((prev) => !prev);
+  const [userDetails, setUserDetails] = useState(null);
 
+  const hideChatOnPaths = ["/login", "/register", "/forgot-password"];
+  const isSupportChatRoute = location.pathname.startsWith(
+    "/dashboard/support/support-chat"
+  );
+  const showChat =
+    !hideChatOnPaths.includes(location.pathname) && !isSupportChatRoute;
   useEffect(() => {
     const checkSplashScreen = () => {
       if (isInitialLoad) {
@@ -343,6 +356,59 @@ const App = () => {
   if (showSplash) return <JaimaxSplash />;
 
   return (
+  <>
+  
+     {showChat && (
+  <>
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center">
+      <button
+        onClick={toggleChat}
+        className="bg-white text-purple-600 rounded-full w-16 h-16 
+        shadow-2xl hover:shadow-purple-300 hover:shadow-3xl
+        flex items-center justify-center transition-all duration-300 transform hover:scale-110 
+        focus:outline-none focus:ring-4 focus:ring-purple-300 backdrop-blur-sm
+        border border-purple-200 animate-bounce hover:animate-none"
+        aria-label="AI Assistant"
+      >
+        {chatOpen ? (
+          // Cross icon when chat is open
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 transform transition-transform duration-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        ) : (
+          // Robot icon when chat is closed
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 transform transition-transform duration-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
+            <rect x="6" y="8" width="12" height="8" rx="2" ry="2" />
+            <circle cx="9" cy="12" r="1" />
+            <circle cx="15" cy="12" r="1" />
+            <line x1="12" y1="6" x2="12" y2="8" />
+          </svg>
+        )}
+      </button>
+    </div>
+
+    {chatOpen && (
+      <ErrorBoundary>
+        <ChatAssistant onClose={() => setChatOpen(false)} />
+      </ErrorBoundary>
+    )}
+  </>
+)}
     <Routes>
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>
@@ -445,6 +511,7 @@ const App = () => {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+  </>
   );
 };
 

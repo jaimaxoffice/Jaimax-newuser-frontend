@@ -71,3 +71,94 @@ export const apiSlice = createApi({
 });
 
 export const { usePrefetch } = apiSlice;
+
+
+
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+// // Default base query (Node API on port 3000)
+// const baseQuery = fetchBaseQuery({
+//   baseUrl: import.meta.env.VITE_API_BASE_URL, // example: http://localhost:3000
+//   prepareHeaders: (headers) => {
+//     headers.set("Access-Control-Allow-Origin", "*");
+//     headers.set(
+//       "Access-Control-Allow-Methods",
+//       "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+//     );
+
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       headers.set("authorization", `Bearer ${token}`);
+//     }
+//     return headers;
+//   },
+// });
+
+// /**
+//  * Custom base query to handle token refresh and retry logic
+//  * and to dynamically switch base URLs for Python API (port 8000)
+//  */
+// const baseQueryWithReAuth = async (args, api, extraOptions) => {
+//   let modifiedArgs = { ...args };
+
+//   console.log(modifiedArgs , "modifiedArgs")
+//   // If request specifies `python: true`, change base URL to Python API
+//   if (args?.python) {
+//     modifiedArgs = {
+//       ...args,
+//       url: `${import.meta.env.VITE_API_BASE_URL_PYTHON}${args.url}`, // example: http://localhost:8000
+//     };
+//   }
+
+//   console.log(args.url , "args.ur")
+
+//   // Use modified args for API request
+//   let result = await baseQuery(modifiedArgs, api, extraOptions);
+//   console.log(result , "result")
+
+//   // Handle token refresh on 408
+//   if (result?.error?.data?.status_code === 408) {
+//     const refreshResult = await baseQuery(
+//       { url: "/Auth/refreshToken", method: "GET" },
+//       api,
+//       extraOptions
+//     );
+
+//     if (refreshResult?.data) {
+//       // Store new token
+//       localStorage.setItem("token", refreshResult.data?.data.token);
+
+//       // Retry original request
+//       result = await baseQuery(modifiedArgs, api, extraOptions);
+//     } else {
+//       return refreshResult;
+//     }
+//   }
+
+//   // Handle logout on 401
+//   if (result?.error?.data?.status_code === 401) {
+//     localStorage.clear();
+//     window.location.href = "/login";
+//   }
+
+//   return result;
+// };
+
+// // Main API slice
+// export const apiSlice = createApi({
+//   reducerPath: "apiSlice",
+//   baseQuery: baseQueryWithReAuth,
+//   tagTypes: ["getComment", "updateDetails", "getTicket", "shareholder"],
+//    endpoints: (builder) => ({}),
+// });
+
+// export const {
+//   usePrefetch,
+//   useGetNodeDataQuery,
+//   useGetPythonDataQuery,
+// } = apiSlice;
+
+
+
+
+

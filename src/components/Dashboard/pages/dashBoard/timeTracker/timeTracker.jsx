@@ -181,6 +181,7 @@ const PaymentModal = ({
               </tr>
             </thead>
             <tbody>
+              {console.log(purchaseCoinsBreakup?.requestedAmount,"hello data jmc call")}
               {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
                 const resolvedPrice =
                   currency === "INR"
@@ -217,7 +218,7 @@ const PaymentModal = ({
                   className="border border-teal-100 px-3 py-2 text-center text-orange-700"
                   colSpan={3}
                 >
-                  {(Number(purchaseCoinsBreakup?.charges) || 0).toFixed(2)}{" "}
+                  {(Number(purchaseCoinsBreakup?.requsetedAmount) || 0).toFixed(2)}{" "}
                   {currency}
                 </td>
               </tr>
