@@ -24,11 +24,11 @@ import {
   useUserDataQuery,
   useCreatePaymentMutation,
 } from "../dashBoard/DashboardApliSlice.js";
-import adaJSON from './ada.json';
+import adaJSON from "./ada.json";
 import xrpjson from "./xrp.json";
 import USDTJSON from "./usdt.json";
 import trxJSON from "./trx.json";
-import USDCJSON  from "./usdc.json";
+import USDCJSON from "./usdc.json";
 import testnetUSDTJSON from "./testnetUSDT.json";
 import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
 import { toast } from "react-toastify";
@@ -78,29 +78,28 @@ const UserDetailsComponent = () => {
   const id = sessionStorage.setItem("tkn", tkn);
   const token = sessionStorage.getItem("tkn");
   const TOKEN_CONFIG = {
-  USDT: {
-    address: "0x55d398326f99059fF775485246999027B3197955",
-    abi: USDTJSON.abi
-  },
-  USDC: {
-    address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-    abi: USDCJSON.abi
-  },
-  TRX: {
-    address: "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
-    abi: trxJSON.abi
-  },
+    USDT: {
+      address: "0x55d398326f99059fF775485246999027B3197955",
+      abi: USDTJSON.abi,
+    },
+    USDC: {
+      address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      abi: USDCJSON.abi,
+    },
+    TRX: {
+      address: "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
+      abi: trxJSON.abi,
+    },
 
-  XRP: {
-    address: "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
-    abi: xrpjson.abi
-  },
-  ADA: {
-    address: "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
-    abi: adaJSON.abi
-  },
-
-};
+    XRP: {
+      address: "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+      abi: xrpjson.abi,
+    },
+    ADA: {
+      address: "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+      abi: adaJSON.abi,
+    },
+  };
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) {
@@ -113,32 +112,32 @@ const UserDetailsComponent = () => {
   const { data: userData, refetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
-useEffect(() => {
-  const pinVerified = sessionStorage.getItem("isPinVerified");
-  if (pinVerified === "true") {
-    setIsPinVerified(true);
-    setShowPinEntry(false);
-  }
-  setSessionChecked(true); // Mark that we've checked the session storage
-}, []);
-useEffect(() => {
-  if (userData && userData.data && sessionChecked) {
-    if (!userData.data.pin) {
-      // User hasn't created a PIN yet
-      setShowPinModal(true);
+  useEffect(() => {
+    const pinVerified = sessionStorage.getItem("isPinVerified");
+    if (pinVerified === "true") {
+      setIsPinVerified(true);
       setShowPinEntry(false);
-      setIsPinVerified(false);
-    } else {
-      // User has a PIN, but check if already verified via session
-      const pinVerified = sessionStorage.getItem("isPinVerified");
-      if (pinVerified !== "true") {
-        setShowPinModal(false);
-        setShowPinEntry(true);
+    }
+    setSessionChecked(true); // Mark that we've checked the session storage
+  }, []);
+  useEffect(() => {
+    if (userData && userData.data && sessionChecked) {
+      if (!userData.data.pin) {
+        // User hasn't created a PIN yet
+        setShowPinModal(true);
+        setShowPinEntry(false);
         setIsPinVerified(false);
+      } else {
+        // User has a PIN, but check if already verified via session
+        const pinVerified = sessionStorage.getItem("isPinVerified");
+        if (pinVerified !== "true") {
+          setShowPinModal(false);
+          setShowPinEntry(true);
+          setIsPinVerified(false);
+        }
       }
     }
-  }
-}, [userData, sessionChecked]);
+  }, [userData, sessionChecked]);
   // useEffect(() => {
   //   if (userData && userData.data) {
   //     if (!userData.data.pin) {
@@ -486,97 +485,101 @@ useEffect(() => {
   //     setIsSwapProcessing(false);
   //   }
   // };
-// 🛠 Token contract configuration
+  // 🛠 Token contract configuration
 
-
-const handleCryptoSwap = async () => {
-  console.log("hello");
-  if (!sellAmount || !sellToken || parseFloat(sellAmount) === 0) {
-    setSwapMessage("Please enter amount to swap");
-    return;
-  }
-
-  setIsSwapProcessing(true);
-  setSwapMessage("");
-
-  try {
-    if (!walletClient) {
-      setSwapMessage("Please connect your wallet");
-      setIsSwapProcessing(false);
+  const handleCryptoSwap = async () => {
+    console.log("hello");
+    if (!sellAmount || !sellToken || parseFloat(sellAmount) === 0) {
+      setSwapMessage("Please enter amount to swap");
       return;
     }
 
-    // ✅ Pick token contract dynamically
-    const tokenInfo = TOKEN_CONFIG[sellToken];
-    if (!tokenInfo) {
-      setSwapMessage("Unsupported token selected");
-      setIsSwapProcessing(false);
-      return;
-    }
+    setIsSwapProcessing(true);
+    setSwapMessage("");
 
-    const provider = new ethers.BrowserProvider(walletClient.transport);
-    const signer = await provider.getSigner();
-    const userAddress = await signer.getAddress();
-
-    const contract = new ethers.Contract(tokenInfo.address, tokenInfo.abi, signer);
-
-    const decimals = await contract.decimals();
-    const amountInWei = ethers.parseUnits(sellAmount, decimals);
-
-    // 🔍 Check balance
-    const balance = await contract.balanceOf(userAddress);
-    if (balance < amountInWei) {
-      setSwapMessage("Insufficient token balance");
-      setIsSwapProcessing(false);
-      return;
-    }
-
-    const ownerAddress = "0xf0E79Eaf6a2290f6fb5E7201d3900456909a6871";
-
-    // ✅ Transfer
-    const tx = await contract.transfer(ownerAddress, amountInWei);
-    console.log("Transaction sent:", tx.hash);
-
-    const receipt = await tx.wait();
-    console.log("receipt:", receipt);
-
-    if (receipt.status === 1) {
-      const result = await awardJmcToUser({
-        userId: HARDCODED_USER_ID,
-        swappedTokenCount: parseFloat(sellAmount),
-        swappedTokenType: sellToken,
-        adminTransactionHash: receipt.hash,
-        swapType: "swap",
-        grossInrValue: awardJmcToUserPayload.grossInrValue,
-        platformFee: awardJmcToUserPayload.platformFee,
-        bscTds: awardJmcToUserPayload.bscTds,
-        netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
-        jmcTds: awardJmcToUserPayload.jmcTds,
-        finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
-        equivalentJmc: awardJmcToUserPayload.equivalentJmc,
-      }).unwrap();
-
-      if (result.success) {
-        setSwapMessage(`Swap successful! You received JMC tokens.`);
-        setSellAmount("");
-        setEquivalentJMC(0);
-        handleGetUserDetails();
-
-        showNotification(
-          "Swap Successful",
-          `You've successfully swapped ${sellAmount} ${sellToken} for ${awardJmcToUserPayload.equivalentJmc} JMC tokens!`
-        );
+    try {
+      if (!walletClient) {
+        setSwapMessage("Please connect your wallet");
+        setIsSwapProcessing(false);
+        return;
       }
-    } else {
-      setSwapMessage("Transaction failed on blockchain.");
+
+      // ✅ Pick token contract dynamically
+      const tokenInfo = TOKEN_CONFIG[sellToken];
+      if (!tokenInfo) {
+        setSwapMessage("Unsupported token selected");
+        setIsSwapProcessing(false);
+        return;
+      }
+
+      const provider = new ethers.BrowserProvider(walletClient.transport);
+      const signer = await provider.getSigner();
+      const userAddress = await signer.getAddress();
+
+      const contract = new ethers.Contract(
+        tokenInfo.address,
+        tokenInfo.abi,
+        signer
+      );
+
+      const decimals = await contract.decimals();
+      const amountInWei = ethers.parseUnits(sellAmount, decimals);
+
+      // 🔍 Check balance
+      const balance = await contract.balanceOf(userAddress);
+      if (balance < amountInWei) {
+        setSwapMessage("Insufficient token balance");
+        setIsSwapProcessing(false);
+        return;
+      }
+
+      const ownerAddress = "0xf0E79Eaf6a2290f6fb5E7201d3900456909a6871";
+
+      // ✅ Transfer
+      const tx = await contract.transfer(ownerAddress, amountInWei);
+      console.log("Transaction sent:", tx.hash);
+
+      const receipt = await tx.wait();
+      console.log("receipt:", receipt);
+
+      if (receipt.status === 1) {
+        const result = await awardJmcToUser({
+          userId: HARDCODED_USER_ID,
+          swappedTokenCount: parseFloat(sellAmount),
+          swappedTokenType: sellToken,
+          adminTransactionHash: receipt.hash,
+          swapType: "swap",
+          grossInrValue: awardJmcToUserPayload.grossInrValue,
+          platformFee: awardJmcToUserPayload.platformFee,
+          bscTds: awardJmcToUserPayload.bscTds,
+          netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
+          jmcTds: awardJmcToUserPayload.jmcTds,
+          finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
+          equivalentJmc: awardJmcToUserPayload.equivalentJmc,
+          shortageResolution: awardJmcToUserPayload.remainingShortage,
+        }).unwrap();
+
+        if (result.success) {
+          setSwapMessage(`Swap successful! You received JMC tokens.`);
+          setSellAmount("");
+          setEquivalentJMC(0);
+          handleGetUserDetails();
+
+          showNotification(
+            "Swap Successful",
+            `You've successfully swapped ${sellAmount} ${sellToken} for ${awardJmcToUserPayload.equivalentJmc} JMC tokens!`
+          );
+        }
+      } else {
+        setSwapMessage("Transaction failed on blockchain.");
+      }
+    } catch (err) {
+      console.error("Swap failed:", err);
+      setSwapMessage("Swap failed. Please try again.");
+    } finally {
+      setIsSwapProcessing(false);
     }
-  } catch (err) {
-    console.error("Swap failed:", err);
-    setSwapMessage("Swap failed. Please try again.");
-  } finally {
-    setIsSwapProcessing(false);
-  }
-};
+  };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -859,6 +862,15 @@ const handleCryptoSwap = async () => {
       </>
     );
   };
+
+  const BSC_TOKEN_CONTRACT_ADRESS = "";
+  const handleViewOnBscScan = () => {
+    window.open(
+      `https://bscscan.com/token/${contractAddress}?a=${userData?.data.walletadress}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
   return (
     <>
       {showPinModal && (
@@ -881,15 +893,15 @@ const handleCryptoSwap = async () => {
 
       {showPinEntry && !isPinVerified && (
         <PinEntryModal
-      onSuccess={() => {
-        setIsPinVerified(true);
-        setShowPinEntry(false);
-        // Store PIN verification in session storage
-        sessionStorage.setItem("isPinVerified", "true");
-      }}
-      onForgotPin={() => setShowForgotPinModal(true)}
-      onChangePin={() => setShowChangePinModal(true)}
-    />
+          onSuccess={() => {
+            setIsPinVerified(true);
+            setShowPinEntry(false);
+            // Store PIN verification in session storage
+            sessionStorage.setItem("isPinVerified", "true");
+          }}
+          onForgotPin={() => setShowForgotPinModal(true)}
+          onChangePin={() => setShowChangePinModal(true)}
+        />
       )}
 
       {showForgotPinModal && (
@@ -970,6 +982,33 @@ const handleCryptoSwap = async () => {
                       />
                     </svg>
                     <span className="font-medium text-sm">Binance</span>
+                  </button>
+                  <button
+                    onClick={handleViewOnBscScan}
+                    className="group flex items-center gap-2 px-5 py-2 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transform hover:-translate-y-1 transition-all duration-300 shadow-md hover:shadow-lg border border-yellow-500"
+                  >
+                    {/* Eye Icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4 group-hover:scale-110 transition-transform duration-200"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+
+                    <span className="font-medium text-sm">BscScan</span>
                   </button>
                 </div>
               </div>
@@ -1427,13 +1466,10 @@ const handleCryptoSwap = async () => {
                     <span>Charges</span>
                     <strong>
                       {(
-                        (purchaseCoinsBreakup?.requsetedAmount) -
-                        Number(purchaseCoinsBreakup?.totalAmount) 
+                        purchaseCoinsBreakup?.requsetedAmount -
+                        Number(purchaseCoinsBreakup?.totalAmount)
                       ).toFixed(2)}
-                      
                     </strong>
-                    
-                    
                   </div>
                   <div className="flex justify-between">
                     <span>GrossINr</span>
