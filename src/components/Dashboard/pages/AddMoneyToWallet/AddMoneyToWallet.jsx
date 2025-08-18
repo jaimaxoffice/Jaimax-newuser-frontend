@@ -980,7 +980,7 @@ const AddMoneyToWallet = () => {
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
-        navigate("/buy-history");
+        navigate("/wallet");
       }
     } catch (error) {
       // console.log("Error submitting form:", error);

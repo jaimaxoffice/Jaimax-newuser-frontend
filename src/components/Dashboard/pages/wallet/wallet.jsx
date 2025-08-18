@@ -472,7 +472,7 @@ if (rawUserData) {
                           )}
                         </td>
                         <td className="px-2 xl:px-3 py-3 whitespace-nowrap font-semibold text-teal-700">
-                          {formatCurrency(transaction.transactionAmount)}
+                          {(transaction.transactionAmount)}
                         </td>
                         {countryCode !== 91 && (
                           <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">

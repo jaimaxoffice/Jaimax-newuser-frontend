@@ -803,7 +803,6 @@ const UserDetailsComponent = () => {
           onSuccess={() => {
             setIsPinVerified(true);
             setShowPinEntry(false);
-            // Store PIN verification in session storage
             sessionStorage.setItem("isPinVerified", "true");
           }}
           onForgotPin={() => setShowForgotPinModal(true)}
@@ -974,8 +973,6 @@ const UserDetailsComponent = () => {
 
                   {/* Token Balance Card */}
                   <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-md p-5 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                    {/* <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-10 -mt-10"></div> */}
-                    {/* <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-10 -mb-10"></div> */}
                     <div className="flex items-center justify-between relative z-10">
                       <div>
                         <h6 className="text-white text-sm font-semibold mb-1 flex items-center gap-2">
