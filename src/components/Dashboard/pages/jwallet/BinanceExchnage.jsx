@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import axios from "axios";
 import adaJSON from "./ada.json";
 import xrpjson from "./xrp.json";
 import USDTJSON from "./usdt.json";
 import trxJSON from "./trx.json";
 import USDCJSON from "./usdc.json";
-
 import Cookies from "js-cookie";
 import {
   useExchangeCryptoMutation,
@@ -17,24 +15,18 @@ const bscUSDTAddress = "0x55d398326f99059fF775485246999027B3197955";
 const JMCTokenAddress = "0x7a766a3ae6e8782Fd70F59a21e942A6582F4Ca60";
 const walletBalance = Cookies.get("userData");
 import { toast } from "react-toastify";
-
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice.js";
 const parsedUserData = walletBalance?.data?.walletBalance;
-// console.log(parsedUserData, "HARDCODED USER DATA");
 const BinanceExchange = () => {
-  // State management
   const [awardJmcToUserPayload, SetawardJmcToUserPayload] = useState({});
   const [contract, setContract] = useState(null);
   const [tokenBalance, setTokenBalance] = useState(0);
   const [tokenSent, setTokenSent] = useState("");
-  const [jmcSent, setJMCSent] = useState("");
   const [bnbBalance, setBNBBalance] = useState(0);
-  const [userJMC, setUserJMC] = useState(0);
   const [selectedToken, setSelectedToken] = useState("USDT");
   const address = Cookies.get("userData");
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const id = address ? JSON.parse(address).data?.walletBalance : "";
-
   const TOKEN_CONFIG = {
     USDT: {
       address: "0x55d398326f99059fF775485246999027B3197955",
@@ -87,7 +79,6 @@ const BinanceExchange = () => {
     };
     verifyToken();
   }, [token]);
-  // Define token data
   const tokens = {
     USDT: { symbol: "USDT", balance: tokenBalance, icon: "₮", color: "teal" },
     USDC: { symbol: "USDC", balance: usdcBalance, icon: "$", color: "blue" },
@@ -99,29 +90,7 @@ const BinanceExchange = () => {
   const parsedUserData = userData ? JSON.parse(userData) : null;
   const userId = parsedUserData?._id;
   console.log(userId);
-  // useEffect(() => {
-  //   const connectContract = async () => {
-  //     try {
-  //       if (window.ethereum) {
-  //         const provider = new ethers.JsonRpcProvider(
-  //           "https://bsc-dataseed.bnbchain.org"
-  //         );
 
-  //         const usdtContract = new ethers.Contract(
-  //           bscUSDTAddress,
-  //           bscUSDTJSON.abi,
-  //           provider
-  //         );
-  //         // console.log(await usdtContract.name());
-
-  //         setContract(usdtContract);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error connecting to contract:", error);
-  //     }
-  //   };
-  //   connectContract();
-  // }, []);
 
   useEffect(() => {
     const connectContract = async () => {
@@ -230,24 +199,7 @@ const BinanceExchange = () => {
 
     fetchAllBalances();
   }, []);
-  //   const fetchTokenBalance = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const BSC_URL = "https://bsc-dataseed.bnbchain.org";
-  //       const provider = new ethers.JsonRpcProvider(BSC_URL);
-  //       const usdtContract = new ethers.Contract(
-  //         bscUSDTAddress,
-  //         bscUSDTJSON.abi,
-  //         provider
-  //       );
-  //       const balance = await usdtContract.balanceOf(walletAddress);
-  //       setTokenBalance(parseFloat(ethers.formatEther(balance)).toFixed(2));
-  //     } catch (error) {
-  //       console.error("Error fetching token balance:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //  };
+
   const fetchBnbBalance = async () => {
     try {
       const BSC_URL = "https://bsc-dataseed.bnbchain.org";
@@ -368,78 +320,7 @@ const BinanceExchange = () => {
     }
   };
 
-  // Handle token swap
-  // const handleTokenSwap = async (event) => {
-  //   event.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     console.log(`Started Exchange of ${selectedToken} for JMC`);
-  //     const provider = new ethers.JsonRpcProvider(
-  //       "https://bsc-dataseed.bnbchain.org"
-  //     );
-
-  //     const privateKeyToAccount =
-  //       "0xe06ec359f0aae2db1ad0c76362564aa5fdfad0e0a70c4d46fab3f4894b9e04b8";
-  //     const signer = new ethers.Wallet(privateKeyToAccount, provider);
-
-  //     const usdtContract = new ethers.Contract(
-  //       bscUSDTAddress,
-  //       bscUSDTJSON.abi,
-  //       signer
-  //     );
-  //     // console.log(await usdtContract.name());
-  //     // const txGasEstimate = await usdtContract.transfer.estimateGas(
-  //     //   "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
-  //     //   ethers.parseUnits(tokenSent, await usdtContract.decimals())
-  //     // );
-  //     // console.log(txGasEstimate)
-  //     const tx = await usdtContract.transfer(
-  //       "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
-  //       ethers.parseUnits(tokenSent, await usdtContract.decimals())
-  //     );
-  //     const receipt = await tx.wait();
-
-  //     if (receipt.status == 1) {
-  //       console.log(receipt);
-  //       const result = await awardJmcToUser({
-  //         userId: userId,
-  //         swappedTokenCount: parseFloat(tokenSent),
-  //         swappedTokenType: selectedToken,
-  //         adminTransactionHash: receipt.hash,
-  //         swapType: "bsc-exchange",
-  //         grossInrValue: awardJmcToUserPayload.grossInrValue,
-  //         platformFee: awardJmcToUserPayload.platformFee,
-  //         bscTds: awardJmcToUserPayload.bscTds,
-  //         netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
-  //         jmcTds: awardJmcToUserPayload.jmcTds,
-  //         finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
-  //         equivalentJmc: awardJmcToUserPayload.equivalentJmc,
-  //       }).unwrap();
-  //     } else {
-  //       console.log("Transaction failed:", receipt);
-  //     }
-
-  //     toast(
-  //       "For security reasons, the actual swap functionality has been modified to remove sensitive data like private keys. In a production environment, this would connect to a wallet and perform the swap."
-  //     );
-  //     setTimeout(() => {
-  //       toast(
-  //         `Successfully swapped ${tokenSent} ${selectedToken} for ${equivalentJMC.toFixed(
-  //           2
-  //         )} JMC`
-  //       );
-  //       setTokenSent("");
-  //       fetchTokenBalance();
-  //       setLoading(false);
-  //     }, 2000);
-  //   } catch (err) {
-  //     console.error("Error during token swap:", err);
-  //     alert("Transaction failed. Please try again.");
-  //     setLoading(false);
-  //   }
-  // };
-  useEffect(() => {
+useEffect(() => {
     const fetchAllBalances = async () => {
       setLoading(true);
       try {
@@ -517,7 +398,7 @@ const BinanceExchange = () => {
               </div>
               <p className="text-xs text-teal-700">JMC</p>
             </div>
-            <p className="text-sm font-bold">{userdata?.data?.walletBalance}</p>
+            <p className="text-sm font-bold">{userdata?.data?.tokens}</p>
           </div>
         </div>
         <div className="flex-1 bg-teal-50 p-2 rounded-lg border border-teal-100">
@@ -618,12 +499,7 @@ const BinanceExchange = () => {
           </div>
 
           <div>
-            <div className="flex justify-between mb-1">
-              <label className="text-xs text-gray-600">You receive</label>
-              <span className="text-xs text-gray-500">
-                Balance: {userdata?.data?.walletBalance} JMC
-              </span>
-            </div>
+
             <div className="bg-white p-2 border border-gray-200 rounded-lg relative">
               <p className="text-sm font-bold text-gray-800">
                 {isCalculating ? (

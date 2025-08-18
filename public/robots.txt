@@ -1,0 +1,71 @@
+# ========================
+# Jaimax robots.txt
+# Allow all major search engines & AI bots
+# ========================
+
+# --- Allow all bots by default ---
+User-agent: *
+Allow: /
+
+# --- Google Search & Services ---
+User-agent: Googlebot
+Allow: /
+User-agent: Mediapartners-Google*
+Allow: /
+User-agent: Adsbot-Google
+Allow: /
+User-agent: Googlebot-Image
+Allow: /
+User-agent: Googlebot-Mobile
+Allow: /
+
+# --- Bing Search ---
+User-agent: Bingbot
+Allow: /
+
+# --- Yahoo Search ---
+User-agent: Slurp
+Allow: /
+
+# --- Yandex Search ---
+User-agent: Yandex
+Allow: /
+
+# --- Baidu Search ---
+User-agent: Baiduspider
+Allow: /
+
+# --- DuckDuckGo ---
+User-agent: DuckDuckBot
+Allow: /
+
+# --- Ask.com ---
+User-agent: Teoma
+Allow: /
+
+# --- Archive.org Wayback Machine ---
+User-agent: ia_archiver-web.archive.org
+Allow: /
+
+# --- OpenAI ChatGPT ---
+User-agent: GPTBot
+Allow: /
+
+# --- Google Gemini AI ---
+User-agent: Google-Extended
+Allow: /
+
+# --- Common Crawl (AI training source) ---
+User-agent: CCBot
+Allow: /
+
+# --- Anthropic Claude AI ---
+User-agent: ClaudeBot
+Allow: /
+
+# --- Perplexity AI ---
+User-agent: PerplexityBot
+Allow: /
+
+# --- Sitemap ---
+Sitemap: https://www.jaimax.com/sitemap.xml

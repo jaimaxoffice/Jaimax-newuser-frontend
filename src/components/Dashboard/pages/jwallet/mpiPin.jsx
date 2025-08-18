@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   useRequestCreatePinOtpMutation,
   useCreatePinMutation,
@@ -16,6 +17,7 @@ const defaultQuestions = [
 export default function CreateWalletPin() {
   // Step state
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
 
   // Form state
   const [pin, setPin] = useState("");
@@ -317,6 +319,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
   const [error, setError] = useState("");
   const [verifyPin, { isLoading }] = useVerifyPinMutation();
   const inputs = useRef([]);
+  const navigate = useNavigate();
 
   const handleChange = (e, idx) => {
     const val = e.target.value.replace(/\D/g, "");
@@ -423,6 +426,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
 export function ForgotPinModal({ onClose }) {
   const [step, setStep] = useState(1);
   const [otp, setOtp] = useState("");
+  const navigate = useNavigate();
   const [answers, setAnswers] = useState(["", ""]);
   const [newPin, setNewPin] = useState("");
   const [confirmNewPin, setConfirmNewPin] = useState("");
@@ -492,7 +496,8 @@ export function ForgotPinModal({ onClose }) {
               {requestingOtp ? "Requesting OTP..." : "Request OTP"}
             </button>
             <button
-              onClick={onClose}
+              onClick={() => navigate("/home")}
+              type="button"
               className="mt-4 text-teal-600 underline text-sm font-medium"
             >
               Cancel
@@ -574,7 +579,7 @@ export function ForgotPinModal({ onClose }) {
               {resettingPin ? "Resetting..." : "Reset PIN"}
             </button>
             <button
-              onClick={onClose}
+              onClick={() => navigate("/home")}
               type="button"
               className="mt-4 text-teal-600 underline text-sm font-medium"
             >
@@ -599,7 +604,7 @@ export function ChangePinModal({ onClose }) {
   const [confirmNewPin, setConfirmNewPin] = useState("");
   const [error, setError] = useState("");
   const [modifyPin, { isLoading }] = useModifyPinMutation();
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -625,68 +630,72 @@ export function ChangePinModal({ onClose }) {
   };
 
   return (
-<div className="fixed inset-0 bg-teal-900 bg-opacity-60 flex items-center justify-center z-50 px-2">
-  <form
-    onSubmit={handleSubmit}
-    className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 sm:p-8 flex flex-col items-center"
-  >
-    <h2 className="text-2xl font-bold mb-4 text-teal-700">Change PIN</h2>
-    <div className="mb-2 w-full">
-      <label className="block text-sm font-medium mb-1 text-teal-700">Current PIN</label>
-      <input
-        type="password"
-        value={pin}
-        onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
-        className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
-        maxLength={6}
-        minLength={4}
-        required
-      />
+    <div className="fixed inset-0 bg-teal-900 bg-opacity-60 flex items-center justify-center z-50 px-2">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 sm:p-8 flex flex-col items-center"
+      >
+        <h2 className="text-2xl font-bold mb-4 text-teal-700">Change PIN</h2>
+        <div className="mb-2 w-full">
+          <label className="block text-sm font-medium mb-1 text-teal-700">
+            Current PIN
+          </label>
+          <input
+            type="password"
+            value={pin}
+            onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
+            className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
+            maxLength={6}
+            minLength={4}
+            required
+          />
+        </div>
+        <div className="mb-2 w-full">
+          <label className="block text-sm font-medium mb-1 text-teal-700">
+            New PIN
+          </label>
+          <input
+            type="password"
+            value={newPin}
+            onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))}
+            className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
+            maxLength={6}
+            minLength={4}
+            required
+          />
+        </div>
+        <div className="mb-2 w-full">
+          <label className="block text-sm font-medium mb-1 text-teal-700">
+            Confirm New PIN
+          </label>
+          <input
+            type="password"
+            value={confirmNewPin}
+            onChange={(e) =>
+              setConfirmNewPin(e.target.value.replace(/\D/g, ""))
+            }
+            className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
+            maxLength={6}
+            minLength={4}
+            required
+          />
+        </div>
+        {error && <div className="text-red-600 mb-2">{error}</div>}
+        <button
+          type="submit"
+          className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition w-full font-semibold"
+          disabled={isLoading}
+        >
+          {isLoading ? "Changing..." : "Change PIN"}
+        </button>
+        <button
+          onClick={() => navigate("/home")}
+          type="button"
+          className="mt-4 text-teal-600 underline text-sm font-medium"
+        >
+          Cancel
+        </button>
+      </form>
     </div>
-    <div className="mb-2 w-full">
-      <label className="block text-sm font-medium mb-1 text-teal-700">New PIN</label>
-      <input
-        type="password"
-        value={newPin}
-        onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))}
-        className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
-        maxLength={6}
-        minLength={4}
-        required
-      />
-    </div>
-    <div className="mb-2 w-full">
-      <label className="block text-sm font-medium mb-1 text-teal-700">
-        Confirm New PIN
-      </label>
-      <input
-        type="password"
-        value={confirmNewPin}
-        onChange={(e) =>
-          setConfirmNewPin(e.target.value.replace(/\D/g, ""))
-        }
-        className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
-        maxLength={6}
-        minLength={4}
-        required
-      />
-    </div>
-    {error && <div className="text-red-600 mb-2">{error}</div>}
-    <button
-      type="submit"
-      className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition w-full font-semibold"
-      disabled={isLoading}
-    >
-      {isLoading ? "Changing..." : "Change PIN"}
-    </button>
-    <button
-      onClick={onClose}
-      type="button"
-      className="mt-4 text-teal-600 underline text-sm font-medium"
-    >
-      Cancel
-    </button>
-  </form>
-</div>
   );
 }

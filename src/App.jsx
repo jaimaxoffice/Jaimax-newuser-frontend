@@ -59,7 +59,6 @@ import FloatingNavButton from "./global/FloatingNavButton";
 import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
-import ImagesUpload from './components/ImgesAdmin/Images'
 import ErrorBoundary from "./pages/chatbot/ErrorBoundary";
 import ChatAssistant from "./pages/chatbot/chatComponent";
 // const getAuthToken = () => {
@@ -360,7 +359,7 @@ const App = () => {
   
      {showChat && (
   <>
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center">
+    {/* <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center">
       <button
         onClick={toggleChat}
         className="bg-white text-purple-600 rounded-full w-16 h-16 
@@ -400,13 +399,13 @@ const App = () => {
           </svg>
         )}
       </button>
-    </div>
+    </div> */}
 
-    {chatOpen && (
+    {/* {chatOpen && (
       <ErrorBoundary>
         <ChatAssistant onClose={() => setChatOpen(false)} />
       </ErrorBoundary>
-    )}
+    )} */}
   </>
 )}
     <Routes>
@@ -484,7 +483,6 @@ const App = () => {
         <Route path="about" element={<JaimaxComponent />} />
         <Route path="contact" element={<Contact />} />
         <Route path="features" element={<FeaturesSection />} />
-        <Route path="/images" element={<ImagesUpload/>}/>
 
         <Route path="blog">
           <Route index element={<BlogLayout />} />

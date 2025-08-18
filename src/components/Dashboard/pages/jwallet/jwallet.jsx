@@ -32,7 +32,10 @@ import USDCJSON from "./usdc.json";
 import testnetUSDTJSON from "./testnetUSDT.json";
 import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import icon2 from "../../../../../public/whitejaimaclogo.png"
 const UserDetailsComponent = () => {
+  const navigate = useNavigate();
   const [awardJmcToUserPayload, SetawardJmcToUserPayload] = useState({});
   const [swapMessage, setSwapMessage] = useState("");
   const [sessionChecked, setSessionChecked] = useState(false);
@@ -128,7 +131,6 @@ const UserDetailsComponent = () => {
         setShowPinEntry(false);
         setIsPinVerified(false);
       } else {
-        // User has a PIN, but check if already verified via session
         const pinVerified = sessionStorage.getItem("isPinVerified");
         if (pinVerified !== "true") {
           setShowPinModal(false);
@@ -138,19 +140,6 @@ const UserDetailsComponent = () => {
       }
     }
   }, [userData, sessionChecked]);
-  // useEffect(() => {
-  //   if (userData && userData.data) {
-  //     if (!userData.data.pin) {
-  //       setShowPinModal(true);
-  //       setShowPinEntry(false);
-  //       setIsPinVerified(false);
-  //     } else {
-  //       setShowPinModal(false);
-  //       setShowPinEntry(true);
-  //       setIsPinVerified(false);
-  //     }
-  //   }
-  // }, [userData]);
 
   const onProceedOrder = async (e) => {
     e?.preventDefault();
@@ -385,107 +374,6 @@ const UserDetailsComponent = () => {
   console.log(awardJmcToUserPayload?.equivalentJmc, "hello jmc");
   const testnetContractAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd"; // Testnet USDT address
   const contractAddress = "0x55d398326f99059fF775485246999027B3197955"; //Mainnet USDT address (BSC)
-  // const handleCryptoSwap = async () => {
-  //   console.log("hello");
-  //   if (!sellAmount || !sellToken || parseFloat(sellAmount) === 0) {
-  //     setSwapMessage("Please enter amount to swap");
-  //     return;
-  //   }
-
-  //   setIsSwapProcessing(true);
-  //   setSwapMessage("");
-
-  //   try {
-  //     if (!walletClient) {
-  //       setSwapMessage("Please connect your wallet");
-  //       setIsSwapProcessing(false);
-  //       return;
-  //     }
-
-  //     const provider = new ethers.BrowserProvider(walletClient.transport);
-  //     const signer = await provider.getSigner();
-  //     const userAddress = await signer.getAddress();
-  //     // const contract = new ethers.Contract(contractAddress, abi.abi, signer); // Mainnet USDT contract
-  //     const contract = new ethers.Contract(
-  //       testnetContractAddress,
-  //       testnetUSDTJSON.abi,
-  //       signer
-  //     ); // Testnet USDT contract
-
-  //     // const contract = new ethers.Contract(
-  //     //   "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
-  //     //   xrpjson.abi,
-  //     //   signer
-  //     // ); // Mainner XRP contract
-
-  //     const decimals = await contract.decimals(); // get correct decimals dynamically
-  //     const amountInWei = ethers.parseUnits(sellAmount, decimals);
-
-  //     // 🔍 Check balance first
-  //     const balance = await contract.balanceOf(userAddress);
-  //     if (balance < amountInWei) {
-  //       setSwapMessage("Insufficient token balance");
-  //       setIsSwapProcessing(false);
-  //       return;
-  //     }
-
-  //     const ownerAddress = "0xf0E79Eaf6a2290f6fb5E7201d3900456909a6871";
-
-  //     // ✅ Proceed with transfer
-  //     const tx = await contract.transfer(ownerAddress, amountInWei);
-  //     console.log("Transaction sent:", tx.hash);
-
-  //     const receipt = await tx.wait();
-  //     console.log("receipt:", receipt);
-
-  //     if (receipt.status === 1) {
-  //       const result = await awardJmcToUser({
-  //         userId: HARDCODED_USER_ID,
-  //         swappedTokenCount: parseFloat(sellAmount),
-  //         swappedTokenType: sellToken,
-  //         adminTransactionHash: receipt.hash,
-  //         swapType: "swap",
-  //         grossInrValue: awardJmcToUserPayload.grossInrValue,
-  //         platformFee: awardJmcToUserPayload.platformFee,
-  //         bscTds: awardJmcToUserPayload.bscTds,
-  //         netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
-  //         jmcTds: awardJmcToUserPayload.jmcTds,
-  //         finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
-  //         equivalentJmc: awardJmcToUserPayload.equivalentJmc,
-  //       }).unwrap();
-  //       console.log(result);
-
-  //       // if (result.success) {
-  //       // //   setSwapMessage(`Swap successful! You received JMC tokens.`);
-  //       // //   setSellAmount("");
-  //       // //   setEquivalentJMC(0);
-  //       // //   handleGetUserDetails();
-  //       // // } else {
-  //       //   setSwapMessage("Swap successful on-chain, but failed on server.");
-  //       // }
-  //       if (result.success) {
-  //         setSwapMessage(`Swap successful! You received JMC tokens.`);
-  //         setSellAmount("");
-  //         setEquivalentJMC(0);
-  //         handleGetUserDetails();
-
-  //         // Show Chrome notification
-  //         showNotification(
-  //           "Swap Successful",
-  //           `You've successfully swapped ${sellAmount} ${sellToken} for ${awardJmcToUserPayload.equivalentJmc} JMC tokens!`
-  //         );
-  //       }
-  //     } else {
-  //       setSwapMessage("Transaction failed on blockchain.");
-  //     }
-  //   } catch (err) {
-  //     console.error("Swap failed:", err);
-  //     setSwapMessage("Swap failed. Please try again.");
-  //   } finally {
-  //     setIsSwapProcessing(false);
-  //   }
-  // };
-  // 🛠 Token contract configuration
 
   const handleCryptoSwap = async () => {
     console.log("hello");
@@ -590,7 +478,6 @@ const UserDetailsComponent = () => {
 
     return () => clearTimeout(timeoutId);
   }, [sellAmount, sellToken, showSwapModal]);
-  // Add this inside the UserDetailsComponent function, before the return statement
   const TransactionHistorySection = () => {
     // Define a simpler query just for the wallet view
     const queryParams = `limit=5&page=1&status=Completed`;
@@ -599,8 +486,21 @@ const UserDetailsComponent = () => {
       data: buyDetails,
       isLoading,
       error,
+      refetch  
     } = useBuyDetailsQuery(queryParams);
-
+  useEffect(() => {
+      // Initial fetch
+      refetch();
+      
+      // Set up polling interval (every 30 seconds)
+      const intervalId = setInterval(() => {
+        refetch();
+      }, 30000);
+      
+      // Clean up interval on component unmount
+      return () => clearInterval(intervalId);
+    }, [refetch]);
+    
     const transactions = buyDetails?.data?.withdrawRequests || [];
 
     // Format date function
@@ -707,7 +607,7 @@ const UserDetailsComponent = () => {
                 {/* Header */}
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs font-bold text-teal-700 tracking-wide">
-                    #{i + 1}
+                    {i + 1}
                   </span>
                   <span
                     className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${getStatusClasses(
@@ -807,6 +707,9 @@ const UserDetailsComponent = () => {
                   JMC
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  mode
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
                   Amount
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
@@ -826,19 +729,22 @@ const UserDetailsComponent = () => {
                   <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
                     {i + 1}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 font-medium truncate max-w-[150px]">
+                  <td className="px-4 py-3 whitespace-nowrap text-xs text-gray-700 font-bold  max-w-[150px]">
                     {data?.paypalTransactionId ||
                       data?.transactionId ||
                       data?.orderId ||
                       "N/A"}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-teal-600 font-semibold">
-                    {data?.jaimax?.toFixed(3) || "N/A"}
+                    {data?.jaimax?.toFixed(5) || "N/A"}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-teal-600 font-semibold">
+                    {data?.paymentMethod || "N/A"}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 font-semibold">
                     {data.currency === "INR"
-                      ? `₹${data.amount?.toFixed(2) || "0.00"}`
-                      : `$${data.amount?.toFixed(2) || "0.00"}`}
+                      ? `₹${data.amount?.toFixed(5) || "0.00"}`
+                      : `$${data.amount?.toFixed(5) || "0.00"}`}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
                     {data?.createdAt
@@ -880,10 +786,11 @@ const UserDetailsComponent = () => {
               <CreateWalletPin />
               <div className="flex justify-end mt-4 sticky bottom-0 bg-white/80 backdrop-blur-sm py-2">
                 <button
-                  onClick={() => setShowPinModal(false)}
-                  className="px-4 py-2 text-sm text-teal-600 hover:text-teal-800 border border-teal-200 rounded-lg transition-all hover:bg-teal-50/50"
+                  onClick={() => navigate("/home")}
+                  type="button"
+                  className="mt-4 text-teal-600 underline text-sm font-medium"
                 >
-                  Close
+                  Cancel
                 </button>
               </div>
             </div>
@@ -1067,8 +974,8 @@ const UserDetailsComponent = () => {
 
                   {/* Token Balance Card */}
                   <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-md p-5 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-10 -mt-10"></div>
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-10 -mb-10"></div>
+                    {/* <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-10 -mt-10"></div> */}
+                    {/* <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-10 -mb-10"></div> */}
                     <div className="flex items-center justify-between relative z-10">
                       <div>
                         <h6 className="text-white text-sm font-semibold mb-1 flex items-center gap-2">
@@ -1080,7 +987,7 @@ const UserDetailsComponent = () => {
                       </div>
                       <div className="relative">
                         <img
-                          src={icon}
+                          src={icon2}
                           alt="JMC"
                           className="w-12 h-12 md:w-14 md:h-14 animate-float"
                         />
@@ -1334,7 +1241,7 @@ const UserDetailsComponent = () => {
                     <h5 className="text-lg font-bold text-gray-800">
                       {purchaseCoinsBreakup.totalCoins}
                       {console.log(
-                        purchaseCoinsBreakup.totalCoins,
+                        purchaseCoinsBreakup.totalAmount,
                         "amount come from ordwer"
                       )}
                       JMC

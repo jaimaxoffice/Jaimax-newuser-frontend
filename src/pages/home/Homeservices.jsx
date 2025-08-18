@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import jaicoins from "../../assets/Images/jaicoins.svg";
 import frameTwo from "../../assets/Images/securitymeasure.svg";
 import access from "../../assets/Images/accessToprofit.svg";
-import rocket2 from '../../assets/Images/framefour.svg';
+import rocket2 from "../../assets/Images/framefour.svg";
 import eye from "../../assets/Images/eye.svg";
 
 const ServicesSection = () => {
@@ -14,31 +14,36 @@ const ServicesSection = () => {
     {
       title: "Security Measures",
       icon: frameTwo, // Security measure icon
-      description: "KYC verification and Google Authenticator fortify your account from unauthorized access. Trust Jaimax to protect your digital assets.",
+      description:
+        "KYC verification and Google Authenticator fortify your account from unauthorized access. Trust Jaimax to protect your digital assets.",
       // gradient: "from-[#bbcf28] to-[#1d974a]",
     },
     {
       title: "Secure Crypto Wallet",
       icon: jaicoins, // Jaicoins icon for wallet
-      description: "Your crypto is protected with top-tier encryption and real-time monitoring. Manage your assets securely from anywhere.",
+      description:
+        "Your crypto is protected with top-tier encryption and real-time monitoring. Manage your assets securely from anywhere.",
       // gradient: "from-[#1d974a] to-[#bbcf28]",
     },
     {
       title: "Access to Profits",
       icon: access, // Access to profits icon
-      description: "Convert your crypto into real-world gains. Flexible, fast, and built for your financial success.",
+      description:
+        "Convert your crypto into real-world gains. Flexible, fast, and built for your financial success.",
       // gradient: "from-[#045c61] to-[#1d974a]",
     },
     {
       title: "Financial Growth",
       icon: rocket2, // Rocket icon for growth
-      description: "Tailored plans aligned with your goals. Grow your portfolio with strategic crypto investments.",
+      description:
+        "Tailored plans aligned with your goals. Grow your portfolio with strategic crypto investments.",
       // gradient: "from-[#bbcf28] to-[#095659]",
     },
     {
       title: "Funds Management",
       icon: eye, // Eye icon for monitoring/management
-      description: "Add, withdraw, and monitor investments effortlessly. Stay in control of your capital anytime, anywhere.",
+      description:
+        "Add, withdraw, and monitor investments effortlessly. Stay in control of your capital anytime, anywhere.",
       // gradient: "from-[#bbcf28] to-[#095659]",
     },
   ];
@@ -49,20 +54,20 @@ const ServicesSection = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const itemId = parseInt(entry.target.dataset.itemId);
-            setVisibleItems(prev => new Set([...prev, itemId]));
+            setVisibleItems((prev) => new Set([...prev, itemId]));
           }
         });
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: "0px 0px -50px 0px",
       }
     );
 
     // Small delay to ensure DOM is ready
     const timer = setTimeout(() => {
-      const items = document.querySelectorAll('[data-item-id]');
-      items.forEach(item => {
+      const items = document.querySelectorAll("[data-item-id]");
+      items.forEach((item) => {
         if (observerRef.current) {
           observerRef.current.observe(item);
         }
@@ -79,22 +84,26 @@ const ServicesSection = () => {
 
   const getAnimationClasses = (itemId, side) => {
     const isVisible = visibleItems.has(itemId);
-    
+
     if (!isVisible) {
-      return side === 'left' 
-        ? '-translate-x-20 opacity-0'
-        : 'translate-x-20 opacity-0';
+      return side === "left"
+        ? "-translate-x-20 opacity-0"
+        : "translate-x-20 opacity-0";
     }
-    
-    return 'translate-x-0 opacity-100';
+
+    return "translate-x-0 opacity-100";
   };
 
   return (
-    <div className="py-10 lg:py-12 overflow-hidden" style={{
-      backgroundImage: "url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/cases-bg.png')",
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-    }}>
+    <div
+      className="py-10 lg:py-12 overflow-hidden"
+      style={{
+        backgroundImage:
+          "url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/cases-bg.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-10">
@@ -109,28 +118,42 @@ const ServicesSection = () => {
         {/* Services Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {services.map((service, index) => {
-            const side = index % 2 === 0 ? 'left' : 'right';
+            const side = index % 2 === 0 ? "left" : "right";
             return (
               <div
                 key={index}
                 data-item-id={index}
-                className={`flex items-start space-x-6 group transition-all duration-1000 ease-out ${getAnimationClasses(index, side)}`}
+                className={`flex items-start space-x-6 group transition-all duration-1000 ease-out ${getAnimationClasses(
+                  index,
+                  side
+                )}`}
                 style={{
-                  transitionDelay: `${index * 150}ms`
+                  transitionDelay: `${index * 150}ms`,
                 }}
               >
                 {/* Icon Circle with Custom Gradient */}
                 <div className="flex-shrink-0">
-                  <div className={`w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br ${service.gradient} rounded-full border-2 border-white/20 flex items-center justify-center text-white text-2xl lg:text-3xl group-hover:border-white/40 group-hover:scale-110 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:shadow-black/30`}>
+                  <div
+                    className={`w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br ${service.gradient} rounded-full border-2 border-white/20 flex items-center justify-center text-white text-2xl lg:text-3xl group-hover:border-white/40 group-hover:scale-110 transition-all duration-500 ease-out group-hover:shadow-lg group-hover:shadow-black/30`}
+                  >
                     {/* Using actual SVG icons */}
-                    <img 
+                    {/* <img 
                       src={service.icon} 
                       alt={service.title}
                       className="w-12 h-12 lg:w-14 lg:h-14 object-contain"
+                    /> */}
+                    <img
+                      src={service.icon}
+                      alt={service.title}
+                      className={`object-contain ${
+                        service.title === "Financial Growth"
+                          ? "w-26 h-26 lg:w-50 lg:h-50" // Bigger size for rocket2
+                          : "w-12 h-12 lg:w-14 lg:h-14" // Default size for others
+                      }`}
                     />
                   </div>
                 </div>
-                
+
                 {/* Content */}
                 <div className="flex-1 pt-2">
                   <h3 className="text-xl lg:text-2xl font-bold text-white mb-4 group-hover:text-[#bbcf28] transition-colors duration-300">
@@ -150,4 +173,3 @@ const ServicesSection = () => {
 };
 
 export default ServicesSection;
-

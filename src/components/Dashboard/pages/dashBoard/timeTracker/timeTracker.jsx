@@ -126,6 +126,7 @@ const transformApiDataToSlabs = (apiData) => {
 const PaymentModal = ({
   show,
   onHide,
+  purchaseCoinsBreakup,
   onConfirmPayment,
   purchasingAmount,
   currency,
@@ -221,6 +222,7 @@ const PaymentModal = ({
                   {(Number(purchaseCoinsBreakup?.requsetedAmount) || 0).toFixed(2)}{" "}
                   {currency}
                 </td>
+                {console.log(purchaseCoinsBreakup?.requsetedAmount,"hello money")}
               </tr>
 
               {/* Total Row */}
@@ -296,127 +298,222 @@ const PurchaseCoinsBreakupModal = ({
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl p-5 sm:p-6 max-w-3xl w-full mx-3 relative max-h-[85vh] overflow-y-auto border border-teal-200">
-        {/* Close button */}
-        <button
-          className="absolute top-3 right-3 text-teal-500 hover:text-teal-700 text-2xl font-bold transition"
-          onClick={onHide}
-        >
-          ×
-        </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-6">
+  <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative flex flex-col max-h-[90vh] border border-teal-200 overflow-hidden">
+    
+    {/* Header */}
+    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+      <h2 className="text-lg sm:text-xl font-bold text-teal-700">
+        Purchase Coins Breakdown
+      </h2>
+      <button
+        className="text-gray-400 hover:text-teal-600 text-2xl font-bold transition"
+        onClick={onHide}
+      >
+        ×
+      </button>
+    </div>
 
-        {/* Title */}
-        <h2 className="text-lg sm:text-xl font-bold mb-4 text-teal-700 flex items-center gap-2">
-          Purchase Coins Breakdown
-        </h2>
-
-        {/* Table */}
-        <div className="overflow-x-auto mb-5">
-          <table className="w-full text-sm border border-teal-100 rounded-lg overflow-hidden">
-            <thead>
-              <tr className="bg-teal-50">
-                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
-                  Round
-                </th>
-                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
-                  Price ({currency})
-                </th>
-                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
-                  Amount ({currency})
-                </th>
-                <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
-                  Coins Qty
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
-                const resolvedPrice =
-                  currency === "INR"
-                    ? item.resolvedPriceInr
-                    : item.resolvedPriceUsdt;
-                return (
-                  <tr
-                    key={item.round}
-                    className={index % 2 === 0 ? "bg-white" : "bg-teal-50/30"}
-                  >
-                    <td className="border border-teal-100 px-3 py-2 text-center">
-                      {item.round}
-                    </td>
-                    <td className="border border-teal-100 px-3 py-2 text-center">
-                      {resolvedPrice?.toFixed(5)}
-                    </td>
-                    <td className="border border-teal-100 px-3 py-2 text-right">
-                      {item.amount?.toFixed(2)}
-                    </td>
-                    <td className="border border-teal-100 px-3 py-2 text-right">
-                      {item.resolvedQty?.toLocaleString()}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-            <tfoot>
-              {/* Charges Row */}
-              <tr className="bg-orange-50 font-medium">
-                <td className="border border-teal-100 px-3 py-2 text-center text-orange-700">
-                  Charges
-                </td>
-                <td
-                  className="border border-teal-100 px-3 py-2 text-center text-orange-700"
-                  colSpan={3}
+    {/* Table Content */}
+    <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+      <div className="overflow-x-auto border border-gray-200 rounded-lg">
+        <table className="w-full text-sm text-gray-700">
+          <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-semibold tracking-wide">
+            <tr>
+              <th className="px-4 py-3 text-center">Round</th>
+              <th className="px-4 py-3 text-center">Price ({currency})</th>
+              <th className="px-4 py-3 text-center">Amount ({currency})</th>
+              <th className="px-4 py-3 text-center">Coins Qty</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
+              const resolvedPrice =
+                currency === "INR" ? item.resolvedPriceInr : item.resolvedPriceUsdt;
+              return (
+                <tr
+                  key={item.round}
+                  className={index % 2 === 0 ? "bg-white" : "bg-teal-50/40"}
                 >
-                  {(
-                    Number(purchaseCoinsBreakup?.requsetedAmount) -
-                    Number(purchaseCoinsBreakup?.totalAmount)
-                  ).toFixed(2)}{" "}
-                  {currency}
-                  
-                </td>
-                {console.log(Number(purchaseCoinsBreakup?.requsetedAmount) -
-                    Number(purchaseCoinsBreakup?.totalAmount))}
-              </tr>
-
-              {/* Total Row */}
-              <tr className="bg-teal-100 font-bold">
-                <td className="border border-teal-100 px-3 py-2 text-center">
-                  Total
-                </td>
-                <td className="border border-teal-100 px-3 py-2 text-center">
-                  —
-                </td>
-                <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
-                  {(Number(purchaseCoinsBreakup?.totalAmount) || 0).toFixed(2)}
-                </td>
-                <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
-                  {purchaseCoinsBreakup?.totalCoins}
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-
-        {/* Buttons */}
-        <div className="flex justify-end gap-3">
-          <button
-            className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm transition"
-            onClick={onHide}
-            disabled={isProcessing}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm transition disabled:opacity-50"
-            onClick={onSubmitCoins}
-            disabled={isProcessing}
-          >
-            {isProcessing ? "Processing..." : "Proceed"}
-          </button>
-        </div>
+                  <td className="px-4 py-3 text-center font-medium">{item.round}</td>
+                  <td className="px-4 py-3 text-center">{resolvedPrice?.toFixed(5)}</td>
+                  <td className="px-4 py-3 text-right">{item.amount?.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right font-semibold text-gray-800">
+                    {item.resolvedQty?.toLocaleString()}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot className="font-medium">
+            {/* Charges Row */}
+            <tr className="bg-orange-50 text-orange-700">
+              <td className="px-4 py-3 text-center">Charges</td>
+              <td colSpan={3} className="px-4 py-3 text-right">
+                {(
+                  Number(purchaseCoinsBreakup?.requsetedAmount) -
+                  Number(purchaseCoinsBreakup?.totalAmount)
+                ).toFixed(2)}{" "}
+                {currency}
+              </td>
+            </tr>
+            {/* Total Row */}
+            <tr className="bg-teal-100 text-teal-800 font-bold">
+              <td className="px-4 py-3 text-center">Total</td>
+              <td className="px-4 py-3 text-center">—</td>
+              <td className="px-4 py-3 text-right">
+                {(Number(purchaseCoinsBreakup?.requsetedAmount) || 0).toFixed(2)}
+              </td>
+              <td className="px-4 py-3 text-right">
+                {purchaseCoinsBreakup?.totalCoins}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
+
+    {/* Footer */}
+    <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
+      <button
+        className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2 rounded-lg text-sm font-medium transition"
+        onClick={onHide}
+        disabled={isProcessing}
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg text-sm font-semibold transition disabled:opacity-50"
+        onClick={onSubmitCoins}
+        disabled={isProcessing}
+      >
+        {isProcessing ? "Processing..." : "Proceed"}
+      </button>
+    </div>
+  </div>
+</div>
+
+    // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    //   <div className="bg-white rounded-2xl shadow-2xl p-5 sm:p-6 max-w-3xl w-full mx-3 relative max-h-[85vh] overflow-y-auto border border-teal-200">
+    //     {/* Close button */}
+    //     <button
+    //       className="absolute top-3 right-3 text-teal-500 hover:text-teal-700 text-2xl font-bold transition"
+    //       onClick={onHide}
+    //     >
+    //       ×
+    //     </button>
+
+    //     {/* Title */}
+    //     <h2 className="text-lg sm:text-xl font-bold mb-4 text-teal-700 flex items-center gap-2">
+    //       Purchase Coins Breakdown
+    //     </h2>
+
+    //     {/* Table */}
+    //     <div className="overflow-x-auto mb-5">
+    //       <table className="w-full text-sm border border-teal-100 rounded-lg overflow-hidden">
+    //         <thead>
+    //           <tr className="bg-teal-50">
+    //             <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+    //               Round
+    //             </th>
+    //             <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+    //               Price ({currency})
+    //             </th>
+    //             <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+    //               Amount ({currency})
+    //             </th>
+    //             <th className="border border-teal-100 px-3 py-2 text-center font-semibold text-teal-700">
+    //               Coins Qty
+    //             </th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
+    //             const resolvedPrice =
+    //               currency === "INR"
+    //                 ? item.resolvedPriceInr
+    //                 : item.resolvedPriceUsdt;
+    //             return (
+    //               <tr
+    //                 key={item.round}
+    //                 className={index % 2 === 0 ? "bg-white" : "bg-teal-50/30"}
+    //               >
+    //                 <td className="border border-teal-100 px-3 py-2 text-center">
+    //                   {item.round}
+    //                 </td>
+    //                 <td className="border border-teal-100 px-3 py-2 text-center">
+    //                   {resolvedPrice?.toFixed(5)}
+    //                 </td>
+    //                 <td className="border border-teal-100 px-3 py-2 text-right">
+    //                   {item.amount?.toFixed(2)}
+    //                 </td>
+    //                 <td className="border border-teal-100 px-3 py-2 text-right">
+    //                   {item.resolvedQty?.toLocaleString()}
+    //                 </td>
+    //               </tr>
+    //             );
+    //           })}
+    //         </tbody>
+    //         <tfoot>
+    //           {/* Charges Row */}
+    //           <tr className="bg-orange-50 font-medium">
+    //             <td className="border border-teal-100 px-3 py-2 text-center text-orange-700">
+    //               Charges
+    //             </td>
+    //             <td
+    //               className="border border-teal-100 px-3 py-2 text-center text-orange-700"
+    //               colSpan={3}
+    //             >
+    //               {(
+    //                 Number(purchaseCoinsBreakup?.requsetedAmount) -
+    //                 Number(purchaseCoinsBreakup?.totalAmount)
+    //               ).toFixed(2)}{" "}
+    //               {currency}
+                  
+    //             </td>
+    //             {console.log(Number(purchaseCoinsBreakup?.requsetedAmount),"jeloll" )}
+    //           </tr>
+
+    //           {/* Total Row */}
+    //           <tr className="bg-teal-100 font-bold">
+    //             <td className="border border-teal-100 px-3 py-2 text-center">
+    //               Total
+    //             </td>
+    //             <td className="border border-teal-100 px-3 py-2 text-center">
+    //               —
+    //             </td>
+    //             <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
+    //               {(Number(purchaseCoinsBreakup?.requsetedAmount) || 0).toFixed(2)}
+    //             </td>
+    //             <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
+    //               {purchaseCoinsBreakup?.totalCoins}
+    //             </td>
+    //           </tr>
+    //         </tfoot>
+    //       </table>
+    //     </div>
+
+    //     {/* Buttons */}
+    //     <div className="flex justify-end gap-3">
+    //       <button
+    //         className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm transition"
+    //         onClick={onHide}
+    //         disabled={isProcessing}
+    //       >
+    //         Cancel
+    //       </button>
+    //       <button
+    //         type="button"
+    //         className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm transition disabled:opacity-50"
+    //         onClick={onSubmitCoins}
+    //         disabled={isProcessing}
+    //       >
+    //         {isProcessing ? "Processing..." : "Proceed"}
+    //       </button>
+    //     </div>
+    //   </div>
+    // </div>
 
     // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
     //   <div className="bg-white rounded-xl shadow-2xl p-6 max-w-4xl w-full mx-4 relative max-h-[90vh] overflow-y-auto">
@@ -1059,6 +1156,7 @@ const SlabTabs = () => {
             totalCoins: response.data.totalCoins,
             totalAmount: response.data.totalAmount,
             requestedAmount: response.data.requsetedAmount,
+            requsetedAmount:response.data.requsetedAmount,
           });
           setShowPurchaseCoinsModal(true);
         } else {
@@ -1333,6 +1431,7 @@ const SlabTabs = () => {
         onHide={handleCloseModal}
         onConfirmPayment={onSubmitPayment}
         purchasingAmount={+amount}
+        purchaseCoinsBreakup={purchaseCoinsBreakup}
         currency={currency}
         addOrderError={isAddOrderError}
         userData={userData}

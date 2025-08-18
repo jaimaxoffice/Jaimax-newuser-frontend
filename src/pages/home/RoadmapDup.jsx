@@ -6,7 +6,7 @@ import { debounce } from 'lodash';
 const roadmapData = {
   2024: {
     title: "Foundation & Launch",
-    status: "active",
+    status: "Completed",
     progress: 65,
     phases: [
       "• Concept Development - Team assembly and planning",
@@ -18,7 +18,7 @@ const roadmapData = {
   },
   2025: {
     title: "Innovation & Expansion",
-    status: "future",
+    status: "Active",
     progress: 0,
     phases: [
       "• AI Integration - Machine learning features",
