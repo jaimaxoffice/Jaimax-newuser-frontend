@@ -556,7 +556,7 @@ const UserDetailsComponent = () => {
           jmcTds: awardJmcToUserPayload.jmcTds,
           finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
           equivalentJmc: awardJmcToUserPayload.equivalentJmc,
-          shortageResolution: awardJmcToUserPayload.remainingShortage,
+          shortageResolution: awardJmcToUserPayload.shortageResolution,
         }).unwrap();
 
         if (result.success) {
