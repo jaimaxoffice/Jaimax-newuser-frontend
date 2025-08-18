@@ -52,7 +52,18 @@ export default function WalletDashboard() {
   const navigate = useNavigate();
 
   // Get user data from localStorage
-  const userData = Cookies.get("userData") ;
+  // const userData = Cookies.get("userData") ;
+  const rawUserData = Cookies.get("userData"); // comes as string or undefined
+let userData = null;
+
+if (rawUserData) {
+  try {
+    userData = JSON.parse(rawUserData);
+    console.log("Parsed userData:", userData);
+  } catch (error) {
+    console.error("Error parsing userData cookie:", error);
+  }
+}
   const countryCode = userData?.data?.countryCode;
   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
 
@@ -226,7 +237,7 @@ export default function WalletDashboard() {
       <div className="px-3 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white">
         <div className="text-center">
           <p className="text-lg font-bold">
-            {formatCurrency(transaction.transactionAmount)}
+            {(transaction.transactionAmount)}
           </p>
         </div>
       </div>
@@ -249,7 +260,7 @@ export default function WalletDashboard() {
           {countryCode !== 91 && (
             <div className="bg-teal-50 rounded px-2 py-1">
               <span className="text-teal-600 font-medium">Fee:</span>
-              <p className="font-semibold text-teal-800">${(transaction.transactionFee || 0).toFixed(2)}</p>
+              <p className="font-semibold text-teal-800">{(transaction.transactionFee || 0).toFixed(2)}</p>
             </div>
           )}
         </div>
@@ -325,7 +336,7 @@ export default function WalletDashboard() {
                   {transactionsLoading ? (
                     <div className="animate-pulse h-6 sm:h-8 bg-white/20 rounded w-24 mt-1"></div>
                   ) : (
-                    <p className="text-2xl sm:text-3xl font-bold truncate">{formatCurrency(availableWalletBalance)}</p>
+                    <p className="text-2xl sm:text-3xl font-bold truncate">{(availableWalletBalance)}</p>
                   )}
                 </div>
               </div>
@@ -347,8 +358,11 @@ export default function WalletDashboard() {
               <p className="text-teal-600 text-sm font-medium">Referral Code</p>
               <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3 gap-2">
                 <span className="text-sm font-bold tracking-wider text-teal-800 flex-1 truncate">
-                  {userData?.data?.username || "N/A"}
+                  {userData?.username || "N/A"}
+                  
                 </span>
+
+                {console.log(userData?.username,"data is coming")}
                 <div className="flex items-center space-x-2 flex-shrink-0">
                   <button
                     onClick={handleShareReferral}
@@ -462,7 +476,7 @@ export default function WalletDashboard() {
                         </td>
                         {countryCode !== 91 && (
                           <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            ${(transaction.transactionFee || 0).toFixed(2)}
+                            {(transaction.transactionFee || 0).toFixed(2)}
                           </td>
                         )}
                         <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">

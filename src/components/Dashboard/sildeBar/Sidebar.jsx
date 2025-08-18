@@ -35,7 +35,6 @@ const navItems = [
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },
   { name: "Support", path: "/support", icon: <HiOutlineChatAlt2 /> },
   { name: "Meetings", path: "/meetings", icon: <HiOutlineVideoCamera /> },
-  {name:"images", path:"/images",icon:<HiOutlineVideoCamera/>},
   { name: "Logout", icon: <HiOutlineLogout /> },
 ];
 
