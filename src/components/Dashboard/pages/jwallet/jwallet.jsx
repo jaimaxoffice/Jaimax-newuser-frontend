@@ -33,7 +33,7 @@ import testnetUSDTJSON from "./testnetUSDT.json";
 import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import icon2 from "../../../../../public/whitejaimaclogo.png"
+import icon2 from "../../../../../public/whitejaimaclogo.png";
 const UserDetailsComponent = () => {
   const navigate = useNavigate();
   const [awardJmcToUserPayload, SetawardJmcToUserPayload] = useState({});
@@ -103,6 +103,21 @@ const UserDetailsComponent = () => {
       abi: adaJSON.abi,
     },
   };
+  useEffect(() => {
+    const handleCompletion = () => {
+      console.log("Custom event received, closing modal");
+      setShowBinanceExchange(false);
+    };
+
+    document.addEventListener("binanceExchangeCompleted", handleCompletion);
+
+    return () => {
+      document.removeEventListener(
+        "binanceExchangeCompleted",
+        handleCompletion
+      );
+    };
+  }, []);
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) {
@@ -486,21 +501,21 @@ const UserDetailsComponent = () => {
       data: buyDetails,
       isLoading,
       error,
-      refetch  
+      refetch,
     } = useBuyDetailsQuery(queryParams);
-  useEffect(() => {
+    useEffect(() => {
       // Initial fetch
       refetch();
-      
+
       // Set up polling interval (every 30 seconds)
       const intervalId = setInterval(() => {
         refetch();
       }, 30000);
-      
+
       // Clean up interval on component unmount
       return () => clearInterval(intervalId);
     }, [refetch]);
-    
+
     const transactions = buyDetails?.data?.withdrawRequests || [];
 
     // Format date function
@@ -707,6 +722,9 @@ const UserDetailsComponent = () => {
                   JMC
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                  charges
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
                   mode
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
@@ -737,6 +755,14 @@ const UserDetailsComponent = () => {
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-teal-600 font-semibold">
                     {data?.jaimax?.toFixed(5) || "N/A"}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-teal-600 font-semibold">
+                    {(
+                      Number(data?.jmcTds) +
+                      Number(data?.jaimaxPlatformFee) +
+                      Number(data?.bscTds) +
+                      Number(data?.platformFee)
+                    ).toFixed(4)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-teal-600 font-semibold">
                     {data?.paymentMethod || "N/A"}
@@ -1658,8 +1684,43 @@ const UserDetailsComponent = () => {
           </div>
         </div>
       )}
-
       {showBinanceExchange && (
+        <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full animate-fadeIn">
+            <div className="bg-gradient-to-r from-teal-500 to-teal-600 text-white px-5 py-4 rounded-t-xl">
+              <div className="flex items-center justify-between">
+                <h5 className="text-lg font-semibold">Binance Exchange</h5>
+                <button
+                  onClick={() => setShowBinanceExchange(false)}
+                  className="text-white hover:text-gray-200 transition-colors"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            {/* Pass the onClose prop as a function that will close the modal */}
+            <BinanceExchange
+              onClose={() => {
+                console.log("Closing modal from parent onClose handler");
+                setShowBinanceExchange(false);
+              }}
+            />
+          </div>
+        </div>
+      )}
+      {/* {showBinanceExchange && (
         <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full animate-fadeIn">
             <div className="bg-gradient-to-r from-teal-500 to-teal-600 text-white px-5 py-4 rounded-t-xl">
@@ -1690,7 +1751,7 @@ const UserDetailsComponent = () => {
             <BinanceExchange />
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };

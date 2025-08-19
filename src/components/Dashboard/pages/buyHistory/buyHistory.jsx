@@ -315,6 +315,10 @@ const BuyHistory = () => {
                     <th className="px-3 py-4 text-center min-w-[100px] font-semibold">
                       JaiMax Coin
                     </th>
+                    <th className="px-3 py-4 text-center min-w-[100px] font-semibold">
+                      Charges
+                    </th>
+                    
                     <th className="px-3 py-4 text-center min-w-[90px] font-semibold">
                       INR Price
                     </th>
@@ -385,6 +389,14 @@ const BuyHistory = () => {
                         <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">
                           {data?.jaimax?.toFixed(3) || "N/A"}
                         </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-teal-600 font-semibold">
+                    {(
+                      Number(data?.jmcTds) +
+                      Number(data?.jaimaxPlatformFee) +
+                      Number(data?.bscTds) +
+                      Number(data?.platformFee)
+                    ).toFixed(4)}
+                  </td>
                         <td className="px-3 py-4 font-semibold text-sm whitespace-nowrap">
                           {data?.atPriceInr || "N/A"}
                         </td>
