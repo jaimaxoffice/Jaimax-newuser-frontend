@@ -755,7 +755,7 @@ const MyTotalTeam = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1d8d84] to-[#156660] p-2 sm:p-4 md:p-6">
       {/* Stats Cards Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-5 mb-4 md:mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 md:grid-cols-1 gap-3 md:gap-5 mb-4 md:mb-6">
         {infoBoxes.map((box, idx) => (
           <div
             key={idx}
@@ -928,7 +928,7 @@ const MyTotalTeam = () => {
         </div>
 
         {/* Mobile Cards View */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 lg:hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-3 p-3 lg:hidden">
           {isLoading ? (
             [...Array(3)].map((_, i) => (
               <div key={i} className="bg-white rounded-md p-3 border border-gray-200 animate-pulse">

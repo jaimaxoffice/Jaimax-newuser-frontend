@@ -52,7 +52,7 @@ const Disclaimer = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className=" bg-white">
       <div className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-9xl mx-auto">
           {/* Header */}
