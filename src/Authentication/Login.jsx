@@ -23,7 +23,7 @@ import {
   useOTPresentMutation,
 } from "./authApiSlice";
 import Seo from "../SeoContent/Seo";
-import countrycodes from "./countrycodes.json";
+import countrycodes from "./countryCodes.json";
 import TermsConditionsModal from "./TermsAndConditions";
 import * as yup from "yup";
 const Notification = ({ type, message, onClose }) => {
