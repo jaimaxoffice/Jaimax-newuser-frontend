@@ -986,7 +986,7 @@ const RegisterComponent = ({
 
       // Set cookies instead of localStorage
       Cookies.set("token", res?.data?.token, { expires: 7 }); // expires in 7 days
-      Cookies.set("userData", JSON.stringify(res), { expires: 7 });
+      Cookies.set("userData", JSON.stringify(res?.data), { expires: 7 });
       const userData = JSON.parse(Cookies.get("userData") || "{}");
       console.log("User Data:", userData);
       Cookies.set("userRegisterData", JSON.stringify(userRegisterData), {

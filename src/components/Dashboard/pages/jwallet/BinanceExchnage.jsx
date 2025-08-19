@@ -1210,8 +1210,8 @@ const BinanceExchange = ({ onClose }) => {
   const [bnbBalance, setBNBBalance] = useState(0);
   const [selectedToken, setSelectedToken] = useState("USDT");
   const [isTokenVerified, setIsTokenVerified] = useState(false);
-  // const [walletAddress] = useState("0x450ae9decaB959DBcB36ad12f077DBF50e074969");
-  const [walletAddress]=useState("0xCbA7172A76a0eFb2C0625e652A8420D3Af09d259");
+  const [walletAddress] = useState("0x450ae9decaB959DBcB36ad12f077DBF50e074969");
+  // const [walletAddress]=useState("0xCbA7172A76a0eFb2C0625e652A8420D3Af09d259");
   const [loading, setLoading] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
