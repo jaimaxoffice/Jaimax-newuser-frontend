@@ -4,7 +4,7 @@
 //   endpoints: (builder) => ({
 //     sendMessage: builder.mutation({
 //       query: (query) => ({
-//         url: '/admin/aiDocument/ask',
+//         url: '/ai/ask',
 //         method: 'POST',
 //         body: { query },
 //         headers: {
@@ -80,35 +80,119 @@
 // } = chatApi;
 
 
+// // store/api/chatApi.js
+// import { apiSlice } from "../../ApiSliceComponent/jaiMaxApi";
+// export const chatApi = apiSlice.injectEndpoints({
+//   endpoints: (builder) => ({
+//     // Send message to AI and get response
+//     sendChatMessage: builder.mutation({
+//       query: ({ query, conversationId }) => ({
+//         url: 'http://localhost:8000/api/ask',
+//         method: 'POST',
+//         body: { 
+//           query,
+//           conversationId // Optional: for maintaining conversation context
+//         },
+//       }),
+//       invalidatesTags: ['Chat'],
+//       // Transform response to handle streaming or typing effect
+//       transformResponse: (response) => ({
+//         answer: response.answer || "🤖 Sorry, I couldn't find an answer.",
+//         conversationId: response.conversationId,
+//         timestamp: new Date().toISOString(),
+//       }),
+//       // Handle errors gracefully
+//       transformErrorResponse: (response) => ({
+//         error: response.data?.message || "⚠️ We're facing a technical issue. Please try again shortly.",
+//         status: response.status,
+//       }),
+//     }),
+
+//     // Insert user query for analytics/logging
+//     insertUserQuery: builder.mutation({
+//       query: ({ query, conversationId, metadata }) => ({
+//         url: '/ai/insert-query',
+//         method: 'POST',
+//         body: { 
+//           query,
+//           conversationId,
+//           metadata: {
+//             timestamp: new Date().toISOString(),
+//             userAgent: navigator.userAgent,
+//             ...metadata
+//           }
+//         },
+//       }),
+//       invalidatesTags: ['Query'],
+//     }),
+
+//     // Get chat history (if your backend supports it)
+//     getChatHistory: builder.query({
+//       query: ({ conversationId, limit = 50 }) => ({
+//         url: `/ai/chat-history`,
+//         params: { conversationId, limit },
+//       }),
+//       providesTags: ['Chat'],
+//       transformResponse: (response) => response.messages || [],
+//     }),
+
+//     // Delete chat conversation
+//     deleteChatConversation: builder.mutation({
+//       query: ({ conversationId }) => ({
+//         url: `/ai/conversation/${conversationId}`,
+//         method: 'DELETE',
+//       }),
+//       invalidatesTags: ['Chat', 'Query'],
+//     }),
+
+//     // Get AI status/health check
+//     getAiStatus: builder.query({
+//       query: () => '/ai/status',
+//       providesTags: ['Chat'],
+//       // Refetch every 30 seconds to check AI availability
+//       pollingInterval: 30000,
+//     }),
+//   }),
+// });
+
+// export const {
+//   useSendChatMessageMutation,
+//   useInsertUserQueryMutation,
+//   useGetChatHistoryQuery,
+//   useDeleteChatConversationMutation,
+//   useGetAiStatusQuery,
+// } = chatApi;
+
 // store/api/chatApi.js
 import { apiSlice } from "../../ApiSliceComponent/jaiMaxApi";
+
 export const chatApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Send message to AI and get response
+
+    // Send message to AI and get response (Python API on port 8000)
     sendChatMessage: builder.mutation({
       query: ({ query, conversationId }) => ({
-        url: '/ai/ask',
+        url: '/ai/ask', // relative path
         method: 'POST',
         body: { 
           query,
           conversationId // Optional: for maintaining conversation context
         },
+        python: true, // Forces base URL to Python API (port 8000)
       }),
       invalidatesTags: ['Chat'],
-      // Transform response to handle streaming or typing effect
       transformResponse: (response) => ({
         answer: response.answer || "🤖 Sorry, I couldn't find an answer.",
         conversationId: response.conversationId,
         timestamp: new Date().toISOString(),
       }),
-      // Handle errors gracefully
       transformErrorResponse: (response) => ({
         error: response.data?.message || "⚠️ We're facing a technical issue. Please try again shortly.",
         status: response.status,
       }),
     }),
 
-    // Insert user query for analytics/logging
+    // Insert user query for analytics/logging (Node API on port 3000)
     insertUserQuery: builder.mutation({
       query: ({ query, conversationId, metadata }) => ({
         url: '/ai/insert-query',
@@ -126,7 +210,7 @@ export const chatApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Query'],
     }),
 
-    // Get chat history (if your backend supports it)
+    // Get chat history (Node API)
     getChatHistory: builder.query({
       query: ({ conversationId, limit = 50 }) => ({
         url: `/ai/chat-history`,
@@ -136,7 +220,7 @@ export const chatApi = apiSlice.injectEndpoints({
       transformResponse: (response) => response.messages || [],
     }),
 
-    // Delete chat conversation
+    // Delete chat conversation (Node API)
     deleteChatConversation: builder.mutation({
       query: ({ conversationId }) => ({
         url: `/ai/conversation/${conversationId}`,
@@ -145,11 +229,13 @@ export const chatApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Chat', 'Query'],
     }),
 
-    // Get AI status/health check
+    // Get AI status/health check (Python API on port 8000)
     getAiStatus: builder.query({
-      query: () => '/ai/status',
+      query: () => ({
+        url: '/ai/status',
+        python: true, // Calls Python base URL
+      }),
       providesTags: ['Chat'],
-      // Refetch every 30 seconds to check AI availability
       pollingInterval: 30000,
     }),
   }),

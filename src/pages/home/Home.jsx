@@ -120,33 +120,7 @@ const Home = () => {
         {/* Components Section - Proper spacing for mobile */}
         <div className="w-full">
           {/* AI Assistant Button */}
-          <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center">
-            <button
-              onClick={toggleChat}
-              className="bg-[#aadc32] hover:bg-[#b8cc26] text-[#0f1c14] rounded-full px-4 py-3 shadow-lg
-            flex items-center space-x-2 transition-colors duration-300 focus:outline-none"
-              aria-label="AI Assistant"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <rect x="6" y="8" width="12" height="8" rx="2" ry="2" />
-                <circle cx="9" cy="12" r="1" />
-                <circle cx="15" cy="12" r="1" />
-                <line x1="12" y1="6" x2="12" y2="8" />
-              </svg>
-              <span className="font-semibold text-lg select-none">ASK AI</span>
-            </button>
-          </div>
-
-          {/* Show ChatAssistant only if chatOpen is true */}
-          {chatOpen && <ChatAssistant onClose={() => setChatOpen(false)} />}
-
+   
           <CryptoStakingSection />
           <ServicesComponent />
           <GrowthPlanTimeline />
