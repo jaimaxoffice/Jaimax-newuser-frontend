@@ -6094,7 +6094,7 @@ const UserDetailsComponent = () => {
               <CreateWalletPin />
               <div className="flex justify-end mt-4 sticky bottom-0 bg-white/80 backdrop-blur-sm py-2">
                 <button
-                  onClick={() => navigate("/home")}
+                  onClick={() => navigate("/dashboard")}
                   type="button"
                   className="mt-4 text-teal-600 underline text-sm font-medium"
                 >

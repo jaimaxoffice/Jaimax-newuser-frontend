@@ -447,16 +447,11 @@ export default function Profile3DForm() {
     }`;
 
   return (
-    <div className="bg-[#1d8e85]  flex items-center justify-center p-2 sm:p-4 lg:p-3 min-h-screen">
-      <div className="w-full max-w-9xl bg-white bg-opacity-90 backdrop-blur rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8">
-        {/* Mobile-first layout with responsive flex direction */}
+    <div className="bg-[#1d8e85]  flex items-center justify-center p-2 sm:p-4   ">
+      <div className="w-full max-w-screen bg-white bg-opacity-90 backdrop-blur rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 lg:p-8">
         <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 xl:gap-10 ">
-          
-          {/* Profile Form Section */}
           <div className="w-full xl:w-2/3 space-y-4 sm:space-y-6">
-            {/* Header with Profile Image */}
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-              {/* Profile Image with Gender Avatar */}
               <div className="relative group flex-shrink-0">
                 <div
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-teal-600 to-white p-1 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-teal-600/50"

@@ -131,7 +131,7 @@ const BuyHistory = () => {
 
   return (
     <div className="min-h-screen bg-[#1d8e85] p-2 sm:p-4 lg:p-8">
-      <div className="container mx-auto max-w-7xl">
+      <div className="container mx-auto max-w-screen">
         {/* Header and Controls */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 lg:mb-8 gap-3 sm:gap-4">
           {/* Search Input */}

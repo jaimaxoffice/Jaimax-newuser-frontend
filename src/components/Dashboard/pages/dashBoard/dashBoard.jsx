@@ -317,7 +317,14 @@
 
 // export default Dashboard;
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState, useCallback, useMemo, lazy, Suspense } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  lazy,
+  Suspense,
+} from "react";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
@@ -359,7 +366,12 @@ const TeamTable = React.memo(({ data, isLoading, currentPage, perPage }) => {
       <tbody>
         <tr className="border-t border-teal-200 justify-center align-center">
           <td colSpan="7" className="p-4 text-center text-gray-600">
-            No team build still
+            <p className="text-teal text-lg font-medium">
+              No team members found
+            </p>
+            <p className="text-teal text-sm mt-2">
+              Try adjusting your search criteria
+            </p>
           </td>
         </tr>
       </tbody>
@@ -421,7 +433,11 @@ const MobileTeamCards = React.memo(({ data, isLoading }) => {
     return (
       <div className="w-full p-8 bg-white rounded-xl shadow-md border border-teal-100 text-center">
         <div className="text-teal-300 mb-4">
-          <svg className="w-16 h-16 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+          <svg
+            className="w-16 h-16 mx-auto"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
             <path
               fillRule="evenodd"
               d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -429,8 +445,12 @@ const MobileTeamCards = React.memo(({ data, isLoading }) => {
             />
           </svg>
         </div>
-        <p className="text-teal-600 text-lg font-medium">No team members found</p>
-        <p className="text-teal-400 text-sm mt-2">Try adjusting your search criteria</p>
+        <p className="text-teal-600 text-lg font-medium">
+          No team members found
+        </p>
+        <p className="text-teal-400 text-sm mt-2">
+          Try adjusting your search criteria
+        </p>
       </div>
     );
   }
@@ -470,13 +490,19 @@ const MobileTeamCards = React.memo(({ data, isLoading }) => {
 
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-              <span className="text-sm text-teal-600 font-medium">Username:</span>
-              <span className="text-sm text-teal-800">{item.username || "N/A"}</span>
+              <span className="text-sm text-teal-600 font-medium">
+                Username:
+              </span>
+              <span className="text-sm text-teal-800">
+                {item.username || "N/A"}
+              </span>
             </div>
 
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-              <span className="text-sm text-teal-600 font-medium">Referrals:</span>
+              <span className="text-sm text-teal-600 font-medium">
+                Referrals:
+              </span>
               <span className="text-sm font-semibold text-teal-800 bg-teal-50 px-2 py-1 rounded-md">
                 {item.totalChainReferrals || 0}
               </span>
@@ -484,7 +510,9 @@ const MobileTeamCards = React.memo(({ data, isLoading }) => {
 
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-              <span className="text-sm text-teal-600 font-medium">Join Date:</span>
+              <span className="text-sm text-teal-600 font-medium">
+                Join Date:
+              </span>
               <span className="text-sm text-teal-800">
                 {item.createdAt
                   ? item.createdAt.slice(0, 10).split("-").reverse().join("-")
@@ -499,8 +527,8 @@ const MobileTeamCards = React.memo(({ data, isLoading }) => {
 });
 
 // Add display names for React DevTools
-TeamTable.displayName = 'TeamTable';
-MobileTeamCards.displayName = 'MobileTeamCards';
+TeamTable.displayName = "TeamTable";
+MobileTeamCards.displayName = "MobileTeamCards";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -512,17 +540,22 @@ const Dashboard = () => {
   });
 
   // Memoized query parameters
-  const queryParams = useMemo(() => 
-    `limit=${queryState.perPage}&page=${queryState.currentPage}&search=${queryState.search}`,
+  const queryParams = useMemo(
+    () =>
+      `limit=${queryState.perPage}&page=${queryState.currentPage}&search=${queryState.search}`,
     [queryState.perPage, queryState.currentPage, queryState.search]
   );
 
   // API data fetching with react-query
-  const { data, isLoading, isError, error, refetch } = useUserDetailsQuery(queryParams);
+  const { data, isLoading, isError, error, refetch } =
+    useUserDetailsQuery(queryParams);
 
   // Extract team data and memoize it
-  const tableData = useMemo(() => data?.data?.withdrawRequests || [], [data?.data?.withdrawRequests]);
-  
+  const tableData = useMemo(
+    () => data?.data?.withdrawRequests || [],
+    [data?.data?.withdrawRequests]
+  );
+
   // Token validation effect
   useEffect(() => {
     const token = Cookies.get("token");
@@ -547,22 +580,22 @@ const Dashboard = () => {
   const handleSearch = useCallback((e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    
+
     // Use a proper debounce implementation
     const timeoutId = setTimeout(() => {
-      setQueryState(prev => ({
+      setQueryState((prev) => ({
         ...prev,
         search: value,
-        currentPage: 1
+        currentPage: 1,
       }));
     }, 800);
-    
+
     return () => clearTimeout(timeoutId);
   }, []);
 
   // Memoized pagination handler
   const handlePageChange = useCallback((page) => {
-    setQueryState(prev => ({ ...prev, currentPage: page }));
+    setQueryState((prev) => ({ ...prev, currentPage: page }));
   }, []);
 
   return (
@@ -579,7 +612,7 @@ const Dashboard = () => {
         pauseOnHover
         theme="colored"
       />
-      
+
       <div className="mb-3">
         <Suspense fallback={<ComponentLoader />}>
           <ActionButtons />
@@ -602,7 +635,7 @@ const Dashboard = () => {
           </Suspense>
         </div>
       </div>
-      
+
       <div className="w-full bg-gradient-to-br from-teal-50 to-teal-100 min-h-screen px-4 py-6">
         <div className="max-w-9xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
@@ -613,17 +646,27 @@ const Dashboard = () => {
               <input
                 type="text"
                 value={searchTerm}
-                placeholder="Search team members..."
-                className="w-full bg-white border-2 border-teal-200 text-teal-800 rounded-lg py-3 pl-12 pr-4 placeholder-teal-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all duration-200"
+                placeholder="Search"
+                className="w-full h-10 bg-white border border-gray-300 rounded-lg pl-10 pr-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-200 text-sm shadow-sm hover:border-gray-400"
                 onChange={handleSearch}
               />
-              <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                <img
-                  src={search}
-                  alt="search"
-                  className="w-5 h-5 text-teal-400"
-                />
-              </span>
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                {/* Using an SVG directly instead of an img tag to avoid path issues */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
 
@@ -660,9 +703,9 @@ const Dashboard = () => {
                   </th>
                 </tr>
               </thead>
-              <TeamTable 
-                data={tableData} 
-                isLoading={isLoading} 
+              <TeamTable
+                data={tableData}
+                isLoading={isLoading}
                 currentPage={queryState.currentPage}
                 perPage={queryState.perPage}
               />

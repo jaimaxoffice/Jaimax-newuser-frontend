@@ -630,7 +630,7 @@ const AnimatedTestimonials = ({ autoplay = true }) => {
   const isActive = (index) => index === active;
 
   return (
-    <div className="min-h-screen  flex items-center justify-center p-4 md:p-8">
+    <div className="min-h-screen  flex items-center justify-center p-4  md:p-8">
       <div className="max-w-7xl w-full">
         {/* Header */}
         <div className="text-center mb-10 md:mb-16">
