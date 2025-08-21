@@ -477,7 +477,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
   };
 
   const handleClose = () => {
-    navigate("/home");
+    navigate("/dashboard");
   };
 
   return (
@@ -619,7 +619,7 @@ export function ForgotPinModal({ onClose }) {
               {requestingOtp ? "Requesting OTP..." : "Request OTP"}
             </button>
             <button
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/dashboard")}
               type="button"
               className="mt-4 text-teal-600 underline text-sm font-medium"
             >
@@ -702,7 +702,7 @@ export function ForgotPinModal({ onClose }) {
               {resettingPin ? "Resetting..." : "Reset PIN"}
             </button>
             <button
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/dashboard")}
               type="button"
               className="mt-4 text-teal-600 underline text-sm font-medium"
             >
@@ -812,7 +812,7 @@ export function ChangePinModal({ onClose }) {
           {isLoading ? "Changing..." : "Change PIN"}
         </button>
         <button
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/dashboard")}
           type="button"
           className="mt-4 text-teal-600 underline text-sm font-medium"
         >

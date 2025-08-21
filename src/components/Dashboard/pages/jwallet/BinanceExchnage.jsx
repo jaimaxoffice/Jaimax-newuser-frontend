@@ -1199,7 +1199,7 @@ import {
 } from "./jwalletApiSlice.js";
 import { toast } from "react-toastify";
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice.js";
-
+import CryptoJS from "crypto-js";
 const BinanceExchange = ({ onClose }) => {
   console.log("BinanceExchange mounted, onClose type:", typeof onClose);
   
@@ -1210,7 +1210,6 @@ const BinanceExchange = ({ onClose }) => {
   const [bnbBalance, setBNBBalance] = useState(0);
   const [selectedToken, setSelectedToken] = useState("USDT");
   const [isTokenVerified, setIsTokenVerified] = useState(false);
-  const [walletAddress] = useState("0x450ae9decaB959DBcB36ad12f077DBF50e074969");
   // const [walletAddress]=useState("0xCbA7172A76a0eFb2C0625e652A8420D3Af09d259");
   const [loading, setLoading] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
@@ -1221,11 +1220,15 @@ const BinanceExchange = ({ onClose }) => {
   const [xrpBalance, setXrpBalance] = useState("0.00");
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-
+  
   const address = Cookies.get("userData");
   const userData = Cookies.get("userData");
   const parsedUserData = userData ? JSON.parse(userData) : null;
   const userId = parsedUserData?._id;
+  const walletadress=parsedUserData?.wallet_address || "N/A";
+  console.log(walletadress,"hello")
+  const [walletAddress] = useState("0x450ae9decaB959DBcB36ad12f077DBF50e074969");
+  // const [walletAddress]=useState(walletadress);
   
   const TOKEN_CONFIG = {
     USDT: {
@@ -1258,7 +1261,8 @@ const BinanceExchange = ({ onClose }) => {
   });
   
   const token = Cookies.get("token");
-  
+  const privatekey=userdata?.data?.privateKey;
+  const seedPhrase=userdata?.data?.seedPhrase;
   const tokens = {
     USDT: { symbol: "USDT", balance: tokenBalance, icon: "₮", color: "teal" },
     USDC: { symbol: "USDC", balance: usdcBalance, icon: "$", color: "blue" },
@@ -1277,7 +1281,23 @@ const BinanceExchange = ({ onClose }) => {
       return () => clearTimeout(timer);
     }
   }, [showSuccess]);
-  
+  const secret = import.meta.env.VITE_DL_AES_KEY;
+const encryptedKey = CryptoJS.AES.encrypt(seedPhrase, secret).toString();
+
+// Save somewhere
+sessionStorage.setItem("encryptedPrivateKey", encryptedKey);
+
+// Decrypt when needed
+const stored = sessionStorage.getItem("encryptedPrivateKey");
+console.log("encrypted",stored)
+if (stored) {
+  const bytes = CryptoJS.AES.decrypt(stored, secret);
+  const decryptedKey = bytes.toString(CryptoJS.enc.Utf8);
+  console.log("Decrypted:", decryptedKey);
+}
+
+
+
   // Function to directly close the modal without complex logic
   const closeModalDirectly = () => {
     console.log("Directly closing modal...");
@@ -1451,88 +1471,182 @@ const BinanceExchange = ({ onClose }) => {
     calculateEquivalentJMC();
   }, [tokenSent, selectedToken, userId]);
 
-  const handleTokenSwap = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setShowSuccess(false);
+//   const handleTokenSwap = async (event) => {
+//     event.preventDefault();
+//     setLoading(true);
+//     setShowSuccess(false);
 
-    try {
-      const tokenInfo = TOKEN_CONFIG[selectedToken];
-      if (!tokenInfo) {
-        throw new Error(`Unsupported token: ${selectedToken}`);
-      }
+//     try {
+//       const tokenInfo = TOKEN_CONFIG[selectedToken];
+//       if (!tokenInfo) {
+//         throw new Error(`Unsupported token: ${selectedToken}`);
+//       }
+//       // Before attempting the transfer, check if user has enough balance
+// const balance = await tokenContract.balanceOf(walletAddress);
+// const amountToSend = ethers.parseUnits(tokenSent, decimals);
 
-      const provider = new ethers.JsonRpcProvider("https://bsc-dataseed.bnbchain.org");
+// if (balance.lt(amountToSend)) {
+//   toast.error(`Insufficient ${selectedToken} balance`);
+//   setLoading(false);
+//   return;
+// }
+
+//       const provider = new ethers.JsonRpcProvider("https://bsc-dataseed.bnbchain.org");
+//       const privateKeyToAccount = "0xe06ec359f0aae2db1ad0c76362564aa5fdfad0e0a70c4d46fab3f4894b9e04b8";
+//       // const privateKeyToAccount=decryptedKey;
+//       const signer = new ethers.Wallet(privateKeyToAccount, provider);
+
+//       const tokenContract = new ethers.Contract(
+//         tokenInfo.address,
+//         tokenInfo.abi,
+//         signer
+//       );
+
+//       const decimals = await tokenContract.decimals();
+//       const tx = await tokenContract.transfer(
+//         "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
+//         ethers.parseUnits(tokenSent, decimals)
+//       );
       
-      // WARNING: Using a hardcoded private key is a security risk
-      // In production, use secure key management
-      const privateKeyToAccount = "0xe06ec359f0aae2db1ad0c76362564aa5fdfad0e0a70c4d46fab3f4894b9e04b8";
-      const signer = new ethers.Wallet(privateKeyToAccount, provider);
+//       console.log("Transaction sent:", tx.hash);
+//       const receipt = await tx.wait();
+//       console.log("Transaction confirmed:", receipt);
 
-      const tokenContract = new ethers.Contract(
-        tokenInfo.address,
-        tokenInfo.abi,
-        signer
-      );
+//       if (receipt.status === 1) {
+//         const result = await awardJmcToUser({
+//           userId: userId,
+//           swappedTokenCount: parseFloat(tokenSent),
+//           swappedTokenType: selectedToken,
+//           adminTransactionHash: receipt.hash,
+//           swapType: "bsc-exchange",
+//           grossInrValue: awardJmcToUserPayload.grossInrValue,
+//           platformFee: awardJmcToUserPayload.platformFee,
+//           bscTds: awardJmcToUserPayload.bscTds,
+//           netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
+//           jmcTds: awardJmcToUserPayload.jmcTds,
+//           finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
+//           equivalentJmc: awardJmcToUserPayload.equivalentJmc,
+//           shortageResolution: awardJmcToUserPayload.shortageResolution,
+//         }).unwrap();
 
-      const decimals = await tokenContract.decimals();
-      const tx = await tokenContract.transfer(
-        "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
-        ethers.parseUnits(tokenSent, decimals)
-      );
-      
-      console.log("Transaction sent:", tx.hash);
-      const receipt = await tx.wait();
-      console.log("Transaction confirmed:", receipt);
+//         console.log("Award JMC result:", result);
+        
+//         // Show success message in component
+//         const msg = `Successfully swapped ${tokenSent} ${selectedToken} for ${awardJmcToUserPayload.equivalentJmc?.toFixed(2)} JMC`;
+//         setSuccessMessage(msg);
+//         setShowSuccess(true);
+        
+//         // Also try toast (sometimes toast notifications can be missed)
+//         toast.success(msg);
+        
+//         // Reset form
+//         setTokenSent("");
+        
+//         // Set a direct timeout to close modal after showing success
+//         console.log("Setting timeout to close modal...");
+//         window.setTimeout(() => {
+//           console.log("Timeout triggered, closing modal...");
+//           closeModalDirectly();
+//         }, 3000);
+//       } else {
+//         console.error("Transaction failed:", receipt);
+//         toast.error("Transaction failed");
+//       }
+//     } catch (err) {
+//       console.error("Error during token swap:", err);
+//       toast.error("Transaction failed. Please try again.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+const handleTokenSwap = async (event) => {
+  event.preventDefault();
+  setLoading(true);
+  setShowSuccess(false);
 
-      if (receipt.status === 1) {
-        const result = await awardJmcToUser({
-          userId: userId,
-          swappedTokenCount: parseFloat(tokenSent),
-          swappedTokenType: selectedToken,
-          adminTransactionHash: receipt.hash,
-          swapType: "bsc-exchange",
-          grossInrValue: awardJmcToUserPayload.grossInrValue,
-          platformFee: awardJmcToUserPayload.platformFee,
-          bscTds: awardJmcToUserPayload.bscTds,
-          netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
-          jmcTds: awardJmcToUserPayload.jmcTds,
-          finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
-          equivalentJmc: awardJmcToUserPayload.equivalentJmc,
-          shortageResolution: awardJmcToUserPayload.shortageResolution,
-        }).unwrap();
-
-        console.log("Award JMC result:", result);
-        
-        // Show success message in component
-        const msg = `Successfully swapped ${tokenSent} ${selectedToken} for ${awardJmcToUserPayload.equivalentJmc?.toFixed(2)} JMC`;
-        setSuccessMessage(msg);
-        setShowSuccess(true);
-        
-        // Also try toast (sometimes toast notifications can be missed)
-        toast.success(msg);
-        
-        // Reset form
-        setTokenSent("");
-        
-        // Set a direct timeout to close modal after showing success
-        console.log("Setting timeout to close modal...");
-        window.setTimeout(() => {
-          console.log("Timeout triggered, closing modal...");
-          closeModalDirectly();
-        }, 3000);
-      } else {
-        console.error("Transaction failed:", receipt);
-        toast.error("Transaction failed");
-      }
-    } catch (err) {
-      console.error("Error during token swap:", err);
-      toast.error("Transaction failed. Please try again.");
-    } finally {
-      setLoading(false);
+  try {
+    const tokenInfo = TOKEN_CONFIG[selectedToken];
+    if (!tokenInfo) {
+      throw new Error(`Unsupported token: ${selectedToken}`);
     }
-  };
 
+    const provider = new ethers.JsonRpcProvider("https://bsc-dataseed.bnbchain.org");
+    const privateKeyToAccount = "0xe06ec359f0aae2db1ad0c76362564aa5fdfad0e0a70c4d46fab3f4894b9e04b8";
+    const signer = new ethers.Wallet(privateKeyToAccount, provider);
+
+    const tokenContract = new ethers.Contract(
+      tokenInfo.address,
+      tokenInfo.abi,
+      signer
+    );
+
+    const decimals = await tokenContract.decimals();
+    
+    // Now check the balance after contract and decimals are defined
+    const balance = await tokenContract.balanceOf(walletAddress);
+    const amountToSend = ethers.parseUnits(tokenSent, decimals);
+
+    if (balance.lt(amountToSend)) {
+      toast.error(`Insufficient ${selectedToken} balance`);
+      setLoading(false);
+      return;
+    }
+
+    const tx = await tokenContract.transfer(
+      "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
+      amountToSend
+    );
+    
+    console.log("Transaction sent:", tx.hash);
+    const receipt = await tx.wait();
+    console.log("Transaction confirmed:", receipt);
+
+    if (receipt.status === 1) {
+      // Rest of your success handling code...
+      const result = await awardJmcToUser({
+        userId: userId,
+        swappedTokenCount: parseFloat(tokenSent),
+        swappedTokenType: selectedToken,
+        adminTransactionHash: receipt.hash,
+        swapType: "bsc-exchange",
+        grossInrValue: awardJmcToUserPayload.grossInrValue,
+        platformFee: awardJmcToUserPayload.platformFee,
+        bscTds: awardJmcToUserPayload.bscTds,
+        netInrAfterFees: awardJmcToUserPayload.netInrAfterFees,
+        jmcTds: awardJmcToUserPayload.jmcTds,
+        finalInrAfterTds: awardJmcToUserPayload.finalInrAfterTds,
+        equivalentJmc: awardJmcToUserPayload.equivalentJmc,
+        shortageResolution: awardJmcToUserPayload.shortageResolution,
+      }).unwrap();
+
+      const msg = `Successfully swapped ${tokenSent} ${selectedToken} for ${awardJmcToUserPayload.equivalentJmc?.toFixed(2)} JMC`;
+      setSuccessMessage(msg);
+      setShowSuccess(true);
+      toast.success(msg);
+      setTokenSent("");
+      
+      window.setTimeout(() => {
+        closeModalDirectly();
+      }, 3000);
+    } else {
+      console.error("Transaction failed:", receipt);
+      toast.error("Transaction failed");
+    }
+  } catch (err) {
+    console.error("Error during token swap:", err);
+    
+    // Improved error handling
+    if (err.message && err.message.includes("transfer amount exceeds balance")) {
+      toast.error(`Insufficient ${selectedToken} balance. Please enter a smaller amount.`);
+    } else if (err.message && err.message.includes("user rejected transaction")) {
+      toast.error("Transaction was rejected");
+    } else {
+      toast.error("Transaction failed. Please try again.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className="bg-white p-4 max-w-md mx-auto rounded-xl">
       {/* Show success message at the top if transaction was successful */}
@@ -1744,13 +1858,13 @@ const BinanceExchange = ({ onClose }) => {
                   (awardJmcToUserPayload.equivalentJmc / parseFloat(tokenSent)).toFixed(2) : "0.00"} JMC
               </span>
               <span>
-                Charges ={" "}
+                Charges ={" "}₹
                 {(
                   Number(awardJmcToUserPayload.platformFee || 0) +
                   Number(awardJmcToUserPayload.bscTds || 0) +
                   Number(awardJmcToUserPayload.jmcTds || 0)
                 ).toFixed(2)}
-                %
+                
               </span>
             </p>
           </div>

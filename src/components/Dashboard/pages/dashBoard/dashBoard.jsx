@@ -324,7 +324,7 @@ import Cookies from "js-cookie";
 import search from "../../../../assets/search.svg";
 import Loader from "../../../Loader/loader";
 import Pagination from "../../../pagination/pagination";
-import { useUserDetailsQuery } from "../myTotalTeam/myTotatTeamApliSlice";
+import { useUserDetailsQuery } from "../myTotalTeam/myTotalTeamApiSlice";
 
 // Lazy-loaded components
 const ActionButtons = lazy(() => import("./actionComponent/actionCompent"));

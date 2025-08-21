@@ -423,7 +423,7 @@ const Header = React.memo(() => {
               <img
                 src={profileImage}
                 alt="Profile"
-                className="w-full h-full object-cover sm:p-3"
+                className="w-full h-full  sm:p-3"
                 loading="lazy"
               />
             ) : (

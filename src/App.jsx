@@ -61,14 +61,6 @@ import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
 import ErrorBoundary from "./pages/chatbot/ErrorBoundary";
 import ChatAssistant from "./pages/chatbot/chatComponent";
-// const getAuthToken = () => {
-//   try {
-//     return localStorage.getItem("token") || null; // Switched to localStorage
-//   } catch (error) {
-//     console.error("Error accessing localStorage:", error);
-//     return null;
-//   }
-// };
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -77,22 +69,14 @@ const getAuthToken = () => {
     return null;
   }
 };
-// const isValidToken = (token) => {
-//   // No need for try/catch here, just check if token is a non-empty string
-//   return typeof token === "string" && token.length > 0;
-// };
+
 
 const isAuthenticated = () => {
   const token = getAuthToken();
   return token;
 };
 
-// const PublicRoute = () => {
-//   if (isAuthenticated()) {
-//     return <Navigate to="/dashboard" replace />;
-//   }
-//   return <Outlet />;
-// };
+
 
 const getLastSplashTime = () => {
   try {

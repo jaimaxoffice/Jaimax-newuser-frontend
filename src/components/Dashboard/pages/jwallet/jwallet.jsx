@@ -1826,7 +1826,7 @@
 // //   const [showChangePinModal, setShowChangePinModal] = useState(false);
 // //   const [isTokenVerified, setIsTokenVerified] = useState(false);
 // //   const [showPurchaseCoinsModal, setShowPurchaseCoinsModal] = useState(false);
-  
+
 // //   // Mutations and queries with loading states
 // //   const [proceedOrder] = useProceedOrderMutation();
 // //   const [createPayment] = useCreatePaymentMutation();
@@ -1835,7 +1835,7 @@
 // //   const [exchangeCrypto] = useExchangeCryptoMutation();
 // //   const [addOrder, { isLoading: isAddOrderLoading }] = useAddOrderMutation();
 // //   const [awardJmcToUser, { isLoading: isAwarding }] = useAwardJmcToUserMutation();
-  
+
 // //   const HARDCODED = Cookies.get("userData");
 // //   const parsedUserData = HARDCODED ? JSON.parse(HARDCODED) : null;
 // //   const HARDCODED_USER_ID = parsedUserData?._id;
@@ -1843,10 +1843,10 @@
 // //   const tkn = Cookies.get("token");
 // //   const id = sessionStorage.setItem("tkn", tkn);
 // //   const token = sessionStorage.getItem("tkn");
-  
+
 // //   // Determine if any loading state is active
 // //   const isPageLoading = isLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
-  
+
 // //   // Token configuration
 // //   const TOKEN_CONFIG = {
 // //     USDT: {
@@ -1870,7 +1870,7 @@
 // //       abi: adaJSON.abi,
 // //     },
 // //   };
-  
+
 // //   useEffect(() => {
 // //     const handleCompletion = () => {
 // //       console.log("Custom event received, closing modal");
@@ -1883,7 +1883,7 @@
 // //       document.removeEventListener("binanceExchangeCompleted", handleCompletion);
 // //     };
 // //   }, []);
-  
+
 // //   useEffect(() => {
 // //     const verifyToken = async () => {
 // //       if (!token) {
@@ -1893,11 +1893,11 @@
 // //     };
 // //     verifyToken();
 // //   }, [token]);
-  
+
 // //   const { data: userData, refetch, isLoading: isUserDataLoading } = useUserDataQuery(undefined, {
 // //     skip: !isTokenVerified,
 // //   });
-  
+
 // //   useEffect(() => {
 // //     const pinVerified = sessionStorage.getItem("isPinVerified");
 // //     if (pinVerified === "true") {
@@ -1906,7 +1906,7 @@
 // //     }
 // //     setSessionChecked(true); // Mark that we've checked the session storage
 // //   }, []);
-  
+
 // //   useEffect(() => {
 // //     if (userData && userData.data && sessionChecked) {
 // //       if (!userData.data.pin) {
@@ -1967,7 +1967,7 @@
 // //         expiresAt: res.data.expiresAt,
 // //         requsetedAmount: res.data.requsetedAmount,
 // //       });
-      
+
 // //       setShowBuyModal(false);
 // //       setShowPurchaseCoinsModal(true);
 // //     } catch (err) {
@@ -1991,7 +1991,7 @@
 // //     if (!HARDCODED_USER_ID) {
 // //       return setFormErrors({ user: "Missing user id" });
 // //     }
-    
+
 // //     if (!paymentMethod) {
 // //       return setFormErrors({ paymentMethod: "Select a payment method" });
 // //     }
@@ -2005,7 +2005,7 @@
 // //       if (purchaseCoinsBreakup.totalAmount) {
 // //         amount = Number(purchaseCoinsBreakup.totalAmount);
 // //       }
-      
+
 // //       const payload = {
 // //         currency: "INR",
 // //         paymentMethod: paymentMethod,
@@ -2021,7 +2021,7 @@
 // //         toast.success(response?.message || "Purchase successful", {
 // //           position: "top-center",
 // //         });
-        
+
 // //         setShowPurchaseCoinsModal(false);
 
 // //         // Show Chrome notification
@@ -2049,7 +2049,7 @@
 // //     setFormErrors({});
 // //     setPurchaseCoinsBreakup({});
 // //   };
-  
+
 // //   const handleGetUserDetails = async (id = null) => {
 // //     const targetUserId = id || HARDCODED_USER_ID;
 
@@ -2148,7 +2148,7 @@
 // //       setIsCalculating(false);
 // //     }
 // //   };
-  
+
 // //   const testnetContractAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd"; // Testnet USDT address
 // //   const contractAddress = "0x55d398326f99059fF775485246999027B3197955"; //Mainnet USDT address (BSC)
 
@@ -2254,7 +2254,7 @@
 
 // //     return () => clearTimeout(timeoutId);
 // //   }, [sellAmount, sellToken, showSwapModal]);
-  
+
 // //   const TransactionHistorySection = () => {
 // //     // Define a simpler query just for the wallet view
 // //     const queryParams = `limit=5&page=1&status=Completed`;
@@ -2265,7 +2265,7 @@
 // //       error,
 // //       refetch,
 // //     } = useBuyDetailsQuery(queryParams);
-    
+
 // //     useEffect(() => {
 // //       // Initial fetch
 // //       refetch();
@@ -2566,7 +2566,7 @@
 // //       "noopener,noreferrer"
 // //     );
 // //   };
-  
+
 // //   return (
 // //     <>
 // //       {/* Main loader when page is initially loading */}
@@ -2615,7 +2615,7 @@
 // //         <div className="min-h-screen bg-gradient-to-b from-white to-teal-50">
 // //           {/* Show loading indicator when user data is loading */}
 // //           {isUserDataLoading && <Loader />}
-          
+
 // //           <div className="container mx-auto px-4 py-8">
 // //             {/* Header Section */}
 // //             <div className="mb-8">
@@ -3109,7 +3109,7 @@
 // //           </div>
 // //         </div>
 // //       )}
-      
+
 // //       {showPurchaseCoinsModal && (
 // //         <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
 // //           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full my-2 animate-fadeIn">
@@ -3475,7 +3475,7 @@
 // //           </div>
 // //         </div>
 // //       )}
-      
+
 // //       {showBinanceExchange && (
 // //         <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
 // //           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full animate-fadeIn">
@@ -3517,8 +3517,6 @@
 // // };
 
 // // export default UserDetailsComponent;
-
-
 
 // import React, { useState, useEffect } from "react";
 // import {
@@ -3587,7 +3585,7 @@
 //   const [showChangePinModal, setShowChangePinModal] = useState(false);
 //   const [isTokenVerified, setIsTokenVerified] = useState(false);
 //   const [showPurchaseCoinsModal, setShowPurchaseCoinsModal] = useState(false);
-  
+
 //   // Mutations and queries with loading states
 //   const [proceedOrder] = useProceedOrderMutation();
 //   const [createPayment] = useCreatePaymentMutation();
@@ -3596,7 +3594,7 @@
 //   const [exchangeCrypto] = useExchangeCryptoMutation();
 //   const [addOrder, { isLoading: isAddOrderLoading }] = useAddOrderMutation();
 //   const [awardJmcToUser, { isLoading: isAwarding }] = useAwardJmcToUserMutation();
-  
+
 //   const HARDCODED = Cookies.get("userData");
 //   const parsedUserData = HARDCODED ? JSON.parse(HARDCODED) : null;
 //   const HARDCODED_USER_ID = parsedUserData?._id;
@@ -3604,10 +3602,10 @@
 //   const tkn = Cookies.get("token");
 //   const id = sessionStorage.setItem("tkn", tkn);
 //   const token = sessionStorage.getItem("tkn");
-  
+
 //   // Determine if any loading state is active
 //   const isPageLoading = isLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
-  
+
 //   // Token configuration
 //   const TOKEN_CONFIG = {
 //     USDT: {
@@ -3631,7 +3629,7 @@
 //       abi: adaJSON.abi,
 //     },
 //   };
-  
+
 //   useEffect(() => {
 //     const handleCompletion = () => {
 //       console.log("Custom event received, closing modal");
@@ -3644,7 +3642,7 @@
 //       document.removeEventListener("binanceExchangeCompleted", handleCompletion);
 //     };
 //   }, []);
-  
+
 //   useEffect(() => {
 //     const verifyToken = async () => {
 //       if (!token) {
@@ -3654,11 +3652,11 @@
 //     };
 //     verifyToken();
 //   }, [token]);
-  
+
 //   const { data: userData, refetch, isLoading: isUserDataLoading } = useUserDataQuery(undefined, {
 //     skip: !isTokenVerified,
 //   });
-  
+
 //   useEffect(() => {
 //     const pinVerified = sessionStorage.getItem("isPinVerified");
 //     if (pinVerified === "true") {
@@ -3667,7 +3665,7 @@
 //     }
 //     setSessionChecked(true); // Mark that we've checked the session storage
 //   }, []);
-  
+
 //   useEffect(() => {
 //     if (userData && userData.data && sessionChecked) {
 //       if (!userData.data.pin) {
@@ -3728,7 +3726,7 @@
 //         expiresAt: res.data.expiresAt,
 //         requsetedAmount: res.data.requsetedAmount,
 //       });
-      
+
 //       setShowBuyModal(false);
 //       setShowPurchaseCoinsModal(true);
 //     } catch (err) {
@@ -3752,7 +3750,7 @@
 //     if (!HARDCODED_USER_ID) {
 //       return setFormErrors({ user: "Missing user id" });
 //     }
-    
+
 //     if (!paymentMethod) {
 //       return setFormErrors({ paymentMethod: "Select a payment method" });
 //     }
@@ -3766,7 +3764,7 @@
 //       if (purchaseCoinsBreakup.totalAmount) {
 //         amount = Number(purchaseCoinsBreakup.totalAmount);
 //       }
-      
+
 //       const payload = {
 //         currency: "INR",
 //         paymentMethod: paymentMethod,
@@ -3782,7 +3780,7 @@
 //         toast.success(response?.message || "Purchase successful", {
 //           position: "top-center",
 //         });
-        
+
 //         setShowPurchaseCoinsModal(false);
 
 //         // Show Chrome notification
@@ -3810,7 +3808,7 @@
 //     setFormErrors({});
 //     setPurchaseCoinsBreakup({});
 //   };
-  
+
 //   const handleGetUserDetails = async (id = null) => {
 //     const targetUserId = id || HARDCODED_USER_ID;
 
@@ -3909,7 +3907,7 @@
 //       setIsCalculating(false);
 //     }
 //   };
-  
+
 //   const testnetContractAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd"; // Testnet USDT address
 //   const contractAddress = "0x55d398326f99059fF775485246999027B3197955"; //Mainnet USDT address (BSC)
 
@@ -4015,7 +4013,7 @@
 
 //     return () => clearTimeout(timeoutId);
 //   }, [sellAmount, sellToken, showSwapModal]);
-  
+
 //   const TransactionHistorySection = () => {
 //     // Define a simpler query just for the wallet view
 //     const queryParams = `limit=5&page=1&status=Completed`;
@@ -4026,7 +4024,7 @@
 //       error,
 //       refetch,
 //     } = useBuyDetailsQuery(queryParams);
-    
+
 //     useEffect(() => {
 //       // Initial fetch
 //       refetch();
@@ -4327,7 +4325,7 @@
 //       "noopener,noreferrer"
 //     );
 //   };
-  
+
 //   return (
 //     <>
 //       {/* Main loader when page is initially loading */}
@@ -4376,7 +4374,7 @@
 //         <div className="min-h-screen bg-gradient-to-b from-white to-teal-50">
 //           {/* Show loading indicator when user data is loading */}
 //           {isUserDataLoading && <Loader />}
-          
+
 //           <div className="container mx-auto px-4 py-8">
 //             {/* Header Section */}
 //             <div className="mb-8">
@@ -4870,7 +4868,7 @@
 //           </div>
 //         </div>
 //       )}
-      
+
 //       {showPurchaseCoinsModal && (
 //         <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
 //           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full my-2 animate-fadeIn">
@@ -5197,7 +5195,7 @@
 //           </div>
 //         </div>
 //       )}
-      
+
 //       {showBinanceExchange && (
 //         <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
 //           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full animate-fadeIn">
@@ -5240,7 +5238,6 @@
 
 // export default UserDetailsComponent;
 
-
 import React, { useState, useEffect } from "react";
 import {
   useGetUserDetailsMutation,
@@ -5248,14 +5245,11 @@ import {
   useExchangeCryptoMutation,
   useAwardJmcToUserMutation,
 } from "./jwalletApiSlice";
-import abi from "./usdt.json";
 import icon from "../../../../assets/Images/jaicoin.svg";
 import { ethers } from "ethers";
-import usdtJSON from "./usdt.json";
 import ConnectWallet from "./ConnectWallet.jsx";
 import { useWalletClient, useAccount } from "wagmi";
 import BinanceExchange from "./BinanceExchnage.jsx";
-import { useGetRoundQuery } from "../../../../components/Dashboard/pages/dashBoard/DashboardApliSlice";
 import Cookies from "js-cookie";
 import CreateWalletPin, {
   ForgotPinModal,
@@ -5267,16 +5261,16 @@ import {
   useAddOrderMutation,
   useUserDataQuery,
   useCreatePaymentMutation,
+  useGetRoundQuery,
 } from "../dashBoard/DashboardApliSlice.js";
 import adaJSON from "./ada.json";
 import xrpjson from "./xrp.json";
 import USDTJSON from "./usdt.json";
 import trxJSON from "./trx.json";
 import USDCJSON from "./usdc.json";
-import testnetUSDTJSON from "./testnetUSDT.json";
 import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
 import { toast } from "react-toastify";
-import Loader from '../../../Loader/loader';
+import Loader from "../../../Loader/loader";
 import { useNavigate } from "react-router-dom";
 import icon2 from "../../../../../public/whitejaimaclogo.png";
 
@@ -5309,16 +5303,19 @@ const UserDetailsComponent = () => {
   const [showChangePinModal, setShowChangePinModal] = useState(false);
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const [showPurchaseCoinsModal, setShowPurchaseCoinsModal] = useState(false);
-  
+
   // Mutations and queries with loading states
   const [proceedOrder] = useProceedOrderMutation();
   const [createPayment] = useCreatePaymentMutation();
-  const [getUserDetails, { data, isLoading, error }] = useGetUserDetailsMutation();
-  const [exchangeInrToCrypto, { isLoading: isExchangeLoading }] = useExchangeInrToCryptoMutation();
+  const [getUserDetails, { data, isLoading, error }] =
+    useGetUserDetailsMutation();
+  const [exchangeInrToCrypto, { isLoading: isExchangeLoading }] =
+    useExchangeInrToCryptoMutation();
   const [exchangeCrypto] = useExchangeCryptoMutation();
   const [addOrder, { isLoading: isAddOrderLoading }] = useAddOrderMutation();
-  const [awardJmcToUser, { isLoading: isAwarding }] = useAwardJmcToUserMutation();
-  
+  const [awardJmcToUser, { isLoading: isAwarding }] =
+    useAwardJmcToUserMutation();
+
   const HARDCODED = Cookies.get("userData");
   const parsedUserData = HARDCODED ? JSON.parse(HARDCODED) : null;
   const HARDCODED_USER_ID = parsedUserData?._id;
@@ -5327,10 +5324,12 @@ const UserDetailsComponent = () => {
   const id = sessionStorage.setItem("tkn", tkn);
   const token = sessionStorage.getItem("tkn");
   const { data: roundsData, isloading } = useGetRoundQuery();
-const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1) || [];
+  const liveRounds =
+    roundsData?.data?.rounds?.filter((round) => round.status === 1) || [];
   // Determine if any loading state is active
-  const isPageLoading = isLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
-  
+  const isPageLoading =
+    isLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
+
   // Token configuration
   const TOKEN_CONFIG = {
     USDT: {
@@ -5354,10 +5353,10 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
       abi: adaJSON.abi,
     },
   };
-  
+
   // Make setShowBinanceExchange available globally for BinanceExchange component
   window.setShowBinanceExchange = setShowBinanceExchange;
-  
+
   useEffect(() => {
     const handleCompletion = () => {
       console.log("Custom event received, closing modal");
@@ -5367,10 +5366,13 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
     document.addEventListener("binanceExchangeCompleted", handleCompletion);
 
     return () => {
-      document.removeEventListener("binanceExchangeCompleted", handleCompletion);
+      document.removeEventListener(
+        "binanceExchangeCompleted",
+        handleCompletion
+      );
     };
   }, []);
-  
+
   useEffect(() => {
     const verifyToken = async () => {
       if (!token) {
@@ -5380,34 +5382,46 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
     };
     verifyToken();
   }, [token]);
-  
-  const { data: userData, refetch, isLoading: isUserDataLoading } = useUserDataQuery(undefined, {
+
+  const {
+    data: userData,
+    refetch,
+    isLoading: isUserDataLoading,
+  } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
-  
+
   useEffect(() => {
-  const storedData = sessionStorage.getItem("isPinVerified");
+    const storedData = sessionStorage.getItem("isPinVerified");
 
-  if (storedData) {
-    const { value, timestamp } = JSON.parse(storedData);
+    if (storedData) {
+      const { value, timestamp } = JSON.parse(storedData);
+      const now = Date.now();
+      const diff = now - timestamp;
 
-    // check expiry (7 minutes = 420000 ms)
-    const now = Date.now();
-    if (value === "true" && now - timestamp < 7 * 60 * 1000) {
-      setIsPinVerified(true);
-      setShowPinEntry(false);
-    } else {
-      // expired -> clear storage
-      sessionStorage.removeItem("isPinVerified");
-      setIsPinVerified(false);
-      setShowPinEntry(true);
+      if (value === "true" && diff < 7 * 60 * 1000) {
+        setIsPinVerified(true);
+        setShowPinEntry(false);
+
+        // auto-expire after remaining time
+        const timeout = setTimeout(() => {
+          sessionStorage.removeItem("isPinVerified");
+          setIsPinVerified(false);
+          setShowPinEntry(true);
+        }, 7 * 60 * 1000 - diff);
+
+        return () => clearTimeout(timeout);
+      } else {
+        // expired -> clear storage
+        sessionStorage.removeItem("isPinVerified");
+        setIsPinVerified(false);
+        setShowPinEntry(true);
+      }
     }
-  }
 
-  setSessionChecked(true); // finished checking
-}, []);
+    setSessionChecked(true); // finished checking
+  }, []);
 
-  
   useEffect(() => {
     if (userData && userData.data && sessionChecked) {
       if (!userData.data.pin) {
@@ -5468,7 +5482,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
         expiresAt: res.data.expiresAt,
         requsetedAmount: res.data.requsetedAmount,
       });
-      
+
       setShowBuyModal(false);
       setShowPurchaseCoinsModal(true);
     } catch (err) {
@@ -5492,7 +5506,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
     if (!HARDCODED_USER_ID) {
       return setFormErrors({ user: "Missing user id" });
     }
-    
+
     if (!paymentMethod) {
       return setFormErrors({ paymentMethod: "Select a payment method" });
     }
@@ -5506,7 +5520,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
       if (purchaseCoinsBreakup.totalAmount) {
         amount = Number(purchaseCoinsBreakup.totalAmount);
       }
-      
+
       const payload = {
         currency: "INR",
         paymentMethod: paymentMethod,
@@ -5522,7 +5536,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
         toast.success(response?.message || "Purchase successful", {
           position: "top-center",
         });
-        
+
         setShowPurchaseCoinsModal(false);
 
         // Show Chrome notification
@@ -5550,7 +5564,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
     setFormErrors({});
     setPurchaseCoinsBreakup({});
   };
-  
+
   const handleGetUserDetails = async (id = null) => {
     const targetUserId = id || HARDCODED_USER_ID;
 
@@ -5649,7 +5663,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
       setIsCalculating(false);
     }
   };
-  
+
   const testnetContractAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd"; // Testnet USDT address
   const contractAddress = "0x55d398326f99059fF775485246999027B3197955"; //Mainnet USDT address (BSC)
 
@@ -5755,7 +5769,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
 
     return () => clearTimeout(timeoutId);
   }, [sellAmount, sellToken, showSwapModal]);
-  
+
   const TransactionHistorySection = () => {
     // Define a simpler query just for the wallet view
     const queryParams = `limit=5&page=1&status=Completed`;
@@ -5766,7 +5780,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
       error,
       refetch,
     } = useBuyDetailsQuery(queryParams);
-    
+
     useEffect(() => {
       // Initial fetch
       refetch();
@@ -6067,7 +6081,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
       "noopener,noreferrer"
     );
   };
-  
+
   return (
     <>
       {/* Main loader when page is initially loading */}
@@ -6097,7 +6111,12 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
           onSuccess={() => {
             setIsPinVerified(true);
             setShowPinEntry(false);
-            sessionStorage.setItem("isPinVerified", "true");
+
+            // Save timestamp when user enters PIN successfully
+            sessionStorage.setItem(
+              "isPinVerified",
+              JSON.stringify({ value: "true", timestamp: Date.now() })
+            );
           }}
           onForgotPin={() => setShowForgotPinModal(true)}
           onChangePin={() => setShowChangePinModal(true)}
@@ -6116,7 +6135,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
         <div className="min-h-screen bg-gradient-to-b from-white to-teal-50">
           {/* Show loading indicator when user data is loading */}
           {isUserDataLoading && <Loader />}
-          
+
           <div className="container mx-auto px-4 py-8">
             {/* Header Section */}
             <div className="mb-8">
@@ -6462,31 +6481,31 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
                   JMC Token Price
                 </h6>
                 <div className="grid grid-cols-2 gap-3">
-            <div className="flex items-center">
-              <span className="text-teal-600 mr-2">₹</span>
-              <div>
-                <small className="text-teal-600 block text-xs">
-                  INR Price
-                </small>
-                <strong className="text-gray-800 text-sm">
-                  ₹{liveRounds[0]?.atPriceInr || "0.00"}
-                </strong>{" "}
-                per JMC
-              </div>
-            </div>
-            <div className="flex items-center">
-              <span className="text-teal-600 mr-2">$</span>
-              <div>
-                <small className="text-teal-600 block text-xs">
-                  USD Price
-                </small>
-                <strong className="text-gray-800 text-sm">
-                  ${liveRounds[0]?.atPriceUsdt || "0.00"}
-                </strong>{" "}
-                per JMC
-              </div>
-            </div>
-          </div>
+                  <div className="flex items-center">
+                    <span className="text-teal-600 mr-2">₹</span>
+                    <div>
+                      <small className="text-teal-600 block text-xs">
+                        INR Price
+                      </small>
+                      <strong className="text-gray-800 text-sm">
+                        ₹{liveRounds[0]?.atPriceInr || "0.00"}
+                      </strong>{" "}
+                      per JMC
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-teal-600 mr-2">$</span>
+                    <div>
+                      <small className="text-teal-600 block text-xs">
+                        USD Price
+                      </small>
+                      <strong className="text-gray-800 text-sm">
+                        ${liveRounds[0]?.atPriceUsdt || "0.00"}
+                      </strong>{" "}
+                      per JMC
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="mb-5">
@@ -6614,7 +6633,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
           </div>
         </div>
       )}
-      
+
       {showPurchaseCoinsModal && (
         <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full my-2 animate-fadeIn">
@@ -6740,13 +6759,30 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
                 >
                   {isCompletingPurchase ? (
                     <>
-                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Processing...
                     </>
-                  ) : "Pay & Complete"}
+                  ) : (
+                    "Pay & Complete"
+                  )}
                 </button>
               </div>
             </form>
@@ -6980,7 +7016,7 @@ const liveRounds = roundsData?.data?.rounds?.filter(round => round.status === 1)
           </div>
         </div>
       )}
-      
+
       {showBinanceExchange && (
         <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full animate-fadeIn">

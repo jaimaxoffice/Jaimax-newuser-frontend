@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef,useCallback  } from "react";
-import { Search, X, ChevronDown, Paperclip, Upload, Filter, Eye, Send,ArrowLeft ,User ,AlertCircle ,MessageSquare ,Clock , Image as ImageIcon } from "lucide-react";
+import { Search, X, ChevronDown, Paperclip, Upload,CheckCircle2 , Filter, Eye, Send,ArrowLeft ,User ,AlertCircle ,MessageSquare ,Clock , Image as ImageIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import { Select, MenuItem } from "@mui/material";
 import { useParams,Link  } from 'react-router-dom';
-// Import your actual RTK Query hooks
 import {
   useSupportDataQuery,
   useCategoryGetQuery,
@@ -54,27 +53,27 @@ const CreateTicketModal = ({ show, setShow }) => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleTicket = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+const handleTicket = async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
 
-    try {
-      const submitFormData = new FormData();
-      submitFormData.Pageend('title', formData.title);
-      submitFormData.Pageend('category_id', formData.cat);
-      submitFormData.Pageend('content', formData.content);
-      submitFormData.Pageend('priority', formData.priority.toLowerCase());
-      submitFormData.Pageend('image', formData.image);
+  try {
+    const submitFormData = new FormData();
+    submitFormData.append('title', formData.title);
+    submitFormData.append('category_id', formData.cat);
+    submitFormData.append('content', formData.content);
+    submitFormData.append('priority', formData.priority.toLowerCase());
+    submitFormData.append('image', formData.image);
 
-      const { data } = await createTicket(submitFormData);
-      if (data?.success === 1) {
-        toast.success(data.message, { position: 'top-center' });
-        handleClose();
-      }
-    } catch (err) {
-      toast.error(err?.data?.message || "An error occurred", { position: 'top-center' });
+    const { data } = await createTicket(submitFormData);
+    if (data?.success === 1) {
+      toast.success(data.message, { position: 'top-center' });
+      handleClose();
     }
-  };
+  } catch (err) {
+    toast.error(err?.data?.message || "An error occurred", { position: 'top-center' });
+  }
+};
 
   const handleClose = () => {
     setFormData({ title: '', cat: '', content: '', priority: '', image: '' });
