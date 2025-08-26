@@ -946,7 +946,7 @@ const MyTotalTeam = () => {
                 </div>
               </div>
             ))
-          ) : filteredData.length === 0 ? (
+          ) : filteredData.length=== 0 ? (
             <div className="text-center py-10 bg-white rounded-md border border-gray-200 col-span-full">
               <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
               <h3 className="text-base font-semibold text-gray-800 mb-2">No members found</h3>
@@ -1091,13 +1091,17 @@ const MyTotalTeam = () => {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-center p-4 border-t border-gray-100">
+        {
+          filteredData.length !== 0 && 
+             <div className="flex justify-center p-4 border-t border-gray-100">
           <Pagination
             currentPage={state.currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
         </div>
+        }
+     
       </div>
 
       {/* Modals */}

@@ -248,10 +248,14 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
       handleSubmit(e);
     }
   };
-const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e) => {
   e.preventDefault();
   if (!validate()) {
-    setNotification({ type: "error", message: "Please fix the highlighted fields." });
+    setNotification({
+      type: "error",
+      message: "Please fix the highlighted fields.",
+    });
     return;
   }
 
@@ -271,18 +275,27 @@ const handleSubmit = async (e) => {
     }).unwrap();
 
     if (response?.success) {
-      Cookies.set("token", response?.data?.token, { expires: 7 });
-      sessionStorage.setItem("token", response?.data?.token);
-      Cookies.set("userData", JSON.stringify(response?.data), { expires: 7 });
+      const userData = response?.data;
+
+      // store tokens & user info
+      Cookies.set("token", userData?.token, { expires: 7 });
+      sessionStorage.setItem("token", userData?.token);
+      Cookies.set("userData", JSON.stringify(userData), { expires: 7 });
 
       setNotification({
         type: "success",
         message: response?.message || "Login successful! Redirecting...",
       });
 
+      // ✅ check KYC status before redirect
       setTimeout(() => {
-        navigate("/kyc-information");
-        console.log("Redirecting to dashboard");
+        if (userData?.kycVerified === "approve") {
+          navigate("/dashboard");
+          console.log("Redirecting to Dashboard");
+        } else {
+          navigate("/kyc-information" );
+          console.log("Redirecting to KYC Information");
+        }
       }, 1000);
     } else {
       setNotification({
@@ -298,6 +311,57 @@ const handleSubmit = async (e) => {
     });
   }
 };
+
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   if (!validate()) {
+//     setNotification({ type: "error", message: "Please fix the highlighted fields." });
+//     return;
+//   }
+
+//   if (rememberMe) {
+//     Cookies.set("email", formData.email?.trim(), { expires: 30 });
+//     Cookies.set("rememberMe", "true", { expires: 30 });
+//   } else {
+//     Cookies.remove("email");
+//     Cookies.remove("rememberMe");
+//   }
+
+//   try {
+//     const response = await login({
+//       email: formData.email?.trim(),
+//       password: formData.password,
+//       role: 1,
+//     }).unwrap();
+
+//     if (response?.success) {
+//       Cookies.set("token", response?.data?.token, { expires: 7 });
+//       sessionStorage.setItem("token", response?.data?.token);
+//       Cookies.set("userData", JSON.stringify(response?.data), { expires: 7 });
+
+//       setNotification({
+//         type: "success",
+//         message: response?.message || "Login successful! Redirecting...",
+//       });
+
+//       setTimeout(() => {
+//         navigate("/kyc-information");
+//         console.log("Redirecting to dashboard");
+//       }, 1000);
+//     } else {
+//       setNotification({
+//         type: "error",
+//         message: response?.message || "Login failed.",
+//       });
+//     }
+//   } catch (err) {
+//     const errorMessage = err?.data?.message || "Login error";
+//     setNotification({
+//       type: "error",
+//       message: errorMessage,
+//     });
+//   }
+// };
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
 

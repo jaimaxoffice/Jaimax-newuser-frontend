@@ -267,6 +267,36 @@ const HomeAbout = () => {
 
   return (
     <>
+    <div className="max-w-3xl p-14 mx-auto">
+              <h4 className="text-xl md:text-2xl font-semibold mb-6 text-gray-200">
+                CONTRACT ADDRESS
+              </h4>
+              <div className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 w-full">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 px-3 py-2 sm:px-4 sm:py-2">
+                  <p className="flex-1 text-center sm:text-left font-mono text-sm sm:text-base md:text-lg text-white break-all leading-tight">
+                    {contractAddress}
+                  </p>
+
+                  <button
+                    onClick={handleCopy}
+                    className="flex items-center justify-center space-x-0 sm:space-x-2 bg-teal-500 hover:bg-teal-600 text-white text-xs sm:text-sm font-medium px-4 py-1.5 sm:px-5 sm:py-2 rounded-full transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md"
+                    title={copied ? 'Copied!' : 'Copy to clipboard'}
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="hidden sm:inline" size={16} />
+                        <span>Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="hidden sm:inline" size={16} />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
       {/* Your existing JSX */}
       <section className="bg-[#085056] py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center mb-10">
