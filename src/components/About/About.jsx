@@ -529,7 +529,7 @@ const JaimaxOverview = () => {
         <AnimatedSection>
           <motion.div
             whileHover={{ scale: 1.01 }}
-            className="bg-gradient-to-r from-teal-600 to-green-600 rounded-xl py-12 px-4 sm:px-8 text-center"
+            className="bg-gradient-to-r from-teal-600 to-green-600 rounded-xl mb-4 py-12 px-4 sm:px-8 text-center"
           >
             <h5 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-white">
               We're Not Just Building a Coin — We're Building a Future
