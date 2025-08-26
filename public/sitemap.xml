@@ -1,134 +1,93 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-		<!--	created with www.mysitemapgenerator.com	-->
-		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-	<loc>https://jaimax.com/</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/support</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/contact</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/blog</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/about</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/disclaimer</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/features</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/refund-policy</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/terms-and-conditions</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/privacy-policy</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/services</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/images/Jaimax_white_paper.pdf</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/login</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/register</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/forgot-password</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/profile</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/dashboard</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/wallet</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/my-team</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/buy-history</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/kyc-information</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/wallet/add-funds</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/withdrawal</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/earnings</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/shareholders</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://jaimax.com/legal</loc>
-	<lastmod>2024-11-20T08:08:03+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://www.jaimax.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/services</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/features</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/blog</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/images/Jaimax_white_paper.pdf</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/login</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/register</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/refund-policy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/terms-and-conditions</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/privacy-policy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.jaimax.com/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.jaimax.com/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- App Store Links -->
+  <url>
+    <loc>https://play.google.com/store/apps/details?id=com.jaimax.app</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

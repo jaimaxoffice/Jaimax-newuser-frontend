@@ -30,6 +30,7 @@ const navItems = [
   { name: "Buy History", path: "/buy-history", icon: <HiOutlineChartBar /> },
   { name: "Security", path: "/security", icon: <HiOutlineShieldCheck /> },
   { name: "Profile", path: "/profile", icon: <HiOutlineUser /> },
+  { name: "Goa-Getaway", path: "/goa-vacation", icon: <HiOutlineUser /> },
   { name: "Jwallet", path: "/jwallet", icon: <HiOutlineCreditCard /> },
   { name: "KYC", path: "/kyc-information", icon: <HiOutlineIdentification /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },

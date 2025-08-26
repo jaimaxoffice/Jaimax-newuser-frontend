@@ -5663,9 +5663,7 @@ const UserDetailsComponent = () => {
       setIsCalculating(false);
     }
   };
-
-  const testnetContractAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd"; // Testnet USDT address
-  const contractAddress = "0x55d398326f99059fF775485246999027B3197955"; //Mainnet USDT address (BSC)
+  // const contractAddress = "0x55d398326f99059fF775485246999027B3197955"; //Mainnet USDT address (BSC)
 
   const handleCryptoSwap = async () => {
     if (!sellAmount || !sellToken || parseFloat(sellAmount) === 0) {

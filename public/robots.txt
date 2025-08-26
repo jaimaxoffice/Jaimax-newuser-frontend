@@ -1,8 +1,3 @@
-# ========================
-# Jaimax robots.txt
-# Allow all major search engines & AI bots
-# ========================
-
 # --- Allow all bots by default ---
 User-agent: *
 Allow: /

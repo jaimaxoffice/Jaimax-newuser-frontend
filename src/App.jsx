@@ -61,6 +61,7 @@ import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
 import ErrorBoundary from "./pages/chatbot/ErrorBoundary";
 import ChatAssistant from "./pages/chatbot/chatComponent";
+import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation"
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -428,6 +429,9 @@ const App = () => {
         </Route>
         <Route path="/security" element={<DashboardLayout />}>
           <Route index element={<Security />} />
+        </Route>
+        <Route path="/goa-vacation" element={<DashboardLayout />}>
+          <Route index element={<MarketingPlanReferrals />} />
         </Route>
         <Route path="/profile" element={<DashboardLayout />}>
           <Route index element={<Profile />} />
