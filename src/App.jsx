@@ -342,8 +342,8 @@ const App = () => {
 
   return (
   <>
-
       <PriceRiseAlert/>
+
     <Routes>
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>
