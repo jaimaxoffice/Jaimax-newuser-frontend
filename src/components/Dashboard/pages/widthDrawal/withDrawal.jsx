@@ -1146,7 +1146,7 @@ const Withdrawal = () => {
       />
 
       {/* Pagination - Only show if there's data */}
-      {withdrawHistory?.data?.pagination?.total > 0 && (
+      {withdrawHistory?.data?.pagination?.total >= 0 && (
         <div className="mt-3 bg-white rounded border border-gray-200 shadow-sm">
           <div className="p-3">
             <div className="flex flex-col gap-3">

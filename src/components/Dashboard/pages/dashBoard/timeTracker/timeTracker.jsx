@@ -231,10 +231,8 @@ const PaymentModal = ({
                   Total
                 </td>
                 <td className="border border-teal-100 px-3 py-2 text-center">
-                  {(
-                    Number(purchaseCoinsBreakup?.requestedAmount) -
-                    Number(purchaseCoinsBreakup?.totalAmount)
-                  ).toFixed(2)}
+                  {(Number(purchaseCoinsBreakup?.charges) || 0).toFixed(2)}
+                  {console.log(purchaseCoinsBreakup?.charges,"hello charges")}
                 </td>
                 <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
                   {(Number(purchaseCoinsBreakup?.totalAmount) || 0).toFixed(2)}
@@ -338,6 +336,8 @@ const PurchaseCoinsBreakupModal = ({
                   <td className="px-4 py-3 text-center font-medium">{item.round}</td>
                   <td className="px-4 py-3 text-center">{resolvedPrice?.toFixed(5)}</td>
                   <td className="px-4 py-3 text-right">{item.amount?.toFixed(2)}</td>
+                  
+                  
                   <td className="px-4 py-3 text-right font-semibold text-gray-800">
                     {item.resolvedQty?.toLocaleString()}
                   </td>
@@ -349,12 +349,12 @@ const PurchaseCoinsBreakupModal = ({
             {/* Charges Row */}
             <tr className="bg-orange-50 text-orange-700">
               <td className="px-4 py-3 text-center">Charges</td>
-              <td colSpan={3} className="px-4 py-3 text-right">
-                {(
-                  Number(purchaseCoinsBreakup?.requsetedAmount) -
-                  Number(purchaseCoinsBreakup?.totalAmount)
-                ).toFixed(2)}{" "}
+              <td colSpan={2} className="px-4 py-3 text-right">
+               {(Number(purchaseCoinsBreakup?.charges) || 0).toFixed(2)}
                 {currency}
+              </td>
+              <td colSpan={2} className="px-4 py-3 text-right">
+              
               </td>
             </tr>
             {/* Total Row */}
@@ -364,6 +364,7 @@ const PurchaseCoinsBreakupModal = ({
               <td className="px-4 py-3 text-right">
                 {(Number(purchaseCoinsBreakup?.requsetedAmount) || 0).toFixed(2)}
               </td>
+              
               <td className="px-4 py-3 text-right">
                 {purchaseCoinsBreakup?.totalCoins}
               </td>
@@ -927,6 +928,7 @@ const SlabTabs = () => {
             totalAmount: response.data.totalAmount,
             requestedAmount: response.data.requsetedAmount,
             requsetedAmount:response.data.requsetedAmount,
+            charges: response.data.charges??0,
           });
           setShowPurchaseCoinsModal(true);
         } else {

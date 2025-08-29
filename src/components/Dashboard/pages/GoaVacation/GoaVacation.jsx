@@ -459,11 +459,7 @@ const MarketingPlanReferrals = () => {
             </div>
           ) : (
             <div className="bg-white rounded-lg sm:rounded-xl p-6 sm:p-8 md:p-12 text-center shadow-sm border border-gray-100">
-              <img 
-                src="https://img.icons8.com/clouds/200/000000/palm-tree.png" 
-                alt="Palm Tree" 
-                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mx-auto mb-3 sm:mb-4 opacity-60"
-              />
+              
               <h4 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Start Your Journey to Goa!</h4>
               <p className="text-sm sm:text-base text-gray-600 max-w-md mx-auto mb-4 sm:mb-6">
                 Invite your friends and family to join you on this amazing vacation opportunity. 

@@ -73,21 +73,15 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.jaimax.com/</loc>
+    <loc>https://www.jaimax.com/kyc_pmla</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.jaimax.com/</loc>
+    <loc>https://www.jaimax.com/aml_ctf</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
-  <!-- App Store Links -->
-  <url>
-    <loc>https://play.google.com/store/apps/details?id=com.jaimax.app</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
 
 </urlset>

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { debounce } from 'lodash';
-
+import image from '../../assets/Images/roadmap.png';
 const roadmapData = {
   2024: {
     title: "Foundation & Launch",
@@ -96,7 +96,8 @@ export default function RoadmapTimeline() {
             <div className="sticky top-8">
               <div className="relative">
                 <img
-                  src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png"
+                  // src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png"
+                  src={image}
                   alt="Roadmap Illustration"
                   className="w-full h-auto max-h-[600px] object-contain opacity-60 hover:opacity-80 transition-opacity duration-300"
                 />

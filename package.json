@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "jaimax coin",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -29,7 +29,7 @@
     "daisyui": "^5.0.43",
     "dotted-map": "^2.2.3",
     "formik": "^2.4.6",
-    "framer-motion": "^12.16.0",
+    "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
     "hamburger-react": "^2.5.2",
     "helmet": "^8.1.0",

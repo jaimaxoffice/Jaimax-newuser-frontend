@@ -2283,7 +2283,7 @@ const KycInformation = () => {
       if (origin.includes("5173") || origin.includes("5174")) {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_DEV;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_DEV;
-      } else if (origin === "https://jaimax.com") {
+      } else if (origin === "https://www.jaimax.com") {
         redirectURI = import.meta.env.VITE_DL_REDIRECT_URI_PROD;
         clientId = import.meta.env.VITE_DL_CLIENT_ID_PROD;
       } else {

@@ -356,10 +356,10 @@ const JaimaxFAQ = () => {
                   </button>
 
                   {/* Answer */}
-                  <div className={`overflow-hidden transition-all duration-500 ease-out ${
+                  <div className={`overflow-hidden  transition-all duration-500 ease-out ${
                     activeIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                   }`}>
-                    <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+                    <div className="px-4 sm:px-6 pb-4  py-3 sm:pb-6">
                       <div className="bg-slate-700/30 rounded-lg sm:rounded-xl p-4 sm:p-5 border-l-4 border-[#4ecdc4]/70">
                         <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">
                           {faq.answer}
