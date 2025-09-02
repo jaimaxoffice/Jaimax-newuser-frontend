@@ -61,7 +61,7 @@ export default function CreateWalletPin({ onClose }) {
 
     // Basic validation
     if (!/^\d{4,6}$/.test(pin)) {
-      setFormError("PIN must be 4-6 digits.");
+      setFormError("PIN must be 6 digits.");
       return;
     }
     if (pin !== confirmPin) {

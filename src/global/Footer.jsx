@@ -323,7 +323,7 @@ const Footer = () => {
               </h3>
               <ul className="space-y-2 sm:space-y-3">
                 {[
-                  { name: "24/7 Support", path: "/supporthme" },
+                  { name: "24/7 Support", path: "/supportpage" },
                   { name: "Refund Policy", path: "/refund-policy" },
                   {
                     name: "Terms and Conditions",

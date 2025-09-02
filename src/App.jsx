@@ -431,10 +431,8 @@ const App = () => {
         </Route>
 
         <Route path="services" element={<CryptoServicesFlipCards />} />
-        <Route path="supporthome" element={<SupportPage />} />
         <Route path="privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="support-page" element={<SupportPage />} />
-        <Route path="support-chat/:id" element={<SupportChart />} />
+        <Route path="/supportpage" element={<SupportPage />} />        
         <Route path="terms-and-conditions" element={<TermsConditions />} />
         <Route path="refund-policy" element={<RefundPolicy />} />
         <Route path="disclaimer" element={<Disclaimer />} />
