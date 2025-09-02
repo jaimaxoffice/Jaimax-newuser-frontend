@@ -232,12 +232,11 @@ const BinanceExchange = ({ onClose }) => {
     }
   };
 
-  // Fetch all balances on component mount
   useEffect(() => {
     const fetchAllBalances = async () => {
       setFetchingBalances(true);
       try {
-        toast.info("Fetching wallet balances...");
+       
         await Promise.all([
           fetchTokenBalance("USDT"),
           fetchTokenBalance("USDC"),
@@ -258,40 +257,48 @@ const BinanceExchange = ({ onClose }) => {
     fetchAllBalances();
   }, [walletAddress]);
 
-  // Calculate JMC equivalent
-  // const calculateEquivalentJMC = async () => {
-  //   if (!tokenSent || !selectedToken || parseFloat(tokenSent) <= 0) {
-  //     setAwardJmcToUserPayload({});
-  //     return;
-  //   }
+//   const calculateEquivalentJMC = async () => {
+//   if (!tokenSent || !selectedToken || parseFloat(tokenSent) <= 0) {
+//     setAwardJmcToUserPayload({});
+//     toast.warning("Please enter a valid amount and token to swap.");
+//     return;
+//   }
 
-  //   setIsCalculating(true);
-  //   try {
-  //     const response = await exchangeCrypto({
-  //       userId,
-  //       tokenName: selectedToken,
-  //       tokensSent: parseFloat(tokenSent),
-  //     }).unwrap();
+//   setIsCalculating(true);
+//   try {
+//     const response = await exchangeCrypto({
+//       userId,
+//       tokenName: selectedToken,
+//       tokensSent: parseFloat(tokenSent),
+//     }).unwrap();
 
-  //     if (response?.data) {
-  //       setAwardJmcToUserPayload(response.data);
-  //     } else {
-  //       setAwardJmcToUserPayload({});
-  //       toast.warning("Could not calculate JMC equivalent. Please try again.");
-  //     }
-  //   } catch (err) {
-  //     console.error("Failed to calculate equivalent JMC:", err);
-  //     toast.error("Error calculating JMC equivalent rate.");
-  //     setAwardJmcToUserPayload({});
-  //   } finally {
-  //     setIsCalculating(false);
-  //   }
-  // };
+//     if (response?.data) {
+//       setAwardJmcToUserPayload(response.data);
+//     } else {
+//       setAwardJmcToUserPayload({});
+//       toast.warning(
+//         response?.message ||
+//         "Could not calculate JMC equivalent. Please try again."
+//       );
+//     }
+//   } catch (err) {
+//     console.error("Failed to calculate equivalent JMC:", err);
 
-  const calculateEquivalentJMC = async () => {
+//     // Check if server returned a message
+//     const errorMessage =
+//       err?.data?.message || err?.error || "Error calculating JMC equivalent rate.";
+
+//     toast.error(errorMessage);
+//     setAwardJmcToUserPayload({});
+//   } finally {
+//     setIsCalculating(false);
+//   }
+// };
+
+const calculateEquivalentJMC = async () => {
   if (!tokenSent || !selectedToken || parseFloat(tokenSent) <= 0) {
     setAwardJmcToUserPayload({});
-    toast.warning("Please enter a valid amount and token to swap.");
+   
     return;
   }
 
@@ -303,21 +310,31 @@ const BinanceExchange = ({ onClose }) => {
       tokensSent: parseFloat(tokenSent),
     }).unwrap();
 
-    if (response?.data) {
+    console.log("API Response:", response); // Debug log to check response structure
+
+    if (response?.success === 1 && response?.data) {
       setAwardJmcToUserPayload(response.data);
     } else {
       setAwardJmcToUserPayload({});
-      toast.warning(
-        response?.message ||
-        "Could not calculate JMC equivalent. Please try again."
-      );
+      // Explicitly check and display the message
+      if (response && response.message) {
+        toast.warning(response.message);
+      } else {
+        toast.warning("Could not calculate JMC equivalent. Please try again.");
+      }
     }
   } catch (err) {
     console.error("Failed to calculate equivalent JMC:", err);
-
-    // Check if server returned a message
+    
+    // Make sure we're accessing error data correctly
+    console.log("Error object:", err); // Debug log
+    
+    // Check different possible locations for the error message
     const errorMessage =
-      err?.data?.message || err?.error || "Error calculating JMC equivalent rate.";
+      (err?.data?.message) || 
+      (err?.message) || 
+      (err?.error) || 
+      "Error calculating JMC equivalent rate.";
 
     toast.error(errorMessage);
     setAwardJmcToUserPayload({});
@@ -325,8 +342,6 @@ const BinanceExchange = ({ onClose }) => {
     setIsCalculating(false);
   }
 };
-
-
   // Recalculate when token or amount changes
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -709,7 +724,7 @@ function getDecryptedPrivateKey(privatekey, secret) {
                 onChange={(event) => {
                   setTokenSent(event.target.value);
                 }}
-                className="flex-1 p-2 text-sm border border-gray-300 rounded-lg"
+                className="flex-1 p-2  bg-white text-sm border border-gray-300 rounded-lg"
                 disabled={showSuccess || swapInProgress}
               />
               <select

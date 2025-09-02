@@ -272,7 +272,7 @@ const Footer = () => {
                   { name: "Contact", path: "/contact" },
                   {
                     name: "White Paper",
-                    path: "/images/white_paper.pdf",
+                    path: "/jaimax-whitepaper.pdf",
                     external: true,
                   },
                 ].map((link) => (
@@ -323,7 +323,7 @@ const Footer = () => {
               </h3>
               <ul className="space-y-2 sm:space-y-3">
                 {[
-                  { name: "24/7 Support", path: "/supporthome" },
+                  { name: "24/7 Support", path: "/supporthme" },
                   { name: "Refund Policy", path: "/refund-policy" },
                   {
                     name: "Terms and Conditions",

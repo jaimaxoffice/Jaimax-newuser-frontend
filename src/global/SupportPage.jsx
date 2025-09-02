@@ -187,10 +187,11 @@
 
 
 import React from "react";
-
+import Seo from "../SeoContent/Seo";
 const SupportAndRiskDisclosure = () => {
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+       <Seo page="supportme" />
       <div className="max-w-9xl mx-auto space-y-8">
         {/* 24/7 Support Section */}
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">

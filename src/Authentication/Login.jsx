@@ -470,7 +470,7 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
               onKeyDown={handleKeyDown}
               placeholder="Enter your email"
               autoComplete="off"
-              className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              className={`w-full pl-10 pr-4 bg-white py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
               }`}
             />
@@ -497,7 +497,7 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
               onKeyDown={handleKeyDown}
               placeholder="Enter your password"
               autoComplete="off"
-              className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              className={`w-full bg-white pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
               }`}
             />
@@ -1202,7 +1202,7 @@ const RegisterComponent = ({
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Full Name"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              className={`w-full pl-10 bg-white pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.name && touched.name
                   ? "border-red-500 bg-red-50"
                   : "border-gray-300"
@@ -1266,7 +1266,7 @@ const RegisterComponent = ({
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Email"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              className={`w-full pl-10 pr-3 py-2.5  bg-white text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.email && touched.email
                   ? "border-red-500 bg-red-50"
                   : "border-gray-300"
@@ -1292,7 +1292,7 @@ const RegisterComponent = ({
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Password"
-              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              className={`w-full pl-10 pr-10 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.password && touched.password
                   ? "border-red-500 bg-red-50"
                   : "border-gray-300"
@@ -1329,7 +1329,7 @@ const RegisterComponent = ({
               onChange={handleInputChange}
               onBlur={handleBlur}
               placeholder="Confirm Password"
-              className={`w-full pl-10 pr-10 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              className={`w-full pl-10 pr-10 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.confirmPassword && touched.confirmPassword
                   ? "border-red-500 bg-red-50"
                   : "border-gray-300"
@@ -1368,7 +1368,7 @@ const RegisterComponent = ({
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               placeholder="Referral ID (Optional)"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+              className={`w-full pl-10 pr-3 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.referralId && touched.referralId
                   ? "border-red-500 bg-red-50"
                   : "border-gray-300"
@@ -1396,7 +1396,7 @@ const RegisterComponent = ({
                 onBlur={handleBlur}
                 placeholder="Enter 6-digit OTP"
                 maxLength="6"
-                className={`w-full pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+                className={`w-full bg-white pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                   errors.otp && touched.otp
                     ? "border-red-500 bg-red-50"
                     : "border-gray-300"

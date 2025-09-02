@@ -63,6 +63,7 @@ import ErrorBoundary from "./pages/chatbot/ErrorBoundary";
 import ChatAssistant from "./pages/chatbot/chatComponent";
 import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation"
 import PriceRiseAlert from "./pages/home/Countdown";
+import SecurityLayer from "./pages/securitylayer";
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -342,6 +343,7 @@ const App = () => {
 
   return (
   <>
+  <SecurityLayer />
       <PriceRiseAlert/>
 
     <Routes>
@@ -369,9 +371,9 @@ const App = () => {
         <Route path="/my-team" element={<DashboardLayout />}>
           <Route index element={<MyTotalTeam />} />
         </Route>
-        <Route path="/shareholders" element={<DashboardLayout />}>
+        {/* <Route path="/shareholders" element={<DashboardLayout />}>
           <Route index element={<Shareholders />} />
-        </Route>
+        </Route> */}
         <Route path="/earnings" element={<DashboardLayout />}>
           <Route index element={<TodayEarning />} />
         </Route>

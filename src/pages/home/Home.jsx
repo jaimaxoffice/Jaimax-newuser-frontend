@@ -480,7 +480,7 @@ const Home = () => {
           "@type": "Offer",
           "url": "https://www.jaimax.com",
           "priceCurrency": "INR",
-          "price": "0.022",
+          "price": "0.025",
           "availability": "https://schema.org/InStock"
         }
       },
@@ -565,7 +565,7 @@ const Home = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
       />
 
-      <div className="outer-container">
+      <div className="outer-container scrollbar-hide">
         <header className="relative min-h-[100dvh] flex flex-col justify-center">
           {/* Hero background image */}
           <div className="absolute inset-0 w-full h-full">

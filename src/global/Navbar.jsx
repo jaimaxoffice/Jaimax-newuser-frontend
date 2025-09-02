@@ -171,7 +171,7 @@ const Navbar = () => {
               <li>
                 <NavLink
                   className="inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm whitespace-nowrap"
-                  to="/images/white_paper.pdf"
+                  to="/jaimax-whitepaper.pdf"
                   target="_blank"
                 >
                   White Paper

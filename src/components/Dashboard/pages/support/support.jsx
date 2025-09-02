@@ -133,7 +133,7 @@ const handleTicket = async (e) => {
                   setFormData({ ...formData, title: value });
                 }
               }}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
+              className="w-full rounded-lg  bg-white border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
               placeholder="Enter ticket title"
             />
             {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title}</p>}
@@ -262,7 +262,7 @@ const handleTicket = async (e) => {
                   setFormData({ ...formData, content: value });
                 }
               }}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
+              className="w-full bg-white rounded-lg border border-gray-300 px-3 py-2 resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 outline-none"
               placeholder="Describe your issue in detail"
             />
             {errors.content && <p className="text-sm text-red-500 mt-1">{errors.content}</p>}

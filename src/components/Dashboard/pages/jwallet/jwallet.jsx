@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import {
   useGetUserDetailsMutation,
@@ -42,24 +41,24 @@ const initialSwapState = {
   swapMessage: "",
   isCalculating: false,
   isProcessing: false,
-  feeDetails: null
+  feeDetails: null,
 };
 
 function swapReducer(state, action) {
   switch (action.type) {
-    case 'SET_AMOUNT':
+    case "SET_AMOUNT":
       return { ...state, sellAmount: action.payload };
-    case 'SET_TOKEN':
+    case "SET_TOKEN":
       return { ...state, sellToken: action.payload };
-    case 'SET_MESSAGE':
+    case "SET_MESSAGE":
       return { ...state, swapMessage: action.payload };
-    case 'SET_CALCULATING':
+    case "SET_CALCULATING":
       return { ...state, isCalculating: action.payload };
-    case 'SET_PROCESSING':
+    case "SET_PROCESSING":
       return { ...state, isProcessing: action.payload };
-    case 'SET_FEE_DETAILS':
+    case "SET_FEE_DETAILS":
       return { ...state, feeDetails: action.payload };
-    case 'RESET':
+    case "RESET":
       return initialSwapState;
     default:
       return state;
@@ -75,30 +74,29 @@ const initialModalState = {
   pinEntry: false,
   forgotPinModal: false,
   changePinModal: false,
-  purchaseCoinsModal: false
+  purchaseCoinsModal: false,
 };
 
 function modalReducer(state, action) {
   switch (action.type) {
-    case 'OPEN':
+    case "OPEN":
       return { ...state, [action.modal]: true };
-    case 'CLOSE':
+    case "CLOSE":
       return { ...state, [action.modal]: false };
-    case 'CLOSE_ALL':
+    case "CLOSE_ALL":
       return initialModalState;
     default:
       return state;
   }
 }
 
-
 const UserDetailsComponent = () => {
   const navigate = useNavigate();
-  
+
   // Use reducers for complex state management
   const [swapState, dispatchSwap] = useReducer(swapReducer, initialSwapState);
   const [modals, dispatchModal] = useReducer(modalReducer, initialModalState);
-  
+
   // Core state variables
   const [awardJmcToUserPayload, setAwardJmcToUserPayload] = useState({});
   const [calculateMessage, setCalculateMessage] = useState("");
@@ -114,15 +112,18 @@ const UserDetailsComponent = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isPinVerified, setIsPinVerified] = useState(false);
   const [isTokenVerified, setIsTokenVerified] = useState(false);
-  const contractAddress="0x90e18b768C5eCC93B73525ab973aBd1592Df3aB2"; // Test address
+  const contractAddress = "0x90e18b768C5eCC93B73525ab973aBd1592Df3aB2"; // Test address
   // Mutations and queries with loading states
   const [proceedOrder] = useProceedOrderMutation();
   const [createPayment] = useCreatePaymentMutation();
-  const [getUserDetails, { data, isLoading, error }] = useGetUserDetailsMutation();
-  const [exchangeInrToCrypto, { isLoading: isExchangeLoading }] = useExchangeInrToCryptoMutation();
+  const [getUserDetails, { data, isLoading, error }] =
+    useGetUserDetailsMutation();
+  const [exchangeInrToCrypto, { isLoading: isExchangeLoading }] =
+    useExchangeInrToCryptoMutation();
   const [exchangeCrypto] = useExchangeCryptoMutation();
   const [addOrder, { isLoading: isAddOrderLoading }] = useAddOrderMutation();
-  const [awardJmcToUser, { isLoading: isAwarding }] = useAwardJmcToUserMutation();
+  const [awardJmcToUser, { isLoading: isAwarding }] =
+    useAwardJmcToUserMutation();
 
   // User data and setup
   const HARDCODED = Cookies.get("userData");
@@ -133,10 +134,12 @@ const UserDetailsComponent = () => {
   const id = sessionStorage.setItem("tkn", tkn);
   const token = sessionStorage.getItem("tkn");
   const { data: roundsData, isloading } = useGetRoundQuery();
-  const liveRounds = roundsData?.data?.rounds?.filter((round) => round.status === 1) || [];
-  
+  const liveRounds =
+    roundsData?.data?.rounds?.filter((round) => round.status === 1) || [];
+
   // Determine if any loading state is active
-  const isPageLoading = isLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
+  const isPageLoading =
+    isLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
 
   // Token configuration
   const TOKEN_CONFIG = {
@@ -164,19 +167,22 @@ const UserDetailsComponent = () => {
 
   // Make setShowBinanceExchange available globally for BinanceExchange component
   window.setShowBinanceExchange = (value) => {
-    dispatchModal({ type: value ? 'OPEN' : 'CLOSE', modal: 'binanceExchange' });
+    dispatchModal({ type: value ? "OPEN" : "CLOSE", modal: "binanceExchange" });
   };
 
   useEffect(() => {
     const handleCompletion = () => {
       console.log("Custom event received, closing modal");
-      dispatchModal({ type: 'CLOSE', modal: 'binanceExchange' });
+      dispatchModal({ type: "CLOSE", modal: "binanceExchange" });
     };
 
     document.addEventListener("binanceExchangeCompleted", handleCompletion);
 
     return () => {
-      document.removeEventListener("binanceExchangeCompleted", handleCompletion);
+      document.removeEventListener(
+        "binanceExchangeCompleted",
+        handleCompletion
+      );
     };
   }, []);
 
@@ -208,13 +214,13 @@ const UserDetailsComponent = () => {
 
       if (value === "true" && diff < 7 * 60 * 1000) {
         setIsPinVerified(true);
-        dispatchModal({ type: 'CLOSE', modal: 'pinEntry' });
+        dispatchModal({ type: "CLOSE", modal: "pinEntry" });
 
         // Auto-expire after remaining time
         const timeout = setTimeout(() => {
           sessionStorage.removeItem("isPinVerified");
           setIsPinVerified(false);
-          dispatchModal({ type: 'OPEN', modal: 'pinEntry' });
+          dispatchModal({ type: "OPEN", modal: "pinEntry" });
         }, 7 * 60 * 1000 - diff);
 
         return () => clearTimeout(timeout);
@@ -222,7 +228,7 @@ const UserDetailsComponent = () => {
         // Expired -> clear storage
         sessionStorage.removeItem("isPinVerified");
         setIsPinVerified(false);
-        dispatchModal({ type: 'OPEN', modal: 'pinEntry' });
+        dispatchModal({ type: "OPEN", modal: "pinEntry" });
       }
     }
 
@@ -233,14 +239,14 @@ const UserDetailsComponent = () => {
     if (userData && userData.data && sessionChecked) {
       if (!userData.data.pin) {
         // User hasn't created a PIN yet
-        dispatchModal({ type: 'OPEN', modal: 'pinModal' });
-        dispatchModal({ type: 'CLOSE', modal: 'pinEntry' });
+        dispatchModal({ type: "OPEN", modal: "pinModal" });
+        dispatchModal({ type: "CLOSE", modal: "pinEntry" });
         setIsPinVerified(false);
       } else {
         const pinVerified = sessionStorage.getItem("isPinVerified");
         if (pinVerified !== "true") {
-          dispatchModal({ type: 'CLOSE', modal: 'pinModal' });
-          dispatchModal({ type: 'OPEN', modal: 'pinEntry' });
+          dispatchModal({ type: "CLOSE", modal: "pinModal" });
+          dispatchModal({ type: "OPEN", modal: "pinEntry" });
           setIsPinVerified(false);
         }
       }
@@ -248,15 +254,22 @@ const UserDetailsComponent = () => {
   }, [userData, sessionChecked]);
 
   const calculateEquivalentJMC = async () => {
-    if (!swapState.sellAmount || !swapState.sellToken || parseFloat(swapState.sellAmount) === 0) {
-      dispatchSwap({ type: 'SET_MESSAGE', payload: "Please enter a valid amount to swap." });
+    if (
+      !swapState.sellAmount ||
+      !swapState.sellToken ||
+      parseFloat(swapState.sellAmount) === 0
+    ) {
+      dispatchSwap({
+        type: "SET_MESSAGE",
+        payload: "Please enter a valid amount to swap.",
+      });
       toast.error("Please enter a valid amount to swap.");
       return;
     }
 
-    dispatchSwap({ type: 'SET_CALCULATING', payload: true });
-    dispatchSwap({ type: 'SET_MESSAGE', payload: "" });
-    
+    dispatchSwap({ type: "SET_CALCULATING", payload: true });
+    dispatchSwap({ type: "SET_MESSAGE", payload: "" });
+
     try {
       const result = await exchangeCrypto({
         userId: HARDCODED_USER_ID,
@@ -266,48 +279,65 @@ const UserDetailsComponent = () => {
 
       if (result.success === 1) {
         setAwardJmcToUserPayload(result?.data);
-        dispatchSwap({ type: 'SET_FEE_DETAILS', payload: {
-          grossInrValue: result?.data?.grossInrValue,
-          platformFee: result?.data?.platformFee,
-          bscTds: result?.data?.bscTds,
-          netInrAfterFees: result?.data?.netInrAfterFees,
-          jmcTds: result?.data?.jmcTds,
-          finalInrAfterTds: result?.data?.finalInrAfterTds,
-          equivalentJmc: result?.data?.equivalentJmc
-        }});
+        dispatchSwap({
+          type: "SET_FEE_DETAILS",
+          payload: {
+            grossInrValue: result?.data?.grossInrValue,
+            platformFee: result?.data?.platformFee,
+            bscTds: result?.data?.bscTds,
+            netInrAfterFees: result?.data?.netInrAfterFees,
+            jmcTds: result?.data?.jmcTds,
+            finalInrAfterTds: result?.data?.finalInrAfterTds,
+            equivalentJmc: result?.data?.equivalentJmc,
+          },
+        });
       }
     } catch (err) {
       console.error("Failed to calculate equivalent JMC:", err);
-      const errorMessage = err?.data?.message || err?.error || "Something went wrong ❌";
-      dispatchSwap({ type: 'SET_MESSAGE', payload: errorMessage });
+      const errorMessage =
+        err?.data?.message || err?.error || "Something went wrong ❌";
+      dispatchSwap({ type: "SET_MESSAGE", payload: errorMessage });
       toast.error(errorMessage);
     } finally {
-      dispatchSwap({ type: 'SET_CALCULATING', payload: false });
+      dispatchSwap({ type: "SET_CALCULATING", payload: false });
     }
   };
 
   // Handle crypto swap with improved error handling
   const handleCryptoSwap = async () => {
-    if (!swapState.sellAmount || !swapState.sellToken || parseFloat(swapState.sellAmount) === 0) {
-      dispatchSwap({ type: 'SET_MESSAGE', payload: "Please enter amount to swap" });
+    if (
+      !swapState.sellAmount ||
+      !swapState.sellToken ||
+      parseFloat(swapState.sellAmount) === 0
+    ) {
+      dispatchSwap({
+        type: "SET_MESSAGE",
+        payload: "Please enter amount to swap",
+      });
       return;
     }
 
-    dispatchSwap({ type: 'SET_PROCESSING', payload: true });
-    dispatchSwap({ type: 'SET_MESSAGE', payload: "" });
+    dispatchSwap({ type: "SET_PROCESSING", payload: true });
+    dispatchSwap({ type: "SET_MESSAGE", payload: "" });
 
     try {
       if (!walletClient) {
-        dispatchSwap({ type: 'SET_MESSAGE', payload: "Please connect your wallet" });
-        dispatchSwap({ type: 'SET_PROCESSING', payload: false });
+        dispatchSwap({
+          type: "SET_MESSAGE",
+          payload: "Please connect your wallet",
+        });
+        dispatchSwap({ type: "SET_PROCESSING", payload: false });
         return;
       }
 
       // Token contract selection logic
       const tokenInfo = TOKEN_CONFIG[swapState.sellToken];
       if (!tokenInfo) {
-        dispatchSwap({ type: 'SET_MESSAGE', payload: "Unsupported token selected" });
-        dispatchSwap({ type: 'SET_PROCESSING', payload: false });
+        dispatchSwap({
+          type: "SET_MESSAGE",
+          payload: "Unsupported token selected",
+        });
+        dispatchSwap({ type: "SET_PROCESSING", payload: false });
         return;
       }
 
@@ -327,8 +357,11 @@ const UserDetailsComponent = () => {
       // Balance check
       const balance = await contract.balanceOf(userAddress);
       if (balance < amountInWei) {
-        dispatchSwap({ type: 'SET_MESSAGE', payload: "Insufficient token balance" });
-        dispatchSwap({ type: 'SET_PROCESSING', payload: false });
+        dispatchSwap({
+          type: "SET_MESSAGE",
+          payload: "Insufficient token balance",
+        });
+        dispatchSwap({ type: "SET_PROCESSING", payload: false });
         return;
       }
 
@@ -360,9 +393,12 @@ const UserDetailsComponent = () => {
         }).unwrap();
 
         if (result.success) {
-          dispatchSwap({ type: 'SET_MESSAGE', payload: `Swap successful! You received JMC tokens.` });
-          dispatchSwap({ type: 'SET_AMOUNT', payload: "" });
-          dispatchSwap({ type: 'SET_FEE_DETAILS', payload: null });
+          dispatchSwap({
+            type: "SET_MESSAGE",
+            payload: `Swap successful! You received JMC tokens.`,
+          });
+          dispatchSwap({ type: "SET_AMOUNT", payload: "" });
+          dispatchSwap({ type: "SET_FEE_DETAILS", payload: null });
           handleGetUserDetails();
           toast.success("Swap completed successfully ✅");
 
@@ -372,21 +408,31 @@ const UserDetailsComponent = () => {
           );
         }
       } else {
-        dispatchSwap({ type: 'SET_MESSAGE', payload: "Transaction failed on blockchain." });
+        dispatchSwap({
+          type: "SET_MESSAGE",
+          payload: "Transaction failed on blockchain.",
+        });
       }
     } catch (err) {
       console.error("Swap failed:", err);
-      dispatchSwap({ type: 'SET_MESSAGE', payload: "Swap failed. Please try again." });
+      dispatchSwap({
+        type: "SET_MESSAGE",
+        payload: "Swap failed. Please try again.",
+      });
       toast.error("Swap failed. Please try again ❌");
     } finally {
-      dispatchSwap({ type: 'SET_PROCESSING', payload: false });
+      dispatchSwap({ type: "SET_PROCESSING", payload: false });
     }
   };
 
   // Use effect to run calculation when values change
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (modals.swapModal && swapState.sellAmount && parseFloat(swapState.sellAmount) > 0) {
+      if (
+        modals.swapModal &&
+        swapState.sellAmount &&
+        parseFloat(swapState.sellAmount) > 0
+      ) {
         calculateEquivalentJMC();
       }
     }, 500); // Debounce calculation
@@ -435,11 +481,11 @@ const UserDetailsComponent = () => {
         shortageResolution: res.data.shortageData,
         expiresAt: res.data.expiresAt,
         requsetedAmount: res.data.requsetedAmount,
-        charges:res.data.charges??0
+        charges: res.data.charges ?? 0,
       });
 
-      dispatchModal({ type: 'CLOSE', modal: 'buyModal' });
-      dispatchModal({ type: 'OPEN', modal: 'purchaseCoinsModal' });
+      dispatchModal({ type: "CLOSE", modal: "buyModal" });
+      dispatchModal({ type: "OPEN", modal: "purchaseCoinsModal" });
     } catch (err) {
       setPurchaseCoinsBreakup({});
       setErrorMessage(
@@ -492,7 +538,7 @@ const UserDetailsComponent = () => {
           position: "top-center",
         });
 
-        dispatchModal({ type: 'CLOSE', modal: 'purchaseCoinsModal' });
+        dispatchModal({ type: "CLOSE", modal: "purchaseCoinsModal" });
 
         // Show Chrome notification
         showNotification(
@@ -515,7 +561,7 @@ const UserDetailsComponent = () => {
   };
 
   const closePurchaseModal = () => {
-    dispatchModal({ type: 'CLOSE', modal: 'purchaseCoinsModal' });
+    dispatchModal({ type: "CLOSE", modal: "purchaseCoinsModal" });
     setFormErrors({});
     setPurchaseCoinsBreakup({});
   };
@@ -581,12 +627,12 @@ const UserDetailsComponent = () => {
         // Create a toast notification instead of alert
         toast.success(`${label} copied to clipboard!`, {
           position: "bottom-right",
-          autoClose: 3000
+          autoClose: 3000,
         });
       })
       .catch(() => {
         toast.error("Failed to copy to clipboard", {
-          position: "bottom-right"
+          position: "bottom-right",
         });
       });
   };
@@ -929,8 +975,8 @@ const UserDetailsComponent = () => {
               </h5>
               <button
                 onClick={() => {
-                  dispatchModal({ type: 'CLOSE', modal: 'swapModal' });
-                  dispatchSwap({ type: 'RESET' });
+                  dispatchModal({ type: "CLOSE", modal: "swapModal" });
+                  dispatchSwap({ type: "RESET" });
                 }}
                 className="text-white hover:text-gray-200 transition-colors"
               >
@@ -950,7 +996,7 @@ const UserDetailsComponent = () => {
               </button>
             </div>
           </div>
-          
+
           {/* Global loading overlay */}
           {swapState.isProcessing && (
             <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-xl">
@@ -960,9 +1006,9 @@ const UserDetailsComponent = () => {
               </p>
             </div>
           )}
-          
+
           <ConnectWallet />
-          
+
           <div className="p-5">
             {swapState.swapMessage && (
               <div
@@ -988,14 +1034,24 @@ const UserDetailsComponent = () => {
                         type="number"
                         className="w-full sm:flex-1 bg-transparent text-lg font-semibold text-gray-800 outline-none text-center sm:text-left"
                         value={swapState.sellAmount}
-                        onChange={(e) => dispatchSwap({ type: 'SET_AMOUNT', payload: e.target.value })}
+                        onChange={(e) =>
+                          dispatchSwap({
+                            type: "SET_AMOUNT",
+                            payload: e.target.value,
+                          })
+                        }
                         placeholder="0.00"
                         disabled={swapState.isCalculating}
                       />
                       <select
                         className="w-full sm:w-auto px-3 py-1.5 bg-white border border-teal-200 rounded-lg text-gray-700 font-medium focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
                         value={swapState.sellToken}
-                        onChange={(e) => dispatchSwap({ type: 'SET_TOKEN', payload: e.target.value })}
+                        onChange={(e) =>
+                          dispatchSwap({
+                            type: "SET_TOKEN",
+                            payload: e.target.value,
+                          })
+                        }
                         disabled={swapState.isCalculating}
                       >
                         <option value="USDT">USDT</option>
@@ -1033,7 +1089,7 @@ const UserDetailsComponent = () => {
                   <div className="bg-teal-50 rounded-lg p-3 relative">
                     {swapState.isCalculating && (
                       <div className="absolute inset-0 bg-teal-50/90 flex items-center justify-center rounded-lg">
-                        <Loader/>
+                        <Loader />
                       </div>
                     )}
                     <div className="flex flex-col sm:flex-row items-center gap-2">
@@ -1054,40 +1110,59 @@ const UserDetailsComponent = () => {
                 {swapState.feeDetails && (
                   <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 mb-4">
                     <h6 className="text-sm font-medium text-teal-700 mb-2 flex items-center">
-                      <svg 
-                        className="w-4 h-4 mr-1.5" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
+                      <svg
+                        className="w-4 h-4 mr-1.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
                         stroke="currentColor"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
                       </svg>
                       Transaction Breakdown
                     </h6>
                     <div className="space-y-1.5 text-xs">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Gross Value:</span>
-                        <span className="font-semibold">₹{swapState.feeDetails.grossInrValue?.toFixed(2)}</span>
+                        <span className="font-semibold">
+                          ₹{swapState.feeDetails.grossInrValue?.toFixed(2)}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Platform Fee:</span>
-                        <span className="font-semibold">₹{swapState.feeDetails.platformFee?.toFixed(2)}</span>
+                        <span className="font-semibold">
+                          ₹{swapState.feeDetails.platformFee?.toFixed(2)}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">BSC TDS:</span>
-                        <span className="font-semibold">₹{swapState.feeDetails.bscTds?.toFixed(2)}</span>
+                        <span className="font-semibold">
+                          ₹{swapState.feeDetails.bscTds?.toFixed(2)}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Net after Fees:</span>
-                        <span className="font-semibold">₹{swapState.feeDetails.netInrAfterFees?.toFixed(2)}</span>
+                        <span className="font-semibold">
+                          ₹{swapState.feeDetails.netInrAfterFees?.toFixed(2)}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">JMC TDS:</span>
-                        <span className="font-semibold">{swapState.feeDetails.jmcTds?.toFixed(5)} JMC</span>
+                        <span className="font-semibold">
+                          {swapState.feeDetails.jmcTds?.toFixed(5)} JMC
+                        </span>
                       </div>
                       <div className="flex justify-between pt-1.5 mt-1 border-t border-teal-200">
-                        <span className="text-gray-700 font-medium">You Receive:</span>
-                        <span className="font-bold text-teal-700">{swapState.feeDetails.equivalentJmc?.toFixed(5)} JMC</span>
+                        <span className="text-gray-700 font-medium">
+                          You Receive:
+                        </span>
+                        <span className="font-bold text-teal-700">
+                          {swapState.feeDetails.equivalentJmc?.toFixed(5)} JMC
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1099,9 +1174,12 @@ const UserDetailsComponent = () => {
                     <div className="flex flex-col sm:flex-row justify-between items-center text-xs gap-1">
                       <span className="text-teal-600">Exchange Rate</span>
                       <strong className="text-gray-800">
-                        1 {swapState.sellToken} = {(
-                          swapState.feeDetails.equivalentJmc / parseFloat(swapState.sellAmount || 1)
-                        ).toFixed(4)} JMC
+                        1 {swapState.sellToken} ={" "}
+                        {(
+                          swapState.feeDetails.equivalentJmc /
+                          parseFloat(swapState.sellAmount || 1)
+                        ).toFixed(4)}{" "}
+                        JMC
                       </strong>
                     </div>
                   </div>
@@ -1115,8 +1193,8 @@ const UserDetailsComponent = () => {
               <>
                 <button
                   onClick={() => {
-                    dispatchModal({ type: 'CLOSE', modal: 'swapModal' });
-                    dispatchSwap({ type: 'RESET' });
+                    dispatchModal({ type: "CLOSE", modal: "swapModal" });
+                    dispatchSwap({ type: "RESET" });
                   }}
                   className="w-full sm:w-auto px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm"
                 >
@@ -1160,8 +1238,8 @@ const UserDetailsComponent = () => {
             ) : (
               <button
                 onClick={() => {
-                  dispatchModal({ type: 'CLOSE', modal: 'swapModal' });
-                  dispatchSwap({ type: 'RESET' });
+                  dispatchModal({ type: "CLOSE", modal: "swapModal" });
+                  dispatchSwap({ type: "RESET" });
                 }}
                 className="w-full sm:w-auto px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm"
               >
@@ -1183,7 +1261,14 @@ const UserDetailsComponent = () => {
         <div className="fixed inset-0 backdrop-blur-sm bg-teal-900/30 flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl max-w-md w-full my-4 p-4 border border-teal-100/50 animate-fadeIn max-h-[90vh] overflow-y-auto">
             <div className="max-h-full">
-              <CreateWalletPin />
+              <CreateWalletPin
+                onClose={() => {
+                  // Close the modal
+                  dispatchModal({ type: "CLOSE", modal: "pinModal" });
+
+                 dispatchModal({ type: "OPEN", modal: "pinEntry" });
+                }}
+              />
               <div className="flex justify-end mt-4 sticky bottom-0 bg-white/80 backdrop-blur-sm py-2">
                 <button
                   onClick={() => navigate("/dashboard")}
@@ -1202,7 +1287,7 @@ const UserDetailsComponent = () => {
         <PinEntryModal
           onSuccess={() => {
             setIsPinVerified(true);
-            dispatchModal({ type: 'CLOSE', modal: 'pinEntry' });
+            dispatchModal({ type: "CLOSE", modal: "pinEntry" });
 
             // Save timestamp when user enters PIN successfully
             sessionStorage.setItem(
@@ -1210,17 +1295,29 @@ const UserDetailsComponent = () => {
               JSON.stringify({ value: "true", timestamp: Date.now() })
             );
           }}
-          onForgotPin={() => dispatchModal({ type: 'OPEN', modal: 'forgotPinModal' })}
-          onChangePin={() => dispatchModal({ type: 'OPEN', modal: 'changePinModal' })}
+          onForgotPin={() =>
+            dispatchModal({ type: "OPEN", modal: "forgotPinModal" })
+          }
+          onChangePin={() =>
+            dispatchModal({ type: "OPEN", modal: "changePinModal" })
+          }
         />
       )}
 
       {modals.forgotPinModal && (
-        <ForgotPinModal onClose={() => dispatchModal({ type: 'CLOSE', modal: 'forgotPinModal' })} />
+        <ForgotPinModal
+          onClose={() =>
+            dispatchModal({ type: "CLOSE", modal: "forgotPinModal" })
+          }
+        />
       )}
 
       {modals.changePinModal && (
-        <ChangePinModal onClose={() => dispatchModal({ type: 'CLOSE', modal: 'changePinModal' })} />
+        <ChangePinModal
+          onClose={() =>
+            dispatchModal({ type: "CLOSE", modal: "changePinModal" })
+          }
+        />
       )}
 
       {isPinVerified && (
@@ -1241,7 +1338,9 @@ const UserDetailsComponent = () => {
                 </div>
                 <div className="flex flex-wrap gap-2 animate-slideIn">
                   <button
-                    onClick={() => dispatchModal({ type: 'OPEN', modal: 'buyModal' })}
+                    onClick={() =>
+                      dispatchModal({ type: "OPEN", modal: "buyModal" })
+                    }
                     className="group flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-full hover:bg-teal-600 transform hover:-translate-y-1 transition-all duration-300 shadow-md hover:shadow-lg"
                   >
                     <svg
@@ -1260,7 +1359,9 @@ const UserDetailsComponent = () => {
                     <span className="font-medium text-sm">Buy Tokens</span>
                   </button>
                   <button
-                    onClick={() => dispatchModal({ type: 'OPEN', modal: 'swapModal' })}
+                    onClick={() =>
+                      dispatchModal({ type: "OPEN", modal: "swapModal" })
+                    }
                     className="group flex items-center gap-2 px-4 py-2 bg-white text-teal-500 rounded-full hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 shadow-md hover:shadow-lg border border-teal-200"
                   >
                     <svg
@@ -1279,7 +1380,9 @@ const UserDetailsComponent = () => {
                     <span className="font-medium text-sm">Swap</span>
                   </button>
                   <button
-                    onClick={() => dispatchModal({ type: 'OPEN', modal: 'binanceExchange' })}
+                    onClick={() =>
+                      dispatchModal({ type: "OPEN", modal: "binanceExchange" })
+                    }
                     className="group flex items-center gap-2 px-4 py-2 bg-white text-teal-500 rounded-full hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 shadow-md hover:shadow-lg border border-teal-200"
                   >
                     <svg
@@ -1490,7 +1593,9 @@ const UserDetailsComponent = () => {
               <div className="flex items-center justify-between">
                 <h5 className="text-lg font-semibold">Buy JMC Tokens</h5>
                 <button
-                  onClick={() => dispatchModal({ type: 'CLOSE', modal: 'buyModal' })}
+                  onClick={() =>
+                    dispatchModal({ type: "CLOSE", modal: "buyModal" })
+                  }
                   className="text-white hover:text-gray-200 transition-colors"
                 >
                   <svg
@@ -1607,7 +1712,7 @@ const UserDetailsComponent = () => {
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    className="w-full bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                     value={buyAmount}
                     onChange={(e) => setBuyAmount(e.target.value)}
                     placeholder="Enter amount"
@@ -1664,7 +1769,9 @@ const UserDetailsComponent = () => {
 
             <div className="bg-gray-50 px-5 py-4 rounded-b-xl flex justify-end gap-3">
               <button
-                onClick={() => dispatchModal({ type: 'CLOSE', modal: 'buyModal' })}
+                onClick={() =>
+                  dispatchModal({ type: "CLOSE", modal: "buyModal" })
+                }
                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm"
               >
                 Cancel
@@ -1776,9 +1883,7 @@ const UserDetailsComponent = () => {
                   <div className="flex justify-between">
                     <span>Charges</span>
                     <strong>
-                      {(
-                        purchaseCoinsBreakup?.charges
-                      ).toFixed(2)}
+                      {(purchaseCoinsBreakup?.charges).toFixed(2)}
                     </strong>
                   </div>
                   <div className="flex justify-between">
@@ -1819,7 +1924,12 @@ const UserDetailsComponent = () => {
               <div className="bg-gray-50 px-5 py-4 rounded-b-xl flex justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => dispatchModal({ type: 'CLOSE', modal: 'purchaseCoinsModal' })}
+                  onClick={() =>
+                    dispatchModal({
+                      type: "CLOSE",
+                      modal: "purchaseCoinsModal",
+                    })
+                  }
                   className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 text-sm"
                 >
                   Cancel
@@ -1854,7 +1964,9 @@ const UserDetailsComponent = () => {
               <div className="flex items-center justify-between">
                 <h5 className="text-lg font-semibold">Binance Exchange</h5>
                 <button
-                  onClick={() => dispatchModal({ type: 'CLOSE', modal: 'binanceExchange' })}
+                  onClick={() =>
+                    dispatchModal({ type: "CLOSE", modal: "binanceExchange" })
+                  }
                   className="text-white hover:text-gray-200 transition-colors"
                 >
                   <svg
@@ -1877,7 +1989,7 @@ const UserDetailsComponent = () => {
             <BinanceExchange
               onClose={() => {
                 console.log("Closing modal from parent onClose handler");
-                dispatchModal({ type: 'CLOSE', modal: 'binanceExchange' });
+                dispatchModal({ type: "CLOSE", modal: "binanceExchange" });
               }}
             />
           </div>

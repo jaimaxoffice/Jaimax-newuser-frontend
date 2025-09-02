@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+// import CheckCircleIcon  from "react-lucide";
 import {
   useRequestCreatePinOtpMutation,
   useCreatePinMutation,
@@ -279,7 +280,7 @@ export default function CreateWalletPin({ onClose }) {
               transition={{ type: "spring", damping: 8 }}
               className="inline-flex items-center justify-center p-2 rounded-full bg-teal-100 text-teal-600 mb-4"
             >
-              <CheckCircleIcon className="h-10 w-10 text-teal-500" />
+              {/* <CheckCircleIcon className="h-10 w-10 text-teal-500" /> */}
             </motion.div>
             <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4 text-teal-800">
               Wallet PIN created successfully!
