@@ -343,7 +343,7 @@ const App = () => {
 
   return (
   <>
-  <SecurityLayer />
+  {/* <SecurityLayer /> */}
       <PriceRiseAlert/>
 
     <Routes>
@@ -453,3 +453,10 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+

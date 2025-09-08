@@ -278,7 +278,7 @@ const MarketingPlanReferrals = () => {
   const [activeTab, setActiveTab] = useState("L1");
   const currentReferrals = activeTab === "L1" ? directRefs : chainRefs;
   const eligibilityCount = activeTab === "L1" ? directRefs.length : chainRefs.length;
-  const targetCount = activeTab === "L1" ? 10 : 50;
+  const targetCount = activeTab === "L1" ? 10 : 40;
   const userProfile = userDetails?.data;
   const eligible = userDetails?.data?.eligible;
   

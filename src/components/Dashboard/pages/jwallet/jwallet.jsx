@@ -116,8 +116,8 @@ const UserDetailsComponent = () => {
   // Mutations and queries with loading states
   const [proceedOrder] = useProceedOrderMutation();
   const [createPayment] = useCreatePaymentMutation();
-  const [getUserDetails, { data, isLoading, error }] =
-    useGetUserDetailsMutation();
+  // const [getUserDetails, { data, isLoading, error }] =
+  //   useGetUserDetailsMutation();
   const [exchangeInrToCrypto, { isLoading: isExchangeLoading }] =
     useExchangeInrToCryptoMutation();
   const [exchangeCrypto] = useExchangeCryptoMutation();
@@ -136,10 +136,16 @@ const UserDetailsComponent = () => {
   const { data: roundsData, isloading } = useGetRoundQuery();
   const liveRounds =
     roundsData?.data?.rounds?.filter((round) => round.status === 1) || [];
-
+  const {
+    data: userData,
+    refetch,
+    isLoading: isUserDataLoading,
+  } = useUserDataQuery(undefined, {
+    skip: !isTokenVerified,
+  });
   // Determine if any loading state is active
   const isPageLoading =
-    isLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
+    isUserDataLoading || isAwarding || isExchangeLoading || isAddOrderLoading;
 
   // Token configuration
   const TOKEN_CONFIG = {
@@ -196,13 +202,7 @@ const UserDetailsComponent = () => {
     verifyToken();
   }, [token]);
 
-  const {
-    data: userData,
-    refetch,
-    isLoading: isUserDataLoading,
-  } = useUserDataQuery(undefined, {
-    skip: !isTokenVerified,
-  });
+
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("isPinVerified");
@@ -399,7 +399,7 @@ const UserDetailsComponent = () => {
           });
           dispatchSwap({ type: "SET_AMOUNT", payload: "" });
           dispatchSwap({ type: "SET_FEE_DETAILS", payload: null });
-          handleGetUserDetails();
+          // handleGetUserDetails();
           toast.success("Swap completed successfully ✅");
 
           showNotification(
@@ -567,10 +567,10 @@ const UserDetailsComponent = () => {
   };
 
   const handleGetUserDetails = async (id = null) => {
-    const targetUserId = id || HARDCODED_USER_ID;
+    const targetUserId =  HARDCODED_USER_ID;
 
     try {
-      await getUserDetails({ userId: targetUserId }).unwrap();
+     
     } catch (err) {
       console.error("Failed to fetch user details:", err);
     }
@@ -1431,7 +1431,7 @@ const UserDetailsComponent = () => {
               </div>
             </div>
 
-            {data?.success && !isLoading && (
+            {userData?.success && !isUserDataLoading && (
               <div className="animate-fadeIn space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   {/* Wallet Address Card */}
@@ -1451,13 +1451,13 @@ const UserDetailsComponent = () => {
                         <input
                           type="text"
                           className="flex-1 px-3 py-2 bg-white text-gray-700 rounded-l-lg text-sm border border-gray-200 focus:border-teal-500 focus:outline-none transition-colors"
-                          value={data.data.walletadress}
+                          value={userData.data.walletadress}
                           readOnly
                         />
                         <button
                           onClick={() =>
                             handleCopyToClipboard(
-                              data.data.walletadress,
+                              userData.data.walletadress,
                               "Wallet Address"
                             )
                           }
@@ -1490,7 +1490,7 @@ const UserDetailsComponent = () => {
                           Token Balance
                         </h6>
                         <h3 className="text-2xl md:text-3xl font-bold text-white">
-                          {data?.data?.tokens.toFixed(3)}
+                          {userData?.data?.tokens.toFixed(3)}
                         </h3>
                       </div>
                       <div className="relative">

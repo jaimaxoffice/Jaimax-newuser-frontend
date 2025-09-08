@@ -28,6 +28,7 @@
     "crypto-js": "^4.2.0",
     "daisyui": "^5.0.43",
     "dotted-map": "^2.2.3",
+    "draft-js": "^0.11.7",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
