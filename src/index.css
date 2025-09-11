@@ -43,8 +43,9 @@ p {
   scrollbar-width: none;        
   -ms-overflow-style: none;
 }
+
 .scrollbar-none::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari */
+  display: none;            
 }
 
 .regfrom-feild{
@@ -68,10 +69,10 @@ p {
 
 /* Firefox scrollbar */
 html {
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scrollbar-color: #044e54 rgba(8, 83, 89, 0.1);
   background-color: black;
-  scroll-behavior: smooth; /* Added this line */
+  /* scroll-behavior: smooth;  */
     height: 100%;
   overflow-y: auto;
 }

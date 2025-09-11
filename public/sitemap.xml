@@ -38,7 +38,7 @@
   </url>
 
   <url>
-    <loc>https://www.jaimax.com/images/Jaimax_white_paper.pdf</loc>
+    <loc>https://www.jaimax.com/jaimax-whitepaper.pdf</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -73,12 +73,12 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.jaimax.com/kyc_pmla</loc>
+    <loc>https://www.jaimax.com/kyc-pmla</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.jaimax.com/aml_ctf</loc>
+    <loc>https://www.jaimax.com/aml-ctf</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

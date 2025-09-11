@@ -330,8 +330,8 @@ const Footer = () => {
                     path: "/terms-and-conditions",
                   },
                   { name: "Privacy Policy", path: "/privacy-policy" },
-                  { name: "KYC_PMLA", path: "/kyc_pmla" },
-                  { name: "AML_CTF", path: "/aml_ctf" },
+                  { name: "KYC_PMLA", path: "/kyc-pmla" },
+                  { name: "AML_CTF", path: "/aml-ctf" },
                 ].map((link) => (
                   <li key={link.name}>
                     <NavLink

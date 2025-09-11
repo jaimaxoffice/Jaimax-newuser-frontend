@@ -6,33 +6,38 @@ const PriceRiseAlert = () => {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
+  const STORAGE_KEY = "goaplan"; // ✅ new storage key
   useEffect(() => {
-    const STORAGE_KEY = "priceAlertCampaign"; // Use a specific key for this campaign
-
     const checkVisibility = () => {
       const now = new Date();
 
       // Campaign date range
-      const visibleFromDate = new Date("2025-08-24T00:00:00");
+      const visibleFromDate = new Date("2025-09-16T00:00:00");
       const invisibleFromDate = new Date("2025-09-30T00:00:00");
-      
+
       // Check if we're within the campaign period
       const campaignActive = now >= visibleFromDate && now < invisibleFromDate;
-      
+
       // Check if user has manually dismissed this campaign
-      const userDismissed = sessionStorage.getItem(`${STORAGE_KEY}_dismissed`) === "true";
-      
+      const userDismissed =
+        sessionStorage.getItem(`${STORAGE_KEY}_dismissed`) === "true";
+
       // Only show if campaign is active and user hasn't dismissed it
       const shouldBeVisible = campaignActive && !userDismissed;
-      
+
       setIsVisible(shouldBeVisible);
       
       // Store the current campaign state
       try {
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
-          campaignActive,
-          checkedAt: now.toISOString()
-        }));
+        sessionStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            campaignActive,
+            userDismissed,
+            isVisible: shouldBeVisible, // Add this!
+            checkedAt: now.toISOString(),
+          })
+        );
       } catch {
         // Ignore storage errors
       }
@@ -45,13 +50,13 @@ const PriceRiseAlert = () => {
         setIsVisible(false);
         return; // Exit early if dismissed
       }
-      
+
       // Otherwise check campaign timing
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === "object" && "campaignActive" in parsed) {
-          setIsVisible(Boolean(parsed.campaignActive));
+        if (parsed && typeof parsed === "object") {
+          setIsVisible(Boolean(parsed.isVisible));
         } else {
           checkVisibility();
         }
@@ -71,9 +76,10 @@ const PriceRiseAlert = () => {
 
   const handleClose = () => {
     setIsVisible(false);
+    sessionStorage.setItem(`${STORAGE_KEY}_dismissed`, "true");
     // Remember that user closed this popup
     try {
-      sessionStorage.setItem("priceAlertCampaign_dismissed", "true");
+      sessionStorage.setItem(`${STORAGE_KEY}_dismissed`, "true");
     } catch {
       // Ignore storage errors
     }
@@ -84,7 +90,7 @@ const PriceRiseAlert = () => {
     navigate("/dashboard");
     // Remember that user interacted with this popup
     try {
-      sessionStorage.setItem("priceAlertCampaign_dismissed", "true");
+      sessionStorage.setItem(`${STORAGE_KEY}_dismissed`, "true");
     } catch {
       // Ignore storage errors
     }
