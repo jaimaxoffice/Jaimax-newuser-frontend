@@ -4185,7 +4185,7 @@ const KycInformation = () => {
     if (name === "panNumber" && !/^[a-zA-Z0-9]*$/.test(value)) {
       return;
     }
-    if (name === "upi_id" && !/^[0-9]*$/.test(value)) {
+    if (name === "upi_id" && !/^[a-zA-Z0-9@._-]*$/.test(value)) {
       return;
     }
 
