@@ -356,7 +356,7 @@ import { useNavigate } from 'react-router-dom';
 import Seo from '../../SeoContent/Seo';
 import homeBgDesktop from "../../assets/Images/HomeDesktop.jpg";
 import homeBgMobile from "../../assets/Images/HomeMobile.jpg";
-
+import whatsapp from "../../assets/Images/whatsup copy.svg"
 // Lazy-loaded components
 const CryptoStakingSection = lazy(() => import('./HomeAbout'));
 const ServicesComponent = lazy(() => import('./Homeservices'));
@@ -565,7 +565,7 @@ const Home = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
       />
 
-      <div className="outer-container scrollbar-hide">
+     <div className="outer-container overflow-y-auto scrollbar-hide" >
         <header className="relative min-h-[100dvh] flex flex-col justify-center">
           {/* Hero background image */}
           <div className="absolute inset-0 w-full h-full">
@@ -620,6 +620,7 @@ const Home = () => {
               </p>
             </div>
           </div>
+          
         </header>
 
         {/* Main Sections */}

@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
 import JaimaxSplash from "./global/Splashscreen";
-
+import FloatingWhatsapp from "./global/FloatingWhatsapp";
 import AuthContainer from "./Authentication/Login";
 import ForgotPassword from "./Authentication/ForgotPassword";
 
@@ -30,14 +30,14 @@ import RefundPolicy from "./global/RefundPolicy";
 import TermsConditions from "./global/TermsConditons";
 import PrivacyPolicy from "./global/PrivacyPolicy";
 import Disclaimer from "./global/Disclaimer";
-import AmlCtfPolicy from './global/Aml_Ctf'
+import AmlCtfPolicy from "./global/Aml_Ctf";
 import Margintrading from "./services/Margintrading";
 import ApiTrading from "./services/Apitrading";
 import SpotTrading from "./services/Spottrading";
 import FuturesTrading from "./services/Futurestrading";
 import PreSale from "./services/Presale";
 import ReferEarn from "./services/Referearn";
-import KycPmlaPolicy from './global/Kyc_Pmla'
+import KycPmlaPolicy from "./global/Kyc_Pmla";
 import Dashboard from "./components/Dashboard/pages/dashBoard/dashBoard";
 import Wallet from "./components/Dashboard/pages/wallet/wallet";
 import MyTotalTeam from "./components/Dashboard/pages/myTotalTeam/myTotalTeam";
@@ -61,9 +61,11 @@ import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
 import ErrorBoundary from "./pages/chatbot/ErrorBoundary";
 import ChatAssistant from "./pages/chatbot/chatComponent";
-import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation"
+import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation";
 import PriceRiseAlert from "./pages/home/Countdown";
 import SecurityLayer from "./pages/securitylayer";
+import PriceIncreasePopup from "./pages/home/popup";
+import BlogPage from "./components/Blogsection/BlogDisplay";
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -73,13 +75,10 @@ const getAuthToken = () => {
   }
 };
 
-
 const isAuthenticated = () => {
   const token = getAuthToken();
   return token;
 };
-
-
 
 const getLastSplashTime = () => {
   try {
@@ -136,19 +135,19 @@ const DashboardLayout = () => {
     return () => window.removeEventListener("resize", updatePosition);
   }, []);
 
-const handleLogout = () => {
-  try {
-    Cookies.remove("token");
-    Cookies.remove("userData");
-    Cookies.remove("email");
-    Cookies.remove("rememberMe");
-    sessionStorage.removeItem("isPinVerified");
-  } catch (error) {
-    console.error("Error during logout:", error);
-  }
-  setShowLogoutModal(false);
-  window.location.href = "/login"; // Or use navigate("/login") if using react-router
-};
+  const handleLogout = () => {
+    try {
+      Cookies.remove("token");
+      Cookies.remove("userData");
+      Cookies.remove("email");
+      Cookies.remove("rememberMe");
+      sessionStorage.removeItem("isPinVerified");
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+    setShowLogoutModal(false);
+    window.location.href = "/login"; // Or use navigate("/login") if using react-router
+  };
   const handleNavigation = (path) => {
     setShowNavMenu(false);
     window.location.href = path;
@@ -210,7 +209,7 @@ const handleLogout = () => {
   };
 
   return (
-    <div className="relative flex h-screen bg-white overflow-hidden">
+    <div className="relative flex h-screen bg-[#1d8d84] overflow-hidden ">
       <ToastContainer
         position="top-center"
         autoClose={3000}
@@ -270,14 +269,14 @@ const PublicLayout = () => {
   const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
-
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
       {!shouldHideNavbar && <Navbar />}
       <main className="flex-1">
         <Outlet />
       </main>
       {!shouldHideNavbar && <Footer />}
+      {!shouldHideNavbar && <FloatingWhatsapp />}
     </div>
   );
 };
@@ -342,121 +341,121 @@ const App = () => {
   if (showSplash) return <JaimaxSplash />;
 
   return (
-  <>
-  {/* <SecurityLayer /> */}
-      <PriceRiseAlert/>
+    <>
+    
+      {/* <SecurityLayer /> */}
+      <PriceIncreasePopup />
+      <PriceRiseAlert />
 
-    <Routes>
-      <Route element={<PrivateRoute />}>
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="wallet" element={<Wallet />}/>
-          <Route path="my-team" element={<MyTotalTeam />} />
-          <Route path="shareholders" element={<Shareholders />} />
-          <Route path="buy-history" element={<BuyHistory />} />
-          <Route path="security" element={<Security />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="kyc" element={<Kyc />} />
-          <Route path="withdrawal" element={<WithDrawal />} />
-          <Route path="support" element={<Support />} />
-          
-        </Route>
+      <Routes>
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="wallet" element={<Wallet />} />
+            <Route path="my-team" element={<MyTotalTeam />} />
+            <Route path="shareholders" element={<Shareholders />} />
+            <Route path="buy-history" element={<BuyHistory />} />
+            <Route path="security" element={<Security />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="kyc" element={<Kyc />} />
+            <Route path="withdrawal" element={<WithDrawal />} />
+            <Route path="support" element={<Support />} />
+          </Route>
 
-        <Route path="/wallet" element={<DashboardLayout />}>
-          <Route index element={<Wallet />} />
-        </Route>
-        <Route path="/add-funds" element={<DashboardLayout />}>
-          <Route index element={<AddMoneyToWallet />} />
-        </Route>
-        <Route path="/my-team" element={<DashboardLayout />}>
-          <Route index element={<MyTotalTeam />} />
-        </Route>
-        {/* <Route path="/shareholders" element={<DashboardLayout />}>
+          <Route path="/wallet" element={<DashboardLayout />}>
+            <Route index element={<Wallet />} />
+          </Route>
+          <Route path="/add-funds" element={<DashboardLayout />}>
+            <Route index element={<AddMoneyToWallet />} />
+          </Route>
+          <Route path="/my-team" element={<DashboardLayout />}>
+            <Route index element={<MyTotalTeam />} />
+          </Route>
+          {/* <Route path="/shareholders" element={<DashboardLayout />}>
           <Route index element={<Shareholders />} />
         </Route> */}
-        <Route path="/earnings" element={<DashboardLayout />}>
-          <Route index element={<TodayEarning />} />
+          <Route path="/earnings" element={<DashboardLayout />}>
+            <Route index element={<TodayEarning />} />
+          </Route>
+          <Route path="/buy-history" element={<DashboardLayout />}>
+            <Route index element={<BuyHistory />} />
+          </Route>
+          <Route path="/security" element={<DashboardLayout />}>
+            <Route index element={<Security />} />
+          </Route>
+          <Route path="/goa-vacation" element={<DashboardLayout />}>
+            <Route index element={<MarketingPlanReferrals />} />
+          </Route>
+          <Route path="/profile" element={<DashboardLayout />}>
+            <Route index element={<Profile />} />
+          </Route>
+          <Route path="/jwallet" element={<DashboardLayout />}>
+            <Route index element={<UserDetailsComponent />} />
+          </Route>
+          <Route path="/kyc-information" element={<DashboardLayout />}>
+            <Route index element={<Kyc />} />
+          </Route>
+          <Route path="/withdrawal" element={<DashboardLayout />}>
+            <Route index element={<WithDrawal />} />
+          </Route>
+          <Route path="/support" element={<DashboardLayout />}>
+            <Route index element={<Support />} />
+
+            <Route path="support-chat/:id" element={<SupportChart />} />
+          </Route>
+          <Route path="/meetings" element={<DashboardLayout />}>
+            <Route index element={<UserMeetingsShowcase />} />
+          </Route>
         </Route>
-        <Route path="/buy-history" element={<DashboardLayout />}>
-          <Route index element={<BuyHistory />} />
-        </Route>
-        <Route path="/security" element={<DashboardLayout />}>
-          <Route index element={<Security />} />
-        </Route>
-        <Route path="/goa-vacation" element={<DashboardLayout />}>
-          <Route index element={<MarketingPlanReferrals />} />
-        </Route>
-        <Route path="/profile" element={<DashboardLayout />}>
-          <Route index element={<Profile />} />
-        </Route>
-        <Route path="/jwallet" element={<DashboardLayout />}>
-          <Route index element={<UserDetailsComponent />} />
-        </Route>
-        <Route path="/kyc-information" element={<DashboardLayout />}>
-          <Route index element={<Kyc />} />
-        </Route>
-        <Route path="/withdrawal" element={<DashboardLayout />}>
-          <Route index element={<WithDrawal />} />
-        </Route>
-        <Route path="/support" element={<DashboardLayout />}>
-          <Route index element={<Support />} />
+
+        <Route path="/" element={<PublicLayout />}>
+          <Route
+            index
+            element={
+              isAuthenticated() ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Home />
+              )
+            }
+          />
+          <Route element={<PublicRoute />}>
+            <Route path="login" element={<AuthContainer />} />
+            <Route path="register" element={<AuthContainer />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+          </Route>
+          <Route path="about" element={<JaimaxComponent />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="features" element={<FeaturesSection />} />
           
-        <Route path="support-chat/:id" element={<SupportChart />} />
+            {/* <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPage />} /> */}
+          
+          <Route path="blog">
+            <Route index element={<BlogLayout />} />
+            <Route path=":slug" element={<BlogDetailPage />} />
+          </Route>
 
-        </Route>
-        <Route path="/meetings" element={<DashboardLayout />}>
-          <Route index element={<UserMeetingsShowcase />} />
-        </Route>
-      </Route>
-
-      <Route path="/" element={<PublicLayout />}>
-        <Route
-          index
-          element={
-            isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Home />
-          }
-        />
-        <Route element={<PublicRoute />}>
-          <Route path="login" element={<AuthContainer />} />
-          <Route path="register" element={<AuthContainer />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-        </Route>
-        <Route path="about" element={<JaimaxComponent />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="features" element={<FeaturesSection />} />
-
-        <Route path="blog">
-          <Route index element={<BlogLayout />} />
-          <Route path=":slug" element={<BlogDetailPage />} />
+          <Route path="services" element={<CryptoServicesFlipCards />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/supportpage" element={<SupportPage />} />
+          <Route path="terms-and-conditions" element={<TermsConditions />} />
+          <Route path="refund-policy" element={<RefundPolicy />} />
+          <Route path="disclaimer" element={<Disclaimer />} />
+          <Route path="Margintrading" element={<Margintrading />} />
+          <Route path="ApiTrading" element={<ApiTrading />} />
+          <Route path="SpotTrading" element={<SpotTrading />} />
+          <Route path="FuturesTrading" element={<FuturesTrading />} />
+          <Route path="PreSale" element={<PreSale />} />
+          <Route path="Kyc-Pmla" element={<KycPmlaPolicy />} />
+          <Route path="AML-CTF" element={<AmlCtfPolicy />} />
+          <Route path="ReferEarn" element={<ReferEarn />} />
         </Route>
 
-        <Route path="services" element={<CryptoServicesFlipCards />} />
-        <Route path="privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/supportpage" element={<SupportPage />} />        
-        <Route path="terms-and-conditions" element={<TermsConditions />} />
-        <Route path="refund-policy" element={<RefundPolicy />} />
-        <Route path="disclaimer" element={<Disclaimer />} />
-        <Route path="Margintrading" element={<Margintrading />} />
-        <Route path="ApiTrading" element={<ApiTrading />} />
-        <Route path="SpotTrading" element={<SpotTrading />} />
-        <Route path="FuturesTrading" element={<FuturesTrading />} />
-        <Route path="PreSale" element={<PreSale />} />
-        <Route path="Kyc_Pmla" element={<KycPmlaPolicy />} />
-        <Route path="AML_CTF" element={<AmlCtfPolicy  />} />
-        <Route path="ReferEarn" element={<ReferEarn />} />
-      </Route>
-
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  </>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 };
 
 export default App;
-
-
-
-
-
-
-

@@ -303,15 +303,27 @@ const ContactInformationSectionContent = () => {
                 <MapPin className="h-6 w-6 text-lime-400 mr-3 mt-0.5 flex-shrink-0" />
                 <span>Survey No :18, India building, 4th Floor, Vaishnavi's Cynosure, Extension, Gachibowli, Hyderabad, Telangana 500081.</span>
               </motion.div>
-              <motion.div className="flex items-center text-white" variants={itemVariants}>
-                <Phone className="h-6 w-6 text-lime-400 mr-3" />
-                <a 
-                  href="tel:+916303008654" 
-                  className="hover:text-lime-400 transition-colors duration-200 cursor-pointer"
-                >
-                  +91 6303008654
-                </a>
-              </motion.div>
+              <motion.div
+  className="flex items-start text-white space-x-3"
+  variants={itemVariants}
+>
+  <Phone className="h-6 w-6 text-lime-400 mt-1" />
+  <div className="flex flex-col space-y-1">
+    <a
+      href="tel:+919121799947"
+      className="hover:text-lime-400 transition-colors duration-200 cursor-pointer"
+    >
+      +91 9121799947
+    </a>
+    <a
+      href="tel:+919121758880"
+      className="hover:text-lime-400 transition-colors duration-200 cursor-pointer"
+    >
+      +91 9121758880
+    </a>
+  </div>
+</motion.div>
+
               <motion.div className="flex items-center text-white" variants={itemVariants}>
                 <Mail className="h-6 w-6 text-lime-400 mr-3" />
                 <a 
