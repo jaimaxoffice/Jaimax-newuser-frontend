@@ -59,7 +59,8 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 // import { config, bsc, IOTATestnet } from '../../wagmiConfig';
 
 import { config, bsc, bscTestnet } from "./wagmi.js";
-
+import { registerSW } from 'virtual:pwa-register';
+registerSW({ immediate: true });
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -81,3 +82,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </Provider>
   </React.StrictMode>
 );
+// Service Worker registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('sw.js') // relative path
+      .then((reg) => console.log('SW registered:', reg))
+      .catch((err) => console.log('SW registration failed:', err));
+  });
+}

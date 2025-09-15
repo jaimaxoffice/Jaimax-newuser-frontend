@@ -1,0 +1,16 @@
+{
+  "name": "Jaimax",
+  "short_name": "Jaimax",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1d8e85",
+  "theme_color": "#1d8e85",
+  "icons": [
+    {
+      "src": "jaimax-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

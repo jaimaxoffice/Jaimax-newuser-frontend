@@ -855,7 +855,7 @@ const AddMoneyToWallet = () => {
     }
   };
 
-    const extractDetailsFromImage = (file) => {
+  const extractDetailsFromImage = (file) => {
     if (!file) return;
 
     setIsLoading(true);
@@ -1477,6 +1477,7 @@ const AddMoneyToWallet = () => {
     try {
       // Step 1: Get and parse user data from localStorage
       const userDataRaw = Cookies.get("userData");
+      // console.log(userDataRaw, "userDataRaw");
       if (!userDataRaw) {
         // console.error("User not found in localStorage");
         alert("User not logged in. Please login and try again.");
@@ -1484,8 +1485,9 @@ const AddMoneyToWallet = () => {
       }
 
       const userData = JSON.parse(userDataRaw);
-      const userId = userData?.data?._id;
-      const name = userData?.data?.name;
+      // console.log(userData, "userData");
+      const userId = userData?._id;
+      const name = userData?.name;
 
       if (!userId || !name) {
         // console.error("User data is incomplete");
