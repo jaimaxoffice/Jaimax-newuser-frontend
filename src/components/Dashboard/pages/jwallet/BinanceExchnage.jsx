@@ -1086,7 +1086,7 @@ const BinanceExchange = ({ onClose }) => {
           fetchTokenBalance("ADA"),
           fetchBnbBalance(),
         ]);
-        addNotification("Balances updated successfully", "success");
+        
       } catch (error) {
         console.error("Error fetching balances:", error);
         addNotification("Failed to fetch some balances. Please try refreshing.", "error");

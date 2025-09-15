@@ -12,7 +12,7 @@ const PriceRiseAlert = () => {
       const now = new Date();
 
       // Campaign date range
-      const visibleFromDate = new Date("2025-09-16T00:00:00");
+      const visibleFromDate = new Date("2025-09-15T00:00:00");
       const invisibleFromDate = new Date("2025-09-30T00:00:00");
 
       // Check if we're within the campaign period

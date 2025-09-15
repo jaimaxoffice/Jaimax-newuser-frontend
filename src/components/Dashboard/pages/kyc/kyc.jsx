@@ -4095,7 +4095,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import digiLocker from "../../../../assets/digiLocker.jpg";
-import editIcon from "../../../../assets/edit.svg";
+import editIcon from "../../../../assets/square-pen.svg";
 import showIcon from "../../../../assets/showIcon.svg";
 import countryCodes from "../../../../Authentication/countryCodes.json";
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";

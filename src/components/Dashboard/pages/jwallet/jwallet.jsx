@@ -949,425 +949,16 @@ const UserDetailsComponent = () => {
       </>
     );
   };
-
-  // Enhanced Swap Modal with fee breakdown and better loading indicators
-  const renderSwapModal = () => {
-    return (
-      // <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-auto">
-      //   <div className="bg-white rounded-xl shadow-2xl max-w-md w-full animate-fadeIn relative">
-      //     <div className="bg-gradient-to-r from-teal-500 to-teal-600 text-white px-5 py-4 rounded-t-xl">
-      //       <div className="flex items-center justify-between">
-      //         <h5 className="text-lg font-semibold flex items-center">
-      //           <svg
-      //             className="w-4 h-4 mr-2"
-      //             fill="none"
-      //             stroke="currentColor"
-      //             viewBox="0 0 24 24"
-      //           >
-      //             <path
-      //               strokeLinecap="round"
-      //               strokeLinejoin="round"
-      //               strokeWidth={2}
-      //               d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-      //             />
-      //           </svg>
-      //           Swap Tokens
-      //         </h5>
-      //         <button
-      //           onClick={() => {
-      //             dispatchModal({ type: "CLOSE", modal: "swapModal" });
-      //             dispatchSwap({ type: "RESET" });
-      //           }}
-      //           className="text-white hover:text-gray-200 transition-colors"
-      //         >
-      //           <svg
-      //             className="w-5 h-5"
-      //             fill="none"
-      //             stroke="currentColor"
-      //             viewBox="0 0 24 24"
-      //           >
-      //             <path
-      //               strokeLinecap="round"
-      //               strokeLinejoin="round"
-      //               strokeWidth={2}
-      //               d="M6 18L18 6M6 6l12 12"
-      //             />
-      //           </svg>
-      //         </button>
-      //       </div>
-      //     </div>
-
-      //     {/* Global loading overlay */}
-      //     {swapState.isProcessing && (
-      //       <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-xl">
-      //         <Loader />
-      //         <p className="mt-3 text-teal-700 font-medium">
-      //           Processing swap...
-      //         </p>
-      //       </div>
-      //     )}
-
-      //     <ConnectWallet />
-
-      //     <div className="p-5">
-      //       {swapState.swapMessage && (
-      //         <div
-      //           className={`rounded-lg p-3 mb-3 text-center text-sm font-medium ${
-      //             swapState.swapMessage.includes("successful")
-      //               ? "bg-green-100 text-green-700"
-      //               : "bg-red-100 text-red-700"
-      //           }`}
-      //         >
-      //           {swapState.swapMessage}
-      //         </div>
-      //       )}
-
-      //       {!swapState.swapMessage && (
-      //         <>
-      //           <div className="mb-4 relative">
-      //             <label className="block text-gray-700 font-medium mb-1 text-sm">
-      //               From
-      //             </label>
-      //             <div className="bg-teal-50 rounded-lg p-3">
-      //               <div className="flex flex-col sm:flex-row justify-center gap-2">
-      //                 <input
-      //                   type="number"
-      //                   className="w-full sm:flex-1 bg-transparent text-lg font-semibold text-gray-800 outline-none text-center sm:text-left"
-      //                   value={swapState.sellAmount}
-      //                   onChange={(e) =>
-      //                     dispatchSwap({
-      //                       type: "SET_AMOUNT",
-      //                       payload: e.target.value,
-      //                     })
-      //                   }
-      //                   placeholder="0.00"
-      //                   disabled={swapState.isCalculating}
-      //                 />
-      //                 <select
-      //                   className="w-full sm:w-auto px-3 py-1.5 bg-white border border-teal-200 rounded-lg text-gray-700 font-medium focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
-      //                   value={swapState.sellToken}
-      //                   onChange={(e) =>
-      //                     dispatchSwap({
-      //                       type: "SET_TOKEN",
-      //                       payload: e.target.value,
-      //                     })
-      //                   }
-      //                   disabled={swapState.isCalculating}
-      //                 >
-      //                   <option value="USDT">USDT</option>
-      //                   <option value="USDC">USDC</option>
-      //                   <option value="TRX">TRX</option>
-      //                   <option value="XRP">XRP</option>
-      //                   <option value="ADA">ADA</option>
-      //                 </select>
-      //               </div>
-      //             </div>
-      //           </div>
-
-      //           <div className="flex justify-center mb-4">
-      //             <div className="bg-teal-100 rounded-full p-2">
-      //               <svg
-      //                 className="w-4 h-4 text-teal-600"
-      //                 fill="none"
-      //                 stroke="currentColor"
-      //                 viewBox="0 0 24 24"
-      //               >
-      //                 <path
-      //                   strokeLinecap="round"
-      //                   strokeLinejoin="round"
-      //                   strokeWidth={2}
-      //                   d="M19 14l-7 7m0 0l-7-7m7 7V3"
-      //                 />
-      //               </svg>
-      //             </div>
-      //           </div>
-
-      //           <div className="mb-4 relative">
-      //             <label className="block text-gray-700 font-medium mb-1 text-sm">
-      //               To
-      //             </label>
-      //             <div className="bg-teal-50 rounded-lg p-3 relative">
-      //               {swapState.isCalculating && (
-      //                 <div className="absolute inset-0 bg-teal-50/90 flex items-center justify-center rounded-lg">
-      //                   <Loader />
-      //                 </div>
-      //               )}
-      //               <div className="flex flex-col sm:flex-row items-center gap-2">
-      //                 <input
-      //                   type="text"
-      //                   className="w-full sm:flex-1 bg-transparent text-lg font-semibold text-gray-800 outline-none text-center sm:text-left"
-      //                   value={swapState.feeDetails?.equivalentJmc || "0"}
-      //                   readOnly
-      //                 />
-      //                 <span className="px-3 py-1.5 bg-teal-100 text-teal-700 rounded-lg font-medium text-sm">
-      //                   JMC
-      //                 </span>
-      //               </div>
-      //             </div>
-      //           </div>
-
-      //           {/* Fee breakdown section */}
-      //           {swapState.feeDetails && (
-      //             <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 mb-4">
-      //               <h6 className="text-sm font-medium text-teal-700 mb-2 flex items-center">
-      //                 <svg
-      //                   className="w-4 h-4 mr-1.5"
-      //                   fill="none"
-      //                   viewBox="0 0 24 24"
-      //                   stroke="currentColor"
-      //                 >
-      //                   <path
-      //                     strokeLinecap="round"
-      //                     strokeLinejoin="round"
-      //                     strokeWidth={2}
-      //                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      //                   />
-      //                 </svg>
-      //                 Transaction Breakdown
-      //               </h6>
-      //               <div className="space-y-1.5 text-xs">
-      //                 <div className="flex justify-between">
-      //                   <span className="text-gray-600">Gross Value:</span>
-      //                   <span className="font-semibold">
-      //                     ₹{swapState.feeDetails.grossInrValue?.toFixed(2)}
-      //                   </span>
-      //                 </div>
-      //                 <div className="flex justify-between">
-      //                   <span className="text-gray-600">Platform Fee:</span>
-      //                   <span className="font-semibold">
-      //                     ₹{swapState.feeDetails.platformFee?.toFixed(2)}
-      //                   </span>
-      //                 </div>
-      //                 <div className="flex justify-between">
-      //                   <span className="text-gray-600">BSC TDS:</span>
-      //                   <span className="font-semibold">
-      //                     ₹{swapState.feeDetails.bscTds?.toFixed(2)}
-      //                   </span>
-      //                 </div>
-      //                 <div className="flex justify-between">
-      //                   <span className="text-gray-600">Net after Fees:</span>
-      //                   <span className="font-semibold">
-      //                     ₹{swapState.feeDetails.netInrAfterFees?.toFixed(2)}
-      //                   </span>
-      //                 </div>
-      //                 <div className="flex justify-between">
-      //                   <span className="text-gray-600">JMC TDS:</span>
-      //                   <span className="font-semibold">
-      //                     {swapState.feeDetails.jmcTds?.toFixed(5)} JMC
-      //                   </span>
-      //                 </div>
-      //                 <div className="flex justify-between pt-1.5 mt-1 border-t border-teal-200">
-      //                   <span className="text-gray-700 font-medium">
-      //                     You Receive:
-      //                   </span>
-      //                   <span className="font-bold text-teal-700">
-      //                     {swapState.feeDetails.equivalentJmc?.toFixed(5)} JMC
-      //                   </span>
-      //                 </div>
-      //               </div>
-      //             </div>
-      //           )}
-
-      //           {/* Exchange rate info */}
-      //           {swapState.feeDetails?.equivalentJmc > 0 && (
-      //             <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
-      //               <div className="flex flex-col sm:flex-row justify-between items-center text-xs gap-1">
-      //                 <span className="text-teal-600">Exchange Rate</span>
-      //                 <strong className="text-gray-800">
-      //                   1 {swapState.sellToken} ={" "}
-      //                   {(
-      //                     swapState.feeDetails.equivalentJmc /
-      //                     parseFloat(swapState.sellAmount || 1)
-      //                   ).toFixed(4)}{" "}
-      //                   JMC
-      //                 </strong>
-      //               </div>
-      //             </div>
-      //           )}
-      //         </>
-      //       )}
-      //     </div>
-
-      //     <div className="bg-gray-50 px-5 py-4 rounded-b-xl flex flex-col sm:flex-row justify-end gap-2">
-      //       {!swapState.swapMessage ? (
-      //         <>
-      //           <button
-      //             onClick={() => {
-      //               dispatchModal({ type: "CLOSE", modal: "swapModal" });
-      //               dispatchSwap({ type: "RESET" });
-      //             }}
-      //             className="w-full sm:w-auto px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm"
-      //           >
-      //             Cancel
-      //           </button>
-      //           <button
-      //             onClick={handleCryptoSwap}
-      //             disabled={
-      //               swapState.isProcessing ||
-      //               swapState.isCalculating ||
-      //               !swapState.sellAmount ||
-      //               parseFloat(swapState.sellAmount) === 0
-      //             }
-      //             className="w-full sm:w-auto px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
-      //           >
-      //             {swapState.isProcessing ? (
-      //               <>
-      //                 <Loader />
-      //                 <span>Swapping...</span>
-      //               </>
-      //             ) : (
-      //               <>
-      //                 <svg
-      //                   className="w-4 h-4"
-      //                   fill="none"
-      //                   stroke="currentColor"
-      //                   viewBox="0 0 24 24"
-      //                 >
-      //                   <path
-      //                     strokeLinecap="round"
-      //                     strokeLinejoin="round"
-      //                     strokeWidth={2}
-      //                     d="M5 13l4 4L19 7"
-      //                   />
-      //                 </svg>
-      //                 Confirm Swap
-      //               </>
-      //             )}
-      //           </button>
-      //         </>
-      //       ) : (
-      //         <button
-      //           onClick={() => {
-      //             dispatchModal({ type: "CLOSE", modal: "swapModal" });
-      //             dispatchSwap({ type: "RESET" });
-      //           }}
-      //           className="w-full sm:w-auto px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm"
-      //         >
-      //           Close
-      //         </button>
-      //       )}
-      //     </div>
-      //   </div>
-      // </div>
-
-      <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 z-50 overflow-auto safe-area-inset">
-  <div className="bg-white rounded-xl shadow-2xl w-full max-w-md animate-fadeIn relative mx-auto my-auto">
-    <div className="bg-gradient-to-r from-teal-500 to-teal-600 text-white px-4 py-4 rounded-t-xl">
-      <div className="flex items-center justify-between">
-        <h5 className="text-base md:text-lg font-semibold flex items-center">
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-            />
-          </svg>
-          Swap Tokens
-        </h5>
-        <button
-          onClick={() => {
-            dispatchModal({ type: "CLOSE", modal: "swapModal" });
-            dispatchSwap({ type: "RESET" });
-          }}
-          className="text-white hover:text-gray-200 transition-colors p-2 -mr-2"
-          aria-label="Close"
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    {/* Global loading overlay */}
-    {swapState.isProcessing && (
-      <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-xl">
-        <Loader />
-        <p className="mt-3 text-teal-700 font-medium">
-          Processing swap...
-        </p>
-      </div>
-    )}
-
-    <ConnectWallet />
-
-    <div className="p-4 md:p-5 overflow-y-auto max-h-[70vh] md:max-h-[60vh]">
-      {swapState.swapMessage && (
-        <div
-          className={`rounded-lg p-3 mb-3 text-center text-sm font-medium ${
-            swapState.swapMessage.includes("successful")
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {swapState.swapMessage}
-        </div>
-      )}
-
-      {!swapState.swapMessage && (
-        <>
-          <div className="mb-4 relative">
-            <label className="block text-gray-700 font-medium mb-1 text-sm">
-              From
-            </label>
-            <div className="bg-teal-50 rounded-lg p-3">
-              <div className="flex flex-col gap-2">
-                <input
-                  type="text"
-                  inputMode="decimal"
-                  className="w-full bg-transparent text-lg font-semibold text-gray-800 outline-none text-center"
-                  value={swapState.sellAmount}
-                  onChange={(e) =>
-                    dispatchSwap({
-                      type: "SET_AMOUNT",
-                      payload: e.target.value,
-                    })
-                  }
-                  placeholder="0.00"
-                  disabled={swapState.isCalculating}
-                  pattern="[0-9]*\.?[0-9]*"
-                />
-                <select
-                  className="w-full px-3 py-2.5 bg-white border border-teal-200 rounded-lg text-gray-700 font-medium focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm appearance-none"
-                  value={swapState.sellToken}
-                  onChange={(e) =>
-                    dispatchSwap({
-                      type: "SET_TOKEN",
-                      payload: e.target.value,
-                    })
-                  }
-                  disabled={swapState.isCalculating}
-                >
-                  <option value="USDT">USDT</option>
-                  <option value="USDC">USDC</option>
-                  <option value="TRX">TRX</option>
-                  <option value="XRP">XRP</option>
-                  <option value="ADA">ADA</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-center mb-4">
-            <div className="bg-teal-100 rounded-full p-2">
+const renderSwapModal = () => {
+   
+  return (
+    <div className="fixed inset-0 bg-teal-900/40 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 z-50 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md animate-fadeIn relative flex flex-col max-h-[90vh] md:max-h-[85vh]">
+        <div className="bg-gradient-to-r from-teal-500 to-teal-600 text-white px-4 py-4 rounded-t-xl flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <h5 className="text-base md:text-lg font-semibold flex items-center">
               <svg
-                className="w-4 h-4 text-teal-600"
+                className="w-4 h-4 mr-2"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -1376,181 +967,293 @@ const UserDetailsComponent = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                 />
               </svg>
-            </div>
+              Swap Tokens
+            </h5>
+            <button
+              onClick={() => {
+                dispatchModal({ type: "CLOSE", modal: "swapModal" });
+                dispatchSwap({ type: "RESET" });
+              }}
+              className="text-white hover:text-gray-200 transition-colors p-2 -mr-2"
+              aria-label="Close"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
+        </div>
 
-          <div className="mb-4 relative">
-            <label className="block text-gray-700 font-medium mb-1 text-sm">
-              To
-            </label>
-            <div className="bg-teal-50 rounded-lg p-3 relative">
-              {swapState.isCalculating && (
-                <div className="absolute inset-0 bg-teal-50/90 flex items-center justify-center rounded-lg">
-                  <Loader />
+        {/* Global loading overlay */}
+        {swapState.isProcessing && (
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-xl">
+            <Loader />
+            <p className="mt-3 text-teal-700 font-medium">
+              Processing swap...
+            </p>
+          </div>
+        )}
+
+        <ConnectWallet />
+
+        <div className="p-4 md:p-5 overflow-y-auto flex-grow">
+          {swapState.swapMessage && (
+            <div
+              className={`rounded-lg p-3 mb-3 text-center text-sm font-medium ${
+                swapState.swapMessage.includes("successful")
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {swapState.swapMessage}
+            </div>
+          )}
+
+          {!swapState.swapMessage && (
+            <>
+              <div className="mb-4 relative">
+                <label className="block text-gray-700 font-medium mb-1 text-sm">
+                  From
+                </label>
+                <div className="bg-teal-50 rounded-lg p-3">
+                  <div className="flex flex-col gap-2">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      className="w-full bg-transparent text-lg font-semibold text-gray-800 outline-none text-center"
+                      value={swapState.sellAmount}
+                      onChange={(e) =>
+                        dispatchSwap({
+                          type: "SET_AMOUNT",
+                          payload: e.target.value,
+                        })
+                      }
+                      placeholder="0.00"
+                      disabled={swapState.isCalculating}
+                      pattern="[0-9]*\.?[0-9]*"
+                    />
+                    <select
+                      className="w-full px-3 py-2.5 bg-white border border-teal-200 rounded-lg text-gray-700 font-medium focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm appearance-none"
+                      value={swapState.sellToken}
+                      onChange={(e) =>
+                        dispatchSwap({
+                          type: "SET_TOKEN",
+                          payload: e.target.value,
+                        })
+                      }
+                      disabled={swapState.isCalculating}
+                    >
+                      <option value="USDT">USDT</option>
+                      <option value="USDC">USDC</option>
+                      <option value="TRX">TRX</option>
+                      <option value="XRP">XRP</option>
+                      <option value="ADA">ADA</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-center mb-4">
+                <div className="bg-teal-100 rounded-full p-2">
+                  <svg
+                    className="w-4 h-4 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="mb-4 relative">
+                <label className="block text-gray-700 font-medium mb-1 text-sm">
+                  To
+                </label>
+                <div className="bg-teal-50 rounded-lg p-3 relative">
+                  {swapState.isCalculating && (
+                    <div className="absolute inset-0 bg-teal-50/90 flex items-center justify-center rounded-lg">
+                      <Loader />
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between gap-2">
+                    <input
+                      type="text"
+                      className="flex-1 bg-transparent text-lg font-semibold text-gray-800 outline-none text-center"
+                      value={swapState.feeDetails?.equivalentJmc || "0"}
+                      readOnly
+                    />
+                    <span className="px-3 py-2 bg-teal-100 text-teal-700 rounded-lg font-medium text-sm whitespace-nowrap">
+                      JMC
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fee breakdown section */}
+              {swapState.feeDetails && (
+                <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 mb-4">
+                  <h6 className="text-sm font-medium text-teal-700 mb-2 flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-1.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    Transaction Breakdown
+                  </h6>
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Gross Value:</span>
+                      <span className="font-semibold">
+                        ₹{swapState.feeDetails.grossInrValue?.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Platform Fee:</span>
+                      <span className="font-semibold">
+                        ₹{swapState.feeDetails.platformFee?.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">BSC TDS:</span>
+                      <span className="font-semibold">
+                        ₹{swapState.feeDetails.bscTds?.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Net after Fees:</span>
+                      <span className="font-semibold">
+                        ₹{swapState.feeDetails.netInrAfterFees?.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">JMC TDS:</span>
+                      <span className="font-semibold">
+                        {swapState.feeDetails.jmcTds?.toFixed(5)} JMC
+                      </span>
+                    </div>
+                    <div className="flex justify-between pt-1.5 mt-1 border-t border-teal-200">
+                      <span className="text-gray-700 font-medium">
+                        You Receive:
+                      </span>
+                      <span className="font-bold text-teal-700">
+                        {swapState.feeDetails.equivalentJmc?.toFixed(5)} JMC
+                      </span>
+                    </div>
+                  </div>
                 </div>
               )}
-              <div className="flex items-center justify-between gap-2">
-                <input
-                  type="text"
-                  className="flex-1 bg-transparent text-lg font-semibold text-gray-800 outline-none text-center"
-                  value={swapState.feeDetails?.equivalentJmc || "0"}
-                  readOnly
-                />
-                <span className="px-3 py-2 bg-teal-100 text-teal-700 rounded-lg font-medium text-sm whitespace-nowrap">
-                  JMC
-                </span>
-              </div>
-            </div>
-          </div>
 
-          {/* Fee breakdown section */}
-          {swapState.feeDetails && (
-            <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 mb-4">
-              <h6 className="text-sm font-medium text-teal-700 mb-2 flex items-center">
-                <svg
-                  className="w-4 h-4 mr-1.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Transaction Breakdown
-              </h6>
-              <div className="space-y-1.5 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Gross Value:</span>
-                  <span className="font-semibold">
-                    ₹{swapState.feeDetails.grossInrValue?.toFixed(2)}
-                  </span>
+              {/* Exchange rate info */}
+              {swapState.feeDetails?.equivalentJmc > 0 && (
+                <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                  <div className="flex justify-between items-center text-xs gap-1">
+                    <span className="text-teal-600">Exchange Rate</span>
+                    <strong className="text-gray-800">
+                      1 {swapState.sellToken} ={" "}
+                      {(
+                        swapState.feeDetails.equivalentJmc /
+                        parseFloat(swapState.sellAmount || 1)
+                      ).toFixed(4)}{" "}
+                      JMC
+                    </strong>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Platform Fee:</span>
-                  <span className="font-semibold">
-                    ₹{swapState.feeDetails.platformFee?.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">BSC TDS:</span>
-                  <span className="font-semibold">
-                    ₹{swapState.feeDetails.bscTds?.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Net after Fees:</span>
-                  <span className="font-semibold">
-                    ₹{swapState.feeDetails.netInrAfterFees?.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">JMC TDS:</span>
-                  <span className="font-semibold">
-                    {swapState.feeDetails.jmcTds?.toFixed(5)} JMC
-                  </span>
-                </div>
-                <div className="flex justify-between pt-1.5 mt-1 border-t border-teal-200">
-                  <span className="text-gray-700 font-medium">
-                    You Receive:
-                  </span>
-                  <span className="font-bold text-teal-700">
-                    {swapState.feeDetails.equivalentJmc?.toFixed(5)} JMC
-                  </span>
-                </div>
-              </div>
-            </div>
+              )}
+            </>
           )}
+        </div>
 
-          {/* Exchange rate info */}
-          {swapState.feeDetails?.equivalentJmc > 0 && (
-            <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
-              <div className="flex justify-between items-center text-xs gap-1">
-                <span className="text-teal-600">Exchange Rate</span>
-                <strong className="text-gray-800">
-                  1 {swapState.sellToken} ={" "}
-                  {(
-                    swapState.feeDetails.equivalentJmc /
-                    parseFloat(swapState.sellAmount || 1)
-                  ).toFixed(4)}{" "}
-                  JMC
-                </strong>
-              </div>
-            </div>
+        <div className="bg-gray-50 px-4 py-4 rounded-b-xl flex flex-col gap-2 flex-shrink-0">
+          {!swapState.swapMessage ? (
+            <>
+              <button
+                onClick={handleCryptoSwap}
+                disabled={
+                  swapState.isProcessing ||
+                  swapState.isCalculating ||
+                  !swapState.sellAmount ||
+                  parseFloat(swapState.sellAmount) === 0
+                }
+                className="w-full px-4 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm font-medium"
+              >
+                {swapState.isProcessing ? (
+                  <>
+                    <Loader />
+                    <span>Swapping...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Confirm Swap
+                  </>
+                )}
+              </button>
+              <button
+                onClick={() => {
+                  dispatchModal({ type: "CLOSE", modal: "swapModal" });
+                  dispatchSwap({ type: "RESET" });
+                }}
+                className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                dispatchModal({ type: "CLOSE", modal: "swapModal" });
+                dispatchSwap({ type: "RESET" });
+              }}
+              className="w-full px-4 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium"
+            >
+              Close
+            </button>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </div>
+  );
+};
 
-    <div className="bg-gray-50 px-4 py-4 rounded-b-xl flex flex-col gap-2">
-      {!swapState.swapMessage ? (
-        <>
-          <button
-            onClick={handleCryptoSwap}
-            disabled={
-              swapState.isProcessing ||
-              swapState.isCalculating ||
-              !swapState.sellAmount ||
-              parseFloat(swapState.sellAmount) === 0
-            }
-            className="w-full px-4 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm font-medium"
-          >
-            {swapState.isProcessing ? (
-              <>
-                <Loader />
-                <span>Swapping...</span>
-              </>
-            ) : (
-              <>
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Confirm Swap
-              </>
-            )}
-          </button>
-          <button
-            onClick={() => {
-              dispatchModal({ type: "CLOSE", modal: "swapModal" });
-              dispatchSwap({ type: "RESET" });
-            }}
-            className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
-          >
-            Cancel
-          </button>
-        </>
-      ) : (
-        <button
-          onClick={() => {
-            dispatchModal({ type: "CLOSE", modal: "swapModal" });
-            dispatchSwap({ type: "RESET" });
-          }}
-          className="w-full px-4 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium"
-        >
-          Close
-        </button>
-      )}
-    </div>
-  </div>
-</div>
-    );
-  };
 
   return (
     <>

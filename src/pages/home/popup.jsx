@@ -20,7 +20,7 @@ const PriceIncreasePopup = () => {
     const checkVisibility = () => {
       const now = new Date();
       const visibleFromDate = new Date("2025-09-12T00:00:00");
-      const invisibleFromDate = new Date("2025-09-16T00:00:00");
+      const invisibleFromDate = new Date("2025-09-15T00:00:00");
 
       const campaignActive = now >= visibleFromDate && now < invisibleFromDate;
       const userDismissed =
@@ -120,7 +120,7 @@ useEffect(() => {
   setTimeout(() => setIsLoaded(true), 100);
 
   const startDate = new Date("2025-09-12T00:00:00");
-  const endDate = new Date("2025-09-16T00:00:00");
+  const endDate = new Date("2025-09-15T00:00:00");
   const totalDuration = (endDate - startDate) / 1000;
 
   const timer = setInterval(() => {
