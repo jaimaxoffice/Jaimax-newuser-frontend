@@ -553,7 +553,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-teal-900 bg-opacity-60 flex items-center justify-center z-50">
+    <div className="fixed inset-0 b  flex items-center justify-center z-50 m-2 ">
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 flex flex-col items-center relative"
