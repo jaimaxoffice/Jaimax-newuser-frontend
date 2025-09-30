@@ -8,7 +8,7 @@ export const lockedsuperbonusApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    getDisburseBonus: builder.query({
+    disburseBonus: builder.mutation({  // <-- change to mutation
       query: () => ({
         url: `/User/disburse-locked-superboonus`,
         method: "GET",
@@ -17,4 +17,7 @@ export const lockedsuperbonusApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllLockedSuperbonusQuery,useGetDisburseBonusQuery  } = lockedsuperbonusApiSlice;
+export const { 
+  useGetAllLockedSuperbonusQuery, 
+  useDisburseBonusMutation  // <-- updated hook
+} = lockedsuperbonusApiSlice;
