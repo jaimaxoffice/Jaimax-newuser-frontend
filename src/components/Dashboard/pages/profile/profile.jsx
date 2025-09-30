@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { LockKeyhole, UserRound, User, Mail, Phone, Home, MapPin } from "lucide-react";
+import {
+  LockKeyhole,
+  UserRound,
+  User,
+  Mail,
+  Phone,
+  Home,
+  MapPin,
+} from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -8,7 +16,7 @@ import {
   useVerifyMutation,
 } from "../../../../Authentication/authApiSlice";
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
-import { useUpdateAddressMutation } from './profileApiSlice';
+import { useUpdateAddressMutation } from "./profileApiSlice";
 import countryCodes from "../../../../Authentication/countryCodes.json";
 
 export default function Profile3DForm() {
@@ -83,76 +91,79 @@ export default function Profile3DForm() {
     setShowPassword(!showPassword);
   };
 
+  const validateForm = () => {
+    let formErrors = {};
+    const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
+    const nameRegex = /^[a-zA-Z\s'-]+$/;
+    const addressRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])?[a-zA-Z0-9\s.,'#-]+$/;
 
+    // --- Name Validation ---
+    if (!state.name.trim()) {
+      formErrors.name = "Name is required.";
+    } else if (state.name.trim().length < 2) {
+      formErrors.name = "Name must be at least 2 characters long.";
+    } else if (state.name.trim().length > 50) {
+      formErrors.name = "Name cannot exceed 50 characters.";
+    } else if (!nameRegex.test(state.name.trim())) {
+      formErrors.name =
+        "Name can only contain letters, spaces, hyphens, and apostrophes.";
+    }
 
- const validateForm = () => {
-  let formErrors = {};
-  const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
-  const nameRegex = /^[a-zA-Z\s'-]+$/;
-  const addressRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])?[a-zA-Z0-9\s.,'#-]+$/;
+    // --- Phone Validation ---
+    if (!state.phone) {
+      formErrors.phone = "Mobile number is required.";
+    } else if (
+      typeof state.phone !== "string" &&
+      typeof state.phone !== "number"
+    ) {
+      formErrors.phone = "Invalid mobile number format.";
+    } else if (!String(state.phone).trim()) {
+      formErrors.phone = "Mobile number is required.";
+    } else if (!phoneRegex.test(String(state.phone))) {
+      formErrors.phone =
+        "Invalid mobile number format. Please enter 7-20 digits, optionally with +, spaces, -, or ().";
+    }
 
-  // --- Name Validation ---
-  if (!state.name.trim()) {
-    formErrors.name = "Name is required.";
-  } else if (state.name.trim().length < 2) {
-    formErrors.name = "Name must be at least 2 characters long.";
-  } else if (state.name.trim().length > 50) {
-    formErrors.name = "Name cannot exceed 50 characters.";
-  } else if (!nameRegex.test(state.name.trim())) {
-    formErrors.name = "Name can only contain letters, spaces, hyphens, and apostrophes.";
-  }
+    // --- Address Validation ---
+    if (!state.address.trim()) {
+      formErrors.address = "Address is required.";
+    } else if (state.address.trim().length < 5) {
+      formErrors.address = "Address must be at least 5 characters long.";
+    } else if (state.address.trim().length > 100) {
+      formErrors.address = "Address cannot exceed 100 characters.";
+    } else if (!addressRegex.test(state.address.trim())) {
+      formErrors.address = "Address contains invalid characters.";
+    }
 
-  // --- Phone Validation ---
-  if (!state.phone) { 
-    formErrors.phone = "Mobile number is required.";
-  } else if (typeof state.phone !== 'string' && typeof state.phone !== 'number') {
-    formErrors.phone = "Invalid mobile number format."; 
-  } else if (!String(state.phone).trim()) { 
-    formErrors.phone = "Mobile number is required.";
-  } else if (!phoneRegex.test(String(state.phone))) {
-    formErrors.phone = "Invalid mobile number format. Please enter 7-20 digits, optionally with +, spaces, -, or ().";
-  }
+    // --- City Validation ---
+    if (!state.city.trim()) {
+      formErrors.city = "City is required.";
+    } else if (state.city.trim().length < 2) {
+      formErrors.city = "City must be at least 2 characters long.";
+    } else if (state.city.trim().length > 50) {
+      formErrors.city = "City cannot exceed 50 characters.";
+    } else if (!/^[a-zA-Z\s-]+$/.test(state.city.trim())) {
+      formErrors.city = "City can only contain letters, spaces, and hyphens.";
+    }
 
-  // --- Address Validation ---
-  if (!state.address.trim()) {
-    formErrors.address = "Address is required.";
-  } else if (state.address.trim().length < 5) {
-    formErrors.address = "Address must be at least 5 characters long.";
-  } else if (state.address.trim().length > 100) {
-    formErrors.address = "Address cannot exceed 100 characters.";
-  } else if (!addressRegex.test(state.address.trim())) {
-    formErrors.address = "Address contains invalid characters.";
-  }
+    // --- State Validation ---
+    if (!state.state.trim()) {
+      formErrors.state = "State is required.";
+    } else if (state.state.trim().length < 2) {
+      formErrors.state = "State must be at least 2 characters long.";
+    } else if (state.state.trim().length > 50) {
+      formErrors.state = "State cannot exceed 50 characters.";
+    } else if (!/^[a-zA-Z\s-]+$/.test(state.state.trim())) {
+      formErrors.state = "State can only contain letters, spaces, and hyphens.";
+    }
 
-  // --- City Validation ---
-  if (!state.city.trim()) {
-    formErrors.city = "City is required.";
-  } else if (state.city.trim().length < 2) {
-    formErrors.city = "City must be at least 2 characters long.";
-  } else if (state.city.trim().length > 50) {
-    formErrors.city = "City cannot exceed 50 characters.";
-  } else if (!/^[a-zA-Z\s-]+$/.test(state.city.trim())) { 
-    formErrors.city = "City can only contain letters, spaces, and hyphens.";
-  }
+    // --- Country Validation ---
+    if (!state.country.trim()) {
+      formErrors.country = "Country is required.";
+    }
 
-  // --- State Validation ---
-  if (!state.state.trim()) {
-    formErrors.state = "State is required.";
-  } else if (state.state.trim().length < 2) {
-    formErrors.state = "State must be at least 2 characters long.";
-  } else if (state.state.trim().length > 50) {
-    formErrors.state = "State cannot exceed 50 characters.";
-  } else if (!/^[a-zA-Z\s-]+$/.test(state.state.trim())) {
-    formErrors.state = "State can only contain letters, spaces, and hyphens.";
-  }
-
-  // --- Country Validation ---
-  if (!state.country.trim()) {
-    formErrors.country = "Country is required.";
-  } 
-
-  return formErrors;
-};
+    return formErrors;
+  };
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
@@ -192,7 +203,7 @@ export default function Profile3DForm() {
   const currentImage = () => {
     if (profileImage) {
       return profileImage;
-    } else if (state.profile && typeof state.profile === 'string') {
+    } else if (state.profile && typeof state.profile === "string") {
       return state.profile;
     } else {
       return null;
@@ -443,7 +454,8 @@ export default function Profile3DForm() {
   }
 
   const inputClass = (hasError) =>
-    `w-full border focus:border-teal-500 focus:ring-2 focus:ring-teal-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 transition bg-white bg-opacity-90 shadow-inner backdrop-blur ${hasError ? 'border-red-500' : 'border-gray-300'
+    `w-full border focus:border-teal-500 focus:ring-2 focus:ring-teal-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 transition bg-white bg-opacity-90 shadow-inner backdrop-blur ${
+      hasError ? "border-red-500" : "border-gray-300"
     }`;
 
   return (
@@ -467,12 +479,20 @@ export default function Profile3DForm() {
                         className="w-full h-full object-cover rounded-full"
                       />
                     ) : (
-                      <span className="text-3xl sm:text-4xl">{getDefaultAvatar()}</span>
+                      <span className="text-3xl sm:text-4xl">
+                        {getDefaultAvatar()}
+                      </span>
                     )}
 
                     {/* Hover Overlay */}
-                    <div className={`absolute inset-0 bg-black/50 rounded-full flex items-center justify-center transition-opacity duration-300 ${avatarHover ? 'opacity-100' : 'opacity-0'}`}>
-                      <span className="text-white text-xs font-medium">Change</span>
+                    <div
+                      className={`absolute inset-0 bg-black/50 rounded-full flex items-center justify-center transition-opacity duration-300 ${
+                        avatarHover ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <span className="text-white text-xs font-medium">
+                        Change
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -491,12 +511,17 @@ export default function Profile3DForm() {
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center justify-center sm:justify-start gap-2">
                   Profile Information
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">Update your details below</p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  Update your details below
+                </p>
 
                 <p className="mt-2 text-xs sm:text-sm leading-5 sm:leading-6 text-gray-700">
-                  <span className="font-semibold text-[#0d7f79]"> Pro Tip:</span>{" "}
-                  Keep your profile information up-to-date for better communication
-                  and service experience.
+                  <span className="font-semibold text-[#0d7f79]">
+                    {" "}
+                    Pro Tip:
+                  </span>{" "}
+                  Keep your profile information up-to-date for better
+                  communication and service experience.
                 </p>
               </div>
             </div>
@@ -506,7 +531,10 @@ export default function Profile3DForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {/* Full Name */}
                 <div className="space-y-1">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Full Name *
                   </label>
                   <input
@@ -516,14 +544,27 @@ export default function Profile3DForm() {
                     value={state.name}
                     onChange={handleChange}
                     placeholder="Enter your full name"
-                    className={inputClass(errors.name)}
+                    disabled={
+                      userData?.data && Object.keys(userData.data).length > 0
+                    }
+                    className={`${inputClass(errors.name)} ${
+                      userData?.data && Object.keys(userData.data).length > 0
+                        ? "opacity-60 cursor-not-allowed"
+                        : ""
+                    }`}
                   />
-                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+
+                  {errors.name && (
+                    <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                  )}
                 </div>
 
                 {/* Email */}
                 <div className="space-y-1">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email Address *
                   </label>
                   <input
@@ -532,15 +573,26 @@ export default function Profile3DForm() {
                     name="email"
                     value={state.email}
                     placeholder="Enter your email address"
-                    disabled={userData?.data && Object.keys(userData.data).length > 0}
-                    className={`${inputClass(errors.email)} ${userData?.data && Object.keys(userData.data).length > 0 ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    disabled={
+                      userData?.data && Object.keys(userData.data).length > 0
+                    }
+                    className={`${inputClass(errors.email)} ${
+                      userData?.data && Object.keys(userData.data).length > 0
+                        ? "opacity-60 cursor-not-allowed"
+                        : ""
+                    }`}
                   />
-                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                  )}
                 </div>
 
                 {/* Phone */}
                 <div className="space-y-1">
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Phone Number *
                   </label>
                   <input
@@ -549,15 +601,26 @@ export default function Profile3DForm() {
                     name="phone"
                     value={state.phone}
                     placeholder="Enter your phone number"
-                    disabled={userData?.data && Object.keys(userData.data).length > 0}
-                    className={`${inputClass(errors.phone)} ${userData?.data && Object.keys(userData.data).length > 0 ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    disabled={
+                      userData?.data && Object.keys(userData.data).length > 0
+                    }
+                    className={`${inputClass(errors.phone)} ${
+                      userData?.data && Object.keys(userData.data).length > 0
+                        ? "opacity-60 cursor-not-allowed"
+                        : ""
+                    }`}
                   />
-                  {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                  {errors.phone && (
+                    <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                  )}
                 </div>
 
                 {/* Address */}
                 <div className="space-y-1">
-                  <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="address"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Address *
                   </label>
                   <input
@@ -569,12 +632,19 @@ export default function Profile3DForm() {
                     placeholder="Enter your address"
                     className={inputClass(errors.address)}
                   />
-                  {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+                  {errors.address && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.address}
+                    </p>
+                  )}
                 </div>
 
                 {/* City */}
                 <div className="space-y-1">
-                  <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="city"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     City *
                   </label>
                   <input
@@ -586,12 +656,17 @@ export default function Profile3DForm() {
                     placeholder="Enter your city"
                     className={inputClass(errors.city)}
                   />
-                  {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+                  {errors.city && (
+                    <p className="text-red-500 text-xs mt-1">{errors.city}</p>
+                  )}
                 </div>
 
                 {/* State */}
                 <div className="space-y-1">
-                  <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="state"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     State *
                   </label>
                   <input
@@ -603,12 +678,17 @@ export default function Profile3DForm() {
                     placeholder="Enter your state"
                     className={inputClass(errors.state)}
                   />
-                  {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
+                  {errors.state && (
+                    <p className="text-red-500 text-xs mt-1">{errors.state}</p>
+                  )}
                 </div>
 
                 {/* Country - Full width on mobile, half on larger screens */}
                 <div className="space-y-1 sm:col-span-1">
-                  <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="country"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Country *
                   </label>
                   <select
@@ -616,8 +696,14 @@ export default function Profile3DForm() {
                     name="country"
                     value={state.country}
                     onChange={handleChange}
-                    disabled={userData?.data && Object.keys(userData.data).length > 0}
-                    className={`${inputClass(errors.country)} ${userData?.data && Object.keys(userData.data).length > 0 ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    disabled={
+                      userData?.data && Object.keys(userData.data).length > 0
+                    }
+                    className={`${inputClass(errors.country)} ${
+                      userData?.data && Object.keys(userData.data).length > 0
+                        ? "opacity-60 cursor-not-allowed"
+                        : ""
+                    }`}
                   >
                     <option value="">Select Country</option>
                     {countryCodes?.map(({ country_name }) => (
@@ -626,7 +712,11 @@ export default function Profile3DForm() {
                       </option>
                     ))}
                   </select>
-                  {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country}</p>}
+                  {errors.country && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.country}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -634,15 +724,19 @@ export default function Profile3DForm() {
               <button
                 type="submit"
                 disabled={loading || updateLoader}
-                className={`w-full mt-4 sm:mt-6 py-2.5 rounded-full font-semibold transition shadow-md text-sm sm:text-base ${loading || updateLoader
-                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                  : 'bg-teal-600 hover:bg-teal-700 text-white'
-                  }`}
+                className={`w-full mt-4 sm:mt-6 py-2.5 rounded-full font-semibold transition shadow-md text-sm sm:text-base ${
+                  loading || updateLoader
+                    ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                    : "bg-teal-600 hover:bg-teal-700 text-white"
+                }`}
               >
-                {loading || updateLoader ?
-                  (userData?.data && Object.keys(userData.data).length > 0 ? "Updating..." : "Creating...") :
-                  (userData?.data && Object.keys(userData.data).length > 0 ? "Update Profile" : "Create Profile")
-                }
+                {loading || updateLoader
+                  ? userData?.data && Object.keys(userData.data).length > 0
+                    ? "Updating..."
+                    : "Creating..."
+                  : userData?.data && Object.keys(userData.data).length > 0
+                  ? "Update Profile"
+                  : "Create Profile"}
               </button>
             </form>
           </div>
@@ -651,10 +745,15 @@ export default function Profile3DForm() {
           <div className="w-full xl:w-1/3 space-y-4 sm:space-y-6 border-t xl:border-t-0 xl:border-l pt-6 xl:pt-0 xl:pl-6 lg:pl-8">
             {/* Security Notice */}
             <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 sm:p-4 text-sm text-teal-900 shadow-sm">
-              <p className="font-semibold mb-1 text-xs sm:text-sm">Security Reminder</p>
+              <p className="font-semibold mb-1 text-xs sm:text-sm">
+                Security Reminder
+              </p>
               <p className="leading-relaxed text-xs sm:text-sm">
-                <span className="text-teal-700">Enter your current password</span> before making any changes to your password.
-                This helps us verify that it's really you and keeps your information safe.
+                <span className="text-teal-700">
+                  Enter your current password
+                </span>{" "}
+                before making any changes to your password. This helps us verify
+                that it's really you and keeps your information safe.
               </p>
             </div>
 
@@ -667,36 +766,50 @@ export default function Profile3DForm() {
             <div className="flex flex-col gap-3 sm:gap-4">
               {/* Current Password */}
               <div className="space-y-1">
-                <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="currentPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Current Password *
                 </label>
                 <div className="relative">
                   <input
                     id="currentPassword"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                     placeholder="Enter your current password"
                     readOnly={otpVerified}
-                    className={`${inputClass(errors.password)} pr-10 ${otpVerified ? 'opacity-60' : ''}`}
+                    className={`${inputClass(errors.password)} pr-10 ${
+                      otpVerified ? "opacity-60" : ""
+                    }`}
                   />
                   <button
                     type="button"
                     onClick={togglePassword}
                     disabled={otpVerified}
                     className="absolute right-3 top-2.5 text-gray-600 hover:text-teal-600 disabled:opacity-50"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
-                    {showPassword ? '🙈' : '👁️'}
+                    {showPassword ? "🙈" : "👁️"}
                   </button>
                 </div>
-                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                )}
               </div>
 
               {/* OTP Input */}
               <div className="space-y-1">
-                <label htmlFor="otp" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="otp"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   OTP *
                 </label>
                 <div className="flex gap-2 sm:gap-3">
@@ -705,10 +818,14 @@ export default function Profile3DForm() {
                     type="text"
                     name="otp"
                     value={formData.otp}
-                    onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, otp: e.target.value })
+                    }
                     placeholder="Enter 4-digit OTP"
                     disabled={!otpSent}
-                    className={`${inputClass(errors.otp)} flex-1 ${!otpSent ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    className={`${inputClass(errors.otp)} flex-1 ${
+                      !otpSent ? "opacity-60 cursor-not-allowed" : ""
+                    }`}
                   />
                   <button
                     type="button"
@@ -719,13 +836,17 @@ export default function Profile3DForm() {
                     {isOtpSending
                       ? "Sending..."
                       : otpSent && !resendOtp
-                        ? `${Math.floor(timer / 60)}:${timer % 60 < 10 ? `0${timer % 60}` : timer % 60}`
-                        : otpSent && resendOtp
-                          ? "Resend"
-                          : "Get OTP"}
+                      ? `${Math.floor(timer / 60)}:${
+                          timer % 60 < 10 ? `0${timer % 60}` : timer % 60
+                        }`
+                      : otpSent && resendOtp
+                      ? "Resend"
+                      : "Get OTP"}
                   </button>
                 </div>
-                {errors.otp && <p className="text-red-500 text-xs mt-1">{errors.otp}</p>}
+                {errors.otp && (
+                  <p className="text-red-500 text-xs mt-1">{errors.otp}</p>
+                )}
               </div>
 
               {/* Verify OTP Button */}
@@ -744,7 +865,10 @@ export default function Profile3DForm() {
               {otpVerified && (
                 <div className="space-y-3 sm:space-y-4">
                   <div className="space-y-1">
-                    <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="newPassword"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       New Password *
                     </label>
                     <input
@@ -752,15 +876,27 @@ export default function Profile3DForm() {
                       type="password"
                       name="newPassword"
                       value={formData.newPassword}
-                      onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          newPassword: e.target.value,
+                        })
+                      }
                       placeholder="Enter new password (min 6 characters)"
                       className={inputClass(errors.newPassword)}
                     />
-                    {errors.newPassword && <p className="text-red-500 text-xs mt-1">{errors.newPassword}</p>}
+                    {errors.newPassword && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.newPassword}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="confirmPassword"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Confirm New Password *
                     </label>
                     <input
@@ -768,11 +904,17 @@ export default function Profile3DForm() {
                       type="password"
                       name="confirmPwd"
                       value={formData.confirmPwd}
-                      onChange={(e) => setFormData({ ...formData, confirmPwd: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, confirmPwd: e.target.value })
+                      }
                       placeholder="Confirm your new password"
                       className={inputClass(errors.confirmPwd)}
                     />
-                    {errors.confirmPwd && <p className="text-red-500 text-xs mt-1">{errors.confirmPwd}</p>}
+                    {errors.confirmPwd && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.confirmPwd}
+                      </p>
+                    )}
                   </div>
 
                   <button

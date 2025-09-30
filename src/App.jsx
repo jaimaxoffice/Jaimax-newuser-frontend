@@ -55,6 +55,7 @@ import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddM
 import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarning";
 import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
 import PrivateRoute from "./router/PrivateRoute";
+import SuperBonusInfo from "./components/lockedSuperBouns/LockedSuperbonus"
 import FloatingNavButton from "./global/FloatingNavButton";
 import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
@@ -66,6 +67,7 @@ import PriceRiseAlert from "./pages/home/Countdown";
 import SecurityLayer from "./pages/securitylayer";
 import PriceIncreasePopup from "./pages/home/popup";
 import BlogPage from "./components/Blogsection/BlogDisplay";
+import ConditionalPopup from "./pages/home/Conditional";
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -342,9 +344,9 @@ const App = () => {
 
   return (
     <>
-    
-      {/* <SecurityLayer /> */}
-      <PriceIncreasePopup />
+    <ConditionalPopup/>
+      {/* <DusseraPopup/>
+      <PriceIncreasePopup /> */}
       <PriceRiseAlert />
 
       <Routes>
@@ -352,8 +354,8 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="wallet" element={<Wallet />} />
-            <Route path="my-team" element={<MyTotalTeam />} />
             <Route path="shareholders" element={<Shareholders />} />
+            <Route path="locked-superbonu" element={<SuperBonusInfo />} />
             <Route path="buy-history" element={<BuyHistory />} />
             <Route path="security" element={<Security />} />
             <Route path="profile" element={<Profile />} />
@@ -376,6 +378,9 @@ const App = () => {
         </Route> */}
           <Route path="/earnings" element={<DashboardLayout />}>
             <Route index element={<TodayEarning />} />
+          </Route>
+          <Route path="/locked-superbonus" element={<DashboardLayout />}>
+            <Route index element={<SuperBonusInfo />} />
           </Route>
           <Route path="/buy-history" element={<DashboardLayout />}>
             <Route index element={<BuyHistory />} />

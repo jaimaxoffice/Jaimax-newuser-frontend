@@ -1,674 +1,636 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
+
+// import React, { useState, useEffect } from 'react';
+// import icon from "../../assets/Images/jaimaxcoin.png";
+// import { useNavigate } from 'react-router-dom'; 
+// const CoinPricePopup = ({ 
+//   coinName = "JaiMax Coin", 
+//   coinSymbol = "JMC",
+//   oldPriceINR = "0.028",
+//   newPriceINR = "0.03",
+//   oldPriceUSD = "0.00032",
+//   newPriceUSD = "0.00034",
+//  startDate = "2025-09-30T00:00:00",
+//   endDate = "2025-10-03T00:00:00",
+//   onBuy = () => {},
+//   onClose = () => {},
+//    forceVisible = false,
+//   theme = "green"
+// }) => {
+//   const [isVisible, setIsVisible] = useState(forceVisible); 
+//   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+//   const [showConfetti, setShowConfetti] = useState(false);
+//   const [progress, setProgress] = useState(0);
+//   const navigate = useNavigate();
+//   const percentageIncrease = ((parseFloat(newPriceINR) - parseFloat(oldPriceINR)) / parseFloat(oldPriceINR)) * 100;
+//   const endTime = new Date(`2025-10-03T00:00:00`);
+//   const mainGreen = "#18a04a";
+//   const colors = {
+//     primary: mainGreen,
+//     secondary: "#0d3e23",
+//     dark: "#0a2e19",
+//     gradient: {
+//       primary: `linear-gradient(135deg, ${mainGreen}, #106b32)`,
+//       secondary: "linear-gradient(135deg, #0d3e23, #072713)"
+//     }
+//   };
+//   const radius = 25;
+//   const circumference = 2 * Math.PI * radius;
+//   const offset = circumference - (progress / 100) * circumference;
+  
+//   useEffect(() => {
+//     const shouldShowPopup = sessionStorage.getItem('pricePoupClosed') !== 'true';
+//     setIsVisible(shouldShowPopup);
+//     const handleStorageChange = (e) => {
+//       if (e.key === 'pricePoupClosed' && e.newValue === 'true') {
+//         setIsVisible(false);
+//       }
+//     };
+    
+//     window.addEventListener('storage', handleStorageChange);
+    
+//     return () => {
+//       window.removeEventListener('storage', handleStorageChange);
+//     };
+//   }, []);
+//   useEffect(() => {
+//   if (forceVisible) {
+//     setIsVisible(true);
+//   } else {
+//     const shouldShowPopup = sessionStorage.getItem('pricePoupClosed') !== 'true';
+//     setIsVisible(shouldShowPopup);
+//   }
+  
+//   const handleStorageChange = (e) => {
+//     if (e.key === 'pricePoupClosed' && e.newValue === 'true') {
+//       setIsVisible(false);
+//     }
+//   };
+  
+//   window.addEventListener('storage', handleStorageChange);
+  
+//   return () => {
+//     window.removeEventListener('storage', handleStorageChange);
+//   };
+// }, [forceVisible]); // Add forceVisible to the dependency array
+//   useEffect(() => {
+//     if (!isVisible) return;
+    
+//     const timer = setInterval(() => {
+//       const difference = endTime - new Date();
+      
+//       if (difference > 0) {
+//         setTimeLeft({
+//           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+//           hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+//           minutes: Math.floor((difference / 1000 / 60) % 60),
+//           seconds: Math.floor((difference / 1000) % 60)
+//         });
+//       } else {
+//         setIsVisible(false);
+//         sessionStorage.setItem('pricePoupClosed', 'true');
+//         clearInterval(timer);
+//       }
+//     }, 1000);
+    
+//     return () => clearInterval(timer);
+//   }, [endTime, isVisible]);
+  
+//   useEffect(() => {
+//     if (!isVisible) return;
+    
+//     let startValue = 0;
+//     const endValue = percentageIncrease;
+//     const duration = 1500;
+//     const startTime = Date.now();
+    
+//     const animateProgress = () => {
+//       const currentTime = Date.now();
+//       const elapsedTime = currentTime - startTime;
+      
+//       if (elapsedTime < duration) {
+//         const progress = elapsedTime / duration;
+//         const easedProgress = 1 - Math.pow(1 - progress, 3);
+//         startValue = easedProgress * endValue;
+//         setProgress(startValue);
+//         requestAnimationFrame(animateProgress);
+//       } else {
+//         setProgress(endValue);
+//       }
+//     };
+    
+//     requestAnimationFrame(animateProgress);
+//   }, [isVisible, percentageIncrease]);
+
+// const handleClose = () => {
+//     setIsVisible(false);
+//     sessionStorage.setItem('pricePoupClosed', 'true');
+//     onClose(); // Call onClose when closing
+//   };
+  
+//   const handleBuy = () => {
+//      navigate("/dashboard");
+//     // setShowConfetti(true);
+
+//     onBuy();
+//   };
+
+//   if (!isVisible) return null;
+
+//   return (
+//     <div className="fixed inset-0 flex items-center justify-center z-50 p-3 mt-10">
+//       <style>
+//         {`
+//           @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+//           @keyframes confetti-fall { 
+//             0% { transform: translateY(0) rotate(0); opacity: 1; } 
+//             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } 
+//           }
+//           @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+//           .coin-float { animation: float 6s ease-in-out infinite; }
+          
+//           .confetti-piece {
+//             position: absolute;
+//             top: 0;
+//             animation-name: confetti-fall;
+//             animation-timing-function: ease-in-out;
+//             animation-fill-mode: forwards;
+//           }
+          
+//           .gradient-border {
+//             position: relative;
+//           }
+//           .gradient-border::after {
+//             content: '';
+//             position: absolute;
+//             inset: 0;
+//             border-radius: inherit;
+//             padding: 1px;
+//             background: ${colors.gradient.primary};
+//             -webkit-mask: 
+//               linear-gradient(#fff 0 0) content-box, 
+//               linear-gradient(#fff 0 0);
+//             -webkit-mask-composite: xor;
+//             mask-composite: exclude;
+//             pointer-events: none;
+//           }
+//         `}
+//       </style>
+
+//       {/* Confetti effect */}
+//       {showConfetti && (
+//         <div className="fixed inset-0 pointer-events-none z-[100]">
+//           {Array.from({ length: 100 }).map((_, i) => {
+//             const size = Math.random() * 10 + 5;
+//             const duration = Math.random() * 3 + 2;
+//             const delay = Math.random() * 0.5;
+            
+//             return (
+//               <div 
+//                 key={i}
+//                 className="confetti-piece rounded-lg"
+//                 style={{
+//                   left: `${Math.random() * 100}%`,
+//                   width: `${size}px`,
+//                   height: `${size}px`,
+//                   backgroundColor: i % 3 === 0 ? mainGreen : i % 3 === 1 ? '#ffffff' : '#ffdd00',
+//                   transform: `rotate(${Math.random() * 360}deg)`,
+//                   animationDuration: `${duration}s`,
+//                   animationDelay: `${delay}s`
+//                 }}
+//               />
+//             );
+//           })}
+//         </div>
+//       )}
+      
+//       <div 
+//         className="relative rounded-xl overflow-hidden w-full max-w-xs shadow-[0_10px_25px_rgba(0,0,0,0.5)]" 
+//         style={{ backgroundColor: mainGreen }}
+//       >
+//         {/* Close button in top-right */}
+//         <button 
+//           onClick={handleClose} 
+//           className="absolute top-3 right-3 text-white/70 hover:text-white hover:bg-black/10 rounded-full p-1.5 z-10"
+//           aria-label="Close"
+//         >
+//           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+//             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+//           </svg>
+//         </button>
+        
+//         <div className="p-5">
+//           {/* Main Announcement */}
+//           <div className="text-center mb-4">
+//             <div className="flex items-center justify-center mb-2">
+//             </div>
+//             <h3 className="text-lg font-bold text-white mb-1">Price Update!</h3>
+//             <div className="text-white/70 text-sm">The price has officially increased</div>
+//           </div>
+          
+//           {/* Price Comparison */}
+//           <div className="bg-black/20 rounded-lg p-3 mb-4 border border-opacity-20 shadow-inner gradient-border">
+//             <div className="flex justify-between items-center">
+//               <div>
+//                 <div className="text-white/60 text-xs mb-0.5">Previous</div>
+//                 <div className="text-white font-medium text-base">{oldPriceINR} ₹</div>
+//                 <div className="text-white/50 text-[10px]">${oldPriceUSD}</div>
+//               </div>
+              
+//               <div className="flex flex-col items-center justify-center">
+//                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: "#ffffff" }}>
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+//                 </svg>
+//               </div>
+              
+//               <div>
+//                 <div className="text-xs mb-0.5 text-white">Current</div>
+//                 <div className="text-white font-bold text-base">{newPriceINR} ₹</div>
+//                 <div className="text-white/50 text-[10px]">${newPriceUSD}</div>
+//               </div>
+//             </div>
+//           </div>
+          
+//           {/* Message */}
+//           <div className="bg-black/30 rounded-lg p-3 mb-4 border border-opacity-20 text-white shadow-inner gradient-border">
+//             <p className="text-center mb-2 text-xs">
+//               Don't miss the chance — the earlier you buy, the bigger your future rewards!
+//             </p>
+//           </div>
+          
+//           {/* Side by side: Icon with circular progress + Timer */}
+//           <div className="flex items-center space-x-3 mb-4">
+//             {/* Left: Icon with circular progress */}
+//             <div className="relative w-16 h-16 flex-shrink-0 ">
+//               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 60 60">
+//                 <defs>
+//                   <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+//                     <stop offset="0%" stopColor="#ffffff" />
+//                     <stop offset="100%" stopColor="#e6e6e6" />
+//                   </linearGradient>
+//                   <filter id="glow">
+//                     <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+//                     <feMerge>
+//                       <feMergeNode in="coloredBlur"/>
+//                       <feMergeNode in="SourceGraphic"/>
+//                     </feMerge>
+//                   </filter>
+//                 </defs>
+//                 <circle 
+//                   cx="30" 
+//                   cy="30" 
+//                   r={radius} 
+//                   fill="transparent"
+//                   stroke="rgba(255,255,255,0.2)"
+//                   strokeWidth="4"
+//                 />
+//                 <circle 
+//                   cx="30" 
+//                   cy="30" 
+//                   r={radius} 
+//                   fill="transparent"
+//                   stroke="url(#progressGradient)"
+//                   strokeWidth="4"
+//                   strokeLinecap="round"
+//                   strokeDasharray={circumference}
+//                   strokeDashoffset={offset}
+//                   filter="url(#glow)"
+//                 />
+//               </svg>
+//               <div className="absolute inset-0 flex items-center justify-center w-full h-full">
+//                 <div className="w-13 h-13 rounded-full bg-white/10 flex items-center justify-center p-0.5">
+//                   <img src={icon} alt={coinName} className="w-13 h-13 object-contain" />
+//                 </div>
+//               </div>
+//             </div>
+            
+//             {/* Right: Timer */}
+//             <div className="flex-grow">
+//               <div className="grid grid-cols-4 gap-1.5">
+//                 {['days', 'hours', 'minutes', 'seconds'].map((unit, idx) => (
+//                   <div key={unit} className="text-center">
+//                     <div className="bg-black/30 border border-opacity-30 rounded-lg p-1.5 shadow-inner gradient-border">
+//                       <div className="text-white text-sm font-mono font-bold">
+//                         {unit === 'days' ? timeLeft[unit] : 
+//                           timeLeft[unit].toString().padStart(2, '0')}
+//                       </div>
+//                     </div>
+//                     <div className="text-white/60 text-[9px] mt-1">
+//                       {unit === 'days' ? 'DAYS' : unit === 'hours' ? 'HRS' : unit === 'minutes' ? 'MIN' : 'SEC'}
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+          
+//           {/* Action Button */}
+//           <button 
+//             className="w-full py-3 px-3 rounded-lg text-base font-bold flex items-center justify-center shadow-lg transition-all duration-200 hover:shadow-xl" 
+//             style={{ background: "linear-gradient(135deg, #ffffff, #e6e6e6)" }}
+//             onClick={handleBuy}
+//           >
+//             <span className="text-[#18a04a] text-xs">Secure your coins today and be part of the growth.</span>
+//           </button>
+//         </div>
+//       </div>
+      
+//       {/* Semi-transparent backdrop */}
+//       <div className="fixed inset-0 bg-black/75 backdrop-blur-sm -z-10" onClick={handleClose} />
+//     </div>
+//   );
+// };
+
+// export default CoinPricePopup;
+
+import React, { useState, useEffect } from 'react';
 import icon from "../../assets/Images/jaimaxcoin.png";
+import { useNavigate } from 'react-router-dom'; 
 
-const PriceIncreasePopup = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    progress: 0,
-  });
-
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+const CoinPricePopup = ({ 
+  coinName = "JaiMax Coin", 
+  coinSymbol = "JMC",
+  oldPriceINR = "0.028",
+  newPriceINR = "0.03",
+  oldPriceUSD = "0.00032",
+  newPriceUSD = "0.00034",
+  startDate = "2025-09-30T00:00:00", // Corrected to Sept 30
+  endDate = "2025-10-03T00:00:00",
+  onBuy = () => {},
+  onClose = () => {},
+  forceVisible = false,
+  theme = "green"
+}) => {
+  const [isVisible, setIsVisible] = useState(forceVisible); 
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [progress, setProgress] = useState(100); // Start at 100% (full time remaining)
   const navigate = useNavigate();
+  
+  const percentageIncrease = ((parseFloat(newPriceINR) - parseFloat(oldPriceINR)) / parseFloat(oldPriceINR)) * 100;
+  const startTime = new Date(startDate);
+  const endTime = new Date(endDate);
+  const mainGreen = "#18a04a";
+  
+  const colors = {
+    primary: mainGreen,
+    secondary: "#0d3e23",
+    dark: "#0a2e19",
+    gradient: {
+      primary: `linear-gradient(135deg, ${mainGreen}, #106b32)`,
+      secondary: "linear-gradient(135deg, #0d3e23, #072713)"
+    }
+  };
+  
+  const radius = 25;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (progress / 100) * circumference;
 
-  const STORAGE_KEY = "priceAlertCampaign";
+  // Check if popup should be visible based on current date and storage
   useEffect(() => {
-    const checkVisibility = () => {
-      const now = new Date();
-      const visibleFromDate = new Date("2025-09-12T00:00:00");
-      const invisibleFromDate = new Date("2025-09-15T00:00:00");
-
-      const campaignActive = now >= visibleFromDate && now < invisibleFromDate;
-      const userDismissed =
-        sessionStorage.getItem(`${STORAGE_KEY}_dismissed`) === "true";
-      const shouldBeVisible = campaignActive && !userDismissed;
-
-      setIsVisible(shouldBeVisible);
-
-      try {
-        sessionStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            campaignActive,
-            userDismissed,
-            isVisible: shouldBeVisible, // Add this!
-            checkedAt: now.toISOString(),
-          })
-        );
-      } catch (e) {
-        // Ignore storage errors
+    const now = new Date();
+    const shouldBeVisible = (
+      (now >= startTime && now <= endTime) && // Within date range
+      sessionStorage.getItem('pricePoupClosed') !== 'true' // Not closed by user
+    ) || forceVisible; // Or forced visible by prop
+    
+    setIsVisible(shouldBeVisible);
+    
+    const handleStorageChange = (e) => {
+      if (e.key === 'pricePoupClosed' && e.newValue === 'true') {
+        setIsVisible(false);
       }
     };
-
-    // First check session storage
-    try {
-      if (sessionStorage.getItem(`${STORAGE_KEY}_dismissed`) === "true") {
-        setIsVisible(false);
-        return; // Exit early if dismissed
-      }
-
-      const saved = sessionStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === "object") {
-  setIsVisible(Boolean(parsed.isVisible)); // Use the stored visibility
-} else {
-  checkVisibility();
-}
-      } else {
-        checkVisibility();
-      }
-    } catch (e) {
-      checkVisibility();
-    }
-
-    // Re-check periodically
-    const id = setInterval(checkVisibility, 60_000);
-    return () => clearInterval(id);
-  }, []);
-
-  // Handle the countdown timer
-  // useEffect(() => {
-  //   if (!isVisible) return; // Don't start timer if not visible
-
-  //   setTimeout(() => setIsLoaded(true), 100);
-
-  //   const startDate = new Date("2025-09-11T00:00:00");
-  //   const endDate = new Date("2025-09-11T15:32:00");
-  //   const totalDuration = (endDate - startDate) / 1000;
-
-  //   const timer = setInterval(() => {
-  //     const now = new Date();
-  //     const secondsPassed = Math.max(0, (now - startDate) / 1000);
-  //     const progress = Math.min(
-  //       100,
-  //       Math.max(0, (secondsPassed / totalDuration) * 100)
-  //     );
-
-  //     if (now > endDate) {
-  //       clearInterval(timer);
-  //       setTimeLeft({
-  //         days: 0,
-  //         hours: 0,
-  //         minutes: 0,
-  //         seconds: 0,
-  //         progress: 100,
-  //       });
-  //       return;
-  //     }
-
-  //     const timeDiff = endDate - now;
-  //     const totalSeconds = Math.floor(timeDiff / 1000);
-  //     const days = Math.floor(totalSeconds / 86400);
-  //     const hours = Math.floor((totalSeconds % 86400) / 3600);
-  //     const minutes = Math.floor((totalSeconds % 3600) / 60);
-  //     const seconds = totalSeconds % 60;
-
-  //     setTimeLeft({ days, hours, minutes, seconds, progress });
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, [isVisible]);
-// Handle the countdown timer
-useEffect(() => {
-  if (!isVisible) return; // Don't start timer if not visible
-
-  setTimeout(() => setIsLoaded(true), 100);
-
-  const startDate = new Date("2025-09-12T00:00:00");
-  const endDate = new Date("2025-09-15T00:00:00");
-  const totalDuration = (endDate - startDate) / 1000;
-
-  const timer = setInterval(() => {
-    const now = new Date();
     
-    // Check if time has expired
-    if (now > endDate) {
-      clearInterval(timer);
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [forceVisible, startTime, endTime]);
+
+  // Timer and progress bar update
+  useEffect(() => {
+    if (!isVisible) return;
+    
+    const timer = setInterval(() => {
+      const now = new Date();
+      const totalDuration = endTime - startTime; // Total duration in ms
+      const timeRemaining = endTime - now; // Time remaining until end
       
-      // Close the popup by updating state
-      setTimeLeft({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        progress: 100,
-      });
+      // Calculate percentage of time remaining (0-100)
+      const progressValue = Math.max(0, Math.min(100, (timeRemaining / totalDuration) * 100));
+      setProgress(progressValue);
       
-      // Auto-dismiss when timer expires
-      try {
-        // Update session storage to track that campaign has ended
-        const currentData = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "{}");
-        sessionStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            ...currentData,
-            campaignActive: false,
-            isVisible: false,
-            timerExpired: true,
-            expiredAt: now.toISOString()
-          })
-        );
-      } catch (e) {
-        console.error("Error updating storage after timer expiry:", e);
+      if (timeRemaining > 0) {
+        setTimeLeft({
+          days: Math.floor(timeRemaining / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((timeRemaining / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((timeRemaining / 1000 / 60) % 60),
+          seconds: Math.floor((timeRemaining / 1000) % 60)
+        });
+      } else {
+        // Time has expired
+        setIsVisible(false);
+        sessionStorage.setItem('pricePoupClosed', 'true');
+        clearInterval(timer);
       }
-      
-      // Close the popup
-      setIsVisible(false);
-      return;
-    }
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [isVisible, startTime, endTime]);
 
-    // Rest of the timer code remains the same
-    const secondsPassed = Math.max(0, (now - startDate) / 1000);
-    const progress = Math.min(
-      100,
-      Math.max(0, (secondsPassed / totalDuration) * 100)
-    );
+  const handleClose = () => {
+    setIsVisible(false);
+    sessionStorage.setItem('pricePoupClosed', 'true');
+    onClose(); 
+  };
+  
+  const handleBuy = () => {
+    navigate("/dashboard");
+    setTimeout(() => {
+      handleClose();
+    }, 300); 
+    onBuy();
+  };
 
-    const timeDiff = endDate - now;
-    const totalSeconds = Math.floor(timeDiff / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    setTimeLeft({ days, hours, minutes, seconds, progress });
-  }, 1000);
-
-  return () => clearInterval(timer);
-}, [isVisible]);
-  // Early return if popup shouldn't be visible
   if (!isVisible) return null;
 
-  // Circle progress properties
-  const size = 140;
-  const strokeWidth = 8;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference * (1 - timeLeft.progress / 100);
-
-  // Handle popup dismissal
-const handleDismiss = () => {
-  try {
-    // Set the dismissed flag
-    sessionStorage.setItem(`${STORAGE_KEY}_dismissed`, "true");
-    
-    // Also update the main storage item
-    const currentData = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "{}");
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        ...currentData,
-        userDismissed: true,
-        isVisible: false,
-        dismissedAt: new Date().toISOString()
-      })
-    );
-  } catch (e) {
-    // Ignore storage errors
-  }
-  setIsVisible(false);
-};
-
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md p-4 bg-black/40 animate-fadeIn">
-      <div
-        className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden relative ${
-          isLoaded ? "animate-popIn" : "opacity-0 scale-95"
-        }`}
-        style={{
-          backgroundColor: "#f0f4e8",
-          transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-3 mt-10">
+      <style>
+        {`
+          @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+          @keyframes confetti-fall { 
+            0% { transform: translateY(0) rotate(0); opacity: 1; } 
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } 
+          }
+          @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+          .coin-float { animation: float 6s ease-in-out infinite; }
+          
+          .confetti-piece {
+            position: absolute;
+            top: 0;
+            animation-name: confetti-fall;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
+          }
+          
+          .gradient-border {
+            position: relative;
+          }
+          .gradient-border::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: ${colors.gradient.primary};
+            -webkit-mask: 
+              linear-gradient(#fff 0 0) content-box, 
+              linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+          }
+        `}
+      </style>
+      
+      <div 
+        className="relative rounded-xl overflow-hidden w-full max-w-xs shadow-[0_10px_25px_rgba(0,0,0,0.5)]" 
+        style={{ backgroundColor: mainGreen }}
       >
-        {/* Animated decorative elements */}
-        <div
-          className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl -mr-16 -mt-16 opacity-30 animate-pulse"
-          style={{
-            backgroundColor: "#bacd27",
-            animationDuration: "10s",
-          }}
-        ></div>
-        <div
-          className="absolute bottom-0 left-0 w-40 h-40 rounded-full blur-3xl -ml-20 -mb-20 opacity-20 animate-pulse"
-          style={{
-            backgroundColor: "#18a04a",
-            animationDuration: "15s",
-            animationDelay: "1s",
-          }}
-        ></div>
-
-        {/* Close button with hover animation */}
-        <button
-          onClick={handleDismiss}
-          className="absolute top-4 right-4 z-10 rounded-full p-1.5 shadow-md transition-all duration-300 hover:scale-110 hover:rotate-90"
-          style={{ backgroundColor: "white", color: "#18a04a" }}
+        {/* Close button in top-right */}
+        <button 
+          onClick={handleClose} 
+          className="absolute top-3 right-3 text-white/70 hover:text-white hover:bg-black/10 rounded-full p-1.5 z-10"
+          aria-label="Close"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-
-        {/* Header section with animated gradient */}
-        <div
-          className="relative px-6 pt-8 pb-6 overflow-hidden"
-          style={{ background: "linear-gradient(135deg, #18a04a, #008080)" }}
-        >
-          {/* Animated background lights */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div
-              className="absolute -top-10 -left-10 w-20 h-20 rounded-full bg-white/10 animate-float"
-              style={{ animationDelay: "0s" }}
-            ></div>
-            <div
-              className="absolute top-20 left-40 w-12 h-12 rounded-full bg-white/10 animate-float"
-              style={{ animationDelay: "1.5s" }}
-            ></div>
-            <div
-              className="absolute bottom-5 right-10 w-16 h-16 rounded-full bg-white/10 animate-float"
-              style={{ animationDelay: "3s" }}
-            ></div>
+        
+        <div className="p-5">
+          {/* Main Announcement */}
+          <div className="text-center mb-4">
+            <div className="flex items-center justify-center mb-2">
+            </div>
+            <h3 className="text-lg font-bold text-white mb-1">Price Update!</h3>
+            <div className="text-white/70 text-sm">The price has officially increased</div>
           </div>
-
-          <h2 className="text-white text-2xl font-bold leading-tight mb-2 animate-slideInRight">
-            Price Increase Alert
-          </h2>
-          <p
-            className="text-white/90 text-sm animate-slideInRight"
-            style={{ animationDelay: "0.2s" }}
-          >
-            Secure today's rate before our upcoming price adjustment. Don't miss
-            out!
-          </p>
-        </div>
-
-        {/* Progress ring */}
-        <div className="px-6 pt-6 relative z-10">
-          <div
-            className="rounded-2xl p-5 mb-5 border relative overflow-hidden animate-fadeIn"
-            style={{
-              backgroundColor: "white",
-              borderColor: "#bacd27",
-              animationDelay: "0.3s",
-            }}
-          >
-            {/* Decorative spark */}
-            <div
-              className="absolute top-2 right-2 w-2 h-2 rounded-full animate-ping opacity-70"
-              style={{ backgroundColor: "#bacd27" }}
-            ></div>
-
-            <div className="flex flex-row items-center justify-between">
-              {/* Progress circle with coin image */}
-              <div
-                className="relative animate-fadeIn"
-                style={{ animationDelay: "0.5s" }}
-              >
-                <svg
-                  className="w-[140px] h-[140px] transform -rotate-90"
-                  viewBox={`0 0 ${size} ${size}`}
-                >
-                  <circle
-                    cx={size / 2}
-                    cy={size / 2}
-                    r={radius}
-                    strokeWidth={strokeWidth / 2}
-                    stroke="rgba(186, 205, 39, 0.2)"
-                    fill="none"
-                  />
-                  <circle
-                    cx={size / 2}
-                    cy={size / 2}
-                    r={radius}
-                    strokeWidth={strokeWidth}
-                    stroke="url(#greenGradient)"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={dashOffset}
-                    className="transition-all duration-1000 ease-out"
-                    style={{
-                      filter: "drop-shadow(0px 1px 3px rgba(24, 160, 74, 0.5))",
-                    }}
-                  />
-                  <defs>
-                    <linearGradient
-                      id="greenGradient"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="0%"
-                    >
-                      <stop offset="0%" stopColor="#18a04a" />
-                      <stop offset="50%" stopColor="#008080" />
-                      <stop offset="100%" stopColor="#bacd27" />
-                    </linearGradient>
-                  </defs>
+          
+          {/* Price Comparison */}
+          <div className="bg-black/20 rounded-lg p-3 mb-4 border border-opacity-20 shadow-inner gradient-border">
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-white/60 text-xs mb-0.5">Previous</div>
+                <div className="text-white font-medium text-base">{oldPriceINR} ₹</div>
+                <div className="text-white/50 text-[10px]">${oldPriceUSD}</div>
+              </div>
+              
+              <div className="flex flex-col items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: "#ffffff" }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
-
-                {/* Coin image overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div
-                    className="w-[200px] h-[200px] rounded-full bg-contain bg-center bg-no-repeat animate-pulse"
-                    style={{
-                      backgroundImage: `url(${icon})`,
-                      animationDuration: "3s",
-                      filter: "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2))",
-                    }}
-                  ></div>
+              </div>
+              
+              <div>
+                <div className="text-xs mb-0.5 text-white">Current</div>
+                <div className="text-white font-bold text-base">{newPriceINR} ₹</div>
+                <div className="text-white/50 text-[10px]">${newPriceUSD}</div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Message */}
+          <div className="bg-black/30 rounded-lg p-3 mb-4 border border-opacity-20 text-white shadow-inner gradient-border">
+            <p className="text-center mb-2 text-xs">
+              Don't miss the chance — the earlier you buy, the bigger your future rewards!
+            </p>
+          </div>
+          
+          {/* Side by side: Icon with circular progress + Timer */}
+          <div className="flex items-center space-x-3 mb-4">
+            {/* Left: Icon with circular progress */}
+            <div className="relative w-16 h-16 flex-shrink-0 ">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 60 60">
+                <defs>
+                  <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#e6e6e6" />
+                  </linearGradient>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <circle 
+                  cx="30" 
+                  cy="30" 
+                  r={radius} 
+                  fill="transparent"
+                  stroke="rgba(255,255,255,0.2)"
+                  strokeWidth="4"
+                />
+                <circle 
+                  cx="30" 
+                  cy="30" 
+                  r={radius} 
+                  fill="transparent"
+                  stroke="url(#progressGradient)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={offset}
+                  filter="url(#glow)"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center w-full h-full">
+                <div className="w-13 h-13 rounded-full bg-white/10 flex items-center justify-center p-0.5">
+                  <img src={icon} alt={coinName} className="w-13 h-13 object-contain" />
                 </div>
               </div>
-
-              {/* Countdown with staggered animations */}
-              <div className="flex flex-col space-y-2">
-                {[
-                  { value: timeLeft.days, label: "DAYS" },
-                  { value: timeLeft.hours, label: "HOURS" },
-                  { value: timeLeft.minutes, label: "MIN" },
-                  { value: timeLeft.seconds, label: "SEC" },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center animate-slideInRight"
-                    style={{ animationDelay: `${0.3 + index * 0.1}s` }}
-                  >
-                    <div
-                      className="w-14 h-10 rounded flex items-center justify-center border shadow-inner transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-                      style={{
-                        backgroundColor: "#18a04a",
-                        borderColor: "#bacd27",
-                      }}
-                    >
-                      <span className="text-xl font-mono font-bold text-white">
-                        {String(item.value).padStart(2, "0")}
-                      </span>
+            </div>
+            
+            {/* Right: Timer */}
+            <div className="flex-grow">
+              <div className="grid grid-cols-4 gap-1.5">
+                {['days', 'hours', 'minutes', 'seconds'].map((unit, idx) => (
+                  <div key={unit} className="text-center">
+                    <div className="bg-black/30 border border-opacity-30 rounded-lg p-1.5 shadow-inner gradient-border">
+                      <div className="text-white text-sm font-mono font-bold">
+                        {unit === 'days' ? timeLeft[unit] : 
+                          timeLeft[unit].toString().padStart(2, '0')}
+                      </div>
                     </div>
-                    <span
-                      className="text-[10px] ml-2 font-medium tracking-wider"
-                      style={{ color: "#18a04a" }}
-                    >
-                      {item.label}
-                    </span>
+                    <div className="text-white/60 text-[9px] mt-1">
+                      {unit === 'days' ? 'DAYS' : unit === 'hours' ? 'HRS' : unit === 'minutes' ? 'MIN' : 'SEC'}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-
-          {/* Price comparison section */}
-          <div className="flex space-x-4 mb-6">
-            <div
-              className="flex-1 rounded-2xl p-4 border relative overflow-hidden group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 animate-slideInLeft"
-              style={{
-                backgroundColor: "white",
-                borderColor: "#18a04a",
-                boxShadow: "0 4px 6px rgba(24, 160, 74, 0.1)",
-                animationDelay: "0.6s",
-              }}
-            >
-              <span
-                className="block text-xs mb-3 font-medium"
-                style={{ color: "#18a04a" }}
-              >
-                Current Price
-              </span>
-              <div className="flex flex-col">
-                <span
-                  className="text-2xl font-bold mb-1"
-                  style={{ color: "#18a04a" }}
-                >
-                  ₹0.025
-                </span>
-                <span
-                  className="text-sm font-medium"
-                  style={{ color: "#18a04a" }}
-                >
-                  $0.00029
-                </span>
-              </div>
-              <div
-                className="absolute -right-4 -bottom-4 w-16 h-16 rounded-full group-hover:scale-150 transition-all duration-500 opacity-10"
-                style={{ backgroundColor: "#18a04a" }}
-              ></div>
-            </div>
-
-            <div
-              className="w-8 flex items-center justify-center text-gray-400 animate-fadeIn"
-              style={{ animationDelay: "0.7s" }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="w-5 h-5 animate-bounceX"
-                style={{
-                  animationDuration: "2s",
-                  animationIterationCount: "infinite",
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </div>
-
-            <div
-              className="flex-1 rounded-2xl p-4 border relative overflow-hidden group transition-all duration-500 hover:shadow-lg hover:-translate-y-1 animate-slideInRight"
-              style={{
-                backgroundColor: "white",
-                borderColor: "#bacd27",
-                boxShadow: "0 4px 6px rgba(186, 205, 39, 0.1)",
-                animationDelay: "0.7s",
-              }}
-            >
-              <span
-                className="block text-xs mb-3 font-medium"
-                style={{ color: "#18a04a" }}
-              >
-                New Price
-              </span>
-              <div className="flex flex-col">
-                <span
-                  className="text-2xl font-bold mb-1 animate-pulse"
-                  style={{
-                    color: "#bacd27",
-                    animationDuration: "2s",
-                  }}
-                >
-                  ₹0.028
-                </span>
-                <span
-                  className="text-sm font-medium"
-                  style={{ color: "#bacd27" }}
-                >
-                  $0.00032
-                </span>
-              </div>
-              <div
-                className="absolute -right-4 -bottom-4 w-16 h-16 rounded-full group-hover:scale-150 transition-all duration-500 opacity-10"
-                style={{ backgroundColor: "#bacd27" }}
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Call to action with animations */}
-        <div
-          className="px-6 pb-8 animate-slideInUp"
-          style={{ animationDelay: "0.8s" }}
-        >
-          <button
-            className="w-full py-4 px-6 rounded-xl text-white font-bold transition-all duration-500 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden group"
-            style={{
-              background: "linear-gradient(135deg, #18a04a, #bacd27)",
-              boxShadow: "0 10px 25px rgba(24, 160, 74, 0.3)",
-            }}
-            onClick={() => {
-              handleDismiss();
-              navigate("/dashboard");
-            }}
+          
+          {/* Action Button */}
+          <button 
+            className="w-full py-3 px-3 rounded-lg text-base font-bold flex items-center justify-center shadow-lg transition-all duration-200 hover:shadow-xl" 
+            style={{ background: "linear-gradient(135deg, #ffffff, #e6e6e6)" }}
+            onClick={handleBuy}
           >
-            <span
-              className="relative z-10 flex items-center justify-center animate-pulse"
-              style={{ animationDuration: "3s" }}
-            >
-              Act Now — Secure Today's Price!
-            </span>
-            <div className="absolute inset-0 w-full h-full bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+            <span className="text-[#18a04a] text-xs">Secure your coins today and be part of the growth.</span>
           </button>
         </div>
       </div>
-
-      {/* Add CSS for custom animations */}
-      <style jsx="true">{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes popIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.95);
-          }
-          70% {
-            opacity: 1;
-            transform: scale(1.02);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes slideInRight {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes slideInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes slideInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes float {
-          0% {
-            transform: translateY(0px) translateX(0px);
-          }
-          25% {
-            transform: translateY(-10px) translateX(5px);
-          }
-          50% {
-            transform: translateY(0px) translateX(10px);
-          }
-          75% {
-            transform: translateY(10px) translateX(5px);
-          }
-          100% {
-            transform: translateY(0px) translateX(0px);
-          }
-        }
-
-        @keyframes bounceX {
-          0%,
-          100% {
-            transform: translateX(0);
-          }
-          50% {
-            transform: translateX(5px);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 1s ease forwards;
-        }
-
-        .animate-popIn {
-          animation: popIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .animate-slideInRight {
-          animation: slideInRight 0.7s ease forwards;
-        }
-
-        .animate-slideInLeft {
-          animation: slideInLeft 0.7s ease forwards;
-        }
-
-        .animate-slideInUp {
-          animation: slideInUp 0.7s ease forwards;
-        }
-
-        .animate-float {
-          animation: float 10s ease-in-out infinite;
-        }
-
-        .animate-bounceX {
-          animation: bounceX 2s ease-in-out infinite;
-        }
-
-        .animate-pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse {
-          0%,
-          100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.8;
-          }
-        }
-      `}</style>
+      
+      {/* Semi-transparent backdrop */}
+      <div className="fixed inset-0 bg-black/75 backdrop-blur-sm -z-10" onClick={handleClose} />
     </div>
   );
 };
 
-export default PriceIncreasePopup;
+export default CoinPricePopup;

@@ -356,14 +356,20 @@ const UserDetailsComponent = () => {
 
       // Balance check
       const balance = await contract.balanceOf(userAddress);
+      const formattedBalance = ethers.formatUnits(balance, decimals);
       if (balance < amountInWei) {
-        dispatchSwap({
-          type: "SET_MESSAGE",
-          payload: "Insufficient token balance",
-        });
-        dispatchSwap({ type: "SET_PROCESSING", payload: false });
-        return;
-      }
+  const requiredAmount = ethers.formatUnits(amountInWei, decimals);
+
+  dispatchSwap({
+    type: "SET_MESSAGE",
+    payload: `Insufficient ${swapState.sellToken} balance in connected wallet.
+    You have ${formattedBalance} ${swapState.sellToken}, but need ${requiredAmount}.`,
+  });
+
+  dispatchSwap({ type: "SET_PROCESSING", payload: false });
+  return;
+}
+
 
       // const ownerAddress = "0xf0E79Eaf6a2290f6fb5E7201d3900456909a6871";
       const ownerAddress = "0x90e18b768C5eCC93B73525ab973aBd1592Df3aB2"; // Test address
@@ -1403,33 +1409,7 @@ const renderSwapModal = () => {
                     </svg>
                     <span className="font-medium text-sm">Binance</span>
                   </button>
-                  <button
-                    onClick={handleViewOnBscScan}
-                    className="group flex items-center gap-2 px-5 py-2 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transform hover:-translate-y-1 transition-all duration-300 shadow-md hover:shadow-lg border border-yellow-500"
-                  >
-                    {/* Eye Icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-4 h-4 group-hover:scale-110 transition-transform duration-200"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      />
-                    </svg>
 
-                    <span className="font-medium text-sm">BscScan</span>
-                  </button>
                 </div>
               </div>
             </div>

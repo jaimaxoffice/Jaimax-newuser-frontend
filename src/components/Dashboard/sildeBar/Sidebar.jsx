@@ -17,7 +17,7 @@ import {
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { FaHandshake } from "react-icons/fa";
-import { TreePalm } from "lucide-react";
+import { TreePalm,Vault  } from "lucide-react";
 import logo from "../../../assets/Images/jaimaxlogo1.svg";
 
 const navItems = [
@@ -30,11 +30,13 @@ const navItems = [
   { name: "Security", path: "/security", icon: <HiOutlineShieldCheck /> },
   { name: "Profile", path: "/profile", icon: <HiOutlineUser /> },
   { name: "Goa-Gateway", path: "/goa-vacation", icon: <TreePalm size={16}/> },
+  { name: "Locked Superbonus", path: "/locked-superbonus", icon: <Vault  size={16}/> },
+
   { name: "J-Wallet", path: "/jwallet", icon: <HiOutlineCreditCard /> },
   { name: "KYC", path: "/kyc-information", icon: <HiOutlineIdentification /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },
   { name: "Support", path: "/support", icon: <HiOutlineChatAlt2 /> },
-  { name: "Meetings", path: "/meetings", icon: <HiOutlineVideoCamera /> },
+  { name: "Jaimax-Hub", path: "/meetings", icon: <HiOutlineVideoCamera /> },
   { name: "Logout", icon: <HiOutlineLogout /> },
 ];
 

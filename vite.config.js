@@ -38,10 +38,12 @@ export default defineConfig({
       includeAssets: [
         "favicon.svg",
         "robots.txt",
+        "sitemap.xml",
         "apple-touch-icon.png",
         "jaimax-192.png",
         "jaimax-512.png",
         "safari-pinned-tab.svg",
+        "jaimax-whitepaper.pdf",
       ],
       manifest: {
         name: "Jaimax",
@@ -75,7 +77,8 @@ export default defineConfig({
       workbox: {
         // cleanupOutdatedCaches: true,
         // clientsClaim: true
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+         globPatterns: ["**/*.{js,css,html,png,svg,jpg,jpeg,gif,ico,pdf,txt,xml}"],
+        maximumFileSizeToCacheInBytes: 40 * 1024 * 1024,
       },
     }),
   ],

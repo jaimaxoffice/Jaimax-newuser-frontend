@@ -27,6 +27,7 @@
     "cobe": "^0.6.3",
     "crypto-js": "^4.2.0",
     "daisyui": "^5.0.43",
+    "dompurify": "^3.2.6",
     "dotted-map": "^2.2.3",
     "draft-js": "^0.11.7",
     "formik": "^2.4.6",

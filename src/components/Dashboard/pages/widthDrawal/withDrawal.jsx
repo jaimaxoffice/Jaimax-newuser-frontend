@@ -1514,7 +1514,7 @@ const TransactionTable = ({
                   type="text"
                   placeholder="Search transactions..."
                   onChange={handleSearch}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85]"
+                  className="w-full pl-10 pr-4 bg-white py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85]"
                 />
                 <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
               </div>
@@ -2014,7 +2014,7 @@ const Withdrawal = () => {
                           onClick={() => setErrors(prev => ({ ...prev, amount: undefined }))}
                           name="amount"
                           autoComplete="off"
-                          className={`w-full px-2.5 py-1.5 text-sm border rounded focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] ${
+                          className={`w-full px-2.5 py-1.5 bg-white text-sm border rounded focus:ring-2 focus:ring-[#1d8e85] focus:border-[#1d8e85] ${
                             errors.amount
                               ? "border-red-300 bg-red-50"
                               : "border-gray-300"

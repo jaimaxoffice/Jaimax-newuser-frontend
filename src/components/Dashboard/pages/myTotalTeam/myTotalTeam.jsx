@@ -73,9 +73,10 @@ const MyTotalTeam = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
-  const userData = useMemo(() => {
-    return JSON.parse(localStorage.getItem("userData") || "{}");
-  }, []);
+const userData = useMemo(() => {
+  const userDataCookie = Cookies.get("userData");
+  return userDataCookie ? JSON.parse(userDataCookie) : {};
+}, []);
 
   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
 
@@ -101,7 +102,7 @@ const MyTotalTeam = () => {
       totalUsers: userDetails?.data?.user?.totalActiveDirectUsers || 0,
       totalChainUsers: userDetails?.data?.user?.totalActiveChainRefs || 0,
       totalPages: userDetails?.data?.pagination?.totalPages || 1,
-      username: userDetails?.data?.user?.username || "JAIMAXXXXXXXX",
+      username: userDetails?.data?.user?.username ,
     };
   }, [userDetails]);
 
@@ -147,7 +148,7 @@ const MyTotalTeam = () => {
   // Handle copy referral code
   const handleCopyReferralCode = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(userData?.data?.username || "");
+      await navigator.clipboard.writeText(username);
       dispatch({ type: "SET_COPIED_CODE", payload: true });
       setTimeout(
         () => dispatch({ type: "SET_COPIED_CODE", payload: false }),
@@ -194,7 +195,7 @@ const MyTotalTeam = () => {
         isReferral: true,
       },
     ],
-    [totalUsers, totalChainUsers, userData]
+    [totalUsers, totalChainUsers, userData,username]
   );
 
   // Token verification effect

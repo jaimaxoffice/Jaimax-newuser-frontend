@@ -6,7 +6,7 @@ const PriceRiseAlert = () => {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
-  const STORAGE_KEY = "goaplan"; // ✅ new storage key
+  const STORAGE_KEY = "goaplan";
   useEffect(() => {
     const checkVisibility = () => {
       const now = new Date();
