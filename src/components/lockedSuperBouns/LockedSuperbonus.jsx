@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useGetAllLockedSuperbonusQuery } from './lockedSupBonusApiSlice';
 import ReferralModal from '../Dashboard/modals/referalModal';
@@ -7,9 +6,13 @@ const SuperBonusInfo = () => {
   const { 
     data: response, 
     isLoading, 
-    isError
+    isError,
+    refetch: refreshBonusData
   } = useGetAllLockedSuperbonusQuery();
   
+  const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
+  const [withdrawMessage, setWithdrawMessage] = useState('');
+  const [showWithdrawMessage, setShowWithdrawMessage] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showEligibilityModal, setShowEligibilityModal] = useState(false);
@@ -35,6 +38,16 @@ const SuperBonusInfo = () => {
     }
   }, [bonusInfo]);
 
+  // Auto-hide withdraw message after 5 seconds
+  useEffect(() => {
+    if (showWithdrawMessage) {
+      const timer = setTimeout(() => {
+        setShowWithdrawMessage(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showWithdrawMessage]);
+
   const openReferralModal = () => {
     setShowModal(true);
   };
@@ -46,9 +59,69 @@ const SuperBonusInfo = () => {
   const handleCloseEligibilityModal = () => {
     setShowEligibilityModal(false);
   };
+  
+  // Direct fetch approach instead of using RTK Query hook
+  const handleWithdrawBonus = async () => {
+    try {
+      setIsWithdrawLoading(true);
+      
+      // Get the base URL from your API slice configuration
+      // This is an example - adjust according to your actual API setup
+      const baseUrl = '/api'; // Adjust this to match your API base URL
+      const response = await fetch(`${baseUrl}/User/disburse-locked-superboonus`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          // Include auth headers if needed
+          // 'Authorization': `Bearer ${yourAuthToken}`
+        },
+        credentials: 'include', // If you're using cookies for auth
+      });
+      
+      // Parse the response
+      const data = await response.json();
+      console.log('Bonus withdrawal response:', data);
+      
+      // Store the message from the API
+      setWithdrawMessage(data.message || 'Bonus withdrawal processed');
+      setShowWithdrawMessage(true);
+      
+      // Close modal and refresh data
+      handleCloseEligibilityModal();
+      refreshBonusData();
+    } catch (error) {
+      console.error('Error withdrawing bonus:', error);
+      setWithdrawMessage('Failed to withdraw bonus. Please try again.');
+      setShowWithdrawMessage(true);
+    } finally {
+      setIsWithdrawLoading(false);
+    }
+  };
 
   return (
     <div className="container mx-auto px-3 py-5 max-w-9xl">
+      {/* Message Toast */}
+      {showWithdrawMessage && (
+        <div className="fixed top-5 right-5 z-50 max-w-sm">
+          <div className="bg-teal-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center">
+            <div className="mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p>{withdrawMessage}</p>
+            <button 
+              onClick={() => setShowWithdrawMessage(false)}
+              className="ml-auto text-white hover:text-teal-100"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Referral Modal */}
       <ReferralModal 
         show={showModal} 
@@ -77,17 +150,13 @@ const SuperBonusInfo = () => {
                 You can now access and withdraw your temporary SuperBonus funds. This bonus becomes permanent when you complete all required referrals.
               </p>
             </div>
-            <div className="flex flex-col md:flex-row gap-3 mt-6">
+            <div className="flex justify-center mt-6">
               <button 
-                onClick={handleCloseEligibilityModal}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors md:flex-1"
+                onClick={handleWithdrawBonus}
+                disabled={isWithdrawLoading}
+                className="px-6 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors font-medium w-full"
               >
-                Later
-              </button>
-              <button 
-                className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors md:flex-1 font-medium"
-              >
-                Withdraw Now
+                {isWithdrawLoading ? 'Processing...' : 'Withdraw Now'}
               </button>
             </div>
           </div>
@@ -190,28 +259,26 @@ const SuperBonusInfo = () => {
                 </div>
                 
                 {/* Referral Visual */}
-                {/* Referral Visual - Improved */}
-<div className="flex flex-wrap gap-2 my-6 justify-center">
-  {[...Array(bonusInfo.progress.requiredRefs)].map((_, index) => (
-    <div 
-      key={index} 
-      className={`h-10 w-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
-        index < bonusInfo.progress.currentRefs 
-          ? 'bg-teal-600 shadow-md transform hover:scale-110' 
-          : 'bg-teal-100 border border-teal-200'
-      }`}
-    >
-      {index < bonusInfo.progress.currentRefs ? (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-        </svg>
-      ) : (
-        <span className="text-xs font-medium text-teal-800">{index + 1}</span>
-      )}
-    </div>
-  ))}
-</div>
-                
+                <div className="flex flex-wrap gap-2 my-6 justify-center">
+                  {[...Array(bonusInfo.progress.requiredRefs)].map((_, index) => (
+                    <div 
+                      key={index} 
+                      className={`h-10 w-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                        index < bonusInfo.progress.currentRefs 
+                          ? 'bg-teal-600 shadow-md transform hover:scale-110' 
+                          : 'bg-teal-100 border border-teal-200'
+                      }`}
+                    >
+                      {index < bonusInfo.progress.currentRefs ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      ) : (
+                        <span className="text-xs font-medium text-teal-800">{index + 1}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
                 
                 <div className="bg-teal-50 p-3 rounded-md border border-teal-100">
                   <p className="text-sm text-teal-700 font-medium text-center">
@@ -299,4 +366,3 @@ const SuperBonusInfo = () => {
 };
 
 export default SuperBonusInfo;
-
