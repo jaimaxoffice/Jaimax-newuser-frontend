@@ -373,12 +373,7 @@ const App = () => {
           <Route path="/my-team" element={<DashboardLayout />}>
             <Route index element={<MyTotalTeam />} />
           </Route>
-          {/* <Route path="/shareholders" element={<DashboardLayout />}>
-          <Route index element={<Shareholders />} />
-        </Route> */}
-          <Route path="/earnings" element={<DashboardLayout />}>
-            <Route index element={<TodayEarning />} />
-          </Route>
+
           <Route path="/locked-superbonus" element={<DashboardLayout />}>
             <Route index element={<SuperBonusInfo />} />
           </Route>
