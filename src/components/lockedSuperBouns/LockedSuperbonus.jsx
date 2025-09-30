@@ -181,36 +181,7 @@ const LockedSuperBonusUI = () => {
           <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-md w-full shadow-2xl border-2 border-teal-500 animate-fadeIn m-2">
             {isDisbursingBonus ? (
               /* Loading State */
-              <div className="py-6 sm:py-8 text-center">
-                <div className="inline-block mx-auto mb-4 sm:mb-6">
-                  <svg
-                    className="animate-spin h-12 w-12 sm:h-16 sm:w-16 text-teal-600"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-teal-800">
-                  Processing Your Bonus
-                </h3>
-                <p className="text-sm sm:text-base text-teal-700 mt-2">
-                  Please wait while we process your SuperBonus...
-                </p>
-              </div>
+              <Loader/>
             ) : (
               /* Success State */
               <>
@@ -265,7 +236,7 @@ const LockedSuperBonusUI = () => {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
             <div>
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold">
-                SuperBonus Dashboard
+              Locked  SuperBonus 
               </h2>
               {message && (
                 <p className="mt-1 text-teal-100 text-xs sm:text-sm">
@@ -303,7 +274,7 @@ const LockedSuperBonusUI = () => {
           {bonusData ? (
             <div className="space-y-3 sm:space-y-4">
               <div className="bg-white p-3 sm:p-4 rounded-lg shadow-md border border-teal-100 hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                   <div className="flex-shrink-0">
                     <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center text-teal-600 shadow-inner">
                       <svg
@@ -340,7 +311,53 @@ const LockedSuperBonusUI = () => {
                       ₹{bonusData.amountToWithdrwSuperBonus}
                     </div>
                   </div>
-                </div>
+                </div> */}
+                <div className="flex items-start gap-3">
+  {/* Avatar - always on left */}
+  <div className="flex-shrink-0">
+    <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center text-teal-600 shadow-inner">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    </div>
+  </div>
+
+  {/* Content container - flexible with wrap */}
+  <div className="flex flex-wrap flex-grow items-center gap-2">
+    {/* User Info */}
+    <div className="text-left mr-auto">
+      <h3 className="text-base sm:text-lg font-bold text-teal-800">
+        {bonusData.name}
+      </h3>
+      <div className="flex items-center justify-start mt-2">
+        <span className="text-xs text-gray-500 mr-2">
+          Username:
+        </span>
+        <span className="bg-teal-50 text-teal-800 text-xs font-semibold px-2 py-1 rounded border border-teal-200">
+          {bonusData.username}
+        </span>
+      </div>
+    </div>
+
+    {/* Amount - will wrap to next line if needed */}
+    <div className="flex-shrink-0">
+      <div className="bg-gradient-to-r from-teal-600 to-teal-500 text-white px-3 py-1.5 rounded-md text-sm sm:text-base font-bold shadow-sm whitespace-nowrap">
+        ₹{bonusData.amountToWithdrwSuperBonus}
+      </div>
+    </div>
+  </div>
+</div>
               </div>
 
               {/* Congratulations message when already unlocked */}

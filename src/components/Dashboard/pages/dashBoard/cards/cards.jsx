@@ -152,8 +152,8 @@ const CardItem = React.memo(({ item, index, hoveredCard, setHoveredCard, onViewD
               e.stopPropagation(); // Prevent card hover state from changing
               onViewDetails();
             }}
-            className="mt-2 px-3 py-1.5 bg-white text-[#ffff] bg-[#084e54] text-xs font-medium rounded-md 
-                       shadow-sm hover:bg-[#e0f2f1] transition-all duration-300 
+            className="mt-2 px-3 py-1.5 text-[#ffff]  bg-[#084e54] text-xs font-medium rounded-md 
+                       shadow-sm hover:bg-[#084e54] transition-all duration-300 
                        flex items-center space-x-1 group-hover:bg-[#084e54] group-hover:text-white"
           >
             <span>View Details</span>
