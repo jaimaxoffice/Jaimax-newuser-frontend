@@ -19,6 +19,7 @@ import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
 import { useUpdateAddressMutation } from "./profileApiSlice";
 import countryCodes from "../../../../Authentication/countryCodes.json";
 
+
 export default function Profile3DForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -191,13 +192,14 @@ export default function Profile3DForm() {
   };
 
   const getDefaultAvatar = () => {
-    if (state.gender === "male") {
-      return "👤";
-    } else if (state.gender === "female") {
-      return "👤";
-    } else {
-      return "👤";
-    }
+    // if (state.gender === "male") {
+    //   return "👤";
+    // } else if (state.gender === "female") {
+    //   return "👤";
+    // } else {
+    //   return "👤";
+    // }
+    return <UserRound className="text-teal-600 w-14 h-14"/>
   };
 
   const currentImage = () => {

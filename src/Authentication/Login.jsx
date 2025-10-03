@@ -26,6 +26,8 @@ import Seo from "../SeoContent/Seo";
 import countrycodes from "./countryCodes.json";
 import TermsConditionsModal from "./TermsAndConditions";
 import * as yup from "yup";
+
+
 const Notification = ({ type, message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 5000);
@@ -576,6 +578,7 @@ const RegisterComponent = ({
   onAgreeTerms,
   isConfirmAgree,
 }) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -604,6 +607,18 @@ const RegisterComponent = ({
     useVerifyMutation();
   const [OTPresent, { isLoading: isOTPresentLoading, error: OTPresentError }] =
     useOTPresentMutation();
+
+  // when component mounts, check URL for referralCode
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const referralCode = params.get("referralCode");
+  if (referralCode) {
+    setFormData((prev) => ({
+      ...prev,
+      referralId: referralCode, // prefill field
+    }));
+  }
+}, [location.search]);
 
   const getCurrentCountry = () => {
     const country = countrycodes.find(
@@ -1367,6 +1382,7 @@ const RegisterComponent = ({
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
+              readOnly={!!formData.referralId}
               placeholder="Referral ID (Optional)"
               className={`w-full pl-10 pr-3 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.referralId && touched.referralId

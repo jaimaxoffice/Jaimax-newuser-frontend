@@ -304,7 +304,7 @@ const Dashboard = () => {
       {/* SlabTabs and TopCards side-by-side */}
       <div className="flex flex-col lg:flex-row gap-2 mb-3">
         {/* SlabTabs half width */}
-        <div className="lg:w-1/3">
+        <div className="lg:w-2/4">
           <Suspense fallback={<ComponentLoader />}>
             <SlabTabs />
           </Suspense>

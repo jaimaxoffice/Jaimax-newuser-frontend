@@ -176,14 +176,14 @@ const userData = useMemo(() => {
         title: "Total Active Members",
         value: totalUsers,
         icon: <Users className="w-4 h-4" />,
-        gradient: "from-blue-500 to-blue-600",
+        gradient: "from-teal-500 to-teal-600",
         description: "All active members in your team",
       },
       {
         title: "Foundation",
         value: totalChainUsers,
         icon: <UserCheck className="w-4 h-4" />,
-        gradient: "from-purple-500 to-purple-600",
+        gradient: "from-teal-500 to-teal-600",
         description: "Total users in your chain network",
       },
       {

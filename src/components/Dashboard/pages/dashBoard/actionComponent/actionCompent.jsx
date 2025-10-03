@@ -180,7 +180,7 @@ const ActionButtons = React.memo(() => {
           <ReferralModal
             show={showReferralModal}
             onHide={handleCloseReferralModal}
-            userData={userData}
+            userData={userData?.data}
           />
         </React.Suspense>
       )}

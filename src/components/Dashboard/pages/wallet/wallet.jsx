@@ -72,7 +72,8 @@ export default function WalletDashboard() {
       console.error("Error parsing userData cookie:", error);
     }
   }
-  const countryCode = userData?.data?.countryCode;
+  const countryCode = userData?.countryCode;
+  console.log(countryCode)
   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
 
   // Construct query parameters for API
@@ -363,7 +364,7 @@ export default function WalletDashboard() {
                     <div className="animate-pulse h-6 sm:h-8 bg-white/20 rounded w-24 mt-1"></div>
                   ) : (
                     <p className="text-2xl sm:text-3xl font-bold truncate">
-                      {availableWalletBalance}
+                       {formatCurrency(availableWalletBalance)}
                     </p>
                   )}
                 </div>

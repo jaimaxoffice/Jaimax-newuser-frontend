@@ -260,11 +260,13 @@ I'm excited to introduce you to Jaimax Coin â€“ the future of cryptocurrency! ðŸ
   );
 
   const copyToClipboard = () => {
-    navigator.clipboard
-      .writeText(referralMessage)
+    // navigator.clipboard
+    //   .writeText(referralMessage)
+    navigator.clipboard.writeText(referralLink)
       .then(() => {
         setCopied(true);
-        toast.success("Referral message copied to clipboard!");
+        // toast.success("Referral message copied to clipboard!");
+        toast.success("Referral link copied!");
         setTimeout(() => setCopied(false), 2000);
       })
       .catch(() => {

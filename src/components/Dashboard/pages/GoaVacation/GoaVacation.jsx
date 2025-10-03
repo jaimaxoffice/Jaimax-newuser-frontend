@@ -247,9 +247,11 @@ import { useNavigate } from "react-router-dom";
 import { useUserDetailsQueryDataQuery } from "./GoaVacationApiSlice";
 import Loader from "../../../Loader/loader";
 import Cookies from "js-cookie";
+import ReferralModal from "../../modals/referalModal";
 
 const MarketingPlanReferrals = () => {
   const navigate = useNavigate();
+  const [showReferralModal, setShowReferralModal] = useState(false);
   const [state, setState] = useState({
     currentPage: 1,
     perPage: 10,
@@ -287,6 +289,18 @@ const MarketingPlanReferrals = () => {
     : directRefs.length > 7
     ? "You're so close! Just a few more referrals and you'll be enjoying your dream Goa vacation."
     : "Share with your network today and unlock your paradise getaway to Goa tomorrow!";
+
+    const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
+const referralContent = `
+🚀 Join the Jaimax Coin Revolution! 🚀
+
+Hey there! 🌟
+I'm excited to introduce you to Jaimax Coin – the future of cryptocurrency! 💰✨
+👉 ${REGISTER_REFERAL + userProfile?.username}
+
+#JaimaxCoin #CryptoRevolution #JoinUs
+`;
+
 
   return (
     <div className="min-h-screen bg-[#f8fffd]">
@@ -465,16 +479,30 @@ const MarketingPlanReferrals = () => {
                 Invite your friends and family to join you on this amazing vacation opportunity. 
                 Each referral brings you closer to paradise!
               </p>
-              <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium text-sm sm:text-base py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl transition-all shadow-lg hover:shadow-teal-200 transform hover:-translate-y-1 duration-300">
-                Share Your Invite Code
-              </button>
+              <button
+  onClick={() => setShowReferralModal(true)}
+  className="bg-teal-600 hover:bg-teal-700 text-white font-medium text-sm sm:text-base py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl transition-all shadow-lg hover:shadow-teal-200 transform hover:-translate-y-1 duration-300"
+>
+  Share Your Invite Code
+</button>
             </div>
           )}
         </div>
       </div>
       
       {(isLoading || loading) && <Loader />}
-    </div>
+
+    {/* Referral Modal */}
+{showReferralModal && (
+  <ReferralModal
+  show={showReferralModal}
+  onHide={() => setShowReferralModal(false)}
+  userData={userProfile}
+  referralContent={referralContent}
+  />
+)}
+</div>
+
   );
 };
 

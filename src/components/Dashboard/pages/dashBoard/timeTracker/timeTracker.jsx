@@ -655,7 +655,7 @@ const ActiveSlabContent = ({
 const UpcomingSlabContent = ({ slab, isActive }) => (
   <div
     className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${
-      isActive ? "scale-100 opacity-100" : "scale-95 opacity-80"
+      isActive ? "scale-100 opacity-100 " : "scale-95 opacity-80"
     }`}
   >
     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-amber-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
@@ -1135,7 +1135,7 @@ const SlabTabs = () => {
   return (
     <>
       <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 rounded-2xl w-full max-w-7xl mx-auto shadow-2xl border border-white/50 backdrop-blur-sm">
-        <div className="px-4 py-3 md:px-3 md:py-1">
+        <div className="px-4 py-3 md:px-3 md:py-1 w-[90%] m-auto">
           {/* Desktop Tabs */}
           <div className="hidden md:flex justify-center mb-2">
             <div className="flex rounded-xl p-1 shadow-xl overflow-x-auto gap-2 max-w-full no-scrollbar backdrop-blur-sm">
@@ -1145,7 +1145,7 @@ const SlabTabs = () => {
                   onClick={() => handleTabClick(index)}
                   className={`px-3 py-1 text-sm rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${
                     activeTab === index
-                      ? "bg-[#2cdacc] text-white shadow-lg shadow-emerald-500/25 scale-105"
+                      ? "bg-[#000] text-white shadow-lg shadow-emerald-500/25 scale-105"
                       : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
                   }`}
                 >
@@ -1168,7 +1168,7 @@ const SlabTabs = () => {
                   onClick={() => handleTabClick(index)}
                   className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${
                     activeTab === index
-                      ? "bg-gradient-to-r from-teal-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
+                      ? "bg-[#000] text-white border-emerald-400 shadow-md shadow-emerald-500/25"
                       : "bg-gradient-to-r from-teal-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
                   }`}
                 >
@@ -1180,34 +1180,59 @@ const SlabTabs = () => {
           </div>
 
           {/* Carousel Area */}
-          <div className="relative group">
-            {/* Card Container */}
-            <div className="flex justify-center">
-              <div className="w-full max-w-lg md:max-w-4xl mx-auto">
-                {currentSlab?.type === "active" ? (
-                  <ActiveSlabContent
-                    slab={currentSlab}
-                    isActive={true}
-                    onProceedOrder={onProceedOrder}
-                    amount={amount}
-                    setAmount={setAmount}
-                    currency={currency}
-                    onChangeCurrency={onChangeCurrency}
-                    paymentMethod={paymentMethod}
-                    onChangePaymentMethod={onChangePaymentMethod}
-                    errors={errors}
-                    handleInputChange={handleInputChange}
-                    handleBlur={handleBlur}
-                    userData={userData}
-                  />
-                ) : currentSlab?.type === "sold" ? (
-                  <SoldSlabContent slab={currentSlab} isActive={true} />
-                ) : (
-                  <UpcomingSlabContent slab={currentSlab} isActive={true} />
-                )}
-              </div>
-            </div>
-          </div>
+         {/* Carousel Area */}
+<div className="relative group">
+  {/* Arrow - Left */}
+  <button
+    onClick={() =>
+      handleTabClick((activeTab - 1 + slabsData.length) % slabsData.length)
+    }
+    className="absolute left-[-6%] top-1/2 -translate-y-1/2 
+               text-[#0d9387] hover:text-emerald-600 
+               text-2xl md:text-2xl font-bold 
+               z-20 transition-all duration-300 lg:left-[-6%] md:left-[-3%] sm:left-[-1%]"
+  >
+    &lt;
+  </button>
+
+  {/* Card Container */}
+  <div className="flex justify-center">
+    <div className="w-full max-w-lg md:max-w-4xl mx-auto">
+      {currentSlab?.type === "active" ? (
+        <ActiveSlabContent
+          slab={currentSlab}
+          isActive={true}
+          onProceedOrder={onProceedOrder}
+          amount={amount}
+          setAmount={setAmount}
+          currency={currency}
+          onChangeCurrency={onChangeCurrency}
+          paymentMethod={paymentMethod}
+          onChangePaymentMethod={onChangePaymentMethod}
+          errors={errors}
+          handleInputChange={handleInputChange}
+          handleBlur={handleBlur}
+          userData={userData}
+        />
+      ) : currentSlab?.type === "sold" ? (
+        <SoldSlabContent slab={currentSlab} isActive={true} />
+      ) : (
+        <UpcomingSlabContent slab={currentSlab} isActive={true} />
+      )}
+    </div>
+  </div>
+
+  {/* Arrow - Right */}
+  <button
+    onClick={() => handleTabClick((activeTab + 1) % slabsData.length)}
+    className="absolute right-[-6%] top-1/2 -translate-y-1/2 
+               text-[#0d9387] hover:text-emerald-600 
+               text-2xl md:text-2xl font-bold 
+               z-20 transition-all duration-300 lg:right-[-6%] md:right-[-3%] sm:right-[-1%]"
+  >
+    &gt;
+  </button>
+</div>
 
           {/* Pagination Dots */}
           <div className="flex justify-center items-center gap-2 my-1.5">

@@ -519,7 +519,7 @@ const LockedSuperBonusUI = () => {
                         <span className="text-xs sm:text-sm text-gray-800 font-medium">
                           {bonusData.eligibleToWithDrawTempSuperBonus
                             ? "You can withdraw your temporary SuperBonus!"
-                            : "Not yet eligible to withdraw temporary SuperBonus"}
+                            : "Not yet eligible to Reedem Locked SuperBonus"}
                         </span>
                         {bonusData.eligibleToWithDrawTempSuperBonus &&
                           !bonusData.alreadyUnlockedSuperBonus && (

@@ -482,7 +482,7 @@ const CryptoServicesFlipCards = () => {
               Join thousands of investors who trust Jaimax for their digital asset management
             </p>
             <button
-              className="px-6 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3 md:py-3.5 lg:py-4 bg-lime-400 text-teal-700 rounded-full font-bold text-base sm:text-base md:text-lg lg:text-lg hover:bg-white shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
+              className="px-6 sm:px-6 md:px-4 lg:px-6 py-3 sm:py-2.5 md:py-3.5 lg:py-2 bg-lime-400 text-teal-700 rounded-full font-bold text-base sm:text-base md:text-lg lg:text-lg hover:bg-white shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
               onClick={() => window.open("https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax", "_blank")}
             >
               Launch App

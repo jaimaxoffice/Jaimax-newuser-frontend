@@ -4,18 +4,18 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { debounce } from 'lodash';
 import image from '../../assets/Images/roadmap.png';
 const roadmapData = {
-  2024: {
-    title: "Foundation & Launch",
-    status: "Completed",
-    progress: 65,
-    phases: [
-      "• Concept Development - Team assembly and planning",
-      "• Smart Contract Development - Blockchain architecture",
-      "• Platform Development - Digital platform creation",
-      "• Token Launch - Marketing and fundraising",
-      "• Mobile App Launch - Cross-platform apps"
-    ]
-  },
+  // 2024: {
+  //   title: "Foundation & Launch",
+  //   status: "Completed",
+  //   progress: 65,
+  //   phases: [
+  //     "• Concept Development - Team assembly and planning",
+  //     "• Smart Contract Development - Blockchain architecture",
+  //     "• Platform Development - Digital platform creation",
+  //     "• Token Launch - Marketing and fundraising",
+  //     "• Mobile App Launch - Cross-platform apps"
+  //   ]
+  // },
   2025: {
     title: "Innovation & Expansion",
     status: "Active",

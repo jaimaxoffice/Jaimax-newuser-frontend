@@ -517,7 +517,7 @@ const CoinPricePopup = ({
             <div className="flex items-center justify-center mb-2">
             </div>
             <h3 className="text-lg font-bold text-white mb-1">Price Update!</h3>
-            <div className="text-white/70 text-sm">The price has officially increased</div>
+            <div className="text-white/70 text-sm">The price is about to increase</div>
           </div>
           
           {/* Price Comparison */}
@@ -618,7 +618,7 @@ const CoinPricePopup = ({
           
           {/* Action Button */}
           <button 
-            className="w-full py-3 px-3 rounded-lg text-base font-bold flex items-center justify-center shadow-lg transition-all duration-200 hover:shadow-xl" 
+            className="w-[90%] ml-4 py-2 px-3 rounded-lg text-base font-bold flex items-center justify-center shadow-lg transition-all duration-200 hover:shadow-xl" 
             style={{ background: "linear-gradient(135deg, #ffffff, #e6e6e6)" }}
             onClick={handleBuy}
           >

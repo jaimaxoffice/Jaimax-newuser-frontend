@@ -17,18 +17,18 @@ import {
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { FaHandshake } from "react-icons/fa";
-import { TreePalm,HandCoins  } from "lucide-react";
+import { TreePalm,HandCoins, UserRound, Wallet  } from "lucide-react";
 import logo from "../../../assets/Images/jaimaxlogo1.svg";
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: <HiOutlineViewGrid /> },
-  { name: "Wallet", path: "/wallet", icon: <HiOutlineClipboardList /> },
+  { name: "Wallet", path: "/wallet", icon: <Wallet /> },
   { name: "My Total Team", path: "/my-team", icon: <HiOutlineCalendar /> },
   // { name: "Share Holders", path: "/shareholders", icon: <FaHandshake /> },
   // { name: "Todays Earnings", path: "/earnings", icon: <HiOutlineClock /> },
   { name: "Buy History", path: "/buy-history", icon: <HiOutlineChartBar /> },
   { name: "Security", path: "/security", icon: <HiOutlineShieldCheck /> },
-  { name: "Profile", path: "/profile", icon: <HiOutlineUser /> },
+  { name: "Profile", path: "/profile", icon: <UserRound /> },
   { name: "Goa-Gateway", path: "/goa-vacation", icon: <TreePalm size={16}/> },
   { name: "Locked Superbonus", path: "/locked-superbonus", icon: <HandCoins   size={16}/> },
 
