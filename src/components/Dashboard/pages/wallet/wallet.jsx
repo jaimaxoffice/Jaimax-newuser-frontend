@@ -415,7 +415,7 @@ export default function WalletDashboard() {
                     <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                   <CopyToClipboardButton
-                    textToCopy={referralContent}
+                    textToCopy={userData?.username}
                     isMobile={true}
                   />
                 </div>

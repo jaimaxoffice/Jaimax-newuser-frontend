@@ -1263,7 +1263,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
 import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice";
 import {
@@ -1279,6 +1279,7 @@ import CopyToClipboardButton from "../../../../pages/home/CopyToClipboard";
 import Loader from "../../../Loader/loader";
 import CryptoJS from "crypto-js";
 import { useGetActivePaymentGatewayQuery } from "../TodayEarnings/userEarningApiSlice";
+import transferImage from "../../../../../public/images/transfer money.jpg";
 
 const AddMoneyToWallet = () => {
   const defaultFormData = {
@@ -2084,70 +2085,73 @@ const AddMoneyToWallet = () => {
   return (
     <div>
       {/* Step 1: Buttons */}
-      <div className="flex flex-col sm:flex-row justify-center py-6 gap-4 sm:gap-8">
-        {/* UPI Button */}
-        <button
-          onClick={() => setSelectedOption("upi")}
-          className={`px-5 py-2 rounded-full font-semibold transition border 
+    <div className="flex flex-col md:flex-row md:flex-wrap justify-center lg:justify-center py-6 gap-4 md:gap-5 w-full px-2 md:px-4">
+  {/* UPI Button */}
+  <button
+    onClick={() => setSelectedOption("upi")}
+    className={`px-6 py-2 rounded-full font-semibold transition border 
       ${
         selectedOption === "upi"
           ? "bg-white text-teal-600 border-teal-600"
           : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
-      } 
-      w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
-        >
-          UPI
-        </button>
+      }
+      w-full md:w-auto md:min-w-[140px] lg:min-w-[160px]`}
+  >
+    UPI
+  </button>
 
-        {/* Cards Button */}
-        <button
-          onClick={() => setSelectedOption("cards")}
-          className={`px-5 py-2 rounded-full font-semibold transition border 
+  {/* Cards Button */}
+  <button
+    onClick={() => setSelectedOption("cards")}
+    className={`px-6 py-2 rounded-full font-semibold transition border 
       ${
         selectedOption === "cards"
           ? "bg-white text-teal-600 border-teal-600"
           : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
-      } 
-      w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
-        >
-          Cards
-        </button>
+      }
+      w-full md:w-auto md:min-w-[140px] lg:min-w-[160px]`}
+  >
+    Cards
+  </button>
 
-        {/* Bank Transfer Button */}
-        <button
-          onClick={() => setSelectedOption("bank")}
-          className={`px-5 py-2 rounded-full font-semibold transition border 
+  {/* Bank Transfer Button */}
+  <button
+    onClick={() => setSelectedOption("bank")}
+    className={`px-6 py-2 rounded-full font-semibold transition border 
       ${
         selectedOption === "bank"
           ? "bg-white text-teal-600 border-teal-600"
           : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
-      } 
-      w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
-        >
-          Bank Transfer
-        </button>
-        <button
-  onClick={() => setSelectedOption("others")}
-  className={`px-5 py-2 rounded-full font-semibold transition border 
-    ${
-      selectedOption === "others"
-        ? "bg-white text-teal-600 border-teal-600"
-        : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
-    } 
-    w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
->
-  Others
-</button>
-      </div>
+      }
+      w-full md:w-auto md:min-w-[140px] lg:min-w-[160px]`}
+  >
+    Bank Transfer
+  </button>
 
-      <div className="container mx-auto px-4">
+  {/* Others Button */}
+  <button
+    onClick={() => setSelectedOption("others")}
+    className={`px-6 py-2 rounded-full font-semibold transition border 
+      ${
+        selectedOption === "others"
+          ? "bg-white text-teal-600 border-teal-600"
+          : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
+      }
+      w-full md:w-auto md:min-w-[140px] lg:min-w-[160px]`}
+  >
+    Others
+  </button>
+</div>
+
+
+      <div className="container mx-auto px-2">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 py-6 ">
           {/* Step 2: Conditional Rendering */}
 
           {selectedOption === "upi" && (
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-teal-700 font-bold text-lg mb-6">
+              <div className="bg-white rounded-xl shadow-lg p-4">
+                <h3 className="text-teal-700 font-bold text-lg mb-6 text-center">
                   UPI Payment
                 </h3>
 
@@ -2155,6 +2159,8 @@ const AddMoneyToWallet = () => {
                 <div className="flex flex-col lg:flex-row lg:gap-6">
                   {/* UPI IDs */}
                   <div className="flex-1 mb-6 lg:mb-0">
+                    <h4 className="text-teal-700 font-bold mb-4 mt-2">Pay Now</h4>
+                    <div>
                     <label className="block text-slate-600 font-medium mb-2">
                       Primary UPI ID
                     </label>
@@ -2223,6 +2229,7 @@ const AddMoneyToWallet = () => {
                         loading="lazy"
                       />
                     </div>
+                    </div>
                   </div>
 
                   {/* QR Scanner */}
@@ -2237,10 +2244,10 @@ const AddMoneyToWallet = () => {
 
                   {/* Transaction Details */}
                   <div className="flex-1">
-                    <div className="bg-slate-50 rounded-lg p-4">
-                      <h3 className="text-teal-700 font-semibold mb-4">
+                      <h4 className="text-teal-700 font-semibold mb-4 mt-2">
                         Transaction Details
-                      </h3>
+                      </h4>
+                    <div className="bg-slate-50 rounded-lg p-4">
 
                       {/* Transaction ID */}
                       <div className="mb-4">
@@ -2311,7 +2318,7 @@ const AddMoneyToWallet = () => {
                         <button
                           type="submit"
                           onClick={handleSubmit}
-                          className="lg:w-[30%] sm:w-[50%] bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
+                          className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
                         >
                           Submit
                         </button>
@@ -2326,7 +2333,7 @@ const AddMoneyToWallet = () => {
           {selectedOption === "cards" && (
             <>
               {isPaymentGatewayActive && (
-                <div className="lg:col-span-3 flex justify-center mt-5">
+                <div className="lg:col-span-3 flex justify-center mt-5 lg:mt-10 md:mt-10 sm:mt-5">
                   <div className="bg-white rounded-xl shadow-lg p-6 text-center max-w-md w-full">
                     <h3 className="text-slate-700 font-bold text-lg mb-4">
                       Pay through the cards
@@ -2355,8 +2362,8 @@ const AddMoneyToWallet = () => {
           )}
 
           {selectedOption === "bank" && (
-            <div className="lg:col-span-3 m-auto w-[95%]">
-              <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="lg:col-span-3 m-auto w-full">
+              <div className="bg-white rounded-xl shadow-lg p-4">
                 {/* Main Title */}
                 <h3 className="text-teal-700 font-bold text-lg mb-6">
                   Bank Transfer
@@ -2524,7 +2531,7 @@ const AddMoneyToWallet = () => {
           )}
           
 {selectedOption === "others" && (
-  <div className="lg:col-span-3 flex justify-center mt-5">
+  <div className="lg:col-span-3 flex justify-center mt-5 lg:mt-10 md:mt-10 sm:mt-5">
     <div className="bg-white rounded-xl shadow-lg p-6 text-center max-w-md w-full">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-slate-700">
@@ -2532,6 +2539,9 @@ const AddMoneyToWallet = () => {
           {(+userData?.data?.Inr)?.toFixed(2)}
         </h2>
         <p className="text-slate-500 text-sm">(Referral + Super Bonus)</p>
+      </div>
+      <div className="flex justify-center mb-6">
+        <img src={transferImage} width={120} height={120} alt="transfer money image" />
       </div>
 
       <div className="max-w-md mx-auto">
@@ -2561,6 +2571,7 @@ const AddMoneyToWallet = () => {
           Transfer
         </button>
       </div>
+      <p className="mt-5 text-xs"><span className="font-bold">Note: </span>Here you can withdraw from available balance to wallet</p>
     </div>
   </div>
 )}
@@ -2570,6 +2581,7 @@ const AddMoneyToWallet = () => {
       </div>
 
       {(isLoading || loading) && <Loader />}
+        <ToastContainer position="top-center" autoClose={2000} />
     </div>
   );
 };

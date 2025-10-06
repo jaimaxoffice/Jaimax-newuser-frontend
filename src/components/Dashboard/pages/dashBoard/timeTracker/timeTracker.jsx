@@ -1188,11 +1188,11 @@ const SlabTabs = () => {
     onClick={() =>
       handleTabClick((activeTab - 1 + slabsData.length) % slabsData.length)
     }
-    className="absolute left-[-8%] top-1/2 -translate-y-1/2 
+    className="absolute left-[-6%] top-1/2 -translate-y-1/2 
                text-white 
                bg-[#0d9387] shadow-lg rounded-full p-1 
                transition-all duration-300 hover:scale-110 
-               z-20 lg:left-[-8%] md:left-[-6%] sm:left-[-2%]"
+               z-20 lg:left-[-4%] md:left-[-6%] sm:left-[-2%]"
   >
     <ArrowLeft className="w-4 h-4"/>
   </button>
@@ -1227,11 +1227,11 @@ const SlabTabs = () => {
   {/* Arrow - Right */}
   <button
     onClick={() => handleTabClick((activeTab + 1) % slabsData.length)}
-    className="absolute right-[-8%] top-1/2 -translate-y-1/2 
+    className="absolute right-[-6%] top-1/2 -translate-y-1/2 
                text-white
                bg-[#0d9387] shadow-lg rounded-full p-1 
                transition-all duration-300 hover:scale-110 
-               z-20 lg:right-[-8%] md:right-[-6%] sm:right-[-2%]"
+               z-20 lg:right-[-4%] md:right-[-6%] sm:right-[-2%]"
   >
     <ArrowRight className="w-4 h-4"/>
   </button>
