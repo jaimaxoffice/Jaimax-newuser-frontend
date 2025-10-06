@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useCallback, useMemo } from "react";
+import React, { useEffect, useReducer, useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -12,6 +12,7 @@ import {
   Filter,
   ChevronDown,
   Share2,
+  Check
 } from "lucide-react";
 import Pagination from "../../../pagination/pagination";
 import { useUserDetailsQuery } from "./myTotalTeamApiSlice";
@@ -79,6 +80,9 @@ const userData = useMemo(() => {
 }, []);
 
   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
+
+  const [copiedTop, setCopiedTop] = useState(false);
+  const [copiedInline, setCopiedInline] = useState(false);
 
   // Query params for server-side pagination
   const queryParams = useMemo(() => {
@@ -158,6 +162,9 @@ const userData = useMemo(() => {
       console.error("Failed to copy referral code");
     }
   }, [userData]);
+
+  // console.log("Referral code to copy:", userData?.username || box.value);
+  // console.log(username)
 
   // Generate avatar initials
   const getAvatarInitials = useCallback((name) => {
@@ -246,81 +253,105 @@ const userData = useMemo(() => {
             {/* Side decorative element */}
             <div className="absolute top-0 left-0 h-full w-1.5 bg-gradient-to-b from-teal-400 to-teal-600"></div>
 
-            <div className="p-4 pl-5">
-              {box.isReferral ? (
-                <>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-bold text-gray-800 text-sm">
-                      {box.title}
-                    </h3>
-                    <div className="flex gap-1.5">
-                      <button
-                        onClick={handleCopyReferralCode}
-                        className={`p-1.5 rounded-full text-white ${
-                          state.copiedCode
-                            ? "bg-green-500"
-                            : "bg-teal-500 hover:bg-teal-600"
-                        } transition-colors duration-300 shadow-sm`}
-                        title="Copy referral code"
-                      >
-                        <Copy className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={() =>
-                          dispatch({ type: "TOGGLE_REFERRAL_MODAL" })
-                        }
-                        className="p-1.5 rounded-full bg-teal-500 text-white hover:bg-teal-600 transition-colors duration-300 shadow-sm"
-                        title="Share referral"
-                      >
-                        <Share2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
+ <div className="p-4 pl-5">
+      {box.isReferral ? (
+        <>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-gray-800 text-sm">{box.title}</h3>
+            <div className="flex gap-1.5">
+              {/* ✅ Top Copy button */}
+              <button
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(box.value);
+                    setCopiedTop(true);
+                    setTimeout(() => setCopiedTop(false), 2000);
+                  } catch (err) {
+                    console.error("Failed to copy referral code");
+                  }
+                }}
+                className={`p-1.5 rounded-full text-white ${
+                  copiedTop
+                    ? "bg-green-500"
+                    : "bg-teal-500 hover:bg-teal-600"
+                } transition-colors duration-300 shadow-sm cursor-pointer`}
+                title="Copy referral code"
+              >
+                {copiedTop ? (
+                  <Check className="w-3.5 h-3.5" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
+              </button>
 
-                  <p className="text-xs text-gray-500 mb-2">
-                    {box.description}
-                  </p>
-
-                  <div className="bg-teal-50 rounded-md p-2.5 border border-teal-100 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={`p-1.5 rounded-full bg-gradient-to-r ${box.gradient} text-white shadow-sm`}
-                      >
-                        {box.icon}
-                      </div>
-                      <code className="text-xs font-bold text-teal-800 max-w-[140px] sm:max-w-[180px] truncate">
-                        {box.value}
-                      </code>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-bold text-gray-800 text-sm">
-                      {box.title}
-                    </h3>
-                  </div>
-
-                  <p className="text-xs text-gray-500 mb-3">
-                    {box.description}
-                  </p>
-
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`p-2.5 rounded-full bg-gradient-to-r ${box.gradient} text-white shadow-sm`}
-                    >
-                      {box.icon}
-                    </div>
-                    <div className="text-xl sm:text-2xl font-bold text-gray-800">
-                      {typeof box.value === "number"
-                        ? box.value.toLocaleString()
-                        : box.value}
-                    </div>
-                  </div>
-                </>
-              )}
+              {/* 📤 Share button */}
+              <button
+                onClick={() =>
+                  dispatch({ type: "TOGGLE_REFERRAL_MODAL" })
+                }
+                className="p-1.5 rounded-full bg-teal-500 text-white hover:bg-teal-600 transition-colors duration-300 shadow-sm cursor-pointer"
+                title="Share referral"
+              >
+                <Share2 className="w-3.5 h-3.5" />
+              </button>
             </div>
+          </div>
+
+          <p className="text-xs text-gray-500 mb-2">{box.description}</p>
+
+          {/* Inline referral display + copy */}
+          <div className="bg-teal-50 rounded-md p-2.5 border border-teal-100 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(box.value);
+                    setCopiedInline(true);
+                    setTimeout(() => setCopiedInline(false), 2000);
+                  } catch (err) {
+                    console.error("Failed to copy referral code");
+                  }
+                }}
+                className={`p-2.5 rounded-full bg-gradient-to-r ${box.gradient} text-white shadow-sm cursor-pointer transition-colors duration-300`}
+                title="Copy referral code"
+              >
+                {copiedInline ? (
+                  <Check className="w-3.5 h-3.5" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
+              </button>
+
+              <code className="text-xs font-bold text-teal-800 max-w-[140px] sm:max-w-[180px] truncate">
+                {box.value}
+              </code>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-bold text-gray-800 text-sm">{box.title}</h3>
+          </div>
+
+          <p className="text-xs text-gray-500 mb-3">{box.description}</p>
+
+          <div className="flex items-center gap-3">
+            <div
+              className={`p-2.5 rounded-full bg-gradient-to-r ${box.gradient} text-white shadow-sm`}
+            >
+              {box.icon}
+            </div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-800">
+              {typeof box.value === "number"
+                ? box.value.toLocaleString()
+                : box.value}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+
           </div>
         ))}
       </div>

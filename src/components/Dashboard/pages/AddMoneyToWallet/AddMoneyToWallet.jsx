@@ -1312,11 +1312,11 @@ const AddMoneyToWallet = () => {
   const [isToastShown, setIsToastShown] = useState(false);
   const { data: activePaymentGateway } = useGetActivePaymentGatewayQuery();
 
-  const isPaymentGatewayActive =
-    activePaymentGateway?.data?.length > 0 &&
-    activePaymentGateway.data[0].isActive;
+  // const isPaymentGatewayActive =
+  //   activePaymentGateway?.data?.length > 0 &&
+  //   activePaymentGateway.data[0].isActive;
 
-  // const isPaymentGatewayActive = true;
+  const isPaymentGatewayActive = true;
 
   const countryCode = userData?.data?.countryCode;
   const transactionPercentageValue = 3;
@@ -2088,11 +2088,11 @@ const AddMoneyToWallet = () => {
         {/* UPI Button */}
         <button
           onClick={() => setSelectedOption("upi")}
-          className={`px-6 py-3 rounded-full font-semibold transition border 
+          className={`px-5 py-2 rounded-full font-semibold transition border 
       ${
         selectedOption === "upi"
-          ? "bg-teal-600 text-white border-teal-600"
-          : "bg-white text-teal-600 border-teal-600 hover:bg-teal-600 hover:text-white"
+          ? "bg-white text-teal-600 border-teal-600"
+          : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
       } 
       w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
         >
@@ -2102,11 +2102,11 @@ const AddMoneyToWallet = () => {
         {/* Cards Button */}
         <button
           onClick={() => setSelectedOption("cards")}
-          className={`px-6 py-3 rounded-full font-semibold transition border 
+          className={`px-5 py-2 rounded-full font-semibold transition border 
       ${
         selectedOption === "cards"
-          ? "bg-teal-600 text-white border-teal-600"
-          : "bg-white text-teal-600 border-teal-600 hover:bg-teal-600 hover:text-white"
+          ? "bg-white text-teal-600 border-teal-600"
+          : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
       } 
       w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
         >
@@ -2116,16 +2116,28 @@ const AddMoneyToWallet = () => {
         {/* Bank Transfer Button */}
         <button
           onClick={() => setSelectedOption("bank")}
-          className={`px-6 py-3 rounded-full font-semibold transition border 
+          className={`px-5 py-2 rounded-full font-semibold transition border 
       ${
         selectedOption === "bank"
-          ? "bg-teal-600 text-white border-teal-600"
-          : "bg-white text-teal-600 border-teal-600 hover:bg-teal-600 hover:text-white"
+          ? "bg-white text-teal-600 border-teal-600"
+          : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
       } 
       w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
         >
           Bank Transfer
         </button>
+        <button
+  onClick={() => setSelectedOption("others")}
+  className={`px-5 py-2 rounded-full font-semibold transition border 
+    ${
+      selectedOption === "others"
+        ? "bg-white text-teal-600 border-teal-600"
+        : "bg-teal-500 text-white border-teal-600 hover:bg-white hover:text-teal-600"
+    } 
+    w-full max-w-xs sm:w-auto sm:max-w-none sm:m-0 m-auto`}
+>
+  Others
+</button>
       </div>
 
       <div className="container mx-auto px-4">
@@ -2312,164 +2324,247 @@ const AddMoneyToWallet = () => {
           )}
 
           {selectedOption === "cards" && (
-  <>
-    {isPaymentGatewayActive && (
-      <div className="lg:col-span-3 flex justify-center mt-5">
-        <div className="bg-white rounded-xl shadow-lg p-6 text-center max-w-md w-full">
-          <h3 className="text-slate-700 font-bold text-lg mb-4">
-            Pay through the cards
-          </h3>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Credit_or_Debit_Card_Flat_Icon_Vector.svg/2048px-Credit_or_Debit_Card_Flat_Icon_Vector.svg.png"
-            className="mx-auto mb-4 w-32 h-20 object-contain"
-            alt="Card Payment"
-          />
-          <p className="text-slate-600 text-sm mb-4">
-            For payments above{" "}
-            <strong className="text-slate-700">₹25,000,</strong> ensure
-            your card has sufficient limit and is enabled for high-value
-            online transactions.
-          </p>
-          <button
-            onClick={onClickAddMoney}
-            className="w-3/5 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
-          >
-            Pay Now
-          </button>
-        </div>
-      </div>
-    )}
-  </>
-)}
+            <>
+              {isPaymentGatewayActive && (
+                <div className="lg:col-span-3 flex justify-center mt-5">
+                  <div className="bg-white rounded-xl shadow-lg p-6 text-center max-w-md w-full">
+                    <h3 className="text-slate-700 font-bold text-lg mb-4">
+                      Pay through the cards
+                    </h3>
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Credit_or_Debit_Card_Flat_Icon_Vector.svg/2048px-Credit_or_Debit_Card_Flat_Icon_Vector.svg.png"
+                      className="mx-auto mb-4 w-32 h-20 object-contain"
+                      alt="Card Payment"
+                    />
+                    <p className="text-slate-600 text-sm mb-4">
+                      For payments above{" "}
+                      <strong className="text-slate-700">₹25,000,</strong>{" "}
+                      ensure your card has sufficient limit and is enabled for
+                      high-value online transactions.
+                    </p>
+                    <button
+                      onClick={onClickAddMoney}
+                      className="w-3/5 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
+                    >
+                      Pay Now
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
 
           {selectedOption === "bank" && (
-  <div className="lg:col-span-3 m-auto w-[95%]">
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h3 className="text-teal-700 font-bold text-lg mb-6">Bank Transfer</h3>
+            <div className="lg:col-span-3 m-auto w-[95%]">
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                {/* Main Title */}
+                <h3 className="text-teal-700 font-bold text-lg mb-6">
+                  Bank Transfer
+                </h3>
 
-      {/* Bank + Transaction wrapper */}
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Bank Details */}
-        <div className="flex-1 bg-slate-50 rounded-lg p-4">
-          <h3 className="text-teal-700 font-semibold mb-4">Bank Details</h3>
+                {/* Bank + Transaction wrapper */}
+                <div className="flex flex-col lg:flex-row gap-6">
+                  {/* ===== Left Box - Bank Details ===== */}
+                  <div className="flex-1">
+                    <h3 className="text-teal-700 font-semibold mb-4">
+                      Bank Details
+                    </h3>
+                    <div className=" bg-slate-50 rounded-lg p-4">
+                      {/* Bank Holder Name */}
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="flex-1">
+                          <p className="text-slate-600 font-semibold mb-1">
+                            Bank Holder Name:
+                          </p>
+                          <p className="text-slate-700 text-sm break-words">
+                            {formData.bankAccountHolderName}
+                          </p>
+                        </div>
+                        <CopyToClipboardButton
+                          textToCopy={defaultFormData.bankAccountHolderName}
+                          className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
+                        />
+                      </div>
 
-          {/* Bank Holder Name */}
-          <div className="flex justify-between items-start mb-6">
-            <div className="flex-1">
-              <p className="text-slate-600 font-semibold mb-1">Bank Holder Name:</p>
-              <p className="text-slate-700 text-sm break-words">
-                {formData.bankAccountHolderName}
-              </p>
+                      {/* Account Number */}
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="flex-1">
+                          <p className="text-slate-600 font-semibold mb-1">
+                            Bank Account No:
+                          </p>
+                          <p className="text-slate-700">
+                            {formData.bankAccountNumber}
+                          </p>
+                        </div>
+                        <CopyToClipboardButton
+                          textToCopy={defaultFormData.bankAccountNumber}
+                          className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
+                        />
+                      </div>
+
+                      {/* IFSC Code */}
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="flex-1">
+                          <p className="text-slate-600 font-semibold mb-1">
+                            IFSC Code:
+                          </p>
+                          <p className="text-slate-700">
+                            {formData.bankIfscCode}
+                          </p>
+                        </div>
+                        <CopyToClipboardButton
+                          textToCopy={defaultFormData.bankIfscCode}
+                          className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
+                        />
+                      </div>
+
+                      {/* Bank Name */}
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <p className="text-slate-600 font-semibold mb-1">
+                            Bank Name:
+                          </p>
+                          <p className="text-slate-700">{formData.bankName}</p>
+                        </div>
+                        <CopyToClipboardButton
+                          textToCopy={defaultFormData.bankName}
+                          className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ===== Right Box - Transaction Details ===== */}
+                  <div className="flex-1 ">
+                    {/* Header */}
+                    <h3 className="text-teal-700 font-semibold mb-4">
+                      Upload Screenshot
+                    </h3>
+                    <div className="bg-slate-50 rounded-lg p-4">
+                      {/* Transaction ID */}
+                      <div className="mb-4">
+                        <label className="block text-slate-600 font-medium mb-2">
+                          Transaction ID
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          placeholder={
+                            !isTransactionIdRead
+                              ? "Autofill"
+                              : "Enter transaction ID"
+                          }
+                          value={formData.transactionId}
+                          name="transactionId"
+                          onChange={handleChange}
+                          autoComplete="off"
+                          disabled={!isTransactionIdRead}
+                        />
+                        {errors.transactionId && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.transactionId}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Screenshot Upload */}
+                      <div className="mb-4">
+                        <label className="block text-slate-600 font-medium mb-2">
+                          Screenshot
+                        </label>
+                        <input
+                          type="file"
+                          accept=".jpg,.jpeg,.png,.jfif"
+                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-1000 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-100 file:text-teal-700 hover:file:bg-teal-200"
+                          onChange={handleImageChange}
+                          ref={fileInputRef}
+                        />
+                        {errors.screenshot && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.screenshot}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Amount */}
+                      <div className="mb-6">
+                        <label className="block text-slate-600 font-medium mb-2">
+                          Amount
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          placeholder="Please enter amount"
+                          value={formData.amount}
+                          name="amount"
+                          onChange={handleChange}
+                          autoComplete="off"
+                        />
+                        {errors.amount && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.amount}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
+                      >
+                      
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <CopyToClipboardButton
-              textToCopy={defaultFormData.bankAccountHolderName}
-              className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
-            />
-          </div>
+          )}
+          
+{selectedOption === "others" && (
+  <div className="lg:col-span-3 flex justify-center mt-5">
+    <div className="bg-white rounded-xl shadow-lg p-6 text-center max-w-md w-full">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-slate-700">
+          Available Balance: {countryCode === 91 ? "₹" : "$"}
+          {(+userData?.data?.Inr)?.toFixed(2)}
+        </h2>
+        <p className="text-slate-500 text-sm">(Referral + Super Bonus)</p>
+      </div>
 
-          {/* Account Number */}
-          <div className="flex justify-between items-start mb-6">
-            <div className="flex-1">
-              <p className="text-slate-600 font-semibold mb-1">Bank Account No:</p>
-              <p className="text-slate-700">{formData.bankAccountNumber}</p>
-            </div>
-            <CopyToClipboardButton
-              textToCopy={defaultFormData.bankAccountNumber}
-              className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
-            />
-          </div>
-
-          {/* IFSC Code */}
-          <div className="flex justify-between items-start mb-6">
-            <div className="flex-1">
-              <p className="text-slate-600 font-semibold mb-1">IFSC Code:</p>
-              <p className="text-slate-700">{formData.bankIfscCode}</p>
-            </div>
-            <CopyToClipboardButton
-              textToCopy={defaultFormData.bankIfscCode}
-              className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
-            />
-          </div>
-
-          {/* Bank Name */}
-          <div className="flex justify-between items-start">
-            <div className="flex-1">
-              <p className="text-slate-600 font-semibold mb-1">Bank Name:</p>
-              <p className="text-slate-700">{formData.bankName}</p>
-            </div>
-            <CopyToClipboardButton
-              textToCopy={defaultFormData.bankName}
-              className="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-sm transition-colors"
-            />
-          </div>
+      <div className="max-w-md mx-auto">
+        <div className="mb-4 text-left">
+          <label className="block text-slate-600 font-medium mb-2">
+            Enter Amount To Transfer <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            placeholder="Enter Transfer Amount"
+            name="transferAmount"
+            value={transferAmount}
+            onChange={handleTransferAmountChange}
+            autoComplete="off"
+          />
+          {othersError && (
+            <p className="text-red-500 text-sm mt-1">* {othersError}</p>
+          )}
         </div>
 
-        {/* Transaction Details */}
-        <div className="flex-1 bg-slate-50 rounded-lg p-4">
-          <h3 className="text-teal-700 font-semibold mb-4">Transaction Details</h3>
-
-          {/* Transaction ID */}
-          <div className="mb-4">
-            <label className="block text-slate-600 font-medium mb-2">Transaction ID</label>
-            <input
-              type="text"
-              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder={!isTransactionIdRead ? "Autofill" : "Enter transaction ID"}
-              value={formData.transactionId}
-              name="transactionId"
-              onChange={handleChange}
-              autoComplete="off"
-              disabled={!isTransactionIdRead}
-            />
-            {errors.transactionId && (
-              <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>
-            )}
-          </div>
-
-          {/* Screenshot Upload */}
-          <div className="mb-4">
-            <label className="block text-slate-600 font-medium mb-2">Screenshot</label>
-            <input
-              type="file"
-              accept=".jpg,.jpeg,.png,.jfif"
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-1000 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-100 file:text-teal-700 hover:file:bg-teal-100"
-              onChange={handleImageChange}
-              ref={fileInputRef}
-            />
-            {errors.screenshot && (
-              <p className="text-red-500 text-sm mt-1">{errors.screenshot}</p>
-            )}
-          </div>
-
-          {/* Amount */}
-          <div className="mb-6">
-            <label className="block text-slate-600 font-medium mb-2">Amount</label>
-            <input
-              type="text"
-              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Please enter amount"
-              value={formData.amount}
-              name="amount"
-              onChange={handleChange}
-              autoComplete="off"
-            />
-            {errors.amount && (
-              <p className="text-red-500 text-sm mt-1">{errors.amount}</p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
-          >
-            Submit
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={onSubmitTransferMoney}
+          className="w-3/5 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200"
+        >
+          Transfer
+        </button>
       </div>
     </div>
   </div>
 )}
+
 
         </div>
       </div>

@@ -6,6 +6,8 @@ import {
   DollarSign,
   Clock,
   CheckCircle,
+  ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 import {
   useGetRoundQuery,
@@ -1180,19 +1182,19 @@ const SlabTabs = () => {
           </div>
 
           {/* Carousel Area */}
-         {/* Carousel Area */}
 <div className="relative group">
   {/* Arrow - Left */}
   <button
     onClick={() =>
       handleTabClick((activeTab - 1 + slabsData.length) % slabsData.length)
     }
-    className="absolute left-[-6%] top-1/2 -translate-y-1/2 
-               text-[#0d9387] hover:text-emerald-600 hover:text-2xl 
-               text-xl md:text-xl 
-               z-20 transition-all duration-300 lg:left-[-6%] md:left-[-3%] sm:left-[-1%]"
+    className="absolute left-[-8%] top-1/2 -translate-y-1/2 
+               text-white 
+               bg-[#0d9387] shadow-lg rounded-full p-1 
+               transition-all duration-300 hover:scale-110 
+               z-20 lg:left-[-8%] md:left-[-6%] sm:left-[-2%]"
   >
-    &lt;
+    <ArrowLeft className="w-4 h-4"/>
   </button>
 
   {/* Card Container */}
@@ -1225,12 +1227,13 @@ const SlabTabs = () => {
   {/* Arrow - Right */}
   <button
     onClick={() => handleTabClick((activeTab + 1) % slabsData.length)}
-    className="absolute right-[-6%] top-1/2 -translate-y-1/2 
-               text-[#0d9387] hover:text-emerald-600 hover:text-2xl 
-               text-xl md:text-xl
-               z-20 transition-all duration-300 lg:right-[-6%] md:right-[-3%] sm:right-[-1%]"
+    className="absolute right-[-8%] top-1/2 -translate-y-1/2 
+               text-white
+               bg-[#0d9387] shadow-lg rounded-full p-1 
+               transition-all duration-300 hover:scale-110 
+               z-20 lg:right-[-8%] md:right-[-6%] sm:right-[-2%]"
   >
-    &gt;
+    <ArrowRight className="w-4 h-4"/>
   </button>
 </div>
 
