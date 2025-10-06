@@ -10,6 +10,7 @@ import {
   ExternalLink,
   Menu,
   X,
+  Check
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,14 +24,20 @@ const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
 
 // Copy to Clipboard Button Component
 const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
+  const [copied, setCopied] = useState(false);
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(textToCopy);
-      // console.log('Text copied to clipboard!');
+      setCopied(true);
+
+      // reset after 2 seconds
+      setTimeout(() => setCopied(false), 2000);
     } catch (error) {
-      // console.error('Failed to copy text:', error);
+      console.error("Failed to copy:", error);
     }
   };
+
 
   return (
     <button
@@ -39,11 +46,18 @@ const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
         isMobile ? "text-xs px-3 py-1.5" : "text-xs px-4 py-2"
       }`}
     >
-      <Copy className={`${isMobile ? "w-3 h-3" : "w-4 h-4"}`} />
-      <span className={isMobile ? "hidden xs:inline" : ""}>Copy</span>
+      {copied ? (
+        <Check className={`${isMobile ? "w-3 h-3" : "w-4 h-4"}`} />
+      ) : (
+        <Copy className={`${isMobile ? "w-3 h-3" : "w-4 h-4"}`} />
+      )}
+      <span className={isMobile ? "hidden xs:inline" : ""}>
+        {copied ? "Copied!" : "Copy"}
+      </span>
     </button>
   );
 };
+
 
 export default function WalletDashboard() {
   const [state, setState] = useState({

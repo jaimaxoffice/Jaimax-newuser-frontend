@@ -18,6 +18,7 @@ import {
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
 import { useUpdateAddressMutation } from "./profileApiSlice";
 import countryCodes from "../../../../Authentication/countryCodes.json";
+import { FaUser } from "react-icons/fa";
 
 
 export default function Profile3DForm() {
@@ -199,7 +200,7 @@ export default function Profile3DForm() {
     // } else {
     //   return "👤";
     // }
-    return <UserRound className="text-teal-600 w-14 h-14"/>
+    return <FaUser className="text-teal-600 w-14 h-14"/>
   };
 
   const currentImage = () => {

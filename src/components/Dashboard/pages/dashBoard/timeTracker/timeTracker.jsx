@@ -1145,7 +1145,7 @@ const SlabTabs = () => {
                   onClick={() => handleTabClick(index)}
                   className={`px-3 py-1 text-sm rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${
                     activeTab === index
-                      ? "bg-[#000] text-white shadow-lg shadow-emerald-500/25 scale-105"
+                      ? "bg-teal-500 text-black shadow-lg shadow-emerald-500/25 scale-105"
                       : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
                   }`}
                 >
@@ -1188,8 +1188,8 @@ const SlabTabs = () => {
       handleTabClick((activeTab - 1 + slabsData.length) % slabsData.length)
     }
     className="absolute left-[-6%] top-1/2 -translate-y-1/2 
-               text-[#0d9387] hover:text-emerald-600 
-               text-2xl md:text-2xl font-bold 
+               text-[#0d9387] hover:text-emerald-600 hover:text-2xl 
+               text-xl md:text-xl 
                z-20 transition-all duration-300 lg:left-[-6%] md:left-[-3%] sm:left-[-1%]"
   >
     &lt;
@@ -1226,8 +1226,8 @@ const SlabTabs = () => {
   <button
     onClick={() => handleTabClick((activeTab + 1) % slabsData.length)}
     className="absolute right-[-6%] top-1/2 -translate-y-1/2 
-               text-[#0d9387] hover:text-emerald-600 
-               text-2xl md:text-2xl font-bold 
+               text-[#0d9387] hover:text-emerald-600 hover:text-2xl 
+               text-xl md:text-xl
                z-20 transition-all duration-300 lg:right-[-6%] md:right-[-3%] sm:right-[-1%]"
   >
     &gt;

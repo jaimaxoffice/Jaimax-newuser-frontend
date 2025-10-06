@@ -16,7 +16,7 @@ import {
   HiOutlineCreditCard,
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
-import { FaHandshake } from "react-icons/fa";
+import { FaHandshake, FaUser } from "react-icons/fa";
 import { TreePalm,HandCoins, UserRound, Wallet  } from "lucide-react";
 import logo from "../../../assets/Images/jaimaxlogo1.svg";
 
@@ -28,7 +28,7 @@ const navItems = [
   // { name: "Todays Earnings", path: "/earnings", icon: <HiOutlineClock /> },
   { name: "Buy History", path: "/buy-history", icon: <HiOutlineChartBar /> },
   { name: "Security", path: "/security", icon: <HiOutlineShieldCheck /> },
-  { name: "Profile", path: "/profile", icon: <UserRound /> },
+  { name: "Profile", path: "/profile", icon: <FaUser /> },
   { name: "Goa-Gateway", path: "/goa-vacation", icon: <TreePalm size={16}/> },
   { name: "Locked Superbonus", path: "/locked-superbonus", icon: <HandCoins   size={16}/> },
 

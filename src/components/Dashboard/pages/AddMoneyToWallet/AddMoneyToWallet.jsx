@@ -1293,7 +1293,7 @@ const AddMoneyToWallet = () => {
     amount: "",
   };
 
-  const [selectedOption, setSelectedOption] = useState(""); // "upi" | "cards" | "bank"
+  const [selectedOption, setSelectedOption] = useState("upi"); // "upi" | "cards" | "bank"
   const [selectedUpiId, setSelectedUpiId] = useState("primary");
   const fileInputRef = useRef(null);
 
@@ -1312,11 +1312,11 @@ const AddMoneyToWallet = () => {
   const [isToastShown, setIsToastShown] = useState(false);
   const { data: activePaymentGateway } = useGetActivePaymentGatewayQuery();
 
-  // const isPaymentGatewayActive =
-  //   activePaymentGateway?.data?.length > 0 &&
-  //   activePaymentGateway.data[0].isActive;
+  const isPaymentGatewayActive =
+    activePaymentGateway?.data?.length > 0 &&
+    activePaymentGateway.data[0].isActive;
 
-  const isPaymentGatewayActive = true;
+  // const isPaymentGatewayActive = true;
 
   const countryCode = userData?.data?.countryCode;
   const transactionPercentageValue = 3;
@@ -2088,7 +2088,7 @@ const AddMoneyToWallet = () => {
         {/* UPI Button */}
         <button
           onClick={() => setSelectedOption("upi")}
-          className={`px-6 py-3 rounded-lg font-semibold transition border 
+          className={`px-6 py-3 rounded-full font-semibold transition border 
       ${
         selectedOption === "upi"
           ? "bg-teal-600 text-white border-teal-600"
@@ -2102,7 +2102,7 @@ const AddMoneyToWallet = () => {
         {/* Cards Button */}
         <button
           onClick={() => setSelectedOption("cards")}
-          className={`px-6 py-3 rounded-lg font-semibold transition border 
+          className={`px-6 py-3 rounded-full font-semibold transition border 
       ${
         selectedOption === "cards"
           ? "bg-teal-600 text-white border-teal-600"
@@ -2116,7 +2116,7 @@ const AddMoneyToWallet = () => {
         {/* Bank Transfer Button */}
         <button
           onClick={() => setSelectedOption("bank")}
-          className={`px-6 py-3 rounded-lg font-semibold transition border 
+          className={`px-6 py-3 rounded-full font-semibold transition border 
       ${
         selectedOption === "bank"
           ? "bg-teal-600 text-white border-teal-600"
@@ -2343,7 +2343,7 @@ const AddMoneyToWallet = () => {
 )}
 
           {selectedOption === "bank" && (
-  <div className="lg:col-span-3 m-auto">
+  <div className="lg:col-span-3 m-auto w-[95%]">
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h3 className="text-teal-700 font-bold text-lg mb-6">Bank Transfer</h3>
 
