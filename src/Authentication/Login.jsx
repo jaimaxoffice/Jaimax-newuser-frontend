@@ -596,6 +596,7 @@ const RegisterComponent = ({
     password: "",
     confirmPassword: "",
     referralId: "",
+    // referralLocked: false,
     otp: "",
   });
   const [errors, setErrors] = useState({});
@@ -1382,7 +1383,7 @@ useEffect(() => {
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
-              readOnly={!!formData.referralId}
+              // readOnly={!!formData.referralId}
               placeholder="Referral ID (Optional)"
               className={`w-full pl-10 pr-3 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.referralId && touched.referralId
