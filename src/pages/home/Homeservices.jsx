@@ -96,7 +96,7 @@ const ServicesSection = () => {
 
   return (
     <div
-      className="py-10 lg:py-12 overflow-hidden"
+      className="py-10 lg:py-12 overflow-hidden bg-[#085056]"
       style={{
         backgroundImage:
           "url('https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/cases-bg.png')",

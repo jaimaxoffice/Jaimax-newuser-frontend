@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import assets from "../../../../../assets/assets";
-import { useUserDataQuery } from "../DashboardApliSlice";
+import { useUserDataQuery, useGetRoundQuery } from "../DashboardApliSlice";
 import Cookies from "js-cookie";
-import {useGetAllLockedSuperbonusQuery} from "../../../../lockedSuperBouns/lockedSupBonusApiSlice";
-// Memoize the shape styles to prevent recreation on each render
+
+import { useGetAnnounceQuery } from "../../Announements/AnnouncementsApiSlice";
+import { useGetAllLockedSuperbonusQuery } from "../../../../lockedSuperBouns/lockedSupBonusApiSlice";
 const shapeBaseStyles = {
   position: "absolute",
   opacity: 0.18,
@@ -81,72 +82,27 @@ const shapePositions = [
   { bottom: "0.5rem", right: "0.5rem" },
 ];
 
-// Memoized CardItem component to prevent unnecessary re-renders
-// const CardItem = React.memo(({ item, index, hoveredCard, setHoveredCard }) => {
-
-//   return (
-//     <div
-//       className="group cursor-pointer relative p-3 sm:p-4 rounded-lg bg-white
-//         transition duration-200 ease-in-out hover:bg-[#26a69a] hover:scale-[1.03] min-w-[220px]"
-//       onMouseEnter={() => setHoveredCard(index)}
-//       onMouseLeave={() => setHoveredCard(null)}
-//     >
-//       {/* Text */}
-//       <div className="z-10 relative">
-//         <div className="text-[#084e54] text-sm font-bold mb-1 group-hover:text-white truncate">
-//           {item.label}
-//         </div>
-//         <div className="text-xl font-semibold mb-1 text-[#084e54] group-hover:text-white">
-//           {item.value}
-//         </div>
-//       </div>
-
-//       {/* Icon with background */}
-//       <div
-//         className="absolute right-4 top-1/2 transform -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center z-10 transition-all duration-300"
-//         style={{ backgroundColor: item.iconBg }}
-//       >
-//         <img
-//           src={hoveredCard === index ? item.hoverImage : item.image}
-//           alt={item.label}
-//           className="w-20 h-20 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-200"
-//         />
-//       </div>
-
-//       {/* Decorative Shapes */}
-//       {item.shapes.map((shape, i) => (
-//         <div
-//           key={i}
-//           className={`shape-${shape}`}
-//           style={{
-//             ...shapeBaseStyles,
-//             ...shapeStyles[shape],
-//             ...shapePositions[i],
-//           }}
-//         />
-//       ))}
-//     </div>
-//   );
-// });
-const CardItem = React.memo(({ item, index, hoveredCard, setHoveredCard, onViewDetails }) => {
-  return (
-    <div
-      className="group cursor-pointer relative p-3 sm:p-4 rounded-lg bg-white
+const CardItem = React.memo(
+  ({ item, index, hoveredCard, setHoveredCard, onViewDetails }) => {
+    return (
+      <div
+        className="group cursor-pointer relative p-3 sm:p-4 rounded-lg bg-white
         transition duration-200 ease-in-out hover:bg-[#26a69a] hover:scale-[1.03] min-w-[220px]"
-      onMouseEnter={() => setHoveredCard(index)}
-      onMouseLeave={() => setHoveredCard(null)}
-    >
-      {/* Text */}
-      <div className="z-10 relative">
-        <div className="text-[#084e54] text-sm font-bold mb-1 group-hover:text-white truncate">
-          {item.label}
-        </div>
-        <div className="text-xl font-semibold mb-1 text-[#084e54] group-hover:text-white">
-          {item.value}
-        </div>
-        
-        {/* View Button - only for Locked Superbonus */}
-        {onViewDetails && (
+        onMouseEnter={() => setHoveredCard(index)}
+        onMouseLeave={() => setHoveredCard(null)}
+      >
+        {/* Text */}
+        <div className="z-10 relative">
+          <div className="text-[#084e54] text-sm sm:text-base font-bold mb-1 group-hover:text-white truncate">
+            {item.alreadyUnlockedSuperBonus ? "Already Unlocked" : item.label}
+          </div>
+
+          <div className="text-xl font-semibold mb-1 text-[#084e54] group-hover:text-white">
+            {item.value}
+          </div>
+
+          {/* View Button - only for Locked Superbonus */}
+          {/* {onViewDetails && (
           <button
             onClick={(e) => {
               e.stopPropagation(); // Prevent card hover state from changing
@@ -161,61 +117,96 @@ const CardItem = React.memo(({ item, index, hoveredCard, setHoveredCard, onViewD
               <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </button>
-        )}
-      </div>
+        )} */}
+          {onViewDetails && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onViewDetails();
+              }}
+              className="mt-2 px-3 py-1.5 text-xs sm:text-sm font-medium text-white bg-[#084e54] rounded-md shadow-sm
+                 hover:bg-[#084e54] transition-all duration-300 flex items-center justify-center space-x-1"
+            >
+              <span>View Details</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3 w-3 sm:h-3.5 sm:w-3.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
 
-      {/* Icon with background */}
-      <div
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center z-10 transition-all duration-300"
-        style={{ backgroundColor: item.iconBg }}
-      >
-        <img
-          src={hoveredCard === index ? item.hoverImage : item.image}
-          alt={item.label}
-          className="w-20 h-20 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-200"
-        />
-      </div>
-
-      {/* Decorative Shapes */}
-      {item.shapes.map((shape, i) => (
+        {/* Icon with background */}
         <div
-          key={i}
-          className={`shape-${shape}`}
-          style={{
-            ...shapeBaseStyles,
-            ...shapeStyles[shape],
-            ...shapePositions[i],
-          }}
-        />
-      ))}
-    </div>
-  );
-});
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center z-10 transition-all duration-300"
+          style={{ backgroundColor: item.iconBg }}
+        >
+          <img
+            src={hoveredCard === index ? item.hoverImage : item.image}
+            alt={item.label}
+            className="w-20 h-20 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-200"
+          />
+        </div>
 
+        {/* Decorative Shapes */}
+        {item.shapes.map((shape, i) => (
+          <div
+            key={i}
+            className={`shape-${shape}`}
+            style={{
+              ...shapeBaseStyles,
+              ...shapeStyles[shape],
+              ...shapePositions[i],
+            }}
+          />
+        ))}
+      </div>
+    );
+  }
+);
 
 CardItem.displayName = "CardItem";
 
-// Main component with React.memo to prevent unnecessary re-renders
 const TopCards = React.memo(() => {
   const navigate = useNavigate();
-      const {
+  const {
     data: response,
     isLoading,
     isError,
   } = useGetAllLockedSuperbonusQuery();
+
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const [currency, setCurrency] = useState("");
   const [currencySymbol, setCurrencySymbol] = useState("");
   const token = Cookies.get("token");
-
+  const { data: apiData, refetch: refetchRounds } = useGetRoundQuery();
   const { data: userData, refetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
-const handleNavigateToSuperbonus = useCallback(() => {
-    navigate('/locked-superbonus');
+  const {
+    data: announceData,
+    Loading,
+    Error,
+  } = useGetAnnounceQuery(
+    undefined, // No parameters needed
+    {
+      skip: !apiData?.data?.isActiveAnnouncement, // Skip the query when not active
+    }
+  );
+
+  const handleNavigateToSuperbonus = useCallback(() => {
+    navigate("/locked-superbonus");
   }, [navigate]);
-  // Use useCallback for event handlers
+
   const handleSetHoveredCard = useCallback((index) => {
     setHoveredCard(index);
   }, []);
@@ -244,92 +235,110 @@ const handleNavigateToSuperbonus = useCallback(() => {
   }, [isTokenVerified, refetch]);
 
   // Memoize the cards array to prevent recreation on each render
-  const cards = useMemo(() => [
-    {
-      label: "Total Coins",
-      value: userData?.data?.tokens
-        ? Number(userData.data.tokens).toFixed(3)
-        : "0.000",
-      image: assets.totalCoins1,
-      hoverImage: assets.totalCoins,
-      shapes: ["circle", "triangle"],
-      iconBg: "#e0f2f1",
-    },
-    {
-      label: "Wallet Balance",
-      value: `${currencySymbol}${Number(
-        userData?.data?.walletBalance || 0
-      ).toFixed(2)}`,
-      image: assets.walletBal,
-      hoverImage: assets.walletBal1,
-      shapes: ["square", "diamond"],
-      iconBg: "#e8f5e8",
-    },
-    {
-      label: "Available Balance",
-      value: `${currencySymbol}${Number(userData?.data?.Inr || 0).toFixed(2)}`,
-      image: assets.available,
-      hoverImage: assets.available1,
-      shapes: ["pentagon", "ellipse"],
-      iconBg: "#fff3e0",
-    },
-    {
-      label: "Referral Earnings",
-      value: `${currencySymbol}${Number(
-        userData?.data?.referenceInr || 0
-      ).toFixed(2)}`,
-      image: assets.referal,
-      hoverImage: assets.referal1,
-      shapes: ["hexagon", "circle"],
-      iconBg: "#f3e5f5",
-    },
-    {
-      label: "Active Members",
-      value: userData?.data?.activeUsers
-        ? userData.data.activeUsers.toString()
-        : "0",
-      image: assets.activememo,
-      hoverImage: assets.activememo1,
-      shapes: ["triangle", "square"],
-      iconBg: "#e3f2fd",
-    },
-    {
-      label: "Withdrawal Amount",
-      value: `${currencySymbol}${Number(
-        userData?.data?.withdrawalAmount || 0
-      ).toFixed(2)}`,
-      image: assets.withdraw,
-      hoverImage: assets.withdraw1,
-      shapes: ["diamond", "pentagon"],
-      iconBg: "#fce4ec",
-    },
-    {
-      label: "Locked Superbonus",
-      value: `${currencySymbol}${Number(
-        response?.data?.amountToWithdrwSuperBonus || 0
-      ).toFixed(2)}`,
-      image: assets.withdraw,
-      hoverImage: assets.withdraw1,
-      shapes: ["diamond", "pentagon"],
-      iconBg: "#fce4ec",
-      hasViewButton: true,
-    },
+  const cards = useMemo(
+    () => [
+      {
+        label: "Total Coins",
+        value: userData?.data?.tokens
+          ? Number(userData.data.tokens).toFixed(3)
+          : "0.000",
+        image: assets.totalCoins1,
+        hoverImage: assets.totalCoins,
+        shapes: ["circle", "triangle"],
+        iconBg: "#e0f2f1",
+      },
+      {
+        label: "Wallet Balance",
+        value: `${currencySymbol}${Number(
+          userData?.data?.walletBalance || 0
+        ).toFixed(2)}`,
+        image: assets.walletBal,
+        hoverImage: assets.walletBal1,
+        shapes: ["square", "diamond"],
+        iconBg: "#e8f5e8",
+      },
+      {
+        label: "Available Balance",
+        value: `${currencySymbol}${Number(userData?.data?.Inr || 0).toFixed(
+          2
+        )}`,
+        image: assets.available,
+        hoverImage: assets.available1,
+        shapes: ["pentagon", "ellipse"],
+        iconBg: "#fff3e0",
+      },
+      {
+        label: "Referral Earnings",
+        value: `${currencySymbol}${Number(
+          userData?.data?.referenceInr || 0
+        ).toFixed(2)}`,
+        image: assets.referal,
+        hoverImage: assets.referal1,
+        shapes: ["hexagon", "circle"],
+        iconBg: "#f3e5f5",
+      },
+      {
+        label: "Active Members",
+        value: userData?.data?.activeUsers
+          ? userData.data.activeUsers.toString()
+          : "0",
+        image: assets.activememo,
+        hoverImage: assets.activememo1,
+        shapes: ["triangle", "square"],
+        iconBg: "#e3f2fd",
+      },
+      {
+        label: "Withdrawal Amount",
+        value: `${currencySymbol}${Number(
+          userData?.data?.withdrawalAmount || 0
+        ).toFixed(2)}`,
+        image: assets.withdraw,
+        hoverImage: assets.withdraw1,
+        shapes: ["diamond", "pentagon"],
+        iconBg: "#fce4ec",
+      },
+      // {
+      //   label: "Locked Superbonus",
+      //   value: `${currencySymbol}${Number(
+      //     response?.data?.amountToWithdrwSuperBonus || 0
+      //   ).toFixed(2)}`,
+      //   image: assets.withdraw,
+      //   hoverImage: assets.withdraw1,
+      //   shapes: ["diamond", "pentagon"],
+      //   iconBg: "#fce4ec",
+      //   hasViewButton: true,
+      // },
+      {
+        label: "Locked Superbonus",
+        value: `${currencySymbol}${Number(
+          response?.data?.amountToWithdrwSuperBonus || 0
+        ).toFixed(2)}`,
+        image: assets.withdraw,
+        hoverImage: assets.withdraw1,
+        shapes: ["diamond", "pentagon"],
+        iconBg: "#fce4ec",
+        hasViewButton: true,
+        alreadyUnlockedSuperBonus:
+          response?.data?.alreadyUnlockedSuperBonus || false,
+      },
 
-    {
-      label: "Super Bonus",
-      value: `${currencySymbol}${Number(
-        userData?.data?.super_bonus || 0
-      ).toFixed(2)}`,
-      image: assets.superBonus,
-      hoverImage: assets.superBonus1,
-      shapes: ["ellipse", "hexagon"],
-      iconBg: "#f1f8e9",
-    },
-  ], [userData, currencySymbol,response?.data?.amountToWithdrwSuperBonus]);
+      {
+        label: "Super Bonus",
+        value: `${currencySymbol}${Number(
+          userData?.data?.super_bonus || 0
+        ).toFixed(2)}`,
+        image: assets.superBonus,
+        hoverImage: assets.superBonus1,
+        shapes: ["ellipse", "hexagon"],
+        iconBg: "#f1f8e9",
+      },
+    ],
+    [userData, currencySymbol, response?.data?.amountToWithdrwSuperBonus]
+  );
 
   // Define animation styles once with useEffect
   useEffect(() => {
-    const styleEl = document.createElement('style');
+    const styleEl = document.createElement("style");
     styleEl.textContent = `
       @keyframes floatUpDown {
         0% { transform: translateY(0); }
@@ -345,18 +354,23 @@ const handleNavigateToSuperbonus = useCallback(() => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-1 sm:px-4 md:px-2 mb-0">
-      {cards.map((item, idx) => (
-        <CardItem
-          key={idx}
-          item={item}
-          index={idx}
-          hoveredCard={hoveredCard}
-          setHoveredCard={handleSetHoveredCard}
-           onViewDetails={item.hasViewButton ? handleNavigateToSuperbonus : null}
-        />
-      ))}
-    </div>
+    <>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-1 sm:px-4 md:px-2 mb-0">
+        {cards.map((item, idx) => (
+          <CardItem
+            key={idx}
+            item={item}
+            index={idx}
+            hoveredCard={hoveredCard}
+            setHoveredCard={handleSetHoveredCard}
+            onViewDetails={
+              item.hasViewButton ? handleNavigateToSuperbonus : null
+            }
+          />
+        ))}
+      </div>
+    </>
   );
 });
 

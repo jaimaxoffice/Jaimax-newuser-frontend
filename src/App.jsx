@@ -52,7 +52,6 @@ import Header from "./components/Dashboard/header/header";
 import LogoutModal from "./components/Dashboard/pages/logout/logout";
 import Shareholders from "./components/Dashboard/pages/shareholders/shareholders";
 import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet";
-import TodayEarning from "./components/Dashboard/pages/TodayEarnings/TodayEarning";
 import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
 import PrivateRoute from "./router/PrivateRoute";
 import SuperBonusInfo from "./components/lockedSuperBouns/LockedSuperbonus"
@@ -60,14 +59,9 @@ import FloatingNavButton from "./global/FloatingNavButton";
 import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
-import ErrorBoundary from "./pages/chatbot/ErrorBoundary";
-import ChatAssistant from "./pages/chatbot/chatComponent";
 import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation";
-import PriceRiseAlert from "./pages/home/Countdown";
-import SecurityLayer from "./pages/securitylayer";
-import PriceIncreasePopup from "./pages/home/popup";
-import BlogPage from "./components/Blogsection/BlogDisplay";
-import ConditionalPopup from "./pages/home/Conditional";
+import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation" 
+import PromotersPage from "./components/Dashboard/pages/Promoters/Promoters"
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -344,10 +338,11 @@ const App = () => {
 
   return (
     <>
-    <ConditionalPopup/>
-      {/* <DusseraPopup/>
-      <PriceIncreasePopup /> */}
-      <PriceRiseAlert />
+
+      {/* <DusseraPopup/> */}
+      {/* <PriceIncreasePopup /> */}
+       {/* <PopupManager /> */}
+      {/* <PriceRiseAlert /> */}
 
       <Routes>
         <Route element={<PrivateRoute />}>
@@ -362,6 +357,8 @@ const App = () => {
             <Route path="kyc" element={<Kyc />} />
             <Route path="withdrawal" element={<WithDrawal />} />
             <Route path="support" element={<Support />} />
+            <Route path="foundation" element={<Support />} />
+            <Route path="promoters" element={<Support />} />
           </Route>
 
           <Route path="/wallet" element={<DashboardLayout />}>
@@ -391,6 +388,12 @@ const App = () => {
           </Route>
           <Route path="/jwallet" element={<DashboardLayout />}>
             <Route index element={<UserDetailsComponent />} />
+          </Route>
+          <Route path="/foundation" element={<DashboardLayout />}>
+            <Route index element={<FoundationBonusUI />} />
+          </Route>
+          <Route path="/promoters" element={<DashboardLayout />}>
+            <Route index element={<PromotersPage />} />
           </Route>
           <Route path="/kyc-information" element={<DashboardLayout />}>
             <Route index element={<Kyc />} />

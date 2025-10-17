@@ -18,7 +18,7 @@ import {
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
 import { useUpdateAddressMutation } from "./profileApiSlice";
 import countryCodes from "../../../../Authentication/countryCodes.json";
-
+import Cookies from "js-cookie";
 export default function Profile3DForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -423,6 +423,17 @@ export default function Profile3DForm() {
         toast.success(`${res?.message}`, {
           position: "top-center",
         });
+        // setFormData({
+        //   password: "",
+        //   newPassword: "",
+        //   confirmPwd: "",
+        //   otp: "",
+        // });
+        // setOtpSent(false);
+        // setOtpVerified(false);
+
+
+      Cookies.remove("token");
         setFormData({
           password: "",
           newPassword: "",
@@ -431,6 +442,7 @@ export default function Profile3DForm() {
         });
         setOtpSent(false);
         setOtpVerified(false);
+        window.location.href = "/login";
       } catch (error) {
         setIsToastShown(true);
         if (!isToastShown) {

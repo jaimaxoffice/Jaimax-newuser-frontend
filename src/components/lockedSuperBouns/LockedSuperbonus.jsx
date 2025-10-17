@@ -145,13 +145,13 @@ const LockedSuperBonusUI = () => {
                 Good News!
               </h3>
               <p className="text-sm sm:text-base text-teal-700 mt-2">
-                You are now eligible to Redeem your temporary SuperBonus!
+                You are now eligible to Redeem your Locked SuperBonus!
               </p>
             </div>
             <div className="p-3 sm:p-4 bg-gradient-to-r from-teal-50 to-teal-100 rounded-lg mb-3 sm:mb-4 text-xs sm:text-sm text-teal-800 shadow-inner">
               <p className="font-medium">What does this mean?</p>
               <p className="mt-1">
-                You can now access and Redeem your temporary SuperBonus funds.
+                You can now access and Redeem your Locked SuperBonus funds.
                 This bonus becomes permanent when you complete all required
                 referrals.
               </p>
@@ -518,8 +518,8 @@ const LockedSuperBonusUI = () => {
                       <div className="ml-2 sm:ml-3 flex-grow flex items-center justify-between">
                         <span className="text-xs sm:text-sm text-gray-800 font-medium">
                           {bonusData.eligibleToWithDrawTempSuperBonus
-                            ? "You can withdraw your temporary SuperBonus!"
-                            : "Not yet eligible to withdraw temporary SuperBonus"}
+                            ? "You can withdraw your Locked SuperBonus!"
+                            : "Not yet eligible to withdraw Locked SuperBonus"}
                         </span>
                         {bonusData.eligibleToWithDrawTempSuperBonus &&
                           !bonusData.alreadyUnlockedSuperBonus && (

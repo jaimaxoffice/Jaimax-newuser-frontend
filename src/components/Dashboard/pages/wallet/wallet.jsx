@@ -10,6 +10,7 @@ import {
   ExternalLink,
   Menu,
   X,
+  Check,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -21,26 +22,36 @@ import Loader from "../../../Loader/loader";
 import ReferralModal from "../../modals/referalModal";
 const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
 
-// Copy to Clipboard Button Component
 const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
+  const [copied, setCopied] = useState(false);
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(textToCopy);
-      // console.log('Text copied to clipboard!');
+      setCopied(true);
+      
+      // Reset to copy icon after 2 seconds
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
     } catch (error) {
       // console.error('Failed to copy text:', error);
     }
   };
 
   return (
-    <button
+<button
       onClick={handleCopy}
-      className={`bg-teal-600 hover:bg-teal-700 text-white transition-colors duration-200 flex items-center space-x-2 shadow-md rounded-full ${
-        isMobile ? "text-xs px-3 py-1.5" : "text-xs px-4 py-2"
-      }`}
+      className={`p-1.5 rounded-full text-white ${
+        copied ? "bg-green-500" : "bg-teal-500 hover:bg-teal-600"
+      } transition-colors duration-300 shadow-sm`}
+      title={copied ? "Copied!" : "Copy to clipboard"}
     >
-      <Copy className={`${isMobile ? "w-3 h-3" : "w-4 h-4"}`} />
-      <span className={isMobile ? "hidden xs:inline" : ""}>Copy</span>
+      {copied ? (
+        <Check className={`${isMobile ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'}`} />
+      ) : (
+        <Copy className={`${isMobile ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'}`} />
+      )}
     </button>
   );
 };
@@ -67,7 +78,7 @@ export default function WalletDashboard() {
   if (rawUserData) {
     try {
       userData = JSON.parse(rawUserData);
-      console.log("Parsed userData:", userData);
+      // console.log("Parsed userData:", userData);
     } catch (error) {
       console.error("Error parsing userData cookie:", error);
     }
@@ -96,9 +107,10 @@ export default function WalletDashboard() {
 
   // Calculate pagination
   const totalPages = Math.ceil(totalTransactions / state.perPage);
-
+// console.log(userData?.data?.username, "username is here");
   // Referral content for sharing
-  const referralContent = `
+    const referralContent = `${window.location.origin}/register?referralCode=${userData?.username}`;
+  const hello = `
   🚀 Join the Jaimax Coin Revolution! 🚀
   
   Hey there! 🌟
@@ -363,7 +375,7 @@ export default function WalletDashboard() {
                     <div className="animate-pulse h-6 sm:h-8 bg-white/20 rounded w-24 mt-1"></div>
                   ) : (
                     <p className="text-2xl sm:text-3xl font-bold truncate">
-                      {availableWalletBalance}
+                      ₹{availableWalletBalance}
                     </p>
                   )}
                 </div>
@@ -391,7 +403,7 @@ export default function WalletDashboard() {
                   {userData?.username || "N/A"}
                 </span>
 
-                {console.log(userData?.username, "data is coming")}
+                {/* {console.log(userData?.username, "data is coming")} */}
                 <div className="flex items-center space-x-2 flex-shrink-0">
                   <button
                     onClick={handleShareReferral}

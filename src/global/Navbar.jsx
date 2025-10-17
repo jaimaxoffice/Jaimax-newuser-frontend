@@ -177,6 +177,7 @@ const Navbar = () => {
                   White Paper
                 </NavLink>
               </li>
+              
             </ul>
 
             {/* Action buttons */}

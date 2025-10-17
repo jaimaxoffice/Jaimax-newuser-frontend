@@ -480,7 +480,7 @@ const Home = () => {
           "@type": "Offer",
           "url": "https://www.jaimax.com",
           "priceCurrency": "INR",
-          "price": "0.025",
+          "price": "0.03",
           "availability": "https://schema.org/InStock"
         }
       },

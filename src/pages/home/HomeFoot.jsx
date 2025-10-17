@@ -42,7 +42,7 @@ export default function HomeFooter() {
   const appleStoreLink = "#";
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden bg-[#085056]">
       {/* Main Hero Section */}
       <div
         className="w-full min-h-screen relative "

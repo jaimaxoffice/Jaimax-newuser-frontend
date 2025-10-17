@@ -17,26 +17,25 @@ import {
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { FaHandshake } from "react-icons/fa";
-import { TreePalm,HandCoins  } from "lucide-react";
+import { TreePalm,HandCoins,Wallet,UserRound ,SwatchBook ,Handshake  } from "lucide-react";
 import logo from "../../../assets/Images/jaimaxlogo1.svg";
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: <HiOutlineViewGrid /> },
-  { name: "Wallet", path: "/wallet", icon: <HiOutlineClipboardList /> },
-  { name: "My Total Team", path: "/my-team", icon: <HiOutlineCalendar /> },
-  // { name: "Share Holders", path: "/shareholders", icon: <FaHandshake /> },
-  // { name: "Todays Earnings", path: "/earnings", icon: <HiOutlineClock /> },
+  { name: "Wallet", path: "/wallet", icon: <Wallet  size={18} /> },
   { name: "Buy History", path: "/buy-history", icon: <HiOutlineChartBar /> },
-  { name: "Security", path: "/security", icon: <HiOutlineShieldCheck /> },
-  { name: "Profile", path: "/profile", icon: <HiOutlineUser /> },
-  { name: "Goa-Gateway", path: "/goa-vacation", icon: <TreePalm size={16}/> },
-  { name: "Locked Superbonus", path: "/locked-superbonus", icon: <HandCoins   size={16}/> },
-
+  { name: "My Total Team", path: "/my-team", icon: <HiOutlineCalendar /> },
   { name: "J-Wallet", path: "/jwallet", icon: <HiOutlineCreditCard /> },
-  { name: "KYC", path: "/kyc-information", icon: <HiOutlineIdentification /> },
+  { name: "Promoters", path: "/promoters", icon: <Handshake  size={18} /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },
+  { name: "Foundation Bonus", path: "/foundation", icon: <SwatchBook size={18} /> },
+  { name: "Locked Superbonus", path: "/locked-superbonus", icon: <HandCoins   size={16}/> },
+  { name: "Goa-Gateway", path: "/goa-vacation", icon: <TreePalm size={16}/> },
+  { name: "Profile", path: "/profile", icon: <UserRound size={18}  /> },
+  { name: "KYC", path: "/kyc-information", icon: <HiOutlineIdentification /> },
   { name: "Support", path: "/support", icon: <HiOutlineChatAlt2 /> },
   { name: "Jaimax-Hub", path: "/meetings", icon: <HiOutlineVideoCamera /> },
+  { name: "Security", path: "/security", icon: <HiOutlineShieldCheck /> },
   { name: "Logout", icon: <HiOutlineLogout /> },
 ];
 

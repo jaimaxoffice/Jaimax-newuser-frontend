@@ -4,18 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { debounce } from 'lodash';
 import image from '../../assets/Images/roadmap.png';
 const roadmapData = {
-  2024: {
-    title: "Foundation & Launch",
-    status: "Completed",
-    progress: 65,
-    phases: [
-      "• Concept Development - Team assembly and planning",
-      "• Smart Contract Development - Blockchain architecture",
-      "• Platform Development - Digital platform creation",
-      "• Token Launch - Marketing and fundraising",
-      "• Mobile App Launch - Cross-platform apps"
-    ]
-  },
+
   2025: {
     title: "Innovation & Expansion",
     status: "Active",
@@ -80,7 +69,7 @@ export default function RoadmapTimeline() {
   }, [debouncedHandleIntersection]);
 
   return (
-    <div className="min-h-screen  text-white">
+    <div className="min-h-screen  text-white bg-[#085056]">
       {/* Header */}
       <div className="text-center py-8  md:py-12 px-4">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-teal-300 to-cyan-300 bg-clip-text text-transparent mb-2">

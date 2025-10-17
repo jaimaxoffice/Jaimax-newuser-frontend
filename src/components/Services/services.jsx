@@ -220,7 +220,7 @@
 //             transform: scale(1);
 //           }
 //         }
-        
+
 //         .perspective-1000 {
 //           perspective: 1000px;
 //         }
@@ -236,26 +236,26 @@
 //         .group:hover .group-hover\\:rotate-y-180 {
 //           transform: rotateY(180deg);
 //         }
-        
+
 //         /* Responsive grid adjustments */
 //         @media (max-width: 640px) {
 //           .grid-cols-1 {
 //             gap: 1rem;
 //           }
 //         }
-        
+
 //         @media (min-width: 640px) and (max-width: 1024px) {
 //           .sm\\:grid-cols-2 > * {
 //             min-height: 20rem;
 //           }
 //         }
-        
+
 //         /* Touch device optimizations */
 //         @media (hover: none) and (pointer: coarse) {
 //           .group:active .group-hover\\:rotate-y-180 {
 //             transform: rotateY(180deg);
 //           }
-          
+
 //           .hover\\:scale-105:active {
 //             transform: scale(1.05);
 //           }
@@ -267,33 +267,45 @@
 
 // export default CryptoServicesFlipCards;
 
-
-import React from 'react';
-import { Shield, Wallet, TrendingUp, PieChart, BarChart3, Coins } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import Seo from '../../SeoContent/Seo'
+import React from "react";
+import {
+  Shield,
+  Wallet,
+  TrendingUp,
+  PieChart,
+  BarChart3,
+  Coins,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Seo from "../../SeoContent/Seo";
 
 const CryptoServicesFlipCards = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const mainServices = [
     {
       icon: <Shield size={48} />,
       title: "SECURITY MEASURES",
-      description: "Advanced crypto security protocols with KYC verification, Google Authenticator, and end-to-end encryption.",
-      backContent: "Our comprehensive security framework includes blockchain protection, multi-factor authentication, and compliance-first strategies. Every transaction is secured with military-grade encryption and real-time monitoring."
+      description:
+        "Advanced crypto security protocols with KYC verification, Google Authenticator, and end-to-end encryption.",
+      backContent:
+        "Our comprehensive security framework includes blockchain protection, multi-factor authentication, and compliance-first strategies. Every transaction is secured with military-grade encryption and real-time monitoring.",
     },
     {
       icon: <Wallet size={48} />,
       title: "SECURE CRYPTO WALLET",
-      description: "Integrated wallet with encryption, backup recovery options, and user-friendly features for seamless transactions.",
-      backContent: "Store, send, and receive crypto assets with confidence. Our wallet features cold storage integration, instant transfers, and multi-currency support with industry-leading security protocols."
+      description:
+        "Integrated wallet with encryption, backup recovery options, and user-friendly features for seamless transactions.",
+      backContent:
+        "Store, send, and receive crypto assets with confidence. Our wallet features cold storage integration, instant transfers, and multi-currency support with industry-leading security protocols.",
     },
     {
       icon: <TrendingUp size={48} />,
       title: "ACCESS TO PROFITS",
-      description: "Real-time tracking, growth analytics, and easy withdrawal systems to maximize your crypto earnings.",
-      backContent: "Unlock passive income opportunities through smart investment strategies. Our platform provides automated trading signals, yield farming options, and comprehensive profit tracking tools."
-    }
+      description:
+        "Real-time tracking, growth analytics, and easy withdrawal systems to maximize your crypto earnings.",
+      backContent:
+        "Unlock passive income opportunities through smart investment strategies. Our platform provides automated trading signals, yield farming options, and comprehensive profit tracking tools.",
+    },
   ];
 
   // Why choose us data (bottom section)
@@ -301,31 +313,39 @@ const CryptoServicesFlipCards = () => {
     {
       icon: <PieChart size={48} />,
       title: "FUND MANAGEMENT",
-      description: "Intelligent portfolio management system to track performance and allocate funds smartly across digital assets.",
-      backContent: "Take control of your crypto portfolio with advanced analytics, risk assessment tools, and automated rebalancing. Monitor all your investments with precision and make data-driven decisions.",
-      isPrimary: true
+      description:
+        "Intelligent portfolio management system to track performance and allocate funds smartly across digital assets.",
+      backContent:
+        "Take control of your crypto portfolio with advanced analytics, risk assessment tools, and automated rebalancing. Monitor all your investments with precision and make data-driven decisions.",
+      isPrimary: true,
     },
     {
       icon: <BarChart3 size={48} />,
       title: "FINANCIAL GROWTH",
-      description: "Gateway to financial growth through crypto with reliable and ethical investment opportunities.",
-      backContent: "Build long-term wealth with our ecosystem of growth opportunities. Access exclusive investment rounds, staking rewards, and participate in the future of decentralized finance.",
-      isPrimary: false
+      description:
+        "Gateway to financial growth through crypto with reliable and ethical investment opportunities.",
+      backContent:
+        "Build long-term wealth with our ecosystem of growth opportunities. Access exclusive investment rounds, staking rewards, and participate in the future of decentralized finance.",
+      isPrimary: false,
     },
     {
       icon: <Coins size={48} />,
       title: "EXPERT ANALYSIS",
-      description: "Professional market analysis and insights to guide your investment decisions with confidence.",
-      backContent: "Get access to expert cryptocurrency analysis, market trends, and investment recommendations from our team of professional traders and analysts.",
-      isPrimary: false
+      description:
+        "Professional market analysis and insights to guide your investment decisions with confidence.",
+      backContent:
+        "Get access to expert cryptocurrency analysis, market trends, and investment recommendations from our team of professional traders and analysts.",
+      isPrimary: false,
     },
     {
       icon: <Shield size={48} />,
       title: "24/7 SUPPORT",
-      description: "Round-the-clock customer support to assist you with any queries or technical issues you may encounter.",
-      backContent: "Our dedicated support team is available 24/7 to help you navigate the crypto world. Get instant assistance through multiple channels and resolve issues quickly.",
-      isPrimary: false
-    }
+      description:
+        "Round-the-clock customer support to assist you with any queries or technical issues you may encounter.",
+      backContent:
+        "Our dedicated support team is available 24/7 to help you navigate the crypto world. Get instant assistance through multiple channels and resolve issues quickly.",
+      isPrimary: false,
+    },
   ];
 
   const FlipCard = ({ service, index, delay = 0, isPrimary = false }) => (
@@ -334,18 +354,19 @@ const CryptoServicesFlipCards = () => {
       className="group perspective-1000 h-72 sm:h-80 md:h-96 lg:h-80 hover:scale-105 transition-transform duration-300"
       style={{
         animationDelay: `${delay}s`,
-        animation: 'fadeInScale 0.5s ease-out forwards',
+        animation: "fadeInScale 0.5s ease-out forwards",
         opacity: 0,
-        transform: 'scale(0.8)'
+        transform: "scale(0.8)",
       }}
     >
       <div className="relative w-full h-full transform-style-preserve-3d transition-transform duration-700 group-hover:rotate-y-180">
         {/* Front of card */}
         <div
-          className={`absolute inset-0 backface-hidden ${isPrimary
-              ? 'bg-gradient-to-br from-green-600 to-teal-700 border-lime-400'
-              : 'bg-gradient-to-br from-teal-700 via-green-600 to-lime-400 border-teal-700'
-            } rounded-xl shadow-2xl p-4 sm:p-5 md:p-5 lg:p-6 flex flex-col items-center justify-center text-center border hover:border-lime-400 transition-all duration-300 hover:shadow-lime-400/30 hover:shadow-2xl`}
+          className={`absolute inset-0 backface-hidden ${
+            isPrimary
+              ? "bg-gradient-to-br from-green-600 to-teal-700 border-lime-400"
+              : "bg-gradient-to-br from-teal-700 via-green-600 to-lime-400 border-teal-700"
+          } rounded-xl shadow-2xl p-4 sm:p-5 md:p-5 lg:p-6 flex flex-col items-center justify-center text-center border hover:border-lime-400 transition-all duration-300 hover:shadow-lime-400/30 hover:shadow-2xl`}
         >
           <div className="text-lime-400 mb-3 sm:mb-4 md:mb-4 lg:mb-4 drop-shadow-lg">
             <div className="block sm:hidden">
@@ -398,7 +419,7 @@ const CryptoServicesFlipCards = () => {
             className="px-4 py-1.5 sm:py-2 md:py-1.5 lg:py-2 bg-white/90 text-teal-700 rounded-full font-bold hover:bg-white transition-all duration-200 shadow-lg hover:shadow-xl text-xs sm:text-sm lg:text-sm hover:scale-105 active:scale-95 mb-3"
             onClick={() => navigate("/register")}
           >
-            {isPrimary ? 'Join Now' : 'Get Started'}
+            {isPrimary ? "Join Now" : "Get Started"}
           </button>
           <div className="absolute top-3 right-3 w-2 h-2 bg-white/50 rounded-full"></div>
           <div className="absolute bottom-3 left-3 w-2 h-2 bg-white/30 rounded-full"></div>
@@ -408,8 +429,8 @@ const CryptoServicesFlipCards = () => {
   );
 
   return (
-    <div className="min-h-screen py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-5 md:px-6 lg:px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-5 md:px-6 lg:px-4 bg-[#085056]">
+      <div className="max-w-7xl mx-auto ">
         <Seo page="services" />
         {/* Our Services Section */}
         <div className="mb-10 sm:mb-12 md:mb-14 lg:mb-20">
@@ -419,10 +440,16 @@ const CryptoServicesFlipCards = () => {
               Our Service Offerings
             </h1>
             <p className="text-base sm:text-base md:text-lg lg:text-xl text-lime-400 max-w-3xl mx-auto mb-4 sm:mb-5 md:mb-5 lg:mb-6 font-semibold px-4">
-              Explore the Future of Digital Finance with Jaimax – The Best Crypto Coin in India
+              Explore the Future of Digital Finance with Jaimax – The Best
+              Crypto Coin in India
             </p>
             <p className="text-gray-300 max-w-4xl mx-auto leading-relaxed text-sm sm:text-sm md:text-base lg:text-lg px-4">
-              At Jaimax, we provide a powerful range of crypto services designed to help users grow, secure, and manage their digital assets with ease. Whether you're a new investor or a crypto-savvy expert, our platform delivers the tools and features you need to succeed in the world of cryptocurrency. Discover why Jaimax is fast becoming the best crypto coin in India.
+              At Jaimax, we provide a powerful range of crypto services designed
+              to help users grow, secure, and manage their digital assets with
+              ease. Whether you're a new investor or a crypto-savvy expert, our
+              platform delivers the tools and features you need to succeed in
+              the world of cryptocurrency. Discover why Jaimax is fast becoming
+              the best crypto coin in India.
             </p>
             <div className="w-16 sm:w-16 md:w-20 lg:w-24 h-1 bg-gradient-to-r from-teal-700 to-green-600 mx-auto mt-6 sm:mt-6 md:mt-7 lg:mt-8 rounded-full"></div>
           </div>
@@ -448,7 +475,9 @@ const CryptoServicesFlipCards = () => {
               Why Choose Us?
             </h2>
             <p className="text-gray-300 max-w-3xl mx-auto leading-relaxed text-sm sm:text-sm md:text-base lg:text-lg mb-6 sm:mb-6 md:mb-7 lg:mb-8 px-4">
-              We are committed to our clients and maintain the highest standards. Discover how unique benefits that set us apart and ensure your best financial experience at your every journey.
+              We are committed to our clients and maintain the highest
+              standards. Discover how unique benefits that set us apart and
+              ensure your best financial experience at your every journey.
             </p>
             <button
               className="bg-lime-400 hover:bg-white text-teal-700 font-semibold px-6 sm:px-6 md:px-7 lg:px-8 py-2 sm:py-2 md:py-2.5 lg:py-3 rounded-full transition-all duration-300 text-sm sm:text-sm md:text-base lg:text-base hover:scale-105 active:scale-95"
@@ -479,11 +508,17 @@ const CryptoServicesFlipCards = () => {
               Ready to Start Your Crypto Journey?
             </h2>
             <p className="text-white/90 mb-4 sm:mb-4 md:mb-5 lg:mb-6 text-base sm:text-base md:text-lg lg:text-lg px-4">
-              Join thousands of investors who trust Jaimax for their digital asset management
+              Join thousands of investors who trust Jaimax for their digital
+              asset management
             </p>
             <button
-              className="px-6 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-3 md:py-3.5 lg:py-4 bg-lime-400 text-teal-700 rounded-full font-bold text-base sm:text-base md:text-lg lg:text-lg hover:bg-white shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
-              onClick={() => window.open("https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax", "_blank")}
+              className="px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 bg-lime-400 text-teal-700 rounded-full font-semibold text-sm sm:text-base md:text-base hover:bg-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
+              onClick={() =>
+                window.open(
+                  "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax",
+                  "_blank"
+                )
+              }
             >
               Launch App
             </button>
@@ -498,7 +533,7 @@ const CryptoServicesFlipCards = () => {
             transform: scale(1);
           }
         }
-        
+
         .perspective-1000 {
           perspective: 1000px;
         }
@@ -514,34 +549,34 @@ const CryptoServicesFlipCards = () => {
         .group:hover .group-hover\\:rotate-y-180 {
           transform: rotateY(180deg);
         }
-        
+
         /* Fix for 1024px specifically */
         @media (min-width: 768px) and (max-width: 1024px) {
           .md\\:h-96 {
             height: 24rem;
           }
-          
+
           .md\\:grid-cols-3 > *,
           .md\\:grid-cols-2 > * {
             min-height: auto;
           }
-          
+
           .md\\:text-xs {
             font-size: 0.75rem;
             line-height: 1rem;
           }
-          
+
           .md\\:max-h-40 {
             max-height: 10rem;
           }
         }
-        
+
         /* Touch device optimizations */
         @media (hover: none) and (pointer: coarse) {
           .group:active .group-hover\\:rotate-y-180 {
             transform: rotateY(180deg);
           }
-          
+
           .hover\\:scale-105:active {
             transform: scale(1.05);
           }

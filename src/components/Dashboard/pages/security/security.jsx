@@ -15,7 +15,9 @@ const Legal = () => {
     <section className="py-8 bg-gradient-to-br from-teal-50 to-white min-h-screen">
       <div className="w-full px-4 max-w-screen mx-auto">
         <div className="flex flex-col">
-          <h4 className="text-teal-800 mb-6 text-2xl font-bold">Legal Details</h4>
+          <h4 className="text-teal-800 mb-6 text-2xl font-bold">
+            Legal Details
+          </h4>
           <div className="w-full">
             <div className="bg-white border border-teal-100 rounded-xl py-6 px-8 shadow-lg shadow-teal-100/50">
               <div

@@ -22,8 +22,8 @@ const OurMissionSectionContent = () => {
   };
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 font-inter">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 font-inter bg-[#085056]">
+      <div className="max-w-7xl mx-auto bg-[#085056]">
         {/* Title and Description */}
         <motion.div
           className="text-center lg:text-left mb-12"
@@ -163,7 +163,7 @@ const LocationsSectionContent = () => {
   };
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 text-center font-inter">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 text-center font-inter bg-[#085056]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
@@ -261,7 +261,7 @@ const ContactInformationSectionContent = () => {
   };
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 font-inter">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 font-inter bg-[#085056]">
       <div className="max-w-7xl mx-auto">
         {/* Title and Description */}
         <motion.div

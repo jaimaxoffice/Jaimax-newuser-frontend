@@ -250,118 +250,118 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validate()) {
-    setNotification({
-      type: "error",
-      message: "Please fix the highlighted fields.",
-    });
-    return;
-  }
-
-  if (rememberMe) {
-    Cookies.set("email", formData.email?.trim(), { expires: 30 });
-    Cookies.set("rememberMe", "true", { expires: 30 });
-  } else {
-    Cookies.remove("email");
-    Cookies.remove("rememberMe");
-  }
-
-  try {
-    const response = await login({
-      email: formData.email?.trim(),
-      password: formData.password,
-      role: 1,
-    }).unwrap();
-
-    if (response?.success) {
-      const userData = response?.data;
-
-      // store tokens & user info
-      Cookies.set("token", userData?.token, { expires: 7 });
-      sessionStorage.setItem("token", userData?.token);
-      Cookies.set("userData", JSON.stringify(userData), { expires: 7 });
-
-      setNotification({
-        type: "success",
-        message: response?.message || "Login successful! Redirecting...",
-      });
-
-      // ✅ check KYC status before redirect
-      setTimeout(() => {
-        if (userData?.kycVerified === "approve") {
-          navigate("/dashboard");
-          console.log("Redirecting to Dashboard");
-        } else {
-          navigate("/kyc-information" );
-          console.log("Redirecting to KYC Information");
-        }
-      }, 1000);
-    } else {
+    e.preventDefault();
+    if (!validate()) {
       setNotification({
         type: "error",
-        message: response?.message || "Login failed.",
+        message: "Please fix the highlighted fields.",
+      });
+      return;
+    }
+
+    if (rememberMe) {
+      Cookies.set("email", formData.email?.trim(), { expires: 30 });
+      Cookies.set("rememberMe", "true", { expires: 30 });
+    } else {
+      Cookies.remove("email");
+      Cookies.remove("rememberMe");
+    }
+
+    try {
+      const response = await login({
+        email: formData.email?.trim(),
+        password: formData.password,
+        role: 1,
+      }).unwrap();
+
+      if (response?.success) {
+        const userData = response?.data;
+
+        // store tokens & user info
+        Cookies.set("token", userData?.token, { expires: 7 });
+        sessionStorage.setItem("token", userData?.token);
+        Cookies.set("userData", JSON.stringify(userData), { expires: 7 });
+
+        setNotification({
+          type: "success",
+          message: response?.message || "Login successful! Redirecting...",
+        });
+
+        // ✅ check KYC status before redirect
+        setTimeout(() => {
+          if (userData?.kycVerified === "approve") {
+            navigate("/dashboard");
+            console.log("Redirecting to Dashboard");
+          } else {
+            navigate("/kyc-information");
+            console.log("Redirecting to KYC Information");
+          }
+        }, 1000);
+      } else {
+        setNotification({
+          type: "error",
+          message: response?.message || "Login failed.",
+        });
+      }
+    } catch (err) {
+      const errorMessage = err?.data?.message || "Login error";
+      setNotification({
+        type: "error",
+        message: errorMessage,
       });
     }
-  } catch (err) {
-    const errorMessage = err?.data?.message || "Login error";
-    setNotification({
-      type: "error",
-      message: errorMessage,
-    });
-  }
-};
+  };
 
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   if (!validate()) {
-//     setNotification({ type: "error", message: "Please fix the highlighted fields." });
-//     return;
-//   }
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!validate()) {
+  //     setNotification({ type: "error", message: "Please fix the highlighted fields." });
+  //     return;
+  //   }
 
-//   if (rememberMe) {
-//     Cookies.set("email", formData.email?.trim(), { expires: 30 });
-//     Cookies.set("rememberMe", "true", { expires: 30 });
-//   } else {
-//     Cookies.remove("email");
-//     Cookies.remove("rememberMe");
-//   }
+  //   if (rememberMe) {
+  //     Cookies.set("email", formData.email?.trim(), { expires: 30 });
+  //     Cookies.set("rememberMe", "true", { expires: 30 });
+  //   } else {
+  //     Cookies.remove("email");
+  //     Cookies.remove("rememberMe");
+  //   }
 
-//   try {
-//     const response = await login({
-//       email: formData.email?.trim(),
-//       password: formData.password,
-//       role: 1,
-//     }).unwrap();
+  //   try {
+  //     const response = await login({
+  //       email: formData.email?.trim(),
+  //       password: formData.password,
+  //       role: 1,
+  //     }).unwrap();
 
-//     if (response?.success) {
-//       Cookies.set("token", response?.data?.token, { expires: 7 });
-//       sessionStorage.setItem("token", response?.data?.token);
-//       Cookies.set("userData", JSON.stringify(response?.data), { expires: 7 });
+  //     if (response?.success) {
+  //       Cookies.set("token", response?.data?.token, { expires: 7 });
+  //       sessionStorage.setItem("token", response?.data?.token);
+  //       Cookies.set("userData", JSON.stringify(response?.data), { expires: 7 });
 
-//       setNotification({
-//         type: "success",
-//         message: response?.message || "Login successful! Redirecting...",
-//       });
+  //       setNotification({
+  //         type: "success",
+  //         message: response?.message || "Login successful! Redirecting...",
+  //       });
 
-//       setTimeout(() => {
-//         navigate("/kyc-information");
-//         console.log("Redirecting to dashboard");
-//       }, 1000);
-//     } else {
-//       setNotification({
-//         type: "error",
-//         message: response?.message || "Login failed.",
-//       });
-//     }
-//   } catch (err) {
-//     const errorMessage = err?.data?.message || "Login error";
-//     setNotification({
-//       type: "error",
-//       message: errorMessage,
-//     });
-//   }
-// };
+  //       setTimeout(() => {
+  //         navigate("/kyc-information");
+  //         console.log("Redirecting to dashboard");
+  //       }, 1000);
+  //     } else {
+  //       setNotification({
+  //         type: "error",
+  //         message: response?.message || "Login failed.",
+  //       });
+  //     }
+  //   } catch (err) {
+  //     const errorMessage = err?.data?.message || "Login error";
+  //     setNotification({
+  //       type: "error",
+  //       message: errorMessage,
+  //     });
+  //   }
+  // };
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
 
@@ -577,6 +577,7 @@ const RegisterComponent = ({
   isConfirmAgree,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -586,6 +587,7 @@ const RegisterComponent = ({
   const [timer, setTimer] = useState(0);
   const [canResendOtp, setCanResendOtp] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+const [referralApplied, setReferralApplied] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -597,7 +599,37 @@ const RegisterComponent = ({
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const referralCode = searchParams.get("referralCode");
 
+    if (referralCode) {
+      console.log("Referral code found in URL:", referralCode);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        referralId: referralCode,
+      }));
+
+      setReferralApplied(true);
+
+      // Mark as touched for validation purposes
+      setTouched((prev) => ({
+        ...prev,
+        referralId: true,
+      }));
+
+      // Validate referral code
+      const fieldError = validateField("referralId", referralCode);
+      if (fieldError) {
+        console.log("Referral code validation error:", fieldError);
+        setErrors((prev) => ({
+          ...prev,
+          referralId: fieldError,
+        }));
+      }
+    }
+  }, [location.search]);
   const [register, { isLoading: isRegisterLoading, error: registerError }] =
     useRegisterMutation();
   const [verify, { isLoading: isVerifyLoading, error: verifyError }] =
@@ -852,6 +884,11 @@ const RegisterComponent = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Don't allow changing referral code if it was applied from URL
+    if (name === "referralId" && referralApplied) {
+      return;
+    }
 
     if (name === "phone" && !/^\d*$/.test(value)) {
       return;
@@ -1355,7 +1392,7 @@ const RegisterComponent = ({
         </div>
 
         {/* Referral ID Field */}
-        <div className="space-y-0">
+        {/* <div className="space-y-0">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
               <Users className="h-4 w-4 text-gray-400" />
@@ -1377,6 +1414,56 @@ const RegisterComponent = ({
           </div>
           {errors.referralId && touched.referralId && (
             <p className="text-red-500 text-xs pl-1">{errors.referralId}</p>
+          )}
+        </div> */}
+        <div className="space-y-0">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+              <Users className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              name="referralId"
+              value={formData.referralId}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
+              readOnly={referralApplied}
+              placeholder="Referral ID (Optional)"
+              className={`w-full pl-10 pr-3 py-2.5 text-sm bg-white border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+                errors.referralId && touched.referralId
+                  ? "border-red-500 bg-red-50"
+                  : referralApplied && formData.referralId
+                  ? "border-green-500 bg-green-50 cursor-not-allowed"
+                  : "border-gray-300"
+              }`}
+            />
+            {referralApplied && formData.referralId && !errors.referralId && (
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <span className="text-green-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </div>
+            )}
+          </div>
+          {errors.referralId && touched.referralId && (
+            <p className="text-red-500 text-xs pl-1">{errors.referralId}</p>
+          )}
+          {referralApplied && formData.referralId && !errors.referralId && (
+            <p className="text-green-600 text-xs pl-1">
+              Referral code applied!
+            </p>
           )}
         </div>
 
@@ -1671,8 +1758,6 @@ export default function AuthContainer() {
               <path d="M12 1v2.05c-2.83.49-5 2.94-5 5.95h2c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4h-1v2h1c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4H7c0 3.01 2.17 5.46 5 5.95V23h2v-2.05c2.83-.49 5-2.94 5-5.95s-2.17-5.46-5-5.95V7.95C17.83 7.46 20 5.01 20 2h-2c0 2.21-1.79 4-4 4s-4-1.79-4-4H9c0 3.01 2.17 5.46 5 5.95V1h-2z" />
             </svg>
 
-
-
             {/* Coins SVG */}
             <svg
               className="absolute bottom-24 left-20 w-20 h-20 opacity-10"
@@ -1835,7 +1920,7 @@ export default function AuthContainer() {
             <div className="mb-6 relative">
               <div className="absolute inset-0 w-32 h-32 mx-auto bg-gradient-to-r from-teal-400 to-green-400 rounded-full blur-2xl opacity-30 animate-pulse"></div>
               <div className="relative w-32 h-32 mx-auto mb-4 rounded-full flex items-center justify-center backdrop-blur-sm shadow-xl transform transition-all duration-500 hover:scale-110">
-                <img src={icon} alt="" width={200}  loading="lazy"/>
+                <img src={icon} alt="" width={200} loading="lazy" />
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-bounce delay-300"></div>
                 <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-700"></div>
               </div>

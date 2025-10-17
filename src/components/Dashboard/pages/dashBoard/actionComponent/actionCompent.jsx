@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaShareAlt, FaUser } from "react-icons/fa";
@@ -11,7 +9,6 @@ import {
   useUserDataQuery,
   useGetAdminSettingsQuery
 } from "../DashboardApliSlice";
-
 // Lazy load the modal component
 const ReferralModal = React.lazy(() => import("../../../modals/referalModal"));
 
@@ -54,7 +51,6 @@ const ActionButtons = React.memo(() => {
   const { data: userData, refetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
-  console.log(userData?.data?.username,"data from dash")
   const { data: settings, refetch: refetchAdminSetting } = useGetAdminSettingsQuery();
 
 
@@ -180,10 +176,11 @@ const ActionButtons = React.memo(() => {
           <ReferralModal
             show={showReferralModal}
             onHide={handleCloseReferralModal}
-            userData={userData}
+            userData={userData?.data}
           />
         </React.Suspense>
       )}
+      {/* <AnnouncementList/> */}
     </>
   );
 });

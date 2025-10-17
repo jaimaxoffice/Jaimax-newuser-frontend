@@ -49,6 +49,12 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
         body: { ...data },
       }),
     }),
+    getAnnounce: builder.query({
+      query: () => ({
+        url: "/announcements/get",
+        method: "GET",
+      }),
+    }),
 
     // userData:builder.mutation({
     //   query:(data) =>({
@@ -68,4 +74,5 @@ export const {
   useProceedOrderMutation,
   useCreatePaymentMutation,
   useCreatePaypalOrderMutation,
+  useGetAnnounceQuery
 } = dashboardApiSlice;

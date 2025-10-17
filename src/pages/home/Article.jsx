@@ -1,49 +1,1221 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Search, TrendingUp, Calendar, Eye, Share2, Menu, X, Copy, Facebook, MessageCircle, Instagram, Twitter } from "lucide-react";
-import { blogsData } from "./blog";
+import DOMPurify from "dompurify";
+import {
+  Search,
+  TrendingUp,
+  Calendar,
+  Eye,
+  Share2,
+  Menu,
+  X,
+  Copy,
+  Facebook,
+  MessageCircle,
+  Instagram,
+  Twitter,
+  Star,
+  ArrowRight,
+} from "lucide-react";
+import {
+  useGetPostBySlugQuery,
+  useGetRecentPostsQuery,
+  useSearchPostsQuery,
+} from "../../components/Blogsection/BlogEditorApiSlice";
+
+// Import your blog images
+import Blog1 from "../../../public/images/Blog1poster.jpg";
+import Blog2 from "../../../public/images/Blog2poster.jpg";
+import Blog3 from "../../../public/images/Blog3poster.jpg";
+import Blog4 from "../../../public/images/Blog4poster.jpg";
+import Blog5 from "../../../public/images/Blog5poster.jpg";
+
+// Static Blog Data - Add this!
+export const staticBlogsData = [
+  {
+    id: 5,
+    image: Blog5,
+    headline: "Why Jaimax Is the Smart Move Right Now",
+    description: `In today’s rapidly evolving cryptocurrency market, making the right investment decisions requires insight, timing, and trust. Among the many <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coins</a> emerging globally,<a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">jaimax</a> stands out as a promising digital asset with unique potential for growth, especially within the Indian crypto ecosystem. This article explores why choosing Jaimax now is a smart move for anyone looking to be part of the future of blockchain and digital finance.`,
+    date: "09 june 25",
+    content: {
+      title: "Jaimax: The Best Crypto Coin Emerging from India",
+      sections: [
+        {
+          type: "paragraph",
+          content: `India is rapidly becoming a hotspot for cryptocurrency adoption, supported by a growing population of tech-savvy users and increasing blockchain awareness. As the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, Jaimax offers a rare opportunity to join a community focused on decentralized finance (DeFi), crypto innovation, and financial empowerment. With a low market price, it provides an attractive entry point for early adopters.`,
+        },
+
+        {
+          type: "heading",
+          content: "Unmatched Growth Potential at a Low Price Point",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Jaimax’s current token price remains highly accessible, allowing investors to get in early before the coin reaches widespread adoption. Early entry into emerging cryptocurrencies like Jaimax can lead to significant gains as the project gains momentum and achieves milestones such as listings on major exchanges and active user adoption. This makes Jaimax one of the most promising crypto investment opportunities today.",
+        },
+
+        {
+          type: "heading",
+          content: "Strong Use Cases Driving Real-World Utility",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Unlike many cryptocurrencies that lack clear applications, Jaimax is building an ecosystem that supports:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "<b>Decentralized applications (dApps)</b>",
+            "<b>Non-fungible tokens (NFTs)</b> ",
+            "<b>Digital payments in e-commerce</b>",
+            "<b>Community rewards and incentives</b>",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "This focus on blockchain technology integration ensures Jaimax is positioned for sustainable growth, not just speculative hype. Its utility in real-world scenarios strengthens its value proposition as a functional crypto coin.",
+        },
+        {
+          type: "heading",
+          content: "Robust and Secure Blockchain Infrastructure",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Jaimax operates on a secure blockchain network designed to facilitate fast, low-cost transactions. The project’s architecture emphasizes scalability and security, making it competitive with other top cryptocurrencies globally. Investors can trust that their assets are protected by advanced cryptographic protocols and a transparent, decentralized ledger system.",
+        },
+
+        {
+          type: "heading",
+          content: "Experienced Leadership and Active Community Engagement",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "The Jaimax project is driven by a dedicated team of experts with backgrounds in blockchain development, marketing, and community management. Leaders like Santhosh, Mithuna, and Raja Lakshmi actively engage with their growing community, providing regular updates and educational content that boosts crypto awareness and fosters trust.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Community involvement is crucial in the crypto space, and Jaimax’s active social media presence on platforms like Telegram, Twitter, and YouTube demonstrates its commitment to transparency and growth.",
+        },
+        {
+          type: "heading",
+          content: "Clear Roadmap for Future Development",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax’s strategic roadmap includes multiple phases that enhance its ecosystem:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Launching Jaimax Foundation Chain with enhanced scalability",
+            "Expanding NFT and DeFi services",
+            "Introducing mobile wallets and user-friendly interfaces",
+            "Partnering with key industry players for exchange listings and integrations",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "These planned developments signal a sustainable, well-managed growth trajectory, making Jaimax a strong contender among emerging altcoins.",
+        },
+        {
+          type: "heading",
+          content: "Community-Driven Rewards and Referral Programs",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax incorporates a referral-based foundation system, allowing early participants to earn rewards through network growth. This incentivizes organic community building and encourages wider adoption, enhancing the coin’s value and liquidity. Such programs add to the overall appeal of Jaimax as a smart crypto investment.",
+        },
+
+        {
+          type: "heading",
+          content: "Why Timing Matters: Capitalizing on Early Adoption",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency success stories show that early adoption is key to maximizing returns. By entering the Jaimax ecosystem now, investors gain access before the coin’s price rises following increased demand and wider recognition. This early mover advantage is vital in a market characterized by rapid shifts and high volatility.",
+        },
+
+        {
+          type: "heading",
+          content: "Jaimax and the Future of Indian Cryptocurrency",
+        },
+        {
+          type: "paragraph",
+          content:
+            "As India navigates its crypto regulatory environment, projects like Jaimax represent the future of decentralized finance in the country. It embodies the spirit of innovation, financial inclusion, and technology-driven growth that India needs to compete globally.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "By embracing Jaimax today, investors and users alike become part of a pioneering movement set to influence the trajectory of blockchain adoption in India and worldwide.",
+        },
+        {
+          type: "heading",
+          content: "In Summary",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax is positioned as one of the most promising cryptocurrency projects in the Indian market, offering a unique blend of technology, community, and opportunity. Its affordable price, robust ecosystem, and forward-looking roadmap make it the smart choice for anyone seeking meaningful engagement with the future of crypto.",
+        },
+      ],
+    },
+  },
+  {
+    id: 4,
+    image: Blog4,
+    headline: "Jaimax: The Future of Cryptocurrency from India to the World",
+    description:
+      "In a world driven by digital transformation and decentralized innovation, Jaimax is emerging as a pioneering cryptocurrency born in India, aiming to make a global mark. Positioned at the intersection of blockchain technology, financial empowerment, and digital freedom, Jaimax isn't just another altcoin — it’s a vision, a movement, and a mission to redefine how the world interacts with finance.",
+    date: "09 june 25",
+    content: {
+      title: "The Rise of a Revolutionary Crypto Brand",
+      sections: [
+        {
+          type: "paragraph",
+          content: `In a world driven by digital transformation and decentralized innovation,
+                    <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">Jaimax</a> is emerging as a pioneering
+                    <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">cryptocurrency</a> born in India, aiming to make a global mark.
+                    Positioned at the intersection of
+                    <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">blockchain technology</a>, financial empowerment, and digital freedom,
+                    Jaimax isn't just another altcoin — it’s a vision, a movement, and a mission to redefine how the world interacts with finance.
+                    Discover why it's <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">India’s best crypto coin</a>.`,
+        },
+
+        {
+          type: "paragraph",
+          content: `Backed by a powerful infrastructure, a strong team of dedicated innovators, and a roadmap grounded in sustainable growth, Jaimax is rapidly gaining traction as <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">India’s best crypto coin</a>. From grassroots education to international expansion, Jaimax is building a future where every digital transaction is secure, accessible, and rewarding.`,
+        },
+        {
+          type: "heading",
+          content: "A Vision Beyond Borders: Jaimax's Global Mission",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "At its core, <b>Jaimax envisions a decentralized future</b> where financial opportunities are not limited by geography, background, or financial history. As India rises as a global tech powerhouse, Jaimax leverages the country's digital momentum to present a <b>crypto platform with international utility and local relevance</b>.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Our mission is clear — <b>to empower individuals</b> through blockchain, enhance security through smart technology, and <b>bridge traditional finance with the digital economy</b>. Whether you're a first-time investor or a seasoned crypto trader, Jaimax offers a gateway into a more inclusive and transparent ecosystem.",
+        },
+        {
+          type: "heading",
+          content: "Blockchain Backbone: The Technology Powering Jaimax",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax is built on <b>advanced blockchain infrastructure</b> ensuring <b>speed, scalability, and security</b>. Designed to handle high-volume transactions while minimizing costs, our chain architecture competes with global standards like Ethereum and Solana:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "<b>High TPS (Transactions Per Second):</b> Jaimax supports lightning-fast processing, suitable for real-time applications.",
+            "<b>Energy-Efficient Consensus Mechanism:</b> Our system reduces carbon footprints, embracing sustainability without sacrificing performance.",
+            "<b>Smart Contract Integration:</b> Developers can build dApps, DeFi protocols, and even NFT platforms using Jaimax, enabling an expansive utility landscape.",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "This <b>robust blockchain foundation</b> makes Jaimax not only a digital currency but also a <b>complete ecosystem.</b>",
+        },
+        {
+          type: "heading",
+          content: "Unmatched Utility: More Than Just a Coin",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Unlike many crypto projects that fade after launch, Jaimax is deeply committed to <b>real-world use cases</b>. Here’s how Jaimax is adding value:",
+        },
+        {
+          type: "subheading",
+          content: "1. Digital Payments",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax enables fast, borderless, and low-fee transactions for merchants and consumers. With ongoing partnerships, we are integrating with payment gateways and e-commerce platforms to bring crypto to daily life.",
+        },
+        {
+          type: "subheading",
+          content: "2. Investment Asset",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "As a rising altcoin, Jaimax offers early investors an opportunity to enter at a low price point and benefit from long-term appreciation. Its tokenomics ensures stability, liquidity, and rewarding holding mechanisms.",
+        },
+        {
+          type: "subheading",
+          content: "3. Ecosystem Growth",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax fosters the creation of decentralized apps (dApps), NFTs, and DeFi projects under its umbrella, giving it beyond-token value. It’s not just a coin — it’s the fuel of an evolving digital economy.",
+        },
+        {
+          type: "heading",
+          content: "Strategic Phased Roadmap: Building With Purpose",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Jaimax follows a 5-phase development plan, ensuring measured, stable, and scalable growth:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "<b>Phase 1:</b> Community Building and Coin Launchocused on raising awareness, building trust, and circulating the token among early adopters.",
+            "<b>Phase 2:</b> Market Expansion & Platform IntegrationLaunch on exchanges, payment partnerships, and merchant onboarding begins.",
+            "<b>Phase 3:</b> Smart Contract and Developer Toolkit Release Developers can deploy smart contracts and dApps on the Jaimax chain.",
+            "<b>Phase 4:</b> Global Outreach & Utility Enhancement Entry into international exchanges and cross-border projects.",
+            "<b>Phase 5:</b> Institutional Partnerships and Governance DAO A decentralized governance model with stakeholder voting rights and institutional backing.",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "This structured path ensures sustainable adoption, not just speculative hype.",
+        },
+        {
+          type: "heading",
+          content: "Community-Driven Approach: Power to the People",
+        },
+        {
+          type: "paragraph",
+          content:
+            "At the heart of Jaimax is its vibrant community. From everyday users to blockchain enthusiasts, the ecosystem thrives on user participation, feedback, and decentralized contributions. Our vision includes:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "<b>Community Voting Rights</b> for major updates and use-case adoption.",
+            "<b>Transparency Reports</b> released quarterly, maintaining trust and accountability.",
+            "<b>Educational Initiatives</b> including seminars, webinars, and local crypto literacy drives.",
+          ],
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "We believe true decentralization starts with an informed community — and we are here to build that together.",
+        },
+        {
+          type: "heading",
+          content: "India's Moment in the Crypto World",
+        },
+        {
+          type: "paragraph",
+          content:
+            "India has long been seen as a technology superpower, and Jaimax capitalizes on that momentum. The country’s deep penetration of smartphones, digital wallets, and growing youth interest in crypto gives Jaimax a unique edge.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "<b>Localized Branding:</b> We speak the language of the people — through campaigns in English, Hindi, Telugu, Tamil, and more.",
+            "<b>Regulatory Alignment:</b> Jaimax aims to align with India’s upcoming crypto regulations to remain legally strong and secure for the future.",
+            "<b>Exporting Innovation:</b> From India to the world — Jaimax is India's answer to global crypto leadership.",
+          ],
+        },
+        {
+          type: "heading",
+          content: "Security and Transparency at the Core",
+        },
+        {
+          type: "paragraph",
+          content:
+            "With regular audits, bug bounty programs, and a fully transparent transaction ledger, Jaimax puts security first. Our open-source codebase invites developers to explore, contribute, and innovate — ensuring continuous improvement and community accountability.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Additionally, our KYC/AML compliance modules are being developed for exchanges and partners, preparing us for a regulation-ready future.",
+        },
+        {
+          type: "heading",
+          content: "Conclusion: Jaimax is the Future",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax is more than just a crypto token — it's a revolution from India, built for the world. As blockchain adoption accelerates, Jaimax stands out with its mission-driven approach, user-first design, and global ambitions.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "The next era of finance will be decentralized, inclusive, and digital. With Jaimax leading the charge, the future of cryptocurrency is not just arriving — it’s being built right now.",
+        },
+      ],
+    },
+  },
+  {
+    id: 1,
+    image: Blog1,
+    headline: "The Power of Early Investment: Why Now is the Time for Jaimax",
+    description:
+      "In the dynamic world of cryptocurrency, success often belongs to those who act early. The current digital era rewards investors who can recognize potential before the world catches on. Jaimax, a rising star in the Indian crypto ecosystem, is positioned to become the best crypto coin in India, offering a rare chance to invest at a foundational level.",
+    date: "05 may 25",
+    content: {
+      title: "Timing Defines Opportunity in Cryptocurrency",
+      sections: [
+        {
+          type: "subheading",
+          content: "Introduction: Timing Defines Opportunity in Cryptocurrency",
+        },
+        {
+          type: "paragraph",
+          content: `In the dynamic world of <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">cryptocurrency</a>, success often belongs to those who act early. The current digital era rewards investors who can recognize potential before the world catches on. Jaimax, a rising star in the Indian crypto ecosystem, is positioned to become the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, offering a rare chance to invest at a foundational level.`,
+        },
+        {
+          type: "paragraph",
+          content: `This article explores why early investment in Jaimax offers a powerful opportunity, and why it is already being considered by experts and early adopters as one of the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coins  to invest</a> in this year.`,
+        },
+        {
+          type: "subheading",
+          content: "The Power of Early Adoption in Crypto Markets",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Early adoption has consistently led to exponential growth in the cryptocurrency space. From Bitcoin’s rise from pennies to thousands of dollars, to Ethereum's surge from a few dollars to four-digit values — history shows that entering early creates long-term winners.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax, in its current early-phase pricing, presents similar characteristics:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Low entry point (₹0.50) for high-volume accumulation.",
+            "Early access before major exchange listings and market hype.",
+            "Direct exposure to a digital asset with real utility and local relevance.",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax’s early investors are not just buying coins; they are securing a strategic position in the future of Indian crypto markets.",
+        },
+        {
+          type: "heading",
+          content: "Why Jaimax is Gaining Attention",
+        },
+        {
+          type: "paragraph",
+          content:
+            "What separates Jaimax from the sea of altcoins in circulation? It’s the combination of technology, local market alignment, transparent development, and long-term vision. Here's why Jaimax is poised to dominate:",
+        },
+        {
+          type: "subheading",
+          content: "1. Tailored for India’s Digital Finance Evolution",
+        },
+        {
+          type: "paragraph",
+          content:
+            "India’s population is embracing digital technology rapidly, and cryptocurrency adoption is accelerating. Jaimax is built with the Indian market in mind — from accessibility to pricing, making it a strong contender for the best crypto coin in India.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Its affordability and scalability align perfectly with India’s demographic — tech-savvy youth, growing retail investors, and emerging entrepreneurs",
+        },
+        {
+          type: "subheading",
+          content: "2. Transparent and Reliable Tokenomics",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Unlike countless speculative crypto projects, Jaimax has clear tokenomics designed for growth, security, and longevity. Limited total supply, gradual release schedules, and secure architecture provide strong investor confidence.",
+        },
+        {
+          type: "paragraph",
+          content: `The coin’s scarcity and responsible allocation create sustainable demand pressure — essential traits for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest</a>`,
+        },
+        {
+          type: "subheading",
+          content: "3. Cutting-Edge Technology",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Behind every reliable crypto coin lies robust technology. Jaimax utilizes high-speed blockchain protocols to ensure:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Instant transactions",
+            "Low fees",
+            "High scalability",
+            "Strong security standards",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "This makes Jaimax future-ready, ensuring its usability across digital applications, mobile wallets, and potential future integrations with e-commerce or fintech platforms.",
+        },
+        {
+          type: "subheading",
+          content: "4. Developer-Backed Roadmap",
+        },
+        {
+          type: "paragraph",
+          content:
+            "A strong coin needs a strong plan. Jaimax has a clear, step-by-step development roadmap involving:",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Exchange listings",
+            "Wallet partnerships",
+            "DeFi integration",
+            "Community tools and apps",
+          ],
+        },
+        {
+          type: "heading",
+          content: "Why ₹0.50 is a Golden Entry Point",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Price is a powerful psychological and strategic factor. With Jaimax currently valued at just ₹0.50, this is a rare moment to accumulate high-volume holdings without high capital investment.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Lowest possible risk with highest potential reward",
+            "Ideal for long-term holding and short-term trading",
+            "Entry before upcoming upgrades and visibility boosts",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "As the crypto market evolves, undervalued assets like Jaimax typically outperform once broader awareness kicks in. That’s why smart investors act before the crowd.",
+        },
+        {
+          type: "heading",
+          content: "Jaimax: Designed for Scalable Growth",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Every successful cryptocurrency must scale effectively. Jaimax’s infrastructure is already built for future expansion.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Scalable transactions per second (TPS) to handle high volume",
+            "Smart contract integration for advanced DeFi functions",
+            "Audit-ready architecture to attract institutional and retail confidence",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "This technical maturity gives Jaimax the foundation to become not just a speculative token but a real utility-driven crypto coin",
+        },
+        {
+          type: "heading",
+          content: "Indian Crypto Trends: Why Jaimax is the Perfect Fit",
+        },
+        {
+          type: "paragraph",
+          content:
+            "India is set to become one of the world’s top cryptocurrency markets. With a population of 1.4 billion and increasing access to internet and mobile banking, the need for affordable, fast, and secure crypto coins is exploding.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Local relevance gives it an edge in adoption over foreign tokens.",
+            "Educational initiatives will drive wider understanding and trust.",
+            "Mobile-ready platforms ensure rural and urban access alike.",
+          ],
+        },
+        {
+          type: "heading",
+          content: "A Secure, Transparent Ecosystem",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Security is non-negotiable. Jaimax employs multi-layered security protocols.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Advanced cryptography",
+            "Blockchain immutability",
+            "Decentralized ledger architecture",
+          ],
+        },
+        {
+          type: "heading",
+          content: "Jaimax vs. Other Crypto Coins: A Comparison",
+        },
+        {
+          type: "table",
+          content: [
+            {
+              Feature: "Price Accessibility",
+              Jaimax: "₹0.50 (entry stage)",
+              "Generic Altcoin": "Often above ₹10+",
+            },
+            {
+              Feature: "Localized Growth Focus",
+              Jaimax: "India-first expansion strategy",
+              "Generic Altcoin": "Global but unfocused",
+            },
+            {
+              Feature: "Technology",
+              Jaimax: "Scalable, fast, secure",
+              "Generic Altcoin": "Average blockchain models",
+            },
+            {
+              Feature: "Roadmap Transparency",
+              Jaimax: "Clear, public, and progressive",
+              "Generic Altcoin": "Often unclear or delayed",
+            },
+            {
+              Feature: "Community & Utility Vision",
+              Jaimax: "Strong user engagement plans",
+              "Generic Altcoin": "Weak or speculative only",
+            },
+          ],
+        },
+        {
+          type: "heading",
+          content: "The Risk of Waiting: Missed Opportunities",
+        },
+        {
+          type: "paragraph",
+          content:
+            "The biggest regret in cryptocurrency history? Not buying early.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Higher entry costs later",
+            "Reduced ROI",
+            "Missed participation in early decision-making or feature access",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "The current stage of Jaimax offers the lowest barrier to entry, while offering maximum growth potential. This is a time-sensitive opportunity that seasoned investors understand",
+        },
+        {
+          type: "heading",
+          content: "Conclusion: The Smart Move Is to Act Early",
+        },
+        {
+          type: "paragraph",
+          content: `The cryptocurrency world doesn’t wait. Jaimax, with its strategic entry price, local relevance, and long-term vision, is clearly one of the best crypto coins in India today. For those looking for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in 2025</a>, this is the moment to step in, while the door is still open.`,
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax isn’t just a coin — it’s a movement toward inclusive, secure, and smart financial systems. Early action leads to long-term advantage. Don’t let this window of opportunity pass.",
+        },
+      ],
+    },
+  },
+
+  {
+    id: 2,
+    image: Blog2,
+    headline: "How Jaimax Works: A Deep Dive into Our Coin and Technology",
+    description:
+      "Jaimax is revolutionizing the way India experiences cryptocurrency. As a forward-thinking digital currency designed for high performance, accessibility, and future scalability, Jaimax is rapidly gaining momentum as the best crypto coin in India. Built with precision and launched for growth, it provides a secure, powerful platform for users looking for the best crypto to invest in India.",
+    date: "12 may 25",
+    content: {
+      title: "Jaimax: The Best Crypto Coin in India",
+      sections: [
+        {
+          type: "paragraph",
+          content: `Jaimax is revolutionizing the way India experiences cryptocurrency. As a forward-thinking digital currency designed for high performance, accessibility, and future scalability, Jaimax is rapidly gaining momentum as the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in india</a>. Built with precision and launched for growth, it provides a secure, powerful platform for users looking for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in India</a>.With an emphasis on cutting-edge technology, simplicity, and trust, Jaimax offers an opportunity for Indian investors to be part of a new financial ecosystem powered by blockchain innovation.`,
+        },
+        {
+          type: "paragraph",
+          content:
+            "With an emphasis on cutting-edge technology, simplicity, and trust, Jaimax offers an opportunity for Indian investors to be part of a new financial ecosystem powered by blockchain innovation",
+        },
+        {
+          type: "heading",
+          content: "The Technology Backbone of Jaimax",
+        },
+        {
+          type: "subheading",
+          content: "High-Speed Scalable Blockchain",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Jaimax is powered by an advanced Proof of Stake (PoS) consensus mechanism. Unlike outdated systems that rely on power-hungry mining, this next-gen blockchain delivers lightning-fast, eco-friendly transactions.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Block Generation Time: 2 seconds",
+            "Transaction Speed: Over 5,000 transactions per second (TPS).",
+            "Network Uptime: 99.99%",
+            "Gas Fees: Extremely low and consistent",
+          ],
+        },
+        {
+          type: "paragraph",
+          content: `This architecture ensures Jaimax is not just a <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coin</a> for trading, but a practical, scalable platform for mainstream use in India and beyond.`,
+        },
+        {
+          type: "subheading",
+          content: "Smart Contract Support and Interoperability",
+        },
+        {
+          type: "paragraph",
+          content:
+            "The Jaimax blockchain is fully smart contract enabled, making it compatible with developers building next-generation decentralized applications (dApps) and tokenized services.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Supports Solidity & Web3 Tools",
+            "Cross-chain compatibility with Ethereum and BNB Smart Chain",
+            "Secure and audited smart contracts",
+          ],
+        },
+        {
+          type: "paragraph",
+          content: `This infrastructure allows real-world use cases — from DeFi platforms to NFT marketplaces — to thrive within the Jaimax ecosystem, reinforcing its position as a <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">top crypto coin in India</a>’s growing digital economy.`,
+        },
+        {
+          type: "heading",
+          content: "Coin Supply and Investment Structure",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax follows a meticulously planned coin distribution model aimed at driving long-term value.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Total Supply: 1 Billion Jaimax coins",
+            "Launch Price: ₹0.10",
+            "Current Price: ₹0.50",
+            "Public Trading Launch: Begins after Phase 2 completion",
+          ],
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "This limited supply model ensures scarcity, while phase-based growth encourages early participation and maximizes investor returns. It’s a strategy that makes Jaimax one of the best crypto coins to invest in India today.",
+        },
+        {
+          type: "heading",
+          content: "Strategic Phased Growth of Jaimax",
+        },
+        {
+          type: "subheading",
+          content: "Phase 1: Launch and Awareness",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Objective: Build user base, generate initial momentum",
+            "Coin Price: ₹0.10",
+            "Outcome: Early adopters benefit from foundational pricing",
+          ],
+        },
+        {
+          type: "subheading",
+          content: "Phase 2: Market Expansion and Branding",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Objective: Solidify brand, expand user outreach",
+            "Coin Price: ₹0.50",
+            "Outcome: Strong community, increased value",
+          ],
+        },
+        {
+          type: "subheading",
+          content: "Post-Phase 2: Trading and Ecosystem Integration",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Objective: Enable public trading on top crypto exchanges",
+            "Focus: Liquidity, partnerships, and platform adoption",
+            "Utility: Used for transactions, smart contract fees, and ecosystem access",
+          ],
+        },
+        {
+          type: "heading",
+          content: "Security, Transparency, and Trust",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Smart Contract Audits: Verified by third-party blockchain security firms",
+            "Open Source Protocols: Code available for public verification",
+            "User Verification: KYC/AML processes in place",
+            "Data Privacy: Protected through end-to-end encryption",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "These protocols help position Jaimax as a safe and reliable cryptocurrency, making it attractive to both first-time users and experienced crypto investors in India.",
+        },
+        {
+          type: "heading",
+          content: "Utility and Real-World Integration",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax isn't just a token with speculative value — it's designed for real-world application.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Use as Gas Token: All transactions and smart contracts require Jaimax",
+            "Ecosystem Growth: Future integration with gaming, e-commerce, and decentralized finance platforms",
+            "Scalable Infrastructure: Ideal for building apps, platforms, and services",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "This practical approach makes Jaimax a true utility crypto coin, offering more than just holding value — it offers use, purpose, and future integration.",
+        },
+        {
+          type: "heading",
+          content: "Why Jaimax is the Best Crypto to Invest in India",
+        },
+        {
+          type: "subheading",
+          content: "India-Focused Innovation",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Jaimax has been created to empower Indian users and businesses. It offers a simplified entry point into the blockchain world with features tailored for the Indian market.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Low-cost entry for new investors",
+            "Localized support and user resources",
+            "Designed with Indian compliance in mind",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "Whether you're an individual looking to diversify your investments or a business seeking blockchain adoption, Jaimax delivers unmatched advantages.",
+        },
+        {
+          type: "subheading",
+          content: "Affordable Today, Valuable Tomorrow",
+        },
+        {
+          type: "paragraph",
+          content:
+            "At ₹0.50 per coin during its second phase, Jaimax represents an incredible opportunity for investors. With public trading and global listings planned, early participation can lead to significant long-term benefits.",
+        },
+        {
+          type: "unordered_list",
+          content: [
+            "Early growth potential",
+            "Backed by strong branding and awareness campaigns",
+            "Designed for sustainable upward movement",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "In a market filled with high-risk speculative coins, Jaimax stands out as a value-driven, strategic crypto investment.",
+        },
+        {
+          type: "heading",
+          content: "Conclusion: Secure Your Place in the Future with Jaimax",
+        },
+        {
+          type: "paragraph",
+          content:
+            "TJaimax is not just another coin in the digital space — it’s a mission, a movement, and a meticulously designed ecosystem. With powerful technology, user-centric design, and a strong vision for the future, Jaimax is becoming the best crypto coin in India and a beacon of trust in the blockchain world.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "If you're looking for a crypto coin that combines security, real utility, and long-term potential, Jaimax is the best crypto to invest in India today.",
+        },
+      ],
+    },
+  },
+  {
+    id: 3,
+    image: Blog3,
+    headline: "Understanding Cryptocurrency: A Simple Guide for New Users",
+    description: `Cryptocurrency has dramatically transformed the financial landscape, offering an innovative and decentralized method of transactions that challenges traditional financial systems. If you’re new to the world of cryptocurrency, it may seem complex, but with the right knowledge and resources, anyone can understand and participate. This guide will break down cryptocurrency in simple terms and introduce you to the exciting opportunities it presents, including how Jaimax, a rising <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coin</a> in India, is making waves in the market.`,
+    date: "13 may 25",
+    content: {
+      title: "What is Cryptocurrency?",
+      sections: [
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency is a form of digital or virtual currency that uses cryptography for secure transactions. Unlike traditional currencies, cryptocurrencies operate on a decentralized network, meaning they are not governed by any central authority such as a government or financial institution. This decentralization enhances security, transparency, and control for users.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "The most well-known cryptocurrency, Bitcoin, was the first to revolutionize digital finance, but today there are thousands of different cryptocurrencies, each serving unique purposes. The underlying technology behind cryptocurrency, blockchain, allows for secure, transparent, and irreversible transactions",
+        },
+        {
+          type: "heading",
+          content: "How Does Cryptocurrency Work?",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Additionally, cryptocurrency transactions rely on cryptographic algorithms to secure the transfer of funds, ensuring that both the transaction and the identity of the sender are protected.",
+        },
+        {
+          type: "heading",
+          content: "Types of Cryptocurrency",
+        },
+        {
+          type: "paragraph",
+          content:
+            "There are various types of cryptocurrencies, each with specific uses. Below are some of the most well-known:",
+        },
+
+        {
+          type: "subheading",
+          content: "Bitcoin (BTC)",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Bitcoin is the original cryptocurrency, introduced in 2009 by the pseudonymous Satoshi Nakamoto. It remains the largest cryptocurrency by market capitalization and is often regarded as a store of value or 'digital gold.'",
+        },
+
+        {
+          type: "subheading",
+          content: "Ethereum (ETH)",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Ethereum is a decentralized platform that enables developers to create smart contracts and decentralized applications (dApps). Ethereum is more than just a cryptocurrency; it also acts as a platform for building applications beyond simple digital currency transactions.",
+        },
+        {
+          type: "subheading",
+          content: "Ripple (XRP)",
+        },
+
+        {
+          type: "unordered_list",
+          content: [
+            "Smart Contract Audits: Verified by third-party blockchain security firms",
+            "Open Source Protocols: Code available for public verification",
+            "User Verification: KYC/AML processes in place",
+            "Data Privacy: Protected through end-to-end encryption",
+          ],
+        },
+        {
+          type: "paragraph",
+          content:
+            "Ripple is both a payment protocol and a cryptocurrency, designed to enable fast and inexpensive cross-border transactions. Ripple offers scalability and efficiency, making it a preferred choice for financial institutions looking to transfer funds globally.",
+        },
+        {
+          type: "subheading",
+          content: "Litecoin (LTC)",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Litecoin is often referred to as the silver to Bitcoin’s gold. With a faster transaction time and lower fees, Litecoin is designed for use as an everyday payment method, making it a practical alternative for regular transactions.",
+        },
+        {
+          type: "subheading",
+          content: "Jaimax Cryptocurrency",
+        },
+        {
+          type: "paragraph",
+          content: `Jaimax is an emerging crypto coin in India, offering a secure, decentralized solution for users seeking investment opportunities in the cryptocurrency market. With its focus on accessibility and community engagement, Jaimax is quickly becoming a <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">top cryptocurrency to invest in India</a>, particularly for those interested in early-stage investments in the cryptocurrency space.`,
+        },
+
+        {
+          type: "heading",
+          content: "How to Buy Cryptocurrency",
+        },
+
+        {
+          type: "paragraph",
+          content:
+            "Acquiring cryptocurrency is straightforward and can be done in several ways. Here are the common methods:",
+        },
+        {
+          type: "subheading",
+          content: "Cryptocurrency Exchanges",
+        },
+        {
+          type: "paragraph",
+          content:
+            "The most common method to buy cryptocurrency is through exchanges. Popular platforms like Coinbase, Binance, and Kraken allow users to create accounts, deposit fiat currency, and purchase a variety of cryptocurrencies. These exchanges also offer wallet services to securely store digital assets.",
+        },
+        {
+          type: "subheading",
+          content: "Peer-to-Peer (P2P) Platforms",
+        },
+        {
+          type: "paragraph",
+          content:
+            "P2P platforms allow users to buy cryptocurrencies directly from other individuals. Transactions can be done using various payment methods such as bank transfers or PayPal, offering flexibility and ease.",
+        },
+
+        {
+          type: "subheading",
+          content: "Bitcoin ATMs.",
+        },
+        {
+          type: "paragraph",
+          content:
+            "In some locations, Bitcoin ATMs allow users to purchase cryptocurrency in exchange for cash. While less common than traditional ATMs, these machines offer an alternative way to acquire digital currency.",
+        },
+        {
+          type: "heading",
+          content: "Storing Cryptocurrency: Wallets",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Once you’ve acquired cryptocurrency, it’s essential to store it securely. There are two main types of wallets:",
+        },
+        {
+          type: "subheading",
+          content: "Hot Wallets",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Hot wallets are online wallets connected to the internet. These are convenient for quick transactions but are more susceptible to hacking. Popular hot wallets include Exodus and Trust Wallet.",
+        },
+        {
+          type: "subheading",
+          content: "Cold Wallets",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cold wallets are offline wallets that provide a higher level of security. Hardware wallets like Ledger and Trezor store your private keys offline, making them less vulnerable to attacks. Cold wallets are best for long-term storage of cryptocurrency.",
+        },
+        {
+          type: "heading",
+          content: "Cryptocurrency Mining",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Mining is the process by which new cryptocurrencies are created and added to the blockchain. Miners use computational power to solve complex mathematical problems, validating transactions and receiving new coins as a reward. Mining used to be more accessible, but today it requires significant computing power, especially for popular cryptocurrencies like Bitcoin",
+        },
+        {
+          type: "heading",
+          content: "Benefits of Cryptocurrency",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency offers several advantages over traditional financial systems:",
+        },
+        {
+          type: "subheading",
+          content: "Decentralization",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency operates on a peer-to-peer network, without a central authority. This gives users greater control over their transactions and assets, reducing reliance on banks or government entities.",
+        },
+        {
+          type: "subheading",
+          content: "Security",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency transactions are secure and irreversible, thanks to blockchain technology and cryptographic algorithms. The decentralized nature of the network also reduces the risks of fraud and identity theft.",
+        },
+        {
+          type: "subheading",
+          content: "Low Transaction Fees",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency transactions often involve lower fees compared to traditional banking systems. For international transfers, cryptocurrencies like Jaimax can be more cost-effective than conventional money transfer services.",
+        },
+        {
+          type: "subheading",
+          content: "Privacy and Anonymity",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Some cryptocurrencies, like Monero and Zcash, offer enhanced privacy features, allowing users to make anonymous transactions. This feature is especially attractive for those who value privacy in their financial dealings.",
+        },
+        {
+          type: "heading",
+          content: "Risks of Cryptocurrency",
+        },
+        {
+          type: "paragraph",
+          content: "Despite its advantages, cryptocurrency comes with risks:",
+        },
+        {
+          type: "subheading",
+          content: "Volatility",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrencies are known for their price volatility, with values fluctuating significantly. While this can lead to high returns, it also poses risks for investors, particularly those new to the market.",
+        },
+        {
+          type: "subheading",
+          content: "Regulatory Uncertainty",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency regulations are still developing in many countries. The regulatory landscape can be uncertain, and changes in laws could affect the market and the legality of using or trading digital currencies.",
+        },
+        {
+          type: "subheading",
+          content: "Security Threats",
+        },
+        {
+          type: "paragraph",
+          content:
+            "While blockchain itself is secure, cryptocurrency exchanges and wallets can be vulnerable to hacking. There have been incidents of high-profile exchanges being compromised, resulting in the loss of millions of dollars.",
+        },
+        {
+          type: "heading",
+          content: "Jaimax: A Top Cryptocurrency to Invest in India",
+        },
+        {
+          type: "paragraph",
+          content: `For those looking for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in India</a>, Jaimax offers an intriguing opportunity. As a rising cryptocurrency in India, Jaimax is gaining attention for its unique approach and growing community. With a focus on user empowerment, Jaimax is poised to become a significant player in the Indian cryptocurrency market. Whether you’re new to crypto or an experienced investor, Jaimax is one of the best cryptocurrencies to invest in India due to its promising potential and increasing adoption.`,
+        },
+        {
+          type: "heading",
+          content: "Conclusion",
+        },
+        {
+          type: "paragraph",
+          content:
+            "Cryptocurrency is revolutionizing the way we think about finance. From Bitcoin to Jaimax, there are many exciting options to explore. Whether you're looking to make investments or simply engage with the digital economy, understanding how cryptocurrencies work and their potential can open up a world of opportunities. With Jaimax emerging as a prominent option for investors in India, the future of digital currencies looks promising.",
+        },
+      ],
+    },
+  },
+];
 
 const slugify = (str) =>
-  str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]/g, "");
+  str
+    ? str
+        .toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^\w-]/g, "")
+    : "";
 
 const BlogPostDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const [post, setPost] = useState(null);
-  const [recentPosts, setRecentPosts] = useState([]);
+  // First, check if it's a static blog post
+  const staticPost = staticBlogsData.find(
+    blog => blog.slug === slug || slugify(blog.headline) === slug
+  );
+
+  // Use RTK Query hooks only if it's not a static post
+  const {
+    data: postData,
+    isLoading: isPostLoading,
+    error: postError,
+  } = useGetPostBySlugQuery(slug, {
+    skip: !slug || !!staticPost, 
+  });
+
+  const { data: recentPostsData, isLoading: isRecentPostsLoading } =
+    useGetRecentPostsQuery(5, {
+      skip: !slug,
+    });
+
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [shareDropdownOpen, setShareDropdownOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+
+  // Use search API instead of local filtering
+  const { data: searchResults, isLoading: isSearchLoading } =
+    useSearchPostsQuery(
+      {
+        search: searchQuery,
+        limit: 5,
+      },
+      { skip: searchQuery.length < 3 }
+    );
 
   const shareRef = useRef(null);
   const searchInputRef = useRef(null);
-  const maxRecentPostsHeight = 400; // Maximum height for recent posts container
 
+  // Redirect to blog list if post not found
   useEffect(() => {
-    // Find the post based on the slug
-    const foundPost = blogsData.find((b) => slugify(b.headline) === slug);
-    if (foundPost) {
-      setPost(foundPost);
-      // Filter out the current post from recent posts
-      const otherPosts = blogsData.filter((b) => b.id !== foundPost.id);
-
-      // Get the most recent posts
-      setRecentPosts(otherPosts.sort((a, b) => {
-        const dateA = new Date(a.date.includes(" ") ? a.date.replace(/(\d{2}) (\w+) (\d{2})/g, "20$3-$2-$1") : a.date);
-        const dateB = new Date(b.date.includes(" ") ? b.date.replace(/(\d{2}) (\w+) (\d{2})/g, "20$3-$2-$1") : b.date);
-        return dateB - dateA;
-      }));
-    } else {
+    if (!staticPost && !isPostLoading && postError) {
       navigate("/blog");
     }
-  }, [slug, navigate]);
-
-  // Search functionality
-  useEffect(() => {
-    // This effect is now handled in handleSearchInputChange for better performance
-  }, []);
+  }, [staticPost, isPostLoading, postError, navigate]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -53,136 +1225,315 @@ const BlogPostDetail = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const handleRecentPostClick = (recentPost) => {
-    navigate(`/blog/${slugify(recentPost.headline)}`);
+    const postSlug = recentPost.slug || slugify(recentPost.title || recentPost.headline);
+    navigate(`/blog/${postSlug}`);
     setSidebarOpen(false);
   };
 
   const handleSearchResultClick = (searchPost) => {
-    navigate(`/blog/${slugify(searchPost.headline)}`);
+    const postSlug = searchPost.slug || slugify(searchPost.title || searchPost.headline);
+    navigate(`/blog/${postSlug}`);
     setSidebarOpen(false);
     setSearchQuery("");
-    setSearchResults([]);
   };
 
   const handleSearchInputChange = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
+    setSearchQuery(e.target.value);
+  };
 
-    if (value.trim()) {
-      const filtered = blogsData.filter(blog =>
-        blog.headline.toLowerCase().includes(value.toLowerCase()) ||
-        blog.description.toLowerCase().includes(value.toLowerCase()) ||
-        (blog.category && blog.category.toLowerCase().includes(value.toLowerCase()))
-      );
-      setSearchResults(filtered);
-    } else {
-      setSearchResults([]);
+  // Form handling
+  const handleFormChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+
+    if (formErrors[id]) {
+      setFormErrors((prev) => ({ ...prev, [id]: "" }));
     }
   };
 
-  const shareOptions = [
-    {
-      name: 'Copy Link',
-      icon: Copy,
-      action: () => {
-        const url = `${window.location.origin}/blog/${slugify(post.headline)}`;
-        navigator.clipboard.writeText(url).then(() => {
-          alert("Link copied to clipboard!");
-          setShareDropdownOpen(false);
-        });
-      }
-    },
-    {
-      name: 'Facebook',
-      icon: Facebook,
-      action: () => {
-        const url = `${window.location.origin}/blog/${slugify(post.headline)}`;
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-        setShareDropdownOpen(false);
-      }
-    },
-    {
-      name: 'Twitter',
-      icon: Twitter,
-      action: () => {
-        const url = `${window.location.origin}/blog/${slugify(post.headline)}`;
-        const text = post.headline;
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-        setShareDropdownOpen(false);
-      }
-    },
-    {
-      name: 'WhatsApp',
-      icon: MessageCircle,
-      action: () => {
-        const url = `${window.location.origin}/blog/${slugify(post.headline)}`;
-        const text = `Check out this blog post: ${post.headline}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
-        setShareDropdownOpen(false);
-      }
-    },
-    {
-      name: 'Instagram',
-      icon: Instagram,
-      action: () => {
-        // Instagram doesn't have direct sharing URL, so copy link instead
-        const url = `${window.location.origin}/blog/${slugify(post.headline)}`;
-        navigator.clipboard.writeText(url).then(() => {
-          alert("Link copied! You can paste it in your Instagram story or bio.");
-          setShareDropdownOpen(false);
-        });
-      }
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.name.trim()) errors.name = "Name is required";
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Email is invalid";
     }
-  ];
+    if (!formData.message.trim()) errors.message = "Message is required";
 
-  // Helper function to render content sections
-  const renderContent = (contentSections) => {
-    return contentSections.map((section, index) => {
-      switch (section.type) {
-        case "paragraph":
-          return (
-            <p
-              key={index}
-              className="mb-4 text-sm sm:text-base leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: section.content }}
-            ></p>
-          );
-        case "heading":
-          return (
-            <h2
-              key={index}
-              className="text-xl sm:text-2xl font-semibold text-white mt-6 mb-3"
-              dangerouslySetInnerHTML={{ __html: section.content }}
-            ></h2>
-          );
-        case "unordered_list":
-          return (
-            <ul key={index} className="list-disc list-inside ml-3 sm:ml-5 mb-4 space-y-2">
-              {section.content.map((item, itemIndex) => (
-                <li
-                  key={itemIndex}
-                  className="text-sm sm:text-base"
-                  dangerouslySetInnerHTML={{ __html: item }}
-                ></li>
-              ))}
-            </ul>
-          );
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      alert("Thank you for your message! We'll get back to you soon.");
+      setFormData({ name: "", email: "", message: "" });
+    }
+  };
+
+  // Format post date
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    
+    // Handle "09 june 25" format
+    if (dateString.match(/^\d{1,2}\s+\w+\s+\d{2}$/)) {
+      return dateString;
+    }
+    
+    let date;
+    if (typeof dateString === "object" && dateString.$date) {
+      date = new Date(dateString.$date);
+    } else {
+      date = new Date(dateString);
+    }
+
+    return isNaN(date.getTime()) ? dateString : date.toLocaleDateString();
+  };
+
+  // Add Poppins font styles
+  useEffect(() => {
+    const fontLink = document.createElement("link");
+    fontLink.href =
+      "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
+    fontLink.rel = "stylesheet";
+    document.head.appendChild(fontLink);
+
+    const styleElement = document.createElement("style");
+    styleElement.textContent = `
+    .blog-content {
+      font-family: 'Poppins', sans-serif;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    
+    .blog-content h1, .blog-content h2, .blog-content h3, 
+    .blog-content h4, .blog-content h5, .blog-content h6 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    
+    .blog-content h1 { font-size: 2.25rem; }
+    .blog-content h2 { font-size: 1.75rem; color: #22d3ee; }
+    .blog-content h3 { font-size: 1.5rem; color: #22d3ee; }
+    .blog-content h4 { font-size: 1.25rem; }
+    
+    .blog-content p {
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      letter-spacing: 0.015em;
+    }
+    
+    .blog-content ul, .blog-content ol {
+      margin-left: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .blog-content li {
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    
+    .blog-content ul li::before {
+      content: '•';
+      color: #22d3ee;
+      position: absolute;
+      left: -1.25rem;
+    }
+    
+    .blog-content a {
+      color: #22d3ee;
+      text-decoration: none;
+      border-bottom: 1px dotted #22d3ee;
+      transition: all 0.2s ease;
+    }
+    
+    .blog-content a:hover {
+      border-bottom: 1px solid #22d3ee;
+    }
+    
+    .blog-content strong, .blog-content b {
+      font-weight: 600;
+      color: white;
+    }
+    
+    .blog-content blockquote {
+      border-left: 4px solid #22d3ee;
+      padding-left: 1.5rem;
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .blog-content hr {
+      border: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 2rem 0;
+    }
+    
+    .blog-content img {
+      max-width: 100%;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+  `;
+    document.head.appendChild(styleElement);
+
+    return () => {
+      if (document.head.contains(styleElement)) {
+        document.head.removeChild(styleElement);
+      }
+      if (document.head.contains(fontLink)) {
+        document.head.removeChild(fontLink);
+      }
+    };
+  }, []);
+
+  // Helper function to render static content sections
+  const renderStaticContent = (sections) => {
+    let html = '';
+    
+    sections.forEach(section => {
+      switch(section.type) {
+        case 'heading':
+          html += `<h3>${section.content}</h3>`;
+          break;
+        case 'paragraph':
+          html += `<p>${section.content}</p>`;
+          break;
+        case 'unordered_list':
+          html += '<ul>';
+          section.content.forEach(item => {
+            html += `<li>${item}</li>`;
+          });
+          html += '</ul>';
+          break;
         default:
-          return null;
+          html += `<p>${section.content}</p>`;
       }
     });
+    
+    return html;
   };
 
-  if (!post) {
+  const renderContent = (post) => {
+    if (!post) return null;
+
+    // Check if it's a static post with content.sections
+    if (post.content?.sections) {
+      const htmlContent = renderStaticContent(post.content.sections);
+      return (
+        <div>
+          {post.content.title && (
+            <h2 className="text-2xl font-bold text-cyan-300 mb-6">
+              {post.content.title}
+            </h2>
+          )}
+          <div
+            className="blog-content prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ 
+              __html: DOMPurify.sanitize(htmlContent, {
+                ADD_TAGS: ["h1", "h2", "h3", "h4", "h5", "h6"],
+                ADD_ATTR: ["style", "href", "target", "rel"],
+              })
+            }}
+          />
+        </div>
+      );
+    }
+
+    // Handle regular HTML content
+    if (post.content && typeof post.content === "string") {
+      const sanitizedContent = DOMPurify.sanitize(post.content, {
+        ADD_TAGS: [
+          "table",
+          "thead",
+          "tbody",
+          "tr",
+          "td",
+          "th",
+          "h1",
+          "h2",
+          "h3",
+        ],
+        ALLOW_TAGS: [
+          "table",
+          "thead",
+          "tbody",
+          "tr",
+          "td",
+          "th",
+          "h1",
+          "h2",
+          "h3",
+          "p",
+          "a",
+          "ul",
+          "ol",
+          "li",
+          "br",
+          "strong",
+          "em",
+          "span",
+          "img",
+          "blockquote",
+          "hr",
+          "div",
+        ],
+      });
+
+      return (
+        <div
+          className="blog-content prose prose-invert max-w-none"
+          dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+        />
+      );
+    }
+
+    // Fallback to description or excerpt
     return (
-      <div className="min-h-screen flex items-center justify-center text-white px-4">
+      <p className="mb-4 font-poppins">
+        {post.excerpt || post.description || "No content available."}
+      </p>
+    );
+  };
+
+  // Determine which post to show (static or dynamic)
+  const post = staticPost || postData?.data?.post;
+  const isLoading = !staticPost && isPostLoading;
+
+  // Combine static posts with recent posts for sidebar
+  const combinedRecentPosts = [
+    ...staticBlogsData.filter(p => p.id !== post?.id).slice(0, 2),
+    ...(recentPostsData?.data?.posts || recentPostsData || [])
+  ].slice(0, 5);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center text-white px-4"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+        }}
+      >
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
           <p className="text-lg">Loading post...</p>
@@ -191,10 +1542,125 @@ const BlogPostDetail = () => {
     );
   }
 
-  // Determine the display date for the current post
-  const displayDate = post.date.includes(" ") ?
-                      new Date(post.date.replace(/(\d{2}) (\w+) (\d{2})/g, "20$3-$2-$1")).toLocaleDateString() :
-                      new Date(post.date).toLocaleDateString();
+  // Error state
+  if (!post) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center text-white px-4"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+        }}
+      >
+        <div className="text-center bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-red-400/30 p-8 max-w-md">
+          <div className="text-red-400 mb-4">
+            <X className="w-16 h-16 mx-auto" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-4">Post Not Found</h2>
+          <p className="text-gray-300 mb-6">
+            The blog post you're looking for couldn't be found or may have been
+            removed.
+          </p>
+          <button
+            onClick={() => navigate("/blog")}
+            className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg hover:from-cyan-600 hover:to-teal-600 transition-colors"
+          >
+            Return to Blog
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Get post data (works for both static and dynamic posts)
+  const postTitle = post.title || post.headline || "";
+  const postDate = formatDate(
+    post.publishedAt || post.createdAt?.$date || post.date
+  );
+  const postImage = post.coverImage || post.image;
+  const postViews = post.views || post.analytics?.views || 0;
+  const postCategory = post.categories?.[0] || post.category || "";
+  const postTags = post.tags || [];
+
+  // Create share options with the actual post data
+  const shareOptions = [
+    {
+      name: "Copy Link",
+      icon: Copy,
+      action: () => {
+        const url = `${window.location.origin}/blog/${
+          post.slug || slugify(post.title || post.headline)
+        }`;
+        navigator.clipboard.writeText(url).then(() => {
+          alert("Link copied to clipboard!");
+          setShareDropdownOpen(false);
+        });
+      },
+    },
+    {
+      name: "Facebook",
+      icon: Facebook,
+      action: () => {
+        const url = `${window.location.origin}/blog/${
+          post.slug || slugify(post.title || post.headline)
+        }`;
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+            url
+          )}`,
+          "_blank"
+        );
+        setShareDropdownOpen(false);
+      },
+    },
+    {
+      name: "Twitter",
+      icon: Twitter,
+      action: () => {
+        const url = `${window.location.origin}/blog/${
+          post.slug || slugify(post.title || post.headline)
+        }`;
+        const text = post.title || post.headline;
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+            text
+          )}&url=${encodeURIComponent(url)}`,
+          "_blank"
+        );
+        setShareDropdownOpen(false);
+      },
+    },
+    {
+      name: "WhatsApp",
+      icon: MessageCircle,
+      action: () => {
+        const url = `${window.location.origin}/blog/${
+          post.slug || slugify(post.title || post.headline)
+        }`;
+        const text = `Check out this blog post: ${post.title || post.headline}`;
+        window.open(
+          `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`,
+          "_blank"
+        );
+        setShareDropdownOpen(false);
+      },
+    },
+    {
+      name: "Instagram",
+      icon: Instagram,
+      action: () => {
+        const url = `${window.location.origin}/blog/${
+          post.slug || slugify(post.title || post.headline)
+        }`;
+        navigator.clipboard.writeText(url).then(() => {
+          alert(
+            "Link copied! You can paste it in your Instagram story or bio."
+          );
+          setShareDropdownOpen(false);
+        });
+      },
+    },
+  ];
 
   const Sidebar = () => (
     <aside className="space-y-4 sm:space-y-6">
@@ -223,64 +1689,123 @@ const BlogPostDetail = () => {
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="w-4 h-4 text-cyan-400" />
             <h3 className="font-semibold text-cyan-100 text-sm">
-              {searchQuery ? `Search Results (${searchResults.length})` : 'Recent Posts'}
+              {searchQuery.length >= 3 ? `Search Results` : "Recent Posts"}
             </h3>
           </div>
 
           <div className="space-y-3 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-400/30 scrollbar-track-transparent">
-            {searchQuery ? (
-              // Show search results
-              searchResults.length > 0 ? (
-                searchResults.map((result) => (
-                  <button
-                    key={result.id}
-                    onClick={() => handleSearchResultClick(result)}
-                    className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-500/10 flex items-center gap-3"
-                  >
-                    {result.image && (
-                      <img
-                        src={result.image}
-                        alt={result.headline}
-                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
-                      />
-                    )}
-                    <div className="flex flex-col flex-grow text-white text-xs">
-                      <span className="line-clamp-2 text-left">{result.headline}</span>
-                      <span className="text-cyan-300/50 text-xs mt-1 line-clamp-1">{result.description}</span>
+            {searchQuery.length >= 3 ? (
+              // Show search results (combine static and dynamic)
+              isSearchLoading ? (
+                <div className="flex flex-col space-y-3">
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="animate-pulse flex items-center gap-3"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-cyan-800/30"></div>
+                      <div className="flex-1">
+                        <div className="h-4 bg-cyan-800/30 rounded w-3/4 mb-2"></div>
+                        <div className="h-3 bg-cyan-800/20 rounded w-1/2"></div>
+                      </div>
                     </div>
-                  </button>
-                ))
-              ) : (
-                <div className="flex items-center justify-center h-32">
-                  <p className="text-cyan-300/60 text-sm text-center">No results found for "{searchQuery}"</p>
+                  ))}
                 </div>
+              ) : (
+                // Combine static search results with API results
+                [
+                  ...staticBlogsData.filter(blog => 
+                    blog.headline.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    blog.description.toLowerCase().includes(searchQuery.toLowerCase())
+                  ),
+                  ...(searchResults?.data?.posts || [])
+                ].map((result) => {
+                  const resultTitle = result.title || result.headline || "";
+                  const resultDescription =
+                    result.excerpt || result.description || "";
+                  const resultImage =
+                    result.coverImage || result.image || result.meta?.ogImage;
+                  const resultId = result._id?.$oid || result.id || result.slug;
+
+                  return (
+                    <button
+                      key={resultId}
+                      onClick={() => handleSearchResultClick(result)}
+                      className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-500/10 flex items-center gap-3"
+                    >
+                      {resultImage ? (
+                        <img
+                          src={resultImage}
+                          alt={resultTitle}
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-800/30 flex-shrink-0 flex items-center justify-center">
+                          <Star className="w-5 h-5 text-cyan-400/50" />
+                        </div>
+                      )}
+                      <div className="flex flex-col flex-grow text-white text-xs">
+                        <span className="line-clamp-2 text-left">
+                          {resultTitle}
+                        </span>
+                        <span className="text-cyan-300/50 text-xs mt-1 line-clamp-1">
+                          {resultDescription}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })
               )
-            ) : (
-              // Show recent posts
-              recentPosts.length > 0 ? (
-                recentPosts.map((rp) => (
+            ) : // Show recent posts
+            isRecentPostsLoading ? (
+              <div className="flex flex-col space-y-3">
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="animate-pulse flex items-center gap-3"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-cyan-800/30"></div>
+                    <div className="flex-1">
+                      <div className="h-4 bg-cyan-800/30 rounded w-3/4"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : combinedRecentPosts.length > 0 ? (
+              combinedRecentPosts.map((rp) => {
+                const rpTitle = rp.title || rp.headline || "";
+                const rpImage = rp.coverImage || rp.image || rp.meta?.ogImage;
+                const rpId = rp._id?.$oid || rp.id || rp.slug;
+
+                return (
                   <button
-                    key={rp.id}
+                    key={rpId}
                     onClick={() => handleRecentPostClick(rp)}
                     className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-500/10 flex items-center gap-3"
                   >
-                    {rp.image && (
+                    {rpImage ? (
                       <img
-                        src={rp.image}
-                        alt={rp.headline}
+                        src={rpImage}
+                        alt={rpTitle}
                         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
                       />
+                    ) : (
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-800/30 flex-shrink-0 flex items-center justify-center">
+                        <Star className="w-5 h-5 text-cyan-400/50" />
+                      </div>
                     )}
                     <div className="flex flex-col flex-grow text-white text-xs">
-                      <span className="line-clamp-2 text-left">{rp.headline}</span>
+                      <span className="line-clamp-2 text-left">{rpTitle}</span>
                     </div>
                   </button>
-                ))
-              ) : (
-                <div className="flex items-center justify-center h-32">
-                  <p className="text-cyan-300/60 text-sm">No recent posts available.</p>
-                </div>
-              )
+                );
+              })
+            ) : (
+              <div className="flex items-center justify-center h-32">
+                <p className="text-cyan-300/60 text-sm">
+                  No recent posts available.
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -293,33 +1818,62 @@ const BlogPostDetail = () => {
           <h3 className="font-semibold text-cyan-100 text-sm mb-4">
             Get in Touch
           </h3>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleFormSubmit}>
             <div>
-              <label htmlFor="name" className="sr-only">Name</label>
+              <label htmlFor="name" className="sr-only">
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
+                value={formData.name}
+                onChange={handleFormChange}
                 placeholder="Your Name"
-                className="w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm"
+                className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm ${
+                  formErrors.name ? "border border-red-500" : ""
+                }`}
               />
+              {formErrors.name && (
+                <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>
+              )}
             </div>
             <div>
-              <label htmlFor="email" className="sr-only">Email</label>
+              <label htmlFor="email" className="sr-only">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
+                value={formData.email}
+                onChange={handleFormChange}
                 placeholder="Your Email"
-                className="w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm"
+                className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm ${
+                  formErrors.email ? "border border-red-500" : ""
+                }`}
               />
+              {formErrors.email && (
+                <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>
+              )}
             </div>
             <div>
-              <label htmlFor="message" className="sr-only">Message</label>
+              <label htmlFor="message" className="sr-only">
+                Message
+              </label>
               <textarea
                 id="message"
                 rows="4"
+                value={formData.message}
+                onChange={handleFormChange}
                 placeholder="Your Message"
-                className="w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm resize-none"
+                className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm resize-none ${
+                  formErrors.message ? "border border-red-500" : ""
+                }`}
               ></textarea>
+              {formErrors.message && (
+                <p className="text-red-500 text-xs mt-1">
+                  {formErrors.message}
+                </p>
+              )}
             </div>
             <button
               type="submit"
@@ -334,16 +1888,26 @@ const BlogPostDetail = () => {
   );
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 py-4 sm:py-8">
-      <div className="w-full mx-0">
+    <div
+      className="min-h-screen px-4 sm:px-6 py-4 sm:py-8"
+      style={{
+        background:
+          "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
+      }}
+    >
+      <div className="w-full mx-auto max-w-screen">
         {/* Mobile Sidebar Toggle */}
         <div className="lg:hidden mb-4">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg font-medium hover:from-cyan-600 hover:to-teal-600 transition-colors duration-300"
           >
-            {sidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-            {sidebarOpen ? 'Close Menu' : 'Menu'}
+            {sidebarOpen ? (
+              <X className="w-4 h-4" />
+            ) : (
+              <Menu className="w-4 h-4" />
+            )}
+            {sidebarOpen ? "Close Menu" : "Menu"}
           </button>
         </div>
 
@@ -373,32 +1937,51 @@ const BlogPostDetail = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           <main className="lg:col-span-3">
-            <article className="relative rounded-2xl p-4 sm:p-6 shadow-lg">
+            <article className="relative rounded-2xl p-4 sm:p-6 shadow-lg bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl border border-cyan-400/20">
+              {/* Back button */}
+              <button
+                onClick={() => navigate("/blog")}
+                className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:text-cyan-300 mb-4 transition-colors"
+              >
+                <ArrowRight className="w-4 h-4 transform rotate-180" />
+                Back to all posts
+              </button>
+
               {/* Headline */}
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-                {post.headline}
+                {postTitle}
               </h1>
 
               {/* Image */}
-              <div className="rounded-xl overflow-hidden mb-6">
+              {postImage && (
                 <img
-                  src={post.image}
-                  alt={post.imageAlt || post.headline}
-                  className="w-full h-48 xs:h-56 sm:h-72 md:h-80 lg:h-96 xl:h-[500px] 2xl:h-[600px] object-fit mx-auto rounded-lg shadow-lg"
+                  src={postImage}
+                  alt={postTitle}
+                  className="w-full h-48 xs:h-56 sm:h-72 md:h-80 lg:h-96 xl:h-[500px] 2xl:h-[600px] object-cover mx-auto rounded-lg shadow-lg mb-6"
+                  loading="lazy"
                 />
-              </div>
+              )}
 
               {/* Meta Info */}
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-white mb-6 border-b border-cyan-700/30 pb-4">
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>{displayDate}</span>
-                </div>
+                {postDate && (
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span>{postDate}</span>
+                  </div>
+                )}
 
-                {post.category && (
+                {postCategory && (
                   <span className="inline-block px-2 sm:px-3 py-1 bg-cyan-800/50 rounded-full text-xs font-medium text-white">
-                    {post.category}
+                    {postCategory}
                   </span>
+                )}
+
+                {postViews && (
+                  <div className="flex items-center gap-1">
+                    <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span>{postViews} views</span>
+                  </div>
                 )}
 
                 {/* Share Button with Dropdown */}
@@ -421,7 +2004,9 @@ const BlogPostDetail = () => {
                           className="w-full text-left flex items-center gap-3 px-4 py-3 hover:bg-cyan-500/10 transition-colors duration-200 first:rounded-t-xl last:rounded-b-xl"
                         >
                           <option.icon className="w-4 h-4 text-cyan-400" />
-                          <span className="text-white text-sm">{option.name}</span>
+                          <span className="text-white text-sm">
+                            {option.name}
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -431,8 +2016,27 @@ const BlogPostDetail = () => {
 
               {/* Full Information/Content */}
               <div className="prose prose-invert max-w-none text-white leading-relaxed">
-                {post.content && post.content.sections && renderContent(post.content.sections)}
+                {renderContent(post)}
               </div>
+
+              {/* Related tags if available */}
+              {postTags && postTags.length > 0 && (
+                <div className="mt-8 pt-4 border-t border-cyan-700/30">
+                  <h3 className="text-sm font-medium text-white mb-3">
+                    Related Topics
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {postTags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 text-xs bg-cyan-800/30 text-cyan-300 rounded-full"
+                      >
+                        {typeof tag === 'string' ? tag : tag.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </article>
           </main>
 
@@ -449,1540 +2053,3 @@ const BlogPostDetail = () => {
 };
 
 export default BlogPostDetail;
-
-// import React, { useState, useEffect, useRef } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import {
-//   Search,
-//   TrendingUp,
-//   Calendar,
-//   Eye,
-//   Share2,
-//   Menu,
-//   X,
-//   Copy,
-//   Facebook,
-//   MessageCircle,
-//   Instagram,
-//   Twitter,
-//   Star,
-//   ArrowRight
-// } from "lucide-react";
-// import { useGetPostBySlugQuery, useGetRecentPostsQuery, useSearchPostsQuery } from "../../components/Blogsection/BlogEditorApiSlice";
-
-// const slugify = (str) =>
-//   str ? str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]/g, "") : "";
-
-// const BlogPostDetail = () => {
-//   const { slug } = useParams();
-//   const navigate = useNavigate();
-
-//   // Use RTK Query hooks
-//   const {
-//     data: postData,
-//     isLoading: isPostLoading,
-//     error: postError
-//   } = useGetPostBySlugQuery(slug, {
-//     skip: !slug
-//   });
-
-//   const {
-//     data: recentPostsData,
-//     isLoading: isRecentPostsLoading
-//   } = useGetRecentPostsQuery(5, {
-//     skip: !slug
-//   });
-// // console.log(postData.data.post.content,"post data")
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [sidebarOpen, setSidebarOpen] = useState(false);
-//   const [shareDropdownOpen, setShareDropdownOpen] = useState(false);
-//   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-//   const [formErrors, setFormErrors] = useState({});
-
-//   // Use search API instead of local filtering
-//   const {
-//     data: searchResults,
-//     isLoading: isSearchLoading
-//   } = useSearchPostsQuery({
-//     search: searchQuery,
-//     limit: 5
-//   }, { skip: searchQuery.length < 3 });
-
-//   const shareRef = useRef(null);
-//   const searchInputRef = useRef(null);
-
-//   // Redirect to blog list if post not found
-//   useEffect(() => {
-//     if (!isPostLoading && postError) {
-//       navigate("/blog");
-//     }
-//   }, [isPostLoading, postError, navigate]);
-
-//   // Close dropdowns when clicking outside
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (shareRef.current && !shareRef.current.contains(event.target)) {
-//         setShareDropdownOpen(false);
-//       }
-//     };
-
-//     document.addEventListener('mousedown', handleClickOutside);
-//     return () => {
-//       document.removeEventListener('mousedown', handleClickOutside);
-//     };
-//   }, []);
-
-//   const handleRecentPostClick = (recentPost) => {
-//     navigate(`/blog/${recentPost.slug || slugify(recentPost.title)}`);
-//     setSidebarOpen(false);
-//   };
-
-//   const handleSearchResultClick = (searchPost) => {
-//     navigate(`/blog/${searchPost.slug || slugify(searchPost.title)}`);
-//     setSidebarOpen(false);
-//     setSearchQuery("");
-//   };
-
-//   const handleSearchInputChange = (e) => {
-//     setSearchQuery(e.target.value);
-//   };
-
-//   // Form handling
-//   const handleFormChange = (e) => {
-//     const { id, value } = e.target;
-//     setFormData(prev => ({ ...prev, [id]: value }));
-
-//     // Clear error when user types
-//     if (formErrors[id]) {
-//       setFormErrors(prev => ({ ...prev, [id]: '' }));
-//     }
-//   };
-
-//   const validateForm = () => {
-//     const errors = {};
-//     if (!formData.name.trim()) errors.name = "Name is required";
-//     if (!formData.email.trim()) {
-//       errors.email = "Email is required";
-//     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-//       errors.email = "Email is invalid";
-//     }
-//     if (!formData.message.trim()) errors.message = "Message is required";
-
-//     setFormErrors(errors);
-//     return Object.keys(errors).length === 0;
-//   };
-
-//   const handleFormSubmit = (e) => {
-//     e.preventDefault();
-//     if (validateForm()) {
-//       // Here you would add API call to submit the form
-//       alert("Thank you for your message! We'll get back to you soon.");
-//       setFormData({ name: '', email: '', message: '' });
-//     }
-//   };
-
-//   // Format post date
-//   const formatDate = (dateString) => {
-//     if (!dateString) return "";
-//     let date;
-
-//     // Handle different date formats
-//     if (typeof dateString === 'object' && dateString.$date) {
-//       date = new Date(dateString.$date);
-//     } else {
-//       date = new Date(dateString);
-//     }
-
-//     return isNaN(date.getTime()) ? "" : date.toLocaleDateString();
-//   };
-
-//   // Helper function to parse and render content
-//   const renderContent = (post) => {
-//     if (!post) return null;
-
-//     // Check if post has content property and it's a string (HTML)
-//     if (post.content) {
-//       if (typeof post.content === 'string') {
-//         return <div dangerouslySetInnerHTML={{ __html: post.content }}></div>;
-//       } else if (post.content.sections) {
-//         // If post has structured content with sections
-//         return post.content.sections.map((section, index) => {
-//           switch (section.type) {
-//             case "paragraph":
-//               return (
-//                 <p
-//                   key={index}
-//                   className="mb-4 text-sm sm:text-base leading-relaxed"
-//                   dangerouslySetInnerHTML={{ __html: section.content }}
-//                 ></p>
-//               );
-//             case "heading":
-//               return (
-//                 <h2
-//                   key={index}
-//                   className="text-xl sm:text-2xl font-semibold text-white mt-6 mb-3"
-//                   dangerouslySetInnerHTML={{ __html: section.content }}
-//                 ></h2>
-//               );
-//             case "unordered_list":
-//               return (
-//                 <ul key={index} className="list-disc list-inside ml-3 sm:ml-5 mb-4 space-y-2">
-//                   {section.content.map((item, itemIndex) => (
-//                     <li
-//                       key={itemIndex}
-//                       className="text-sm sm:text-base"
-//                       dangerouslySetInnerHTML={{ __html: item }}
-//                     ></li>
-//                   ))}
-//                 </ul>
-//               );
-//             default:
-//               return null;
-//           }
-//         });
-//       }
-//     }
-
-//     // If no content is available, show excerpt/description
-//     return <p className="mb-4">{post.content || post.content || "No content available."}</p>;
-//   };
-
-//   // Loading state
-//   if (isPostLoading) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center text-white px-4"
-//            style={{
-//              background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)"
-//            }}>
-//         <div className="text-center">
-//           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
-//           <p className="text-lg">Loading post...</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   // Error state
-//   if (postError || !postData) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center text-white px-4"
-//            style={{
-//              background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)"
-//            }}>
-//         <div className="text-center bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-red-400/30 p-8 max-w-md">
-//           <div className="text-red-400 mb-4">
-//             <X className="w-16 h-16 mx-auto" />
-//           </div>
-//           <h2 className="text-2xl font-bold text-white mb-4">Post Not Found</h2>
-//           <p className="text-gray-300 mb-6">
-//             The blog post you're looking for couldn't be found or may have been removed.
-//           </p>
-//           <button
-//             onClick={() => navigate('/blog')}
-//             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg hover:from-cyan-600 hover:to-teal-600 transition-colors"
-//           >
-//             Return to Blog
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   // Get post data
-//   const post = postData.data.post;
-//   console.log(post,"level2")
-//   const postTitle = post.title || "";
-//   const postDate = formatDate(post.publishedAt || post.createdAt?.$date || post.date);
-//   const postImage = post.coverImage || post.meta?.ogImage || post.image;
-//   const postViews = post.views || post.analytics?.views || 0;
-//   const postCategory = post.categories?.[0] || post.category || "";
-//   const postTags = post.tags || [];
-
-//   // Create share options with the actual post data
-//   const shareOptions = [
-//     {
-//       name: 'Copy Link',
-//       icon: Copy,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${post.slug || slugify(post.title)}`;
-//         navigator.clipboard.writeText(url).then(() => {
-//           alert("Link copied to clipboard!");
-//           setShareDropdownOpen(false);
-//         });
-//       }
-//     },
-//     {
-//       name: 'Facebook',
-//       icon: Facebook,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${post.slug || slugify(post.title)}`;
-//         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-//         setShareDropdownOpen(false);
-//       }
-//     },
-//     {
-//       name: 'Twitter',
-//       icon: Twitter,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${post.slug || slugify(post.title)}`;
-//         const text = post.title;
-//         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-//         setShareDropdownOpen(false);
-//       }
-//     },
-//     {
-//       name: 'WhatsApp',
-//       icon: MessageCircle,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${post.slug || slugify(post.title)}`;
-//         const text = `Check out this blog post: ${post.title}`;
-//         window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
-//         setShareDropdownOpen(false);
-//       }
-//     },
-//     {
-//       name: 'Instagram',
-//       icon: Instagram,
-//       action: () => {
-//         // Instagram doesn't have direct sharing URL, so copy link instead
-//         const url = `${window.location.origin}/blog/${post.slug || slugify(post.title)}`;
-//         navigator.clipboard.writeText(url).then(() => {
-//           alert("Link copied! You can paste it in your Instagram story or bio.");
-//           setShareDropdownOpen(false);
-//         });
-//       }
-//     }
-//   ];
-
-//   const Sidebar = () => (
-//     <aside className="space-y-4 sm:space-y-6">
-//       {/* Search Box */}
-//       <div className="relative group">
-//         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-//         <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
-//           <div className="relative">
-//             <input
-//               ref={searchInputRef}
-//               type="text"
-//               value={searchQuery}
-//               onChange={handleSearchInputChange}
-//               placeholder="Search all blogs..."
-//               className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm pr-8"
-//             />
-//             <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white w-4 h-4" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Recent Posts / Search Results */}
-//       <div className="relative group">
-//         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-//         <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4 sm:p-5">
-//           <div className="flex items-center gap-2 mb-4">
-//             <TrendingUp className="w-4 h-4 text-cyan-400" />
-//             <h3 className="font-semibold text-cyan-100 text-sm">
-//               {searchQuery.length >= 3 ? `Search Results` : 'Recent Posts'}
-//             </h3>
-//           </div>
-
-//           <div className="space-y-3 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-400/30 scrollbar-track-transparent">
-//             {searchQuery.length >= 3 ? (
-//               // Show search results
-//               isSearchLoading ? (
-//                 <div className="flex flex-col space-y-3">
-//                   {[...Array(3)].map((_, i) => (
-//                     <div key={i} className="animate-pulse flex items-center gap-3">
-//                       <div className="w-12 h-12 rounded-full bg-cyan-800/30"></div>
-//                       <div className="flex-1">
-//                         <div className="h-4 bg-cyan-800/30 rounded w-3/4 mb-2"></div>
-//                         <div className="h-3 bg-cyan-800/20 rounded w-1/2"></div>
-//                       </div>
-//                     </div>
-//                   ))}
-//                 </div>
-//               ) : searchResults?.data?.posts?.length > 0 ? (
-//                 searchResults.data.posts.map((result) => {
-//                   const resultTitle = result.title || "";
-//                   const resultDescription = result.excerpt || result.description || "";
-//                   const resultImage = result.coverImage || result.meta?.ogImage || result.image;
-//                   const resultId = result._id?.$oid || result.id || result.slug;
-
-//                   return (
-//                     <button
-//                       key={resultId}
-//                       onClick={() => handleSearchResultClick(result)}
-//                       className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-500/10 flex items-center gap-3"
-//                     >
-//                       {resultImage ? (
-//                         <img
-//                           src={resultImage}
-//                           alt={resultTitle}
-//                           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
-//                         />
-//                       ) : (
-//                         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-800/30 flex-shrink-0 flex items-center justify-center">
-//                           <Star className="w-5 h-5 text-cyan-400/50" />
-//                         </div>
-//                       )}
-//                       <div className="flex flex-col flex-grow text-white text-xs">
-//                         <span className="line-clamp-2 text-left">{resultTitle}</span>
-//                         <span className="text-cyan-300/50 text-xs mt-1 line-clamp-1">{resultDescription}</span>
-//                       </div>
-//                     </button>
-//                   );
-//                 })
-//               ) : (
-//                 <div className="flex items-center justify-center h-32">
-//                   <p className="text-cyan-300/60 text-sm text-center">No results found for "{searchQuery}"</p>
-//                 </div>
-//               )
-//             ) : (
-//               // Show recent posts
-//               isRecentPostsLoading ? (
-//                 <div className="flex flex-col space-y-3">
-//                   {[...Array(3)].map((_, i) => (
-//                     <div key={i} className="animate-pulse flex items-center gap-3">
-//                       <div className="w-12 h-12 rounded-full bg-cyan-800/30"></div>
-//                       <div className="flex-1">
-//                         <div className="h-4 bg-cyan-800/30 rounded w-3/4"></div>
-//                       </div>
-//                     </div>
-//                   ))}
-//                 </div>
-//               ) : recentPostsData?.length > 0 ? (
-//                 recentPostsData.map((rp) => {
-//                   const rpTitle = rp.title || "";
-//                   const rpImage = rp.coverImage || rp.meta?.ogImage || rp.image;
-//                   const rpId = rp._id?.$oid || rp.id || rp.slug;
-
-//                   return (
-//                     <button
-//                       key={rpId}
-//                       onClick={() => handleRecentPostClick(rp)}
-//                       className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-500/10 flex items-center gap-3"
-//                     >
-//                       {rpImage ? (
-//                         <img
-//                           src={rpImage}
-//                           alt={rpTitle}
-//                           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
-//                         />
-//                       ) : (
-//                         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-800/30 flex-shrink-0 flex items-center justify-center">
-//                           <Star className="w-5 h-5 text-cyan-400/50" />
-//                         </div>
-//                       )}
-//                       <div className="flex flex-col flex-grow text-white text-xs">
-//                         <span className="line-clamp-2 text-left">{rpTitle}</span>
-//                       </div>
-//                     </button>
-//                   );
-//                 })
-//               ) : (
-//                 <div className="flex items-center justify-center h-32">
-//                   <p className="text-cyan-300/60 text-sm">No recent posts available.</p>
-//                 </div>
-//               )
-//             )}
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Contact Form */}
-//       <div className="relative group">
-//         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-//         <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4 sm:p-5">
-//           <h3 className="font-semibold text-cyan-100 text-sm mb-4">
-//             Get in Touch
-//           </h3>
-//           <form className="space-y-4" onSubmit={handleFormSubmit}>
-//             <div>
-//               <label htmlFor="name" className="sr-only">Name</label>
-//               <input
-//                 type="text"
-//                 id="name"
-//                 value={formData.name}
-//                 onChange={handleFormChange}
-//                 placeholder="Your Name"
-//                 className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm ${formErrors.name ? 'border border-red-500' : ''}`}
-//               />
-//               {formErrors.name && <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>}
-//             </div>
-//             <div>
-//               <label htmlFor="email" className="sr-only">Email</label>
-//               <input
-//                 type="email"
-//                 id="email"
-//                 value={formData.email}
-//                 onChange={handleFormChange}
-//                 placeholder="Your Email"
-//                 className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm ${formErrors.email ? 'border border-red-500' : ''}`}
-//               />
-//               {formErrors.email && <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>}
-//             </div>
-//             <div>
-//               <label htmlFor="message" className="sr-only">Message</label>
-//               <textarea
-//                 id="message"
-//                 rows="4"
-//                 value={formData.message}
-//                 onChange={handleFormChange}
-//                 placeholder="Your Message"
-//                 className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm resize-none ${formErrors.message ? 'border border-red-500' : ''}`}
-//               ></textarea>
-//               {formErrors.message && <p className="text-red-500 text-xs mt-1">{formErrors.message}</p>}
-//             </div>
-//             <button
-//               type="submit"
-//               className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white py-2 rounded-full font-semibold hover:from-cyan-600 hover:to-teal-600 transition-colors duration-300"
-//             >
-//               Send Message
-//             </button>
-//           </form>
-//         </div>
-//       </div>
-//     </aside>
-//   );
-
-//   return (
-//     <div className="min-h-screen px-4 sm:px-6 py-4 sm:py-8"
-//          style={{
-//            background: "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)"
-//          }}>
-//       <div className="w-full mx-auto max-w-screen">
-//         {/* Mobile Sidebar Toggle */}
-//         <div className="lg:hidden mb-4">
-//           <button
-//             onClick={() => setSidebarOpen(!sidebarOpen)}
-//             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg font-medium hover:from-cyan-600 hover:to-teal-600 transition-colors duration-300"
-//           >
-//             {sidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-//             {sidebarOpen ? 'Close Menu' : 'Menu'}
-//           </button>
-//         </div>
-
-//         {/* Mobile Sidebar Overlay */}
-//         {sidebarOpen && (
-//           <div
-//             className="lg:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-//             onClick={() => setSidebarOpen(false)}
-//           >
-//             <div
-//               className="fixed right-0 top-0 h-full w-80 max-w-[90vw] bg-gradient-to-br from-slate-900 to-slate-800 overflow-y-auto p-4"
-//               onClick={(e) => e.stopPropagation()}
-//             >
-//               <div className="flex justify-between items-center mb-6">
-//                 <h2 className="text-lg font-semibold text-white">Menu</h2>
-//                 <button
-//                   onClick={() => setSidebarOpen(false)}
-//                   className="p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
-//                 >
-//                   <X className="w-5 h-5" />
-//                 </button>
-//               </div>
-//               <Sidebar />
-//             </div>
-//           </div>
-//         )}
-
-//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
-//           <main className="lg:col-span-3">
-//             <article className="relative rounded-2xl p-4 sm:p-6 shadow-lg bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl border border-cyan-400/20">
-//               {/* Back button */}
-//               <button
-//                 onClick={() => navigate('/blog')}
-//                 className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:text-cyan-300 mb-4 transition-colors"
-//               >
-//                 <ArrowRight className="w-4 h-4 transform rotate-180" />
-//                 Back to all posts
-//               </button>
-
-//               {/* Headline */}
-//               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-//                 {postTitle}
-//               </h1>
-
-//               {/* Image */}
-//               {postImage && (
-//                 <div className="rounded-xl overflow-hidden mb-6">
-//                   <img
-//                     src={postImage}
-//                     alt={postTitle}
-//                     className="w-full h-48 xs:h-56 sm:h-72 md:h-80 lg:h-96 xl:h-[500px] 2xl:h-[600px] object-cover mx-auto rounded-lg shadow-lg"
-//                     loading="lazy"
-//                   />
-//                 </div>
-//               )}
-
-//               {/* Meta Info */}
-//               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-white mb-6 border-b border-cyan-700/30 pb-4">
-//                 {postDate && (
-//                   <div className="flex items-center gap-1">
-//                     <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-//                     <span>{postDate}</span>
-//                   </div>
-//                 )}
-
-//                 {postCategory && (
-//                   <span className="inline-block px-2 sm:px-3 py-1 bg-cyan-800/50 rounded-full text-xs font-medium text-white">
-//                     {postCategory}
-//                   </span>
-//                 )}
-
-//                 {postViews > 0 && (
-//                   <div className="flex items-center gap-1">
-//                     <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-//                     <span>{postViews} views</span>
-//                   </div>
-//                 )}
-
-//                 {/* Share Button with Dropdown */}
-//                 <div className="ml-auto relative" ref={shareRef}>
-//                   <button
-//                     onClick={() => setShareDropdownOpen(!shareDropdownOpen)}
-//                     className="rounded-full hover:bg-white/10 p-2 text-white transition-colors duration-200"
-//                     title="Share Post"
-//                   >
-//                     <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
-//                   </button>
-
-//                   {/* Share Dropdown */}
-//                   {shareDropdownOpen && (
-//                     <div className="absolute right-0 top-full mt-2 z-20 bg-gradient-to-br from-cyan-950/95 to-teal-950/90 backdrop-blur-xl rounded-xl border border-cyan-400/30 min-w-48 shadow-xl">
-//                       {shareOptions.map((option, index) => (
-//                         <button
-//                           key={index}
-//                           onClick={option.action}
-//                           className="w-full text-left flex items-center gap-3 px-4 py-3 hover:bg-cyan-500/10 transition-colors duration-200 first:rounded-t-xl last:rounded-b-xl"
-//                         >
-//                           <option.icon className="w-4 h-4 text-cyan-400" />
-//                           <span className="text-white text-sm">{option.name}</span>
-//                         </button>
-//                       ))}
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-
-//               {/* Full Information/Content */}
-//               <div className="prose prose-invert max-w-none text-white leading-relaxed">
-//                 {renderContent(post)}
-//               </div>
-
-//               {/* Related tags if available */}
-//               {postTags && postTags.length > 0 && (
-//                 <div className="mt-8 pt-4 border-t border-cyan-700/30">
-//                   <h3 className="text-sm font-medium text-white mb-3">Related Topics</h3>
-//                   <div className="flex flex-wrap gap-2">
-//                     {postTags.map((tag, index) => (
-//                       <span key={index} className="px-3 py-1 text-xs bg-cyan-800/30 text-cyan-300 rounded-full">
-//                         {tag}
-//                       </span>
-//                     ))}
-//                   </div>
-//                 </div>
-//               )}
-//             </article>
-//           </main>
-
-//           {/* Desktop Sidebar */}
-//           <div className="hidden lg:block lg:col-span-1">
-//             <div className="sticky top-4">
-//               <Sidebar />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BlogPostDetail;
-
-// import React, { useState, useEffect, useRef } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import DOMPurify from "dompurify"; // Add this import for sanitization
-// import {
-//   Search,
-//   TrendingUp,
-//   Calendar,
-//   Eye,
-//   Share2,
-//   Menu,
-//   X,
-//   Copy,
-//   Facebook,
-//   MessageCircle,
-//   Instagram,
-//   Twitter,
-//   Star,
-//   ArrowRight,
-// } from "lucide-react";
-// import {
-//   useGetPostBySlugQuery,
-//   useGetRecentPostsQuery,
-//   useSearchPostsQuery,
-// } from "../../components/Blogsection/BlogEditorApiSlice";
-
-// const slugify = (str) =>
-//   str
-//     ? str
-//         .toLowerCase()
-//         .replace(/ /g, "-")
-//         .replace(/[^\w-]/g, "")
-//     : "";
-
-// const BlogPostDetail = () => {
-//   const { slug } = useParams();
-//   const navigate = useNavigate();
-
-//   // Use RTK Query hooks
-//   const {
-//     data: postData,
-//     isLoading: isPostLoading,
-//     error: postError,
-//   } = useGetPostBySlugQuery(slug, {
-//     skip: !slug,
-//   });
-
-//   const { data: recentPostsData, isLoading: isRecentPostsLoading } =
-//     useGetRecentPostsQuery(5, {
-//       skip: !slug,
-//     });
-
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [sidebarOpen, setSidebarOpen] = useState(false);
-//   const [shareDropdownOpen, setShareDropdownOpen] = useState(false);
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     email: "",
-//     message: "",
-//   });
-//   const [formErrors, setFormErrors] = useState({});
-
-//   // Use search API instead of local filtering
-//   const { data: searchResults, isLoading: isSearchLoading } =
-//     useSearchPostsQuery(
-//       {
-//         search: searchQuery,
-//         limit: 5,
-//       },
-//       { skip: searchQuery.length < 3 }
-//     );
-
-//   const shareRef = useRef(null);
-//   const searchInputRef = useRef(null);
-
-//   // Redirect to blog list if post not found
-//   useEffect(() => {
-//     if (!isPostLoading && postError) {
-//       navigate("/blog");
-//     }
-//   }, [isPostLoading, postError, navigate]);
-
-//   // Close dropdowns when clicking outside
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (shareRef.current && !shareRef.current.contains(event.target)) {
-//         setShareDropdownOpen(false);
-//       }
-//     };
-
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, []);
-
-//   const handleRecentPostClick = (recentPost) => {
-//     navigate(`/blog/${recentPost.slug || slugify(recentPost.title)}`);
-//     setSidebarOpen(false);
-//   };
-
-//   const handleSearchResultClick = (searchPost) => {
-//     navigate(`/blog/${searchPost.slug || slugify(searchPost.title)}`);
-//     setSidebarOpen(false);
-//     setSearchQuery("");
-//   };
-
-//   const handleSearchInputChange = (e) => {
-//     setSearchQuery(e.target.value);
-//   };
-
-//   // Form handling
-//   const handleFormChange = (e) => {
-//     const { id, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [id]: value }));
-
-//     // Clear error when user types
-//     if (formErrors[id]) {
-//       setFormErrors((prev) => ({ ...prev, [id]: "" }));
-//     }
-//   };
-
-//   const validateForm = () => {
-//     const errors = {};
-//     if (!formData.name.trim()) errors.name = "Name is required";
-//     if (!formData.email.trim()) {
-//       errors.email = "Email is required";
-//     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-//       errors.email = "Email is invalid";
-//     }
-//     if (!formData.message.trim()) errors.message = "Message is required";
-
-//     setFormErrors(errors);
-//     return Object.keys(errors).length === 0;
-//   };
-
-//   const handleFormSubmit = (e) => {
-//     e.preventDefault();
-//     if (validateForm()) {
-//       // Here you would add API call to submit the form
-//       alert("Thank you for your message! We'll get back to you soon.");
-//       setFormData({ name: "", email: "", message: "" });
-//     }
-//   };
-
-//   // Format post date
-//   const formatDate = (dateString) => {
-//     if (!dateString) return "";
-//     let date;
-
-//     // Handle different date formats
-//     if (typeof dateString === "object" && dateString.$date) {
-//       date = new Date(dateString.$date);
-//     } else {
-//       date = new Date(dateString);
-//     }
-
-//     return isNaN(date.getTime()) ? "" : date.toLocaleDateString();
-//   };
-
-//   // Helper function to sanitize and render content
-//   // Import Poppins font in your component or in your global CSS
-//   useEffect(() => {
-//     // Add Poppins font if not already in your project
-//     const fontLink = document.createElement("link");
-//     fontLink.href =
-//       "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap";
-//     fontLink.rel = "stylesheet";
-//     document.head.appendChild(fontLink);
-
-//     const styleElement = document.createElement("style");
-//     styleElement.textContent = `
-//     .blog-content {
-//       font-family: 'Poppins', sans-serif;
-//       color: rgba(255, 255, 255, 0.9);
-//       line-height: 1.8;
-//       font-weight: 300;
-//     }
-    
-//     .blog-content h1, .blog-content h2, .blog-content h3, 
-//     .blog-content h4, .blog-content h5, .blog-content h6 {
-//       font-family: 'Poppins', sans-serif;
-//       font-weight: 600;
-//       line-height: 1.3;
-//       margin-top: 2rem;
-//       margin-bottom: 1rem;
-//       color: white;
-//     }
-    
-//     .blog-content h1 { font-size: 2.25rem; }
-//     .blog-content h2 { font-size: 1.75rem; color: #22d3ee; }
-//     .blog-content h3 { font-size: 1.5rem; color: #22d3ee; }
-//     .blog-content h4 { font-size: 1.25rem; }
-    
-//     .blog-content p {
-//       margin-bottom: 1.5rem;
-//       font-size: 1rem;
-//       letter-spacing: 0.015em;
-//     }
-    
-//     .blog-content ul, .blog-content ol {
-//       margin-left: 1.75rem;
-//       margin-bottom: 1.5rem;
-//     }
-    
-//     .blog-content li {
-//       margin-bottom: 0.75rem;
-//       position: relative;
-//     }
-    
-//     .blog-content ul li::before {
-//       content: '•';
-//       color: #22d3ee;
-//       position: absolute;
-//       left: -1.25rem;
-//     }
-    
-//     .blog-content a {
-//       color: #22d3ee;
-//       text-decoration: none;
-//       border-bottom: 1px dotted #22d3ee;
-//       transition: all 0.2s ease;
-//     }
-    
-//     .blog-content a:hover {
-//       border-bottom: 1px solid #22d3ee;
-//     }
-    
-//     .blog-content strong, .blog-content b {
-//       font-weight: 600;
-//       color: white;
-//     }
-    
-//     .blog-content em, .blog-content i {
-//       font-style: italic;
-//     }
-    
-//     .blog-content table {
-//       width: 100%;
-//       border-collapse: collapse;
-//       margin-bottom: 2rem;
-//       border-radius: 0.5rem;
-//       overflow: hidden;
-//     }
-    
-//     .blog-content table td, .blog-content table th {
-//       border: 1px solid rgba(55, 65, 81, 0.5);
-//       padding: 0.75rem 1rem;
-//       font-size: 0.95rem;
-//     }
-    
-//     .blog-content table th {
-//       background-color: rgba(15, 23, 42, 0.8);
-//       font-weight: 500;
-//       text-align: left;
-//       color: white;
-//     }
-    
-//     .blog-content table tr:nth-child(even) {
-//       background-color: rgba(15, 23, 42, 0.4);
-//     }
-    
-//     .blog-content table tr:hover {
-//       background-color: rgba(34, 211, 238, 0.1);
-//     }
-    
-//     .blog-content blockquote {
-//       border-left: 4px solid #22d3ee;
-//       padding-left: 1.5rem;
-//       margin-left: 0;
-//       margin-right: 0;
-//       margin-bottom: 1.5rem;
-//       font-style: italic;
-//       color: rgba(255, 255, 255, 0.8);
-//     }
-    
-//     .blog-content hr {
-//       border: 0;
-//       height: 1px;
-//       background: rgba(255, 255, 255, 0.2);
-//       margin: 2rem 0;
-//     }
-    
-//     .blog-content img {
-//       max-width: 100%;
-//       border-radius: 0.5rem;
-//       margin: 1.5rem 0;
-//     }
-//   `;
-//     document.head.appendChild(styleElement);
-
-//     return () => {
-//       document.head.removeChild(styleElement);
-//       document.head.removeChild(fontLink);
-//     };
-//   }, []);
-//   const renderContent = (post) => {
-//     // Add custom styles with Poppins font
-
-//     if (!post) return null;
-
-//     // Check if post has content property
-//     if (post.content) {
-//       // If content is a string (HTML), sanitize and render it
-//       if (typeof post.content === "string") {
-//         const sanitizedContent = DOMPurify.sanitize(post.content, {
-//           ADD_TAGS: [
-//             "table",
-//             "thead",
-//             "tbody",
-//             "tr",
-//             "td",
-//             "th",
-//             "h1",
-//             "h2",
-//             "h3",
-//           ],
-//           ALLOW_TAGS: [
-//             "table",
-//             "thead",
-//             "tbody",
-//             "tr",
-//             "td",
-//             "th",
-//             "h1",
-//             "h2",
-//             "h3",
-//             "p",
-//             "a",
-//             "ul",
-//             "ol",
-//             "li",
-//             "br",
-//             "strong",
-//             "em",
-//             "span",
-//             "img",
-//             "blockquote",
-//             "hr",
-//             "div",
-//           ],
-//         });
-
-//         return (
-//           <div
-//             className="blog-content prose prose-invert max-w-none"
-//             dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-//           />
-//         );
-//       }
-//     }
-
-//     // If no content is available, show excerpt/description
-//     return (
-//       <p className="mb-4 font-poppins">
-//         {post.excerpt || post.description || "No content available."}
-//       </p>
-//     );
-//   };
-
-//   // Loading state
-//   if (isPostLoading) {
-//     return (
-//       <div
-//         className="min-h-screen flex items-center justify-center text-white px-4"
-//         style={{
-//           background:
-//             "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
-//         }}
-//       >
-//         <div className="text-center">
-//           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
-//           <p className="text-lg">Loading post...</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   // Error state
-//   if (postError || !postData) {
-//     return (
-//       <div
-//         className="min-h-screen flex items-center justify-center text-white px-4"
-//         style={{
-//           background:
-//             "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
-//         }}
-//       >
-//         <div className="text-center bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl rounded-2xl border border-red-400/30 p-8 max-w-md">
-//           <div className="text-red-400 mb-4">
-//             <X className="w-16 h-16 mx-auto" />
-//           </div>
-//           <h2 className="text-2xl font-bold text-white mb-4">Post Not Found</h2>
-//           <p className="text-gray-300 mb-6">
-//             The blog post you're looking for couldn't be found or may have been
-//             removed.
-//           </p>
-//           <button
-//             onClick={() => navigate("/blog")}
-//             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg hover:from-cyan-600 hover:to-teal-600 transition-colors"
-//           >
-//             Return to Blog
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   }
-//   // Get post data
-//   const post = postData.data.post;
-//   const postTitle = post.title || "";
-//   const postDate = formatDate(
-//     post.publishedAt || post.createdAt?.$date || post.date
-//   );
-//   console.log(post.coverImage,"hello")
-//   const postImage = post.coverImage;
-
-//   const postViews = post.views || post.analytics?.views || 0;
-//   const postCategory = post.categories?.[0] || post.category || "";
-//   const postTags = post.tags || [];
-
-//   // Create share options with the actual post data
-//   const shareOptions = [
-//     {
-//       name: "Copy Link",
-//       icon: Copy,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${
-//           post.slug || slugify(post.title)
-//         }`;
-//         navigator.clipboard.writeText(url).then(() => {
-//           alert("Link copied to clipboard!");
-//           setShareDropdownOpen(false);
-//         });
-//       },
-//     },
-//     {
-//       name: "Facebook",
-//       icon: Facebook,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${
-//           post.slug || slugify(post.title)
-//         }`;
-//         window.open(
-//           `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-//             url
-//           )}`,
-//           "_blank"
-//         );
-//         setShareDropdownOpen(false);
-//       },
-//     },
-//     {
-//       name: "Twitter",
-//       icon: Twitter,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${
-//           post.slug || slugify(post.title)
-//         }`;
-//         const text = post.title;
-//         window.open(
-//           `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-//             text
-//           )}&url=${encodeURIComponent(url)}`,
-//           "_blank"
-//         );
-//         setShareDropdownOpen(false);
-//       },
-//     },
-//     {
-//       name: "WhatsApp",
-//       icon: MessageCircle,
-//       action: () => {
-//         const url = `${window.location.origin}/blog/${
-//           post.slug || slugify(post.title)
-//         }`;
-//         const text = `Check out this blog post: ${post.title}`;
-//         window.open(
-//           `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`,
-//           "_blank"
-//         );
-//         setShareDropdownOpen(false);
-//       },
-//     },
-//     {
-//       name: "Instagram",
-//       icon: Instagram,
-//       action: () => {
-//         // Instagram doesn't have direct sharing URL, so copy link instead
-//         const url = `${window.location.origin}/blog/${
-//           post.slug || slugify(post.title)
-//         }`;
-//         navigator.clipboard.writeText(url).then(() => {
-//           alert(
-//             "Link copied! You can paste it in your Instagram story or bio."
-//           );
-//           setShareDropdownOpen(false);
-//         });
-//       },
-//     },
-//   ];
-
-//   const Sidebar = () => (
-//     <aside className="space-y-4 sm:space-y-6">
-//       {/* Search Box */}
-//       <div className="relative group">
-//         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-//         <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4">
-//           <div className="relative">
-//             <input
-//               ref={searchInputRef}
-//               type="text"
-//               value={searchQuery}
-//               onChange={handleSearchInputChange}
-//               placeholder="Search all blogs..."
-//               className="w-full bg-transparent text-cyan-100 placeholder-cyan-300/60 focus:outline-none text-sm pr-8"
-//             />
-//             <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white w-4 h-4" />
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Recent Posts / Search Results */}
-//       <div className="relative group">
-//         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-//         <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4 sm:p-5">
-//           <div className="flex items-center gap-2 mb-4">
-//             <TrendingUp className="w-4 h-4 text-cyan-400" />
-//             <h3 className="font-semibold text-cyan-100 text-sm">
-//               {searchQuery.length >= 3 ? `Search Results` : "Recent Posts"}
-//             </h3>
-//           </div>
-
-//           <div className="space-y-3 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-400/30 scrollbar-track-transparent">
-//             {searchQuery.length >= 3 ? (
-//               // Show search results
-//               isSearchLoading ? (
-//                 <div className="flex flex-col space-y-3">
-//                   {[...Array(3)].map((_, i) => (
-//                     <div
-//                       key={i}
-//                       className="animate-pulse flex items-center gap-3"
-//                     >
-//                       <div className="w-12 h-12 rounded-full bg-cyan-800/30"></div>
-//                       <div className="flex-1">
-//                         <div className="h-4 bg-cyan-800/30 rounded w-3/4 mb-2"></div>
-//                         <div className="h-3 bg-cyan-800/20 rounded w-1/2"></div>
-//                       </div>
-//                     </div>
-//                   ))}
-//                 </div>
-//               ) : searchResults?.data?.posts?.length > 0 ? (
-//                 searchResults.data.posts.map((result) => {
-//                   const resultTitle = result.title || "";
-//                   const resultDescription =
-//                     result.excerpt || result.description || "";
-//                   const resultImage =
-//                     result.coverImage || result.meta?.ogImage || result.image;
-//                   const resultId = result._id?.$oid || result.id || result.slug;
-
-//                   return (
-//                     <button
-//                       key={resultId}
-//                       onClick={() => handleSearchResultClick(result)}
-//                       className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-500/10 flex items-center gap-3"
-//                     >
-//                       {resultImage ? (
-//                         <img
-//                           src={resultImage}
-//                           alt={resultTitle}
-//                           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
-//                         />
-//                       ) : (
-//                         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-800/30 flex-shrink-0 flex items-center justify-center">
-//                           <Star className="w-5 h-5 text-cyan-400/50" />
-//                         </div>
-//                       )}
-//                       <div className="flex flex-col flex-grow text-white text-xs">
-//                         <span className="line-clamp-2 text-left">
-//                           {resultTitle}
-//                         </span>
-//                         <span className="text-cyan-300/50 text-xs mt-1 line-clamp-1">
-//                           {resultDescription}
-//                         </span>
-//                       </div>
-//                     </button>
-//                   );
-//                 })
-//               ) : (
-//                 <div className="flex items-center justify-center h-32">
-//                   <p className="text-cyan-300/60 text-sm text-center">
-//                     No results found for "{searchQuery}"
-//                   </p>
-//                 </div>
-//               )
-//             ) : // Show recent posts
-//             isRecentPostsLoading ? (
-//               <div className="flex flex-col space-y-3">
-//                 {[...Array(3)].map((_, i) => (
-//                   <div
-//                     key={i}
-//                     className="animate-pulse flex items-center gap-3"
-//                   >
-//                     <div className="w-12 h-12 rounded-full bg-cyan-800/30"></div>
-//                     <div className="flex-1">
-//                       <div className="h-4 bg-cyan-800/30 rounded w-3/4"></div>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             ) : recentPostsData?.length > 0 ? (
-//               recentPostsData.map((rp) => {
-//                 const rpTitle = rp.title || "";
-//                 const rpImage = rp.coverImage || rp.meta?.ogImage || rp.image;
-//                 const rpId = rp._id?.$oid || rp.id || rp.slug;
-
-//                 return (
-//                   <button
-//                     key={rpId}
-//                     onClick={() => handleRecentPostClick(rp)}
-//                     className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-500/10 flex items-center gap-3"
-//                   >
-//                     {rpImage ? (
-//                       <img
-//                         src={rpImage}
-//                         alt={rpTitle}
-//                         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
-//                       />
-//                     ) : (
-//                       <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-800/30 flex-shrink-0 flex items-center justify-center">
-//                         <Star className="w-5 h-5 text-cyan-400/50" />
-//                       </div>
-//                     )}
-//                     <div className="flex flex-col flex-grow text-white text-xs">
-//                       <span className="line-clamp-2 text-left">{rpTitle}</span>
-//                     </div>
-//                   </button>
-//                 );
-//               })
-//             ) : (
-//               <div className="flex items-center justify-center h-32">
-//                 <p className="text-cyan-300/60 text-sm">
-//                   No recent posts available.
-//                 </p>
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Contact Form */}
-//       <div className="relative group">
-//         <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-teal-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
-//         <div className="relative bg-gradient-to-br from-cyan-950/80 to-teal-950/70 backdrop-blur-xl rounded-2xl border border-cyan-400/30 p-4 sm:p-5">
-//           <h3 className="font-semibold text-cyan-100 text-sm mb-4">
-//             Get in Touch
-//           </h3>
-//           <form className="space-y-4" onSubmit={handleFormSubmit}>
-//             <div>
-//               <label htmlFor="name" className="sr-only">
-//                 Name
-//               </label>
-//               <input
-//                 type="text"
-//                 id="name"
-//                 value={formData.name}
-//                 onChange={handleFormChange}
-//                 placeholder="Your Name"
-//                 className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm ${
-//                   formErrors.name ? "border border-red-500" : ""
-//                 }`}
-//               />
-//               {formErrors.name && (
-//                 <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>
-//               )}
-//             </div>
-//             <div>
-//               <label htmlFor="email" className="sr-only">
-//                 Email
-//               </label>
-//               <input
-//                 type="email"
-//                 id="email"
-//                 value={formData.email}
-//                 onChange={handleFormChange}
-//                 placeholder="Your Email"
-//                 className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm ${
-//                   formErrors.email ? "border border-red-500" : ""
-//                 }`}
-//               />
-//               {formErrors.email && (
-//                 <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>
-//               )}
-//             </div>
-//             <div>
-//               <label htmlFor="message" className="sr-only">
-//                 Message
-//               </label>
-//               <textarea
-//                 id="message"
-//                 rows="4"
-//                 value={formData.message}
-//                 onChange={handleFormChange}
-//                 placeholder="Your Message"
-//                 className={`w-full px-3 py-2 bg-white/10 rounded-md text-cyan-100 placeholder-cyan-300/60 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-sm resize-none ${
-//                   formErrors.message ? "border border-red-500" : ""
-//                 }`}
-//               ></textarea>
-//               {formErrors.message && (
-//                 <p className="text-red-500 text-xs mt-1">
-//                   {formErrors.message}
-//                 </p>
-//               )}
-//             </div>
-//             <button
-//               type="submit"
-//               className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white py-2 rounded-full font-semibold hover:from-cyan-600 hover:to-teal-600 transition-colors duration-300"
-//             >
-//               Send Message
-//             </button>
-//           </form>
-//         </div>
-//       </div>
-//     </aside>
-//   );
-
-//   return (
-//     <div
-//       className="min-h-screen px-4 sm:px-6 py-4 sm:py-8"
-//       style={{
-//         background:
-//           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
-//       }}
-//     >
-//       <div className="w-full mx-auto max-w-screen">
-//         {/* Mobile Sidebar Toggle */}
-//         <div className="lg:hidden mb-4">
-//           <button
-//             onClick={() => setSidebarOpen(!sidebarOpen)}
-//             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-lg font-medium hover:from-cyan-600 hover:to-teal-600 transition-colors duration-300"
-//           >
-//             {sidebarOpen ? (
-//               <X className="w-4 h-4" />
-//             ) : (
-//               <Menu className="w-4 h-4" />
-//             )}
-//             {sidebarOpen ? "Close Menu" : "Menu"}
-//           </button>
-//         </div>
-
-//         {/* Mobile Sidebar Overlay */}
-//         {sidebarOpen && (
-//           <div
-//             className="lg:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-//             onClick={() => setSidebarOpen(false)}
-//           >
-//             <div
-//               className="fixed right-0 top-0 h-full w-80 max-w-[90vw] bg-gradient-to-br from-slate-900 to-slate-800 overflow-y-auto p-4"
-//               onClick={(e) => e.stopPropagation()}
-//             >
-//               <div className="flex justify-between items-center mb-6">
-//                 <h2 className="text-lg font-semibold text-white">Menu</h2>
-//                 <button
-//                   onClick={() => setSidebarOpen(false)}
-//                   className="p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
-//                 >
-//                   <X className="w-5 h-5" />
-//                 </button>
-//               </div>
-//               <Sidebar />
-//             </div>
-//           </div>
-//         )}
-
-//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
-//           <main className="lg:col-span-3">
-//             <article className="relative rounded-2xl p-4 sm:p-6 shadow-lg bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl border border-cyan-400/20">
-//               {/* Back button */}
-//               <button
-//                 onClick={() => navigate("/blog")}
-//                 className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:text-cyan-300 mb-4 transition-colors"
-//               >
-//                 <ArrowRight className="w-4 h-4 transform rotate-180" />
-//                 Back to all posts
-//               </button>
-
-//               {/* Headline */}
-//               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-//                 {postTitle}
-//               </h1>
-//               <img
-//                 src={postImage}
-//                 alt={postTitle}
-//                 className="w-full h-48 xs:h-56 sm:h-72 md:h-80 lg:h-96 xl:h-[500px] 2xl:h-[600px] object-cover mx-auto rounded-lg shadow-lg"
-//                 loading="lazy"
-//               />
-//               {/* Image */}
-
-//               {/* Meta Info */}
-//               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-white mb-6 border-b border-cyan-700/30 pb-4">
-//                 {postDate && (
-//                   <div className="flex items-center gap-1">
-//                     <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-//                     <span>{postDate}</span>
-//                   </div>
-//                 )}
-
-//                 {postCategory && (
-//                   <span className="inline-block px-2 sm:px-3 py-1 bg-cyan-800/50 rounded-full text-xs font-medium text-white">
-//                     {postCategory}
-//                   </span>
-//                 )}
-
-//                 {postViews > 0 && (
-//                   <div className="flex items-center gap-1">
-//                     <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-//                     <span>{postViews} views</span>
-//                   </div>
-//                 )}
-
-//                 {/* Share Button with Dropdown */}
-//                 <div className="ml-auto relative" ref={shareRef}>
-//                   <button
-//                     onClick={() => setShareDropdownOpen(!shareDropdownOpen)}
-//                     className="rounded-full hover:bg-white/10 p-2 text-white transition-colors duration-200"
-//                     title="Share Post"
-//                   >
-//                     <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
-//                   </button>
-
-//                   {/* Share Dropdown */}
-//                   {shareDropdownOpen && (
-//                     <div className="absolute right-0 top-full mt-2 z-20 bg-gradient-to-br from-cyan-950/95 to-teal-950/90 backdrop-blur-xl rounded-xl border border-cyan-400/30 min-w-48 shadow-xl">
-//                       {shareOptions.map((option, index) => (
-//                         <button
-//                           key={index}
-//                           onClick={option.action}
-//                           className="w-full text-left flex items-center gap-3 px-4 py-3 hover:bg-cyan-500/10 transition-colors duration-200 first:rounded-t-xl last:rounded-b-xl"
-//                         >
-//                           <option.icon className="w-4 h-4 text-cyan-400" />
-//                           <span className="text-white text-sm">
-//                             {option.name}
-//                           </span>
-//                         </button>
-//                       ))}
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-
-//               {/* Full Information/Content */}
-//               <div className="prose prose-invert max-w-none text-white leading-relaxed">
-//                 {renderContent(post)}
-//               </div>
-
-//               {/* Related tags if available */}
-//               {postTags && postTags.length > 0 && (
-//                 <div className="mt-8 pt-4 border-t border-cyan-700/30">
-//                   <h3 className="text-sm font-medium text-white mb-3">
-//                     Related Topics
-//                   </h3>
-//                   <div className="flex flex-wrap gap-2">
-//                     {postTags.map((tag, index) => (
-//                       <span
-//                         key={index}
-//                         className="px-3 py-1 text-xs bg-cyan-800/30 text-cyan-300 rounded-full"
-//                       >
-//                         {tag}
-//                       </span>
-//                     ))}
-//                   </div>
-//                 </div>
-//               )}
-//             </article>
-//           </main>
-
-//           {/* Desktop Sidebar */}
-//           <div className="hidden lg:block lg:col-span-1">
-//             <div className="sticky top-4">
-//               <Sidebar />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BlogPostDetail;

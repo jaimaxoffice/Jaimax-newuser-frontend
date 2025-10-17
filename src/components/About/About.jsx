@@ -318,7 +318,7 @@ const JaimaxOverview = () => {
   };
 
   return (
-    <div className="relative min-h-screen text-white overflow-hidden">
+    <div className="relative min-h-screen text-white overflow-hidden bg-[#085056]">
       <Seo page="about" />
       <FloatingParticles />
 
@@ -343,7 +343,7 @@ const JaimaxOverview = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight bg-gradient-to-r from-teal-400 via-green-400 to-emerald-500 bg-clip-text text-transparent mb-4 drop-shadow-lg"
             >
-              Our Story
+              About Jaimax
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: -20 }}
@@ -351,7 +351,7 @@ const JaimaxOverview = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="text-base sm:text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto [text-shadow:_0_2px_4px_rgb(0_0_0_/_70%)] px-2"
             >
-              Pioneering a secure, transparent, and people-powered future in digital finance.
+              Building the Future of Digital Finance
             </motion.p>
             <motion.div
               initial={{ width: 0 }}
@@ -372,7 +372,11 @@ const JaimaxOverview = () => {
               We are helping people get success.
             </h2>
             <p className="text-white max-w-lg leading-relaxed text-center lg:text-left">
-              Jaimax aims to be the top crypto project from India, creating impact far beyond borders. We're building a financial ecosystem that connects users, traders, and learners. With our strong blockchain foundation, we offer a safe and secure space for everyone to explore the future of crypto.
+              Jaimax is an innovative cryptocurrency in India designed to transform the way people invest, transact, and grow in the blockchain era. As a secure and utility-driven crypto coin, Jaimax brings together technology, transparency, and trust to create a strong foundation for the future of decentralized finance (DeFi).
+              {/* Jaimax aims to be the top crypto project from India, creating impact far beyond borders. We're building a financial ecosystem that connects users, traders, and learners. With our strong blockchain foundation, we offer a safe and secure space for everyone to explore the future of crypto. */}
+            </p>
+            <p>
+              
             </p>
           </div>
 

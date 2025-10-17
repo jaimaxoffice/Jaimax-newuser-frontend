@@ -1,6 +1,7 @@
 import React, { useState, useRef,useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 // import CheckCircleIcon  from "react-lucide";
 import {
   useRequestCreatePinOtpMutation,
@@ -16,6 +17,7 @@ const defaultQuestions = [
   "What is your favorite color?",
 ];
 
+
 export default function CreateWalletPin({ onClose }) {
   // Step state
   const [step, setStep] = useState(1);
@@ -23,13 +25,15 @@ export default function CreateWalletPin({ onClose }) {
 
   // Form state
   const [pin, setPin] = useState("");
-  const [confirmPin, setConfirmPin] = useState("");
+  
+const [showConfirmPin, setShowConfirmPin] = useState(false);
   const [questions, setQuestions] = useState([
     { question: defaultQuestions[0], answer: "" },
     { question: defaultQuestions[1], answer: "" },
   ]);
   const [otp, setOtp] = useState("");
-  
+  const [confirmPin, setConfirmPin] = useState("");
+  const [showPin, setShowPin] = useState(false);
   // API hooks
   const [
     requestOtp,
@@ -139,7 +143,7 @@ export default function CreateWalletPin({ onClose }) {
             onSubmit={handleRequestOtp}
             className="space-y-3 sm:space-y-4"
           >
-            <div>
+            {/* <div>
               <label className="block text-xs sm:text-sm font-medium mb-1.5 text-teal-800">
                 PIN
               </label>
@@ -153,8 +157,8 @@ export default function CreateWalletPin({ onClose }) {
                 placeholder="Enter 4-6 digit PIN"
                 required
               />
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
               <label className="block text-xs sm:text-sm font-medium mb-1.5 text-teal-800">
                 Confirm PIN
               </label>
@@ -168,7 +172,63 @@ export default function CreateWalletPin({ onClose }) {
                 placeholder="Confirm your PIN"
                 required
               />
-            </div>
+            </div> */}
+            <div>
+  <label className="block text-xs sm:text-sm font-medium mb-1.5 text-teal-800">
+    PIN
+  </label>
+  <div className="relative">
+    <input
+      type={showPin ? "text" : "password"}
+      maxLength={6}
+      minLength={4}
+      value={pin}
+      onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
+      className={`${inputClasses} pr-10`} // Add padding for the icon
+      placeholder="Enter 4-6 digit PIN"
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowPin(!showPin)}
+      className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-teal-600 transition-colors"
+    >
+      {showPin ? (
+        <EyeOff className="h-4 w-4" />
+      ) : (
+        <Eye className="h-4 w-4" />
+      )}
+    </button>
+  </div>
+</div>
+            <div>
+  <label className="block text-xs sm:text-sm font-medium mb-1.5 text-teal-800">
+    Confirm PIN
+  </label>
+  <div className="relative">
+    <input
+      type={showConfirmPin ? "text" : "password"}
+      maxLength={6}
+      minLength={4}
+      value={confirmPin}
+      onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ""))}
+      className={`${inputClasses} pr-10`} // Add padding for the icon
+      placeholder="Confirm your PIN"
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowConfirmPin(!showConfirmPin)}
+      className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-teal-600 transition-colors"
+    >
+      {showConfirmPin ? (
+        <EyeOff className="h-4 w-4" />
+      ) : (
+        <Eye className="h-4 w-4" />
+      )}
+    </button>
+  </div>
+</div>
             {questions.map((q, idx) => (
               <div key={idx}>
                 <label className="block text-xs sm:text-sm font-medium mb-1.5 text-teal-800">
@@ -297,201 +357,7 @@ export default function CreateWalletPin({ onClose }) {
     </motion.div>
   );
 }
-// export default function CreateWalletPin() {
-//   // Step state
-//   const [step, setStep] = useState(1);
-//   const navigate = useNavigate();
 
-//   // Form state
-//   const [pin, setPin] = useState("");
-
-//   const [confirmPin, setConfirmPin] = useState("");
-//   const [questions, setQuestions] = useState([
-//     { question: defaultQuestions[0], answer: "" },
-//     { question: defaultQuestions[1], answer: "" },
-//   ]);
-//   const [otp, setOtp] = useState("");
-//   // API hooks
-//   const [
-//     requestOtp,
-//     { isLoading: requestingOtp, error: otpError, data: otpData },
-//   ] = useRequestCreatePinOtpMutation();
-//   const [
-//     createPin,
-//     { isLoading: creatingPin, error: createPinError, data: createPinData },
-//   ] = useCreatePinMutation();
-
-//   // Error state
-//   const [formError, setFormError] = useState("");
-
-//   // Handlers
-//   const handleRequestOtp = async (e) => {
-//     e.preventDefault();
-//     setFormError("");
-
-//     // Basic validation
-//     if (!/^\d{4,6}$/.test(pin)) {
-//       setFormError("PIN must be 4-6 digits.");
-//       return;
-//     }
-//     if (pin !== confirmPin) {
-//       setFormError("PIN and Confirm PIN do not match.");
-//       return;
-//     }
-//     if (questions.some((q) => !q.answer.trim())) {
-//       setFormError("Please answer both security questions.");
-//       return;
-//     }
-
-//     try {
-//       const res = await requestOtp({
-//         pin,
-//         confirmPin,
-//         securityQuestions: questions,
-//       }).unwrap();
-//       if (res.success) setStep(2);
-//     } catch (err) {
-//       setFormError(err?.data?.message || "Failed to request OTP.");
-//     }
-//   };
-
-//   const handleCreatePin = async (e) => {
-//     e.preventDefault();
-//     setFormError("");
-//     if (!otp) {
-//       setFormError("Please enter the OTP.");
-//       return;
-//     }
-//     try {
-//       const res = await createPin({ otp }).unwrap();
-//       if (res.success) setStep(3);
-//     } catch (err) {
-//       setFormError(err?.data?.message || "Failed to create PIN.");
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-md mx-auto mt-4 sm:mt-8 backdrop-blur-md bg-white/70 shadow-lg rounded-xl p-4 sm:p-6 border border-teal-100/50">
-//       <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-center text-teal-700">
-//         {step === 1 && "Create Wallet PIN"}
-//         {step === 2 && "Verify OTP"}
-//         {step === 3 && "PIN Created!"}
-//       </h2>
-
-//       {formError && (
-//         <div className="mb-2 sm:mb-3 text-red-600 text-xs sm:text-sm text-center">
-//           {formError}
-//         </div>
-//       )}
-
-//       {/* Step 1: Request OTP */}
-//       {step === 1 && (
-//         <form onSubmit={handleRequestOtp} className="space-y-2 sm:space-y-3">
-//           <div>
-//             <label className="block text-xs sm:text-sm font-medium mb-1 text-teal-800">
-//               PIN
-//             </label>
-//             <input
-//               type="password"
-//               maxLength={6}
-//               minLength={4}
-//               value={pin}
-//               onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
-//               className="w-full border border-teal-200 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring focus:ring-teal-300 bg-white/50 backdrop-blur-sm"
-//               required
-//             />
-//           </div>
-//           <div>
-//             <label className="block text-xs sm:text-sm font-medium mb-1 text-teal-800">
-//               Confirm PIN
-//             </label>
-//             <input
-//               type="password"
-//               maxLength={6}
-//               minLength={4}
-//               value={confirmPin}
-//               onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ""))}
-//               className="w-full border border-teal-200 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring focus:ring-teal-300 bg-white/50 backdrop-blur-sm"
-//               required
-//             />
-//           </div>
-//           {questions.map((q, idx) => (
-//             <div key={idx}>
-//               <label className="block text-xs sm:text-sm font-medium mb-1 text-teal-800">
-//                 {q.question}
-//               </label>
-//               <input
-//                 type="text"
-//                 value={q.answer}
-//                 onChange={(e) => {
-//                   const newQuestions = [...questions];
-//                   newQuestions[idx].answer = e.target.value;
-//                   setQuestions(newQuestions);
-//                 }}
-//                 className="w-full border border-teal-200 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring focus:ring-teal-300 bg-white/50 backdrop-blur-sm"
-//                 required
-//               />
-//             </div>
-//           ))}
-//           <button
-//             type="submit"
-//             className="w-full bg-teal-600 text-white py-1.5 sm:py-2 rounded-lg hover:bg-teal-700 transition shadow-md text-sm sm:text-base mt-2"
-//             disabled={requestingOtp}
-//           >
-//             {requestingOtp ? "Requesting..." : "Request OTP"}
-//           </button>
-//         </form>
-//       )}
-
-//       {/* Step 2: Enter OTP */}
-//       {step === 2 && (
-//         <form onSubmit={handleCreatePin} className="space-y-2 sm:space-y-3">
-//           <div className="mb-2 text-center text-teal-600 text-xs sm:text-sm">
-//             {otpData?.data?.email
-//               ? `OTP sent to: ${otpData.data.email}`
-//               : "OTP sent to registered email/phone"}
-//           </div>
-//           <div>
-//             <label className="block text-xs sm:text-sm font-medium mb-1 text-teal-800">
-//               Enter OTP
-//             </label>
-//             <input
-//               type="text"
-//               maxLength={6}
-//               value={otp}
-//               onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-//               className="w-full border border-teal-200 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm focus:outline-none focus:ring focus:ring-teal-300 bg-white/50 backdrop-blur-sm"
-//               required
-//             />
-//           </div>
-//           <button
-//             type="submit"
-//             className="w-full bg-teal-600 text-white py-1.5 sm:py-2 rounded-lg hover:bg-teal-700 transition shadow-md text-sm sm:text-base mt-2"
-//             disabled={creatingPin}
-//           >
-//             {creatingPin ? "Verifying..." : "Verify & Create PIN"}
-//           </button>
-//         </form>
-//       )}
-
-//       {/* Step 3: Success */}
-//       {step === 3 && (
-//         <div className="text-center py-2 sm:py-4">
-//           <div className="text-teal-600 text-4xl sm:text-5xl mb-2 sm:mb-3">
-//             ✓
-//           </div>
-//           <div className="text-base sm:text-lg font-medium mb-2 sm:mb-3 text-teal-800">
-//             Wallet PIN created successfully!
-//           </div>
-//           <div className="p-1.5 sm:p-2 border border-teal-200 rounded-lg bg-teal-50/50 backdrop-blur-sm text-teal-700 text-xs sm:text-sm">
-//             You can now access your wallet
-//           </div>
-//         </div>
-//       )}
-//     </div>
-
-//   );
-// }
 
 
 export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
@@ -553,7 +419,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
   };
 
   return (
-    <div className="fixed inset-0 b  flex items-center justify-center z-50 m-2 ">
+    <div className="fixed inset-0   flex items-center justify-center z-50 mr-2 ">
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 flex flex-col items-center relative"
@@ -561,7 +427,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
         <button
           type="button"
           onClick={handleClose}
-          className="absolute top-4 right-4 text-teal-700 hover:text-teal-900 transition"
+          className="absolute top-4 right-4 text-teal-700 hover:text-teal-900 transition "
           aria-label="Close"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -622,6 +488,7 @@ export function ForgotPinModal({ onClose }) {
   const [step, setStep] = useState(1);
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+  
   const [answers, setAnswers] = useState(["", ""]);
   const [newPin, setNewPin] = useState("");
   const [confirmNewPin, setConfirmNewPin] = useState("");
@@ -630,6 +497,9 @@ export function ForgotPinModal({ onClose }) {
     useRequestForgetPinOtpMutation();
   const [forgetPin, { isLoading: resettingPin }] = useForgetPinMutation();
   const { data: questionsData } = useGetSecurityQuestionsQuery();
+  const [showNewPin, setShowNewPin] = useState(false);
+const [showConfirmNewPin, setShowConfirmNewPin] = useState(false);
+
 
   // Step 1: Request OTP
   const handleRequestOtp = async () => {
@@ -735,36 +605,60 @@ export function ForgotPinModal({ onClose }) {
                 />
               </div>
             ))}
-            <div className="mb-2 w-full">
-              <label className="block text-sm font-medium mb-1 text-teal-700">
-                New PIN
-              </label>
-              <input
-                type="password"
-                value={newPin}
-                onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))}
-                className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
-                maxLength={6}
-                minLength={4}
-                required
-              />
-            </div>
-            <div className="mb-2 w-full">
-              <label className="block text-sm font-medium mb-1 text-teal-700">
-                Confirm New PIN
-              </label>
-              <input
-                type="password"
-                value={confirmNewPin}
-                onChange={(e) =>
-                  setConfirmNewPin(e.target.value.replace(/\D/g, ""))
-                }
-                className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
-                maxLength={6}
-                minLength={4}
-                required
-              />
-            </div>
+           <div className="mb-2 w-full">
+  <label className="block text-sm font-medium mb-1 text-teal-700">
+    New PIN
+  </label>
+  <div className="relative">
+    <input
+      type={showNewPin ? "text" : "password"}
+      value={newPin}
+      onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))}
+      className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 pr-10 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
+      maxLength={6}
+      minLength={4}
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowNewPin(!showNewPin)}
+      className="absolute inset-y-0 right-0 flex items-center px-3 text-teal-500 hover:text-teal-700 transition-colors"
+    >
+      {showNewPin ? (
+        <EyeOff className="h-4 w-4" />
+      ) : (
+        <Eye className="h-4 w-4" />
+      )}
+    </button>
+  </div>
+</div>
+           <div className="mb-2 w-full">
+  <label className="block text-sm font-medium mb-1 text-teal-700">
+    Confirm New PIN
+  </label>
+  <div className="relative">
+    <input
+      type={showConfirmNewPin ? "text" : "password"}
+      value={confirmNewPin}
+      onChange={(e) => setConfirmNewPin(e.target.value.replace(/\D/g, ""))}
+      className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 pr-10 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
+      maxLength={6}
+      minLength={4}
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowConfirmNewPin(!showConfirmNewPin)}
+      className="absolute inset-y-0 right-0 flex items-center px-3 text-teal-500 hover:text-teal-700 transition-colors"
+    >
+      {showConfirmNewPin ? (
+        <EyeOff className="h-4 w-4" />
+      ) : (
+        <Eye className="h-4 w-4" />
+      )}
+    </button>
+  </div>
+</div>
             {error && <div className="text-red-600 mb-2">{error}</div>}
             <button
               type="submit"
@@ -797,6 +691,8 @@ export function ChangePinModal({ onClose }) {
   const [pin, setPin] = useState("");
   const [newPin, setNewPin] = useState("");
   const [confirmNewPin, setConfirmNewPin] = useState("");
+  const [showNewPin, setShowNewPin] = useState(false);
+const [showConfirmNewPin, setShowConfirmNewPin] = useState(false);
   const [error, setError] = useState("");
   const [modifyPin, { isLoading }] = useModifyPinMutation();
   const navigate = useNavigate();
@@ -846,35 +742,61 @@ export function ChangePinModal({ onClose }) {
           />
         </div>
         <div className="mb-2 w-full">
-          <label className="block text-sm font-medium mb-1 text-teal-700">
-            New PIN
-          </label>
-          <input
-            type="password"
-            value={newPin}
-            onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))}
-            className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
-            maxLength={6}
-            minLength={4}
-            required
-          />
-        </div>
-        <div className="mb-2 w-full">
-          <label className="block text-sm font-medium mb-1 text-teal-700">
-            Confirm New PIN
-          </label>
-          <input
-            type="password"
-            value={confirmNewPin}
-            onChange={(e) =>
-              setConfirmNewPin(e.target.value.replace(/\D/g, ""))
-            }
-            className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
-            maxLength={6}
-            minLength={4}
-            required
-          />
-        </div>
+  <label className="block text-sm font-medium mb-1 text-teal-700">
+    New PIN
+  </label>
+  <div className="relative">
+    <input
+      type={showNewPin ? "text" : "password"}
+      value={newPin}
+      onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ""))}
+      className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 pr-10 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
+      maxLength={6}
+      minLength={4}
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowNewPin(!showNewPin)}
+      className="absolute inset-y-0 right-0 flex items-center px-3 text-teal-500 hover:text-teal-700 transition-colors"
+    >
+      {showNewPin ? (
+        <EyeOff className="h-4 w-4" />
+      ) : (
+        <Eye className="h-4 w-4" />
+      )}
+    </button>
+  </div>
+</div>
+      <div className="mb-2 w-full">
+  <label className="block text-sm font-medium mb-1 text-teal-700">
+    Confirm New PIN
+  </label>
+  <div className="relative">
+    <input
+      type={showConfirmNewPin ? "text" : "password"}
+      value={confirmNewPin}
+      onChange={(e) =>
+        setConfirmNewPin(e.target.value.replace(/\D/g, ""))
+      }
+      className="w-full border-2 border-teal-200 rounded-lg px-3 py-2 pr-10 bg-teal-50 focus:border-teal-500 focus:bg-white focus:outline-none transition"
+      maxLength={6}
+      minLength={4}
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowConfirmNewPin(!showConfirmNewPin)}
+      className="absolute inset-y-0 right-0 flex items-center px-3 text-teal-500 hover:text-teal-700 transition-colors"
+    >
+      {showConfirmNewPin ? (
+        <EyeOff className="h-4 w-4" />
+      ) : (
+        <Eye className="h-4 w-4" />
+      )}
+    </button>
+  </div>
+</div>
         {error && <div className="text-red-600 mb-2">{error}</div>}
         <button
           type="submit"

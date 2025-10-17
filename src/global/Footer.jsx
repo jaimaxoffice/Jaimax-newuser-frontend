@@ -275,6 +275,28 @@ const Footer = () => {
                     path: "/jaimax-whitepaper.pdf",
                     external: true,
                   },
+                  {
+                    name: "Incorporation Certificate",
+                    path: "/IncorporationCertificate.pdf",
+                                  
+                    external: true,
+                  },
+                 
+                  {
+                    name: "Recognition Certificate",
+                    path: "/RecognitionCertificate.pdf",
+                    external: true,
+                  },
+                  {
+                    name: "GST Registration Certificate",
+                    path: "/GSTRegistrationCertificate.pdf",
+                    external: true,
+                  },
+                  {
+                    name: "ISO certification",
+                    path: "/Isocertified.pdf",
+                    external: true,
+                  },
                 ].map((link) => (
                   <li key={link.name}>
                     <NavLink

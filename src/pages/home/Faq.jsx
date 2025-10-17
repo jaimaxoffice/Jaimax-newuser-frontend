@@ -297,7 +297,7 @@ const JaimaxFAQ = () => {
   };
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen bg-[#085056]">
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{

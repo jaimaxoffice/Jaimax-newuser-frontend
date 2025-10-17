@@ -530,7 +530,7 @@ const JaimaxLanding = () => {
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white bg-[#085056]">
       {/* Hero Section */}
       <Seo page="features" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useCallback, useMemo } from "react";
+import React, { useEffect, useReducer, useCallback, useMemo,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -12,6 +12,7 @@ import {
   Filter,
   ChevronDown,
   Share2,
+  Check,
 } from "lucide-react";
 import Pagination from "../../../pagination/pagination";
 import { useUserDetailsQuery } from "./myTotalTeamApiSlice";
@@ -73,13 +74,45 @@ const MyTotalTeam = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
-const userData = useMemo(() => {
-  const userDataCookie = Cookies.get("userData");
-  return userDataCookie ? JSON.parse(userDataCookie) : {};
-}, []);
+  const userData = useMemo(() => {
+    const userDataCookie = Cookies.get("userData");
+    return userDataCookie ? JSON.parse(userDataCookie) : {};
+  }, []);
+const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
+  const [copied, setCopied] = useState(false);
 
-  const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setCopied(true);
+      
+      // Reset to copy icon after 2 seconds
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      // console.error('Failed to copy text:', error);
+    }
+  };
 
+  return (
+<button
+      onClick={handleCopy}
+      className={`p-1.5 rounded-full text-white ${
+        copied ? "bg-green-500" : "bg-teal-500 hover:bg-teal-600"
+      } transition-colors duration-300 shadow-sm`}
+      title={copied ? "Copied!" : "Copy to clipboard"}
+    >
+      {copied ? (
+        <Check className={`${isMobile ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'}`} />
+      ) : (
+        <Copy className={`${isMobile ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'}`} />
+      )}
+    </button>
+  );
+};
+  // const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
+   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=${userData?.username}`;
   // Query params for server-side pagination
   const queryParams = useMemo(() => {
     return `limit=${state.perPage}&page=${state.currentPage}`;
@@ -102,7 +135,7 @@ const userData = useMemo(() => {
       totalUsers: userDetails?.data?.user?.totalActiveDirectUsers || 0,
       totalChainUsers: userDetails?.data?.user?.totalActiveChainRefs || 0,
       totalPages: userDetails?.data?.pagination?.totalPages || 1,
-      username: userDetails?.data?.user?.username ,
+      username: userDetails?.data?.user?.username,
     };
   }, [userDetails]);
 
@@ -159,6 +192,7 @@ const userData = useMemo(() => {
     }
   }, [userData]);
 
+
   // Generate avatar initials
   const getAvatarInitials = useCallback((name) => {
     if (!name) return "NA";
@@ -176,14 +210,14 @@ const userData = useMemo(() => {
         title: "Total Active Members",
         value: totalUsers,
         icon: <Users className="w-4 h-4" />,
-        gradient: "from-blue-500 to-blue-600",
+        gradient: "from-teal-500 to-teal-600",
         description: "All active members in your team",
       },
       {
         title: "Foundation",
         value: totalChainUsers,
         icon: <UserCheck className="w-4 h-4" />,
-        gradient: "from-purple-500 to-purple-600",
+        gradient: "from-teal-500 to-teal-600",
         description: "Total users in your chain network",
       },
       {
@@ -195,7 +229,7 @@ const userData = useMemo(() => {
         isReferral: true,
       },
     ],
-    [totalUsers, totalChainUsers, userData,username]
+    [totalUsers, totalChainUsers, userData, username]
   );
 
   // Token verification effect
@@ -254,17 +288,11 @@ const userData = useMemo(() => {
                       {box.title}
                     </h3>
                     <div className="flex gap-1.5">
-                      <button
-                        onClick={handleCopyReferralCode}
-                        className={`p-1.5 rounded-full text-white ${
-                          state.copiedCode
-                            ? "bg-green-500"
-                            : "bg-teal-500 hover:bg-teal-600"
-                        } transition-colors duration-300 shadow-sm`}
-                        title="Copy referral code"
-                      >
-                        <Copy className="w-3.5 h-3.5" />
-                      </button>
+                       <CopyToClipboardButton
+                    textToCopy={REGISTER_REFERAL}
+                    isMobile={true}
+                  />
+
                       <button
                         onClick={() =>
                           dispatch({ type: "TOGGLE_REFERRAL_MODAL" })
@@ -494,7 +522,6 @@ const userData = useMemo(() => {
                 key={i}
                 className="bg-white rounded-md p-4 border border-gray-200 hover:border-teal-200 hover:shadow-md transition-all duration-300"
               >
-
                 <div className="flex items-start gap-3">
                   <div className="w-12 h-12 rounded-full flex-shrink-0 shadow-sm overflow-hidden">
                     {data.profile ? (
@@ -502,7 +529,6 @@ const userData = useMemo(() => {
                         src={data?.profile}
                         alt={data.name}
                         className="w-full h-full object-cover rounded-full"
-                        
                       />
                     ) : (
                       <div className="w-full h-full rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-semibold text-sm">
