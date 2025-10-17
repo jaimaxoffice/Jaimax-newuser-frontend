@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { debounce } from 'lodash';
 import image from '../../assets/Images/roadmap.png';
 const roadmapData = {
-
   2025: {
     title: "Innovation & Expansion",
     status: "Active",

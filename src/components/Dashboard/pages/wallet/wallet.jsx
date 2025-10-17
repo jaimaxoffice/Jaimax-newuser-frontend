@@ -35,9 +35,10 @@ const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
         setCopied(false);
       }, 2000);
     } catch (error) {
-      // console.error('Failed to copy text:', error);
+      console.error("Failed to copy:", error);
     }
   };
+
 
   return (
 <button
@@ -55,6 +56,7 @@ const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
     </button>
   );
 };
+
 
 export default function WalletDashboard() {
   const [state, setState] = useState({
@@ -83,7 +85,8 @@ export default function WalletDashboard() {
       console.error("Error parsing userData cookie:", error);
     }
   }
-  const countryCode = userData?.data?.countryCode;
+  const countryCode = userData?.countryCode;
+  console.log(countryCode)
   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
 
   // Construct query parameters for API
@@ -412,7 +415,7 @@ export default function WalletDashboard() {
                     <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                   <CopyToClipboardButton
-                    textToCopy={referralContent}
+                    textToCopy={userData?.username}
                     isMobile={true}
                   />
                 </div>

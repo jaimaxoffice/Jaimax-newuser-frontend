@@ -29,10 +29,11 @@ import USDTJSON from "./usdt.json";
 import trxJSON from "./trx.json";
 import USDCJSON from "./usdc.json";
 import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../../Loader/loader";
 import { useNavigate } from "react-router-dom";
 import icon2 from "../../../../../public/whitejaimaclogo.png";
+import "./jwallet.css";
 
 // Swap state reducer for better state management
 const initialSwapState = {
@@ -630,6 +631,8 @@ const UserDetailsComponent = () => {
         toast.success(`${label} copied to clipboard!`, {
           position: "bottom-right",
           autoClose: 3000,
+          containerId: "wallet-toast",
+          icon: false,
         });
       })
       .catch(() => {
@@ -1975,6 +1978,17 @@ const UserDetailsComponent = () => {
           </div>
         </div>
       )}
+      <ToastContainer
+        enableMultiContainer
+        containerId="wallet-toast"
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        draggable
+        pauseOnHover
+        className="wallet-toast-container"
+      />
     </>
   );
 };

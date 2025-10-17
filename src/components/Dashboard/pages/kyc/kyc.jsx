@@ -4265,6 +4265,8 @@ const KycInformation = () => {
         newErrors.aadhar_doc_back = "The Aadhar doc back field is mandatory.";
       if (isCountryCodeIndia && !formData.pan_doc_front)
         newErrors.pan_doc_front = "The Pan doc front field is mandatory.";
+      if (isCountryCodeIndia && !formData.panNumber)
+        newErrors.panNumber = "The PAN number field is mandatory.";
       if (!isCountryCodeIndia && !formData.dl_doc_front)
         newErrors.dl_doc_front =
           "The Driving License doc front field is mandatory.";

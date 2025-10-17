@@ -1,0 +1,38 @@
+/* Target wallet specific toasts */
+.wallet-toast-container .Toastify__toast--success {
+  background: #16a34a !important; /* Tailwind green-600 */
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Custom single tick icon */
+.wallet-toast-container .Toastify__toast--success::before {
+  content: "✔";
+  font-size: 16px;
+  font-weight: bold;
+  background: #fff;   /* Tailwind green-500 */
+  color: #22c55e;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Close button style */
+.wallet-toast-container .Toastify__close-button {
+  color: #fff !important;
+  opacity: 0.8;
+}
+
+.wallet-toast-container .Toastify__close-button:hover {
+  opacity: 1;
+}

@@ -26,6 +26,8 @@ import Seo from "../SeoContent/Seo";
 import countrycodes from "./countryCodes.json";
 import TermsConditionsModal from "./TermsAndConditions";
 import * as yup from "yup";
+
+
 const Notification = ({ type, message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 5000);
@@ -576,8 +578,9 @@ const RegisterComponent = ({
   onAgreeTerms,
   isConfirmAgree,
 }) => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+  // const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -595,6 +598,7 @@ const [referralApplied, setReferralApplied] = useState(false);
     password: "",
     confirmPassword: "",
     referralId: "",
+    referralLocked: false,
     otp: "",
   });
   const [errors, setErrors] = useState({});
@@ -636,6 +640,20 @@ const [referralApplied, setReferralApplied] = useState(false);
     useVerifyMutation();
   const [OTPresent, { isLoading: isOTPresentLoading, error: OTPresentError }] =
     useOTPresentMutation();
+
+  // when component mounts, check URL for referralCode
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const referralCode = params.get("referralCode");
+  if (referralCode) {
+    setFormData((prev) => ({
+      ...prev,
+      referralId: referralCode,
+      referralLocked: true, // ✅ lock only for link-based refs
+    }));
+  }
+}, [location.search]);
+
 
   const getCurrentCountry = () => {
     const country = countrycodes.find(
@@ -1404,6 +1422,8 @@ const [referralApplied, setReferralApplied] = useState(false);
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
+              readOnly={formData.referralLocked} 
+              // readOnly={!!formData.referralId}
               placeholder="Referral ID (Optional)"
               className={`w-full pl-10 pr-3 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
                 errors.referralId && touched.referralId

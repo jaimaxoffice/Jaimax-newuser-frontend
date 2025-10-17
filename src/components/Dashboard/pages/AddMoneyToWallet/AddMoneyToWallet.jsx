@@ -10,13 +10,10 @@ import {
   useTransferAvailableBalanceMutation,
 } from "../wallet/walletApiSlice";
 import Tesseract from "tesseract.js";
-// import scan from "../../assets/Images/SignUp/scan.png";
 import scan from "../../../../assets/Images/SignUp/newQr.jpg";
 import bhumi from "../../../../assets/Images/SignUp/bhumi.png";
-// import scanners from "../../assets/Images/SignUp/scanners.svg";
 import socialMedia from "../../../../assets/Images/SignUp/socialmedia.svg";
 import CopyToClipboardButton from "../../../../pages/home/CopyToClipboard";
-// import loaderImage from "../../assets/Images/loader.svg";
 import Loader from "../../../Loader/loader";
 import CryptoJS from "crypto-js";
 import { useGetActivePaymentGatewayQuery } from "./AddMoneyApiSlice";
@@ -37,7 +34,8 @@ const AddMoneyToWallet = () => {
     amount: "",
   };
 
-  const [selectedUpiId, setSelectedUpiId] = useState("primary"); // To track which UPI ID is selected
+  const [selectedOption, setSelectedOption] = useState("upi"); // "upi" | "cards" | "bank"
+  const [selectedUpiId, setSelectedUpiId] = useState("primary");
   const fileInputRef = useRef(null);
 
   const [isTransactionIdRead, setIsTransactionIdRead] = useState(false);
@@ -761,6 +759,7 @@ const handleCopy = () => {
   useEffect(() => {
     refetch();
   }, []);
+
   const onClickAddMoney = () => {
     try {
       // Step 1: Get and parse user data from localStorage

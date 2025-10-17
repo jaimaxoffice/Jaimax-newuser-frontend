@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useUserDetailsQueryDataQuery } from "./GoaVacationApiSlice";
 import Loader from "../../../Loader/loader";
 import Cookies from "js-cookie";
+import ReferralModal from "../../modals/referalModal";
 
 const MarketingPlanReferrals = () => {
   const navigate = useNavigate();
+  const [showReferralModal, setShowReferralModal] = useState(false);
   const [state, setState] = useState({
     currentPage: 1,
     perPage: 10,
@@ -337,7 +339,18 @@ const MarketingPlanReferrals = () => {
       </div>
 
       {(isLoading || loading) && <Loader />}
-    </div>
+
+    {/* Referral Modal */}
+{showReferralModal && (
+  <ReferralModal
+  show={showReferralModal}
+  onHide={() => setShowReferralModal(false)}
+  userData={userProfile}
+  referralContent={referralContent}
+  />
+)}
+</div>
+
   );
 };
 

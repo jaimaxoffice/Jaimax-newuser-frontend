@@ -6,6 +6,8 @@ import {
   DollarSign,
   Clock,
   CheckCircle,
+  ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 import {
   useGetRoundQuery,
@@ -655,7 +657,7 @@ const ActiveSlabContent = ({
 const UpcomingSlabContent = ({ slab, isActive }) => (
   <div
     className={`bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/50 rounded-xl p-4 text-gray-800 shadow-xl border border-emerald-200/50 backdrop-blur-sm transform transition-all duration-700 min-h-[250px] relative overflow-hidden ${
-      isActive ? "scale-100 opacity-100" : "scale-95 opacity-80"
+      isActive ? "scale-100 opacity-100 " : "scale-95 opacity-80"
     }`}
   >
     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-amber-400/20 to-transparent rounded-full -translate-y-4 translate-x-4 blur-xl"></div>
@@ -1135,29 +1137,36 @@ const SlabTabs = () => {
   return (
     <>
       <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 rounded-2xl w-full max-w-7xl mx-auto shadow-2xl border border-white/50 backdrop-blur-sm">
-        <div className="px-4 py-3 md:px-3 md:py-1">
-          {/* Desktop Tabs */}
-          <div className="hidden md:flex justify-center mb-2">
-            <div className="flex rounded-xl p-1 shadow-xl overflow-x-auto gap-2 max-w-full no-scrollbar backdrop-blur-sm">
-              {slabsData.map((slab, index) => (
-                <button
-                  key={slab.id}
-                  onClick={() => handleTabClick(index)}
-                  className={`px-3 py-1 text-sm rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 relative overflow-hidden group ${
-                    activeTab === index
-                      ? "bg-[#2cdacc] text-white shadow-lg shadow-emerald-500/25 scale-105"
-                      : "bg-[#0d9387] text-slate-300 hover:from-slate-600 hover:to-slate-700 hover:text-white hover:scale-102 shadow-md"
-                  }`}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
-                  <span className="relative z-10">
-                    {slab.id}
-                    &ensp; Slab
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="px-4 py-3 md:px-3 md:py-1 w-[90%] m-auto">
+         {/* Desktop Slab Tabs */}
+<div className="hidden md:flex justify-center mb-2">
+  <div className="flex rounded-2xl bg-gradient-to-r from-[#e8f9f6] to-[#dff5f2] p-1 shadow-md overflow-x-auto gap-2 max-w-full no-scrollbar">
+    {slabsData.map((slab, index) => (
+      <button
+        key={slab.id}
+        onClick={() => handleTabClick(index)}
+        className={`relative px-4 py-1.5 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 transition-all duration-500 ease-in-out 
+          ${
+            activeTab === index
+              ? "bg-gradient-to-r from-[#0a8377] via-[#0d9387] to-[#0a8377] text-white shadow-[0_0_8px_rgba(13,147,135,0.35)] scale-[1.05]"
+              : "bg-gradient-to-r from-[#b9ebe4] to-[#a2e3d8] text-teal-900 hover:from-[#a8e6db] hover:to-[#94ddce] hover:scale-[1.03]"
+          }`}
+      >
+        <span className="relative z-10 flex items-center justify-center gap-1">
+          {slab.id}
+          <span className="opacity-90">Slab</span>
+        </span>
+
+        {/* Animated glow ring */}
+        {activeTab === index && (
+          <span className="absolute inset-0 rounded-full ring-2 ring-emerald-400/40 animate-pulse"></span>
+        )}
+      </button>
+    ))}
+  </div>
+</div>
+
+
 
           {/* Mobile Tabs */}
           <div className="flex md:hidden justify-start mb-4 overflow-x-auto no-scrollbar">
@@ -1168,7 +1177,7 @@ const SlabTabs = () => {
                   onClick={() => handleTabClick(index)}
                   className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${
                     activeTab === index
-                      ? "bg-gradient-to-r from-teal-500 to-teal-500 text-white border-emerald-400 shadow-md shadow-emerald-500/25"
+                      ? "bg-[#000] text-white border-emerald-400 shadow-md shadow-emerald-500/25"
                       : "bg-gradient-to-r from-teal-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
                   }`}
                 >
@@ -1181,6 +1190,21 @@ const SlabTabs = () => {
 
           {/* Carousel Area */}
           <div className="relative group">
+            {/* Arrow - Left */}
+            <button
+              onClick={() =>
+                handleTabClick(
+                  (activeTab - 1 + slabsData.length) % slabsData.length
+                )
+              }
+              className="absolute top-1/2 -translate-y-1/2
+               text-[#15d8c8] shadow-lg rounded-full p-2
+               transition-all duration-300 hover:scale-110 z-20
+               left-[-8%] sm:left-[-4%] md:left-[-5%] lg:left-[-9%] xl:left-[-6%] hover:bg-[#15d8c8] hover:text-white"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+
             {/* Card Container */}
             <div className="flex justify-center">
               <div className="w-full max-w-lg md:max-w-4xl mx-auto">
@@ -1207,6 +1231,17 @@ const SlabTabs = () => {
                 )}
               </div>
             </div>
+
+            {/* Arrow - Right */}
+            <button
+              onClick={() => handleTabClick((activeTab + 1) % slabsData.length)}
+              className="absolute top-1/2 -translate-y-1/2
+               text-[#15d8c8] shadow-lg rounded-full p-2
+               transition-all duration-300 hover:scale-110 z-20
+               right-[-8%] sm:right-[-4%] md:right-[-5%] lg:right-[-9%] xl:right-[-6%] hover:bg-[#15d8c8] hover:text-white"
+            >
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
 
           {/* Pagination Dots */}

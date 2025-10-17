@@ -191,13 +191,14 @@ export default function Profile3DForm() {
   };
 
   const getDefaultAvatar = () => {
-    if (state.gender === "male") {
-      return "👤";
-    } else if (state.gender === "female") {
-      return "👤";
-    } else {
-      return "👤";
-    }
+    // if (state.gender === "male") {
+    //   return "👤";
+    // } else if (state.gender === "female") {
+    //   return "👤";
+    // } else {
+    //   return "👤";
+    // }
+    return <User className="text-teal-600 w-14 h-14"/>
   };
 
   const currentImage = () => {
