@@ -10,7 +10,7 @@ import {
   useGetAdminSettingsQuery
 } from "../DashboardApliSlice";
 // Lazy load the modal component
-const ReferralModal = React.lazy(() => import("../../../modals/referalModal"));
+const ReferralModal = React.lazy(() => import("../../../../../ReusableComponents/modals/referalModal"));
 
 // Extract static styles outside the component
 const textFieldStyles = {

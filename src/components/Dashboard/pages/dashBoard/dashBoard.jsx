@@ -544,8 +544,8 @@ import { useNavigate } from "react-router-dom";
 import "../../../../../src/App.css";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
-import Loader from "../../../Loader/loader";
-import Pagination from "../../../pagination/pagination";
+import Loader from "../../../../ReusableComponents/Loader/loader";
+import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import { useUserDetailsQuery } from "../myTotalTeam/myTotalTeamApiSlice";
 import {
   useGetRoundQuery,

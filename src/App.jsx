@@ -23,7 +23,7 @@ import Contact from "./components/contact/Contact";
 import FeaturesSection from "./pages/home/HomeFeatures";
 import BlogLayout from "./pages/home/Blog";
 import BlogDetailPage from "./pages/home/Article";
-import CryptoServicesFlipCards from "./components/Services/services";
+import CryptoServicesFlipCards from "./components/MainServices/services";
 import SupportPage from "./global/SupportPage";
 import { SupportChart } from "./components/Dashboard/pages/support/support";
 import RefundPolicy from "./global/RefundPolicy";
@@ -47,14 +47,14 @@ import Profile from "./components/Dashboard/pages/profile/profile";
 import Kyc from "./components/Dashboard/pages/kyc/kyc";
 import WithDrawal from "./components/Dashboard/pages/widthDrawal/withDrawal";
 import Support from "./components/Dashboard/pages/support/support";
-import Sidebar from "./components/Dashboard/sildeBar/Sidebar";
-import Header from "./components/Dashboard/header/header";
+import Sidebar from "./ReusableComponents/sideBar/Sidebar";
+import Header from "./ReusableComponents/header/header";
 import LogoutModal from "./components/Dashboard/pages/logout/logout";
 import Shareholders from "./components/Dashboard/pages/shareholders/shareholders";
 import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet";
-import UserMeetingsShowcase from "./components/Meetings/Zoommeetings";
+import UserMeetingsShowcase from "./components/Dashboard/pages/Meetings/Zoommeetings";
 import PrivateRoute from "./router/PrivateRoute";
-import SuperBonusInfo from "./components/lockedSuperBouns/LockedSuperbonus"
+import SuperBonusInfo from "./components/Dashboard/pages/lockedSuperBouns/LockedSuperbonus"
 import FloatingNavButton from "./global/FloatingNavButton";
 import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";

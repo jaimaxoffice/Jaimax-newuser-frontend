@@ -30,7 +30,7 @@ import trxJSON from "./trx.json";
 import USDCJSON from "./usdc.json";
 import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
 import { ToastContainer, toast } from "react-toastify";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 import { useNavigate } from "react-router-dom";
 import icon2 from "../../../../../public/whitejaimaclogo.png";
 import "./jwallet.css";

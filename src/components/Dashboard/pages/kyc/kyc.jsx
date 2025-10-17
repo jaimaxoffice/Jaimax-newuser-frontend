@@ -4107,7 +4107,7 @@ import {
   useKycaddMutation,
 } from "./kycApiSlice";
 // import DashboardLayout from "../Layout/DashboardLayout";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 
 const KycInformation = () => {
   // const { data } = useContext(MyContext);

@@ -2118,8 +2118,8 @@ import {
   useRedeemPromoterBadgeMutation,
   useGetAllBelovedPromotersQuery,
 } from "./promotersApiSlice";
-import Pagination from "../../../pagination/pagination";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
+import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import {
   HiUser,
   HiMail,

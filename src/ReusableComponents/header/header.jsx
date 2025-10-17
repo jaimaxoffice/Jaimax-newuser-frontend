@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
-import { useUserDataQuery } from '../../Dashboard/pages/dashBoard/DashboardApliSlice';
+import { useUserDataQuery } from '../../components/Dashboard/pages/dashBoard/DashboardApliSlice';
 import Cookies from "js-cookie";
 
 // Keep static data outside component

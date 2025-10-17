@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserDetailsQueryDataQuery } from "./GoaVacationApiSlice";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 import Cookies from "js-cookie";
-import ReferralModal from "../../modals/referalModal";
+import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
 
 const MarketingPlanReferrals = () => {
   const navigate = useNavigate();

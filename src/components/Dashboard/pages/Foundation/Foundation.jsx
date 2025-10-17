@@ -4,10 +4,10 @@ import {
   useRedeemBadgeFoundationMutation,
 } from "./foundationApiSlice";
 import confetti from "canvas-confetti";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 import icon from "../../../../assets/Images/jaimaxcoin.png";
 import icon2 from "../../../../assets/Images/jaicoin.svg";
-import ReferralModal from "../../modals/referalModal";
+import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
 import Cookies from "js-cookie"
 const triggerConfetti = () => {
   confetti({

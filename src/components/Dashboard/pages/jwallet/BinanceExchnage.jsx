@@ -842,7 +842,7 @@ import {
 } from "./jwalletApiSlice.js";
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice.js";
 import CryptoJS from "crypto-js";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 
 const BinanceExchange = ({ onClose }) => {
   // State management

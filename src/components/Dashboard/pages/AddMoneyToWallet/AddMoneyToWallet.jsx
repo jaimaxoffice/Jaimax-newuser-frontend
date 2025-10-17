@@ -14,7 +14,7 @@ import scan from "../../../../assets/Images/SignUp/newQr.jpg";
 import bhumi from "../../../../assets/Images/SignUp/bhumi.png";
 import socialMedia from "../../../../assets/Images/SignUp/socialmedia.svg";
 import CopyToClipboardButton from "../../../../pages/home/CopyToClipboard";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 import CryptoJS from "crypto-js";
 import { useGetActivePaymentGatewayQuery } from "./AddMoneyApiSlice";
 /**

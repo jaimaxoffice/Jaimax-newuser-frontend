@@ -14,10 +14,10 @@ import {
   Share2,
   Check
 } from "lucide-react";
-import Pagination from "../../../pagination/pagination";
+import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import { useUserDetailsQuery } from "./myTotalTeamApiSlice";
-import ReferralModal from "../../modals/referalModal";
-import Loader from "../../../Loader/loader";
+import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 import Cookies from "js-cookie";
 
 // Initial state

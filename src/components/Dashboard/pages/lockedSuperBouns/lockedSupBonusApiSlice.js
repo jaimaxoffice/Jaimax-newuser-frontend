@@ -1,4 +1,4 @@
-import { apiSlice } from "../../ApiSliceComponent/jaiMaxApi";
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
 
 export const lockedsuperbonusApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

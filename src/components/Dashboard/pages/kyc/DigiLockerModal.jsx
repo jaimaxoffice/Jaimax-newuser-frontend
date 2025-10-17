@@ -116,7 +116,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import digiLocker from "../../../../assets/digilockermodel.svg";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 import { useNavigate } from "react-router-dom";
 /**
  * DigiLocker Modal Component

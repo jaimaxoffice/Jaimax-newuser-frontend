@@ -3,8 +3,8 @@ import {
   useGetAllLockedSuperbonusQuery,
   useDisburseBonusMutation,
 } from "./lockedSupbonusApiSlice";
-import ReferralModal from "../Dashboard/modals/referalModal";
-import Loader from "../Loader/Loader";
+import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
+import Loader from "../../../../ReusableComponents/Loader/Loader";
 
 const LockedSuperBonusUI = () => {
   const {

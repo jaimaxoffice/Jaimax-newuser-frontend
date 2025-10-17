@@ -4,7 +4,7 @@ import { useGetUserInfoMutation } from "./shareholderApiSlice";
 import ShareholderCard from "./SharePop";
 import ShareholderForm from "./ShareUpdate";
 import { useNavigate } from "react-router-dom";
-import Loader from "../../../Loader/loader";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 
 
 const ShareholderEligibility = () => {

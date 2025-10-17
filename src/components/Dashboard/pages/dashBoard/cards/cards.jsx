@@ -5,7 +5,7 @@ import { useUserDataQuery, useGetRoundQuery } from "../DashboardApliSlice";
 import Cookies from "js-cookie";
 
 import { useGetAnnounceQuery } from "../../Announements/AnnouncementsApiSlice";
-import { useGetAllLockedSuperbonusQuery } from "../../../../lockedSuperBouns/lockedSupBonusApiSlice";
+import { useGetAllLockedSuperbonusQuery } from "../../lockedSuperBouns/lockedSupBonusApiSlice";
 const shapeBaseStyles = {
   position: "absolute",
   opacity: 0.18,

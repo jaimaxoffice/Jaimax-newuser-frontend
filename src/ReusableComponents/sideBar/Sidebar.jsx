@@ -18,7 +18,7 @@ import {
 import { useState, useEffect } from "react";
 import { FaHandshake } from "react-icons/fa";
 import { TreePalm,HandCoins,Wallet,UserRound ,SwatchBook ,Handshake  } from "lucide-react";
-import logo from "../../../assets/Images/jaimaxlogo1.svg";
+import logo from "../../assets/Images/jaimaxlogo1.svg";
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: <HiOutlineViewGrid /> },

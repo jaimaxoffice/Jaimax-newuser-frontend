@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useBuyDetailsQuery } from "./buyHistoryApiSlice";
 import { toast } from "react-toastify";
-import Pagination from "../../../pagination/pagination";
+import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import Cookies from "js-cookie";
 const BuyHistory = () => {
   const [isTokenVerified, setIsTokenVerified] = useState(false);

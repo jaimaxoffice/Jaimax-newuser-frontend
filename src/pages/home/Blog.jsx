@@ -1,8 +1,9 @@
-import Blog1 from "../../../public/images/Blog1poster.jpg";
-import Blog2 from "../../../public/images/Blog2poster.jpg";
-import Blog3 from "../../../public/images/Blog3poster.jpg";
-import Blog4 from "../../../public/images/Blog4poster.jpg";
-import Blog5 from "../../../public/images/Blog5poster.jpg";
+const Blog1 = "/images/Blog1poster.jpg";
+const Blog2 = "/images/Blog2poster.jpg";
+const Blog3 = "/images/Blog3poster.jpg";
+const Blog4 = "/images/Blog4poster.jpg";
+const Blog5 = "/images/Blog5poster.jpg";
+
 export const blogsData = [
   {
     id: 5,

@@ -18,8 +18,8 @@ import {
   useWalletTransactionsListQuery,
 } from "./walletApiSlice";
 import Cookies from "js-cookie";
-import Loader from "../../../Loader/loader";
-import ReferralModal from "../../modals/referalModal";
+import Loader from "../../../../ReusableComponents/Loader/loader";
+import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
 const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
 
 const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
