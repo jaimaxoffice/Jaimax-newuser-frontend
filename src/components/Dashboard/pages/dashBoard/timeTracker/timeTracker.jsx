@@ -1137,7 +1137,7 @@ const SlabTabs = () => {
   return (
     <>
       <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 rounded-2xl w-full max-w-7xl mx-auto shadow-2xl border border-white/50 backdrop-blur-sm">
-        <div className="px-4 py-3 md:px-3 md:py-1 w-[90%] m-auto">
+        <div className="px-4 py-3 md:px-3 md:py-1 m-auto">
          {/* Desktop Slab Tabs */}
 <div className="hidden md:flex justify-center mb-2">
   <div className="flex rounded-2xl bg-gradient-to-r from-[#e8f9f6] to-[#dff5f2] p-1 shadow-md overflow-x-auto gap-2 max-w-full no-scrollbar">
@@ -1198,11 +1198,11 @@ const SlabTabs = () => {
                 )
               }
               className="absolute top-1/2 -translate-y-1/2
-               text-[#15d8c8] shadow-lg rounded-full p-2
+               text-[#a2e3d8] shadow-lg rounded-full p-2
                transition-all duration-300 hover:scale-110 z-20
-               left-[-8%] sm:left-[-4%] md:left-[-5%] lg:left-[-9%] xl:left-[-6%] hover:bg-[#15d8c8] hover:text-white"
+               left-[-4%] sm:left-[-4%] md:left-[-5%] lg:left-[-9%] xl:left-[-6%] hover:bg-[#a2e3d8] hover:text-white"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
             </button>
 
             {/* Card Container */}
@@ -1236,11 +1236,11 @@ const SlabTabs = () => {
             <button
               onClick={() => handleTabClick((activeTab + 1) % slabsData.length)}
               className="absolute top-1/2 -translate-y-1/2
-               text-[#15d8c8] shadow-lg rounded-full p-2
+               text-[#a2e3d8] shadow-lg rounded-full p-2
                transition-all duration-300 hover:scale-110 z-20
-               right-[-8%] sm:right-[-4%] md:right-[-5%] lg:right-[-9%] xl:right-[-6%] hover:bg-[#15d8c8] hover:text-white"
+               right-[-4%] sm:right-[-4%] md:right-[-5%] lg:right-[-9%] xl:right-[-6%] hover:bg-[#a2e3d8] hover:text-white"
             >
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 

@@ -16,13 +16,14 @@ import JaimaxSplash from "./global/Splashscreen";
 import FloatingWhatsapp from "./global/FloatingWhatsapp";
 import AuthContainer from "./Authentication/Login";
 import ForgotPassword from "./Authentication/ForgotPassword";
-
+import ErrorBoundary from "./pages/chatSupport/ErrorBoundary";
+import ChatAssistant from "./pages/chatSupport/chatComponent";
 import Home from "./pages/home/Home";
 import JaimaxComponent from "./components/About/About";
 import Contact from "./components/contact/Contact";
 import FeaturesSection from "./pages/home/HomeFeatures";
-import BlogLayout from "./pages/home/Blog";
-import BlogDetailPage from "./pages/home/Article";
+import BlogLayout from "./components/BlogSection/Blog";
+import BlogDetailPage from "./components/BlogSection/Article";
 import CryptoServicesFlipCards from "./components/MainServices/services";
 import SupportPage from "./global/SupportPage";
 import { SupportChart } from "./components/Dashboard/pages/support/support";
@@ -62,6 +63,7 @@ import PublicRoute from "./router/PublicRoute";
 import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation";
 import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation" 
 import PromotersPage from "./components/Dashboard/pages/Promoters/Promoters"
+import GuaranteedWealthDashboard from "./components/Dashboard/pages/GuaranteedWealthPlan/GuaranteedWealthPlan"
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -262,17 +264,17 @@ const DashboardLayout = () => {
 const PublicLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
+ const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
-
   return (
     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
+
       {!shouldHideNavbar && <Navbar />}
       <main className="flex-1">
         <Outlet />
       </main>
       {!shouldHideNavbar && <Footer />}
-      {!shouldHideNavbar && <FloatingWhatsapp />}
+      {/* {!shouldHideNavbar && <FloatingWhatsapp />} */}
     </div>
   );
 };
@@ -338,12 +340,62 @@ const App = () => {
 
   return (
     <>
+          {showChat && (
+        <>
+          <div className="fixed bottom-20 right-6 z-50 flex flex-col items-center">
+            <button
+              onClick={toggleChat}
+              className="bg-white text-purple-600 rounded-full w-14 h-14 
+             shadow-2xl
+             flex items-center justify-center transition-all duration-300 
+             backdrop-blur-sm
+             border border-purple-200 "
+              aria-label="AI Assistant"
+            >
+              {chatOpen ? (
+                // Cross icon when chat is open
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 transform transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="#085056"
+                  strokeWidth={3}
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                // Message icon when chat is closed
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#085056"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-message-circle-more-icon lucide-message-circle-more"
+                >
+                  <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+                  <path d="M8 12h.01" />
+                  <path d="M12 12h.01" />
+                  <path d="M16 12h.01" />
+                </svg>
+              )}
+            </button>
+          </div>
 
-      {/* <DusseraPopup/> */}
-      {/* <PriceIncreasePopup /> */}
-       {/* <PopupManager /> */}
-      {/* <PriceRiseAlert /> */}
-
+          {chatOpen && (
+            <ErrorBoundary>
+              <ChatAssistant onClose={() => setChatOpen(false)} />
+            </ErrorBoundary>
+          )}
+        </>
+      )}
+      <FloatingWhatsapp />
       <Routes>
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
@@ -395,6 +447,9 @@ const App = () => {
           <Route path="/promoters" element={<DashboardLayout />}>
             <Route index element={<PromotersPage />} />
           </Route>
+          <Route path="/guaranteedwealthplan" element={<DashboardLayout />}>
+            <Route index element={<GuaranteedWealthDashboard />} />
+          </Route>
           <Route path="/kyc-information" element={<DashboardLayout />}>
             <Route index element={<Kyc />} />
           </Route>
@@ -430,9 +485,6 @@ const App = () => {
           <Route path="about" element={<JaimaxComponent />} />
           <Route path="contact" element={<Contact />} />
           <Route path="features" element={<FeaturesSection />} />
-          
-            {/* <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogPage />} /> */}
           
           <Route path="blog">
             <Route index element={<BlogLayout />} />

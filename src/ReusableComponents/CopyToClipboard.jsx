@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import checkIcon from "../../assets/Images/checkIcon.svg";
-import copyIcon from "../../assets/Images/copyIcon.svg";
+import checkIcon from "../assets/Images/checkIcon.svg";
+import copyIcon from "../assets/Images/copyIcon.svg";
 
 const CopyToClipboardButton = ({ className, textToCopy, styles }) => {
   const [buttonText, setButtonText] = useState("");

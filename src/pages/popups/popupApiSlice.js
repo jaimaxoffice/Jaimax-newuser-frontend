@@ -13,5 +13,4 @@ export const popupApiSlice = apiSlice.injectEndpoints({
 
 export const { 
   useGetActivePopupQuery,
-  useLazyGetActivePopupQuery
 } = popupApiSlice;
