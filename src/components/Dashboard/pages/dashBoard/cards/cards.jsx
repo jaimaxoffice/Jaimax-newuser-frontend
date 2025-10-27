@@ -278,9 +278,9 @@ const TopCards = React.memo(() => {
         iconBg: "#f3e5f5",
       },
       {
-        label: "Active Members",
+        label: "Guanranteed Wealth plan",
         value: userData?.data?.activeUsers
-          ? userData.data.activeUsers.toString()
+          ? userData.data.totalWealthPlanCollectedAmount.toString()
           : "0",
         image: assets.activememo,
         hoverImage: assets.activememo1,
