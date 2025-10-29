@@ -765,35 +765,42 @@ const LockedSuperBonusUI = () => {
     : false;
 
   // Get next unlock milestone
-  const getNextMilestone = () => {
-    if (!bonusData?.tempStages) return null;
-    const stages = Object.values(bonusData.tempStages);
-    const unreleased = stages.find(stage => !stage.isReleased && !stage.canUnlockNow);
-    return unreleased ? unreleased.unlockAt : null;
-  };
+  // const getNextMilestone = () => {
+  //   if (!bonusData?.tempStages) return null;
+  //   const stages = Object.values(bonusData.tempStages);
+  //   const unreleased = stages.find(stage => !stage.isReleased && !stage.canUnlockNow);
+  //   return unreleased ? unreleased.unlockAt : null;
+  // };
+const getNextMilestone = () => {
+  if (!bonusData?.tempStages) return null;
+  const stages = Object.values(bonusData.tempStages);
+
+  // Find next milestone that requires MORE refs
+  const next = stages.find(stage => 
+    !stage.isReleased && 
+    !stage.canUnlockNow && 
+    stage.unlockAt > bonusData.directRefs
+  );
+  return next ? next.unlockAt : null;
+};
 
   const nextMilestone = getNextMilestone();
 
   // Transform data to match original component's expectations
-const transformedData = bonusData ? {
-  name: bonusData.name || "",
-  email: bonusData.email || "",
-  username: bonusData.username || "",
-  amountToWithdrwSuperBonus: totalLockedAmount || 0,
-  eligibleToWithDrawTempSuperBonus: canUnlockAnyStage || false,
-  alreadyUnlockedSuperBonus: allStagesReleased || false,
-  progress: {
-    currentRefs: bonusData.directRefs || 0,
-    requiredRefs: bonusData.maxRefsrequiredToMaxTempSuperBonus || 0,
-
-    remainingRefs: Math.max(
-      0,
-      ((nextMilestone || bonusData.maxRefsToMaxTempSuperBonus || 0) - (bonusData.directRefs || 0))
-    ),
-    directRefs: bonusData.directRefs || 0
-  }
-} : null;
-
+  const transformedData = bonusData ? {
+    name: bonusData.name,
+    email: bonusData.email,
+    username: bonusData.username,
+    amountToWithdrwSuperBonus: totalLockedAmount,
+    eligibleToWithDrawTempSuperBonus: canUnlockAnyStage,
+    alreadyUnlockedSuperBonus: allStagesReleased,
+    progress: {
+      currentRefs: bonusData.directRefs,
+      requiredRefs: bonusData.maxRefsrequiredToMaxTempSuperBonus || 0,
+      remainingRefs: Math.max(0, (nextMilestone || bonusData.maxRefsToMaxTempSuperBonus) - bonusData.directRefs),
+      directRefs: bonusData.directRefs
+    }
+  } : null;
 // console.log(transformedData.progress.requiredRefs)
   // Automatically show eligibility modal when eligible but not unlocked
   useEffect(() => {
@@ -1164,7 +1171,7 @@ const transformedData = bonusData ? {
 
                   <div className="bg-gradient-to-r from-teal-50 to-teal-100 p-2.5 sm:p-3.5 rounded-md border border-teal-100 shadow-inner">
                     <p className="text-xs sm:text-sm text-teal-700 font-medium text-center">
-                      {nextMilestone ? (
+                      {/* {nextMilestone ? (
                         <>
                           Next unlock at{" "}
                           <span className="text-teal-900 font-bold">
@@ -1185,7 +1192,28 @@ const transformedData = bonusData ? {
                           Congratulations! You've completed all required
                           referrals.
                         </>
-                      )}
+                      )} */}
+                      {nextMilestone ? (
+  <>
+    Next unlock at{" "}
+    <span className="text-teal-900 font-bold">
+      {nextMilestone}
+    </span>{" "}
+    referrals (
+    {Math.max(0, nextMilestone - bonusData.directRefs)} more needed)
+  </>
+) : transformedData.progress.remainingRefs > 0 ? (
+  <>
+    You need{" "}
+    <span className="text-teal-900 font-bold">
+      {transformedData.progress.remainingRefs}
+    </span>{" "}
+    more referrals to unlock all stages!
+  </>
+) : (
+  <>Congratulations! You've completed all required referrals.</>
+)}
+
                     </p>
                   </div>
                 </div>

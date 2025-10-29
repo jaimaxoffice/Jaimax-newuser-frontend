@@ -114,6 +114,9 @@ const GuaranteedWealthDashboard = () => {
 
   // Handle activate - Show terms first
   const handleActivateClick = (_id) => {
+    refetchAbove25k();
+    refetchAllOrders();
+    refetchCompletedPlans();
     setPendingActivationId(_id);
     setShowTermsModal(true);
     setTermsAccepted(false);
@@ -133,7 +136,9 @@ const GuaranteedWealthDashboard = () => {
 
     try {
       const response = await activateWealthPlan(pendingActivationId).unwrap();
-
+refetchAbove25k();
+    refetchAllOrders();
+    refetchCompletedPlans();
       setShowTermsModal(false);
       setPendingActivationId(null);
       setTermsAccepted(false);
@@ -178,22 +183,6 @@ const GuaranteedWealthDashboard = () => {
       }
     }
   };
-
-  // Calculate overall stats
-  const activeOrders = allWealthOrders.filter(
-    (order) => order.isGuaranteedWealthOpted
-  );
-
-  const totalInvestment = allWealthOrders.reduce(
-    (total, order) => total + (order.amount || 0),
-    0
-  );
-
-  const totalDisbursed = allWealthOrders.reduce(
-    (total, order) => total + (order.totalAmountDisbursedForWealthPlan || 0),
-    0
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 p-2 md:p-4">
       <ToastContainer
@@ -1250,6 +1239,270 @@ const TermsModal = ({
   );
 };
 
+// const OrdersTable = ({
+//   orders,
+//   loading,
+//   onActivate,
+//   onDeactivate,
+//   onViewDetails,
+//   isProcessing,
+//   emptyMessage,
+//   isMobileView,
+// }) => {
+//   if (loading) {
+//     return <Loader />;
+//   }
+
+//   if (!Array.isArray(orders) || orders.length === 0) {
+//     return (
+//       <div className="text-center py-8 bg-gray-50 rounded-xl">
+//         <div className="text-gray-400 mb-3">
+//           <PieChart size={40} className="mx-auto text-teal-100" />
+//         </div>
+//         <p className="text-gray-500 text-sm md:text-base font-medium">
+//           {emptyMessage || "No orders found"}
+//         </p>
+//         <p className="text-gray-400 text-xs mt-1 max-w-xs mx-auto">
+//           Orders will appear here once created. Check back later or create a new
+//           order.
+//         </p>
+//       </div>
+//     );
+//   }
+
+//   // Mobile view - cards with enhanced styling
+//   if (isMobileView) {
+//     return (
+//       <div className="space-y-3">
+//         {orders.map((order, index) => (
+//           <div
+//             key={order._id || index}
+//             className="bg-white border border-teal-100 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px]"
+//           >
+//             <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-2 border-b flex justify-between items-center">
+//               <div className="font-medium text-white text-xs flex items-center">
+//                 <CreditCard size={12} className="mr-1.5" />
+//                 {order._id ? order._id : "N/A"}
+//               </div>
+//               <span
+//                 className={`px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${
+//                   order.isGuaranteedWealthOpted
+//                     ? "bg-emerald-100 text-emerald-800"
+//                     : "bg-gray-100 text-gray-800"
+//                 }`}
+//               >
+//                 {order.isGuaranteedWealthOpted ? (
+//                   <span className="flex items-center">
+//                     <Check size={10} className="mr-1" /> Active
+//                   </span>
+//                 ) : (
+//                   <span className="flex items-center">
+//                     <X size={10} className="mr-1" /> Inactive
+//                   </span>
+//                 )}
+//               </span>
+//             </div>
+
+//             <div className="p-2.5">
+//               <div className="space-y-2">
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     ₹ Amount:
+//                   </span>
+//                   <span className="font-semibold text-teal-700 text-xs">
+//                     {order.amount || order.order_amount || 0}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     <Calendar size={12} className="mr-1 text-teal-600" />
+//                     Date:
+//                   </span>
+//                   <span className="text-gray-800 text-xs">
+//                     {order.date || order.createdAt
+//                       ? new Date(
+//                           order.date || order.createdAt
+//                         ).toLocaleDateString("en-IN")
+//                       : "N/A"}
+//                   </span>
+//                 </div>
+
+//                 <div>
+//                   <div className="text-xs text-gray-600 mb-1 flex justify-between">
+//                     <span className="flex items-center">
+//                       <Activity size={12} className="mr-1 text-teal-600" />
+//                       Progress:
+//                     </span>
+//                     <span className="text-teal-700 font-medium">
+//                       {order.wealthPalnDisbursedDays || 0}/300
+//                     </span>
+//                   </div>
+//                   <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+//                     <div
+//                       className="bg-gradient-to-r from-teal-500 to-emerald-500 h-2 rounded-full"
+//                       style={{
+//                         width: `${
+//                           ((order.wealthPalnDisbursedDays || 0) / 300) * 100
+//                         }%`,
+//                       }}
+//                     ></div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-3 flex gap-1 text-xs">
+               
+
+//                 {order.isGuaranteedWealthOpted ? (
+//                   <button
+//                     onClick={() => onDeactivate(order._id || order.id)}
+//                     disabled={isProcessing}
+//                     className="flex-1 px-2 py-1.5 bg-red-50 text-red-700 rounded-lg border border-red-200 hover:bg-red-100 transition-all duration-200 font-medium flex items-center justify-center disabled:opacity-50"
+//                   >
+//                     <X size={12} className="mr-1" /> Deactivate
+//                   </button>
+//                 ) : (
+//                   <button
+//                     onClick={() => onActivate(order._id || order.id)}
+//                     className="flex-1 px-2 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-200 font-medium flex items-center justify-center disabled:opacity-50 shadow-sm"
+//                     disabled={isProcessing}
+//                   >
+//                     <Check size={12} className="mr-1" /> Activate
+//                   </button>
+//                 )}
+//                  <button
+//                   onClick={() => onViewDetails(order)}
+//                   className="flex-1 px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 font-medium flex items-center justify-center"
+//                 >
+//                   <Info size={12} className="mr-1" /> Details
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     );
+//   }
+
+//   // Desktop view - enhanced table
+//   return (
+//     <div className="overflow-x-auto rounded-lg border border-gray-200">
+//       <table className="min-w-full divide-y divide-gray-200">
+//         <thead className="bg-gradient-to-r from-teal-500 to-teal-600 text-white">
+//           <tr>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Order ID
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Amount
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Date
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Status
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Progress
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Actions
+//             </th>
+//           </tr>
+//         </thead>
+//         <tbody className="bg-white divide-y divide-gray-200">
+//           {orders.map((order, index) => (
+//             <tr
+//               key={order._id || index}
+//               className="hover:bg-teal-50 transition-colors duration-150"
+//             >
+//               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+//                 {order._id ? order._id : "N/A"}
+//               </td>
+
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 <span className="font-semibold text-teal-700">
+//                   {order.amount || 0}
+//                 </span>
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 {order.date || order.createdAt
+//                   ? new Date(order.date || order.createdAt).toLocaleDateString(
+//                       "en-IN"
+//                     )
+//                   : "N/A"}
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap">
+//                 <span
+//                   className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+//                     order.isGuaranteedWealthOpted
+//                       ? "bg-emerald-100 text-emerald-800"
+//                       : "bg-gray-100 text-gray-800"
+//                   }`}
+//                 >
+//                   {order.isGuaranteedWealthOpted ? (
+//                     <span className="flex items-center">
+//                       <Check size={10} className="mr-1" /> Active
+//                     </span>
+//                   ) : (
+//                     <span className="flex items-center">
+//                       <X size={10} className="mr-1" /> Inactive
+//                     </span>
+//                   )}
+//                 </span>
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 <div className="flex items-center">
+//                   <div className="w-20 bg-gray-200 rounded-full h-2 mr-2 overflow-hidden">
+//                     <div
+//                       className="bg-gradient-to-r from-teal-500 to-emerald-500 h-2 rounded-full"
+//                       style={{
+//                         width: `${
+//                           ((order.wealthPalnDisbursedDays || 0) / 300) * 100
+//                         }%`,
+//                       }}
+//                     ></div>
+//                   </div>
+//                   <span>{order.wealthPalnDisbursedDays || 0}/300</span>
+//                 </div>
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium">
+//                 <div className="flex gap-1">
+                  
+
+//                   {order.isGuaranteedWealthOpted ? (
+//                     <button
+//                       onClick={() => onDeactivate(order._id || order.id)}
+//                       disabled={isProcessing}
+//                       className="px-2 py-1.5 bg-red-50 text-red-700 rounded-lg border border-red-200 hover:bg-red-100 transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+//                     >
+//                       <X size={12} className="mr-1" /> Deactivate
+//                     </button>
+//                   ) : (
+//                     <button
+//                       onClick={() => onActivate(order._id || order.id)}
+//                       disabled={isProcessing}
+//                       className="px-2 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+//                     >
+//                       <Check size={12} className="mr-1" /> Activate
+//                     </button>
+//                   )}
+//                   <button
+//                     onClick={() => onViewDetails(order)}
+//                     className="px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 flex items-center shadow-sm"
+//                   >
+//                     <Info size={12} className="mr-1" /> Details
+//                   </button>
+//                 </div>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
 const OrdersTable = ({
   orders,
   loading,
@@ -1281,6 +1534,12 @@ const OrdersTable = ({
     );
   }
 
+  // Helper function to check if order should be highlighted
+  // Only when: firstTimeWealthPlanOpted is true AND isGuaranteedWealthOpted is false
+  const shouldHighlight = (order) => {
+    return order.firstTimeWealthPlanOpted && !order.isGuaranteedWealthOpted;
+  };
+
   // Mobile view - cards with enhanced styling
   if (isMobileView) {
     return (
@@ -1288,46 +1547,65 @@ const OrdersTable = ({
         {orders.map((order, index) => (
           <div
             key={order._id || index}
-            className="bg-white border border-teal-100 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px]"
+            className={`bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px] ${
+              shouldHighlight(order)
+                ? "border-2 border-amber-300 ring-2 ring-amber-100"
+                : "border border-teal-100"
+            }`}
           >
-            <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-2 border-b flex justify-between items-center">
-              <div className="font-medium text-white text-xs flex items-center">
+            <div
+              className={`p-2 border-b flex justify-between items-center ${
+                shouldHighlight(order)
+                  ? "text-gray-900 bg-gradient-to-r from-amber-300 to-amber-300"
+                  : "text-white bg-gradient-to-r from-teal-500 to-teal-600"
+              }`}
+            >
+              <div className={`font-medium text-xs flex items-center ${
+                shouldHighlight(order) ? "text-gray-900" : "text-white"
+              }`}>
                 <CreditCard size={12} className="mr-1.5" />
                 {order._id ? order._id : "N/A"}
               </div>
-              <span
-                className={`px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  order.isGuaranteedWealthOpted
-                    ? "bg-emerald-100 text-emerald-800"
-                    : "bg-gray-100 text-gray-800"
-                }`}
-              >
-                {order.isGuaranteedWealthOpted ? (
-                  <span className="flex items-center">
-                    <Check size={10} className="mr-1" /> Active
-                  </span>
-                ) : (
-                  <span className="flex items-center">
-                    <X size={10} className="mr-1" /> Inactive
-                  </span>
-                )}
-              </span>
+              <div className="flex items-center gap-1">
+                
+                <span
+                  className={`px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    order.isGuaranteedWealthOpted
+                      ? "bg-emerald-100 text-emerald-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {order.isGuaranteedWealthOpted ? (
+                    <span className="flex items-center">
+                      <Check size={10} className="mr-1" /> Active
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <X size={10} className="mr-1" /> Inactive
+                    </span>
+                  )}
+                </span>
+              </div>
             </div>
 
-            <div className="p-2.5">
+            <div className={`p-2.5 ${shouldHighlight(order) ? "bg-amber-50/30" : ""}`}>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-gray-600 flex items-center">
                     ₹ Amount:
                   </span>
-                  <span className="font-semibold text-teal-700 text-xs">
+                  <span className={`font-semibold text-xs ${
+                    shouldHighlight(order) ? "text-amber-700" : "text-teal-700"
+                  }`}>
                     {order.amount || order.order_amount || 0}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-gray-600 flex items-center">
-                    <Calendar size={12} className="mr-1 text-teal-600" />
+                    <Calendar size={12} className={`mr-1 ${
+                      shouldHighlight(order) ? "text-amber-600" : "text-teal-600"
+                    }`} />
                     Date:
                   </span>
                   <span className="text-gray-800 text-xs">
@@ -1342,16 +1620,24 @@ const OrdersTable = ({
                 <div>
                   <div className="text-xs text-gray-600 mb-1 flex justify-between">
                     <span className="flex items-center">
-                      <Activity size={12} className="mr-1 text-teal-600" />
+                      <Activity size={12} className={`mr-1 ${
+                        shouldHighlight(order) ? "text-amber-600" : "text-teal-600"
+                      }`} />
                       Progress:
                     </span>
-                    <span className="text-teal-700 font-medium">
+                    <span className={`font-medium ${
+                      shouldHighlight(order) ? "text-amber-700" : "text-teal-700"
+                    }`}>
                       {order.wealthPalnDisbursedDays || 0}/300
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-teal-500 to-emerald-500 h-2 rounded-full"
+                      className={`h-2 rounded-full ${
+                        shouldHighlight(order)
+                          ? "bg-gradient-to-r from-amber-300 to-amber-300"
+                          : "bg-gradient-to-r from-teal-500 to-emerald-500"
+                      }`}
                       style={{
                         width: `${
                           ((order.wealthPalnDisbursedDays || 0) / 300) * 100
@@ -1363,8 +1649,6 @@ const OrdersTable = ({
               </div>
 
               <div className="mt-3 flex gap-1 text-xs">
-               
-
                 {order.isGuaranteedWealthOpted ? (
                   <button
                     onClick={() => onDeactivate(order._id || order.id)}
@@ -1376,15 +1660,23 @@ const OrdersTable = ({
                 ) : (
                   <button
                     onClick={() => onActivate(order._id || order.id)}
-                    className="flex-1 px-2 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-200 font-medium flex items-center justify-center disabled:opacity-50 shadow-sm"
+                    className={`flex-1 px-2 py-1.5 rounded-lg transition-all duration-200 font-medium flex items-center justify-center disabled:opacity-50 shadow-sm ${
+                      shouldHighlight(order)
+                        ? "text-gray-900 bg-gradient-to-r from-amber-300 to-amber-300 hover:from-amber-400 hover:to-amber-400"
+                        : "text-white bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700"
+                    }`}
                     disabled={isProcessing}
                   >
                     <Check size={12} className="mr-1" /> Activate
                   </button>
                 )}
-                 <button
+                <button
                   onClick={() => onViewDetails(order)}
-                  className="flex-1 px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 font-medium flex items-center justify-center"
+                  className={`flex-1 px-2 py-1.5 rounded-lg border transition-all duration-200 font-medium flex items-center justify-center ${
+                    shouldHighlight(order)
+                      ? "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
+                      : "bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100"
+                  }`}
                 >
                   <Info size={12} className="mr-1" /> Details
                 </button>
@@ -1426,14 +1718,23 @@ const OrdersTable = ({
           {orders.map((order, index) => (
             <tr
               key={order._id || index}
-              className="hover:bg-teal-50 transition-colors duration-150"
+              className={`transition-colors duration-150 ${
+                shouldHighlight(order)
+                  ? "bg-amber-50/40 hover:bg-amber-100/60 border-l-4 border-l-amber-500"
+                  : "hover:bg-teal-50"
+              }`}
             >
               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
-                {order._id ? order._id : "N/A"}
+                <div className="flex flex-col">
+                  <span>{order._id ? order._id : "N/A"}</span>
+                  
+                </div>
               </td>
 
               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
-                <span className="font-semibold text-teal-700">
+                <span className={`font-semibold ${
+                  shouldHighlight(order) ? "text-amber-700" : "text-teal-700"
+                }`}>
                   {order.amount || 0}
                 </span>
               </td>
@@ -1467,7 +1768,11 @@ const OrdersTable = ({
                 <div className="flex items-center">
                   <div className="w-20 bg-gray-200 rounded-full h-2 mr-2 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-teal-500 to-emerald-500 h-2 rounded-full"
+                      className={`h-2 rounded-full ${
+                        shouldHighlight(order)
+                          ? "bg-gradient-to-r from-lime-500 to-lime-500"
+                          : "bg-gradient-to-r from-teal-500 to-emerald-500"
+                      }`}
                       style={{
                         width: `${
                           ((order.wealthPalnDisbursedDays || 0) / 300) * 100
@@ -1480,8 +1785,6 @@ const OrdersTable = ({
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium">
                 <div className="flex gap-1">
-                  
-
                   {order.isGuaranteedWealthOpted ? (
                     <button
                       onClick={() => onDeactivate(order._id || order.id)}
@@ -1494,14 +1797,22 @@ const OrdersTable = ({
                     <button
                       onClick={() => onActivate(order._id || order.id)}
                       disabled={isProcessing}
-                      className="px-2 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                      className={`px-2 py-1.5 rounded-lg transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
+                        shouldHighlight(order)
+                          ? "text-gray-900 bg-gradient-to-r from-amber-300 to-amber-300 hover:from-amber-400 hover:to-amber-400"
+                          : "text-white bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700"
+                      }`}
                     >
                       <Check size={12} className="mr-1" /> Activate
                     </button>
                   )}
                   <button
                     onClick={() => onViewDetails(order)}
-                    className="px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 flex items-center shadow-sm"
+                    className={`px-2 py-1.5 rounded-lg border transition-all duration-200 flex items-center shadow-sm ${
+                      shouldHighlight(order)
+                        ? "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
+                        : "bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100"
+                    }`}
                   >
                     <Info size={12} className="mr-1" /> Details
                   </button>
@@ -1514,7 +1825,6 @@ const OrdersTable = ({
     </div>
   );
 };
-
 const StatsCard = ({ title, value, icon, color }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-3 border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-2px]">
