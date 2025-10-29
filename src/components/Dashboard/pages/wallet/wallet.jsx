@@ -19,6 +19,7 @@ import {
 } from "./walletApiSlice";
 import Cookies from "js-cookie";
 import Loader from "../../../../ReusableComponents/Loader/loader";
+import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
 const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
 

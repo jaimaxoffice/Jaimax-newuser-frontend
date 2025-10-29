@@ -976,7 +976,7 @@ const JaimaxOverview = () => {
             </h2>
             <div className="text-white max-w-lg leading-relaxed text-center lg:text-left">
               <p className="mb-4">
-                Jaimax is an innovative cryptocurrency in India designed to transform the way people invest, transact, and grow in the blockchain era. As a secure and utility-driven crypto coin, Jaimax brings together technology, transparency, and trust to create a strong foundation for the future of decentralized finance (DeFi).
+                Jaimax is an innovative <a href="http://www.jaimax.com" className="text-teal-300">cryptocurrency in India</a> designed to transform the way people invest, transact, and grow in the blockchain era. As a secure and utility-driven crypto coin, Jaimax brings together technology, transparency, and trust to create a strong foundation for the future of decentralized finance (DeFi).
               </p>
               <p>
                 We believe that digital currency should not just be a trend — it should be a tool for empowerment. That's why Jaimax is built to make crypto investing simple, safe, and rewarding for everyone, from new investors to blockchain experts.

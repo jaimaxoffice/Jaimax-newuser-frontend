@@ -118,7 +118,12 @@ const GuaranteedWealthDashboard = () => {
     setShowTermsModal(true);
     setTermsAccepted(false);
   };
-
+  useEffect(() => {
+    refetchAbove25k();
+    refetchAllOrders();
+    refetchCompletedPlans();
+    refetch();
+  }, []);
   // Proceed with activation after terms accepted
   const handleActivateConfirm = async () => {
     if (!termsAccepted) {
@@ -128,9 +133,7 @@ const GuaranteedWealthDashboard = () => {
 
     try {
       const response = await activateWealthPlan(pendingActivationId).unwrap();
-      refetchAbove25k();
-      refetchAllOrders();
-      refetchCompletedPlans();
+
       setShowTermsModal(false);
       setPendingActivationId(null);
       setTermsAccepted(false);
@@ -819,15 +822,14 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                       />
 
                       <MetricCard
-                        title="Disbursed"
+                        title="Disbursed Amount"
                         value={`₹${totalAmountDisbursed.toLocaleString(
                           "en-IN"
                         )}`}
                         icon={<Wallet size={16} />}
                         color="bg-emerald-500"
                       />
-
-                      <MetricCard
+                       <MetricCard
                         title={
                           orderDetails.isCompleted
                             ? "Total Earned"
@@ -839,9 +841,27 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                             : (
                                 orderDetails.amount - totalAmountDisbursed
                               ).toLocaleString("en-IN")
-                        }`}
+                        }`}   
                         color="bg-purple-500"
                       />
+                      <MetricCard
+                        title="Daily coins"
+                        value={`${orderDetails.guaranteedTokensToBeCollect.toLocaleString(
+                          "en-IN"
+                        )}`}
+                        icon={<Wallet size={16} />}
+                        color="bg-emerald-500"
+                      />
+                      <MetricCard
+                        title="Total coins collected"
+                        value={`${orderDetails.totalCoinsCollectedFormUser.toLocaleString(
+                          "en-IN"
+                        )}`}
+                        icon={<Wallet size={16} />}
+                        color="bg-emerald-500"
+                      />
+
+                     
                     </div>
                   </div>
                 </div>
@@ -993,7 +1013,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
 const MetricCard = ({ title, value, icon, color }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-2 border border-gray-100 flex items-center">
-      <div className={`₹{color} p-2 rounded-lg mr-2 text-white`}>{icon}</div>
+      {/* <div className={`₹{color} p-2 rounded-lg mr-2 text-white`}>{icon}</div> */}
       <div className="flex-1">
         <p className="text-xs text-gray-500">{title}</p>
         <p className="font-semibold text-gray-800">{value}</p>
@@ -1136,8 +1156,8 @@ const TermsModal = ({
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
                       After 300 days:{" "}
-                      <span className="font-bold">50% coins</span> of plan
-                      amount.
+                      <span className="font-bold"> remains 50% coins</span> of
+                      plan token.
                     </span>
                   </p>
                   <p className="flex items-start">
@@ -1343,12 +1363,7 @@ const OrdersTable = ({
               </div>
 
               <div className="mt-3 flex gap-1 text-xs">
-                <button
-                  onClick={() => onViewDetails(order)}
-                  className="flex-1 px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 font-medium flex items-center justify-center"
-                >
-                  <Info size={12} className="mr-1" /> Details
-                </button>
+               
 
                 {order.isGuaranteedWealthOpted ? (
                   <button
@@ -1367,6 +1382,12 @@ const OrdersTable = ({
                     <Check size={12} className="mr-1" /> Activate
                   </button>
                 )}
+                 <button
+                  onClick={() => onViewDetails(order)}
+                  className="flex-1 px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 font-medium flex items-center justify-center"
+                >
+                  <Info size={12} className="mr-1" /> Details
+                </button>
               </div>
             </div>
           </div>
@@ -1459,12 +1480,7 @@ const OrdersTable = ({
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium">
                 <div className="flex gap-1">
-                  <button
-                    onClick={() => onViewDetails(order)}
-                    className="px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 flex items-center shadow-sm"
-                  >
-                    <Info size={12} className="mr-1" /> Details
-                  </button>
+                  
 
                   {order.isGuaranteedWealthOpted ? (
                     <button
@@ -1483,6 +1499,12 @@ const OrdersTable = ({
                       <Check size={12} className="mr-1" /> Activate
                     </button>
                   )}
+                  <button
+                    onClick={() => onViewDetails(order)}
+                    className="px-2 py-1.5 bg-teal-50 text-teal-700 rounded-lg border border-teal-200 hover:bg-teal-100 transition-all duration-200 flex items-center shadow-sm"
+                  >
+                    <Info size={12} className="mr-1" /> Details
+                  </button>
                 </div>
               </td>
             </tr>
@@ -1619,7 +1641,7 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
                 <div className="text-right">
                   <p className="text-xs text-gray-600">Coins Collected</p>
                   <p className="text-sm font-semibold text-amber-600 flex items-center justify-end">
-                    <Coins size={12} className="mr-1" />
+                    <span className="text-amber-600">-</span>
                     {transaction.tokensCollected?.toLocaleString("en-IN") || 0}
                   </p>
                 </div>
@@ -1690,21 +1712,6 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
           <IndianRupee size={16} className="mr-2 text-teal-600" />
           Transaction History
         </h4>
-        <div className="flex items-center space-x-2">
-          <span className="px-3 py-1.5 text-xs bg-teal-50 text-teal-700 rounded-md border border-teal-100 flex items-center">
-            <IndianRupee size={14} className="mr-1.5" /> Transactions:{" "}
-            {totalTransactions}
-          </span>
-          <span className="px-3 py-1.5 text-xs bg-blue-50 text-blue-700 rounded-md border border-blue-100 flex items-center">
-            {/* <Calculator size={14} className="mr-1.5" /> Total Amount: ₹{totalCountTimesAmount.toLocaleString("en-IN")} */}
-          </span>
-          <button
-            onClick={refetch}
-            className="text-xs bg-teal-50 text-teal-700 px-3 py-1.5 rounded-md border border-teal-100 hover:bg-teal-100 transition-colors flex items-center"
-          >
-            <Activity size={14} className="mr-1.5" /> Refresh
-          </button>
-        </div>
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
@@ -1775,7 +1782,7 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-right">
                   <div className="flex items-center justify-end">
-                    <Coins size={12} className="mr-1 text-amber-500" />
+                    <span className="text-amber-600">-</span>
                     <span className="text-sm font-semibold text-amber-600">
                       {transaction.tokensCollected?.toLocaleString("en-IN") ||
                         0}

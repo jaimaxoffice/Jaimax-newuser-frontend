@@ -7,12 +7,14 @@ export const guaranteedWealthApiSlice = apiSlice.injectEndpoints({
         url: "/guaranted-wealth/get-orders-above25k",
         method: "GET",
       }),
+       providesTags: ["WealthPlan"],
     }),
     getAllWealthPlanOrders: builder.query({
       query: () => ({
         url: "/guaranted-wealth/get-all-wealth-plan-ordres",
         method: "GET",
       }),
+      
     }),
     activateTheWealthPlan: builder.mutation({
       query: (orderId) => ({
@@ -20,6 +22,7 @@ export const guaranteedWealthApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { orderId },
       }),
+       
     }),
     deActivateTheWealthPlan: builder.mutation({
       query: (orderId) => ({
@@ -27,12 +30,14 @@ export const guaranteedWealthApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { orderId },
       }),
+
     }),
     getAllCompletedWealthPlanOrders: builder.query({
       query: () => ({
         url: "/guaranted-wealth/get-all-wealth-completed-ordres",
         method: "GET",
       }),
+      
     }),
     getWealthOrderTransactions: builder.query({
       query: ({ orderId, page = 1, limit = 3 }) => ({
@@ -40,6 +45,7 @@ export const guaranteedWealthApiSlice = apiSlice.injectEndpoints({
         method: "GET",
         params: { orderId, page, limit },
       }),
+       
     }),
 
   }),

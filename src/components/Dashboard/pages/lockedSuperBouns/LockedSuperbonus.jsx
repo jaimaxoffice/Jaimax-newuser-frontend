@@ -775,21 +775,26 @@ const LockedSuperBonusUI = () => {
   const nextMilestone = getNextMilestone();
 
   // Transform data to match original component's expectations
-  const transformedData = bonusData ? {
-    name: bonusData.name,
-    email: bonusData.email,
-    username: bonusData.username,
-    amountToWithdrwSuperBonus: totalLockedAmount,
-    eligibleToWithDrawTempSuperBonus: canUnlockAnyStage,
-    alreadyUnlockedSuperBonus: allStagesReleased,
-    progress: {
-      currentRefs: bonusData.directRefs,
-      requiredRefs: bonusData.maxRefsToMaxTempSuperBonus,
-      remainingRefs: Math.max(0, (nextMilestone || bonusData.maxRefsToMaxTempSuperBonus) - bonusData.directRefs),
-      directRefs: bonusData.directRefs
-    }
-  } : null;
+const transformedData = bonusData ? {
+  name: bonusData.name || "",
+  email: bonusData.email || "",
+  username: bonusData.username || "",
+  amountToWithdrwSuperBonus: totalLockedAmount || 0,
+  eligibleToWithDrawTempSuperBonus: canUnlockAnyStage || false,
+  alreadyUnlockedSuperBonus: allStagesReleased || false,
+  progress: {
+    currentRefs: bonusData.directRefs || 0,
+    requiredRefs: bonusData.maxRefsrequiredToMaxTempSuperBonus || 0,
 
+    remainingRefs: Math.max(
+      0,
+      ((nextMilestone || bonusData.maxRefsToMaxTempSuperBonus || 0) - (bonusData.directRefs || 0))
+    ),
+    directRefs: bonusData.directRefs || 0
+  }
+} : null;
+
+// console.log(transformedData.progress.requiredRefs)
   // Automatically show eligibility modal when eligible but not unlocked
   useEffect(() => {
     if (canUnlockAnyStage && !allStagesReleased) {
@@ -802,9 +807,7 @@ const LockedSuperBonusUI = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
         <Loader />
-      </div>
     );
   }
 
@@ -1157,39 +1160,7 @@ const LockedSuperBonusUI = () => {
                   </div>
 
                   {/* Referral Visual */}
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2.5 my-4 sm:my-6 justify-center">
-                    {[...Array(transformedData.progress.requiredRefs)].map(
-                      (_, index) => (
-                        <div
-                          key={index}
-                          className={`h-9 w-9 sm:h-11 sm:w-11 rounded-lg flex items-center justify-center transition-all duration-300 ${
-                            index < transformedData.progress.currentRefs
-                              ? "bg-gradient-to-br from-teal-600 to-teal-500 shadow-md transform hover:scale-110"
-                              : "bg-teal-100 border border-teal-200"
-                          }`}
-                        >
-                          {index < transformedData.progress.currentRefs ? (
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-4 w-4 sm:h-5 sm:w-5 text-white"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          ) : (
-                            <span className="text-2xs sm:text-xs font-medium text-teal-800">
-                              {index + 1}
-                            </span>
-                          )}
-                        </div>
-                      )
-                    )}
-                  </div>
+                  
 
                   <div className="bg-gradient-to-r from-teal-50 to-teal-100 p-2.5 sm:p-3.5 rounded-md border border-teal-100 shadow-inner">
                     <p className="text-xs sm:text-sm text-teal-700 font-medium text-center">

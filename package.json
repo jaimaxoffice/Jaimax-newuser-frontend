@@ -57,6 +57,7 @@
     "react-router-dom": "^7.6.0",
     "react-slick": "^0.31.0",
     "react-toastify": "^11.0.5",
+    "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.22.0",
     "swiper": "^11.2.8",

@@ -96,21 +96,17 @@ const BuyHistory = () => {
    * This method is used to convert the iso string to date & time format
    * @param {*} isoString
    */
-  const formatDateWithAmPm = (isoString) => {
-    const date = new Date(isoString);
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-      timeZone: "UTC", // Assuming UTC date strings from backend
-    };
-    return new Intl.DateTimeFormat("en-GB", options)
-      .format(date)
-      .replace(",", "");
-  };
+const formatDateWithAmPm = (isoString) => {
+  const date = new Date(isoString);
+  const dd = String(date.getUTCDate()).padStart(2, "0");
+  const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const yyyy = date.getUTCFullYear();
+  let hh = date.getUTCHours();
+  const min = String(date.getUTCMinutes()).padStart(2, "0");
+  const ampm = hh >= 12 ? "PM" : "AM";
+  hh = hh % 12 || 12;
+  return `${dd}-${mm}-${yyyy} ${hh}:${min} ${ampm}`;
+};
 
   useEffect(() => {
     setLoading(false);
@@ -248,7 +244,7 @@ const BuyHistory = () => {
                     </div>
                     <div className="flex items-center gap-1 bg-teal-50 rounded px-2 py-1">
                       <span className="text-teal-700 font-semibold">
-                        Round:
+                        Phase:
                       </span>
                       <span className="text-gray-800">
                         {data?.round || "N/A"}
@@ -326,7 +322,7 @@ const BuyHistory = () => {
                       USD Price
                     </th>
                     <th className="px-3 py-4 text-center min-w-[70px] font-semibold">
-                      Round
+                      Phase  
                     </th>
                     <th className="px-3 py-4 text-center min-w-[90px] font-semibold">
                       Currency
@@ -414,7 +410,7 @@ const BuyHistory = () => {
                             ? `₹${data.amount?.toFixed(2) || "0.00"}`
                             : `$${data.amount?.toFixed(2) || "0.00"}`}
                         </td>
-                        <td className="px-3 py-4 text-sm font-medium whitespace-nowrap">
+                        <td className="px-3 py-4 text-xs font-semibold">
                           {data?.createdAt
                             ? formatDateWithAmPm(data?.createdAt)
                             : "N/A"}
