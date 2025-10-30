@@ -283,12 +283,7 @@ export default function WalletDashboard() {
               {transaction.paymentMode || "N/A"}
             </p>
           </div>
-          <div className="bg-teal-50 rounded px-2 py-1">
-            <span className="text-teal-600 font-medium">Currency:</span>
-            <p className="font-semibold text-teal-800">
-              {transaction.currency || "N/A"}
-            </p>
-          </div>
+          
           {countryCode !== 91 && (
             <div className="bg-teal-50 rounded px-2 py-1">
               <span className="text-teal-600 font-medium">Fee:</span>

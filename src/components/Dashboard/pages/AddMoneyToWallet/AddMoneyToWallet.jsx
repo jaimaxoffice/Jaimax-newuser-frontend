@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
-
+import {toast} from "../../../../ReusableComponents/Toasts/Toasts";
 import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice";
 import {
   useAddTransactionMutation,
@@ -205,6 +205,339 @@ const AddMoneyToWallet = () => {
     }
   };
 
+  // const extractDetailsFromImage = (file) => {
+  //   if (!file) return;
+
+  //   setIsLoading(true);
+  //   const reader = new FileReader();
+
+  //   reader.onload = () => {
+  //     if (reader.result) {
+  //       Tesseract.recognize(reader.result, "eng")
+  //         .then(({ data: { text } }) => {
+  //           console.log("=== OCR EXTRACTION START ===");
+  //           console.log("Raw OCR text:", text);
+
+  //           // Clean up the extracted text
+  //           let cleanedText = text.replace(/¥/g, "₹");
+  //           console.log("Cleaned text:", cleanedText);
+
+  //           // Check recipient validation
+  //           const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
+  //           const paidToJaimax = /jaimaxcoin2024@upi/i.test(cleanedText);
+  //           const paidToJaimaxPartial = /jaimax/i.test(cleanedText);
+  //           const paidToJaisvikUpi = /vyapar.174327728615@hdfcbank/i.test(
+  //             cleanedText
+  //           );
+  //           const paidToCorrectRecipient =
+  //             paidToJaisvik ||
+  //             paidToJaimax ||
+  //             paidToJaimaxPartial ||
+  //             paidToJaisvikUpi;
+
+  //           console.log("=== RECIPIENT VALIDATION ===");
+  //           console.log("JAISVIK SOFTWARE found:", paidToJaisvik);
+  //           console.log("jaimaxcoin2024@upi found:", paidToJaimax);
+  //           console.log("Jaimax (partial) found:", paidToJaimaxPartial);
+  //           console.log(
+  //             "vyapar.174327728615@hdfcbank found:",
+  //             paidToJaisvikUpi
+  //           );
+  //           console.log(
+  //             "Payment to correct recipient:",
+  //             paidToCorrectRecipient
+  //           );
+
+  //           // Extract transaction ID
+  //           let transactionID = null;
+  //           let extractionMethod = "";
+
+  //           console.log("=== TRANSACTION ID EXTRACTION ===");
+
+  //           // Method 1: Standard Transaction ID
+  //           console.log("Trying Method 1 - Standard Transaction ID...");
+  //           const transactionPatterns = [
+  //             /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i, // Transaction ID: 080254518184 (with colon/space)
+  //             /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
+  //             /Transaction ID[:\s]*(\w+)/i, // Transaction ID \n 080254518184 (next line)
+  //           ];
+
+  //           for (const pattern of transactionPatterns) {
+  //             const match = cleanedText.match(pattern);
+  //             if (match && !/date|time|am|pm/i.test(match[1])) {
+  //               // Exclude date/time words
+  //               transactionID = match[1];
+  //               extractionMethod = "Standard Transaction ID";
+  //               console.log(
+  //                 "✅ Method 1 - Found Transaction ID:",
+  //                 transactionID
+  //               );
+  //               break;
+  //             }
+  //           }
+
+  //           // Method 1b: Line-by-line search for Transaction ID format
+  //           if (!transactionID) {
+  //             console.log("Trying Method 1b - Transaction ID line-by-line...");
+  //             const lines = cleanedText.split(/\r?\n/);
+
+  //             for (let i = 0; i < lines.length; i++) {
+  //               const line = lines[i].trim();
+
+  //               // Look for "Transaction ID" and check next line
+  //               if (
+  //                 line.toLowerCase().includes("transaction id") &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
+  //                 console.log(`Found Transaction ID line at ${i}: "${line}"`);
+  //                 console.log(`Next line ${i + 1}: "${nextLine}"`);
+
+  //                 // Extract first number from next line (like 080254518184 @ 6th Jun)
+  //                 const numberMatch = nextLine.match(/^([0-9]{8,})/);
+  //                 if (numberMatch) {
+  //                   transactionID = numberMatch[1];
+  //                   extractionMethod = "Transaction ID next line";
+  //                   console.log(
+  //                     "✅ Method 1b - Found Transaction ID from next line:",
+  //                     transactionID
+  //                   );
+  //                   break;
+  //                 }
+  //               }
+  //             }
+  //           }
+
+  //           // Method 2: Tr. ID (ICICI format)
+  //           if (!transactionID) {
+  //             const trIdMatch = cleanedText.match(
+  //               /Tr\.?\s*ID\s*:?\s*([A-Za-z0-9]+)/i
+  //             );
+  //             if (trIdMatch) {
+  //               transactionID = trIdMatch[1];
+  //               extractionMethod = "Tr. ID (ICICI)";
+  //               console.log("✅ Method 2 - Found Tr. ID:", transactionID);
+  //             }
+  //           }
+
+  //           // Method 3: UTR/RRN/Reference patterns
+  //           if (!transactionID) {
+  //             console.log("Trying Method 3 - UTR/RRN/Reference patterns...");
+
+  //             const utrPatterns = [
+  //               /UTR\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR No: AXOlR40001291624|GJW976DJ0368
+  //               /UTR\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR Number: AXOlR40001291624|GJW976DJ0368
+  //               /UTR\s*:?\s*([A-Za-z0-9|:\-_\.]{20,})/i, // UTR: AXOlR40001291624|GJW976DJ0368
+  //               /RRN\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // RRN: 123456789012
+  //               /Reference\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference No: 515123556929
+  //               /Reference\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference Number: 515123556929
+  //               /Ref\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Ref No: 515123556929
+  //               /Payment\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment ID: ABC123456
+  //               /Payment\s*Reference\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment Reference: ABC123456
+  //               /Order\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Order ID: ORD123456
+  //               /TXN\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN ID: ABC123456
+  //               /TXN\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN: ABC123456
+  //               /Acknowledgment\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Acknowledgment: ACK123456
+  //               /ACK\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // ACK: 987654321
+  //             ];
+
+  //             for (const pattern of utrPatterns) {
+  //               const match = cleanedText.match(pattern);
+  //               if (match) {
+  //                 transactionID = match[1];
+  //                 extractionMethod = "UTR/RRN/Reference pattern";
+  //                 console.log("✅ Method 3 - Found with pattern:", pattern);
+  //                 console.log("✅ Method 3 - Extracted:", transactionID);
+  //                 break;
+  //               }
+  //             }
+  //           }
+
+  //           // Method 4: Line-by-line search for Kotak format
+  //           if (!transactionID) {
+  //             const lines = cleanedText.split(/\r?\n/);
+  //             console.log("Trying Method 4 - Line-by-line search...");
+
+  //             for (let i = 0; i < lines.length; i++) {
+  //               const line = lines[i].trim();
+  //               console.log(`Line ${i}: "${line}"`);
+
+  //               // Look for Reference No. (UTR No./RRN) pattern
+  //               if (
+  //                 line.toLowerCase().includes("reference") &&
+  //                 line.toLowerCase().includes("utr") &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
+  //                 console.log(`Found reference line at ${i}: "${line}"`);
+  //                 console.log(`Next line ${i + 1}: "${nextLine}"`);
+
+  //                 // Check if next line is a number
+  //                 const numberMatch = nextLine.match(/^([0-9]{10,})$/);
+  //                 if (numberMatch) {
+  //                   transactionID = numberMatch[1];
+  //                   extractionMethod = "Kotak Reference No. next line";
+  //                   console.log(
+  //                     "✅ Method 4 - Found from next line:",
+  //                     transactionID
+  //                   );
+  //                   break;
+  //                 }
+  //               }
+
+  //               // Look for UTR No. and get next line
+  //               if (
+  //                 line.toLowerCase().includes("utr no") &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
+  //                 const numberMatch = nextLine.match(
+  //                   /^([A-Za-z0-9|:\-_\.]{10,})$/
+  //                 );
+  //                 if (numberMatch) {
+  //                   transactionID = numberMatch[1];
+  //                   extractionMethod = "UTR No. next line";
+  //                   console.log(
+  //                     "✅ Method 4 - Found UTR from next line:",
+  //                     transactionID
+  //                   );
+  //                   break;
+  //                 }
+  //               }
+
+  //               // Look for any label followed by ID on next line
+  //               if (
+  //                 (line.toLowerCase().includes("transaction") ||
+  //                   line.toLowerCase().includes("reference") ||
+  //                   line.toLowerCase().includes("utr") ||
+  //                   line.toLowerCase().includes("rrn")) &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
+  //                 const idMatch = nextLine.match(/^([A-Za-z0-9|:\-_\.]{8,})$/);
+  //                 if (idMatch) {
+  //                   transactionID = idMatch[1];
+  //                   extractionMethod = "Generic label next line";
+  //                   console.log(
+  //                     "✅ Method 4 - Found generic ID from next line:",
+  //                     transactionID
+  //                   );
+  //                   break;
+  //                 }
+  //               }
+  //             }
+  //           }
+
+  //           // Method 5: Any long number fallback
+  //           if (!transactionID) {
+  //             const numberMatch = cleanedText.match(/\b([0-9]{12,})\b/);
+  //             if (numberMatch) {
+  //               transactionID = numberMatch[1];
+  //               extractionMethod = "Fallback long number";
+  //               console.log(
+  //                 "✅ Method 5 - Found fallback number:",
+  //                 transactionID
+  //               );
+  //             }
+  //           }
+
+  //           console.log("=== EXTRACTION RESULT ===");
+  //           console.log("Final transaction ID:", transactionID);
+  //           console.log("Extraction method:", extractionMethod);
+
+  //           // Validation
+  //           if (!paidToCorrectRecipient) {
+  //             console.log("❌ Recipient validation failed");
+  //             setIsLoading(false);
+  //             setFormData((prev) => ({
+  //               ...prev,
+  //               transactionId: "",
+  //               screenshot: null,
+  //             }));
+  //             setIsTransactionIdRead(false);
+  //             if (fileInputRef.current) {
+  //               fileInputRef.current.value = "";
+  //             }
+  //             setErrors((prevErrors) => ({
+  //               ...prevErrors,
+  //               screenshot:
+  //                 "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE",
+  //             }));
+  //             toast.error(
+  //               "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE"
+  //             );
+  //             return;
+  //           }
+
+  //           if (!transactionID) {
+  //             console.log("❌ Transaction ID not found");
+  //             setIsLoading(false);
+  //             setFormData((prev) => ({
+  //               ...prev,
+  //               transactionId: "",
+  //               screenshot: null,
+  //             }));
+  //             setIsTransactionIdRead(false);
+  //             if (fileInputRef.current) {
+  //               fileInputRef.current.value = "";
+  //             }
+  //             setErrors((prevErrors) => ({
+  //               ...prevErrors,
+  //               screenshot:
+  //                 "Transaction ID not found in the screenshot. Please upload a clear payment screenshot.",
+  //             }));
+  //             toast.error(
+  //               "Transaction ID not found in the screenshot. Please upload a clear payment screenshot."
+  //             );
+  //             return;
+  //           }
+
+  //           // Success!
+  //           console.log(
+  //             "✅ All validations passed! Setting transaction ID:",
+  //             transactionID
+  //           );
+  //           setFormData((prev) => ({
+  //             ...prev,
+  //             transactionId: transactionID,
+  //           }));
+  //           setIsLoading(false);
+  //           setIsTransactionIdRead(false);
+  //           setErrors((prevErrors) => ({
+  //             ...prevErrors,
+  //             screenshot: "",
+  //           }));
+  //           toast.success(
+  //             `Transaction ID extracted successfully using ${extractionMethod}!`
+  //           );
+  //           console.log("=== OCR EXTRACTION END ===");
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error during OCR:", error);
+  //           setIsLoading(false);
+  //           setFormData((prev) => ({
+  //             ...prev,
+  //             transactionId: "",
+  //             screenshot: null,
+  //           }));
+  //           setIsTransactionIdRead(false);
+  //           if (fileInputRef.current) {
+  //             fileInputRef.current.value = "";
+  //           }
+  //           setErrors((prevErrors) => ({
+  //             ...prevErrors,
+  //             screenshot:
+  //               "Failed to read screenshot. Please upload a clear image.",
+  //           }));
+  //           toast.error(
+  //             "Failed to read screenshot. Please upload a clear image."
+  //           );
+  //         });
+  //     }
+  //   };
+
+  //   reader.readAsDataURL(file);
+  // };
   const extractDetailsFromImage = (file) => {
     if (!file) return;
 
@@ -538,7 +871,6 @@ const AddMoneyToWallet = () => {
 
     reader.readAsDataURL(file);
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     // Additional validation for specific fields

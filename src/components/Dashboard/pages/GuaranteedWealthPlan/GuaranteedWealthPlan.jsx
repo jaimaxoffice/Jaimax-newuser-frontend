@@ -835,9 +835,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                       />
                       <MetricCard
                         title="Daily coins"
-                        value={`${orderDetails.guaranteedTokensToBeCollect.toLocaleString(
-                          "en-IN"
-                        )}`}
+                        value={`${orderDetails.guaranteedTokensToBeCollect}`}
                         icon={<Wallet size={16} />}
                         color="bg-emerald-500"
                       />
