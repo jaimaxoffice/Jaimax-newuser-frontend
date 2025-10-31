@@ -483,51 +483,51 @@ const MyTotalTeam = () => {
           </div>
 
           {/* Mobile Cards View */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 lg:hidden">
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 lg:hidden">
   {isLoading ? (
     [...Array(3)].map((_, i) => (
       <div
         key={i}
-        className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-5 border border-gray-100 shadow-sm animate-pulse"
+        className="bg-white rounded-lg p-4 border border-gray-200 animate-pulse"
       >
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl"></div>
-          <div className="flex-1 min-w-0 space-y-2">
-            <div className="h-5 bg-gray-200 rounded-lg w-3/4"></div>
-            <div className="h-4 bg-gray-200 rounded-lg w-1/2"></div>
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+          <div className="flex-1 space-y-2">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
           </div>
         </div>
-        <div className="space-y-3 mt-4">
-          <div className="h-4 bg-gray-200 rounded-lg"></div>
-          <div className="h-4 bg-gray-200 rounded-lg w-5/6"></div>
+        <div className="space-y-2">
+          <div className="h-3 bg-gray-200 rounded"></div>
+          <div className="h-3 bg-gray-200 rounded w-5/6"></div>
         </div>
       </div>
     ))
   ) : filteredData.length === 0 ? (
-    <div className="text-center py-16 bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-100 shadow-sm col-span-full">
-      <div className="w-20 h-20 bg-gradient-to-br from-teal-100 to-teal-200 rounded-full flex items-center justify-center mx-auto mb-4">
-        <Users className="w-10 h-10 text-teal-600" />
+    <div className="text-center py-12 bg-white rounded-lg border border-gray-200 col-span-full">
+      <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
+        <Users className="w-8 h-8 text-teal-600" />
       </div>
-      <h3 className="text-lg font-bold text-gray-900 mb-2">
+      <h3 className="text-base font-semibold text-gray-900 mb-1">
         No members found
       </h3>
-      <p className="text-sm text-gray-500 max-w-sm mx-auto px-4 leading-relaxed">
+      <p className="text-sm text-gray-500 max-w-sm mx-auto px-4">
         {state.search || state.filterStatus !== "all"
-          ? "No members match your current filters. Try adjusting your search criteria or filter settings."
-          : "Your team list is currently empty. When you add team members, they'll appear here."}
+          ? "No members match your current filters."
+          : "Your team list is currently empty."}
       </p>
     </div>
   ) : (
     filteredData.map((data, i) => (
       <div
         key={i}
-        className="group bg-gradient-to-br from-white via-white to-gray-50 rounded-2xl p-5 border border-gray-200 hover:border-teal-300 hover:shadow-xl hover:shadow-teal-100/50 transition-all duration-500 hover:-translate-y-1"
+        className="bg-white rounded-lg p-4 border border-gray-200 hover:border-teal-400 hover:shadow-md transition-all"
       >
-        {/* Header Section */}
-        <div className="flex items-start gap-4 mb-4">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-3">
           {/* Avatar */}
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow duration-300 overflow-hidden ring-2 ring-white">
+          <div className="relative flex-shrink-0">
+            <div className="w-12 h-12 rounded-lg overflow-hidden">
               {data.profile ? (
                 <img
                   src={data?.profile}
@@ -535,89 +535,66 @@ const MyTotalTeam = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-teal-500 via-teal-600 to-cyan-600 flex items-center justify-center text-white font-bold text-lg">
+                <div className="w-full h-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-semibold  rounded-xl text-sm">
                   {getAvatarInitials(data.name)}
                 </div>
               )}
             </div>
-            {/* Status Dot */}
-            <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full border-2 border-white shadow-sm ${
-              data.isActive ? "bg-green-500" : "bg-gray-400"
-            }`}></div>
+            
           </div>
 
-          {/* Name & Username */}
+          {/* Name & Status */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-gray-900 text-lg leading-tight break-words mb-1">
+            <h3 className="font-semibold text-gray-900 text-sm leading-tight truncate">
               {data.name || "N/A"}
             </h3>
-            <p className="text-teal-600 text-sm font-medium break-words">
-              @{data.username || "N/A"}
+            <p className="text-teal-600 text-xs font-medium truncate">
+              {data.username || "N/A"}
             </p>
-            
-            {/* Status Badge */}
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mt-2 ${
-                data.isActive
-                  ? "bg-green-50 text-green-700 ring-1 ring-green-200"
-                  : "bg-gray-100 text-gray-700 ring-1 ring-gray-200"
-              }`}
-            >
-              <span className={`w-1.5 h-1.5 rounded-full ${
-                data.isActive ? "bg-green-500" : "bg-gray-400"
-              }`}></span>
-              {data.isActive ? "Active" : "Inactive"}
-            </span>
           </div>
+
+          {/* Status Badge */}
+          <span
+            className={`px-2 py-0.5 rounded text-xs font-medium ${
+              data.isActive
+                ? "bg-green-50 text-green-700"
+                : "bg-gray-100 text-gray-600"
+            }`}
+          >
+            {data.isActive ? "Active" : "Inactive"}
+          </span>
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-4"></div>
+        {/* Email */}
+        <div className="flex items-center gap-2 mb-3 text-xs">
+          <Mail className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+          <p className="text-gray-600 truncate">{data.email || "N/A"}</p>
+        </div>
 
-        {/* Info Section */}
-        <div className="space-y-3">
-          {/* Email */}
-          <div className="flex items-start gap-3 group/item">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-50 to-teal-100 flex items-center justify-center flex-shrink-0">
-              <Mail className="w-4 h-4 text-teal-600" />
+        {/* Stats */}
+        <div className="grid grid-cols-2 gap-2">
+          {/* Referrals */}
+          <div className="bg-teal-50 rounded-lg p-2.5 border border-teal-100">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <Award className="w-3.5 h-3.5 text-teal-600" />
+              <p className="text-xs text-gray-600">Referrals</p>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 font-medium mb-0.5">Email</p>
-              <p className="text-sm text-gray-700 break-all font-medium">
-                {data.email || "N/A"}
-              </p>
-            </div>
+            <p className="text-lg font-bold text-gray-900">
+              {data.totalChainReferrals + data?.totalDirectReferrals || 0}
+            </p>
           </div>
 
-          {/* Stats Row */}
-          <div className="grid grid-cols-2 gap-3 pt-2">
-            {/* Referrals */}
-            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-3 border border-teal-100">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center">
-                  <Award className="w-4 h-4 text-teal-600" />
-                </div>
-              </div>
-              <p className="text-xl font-bold text-gray-900">
-                {data.totalChainReferrals + data?.totalDirectReferrals || 0}
-              </p>
-              <p className="text-xs text-gray-600 font-medium">Referrals</p>
+          {/* Joined */}
+          <div className="bg-gray-50 rounded-lg p-2.5 border border-gray-200">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <Calendar className="w-3.5 h-3.5 text-gray-500" />
+              <p className="text-xs text-gray-600">Joined</p>
             </div>
-
-            {/* Joined Date */}
-            <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-3 border border-gray-200">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-gray-600" />
-                </div>
-              </div>
-              <p className="text-sm font-bold text-gray-900">
-                {data.createdAt
-                  ? data.createdAt.slice(0, 10).split("-").reverse().join("-")
-                  : "N/A"}
-              </p>
-              <p className="text-xs text-gray-600 font-medium">Joined</p>
-            </div>
+            <p className="text-xs font-semibold text-gray-900">
+              {data.createdAt
+                ? data.createdAt.slice(0, 10).split("-").reverse().join("-")
+                : "N/A"}
+            </p>
           </div>
         </div>
       </div>

@@ -639,11 +639,11 @@ const TopCards = React.memo(() => {
             ).toFixed(2)}`
           : `${currencySymbol}${Number(
               userData?.data?.lockedSuperBonusInfo?.totalReleased || 0
-            ).toFixed(2)} Locked`,
+            ).toFixed(2)} `,
         image: assets.withdraw,
         hoverImage: assets.withdraw1,
         iconBg: isSuperBonusCompleted ? "#d4edda" : "#fce4ec",
-        hasViewButton: !isSuperBonusCompleted,
+        hasViewButton: isSuperBonusCompleted,
         isCompleted: isSuperBonusCompleted,
       },
       {

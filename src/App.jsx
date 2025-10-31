@@ -301,7 +301,7 @@ const App = () => {
         const timer = setTimeout(() => {
           setShowSplash(false);
           setLastSplashTime();
-        }, 4000);
+        }, 6000);
 
         return () => clearTimeout(timer);
       } else if (shouldShowSplash()) {
@@ -310,7 +310,7 @@ const App = () => {
         const timer = setTimeout(() => {
           setShowSplash(false);
           setLastSplashTime();
-        }, 4000);
+        }, 6000);
 
         return () => clearTimeout(timer);
       } else {
@@ -331,7 +331,7 @@ const App = () => {
           setLastSplashTime();
         }, 500);
       }
-    }, 60000);
+    }, 200000);
 
     return () => clearInterval(interval);
   }, [showSplash]);

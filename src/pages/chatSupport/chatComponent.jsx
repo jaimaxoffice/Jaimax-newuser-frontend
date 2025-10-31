@@ -253,11 +253,7 @@
         return () => clearInterval(intervalId);
       }
     }, [mode]);
-
-    useEffect(() => {
-      const storedChat = JSON.parse(localStorage.getItem("chatHistory")) || [];
-      setChatHistory(storedChat);
-    }, []);
+    
 
     // RTK Query hooks
     const [sendChatMessage, { isLoading: isSending, error: sendError }] =
@@ -266,33 +262,7 @@
     const { data: aiStatus, error: statusError } = useGetAiStatusQuery();
     const [deleteChatConversation] = useDeleteChatConversationMutation();
 
-    // Local state for messages
-    const [messages, setMessages] = useState(() => {
-      try {
-        const saved = localStorage.getItem(`chat_messages_${conversationId}`);
-        return saved
-          ? JSON.parse(saved)
-          : [
-              {
-                id: 1,
-                from: "bot",
-                text: "Hi 👋 How can I help you today?",
-                time: new Date().toLocaleTimeString(),
-                timestamp: new Date().toISOString(),
-              },
-            ];
-      } catch {
-        return [
-          {
-            id: 1,
-            from: "bot",
-            text: "Hi 👋 How can I help you today?",
-            time: new Date().toLocaleTimeString(),
-            timestamp: new Date().toISOString(),
-          },
-        ];
-      }
-    });
+
 
     const [typingMessage, setTypingMessage] = useState(null);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -332,24 +302,9 @@
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Auto-scroll to bottom
-    useEffect(() => {
-      if (chatEndRef.current) {
-        chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }, [messages, typingMessage]);
 
-    // Save messages to localStorage
-    useEffect(() => {
-      try {
-        localStorage.setItem(
-          `chat_messages_${conversationId}`,
-          JSON.stringify(messages)
-        );
-      } catch (error) {
-        console.warn("Failed to save messages to localStorage:", error);
-      }
-    }, [messages, conversationId]);
+
+
 
     // Cleanup on unmount
     useEffect(() => {
@@ -467,7 +422,7 @@
       setMessages([welcome]);
       setTypingMessage(null);
       setIsTypingComplete(true);
-      localStorage.removeItem(`chat_messages_${conversationId}`);
+      // localStorage.removeItem(`chat_messages_${conversationId}`);
     }, [deleteChatConversation, conversationId]);
 
     const handleDeleteConversation = () => {

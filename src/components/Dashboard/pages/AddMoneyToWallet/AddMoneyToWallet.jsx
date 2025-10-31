@@ -205,339 +205,6 @@ const AddMoneyToWallet = () => {
     }
   };
 
-  // const extractDetailsFromImage = (file) => {
-  //   if (!file) return;
-
-  //   setIsLoading(true);
-  //   const reader = new FileReader();
-
-  //   reader.onload = () => {
-  //     if (reader.result) {
-  //       Tesseract.recognize(reader.result, "eng")
-  //         .then(({ data: { text } }) => {
-  //           console.log("=== OCR EXTRACTION START ===");
-  //           console.log("Raw OCR text:", text);
-
-  //           // Clean up the extracted text
-  //           let cleanedText = text.replace(/¥/g, "₹");
-  //           console.log("Cleaned text:", cleanedText);
-
-  //           // Check recipient validation
-  //           const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
-  //           const paidToJaimax = /jaimaxcoin2024@upi/i.test(cleanedText);
-  //           const paidToJaimaxPartial = /jaimax/i.test(cleanedText);
-  //           const paidToJaisvikUpi = /vyapar.174327728615@hdfcbank/i.test(
-  //             cleanedText
-  //           );
-  //           const paidToCorrectRecipient =
-  //             paidToJaisvik ||
-  //             paidToJaimax ||
-  //             paidToJaimaxPartial ||
-  //             paidToJaisvikUpi;
-
-  //           console.log("=== RECIPIENT VALIDATION ===");
-  //           console.log("JAISVIK SOFTWARE found:", paidToJaisvik);
-  //           console.log("jaimaxcoin2024@upi found:", paidToJaimax);
-  //           console.log("Jaimax (partial) found:", paidToJaimaxPartial);
-  //           console.log(
-  //             "vyapar.174327728615@hdfcbank found:",
-  //             paidToJaisvikUpi
-  //           );
-  //           console.log(
-  //             "Payment to correct recipient:",
-  //             paidToCorrectRecipient
-  //           );
-
-  //           // Extract transaction ID
-  //           let transactionID = null;
-  //           let extractionMethod = "";
-
-  //           console.log("=== TRANSACTION ID EXTRACTION ===");
-
-  //           // Method 1: Standard Transaction ID
-  //           console.log("Trying Method 1 - Standard Transaction ID...");
-  //           const transactionPatterns = [
-  //             /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i, // Transaction ID: 080254518184 (with colon/space)
-  //             /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
-  //             /Transaction ID[:\s]*(\w+)/i, // Transaction ID \n 080254518184 (next line)
-  //           ];
-
-  //           for (const pattern of transactionPatterns) {
-  //             const match = cleanedText.match(pattern);
-  //             if (match && !/date|time|am|pm/i.test(match[1])) {
-  //               // Exclude date/time words
-  //               transactionID = match[1];
-  //               extractionMethod = "Standard Transaction ID";
-  //               console.log(
-  //                 "✅ Method 1 - Found Transaction ID:",
-  //                 transactionID
-  //               );
-  //               break;
-  //             }
-  //           }
-
-  //           // Method 1b: Line-by-line search for Transaction ID format
-  //           if (!transactionID) {
-  //             console.log("Trying Method 1b - Transaction ID line-by-line...");
-  //             const lines = cleanedText.split(/\r?\n/);
-
-  //             for (let i = 0; i < lines.length; i++) {
-  //               const line = lines[i].trim();
-
-  //               // Look for "Transaction ID" and check next line
-  //               if (
-  //                 line.toLowerCase().includes("transaction id") &&
-  //                 i + 1 < lines.length
-  //               ) {
-  //                 const nextLine = lines[i + 1].trim();
-  //                 console.log(`Found Transaction ID line at ${i}: "${line}"`);
-  //                 console.log(`Next line ${i + 1}: "${nextLine}"`);
-
-  //                 // Extract first number from next line (like 080254518184 @ 6th Jun)
-  //                 const numberMatch = nextLine.match(/^([0-9]{8,})/);
-  //                 if (numberMatch) {
-  //                   transactionID = numberMatch[1];
-  //                   extractionMethod = "Transaction ID next line";
-  //                   console.log(
-  //                     "✅ Method 1b - Found Transaction ID from next line:",
-  //                     transactionID
-  //                   );
-  //                   break;
-  //                 }
-  //               }
-  //             }
-  //           }
-
-  //           // Method 2: Tr. ID (ICICI format)
-  //           if (!transactionID) {
-  //             const trIdMatch = cleanedText.match(
-  //               /Tr\.?\s*ID\s*:?\s*([A-Za-z0-9]+)/i
-  //             );
-  //             if (trIdMatch) {
-  //               transactionID = trIdMatch[1];
-  //               extractionMethod = "Tr. ID (ICICI)";
-  //               console.log("✅ Method 2 - Found Tr. ID:", transactionID);
-  //             }
-  //           }
-
-  //           // Method 3: UTR/RRN/Reference patterns
-  //           if (!transactionID) {
-  //             console.log("Trying Method 3 - UTR/RRN/Reference patterns...");
-
-  //             const utrPatterns = [
-  //               /UTR\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR No: AXOlR40001291624|GJW976DJ0368
-  //               /UTR\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR Number: AXOlR40001291624|GJW976DJ0368
-  //               /UTR\s*:?\s*([A-Za-z0-9|:\-_\.]{20,})/i, // UTR: AXOlR40001291624|GJW976DJ0368
-  //               /RRN\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // RRN: 123456789012
-  //               /Reference\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference No: 515123556929
-  //               /Reference\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference Number: 515123556929
-  //               /Ref\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Ref No: 515123556929
-  //               /Payment\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment ID: ABC123456
-  //               /Payment\s*Reference\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment Reference: ABC123456
-  //               /Order\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Order ID: ORD123456
-  //               /TXN\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN ID: ABC123456
-  //               /TXN\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN: ABC123456
-  //               /Acknowledgment\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Acknowledgment: ACK123456
-  //               /ACK\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // ACK: 987654321
-  //             ];
-
-  //             for (const pattern of utrPatterns) {
-  //               const match = cleanedText.match(pattern);
-  //               if (match) {
-  //                 transactionID = match[1];
-  //                 extractionMethod = "UTR/RRN/Reference pattern";
-  //                 console.log("✅ Method 3 - Found with pattern:", pattern);
-  //                 console.log("✅ Method 3 - Extracted:", transactionID);
-  //                 break;
-  //               }
-  //             }
-  //           }
-
-  //           // Method 4: Line-by-line search for Kotak format
-  //           if (!transactionID) {
-  //             const lines = cleanedText.split(/\r?\n/);
-  //             console.log("Trying Method 4 - Line-by-line search...");
-
-  //             for (let i = 0; i < lines.length; i++) {
-  //               const line = lines[i].trim();
-  //               console.log(`Line ${i}: "${line}"`);
-
-  //               // Look for Reference No. (UTR No./RRN) pattern
-  //               if (
-  //                 line.toLowerCase().includes("reference") &&
-  //                 line.toLowerCase().includes("utr") &&
-  //                 i + 1 < lines.length
-  //               ) {
-  //                 const nextLine = lines[i + 1].trim();
-  //                 console.log(`Found reference line at ${i}: "${line}"`);
-  //                 console.log(`Next line ${i + 1}: "${nextLine}"`);
-
-  //                 // Check if next line is a number
-  //                 const numberMatch = nextLine.match(/^([0-9]{10,})$/);
-  //                 if (numberMatch) {
-  //                   transactionID = numberMatch[1];
-  //                   extractionMethod = "Kotak Reference No. next line";
-  //                   console.log(
-  //                     "✅ Method 4 - Found from next line:",
-  //                     transactionID
-  //                   );
-  //                   break;
-  //                 }
-  //               }
-
-  //               // Look for UTR No. and get next line
-  //               if (
-  //                 line.toLowerCase().includes("utr no") &&
-  //                 i + 1 < lines.length
-  //               ) {
-  //                 const nextLine = lines[i + 1].trim();
-  //                 const numberMatch = nextLine.match(
-  //                   /^([A-Za-z0-9|:\-_\.]{10,})$/
-  //                 );
-  //                 if (numberMatch) {
-  //                   transactionID = numberMatch[1];
-  //                   extractionMethod = "UTR No. next line";
-  //                   console.log(
-  //                     "✅ Method 4 - Found UTR from next line:",
-  //                     transactionID
-  //                   );
-  //                   break;
-  //                 }
-  //               }
-
-  //               // Look for any label followed by ID on next line
-  //               if (
-  //                 (line.toLowerCase().includes("transaction") ||
-  //                   line.toLowerCase().includes("reference") ||
-  //                   line.toLowerCase().includes("utr") ||
-  //                   line.toLowerCase().includes("rrn")) &&
-  //                 i + 1 < lines.length
-  //               ) {
-  //                 const nextLine = lines[i + 1].trim();
-  //                 const idMatch = nextLine.match(/^([A-Za-z0-9|:\-_\.]{8,})$/);
-  //                 if (idMatch) {
-  //                   transactionID = idMatch[1];
-  //                   extractionMethod = "Generic label next line";
-  //                   console.log(
-  //                     "✅ Method 4 - Found generic ID from next line:",
-  //                     transactionID
-  //                   );
-  //                   break;
-  //                 }
-  //               }
-  //             }
-  //           }
-
-  //           // Method 5: Any long number fallback
-  //           if (!transactionID) {
-  //             const numberMatch = cleanedText.match(/\b([0-9]{12,})\b/);
-  //             if (numberMatch) {
-  //               transactionID = numberMatch[1];
-  //               extractionMethod = "Fallback long number";
-  //               console.log(
-  //                 "✅ Method 5 - Found fallback number:",
-  //                 transactionID
-  //               );
-  //             }
-  //           }
-
-  //           console.log("=== EXTRACTION RESULT ===");
-  //           console.log("Final transaction ID:", transactionID);
-  //           console.log("Extraction method:", extractionMethod);
-
-  //           // Validation
-  //           if (!paidToCorrectRecipient) {
-  //             console.log("❌ Recipient validation failed");
-  //             setIsLoading(false);
-  //             setFormData((prev) => ({
-  //               ...prev,
-  //               transactionId: "",
-  //               screenshot: null,
-  //             }));
-  //             setIsTransactionIdRead(false);
-  //             if (fileInputRef.current) {
-  //               fileInputRef.current.value = "";
-  //             }
-  //             setErrors((prevErrors) => ({
-  //               ...prevErrors,
-  //               screenshot:
-  //                 "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE",
-  //             }));
-  //             toast.error(
-  //               "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE"
-  //             );
-  //             return;
-  //           }
-
-  //           if (!transactionID) {
-  //             console.log("❌ Transaction ID not found");
-  //             setIsLoading(false);
-  //             setFormData((prev) => ({
-  //               ...prev,
-  //               transactionId: "",
-  //               screenshot: null,
-  //             }));
-  //             setIsTransactionIdRead(false);
-  //             if (fileInputRef.current) {
-  //               fileInputRef.current.value = "";
-  //             }
-  //             setErrors((prevErrors) => ({
-  //               ...prevErrors,
-  //               screenshot:
-  //                 "Transaction ID not found in the screenshot. Please upload a clear payment screenshot.",
-  //             }));
-  //             toast.error(
-  //               "Transaction ID not found in the screenshot. Please upload a clear payment screenshot."
-  //             );
-  //             return;
-  //           }
-
-  //           // Success!
-  //           console.log(
-  //             "✅ All validations passed! Setting transaction ID:",
-  //             transactionID
-  //           );
-  //           setFormData((prev) => ({
-  //             ...prev,
-  //             transactionId: transactionID,
-  //           }));
-  //           setIsLoading(false);
-  //           setIsTransactionIdRead(false);
-  //           setErrors((prevErrors) => ({
-  //             ...prevErrors,
-  //             screenshot: "",
-  //           }));
-  //           toast.success(
-  //             `Transaction ID extracted successfully using ${extractionMethod}!`
-  //           );
-  //           console.log("=== OCR EXTRACTION END ===");
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error during OCR:", error);
-  //           setIsLoading(false);
-  //           setFormData((prev) => ({
-  //             ...prev,
-  //             transactionId: "",
-  //             screenshot: null,
-  //           }));
-  //           setIsTransactionIdRead(false);
-  //           if (fileInputRef.current) {
-  //             fileInputRef.current.value = "";
-  //           }
-  //           setErrors((prevErrors) => ({
-  //             ...prevErrors,
-  //             screenshot:
-  //               "Failed to read screenshot. Please upload a clear image.",
-  //           }));
-  //           toast.error(
-  //             "Failed to read screenshot. Please upload a clear image."
-  //           );
-  //         });
-  //     }
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // };
   const extractDetailsFromImage = (file) => {
     if (!file) return;
 
@@ -548,12 +215,11 @@ const AddMoneyToWallet = () => {
       if (reader.result) {
         Tesseract.recognize(reader.result, "eng")
           .then(({ data: { text } }) => {
-            console.log("=== OCR EXTRACTION START ===");
-            console.log("Raw OCR text:", text);
+            
 
             // Clean up the extracted text
             let cleanedText = text.replace(/¥/g, "₹");
-            console.log("Cleaned text:", cleanedText);
+           
 
             // Check recipient validation
             const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
@@ -568,27 +234,13 @@ const AddMoneyToWallet = () => {
               paidToJaimaxPartial ||
               paidToJaisvikUpi;
 
-            console.log("=== RECIPIENT VALIDATION ===");
-            console.log("JAISVIK SOFTWARE found:", paidToJaisvik);
-            console.log("jaimaxcoin2024@upi found:", paidToJaimax);
-            console.log("Jaimax (partial) found:", paidToJaimaxPartial);
-            console.log(
-              "vyapar.174327728615@hdfcbank found:",
-              paidToJaisvikUpi
-            );
-            console.log(
-              "Payment to correct recipient:",
-              paidToCorrectRecipient
-            );
+           
 
             // Extract transaction ID
             let transactionID = null;
             let extractionMethod = "";
 
-            console.log("=== TRANSACTION ID EXTRACTION ===");
-
-            // Method 1: Standard Transaction ID
-            console.log("Trying Method 1 - Standard Transaction ID...");
+           
             const transactionPatterns = [
               /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i, // Transaction ID: 080254518184 (with colon/space)
               /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
@@ -601,17 +253,14 @@ const AddMoneyToWallet = () => {
                 // Exclude date/time words
                 transactionID = match[1];
                 extractionMethod = "Standard Transaction ID";
-                console.log(
-                  "✅ Method 1 - Found Transaction ID:",
-                  transactionID
-                );
+               
                 break;
               }
             }
 
             // Method 1b: Line-by-line search for Transaction ID format
             if (!transactionID) {
-              console.log("Trying Method 1b - Transaction ID line-by-line...");
+            
               const lines = cleanedText.split(/\r?\n/);
 
               for (let i = 0; i < lines.length; i++) {
@@ -623,18 +272,14 @@ const AddMoneyToWallet = () => {
                   i + 1 < lines.length
                 ) {
                   const nextLine = lines[i + 1].trim();
-                  console.log(`Found Transaction ID line at ${i}: "${line}"`);
-                  console.log(`Next line ${i + 1}: "${nextLine}"`);
+                  
 
                   // Extract first number from next line (like 080254518184 @ 6th Jun)
                   const numberMatch = nextLine.match(/^([0-9]{8,})/);
                   if (numberMatch) {
                     transactionID = numberMatch[1];
                     extractionMethod = "Transaction ID next line";
-                    console.log(
-                      "✅ Method 1b - Found Transaction ID from next line:",
-                      transactionID
-                    );
+                    
                     break;
                   }
                 }
@@ -649,13 +294,13 @@ const AddMoneyToWallet = () => {
               if (trIdMatch) {
                 transactionID = trIdMatch[1];
                 extractionMethod = "Tr. ID (ICICI)";
-                console.log("✅ Method 2 - Found Tr. ID:", transactionID);
+               
               }
             }
 
             // Method 3: UTR/RRN/Reference patterns
             if (!transactionID) {
-              console.log("Trying Method 3 - UTR/RRN/Reference patterns...");
+              // console.log("Trying Method 3 - UTR/RRN/Reference patterns...");
 
               const utrPatterns = [
                 /UTR\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR No: AXOlR40001291624|GJW976DJ0368
@@ -679,8 +324,7 @@ const AddMoneyToWallet = () => {
                 if (match) {
                   transactionID = match[1];
                   extractionMethod = "UTR/RRN/Reference pattern";
-                  console.log("✅ Method 3 - Found with pattern:", pattern);
-                  console.log("✅ Method 3 - Extracted:", transactionID);
+                 
                   break;
                 }
               }
@@ -689,11 +333,11 @@ const AddMoneyToWallet = () => {
             // Method 4: Line-by-line search for Kotak format
             if (!transactionID) {
               const lines = cleanedText.split(/\r?\n/);
-              console.log("Trying Method 4 - Line-by-line search...");
+              
 
               for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
-                console.log(`Line ${i}: "${line}"`);
+                // console.log(`Line ${i}: "${line}"`);
 
                 // Look for Reference No. (UTR No./RRN) pattern
                 if (
@@ -702,18 +346,15 @@ const AddMoneyToWallet = () => {
                   i + 1 < lines.length
                 ) {
                   const nextLine = lines[i + 1].trim();
-                  console.log(`Found reference line at ${i}: "${line}"`);
-                  console.log(`Next line ${i + 1}: "${nextLine}"`);
+                  // console.log(`Found reference line at ${i}: "${line}"`);
+                  // console.log(`Next line ${i + 1}: "${nextLine}"`);
 
                   // Check if next line is a number
                   const numberMatch = nextLine.match(/^([0-9]{10,})$/);
                   if (numberMatch) {
                     transactionID = numberMatch[1];
                     extractionMethod = "Kotak Reference No. next line";
-                    console.log(
-                      "✅ Method 4 - Found from next line:",
-                      transactionID
-                    );
+                    
                     break;
                   }
                 }
@@ -730,10 +371,7 @@ const AddMoneyToWallet = () => {
                   if (numberMatch) {
                     transactionID = numberMatch[1];
                     extractionMethod = "UTR No. next line";
-                    console.log(
-                      "✅ Method 4 - Found UTR from next line:",
-                      transactionID
-                    );
+                   
                     break;
                   }
                 }
@@ -751,10 +389,7 @@ const AddMoneyToWallet = () => {
                   if (idMatch) {
                     transactionID = idMatch[1];
                     extractionMethod = "Generic label next line";
-                    console.log(
-                      "✅ Method 4 - Found generic ID from next line:",
-                      transactionID
-                    );
+                   
                     break;
                   }
                 }
@@ -767,20 +402,17 @@ const AddMoneyToWallet = () => {
               if (numberMatch) {
                 transactionID = numberMatch[1];
                 extractionMethod = "Fallback long number";
-                console.log(
-                  "✅ Method 5 - Found fallback number:",
-                  transactionID
-                );
+                
               }
             }
 
-            console.log("=== EXTRACTION RESULT ===");
-            console.log("Final transaction ID:", transactionID);
-            console.log("Extraction method:", extractionMethod);
+            // console.log("=== EXTRACTION RESULT ===");
+            // console.log("Final transaction ID:", transactionID);
+            // console.log("Extraction method:", extractionMethod);
 
             // Validation
             if (!paidToCorrectRecipient) {
-              console.log("❌ Recipient validation failed");
+              // console.log("❌ Recipient validation failed");
               setIsLoading(false);
               setFormData((prev) => ({
                 ...prev,
@@ -803,7 +435,7 @@ const AddMoneyToWallet = () => {
             }
 
             if (!transactionID) {
-              console.log("❌ Transaction ID not found");
+              // console.log("❌ Transaction ID not found");
               setIsLoading(false);
               setFormData((prev) => ({
                 ...prev,
@@ -826,10 +458,7 @@ const AddMoneyToWallet = () => {
             }
 
             // Success!
-            console.log(
-              "✅ All validations passed! Setting transaction ID:",
-              transactionID
-            );
+           
             setFormData((prev) => ({
               ...prev,
               transactionId: transactionID,
@@ -843,7 +472,7 @@ const AddMoneyToWallet = () => {
             toast.success(
               `Transaction ID extracted successfully using ${extractionMethod}!`
             );
-            console.log("=== OCR EXTRACTION END ===");
+            // console.log("=== OCR EXTRACTION END ===");
           })
           .catch((error) => {
             console.error("Error during OCR:", error);
@@ -871,6 +500,7 @@ const AddMoneyToWallet = () => {
 
     reader.readAsDataURL(file);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     // Additional validation for specific fields
@@ -1091,14 +721,85 @@ const AddMoneyToWallet = () => {
     refetch();
   }, []);
 
-  const onClickAddMoney = () => {
+  // const onClickAddMoney = () => {
+  //   try {
+  //     // Step 1: Get and parse user data from localStorage
+  //     const userDataRaw = Cookies.get("userData");
+  //     // console.log(userDataRaw, "userDataRaw");
+  //     if (!userDataRaw) {
+  //       // console.error("User not found in localStorage");
+  //       alert("User not logged in. Please login and try again.");
+  //       return;
+  //     }
+
+  //     const userData = JSON.parse(userDataRaw);
+  //     // console.log(userData, "userData");
+  //     const userId = userData?._id;
+  //     const name = userData?.name;
+
+  //     if (!userId || !name) {
+  //       // console.error("User data is incomplete");
+  //       alert("User details are missing. Please contact support.");
+  //       return;
+  //     }
+
+  //     // Step 2: Encrypt user data
+  //     const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
+  //     const encryptedUserId = CryptoJS.AES.encrypt(
+  //       userId,
+  //       secretKey
+  //     ).toString();
+  //     const encryptedUserName = CryptoJS.AES.encrypt(
+  //       name,
+  //       secretKey
+  //     ).toString();
+
+  //     const encryptedFrom = CryptoJS.AES.encrypt(
+  //       "website",
+  //       secretKey
+  //     ).toString();
+
+  //     // Step 3: Sign the payload
+  //     const payload = `${encryptedUserId}|${encryptedUserName}`;
+  //     const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
+
+  //     // Step 4: Construct the redirect URL
+  //     const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
+  //       encryptedUserId
+  //     )}&name=${encodeURIComponent(
+  //       encryptedUserName
+  //     )}&from=${encodeURIComponent(encryptedFrom)}&signature=${signature}`;
+
+  //     // Step 5: Open the payment page in a new tab
+  //     const paymentWindow = window.open(redirectUrl, "_blank");
+
+  //     // Step 6: Check if popup was blocked
+  //     if (
+  //       !paymentWindow ||
+  //       paymentWindow.closed ||
+  //       typeof paymentWindow.closed === "undefined"
+  //     ) {
+  //       alert(
+  //         "Popup blocked! Please allow popups for this site to proceed with payment."
+  //       );
+  //     } else {
+  //       paymentWindow.focus(); // optional: bring the tab into focus
+  //     }
+  //   } catch (error) {
+  //     // console.error("Error in onClickAddMoney:", error);
+  //     alert("Something went wrong. Please try again or contact support.");
+  //   }
+  // };
+
+
+   const onClickAddMoney = () => {
     try {
       // Step 1: Get and parse user data from localStorage
       const userDataRaw = Cookies.get("userData");
       // console.log(userDataRaw, "userDataRaw");
       if (!userDataRaw) {
         // console.error("User not found in localStorage");
-        alert("User not logged in. Please login and try again.");
+        toast.error("User not logged in. Please login and try again.");
         return;
       }
 
@@ -1109,9 +810,21 @@ const AddMoneyToWallet = () => {
 
       if (!userId || !name) {
         // console.error("User data is incomplete");
-        alert("User details are missing. Please contact support.");
+        toast.error("User details are missing. Please contact support.");
         return;
       }
+      const numericAmount = Number(amount);
+
+      if (!amount || isNaN(numericAmount) || numericAmount < 15000 || numericAmount > 100000) {
+        setErrors((prev) => ({
+          ...prev,
+          amount: "Amount must be between 15,000 and 1,00,000",
+        }));
+        return;
+      }
+
+      // Clear error if valid
+      setErrors((prev) => ({ ...prev, amount: "" }));
 
       // Step 2: Encrypt user data
       const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
@@ -1129,16 +842,19 @@ const AddMoneyToWallet = () => {
         secretKey
       ).toString();
 
+      const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
+
       // Step 3: Sign the payload
-      const payload = `${encryptedUserId}|${encryptedUserName}`;
+      const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
       const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
 
       // Step 4: Construct the redirect URL
       const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
+      // const redirectUrl = `http://localhost:5174/paynow?userId=${encodeURIComponent(
         encryptedUserId
       )}&name=${encodeURIComponent(
         encryptedUserName
-      )}&from=${encodeURIComponent(encryptedFrom)}&signature=${signature}`;
+      )}&from=${encodeURIComponent(encryptedFrom)}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
 
       // Step 5: Open the payment page in a new tab
       const paymentWindow = window.open(redirectUrl, "_blank");
@@ -1160,7 +876,7 @@ const AddMoneyToWallet = () => {
       alert("Something went wrong. Please try again or contact support.");
     }
   };
-
+  
   return (
 
 
@@ -1937,343 +1653,207 @@ const AddMoneyToWallet = () => {
         </div>
       )}
 
-      {/* Card Payment Method */}
-      {selectedMethod === "card" && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
-          {/* Card Payment Info */}
-          <div className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-            <div className="p-3 sm:p-4 bg-gradient-to-r from-teal-600 to-teal-500 text-white">
-              <h2 className="text-sm sm:text-base md:text-lg font-semibold flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 sm:h-5 sm:w-5 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                  />
-                </svg>
-                Card Payment
-              </h2>
-            </div>
-
-            <div className="p-3 sm:p-4">
-              <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-lg p-2.5 sm:p-3 mb-3 shadow-sm border border-blue-100">
-                <div className="flex items-center mb-2 gap-2">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3 sm:h-4 sm:w-4 text-teal-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
+     {/* Card Payment Method - More compact */}
+          {selectedMethod === "card" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+              {/* Card Payment Info */}
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="p-3 sm:p-4 bg-gradient-to-r from-teal-600 to-teal-500 text-white">
+                  <h2 className="text-base sm:text-lg font-semibold flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-gray-800 font-medium text-xs">
-                      Secure Payment Processing
-                    </h3>
-                    <p className="text-xs text-gray-600">
-                      Protected with industry-standard encryption
-                    </p>
-                  </div>
+                    Card Payment
+                  </h2>
                 </div>
 
-                <div className="space-y-1 ml-1 sm:ml-1.5">
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-teal-600 mr-1 sm:mr-1.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
+                <div className="p-3 sm:p-4">
+                  <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-lg p-3 mb-3 shadow-sm border border-blue-100">
+                    <div className="flex items-center mb-2 gap-2">
+                      <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-gray-800 font-medium text-xs">Secure Payment Processing</h3>
+                        <p className="text-xs text-gray-600">Protected with industry-standard encryption</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 ml-1.5">
+                      <div className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-teal-600 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <p className="text-xs text-gray-600">Major debit & credit cards accepted</p>
+                      </div>
+
+                      <div className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-teal-600 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <p className="text-xs text-gray-600">Instant account credit after payment</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap justify-center gap-1.5 mb-3">
+                    <div className="bg-white rounded-md p-1 shadow-sm border border-gray-100">
+                      <svg className="h-4 w-6" viewBox="0 0 48 48" fill="none">
+                        <rect width="48" height="48" fill="white" />
+                        <path d="M44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24Z" fill="#FFB600" />
+                        <path d="M24 37.125C31.2487 37.125 37.125 31.2487 37.125 24C37.125 16.7513 31.2487 10.875 24 10.875C16.7513 10.875 10.875 16.7513 10.875 24C10.875 31.2487 16.7513 37.125 24 37.125Z" fill="#F7981D" />
+                        <path d="M24 37.125C31.2487 37.125 37.125 31.2487 37.125 24C37.125 16.7513 31.2487 10.875 24 10.875C16.7513 10.875 10.875 16.7513 10.875 24C10.875 31.2487 16.7513 37.125 24 37.125Z" fill="#FF8500" />
+                        <path d="M19.6875 24C19.6875 31.2487 24 37.125 24 37.125C16.7513 37.125 10.875 31.2487 10.875 24C10.875 16.7513 16.7513 10.875 24 10.875C24 10.875 19.6875 16.7513 19.6875 24Z" fill="#FF5050" />
+                        <path d="M24 10.875C24 10.875 28.3125 16.7513 28.3125 24C28.3125 31.2487 24 37.125 24 37.125C31.2487 37.125 37.125 31.2487 37.125 24C37.125 16.7513 31.2487 10.875 24 10.875Z" fill="#E79800" />
+                      </svg>
+                    </div>
+                    {/* Other card logos (simplified) */}
+                    <div className="bg-white rounded-md p-1 shadow-sm border border-gray-100">
+                      <svg className="h-4 w-6" viewBox="0 0 48 48" fill="none">
+                        <rect width="48" height="48" fill="white" />
+                        <path d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24Z" fill="#0A2540" />
+                      </svg>
+                    </div>
+                    <div className="bg-white rounded-md p-1 shadow-sm border border-gray-100">
+                      <svg className="h-4 w-6" viewBox="0 0 48 48" fill="none">
+                        <rect width="48" height="48" fill="white" />
+                        <path d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24Z" fill="#1434CB" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="block text-xs text-gray-600 mb-1 font-medium">
+                      Amount (₹)
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 flex items-center pl-2.5">
+                        <span className="text-gray-500 font-medium">₹</span>
+                      </div>
+                      <input
+                        type="text"
+                        value={amount}
+                        onChange={(e) => {
+                          setAmount(e.target.value.replace(/[^0-9.]/g, ""));
+                          setErrors((prev) => ({ ...prev, amount: "" })); // clear while typing
+                        }}
+                        className={`w-full pl-6 px-3 py-2 bg-gray-50 border ${errors.amount ? "border-red-500" : "border-gray-200"
+                          } rounded-lg transition-all focus:ring-1 focus:ring-teal-500 text-sm`}
+                        placeholder="Enter amount"
                       />
-                    </svg>
-                    <p className="text-xs text-gray-600">
-                      Major debit & credit cards accepted
-                    </p>
+                    </div>
+
+                    {errors.amount && (
+                      <p className="text-red-500 text-xs mt-1 font-medium">{errors.amount}</p>
+                    )}
                   </div>
 
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-teal-600 mr-1 sm:mr-1.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <p className="text-xs text-gray-600">
-                      Instant account credit after payment
-                    </p>
-                  </div>
-                </div>
-              </div>
 
-              <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5 mb-3">
-                <div className="bg-white rounded-md p-1 shadow-sm border border-gray-100">
-                  <svg className="h-3 w-5 sm:h-4 sm:w-6" viewBox="0 0 48 48" fill="none">
-                    <rect width="48" height="48" fill="white" />
-                    <path
-                      d="M44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24Z"
-                      fill="#FFB600"
-                    />
-                  </svg>
-                </div>
-                <div className="bg-white rounded-md p-1 shadow-sm border border-gray-100">
-                  <svg className="h-3 w-5 sm:h-4 sm:w-6" viewBox="0 0 48 48" fill="none">
-                    <rect width="48" height="48" fill="white" />
-                    <path
-                      d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24Z"
-                      fill="#0A2540"
-                    />
-                  </svg>
-                </div>
-                <div className="bg-white rounded-md p-1 shadow-sm border border-gray-100">
-                  <svg className="h-3 w-5 sm:h-4 sm:w-6" viewBox="0 0 48 48" fill="none">
-                    <rect width="48" height="48" fill="white" />
-                    <path
-                      d="M4 24C4 12.9543 12.9543 4 24 4C35.0457 4 44 12.9543 44 24C44 35.0457 35.0457 44 24 44C12.9543 44 4 35.0457 4 24Z"
-                      fill="#1434CB"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              <div className="mb-3">
-                <label className="block text-xs text-gray-600 mb-1 font-medium">
-                  Amount (₹)
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-2 sm:pl-2.5">
-                    <span className="text-gray-500 font-medium text-xs sm:text-sm">
-                      ₹
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="w-full pl-5 sm:pl-6 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-gray-50 border border-gray-200 rounded-md sm:rounded-lg transition-all focus:ring-1 focus:ring-teal-500 text-xs sm:text-sm"
-                    placeholder="Enter amount"
-                  />
-                </div>
-              </div>
-
-              <button
-                onClick={onClickAddMoney}
-                className="w-full bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-teal-400 text-white font-medium py-2 sm:py-2.5 px-4 rounded-md sm:rounded-lg shadow-sm transition-all text-xs"
-              >
-                <div className="flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                  <button
+                    onClick={onClickAddMoney}
+                    className="w-full bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-teal-400 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-all text-xs"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                    />
-                  </svg>
-                  Proceed to Secure Payment
-                </div>
-              </button>
-            </div>
-          </div>
-
-          {/* Card Information */}
-          <div className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-            <div className="p-2.5 sm:p-3 bg-gradient-to-r from-gray-100 to-gray-50 border-b border-gray-100">
-              <h3 className="font-medium text-gray-800 flex items-center text-xs sm:text-sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5 text-teal-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                  />
-                </svg>
-                Card Information
-              </h3>
-            </div>
-
-            <div className="p-3 sm:p-4">
-              {/* Sample Credit Card UI */}
-              <div className="bg-gradient-to-r from-teal-700 to-teal-600 rounded-lg sm:rounded-xl p-2.5 sm:p-3 shadow-lg mb-3 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-12 h-12 sm:w-16 sm:h-16 bg-white opacity-10 rounded-full -mt-4 sm:-mt-5 -mr-4 sm:-mr-5"></div>
-
-                <div className="flex justify-between items-center mb-3 sm:mb-4">
-                  <div className="flex items-center">
-                    <div className="w-7 h-5 sm:w-8 sm:h-6 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-md mr-2 flex justify-center items-center overflow-hidden">
-                      <div className="w-5 h-3 sm:w-6 sm:h-4 bg-yellow-200 rounded-md transform rotate-45 translate-y-3"></div>
+                    <div className="flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                      Proceed to Secure Payment
                     </div>
-                    <div className="h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-white opacity-80"></div>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 sm:h-5 sm:w-5 text-white opacity-90"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
-                    />
-                  </svg>
-                </div>
-
-                <div className="mb-1.5 sm:mb-2">
-                  <p className="text-teal-200 text-xs mb-0.5">Card Number</p>
-                  <div className="flex justify-between">
-                    <p className="text-white text-xs sm:text-sm tracking-wider font-medium">
-                      •••• •••• •••• ••••
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-teal-200 text-xs mb-0.5">Card Holder</p>
-                    <p className="text-white font-medium text-xs">JAIMAX COIN</p>
-                  </div>
-                  <div>
-                    <p className="text-teal-200 text-xs mb-0.5">Expires</p>
-                    <p className="text-white font-medium text-xs">05/72</p>
-                  </div>
+                  </button>
                 </div>
               </div>
 
-              <div className="space-y-2.5 sm:space-y-3">
-                <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-lg p-2 sm:p-2.5 shadow-sm border border-blue-100">
-                  <h4 className="font-medium text-blue-800 mb-1.5 sm:mb-2 flex items-center text-xs">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
+              {/* Card Information - More compact */}
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="p-3 bg-gradient-to-r from-gray-100 to-gray-50 border-b border-gray-100">
+                  <h3 className="font-medium text-gray-800 flex items-center text-xs sm:text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
-                    Security Features
-                  </h4>
-                  <ul className="space-y-1">
-                    <li className="flex items-start">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-teal-600 mr-1 sm:mr-1.5 mt-0.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span className="text-xs text-gray-700">
-                        3D Secure authentication
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-teal-600 mr-1 sm:mr-1.5 mt-0.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span className="text-xs text-gray-700">
-                        PCI-DSS compliant processing
-                      </span>
-                    </li>
-                  </ul>
+                    Card Information
+                  </h3>
                 </div>
 
-                <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg p-2 sm:p-2.5 border-l-3 border-yellow-400">
-                  <div className="flex">
-                    <div className="flex-shrink-0">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
+                <div className="p-3 sm:p-4">
+                  {/* Sample Credit Card UI - More compact */}
+                  <div className="bg-gradient-to-r from-teal-700 to-teal-600 rounded-xl p-3 shadow-lg mb-3 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-white opacity-10 rounded-full -mt-5 -mr-5"></div>
+
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center">
+                        <div className="w-8 h-6 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-md mr-2 flex justify-center items-center overflow-hidden">
+                          <div className="w-6 h-4 bg-yellow-200 rounded-md transform rotate-45 translate-y-3"></div>
+                        </div>
+                        <div className="h-4 w-4 rounded-full bg-white opacity-80"></div>
+                      </div>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white opacity-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
                       </svg>
                     </div>
-                    <div className="ml-2">
-                      <h3 className="text-xs font-medium text-yellow-800">
-                        Important Note
-                      </h3>
-                      <p className="mt-1 text-xs text-yellow-700">
-                        For payments above <strong>₹25,000</strong>, ensure your
-                        card has sufficient limit.
-                      </p>
+
+                    <div className="mb-2">
+                      <p className="text-teal-200 text-xs mb-0.5">Card Number</p>
+                      <div className="flex justify-between">
+                        <p className="text-white text-sm tracking-wider font-medium">•••• •••• •••• ••••</p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-end">
+                      <div>
+                        <p className="text-teal-200 text-xs mb-0.5">Card Holder</p>
+                        <p className="text-white font-medium text-xs">JAIMAX COIN</p>
+                      </div>
+                      <div>
+                        <p className="text-teal-200 text-xs mb-0.5">Expires</p>
+                        <p className="text-white font-medium text-xs">05/72</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-lg p-2.5 shadow-sm border border-blue-100">
+                      <h4 className="font-medium text-blue-800 mb-2 flex items-center text-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        Security Features
+                      </h4>
+                      <ul className="space-y-1">
+                        <li className="flex items-start">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-teal-600 mr-1.5 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-xs text-gray-700">3D Secure authentication</span>
+                        </li>
+                        <li className="flex items-start">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-teal-600 mr-1.5 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-xs text-gray-700">PCI-DSS compliant processing</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg p-2.5 border-l-3 border-yellow-400">
+                      <div className="flex">
+                        <div className="flex-shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                        </div>
+                        <div className="ml-2">
+                          <h3 className="text-xs font-medium text-yellow-800">Important Note</h3>
+                          <p className="mt-1 text-xs text-yellow-700">For payments more amount, ensure your card has sufficient limit.</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
+          )}
       {/* Wallet Balance Transfer Method - COMMENTED OUT */}
       {/* {selectedMethod === "others" && (
         <div className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden max-w-xl mx-auto">

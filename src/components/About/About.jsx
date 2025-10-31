@@ -1055,7 +1055,7 @@ const JaimaxOverview = () => {
                 A Global Crypto Brand from India
               </h2>
               <p className="text-white mb-6 leading-relaxed text-center lg:text-left">
-                To position Jaimax Coin as a leading global crypto brand originating from India. We envision a world where blockchain technology enables financial equality, where every transaction is secure, and where every investor can be part of a borderless digital economy.
+                To position Jaimax Coin as a leading global crypto brand originating from India. We envision a world where <a href="http://www.jaimax.com" className="text-teal-300">blockchain technology</a> enables financial equality, where every transaction is secure, and where every investor can be part of a borderless digital economy.
               </p>
               <p className="text-white mb-8 leading-relaxed text-center lg:text-left">
                 Our goal is to make Jaimax the most trusted cryptocurrency brand in India and across international markets.

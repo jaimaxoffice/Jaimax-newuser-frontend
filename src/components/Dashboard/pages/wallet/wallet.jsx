@@ -279,7 +279,7 @@ export default function WalletDashboard() {
           </div>
           <div className="bg-teal-50 rounded px-2 py-1">
             <span className="text-teal-600 font-medium">Payment:</span>
-            <p className="font-semibold text-teal-800 truncate">
+            <p className="font-semibold  text-sm text-teal-800 ">
               {transaction.paymentMode || "N/A"}
             </p>
           </div>
