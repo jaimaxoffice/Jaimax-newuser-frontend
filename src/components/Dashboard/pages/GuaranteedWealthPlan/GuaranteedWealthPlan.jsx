@@ -150,7 +150,7 @@ refetchAbove25k();
         toast.success("Wealth plan activated successfully!");
       }
     } catch (error) {
-      console.error("Failed to activate:", error);
+      // console.error("Failed to activate:", error);
       // Display the exact error message from the API
       if (error.data && error.data.message) {
         toast.error(error.data.message);
@@ -174,7 +174,7 @@ refetchAbove25k();
         toast.success("Wealth plan deactivated successfully!");
       }
     } catch (error) {
-      console.error("Failed to deactivate:", error);
+      // console.error("Failed to deactivate:", error);
       // Display the exact error message from the API
       if (error.data && error.data.message) {
         toast.error(error.data.message);
@@ -835,7 +835,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                       />
                       <MetricCard
                         title="Daily coins"
-                        value={`${orderDetails.guaranteedTokensToBeCollect}`}
+                        value={`${orderDetails?.guaranteedTokensToBeCollect || 0}`}
                         icon={<Wallet size={16} />}
                         color="bg-emerald-500"
                       />

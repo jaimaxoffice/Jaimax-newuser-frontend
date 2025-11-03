@@ -83,11 +83,11 @@ export default function WalletDashboard() {
       userData = JSON.parse(rawUserData);
       // console.log("Parsed userData:", userData);
     } catch (error) {
-      console.error("Error parsing userData cookie:", error);
+      // console.error("Error parsing userData cookie:", error);
     }
   }
   const countryCode = userData?.countryCode;
-  console.log(countryCode)
+  // console.log(countryCode)
   const REGISTER_REFERAL = `${window.location.origin}/register?referralCode=`;
 
   // Construct query parameters for API

@@ -963,7 +963,7 @@ const BinanceExchange = ({ onClose }) => {
         modalElement.style.display = "none";
       }
     } catch (err) {
-      console.error("Failed to remove modal directly:", err);
+      // console.error("Failed to remove modal directly:", err);
     }
   };
 
@@ -994,7 +994,7 @@ const BinanceExchange = ({ onClose }) => {
         );
         setContract(contract);
       } catch (error) {
-        console.error("Error connecting to contract:", error);
+        // console.error("Error connecting to contract:", error);
         addNotification("Failed to connect to blockchain network. Please try again later.", "error");
       }
     };
@@ -1053,7 +1053,7 @@ const BinanceExchange = ({ onClose }) => {
 
       return formattedBalance;
     } catch (error) {
-      console.error(`Error fetching ${symbol} balance:`, error);
+      // console.error(`Error fetching ${symbol} balance:`, error);
       addNotification(`Could not fetch ${symbol} balance. Network may be congested.`, "error");
       return "0.00";
     }
@@ -1068,7 +1068,7 @@ const BinanceExchange = ({ onClose }) => {
       const balanceBNB = parseFloat(ethers.formatEther(balanceWei)).toFixed(4);
       setBNBBalance(balanceBNB);
     } catch (err) {
-      console.error("Error fetching BNB balance:", err);
+      // console.error("Error fetching BNB balance:", err);
       addNotification("Could not fetch BNB balance. Network may be congested.", "error");
     }
   };
@@ -1088,7 +1088,7 @@ const BinanceExchange = ({ onClose }) => {
         ]);
         
       } catch (error) {
-        console.error("Error fetching balances:", error);
+        // console.error("Error fetching balances:", error);
         addNotification("Failed to fetch some balances. Please try refreshing.", "error");
       } finally {
         setFetchingBalances(false);
@@ -1113,7 +1113,7 @@ const calculateEquivalentJMC = async () => {
       tokensSent: parseFloat(tokenSent),
     }).unwrap();
 
-    console.log("API Response:", response); // Debug log to check response structure
+
 
     if (response?.success === 1 && response?.data) {
       setAwardJmcToUserPayload(response.data);
@@ -1127,10 +1127,7 @@ const calculateEquivalentJMC = async () => {
       }
     }
   } catch (err) {
-    console.error("Failed to calculate equivalent JMC:", err);
-    
-    // Make sure we're accessing error data correctly
-    console.log("Error object:", err); // Debug log
+
     
     // Check different possible locations for the error message
     const errorMessage =
@@ -1245,7 +1242,7 @@ const calculateEquivalentJMC = async () => {
       }
 
       const decryptedKey = getDecryptedPrivateKey(privatekey, secret);
-      console.log("Decryption result:", decryptedKey ? "Success" : "Failed");
+      // console.log("Decryption result:", decryptedKey ? "Success" : "Failed");
 
       if (!decryptedKey) {
         addNotification("Invalid private key. Cannot proceed with swap.", "error");
@@ -1281,11 +1278,11 @@ const calculateEquivalentJMC = async () => {
         amountToSend
       );
 
-      console.log("Transaction sent:", tx.hash);
+      // console.log("Transaction sent:", tx.hash);
       addNotification(`Transaction submitted! Hash: ${tx.hash.substring(0, 10)}...`, "info");
 
       const receipt = await tx.wait();
-      console.log("Transaction confirmed:", receipt);
+      // console.log("Transaction confirmed:", receipt);
 
       if (receipt.status === 1) {
         // Transaction successful, award JMC
@@ -1321,11 +1318,11 @@ const calculateEquivalentJMC = async () => {
         // Reset form
         setTokenSent("");
       } else {
-        console.error("Transaction failed:", receipt);
+        // console.error("Transaction failed:", receipt);
         addNotification("Transaction failed on the blockchain. Please try again.", "error");
       }
     } catch (err) {
-      console.error("Error during token swap:", err);
+      // console.error("Error during token swap:", err);
 
       // Detailed error handling
       if (err.message?.includes("transfer amount exceeds balance")) {

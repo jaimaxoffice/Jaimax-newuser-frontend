@@ -55,14 +55,14 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-
-    // userData:builder.mutation({
-    //   query:(data) =>({
-    //     url:"/user/userDetails",
-    //     method:"POST",
-    //     body:{...data}
-    //   })
+    // getRedeem: builder.mutation({
+    //   query: () => ({
+    //     url: "/User/reedem-welcome-bonus",
+    //     method: "GET",
+    //   }),
     // }),
+
+   
   }),
 });
 
@@ -74,5 +74,6 @@ export const {
   useProceedOrderMutation,
   useCreatePaymentMutation,
   useCreatePaypalOrderMutation,
-  useGetAnnounceQuery
+  useGetAnnounceQuery,
+  // useGetRedeemMutation ,
 } = dashboardApiSlice;

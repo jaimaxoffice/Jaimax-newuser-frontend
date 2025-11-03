@@ -643,7 +643,7 @@ const TopCards = React.memo(() => {
         image: assets.withdraw,
         hoverImage: assets.withdraw1,
         iconBg: isSuperBonusCompleted ? "#d4edda" : "#fce4ec",
-        hasViewButton: isSuperBonusCompleted,
+        hasViewButton: isSuperBonusCompleted || !isSuperBonusCompleted,
         isCompleted: isSuperBonusCompleted,
       },
       {

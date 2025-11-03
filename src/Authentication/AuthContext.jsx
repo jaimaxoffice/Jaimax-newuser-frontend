@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(authStatus);
         setUser(userData);
       } catch (error) {
-        console.error("Error initializing auth:", error);
+        // console.error("Error initializing auth:", error);
         setIsAuthenticated(false);
         setUser(null);
       } finally {
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
       }
       return false;
     } catch (error) {
-      console.error("Login error:", error);
+      // console.error("Login error:", error);
       return false;
     }
   }, []);
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       return success;
     } catch (error) {
-      console.error("Logout error:", error);
+      // console.error("Logout error:", error);
       return false;
     }
   }, []);

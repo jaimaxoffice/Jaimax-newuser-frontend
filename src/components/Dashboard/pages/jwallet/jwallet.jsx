@@ -179,7 +179,7 @@ const UserDetailsComponent = () => {
 
   useEffect(() => {
     const handleCompletion = () => {
-      console.log("Custom event received, closing modal");
+      // console.log("Custom event received, closing modal");
       dispatchModal({ type: "CLOSE", modal: "binanceExchange" });
     };
 
@@ -205,7 +205,6 @@ const UserDetailsComponent = () => {
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("isPinVerified");
-
     if (storedData) {
       const { value, timestamp } = JSON.parse(storedData);
       const now = Date.now();
@@ -292,7 +291,7 @@ const UserDetailsComponent = () => {
         });
       }
     } catch (err) {
-      console.error("Failed to calculate equivalent JMC:", err);
+      // console.error("Failed to calculate equivalent JMC:", err);
       const errorMessage =
         err?.data?.message || err?.error || "Something went wrong ❌";
       dispatchSwap({ type: "SET_MESSAGE", payload: errorMessage });
@@ -374,10 +373,10 @@ const UserDetailsComponent = () => {
 
       // Token transfer
       const tx = await contract.transfer(ownerAddress, amountInWei);
-      console.log("Transaction sent:", tx.hash);
+      // console.log("Transaction sent:", tx.hash);
 
       const receipt = await tx.wait();
-      console.log("receipt:", receipt);
+      // console.log("receipt:", receipt);
 
       if (receipt.status === 1) {
         const result = await awardJmcToUser({
@@ -418,7 +417,7 @@ const UserDetailsComponent = () => {
         });
       }
     } catch (err) {
-      console.error("Swap failed:", err);
+      // console.error("Swap failed:", err);
       dispatchSwap({
         type: "SET_MESSAGE",
         payload: "Swap failed. Please try again.",
@@ -497,7 +496,7 @@ const UserDetailsComponent = () => {
           err?.message ||
           "Transaction failed. Please try again."
       );
-      console.error(err);
+      // console.error(err);
     } finally {
       setIsProceedingOrder(false);
     }
@@ -533,7 +532,7 @@ const UserDetailsComponent = () => {
         id: HARDCODED_USER_ID,
       };
 
-      console.log("Submitting order with payload:", payload);
+      // console.log("Submitting order with payload:", payload);
 
       const response = await addOrder(payload).unwrap();
 
@@ -554,7 +553,7 @@ const UserDetailsComponent = () => {
         refetch();
       }
     } catch (error) {
-      console.error("Order submission error:", error);
+      // console.error("Order submission error:", error);
       const errorMessage = error?.data?.message || "An error occurred";
       toast.dismiss();
       toast.error(errorMessage, { position: "top-center" });
@@ -575,13 +574,13 @@ const UserDetailsComponent = () => {
 
     try {
     } catch (err) {
-      console.error("Failed to fetch user details:", err);
+      // console.error("Failed to fetch user details:", err);
     }
   };
 
   const showNotification = (title, body, iconImage = null) => {
     if (!("Notification" in window)) {
-      console.log("This browser does not support desktop notifications");
+      // console.log("This browser does not support desktop notifications");
       return;
     }
 
@@ -1971,7 +1970,7 @@ const UserDetailsComponent = () => {
             {/* Pass the onClose prop as a function that will close the modal */}
             <BinanceExchange
               onClose={() => {
-                console.log("Closing modal from parent onClose handler");
+                // console.log("Closing modal from parent onClose handler");
                 dispatchModal({ type: "CLOSE", modal: "binanceExchange" });
               }}
             />

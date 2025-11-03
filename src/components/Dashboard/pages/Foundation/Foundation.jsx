@@ -477,7 +477,7 @@ try {
     userData = JSON.parse(userDataString);
   }
 } catch (e) {
-  console.error("Failed to parse cookie JSON:", e);
+  // console.error("Failed to parse cookie JSON:", e);
 }
 
   useEffect(() => {
@@ -504,7 +504,7 @@ try {
       await refetch(); // refresh the foundation data
       setShowModal(false);
     } catch (err) {
-      console.error("Failed to redeem bonus:", err);
+      // console.error("Failed to redeem bonus:", err);
       alert("Failed to redeem your bonus. Please try again.");
     }
   };

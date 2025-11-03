@@ -52,10 +52,10 @@
     const [expandedFAQId, setExpandedFAQId] = useState(null);
 
     const [ChatHistory, setChatHistory] = useState([]);
-    console.log(ChatHistory, "ChatHistory  received from user ");
+    // console.log(ChatHistory, "ChatHistory  received from user ");
     const navigate = useNavigate();
 
-    console.log(TriggerSpeech, "TriggerSpeech");
+    // console.log(TriggerSpeech, "TriggerSpeech");
 
     // Sample FAQs data
     const allFAQs = [
@@ -409,7 +409,7 @@
       try {
         await deleteChatConversation({ conversationId });
       } catch (error) {
-        console.warn("Failed to delete conversation on server:", error);
+        // console.warn("Failed to delete conversation on server:", error);
       }
 
       const welcome = {

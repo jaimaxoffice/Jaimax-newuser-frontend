@@ -26,7 +26,7 @@ const FloatingNavButton = () => {
 
   const handleNavigation = (path) => {
     setShowNavMenu(false);
-    console.log(`Navigating to: ${path}`);
+    // console.log(`Navigating to: ${path}`);
     // Add your navigation logic here
   };
 

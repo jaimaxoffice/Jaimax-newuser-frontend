@@ -475,7 +475,7 @@ const AddMoneyToWallet = () => {
             // console.log("=== OCR EXTRACTION END ===");
           })
           .catch((error) => {
-            console.error("Error during OCR:", error);
+            // console.error("Error during OCR:", error);
             setIsLoading(false);
             setFormData((prev) => ({
               ...prev,

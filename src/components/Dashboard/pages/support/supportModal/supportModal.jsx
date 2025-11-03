@@ -68,7 +68,6 @@ export default function CreateTicketModal({
 
   const handleTicket = async (e) => {
     e.preventDefault();
-    console.log("hello this is support");
     if (!validate()) return;
     try {
       const submitFormData = new FormData();

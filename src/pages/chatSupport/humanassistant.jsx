@@ -1657,7 +1657,7 @@ export default function HumanAssistant({ onclose }) {
           setUserData(null);
         }
       } catch (error) {
-        console.error("Error parsing user data:", error);
+        // console.error("Error parsing user data:", error);
         setIsAuthenticated(false);
         setUserData(null);
       }
@@ -1694,7 +1694,7 @@ export default function HumanAssistant({ onclose }) {
 
         setTranslations(transformedData);
       } catch (error) {
-        console.error("Error fetching chatbot content:", error);
+        // console.error("Error fetching chatbot content:", error);
         setTranslations(null);
       }
     };
@@ -1876,7 +1876,7 @@ export default function HumanAssistant({ onclose }) {
         isAuthenticated: isAuthenticated,
       }).unwrap();
     } catch (err) {
-      console.error("Error sending message:", err);
+      // console.error("Error sending message:", err);
     }
   };
 

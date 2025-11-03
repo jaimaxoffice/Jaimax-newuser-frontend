@@ -39,9 +39,7 @@ const CreateTicketModal = ({ show, setShow }) => {
   ];
 
   const categories = catgetData?.data?.response || [];
-  console.log('Categories:', categories);
-  console.log('Categories loading:', categoriesLoading);
-  console.log('Categories error:', categoriesError);
+
 
   const validate = () => {
     const errs = {};

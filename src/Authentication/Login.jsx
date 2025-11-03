@@ -293,10 +293,10 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
         setTimeout(() => {
           if (userData?.kycVerified === "approve") {
             navigate("/dashboard");
-            console.log("Redirecting to Dashboard");
+            // console.log("Redirecting to Dashboard");
           } else {
             navigate("/kyc-information");
-            console.log("Redirecting to KYC Information");
+            // console.log("Redirecting to KYC Information");
           }
         }, 1000);
       } else {
@@ -608,7 +608,7 @@ const [referralApplied, setReferralApplied] = useState(false);
     const referralCode = searchParams.get("referralCode");
 
     if (referralCode) {
-      console.log("Referral code found in URL:", referralCode);
+      // console.log("Referral code found in URL:", referralCode);
 
       setFormData((prevData) => ({
         ...prevData,
@@ -626,7 +626,7 @@ const [referralApplied, setReferralApplied] = useState(false);
       // Validate referral code
       const fieldError = validateField("referralId", referralCode);
       if (fieldError) {
-        console.log("Referral code validation error:", fieldError);
+        // console.log("Referral code validation error:", fieldError);
         setErrors((prev) => ({
           ...prev,
           referralId: fieldError,
@@ -1107,7 +1107,7 @@ useEffect(() => {
       Cookies.set("token", res?.data?.token, { expires: 7 }); // expires in 7 days
       Cookies.set("userData", JSON.stringify(res?.data), { expires: 7 });
       const userData = JSON.parse(Cookies.get("userData") || "{}");
-      console.log("User Data:", userData);
+      // console.log("User Data:", userData);
       Cookies.set("userRegisterData", JSON.stringify(userRegisterData), {
         expires: 7,
       });

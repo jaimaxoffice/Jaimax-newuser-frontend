@@ -60,8 +60,8 @@ import MetaTags from './MetaTags';
 
 const seoContent = {
   homePage: {
-    title: "Jaimax Coin – The Best Crypto Coin in India for Safe and Profitable Investments",
-    description: "Jaimax Coin is a secure and innovative cryptocurrency offering seamless transactions and smart investment opportunities. Discover why Jaimax is the best crypto coin in India and take a step toward a stronger financial future.",
+    title: "Jaimax Coin – The Best Pre-Sale Crypto Coin in India for Smart Investments",
+    description: "Jaimax Coin is India’s most trusted pre-sale crypto coin, designed for secure and profitable investments. Join early, grow faster, and be part of the next big blockchain innovation.",
     canonical: "https://jaimax.com/"
   },
   about: {

@@ -36,7 +36,6 @@ const BuyHistory = () => {
     error,
     refetch,
   } = useBuyDetailsQuery(queryParams);
-  console.log(buyDetails); // ✅ shows the fetched data
   const TableData = buyDetails?.data?.withdrawRequests || [];
 
   const handlePageChange = (e) => {
@@ -378,7 +377,6 @@ const formatDateWithAmPm = (isoString) => {
                             data?.transactionId ||
                             "N/A"}
                         </td>
-                        {console.log(data?.transactionId)}
                         <td className="px-3 py-4 font-semibold capitalize text-sm whitespace-nowrap">
                           {data?.paymentMethod || "N/A"}
                         </td>

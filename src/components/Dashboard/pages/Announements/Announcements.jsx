@@ -13,7 +13,7 @@ function AnnouncementComponent() {
   useEffect(() => {
     // You can access the announcement data here
     if (announceData) {
-      console.log('Announcement data:', announceData);
+      // console.log('Announcement data:', announceData);
     }
   }, [announceData]);
 

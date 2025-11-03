@@ -68,7 +68,7 @@ const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
   } catch (error) {
-    console.error("Error accessing cookies:", error);
+    // console.error("Error accessing cookies:", error);
     return null;
   }
 };
@@ -91,7 +91,7 @@ const getLastSplashTime = () => {
     }
     return null;
   } catch (error) {
-    console.error("Error getting last splash time from localStorage:", error);
+    // console.error("Error getting last splash time from localStorage:", error);
     return null;
   }
 };
@@ -100,7 +100,7 @@ const setLastSplashTime = () => {
   try {
     localStorage.setItem("lastSplashTime", Date.now().toString()); // Stores the current timestamp
   } catch (error) {
-    console.error("Error setting last splash time in localStorage:", error);
+    // console.error("Error setting last splash time in localStorage:", error);
   }
 };
 
@@ -141,7 +141,7 @@ const DashboardLayout = () => {
       Cookies.remove("rememberMe");
       sessionStorage.removeItem("isPinVerified");
     } catch (error) {
-      console.error("Error during logout:", error);
+      // console.error("Error during logout:", error);
     }
     setShowLogoutModal(false);
     window.location.href = "/login"; // Or use navigate("/login") if using react-router
