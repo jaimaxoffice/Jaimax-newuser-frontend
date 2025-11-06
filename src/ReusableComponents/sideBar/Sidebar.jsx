@@ -112,7 +112,9 @@ function Sidebar({ onLogoutClick }) {
             }`}
           >
             {isOpen ? (
-              <img src={logo} alt="Logo" className="" />
+              <img src={logo} alt="Logo" 
+              title=" Jaimax Coin – Best Pre-Sale Crypto Coin in India | Smart Investments"
+               className="" />
             ) : (
               !isMobile && (
                 <div className="w-10 h-10 bg-teal-600/20 rounded-lg flex items-center justify-center"></div>

@@ -56,7 +56,6 @@ import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddM
 import UserMeetingsShowcase from "./components/Dashboard/pages/Meetings/Zoommeetings";
 import PrivateRoute from "./router/PrivateRoute";
 import SuperBonusInfo from "./components/Dashboard/pages/lockedSuperBouns/LockedSuperbonus"
-import FloatingNavButton from "./global/FloatingNavButton";
 import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
@@ -68,7 +67,6 @@ const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
   } catch (error) {
-    // console.error("Error accessing cookies:", error);
     return null;
   }
 };

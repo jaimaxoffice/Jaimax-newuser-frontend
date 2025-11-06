@@ -7,6 +7,8 @@ const testimonials = [
     name: "Michael R.",
     designation: "Crypto Investor (USA)",
     src: "https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    imageTitle: "Michael R. - Satisfied Crypto Investor from USA",
+    imageAlt: "Profile photo of Michael R., a crypto investor sharing his positive experience with Jaimax"
   },
   {
     quote:
@@ -14,6 +16,8 @@ const testimonials = [
     name: "Elena F.",
     designation: "Blockchain Consultant (Germany)",
     src: "https://img.freepik.com/free-photo/lifestyle-people-emotions-casual-concept-confident-nice-smiling-asian-woman-cross-arms-chest-confident-ready-help-listening-coworkers-taking-part-conversation_1258-59335.jpg?semt=ais_hybrid&w=740",
+    imageTitle: "Elena F. - Expert Blockchain Consultant from Germany",
+    imageAlt: "Profile photo of Elena F., a blockchain consultant endorsing Jaimax platform"
   },
   {
     quote:
@@ -21,6 +25,8 @@ const testimonials = [
     name: "Rohit Sharma",
     designation: "Pune",
     src: "https://plus.unsplash.com/premium_photo-1689977927774-401b12d137d6?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3",
+    imageTitle: "Rohit Sharma - Jaimax User from Pune",
+    imageAlt: "Profile photo of Rohit Sharma, a satisfied Jaimax user from Pune, India"
   },
   {
     quote:
@@ -28,6 +34,8 @@ const testimonials = [
     name: "Karthik Menon",
     designation: "Bangalore",
     src: "https://img.freepik.com/free-photo/closeup-young-hispanic-man-casuals-studio_662251-600.jpg?semt=ais_hybrid&w=740",
+    imageTitle: "Karthik Menon - Experienced Crypto User from Bangalore",
+    imageAlt: "Profile photo of Karthik Menon, a crypto enthusiast praising Jaimax from Bangalore"
   },
   {
     quote:
@@ -35,6 +43,8 @@ const testimonials = [
     name: "Ayesha Khan",
     designation: "Hyderabad",
     src: "https://media.gettyimages.com/id/1354842602/photo/portrait-of-a-young-businesswoman-working-on-a-laptop-in-an-office.jpg?s=612x612&w=0&k=20&c=kfP1g2712RiaxsDriIxFo363ARlaL2D591s-22CnIo8=",
+    imageTitle: "Ayesha Khan - Digital Economy Advocate from Hyderabad",
+    imageAlt: "Profile photo of Ayesha Khan, a Jaimax supporter from Hyderabad championing India's digital economy"
   },
 ];
 
@@ -56,7 +66,7 @@ const AnimatedTestimonials = ({ autoplay = true }) => {
   const isActive = (index) => index === active;
 
   return (
-    <div className="min-h-screen  flex items-center justify-center p-4  md:p-8 bg-[#085056]">
+    <div className="min-h-screen flex items-center justify-center p-4 md:p-8 bg-[#085056]">
       <div className="max-w-7xl w-full">
         {/* Header */}
         <div className="text-center mb-10 md:mb-16">
@@ -88,9 +98,11 @@ const AnimatedTestimonials = ({ autoplay = true }) => {
                   <div className="relative h-full group">
                     <img
                       src={t.src}
-                      alt={t.name}
+                      alt={t.imageAlt || `${t.name} - ${t.designation}`}
+                      title={t.imageTitle || `${t.name} - Jaimax User Testimonial`}
                       className="w-full h-full object-cover rounded-3xl shadow-2xl transition-transform duration-500 group-hover:scale-105"
                       draggable={false}
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl"></div>
                     {/* Name badge */}
@@ -136,18 +148,50 @@ const AnimatedTestimonials = ({ autoplay = true }) => {
                   <button
                     onClick={handlePrev}
                     aria-label="Previous testimonial"
+                    title="View previous testimonial"
                     className="group flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-[#bbcf28] to-[#20934a] text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
                   >
                     {/* Left Arrow SVG */}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      className="lucide lucide-arrow-left-icon lucide-arrow-left"
+                      aria-hidden="true"
+                    >
+                      <path d="m12 19-7-7 7-7"/>
+                      <path d="M19 12H5"/>
+                    </svg>
                   </button>
                   <button
                     onClick={handleNext}
                     aria-label="Next testimonial"
+                    title="View next testimonial"
                     className="group flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-[#bbcf28] to-[#20934a] text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
                   >
                     {/* Right Arrow SVG */}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      className="lucide lucide-arrow-right-icon lucide-arrow-right"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14"/>
+                      <path d="m12 5 7 7-7 7"/>
+                    </svg>
                   </button>
                 </div>
                 {/* Dots */}
@@ -162,6 +206,7 @@ const AnimatedTestimonials = ({ autoplay = true }) => {
                           : 'w-2 bg-black/30 hover:bg-blue-300'
                       }`}
                       aria-label={`Go to testimonial ${index + 1}`}
+                      title={`View testimonial from ${testimonials[index].name}`}
                     />
                   ))}
                 </div>
@@ -182,4 +227,3 @@ const AnimatedTestimonials = ({ autoplay = true }) => {
 };
 
 export default AnimatedTestimonials;
-

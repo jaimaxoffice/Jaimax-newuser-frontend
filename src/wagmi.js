@@ -77,5 +77,5 @@ export const config = getDefaultConfig({
     bsc,
     IOTATestnet,
     bscTestnet,],
-  ssr: true, // If your dApp uses server side rendering (SSR)
+  ssr: true, 
 });

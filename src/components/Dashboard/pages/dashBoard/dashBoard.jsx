@@ -13,16 +13,15 @@ import Cookies from "js-cookie";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import { useUserDetailsQuery } from "../myTotalTeam/myTotalTeamApiSlice";
+import KycBonusPopup from "../dashBoard/kycpopup";
 import {
   useGetRoundQuery,
   useGetAnnounceQuery,
   useUserDataQuery,
-  // useGetRedeemMutation 
 } from "../dashBoard/DashboardApliSlice";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import WelcomeBonusModal from "../RedeemCoins/Redeemcoins";
 // Lazy-loaded components
 const ActionButtons = lazy(() => import("./actionComponent/actionCompent"));
 const TopCards = lazy(() => import("./cards/cards"));
@@ -230,17 +229,18 @@ const Dashboard = () => {
     perPage: 10,
     search: "",
   });
-    const [isTokenVerified, setIsTokenVerified] = useState(false);
-     const [showWelcomeBonusModal, setShowWelcomeBonusModal] = useState(false);
-    const token = Cookies.get("token");
+  const [isTokenVerified, setIsTokenVerified] = useState(false);
+  const token = Cookies.get("token");
   useEffect(() => {
     if (token) {
       setIsTokenVerified(true);
     }
   }, [token]);
-  const { data: userData, fetch:userRefetch } = useUserDataQuery(undefined, {
+  const { data: userData, fetch: userRefetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
+
+
   // Memoized query parameters
   const queryParams = useMemo(
     () => `limit=${queryState.perPage}&page=${queryState.currentPage}}`,
@@ -261,47 +261,12 @@ const Dashboard = () => {
     isLoading: announceLoading,
     Error,
   } = useGetAnnounceQuery(undefined, { skip: !shouldFetch });
-// const [redeemBonus, { isLoading: isRedeeming }] = useGetRedeemMutation();
   useEffect(() => {
     const token = Cookies.get("token");
     if (!token) {
       navigate("/login");
     }
   }, [navigate]);
-//   useEffect(() => {
-//     if (userData?.data?.welcomeBonusAwarded === false) {
-//       const timer = setTimeout(() => {
-//         setShowWelcomeBonusModal(true);
-//       }, 300);
-      
-//       return () => clearTimeout(timer);
-//     }
-//   }, [userData?.data?.welcomeBonusAwarded]);
-
-// const handleClaimBonus = async () => {
-//   console.log("Claim button clicked"); 
-//   try {
-//     console.log("Calling redeemBonus API...");
-//     const response = await redeemBonus().unwrap();
-//     console.log("API response:", response);
-//     toast.success("Welcome bonus claimed successfully! 🎉");
-//     setShowWelcomeBonusModal(false);
-//     userRefetch();
-//   } catch (error) {
-//     console.error("API error:", error);
-//     toast.error(error?.data?.message || "Failed to claim bonus. Please try again.");
-//   }
-// };
-
-//   const handleCloseModal = () => {
-//     setShowWelcomeBonusModal(false);
-//     localStorage.setItem('welcomeBonusModalClosed', 'true');
-//   };
-//   useEffect(() => {
-//     const modalClosed = localStorage.getItem('welcomeBonusModalClosed');
-//     if (modalClosed === 'true' && userData?.data?.welcomeBonusAwarded === false) {
-//     }
-//   }, [userData]);
   useEffect(() => {
     if (error?.data?.status_code === 400) {
       toast.error(error?.data?.message);
@@ -366,21 +331,21 @@ const Dashboard = () => {
         pauseOnHover
         theme="colored"
       />
-      {/* <WelcomeBonusModal
-        isOpen={showWelcomeBonusModal}
-        onClose={handleCloseModal}
-        onClaim={handleClaimBonus}
-        isLoading={isRedeeming}
-      /> */}
-
-      {/* Action Buttons */}
-   
-
+      {userData?.data && (
+        <KycBonusPopup
+          kycBonusEligible={userData?.data?.kycBonusEligible}
+          kycBonusClaimed={userData?.data?.kycBonusClaimed}
+          onClose={() => {
+            console.log("Bonus popup closed");
+          }}
+          refetchUser={userRefetch}
+        />
+      )}
       {/* Announcement Slider - Mobile Only */}
-{apiData?.data?.isActiveAnnouncement &&
-  announceData?.data?.[0]?.slides && (
-    <>
-      <style>{`
+      {apiData?.data?.isActiveAnnouncement &&
+        announceData?.data?.[0]?.slides && (
+          <>
+            <style>{`
   .announcement-slider {
     position: relative;
     padding-bottom: 8px;
@@ -448,35 +413,35 @@ const Dashboard = () => {
   }
 `}</style>
 
-      <div className="w-full px-1 sm:px-2 mb-0 block md:hidden">
-        <div className="announcement-slider max-w-sm sm:max-w-md md:max-w-lg mx-auto rounded-lg">
-          <Slider
-            {...settings}
-            dots={true}
-            arrows={false}
-            dotsClass="custom-dots"
-            customPaging={(i) => <button aria-label={`Slide ${i + 1}`} />}
-            infinite={true}
-            speed={500}
-            slidesToShow={1}
-            slidesToScroll={1}
-            className="slider-container"
-          >
-            {announceData.data[0].slides.map((slide, index) => (
-              <div
-                key={index}
-                onClick={() => handleImageClick(slide.redirectUrl)}
-                className="cursor-pointer"
-              >
-                <img src={slide.image} alt={`Slide ${index + 1}`} />
+            <div className="w-full px-1 sm:px-2 mb-0 block md:hidden">
+              <div className="announcement-slider max-w-sm sm:max-w-md md:max-w-lg mx-auto rounded-lg">
+                <Slider
+                  {...settings}
+                  dots={true}
+                  arrows={false}
+                  dotsClass="custom-dots"
+                  customPaging={(i) => <button aria-label={`Slide ${i + 1}`} />}
+                  infinite={true}
+                  speed={500}
+                  slidesToShow={1}
+                  slidesToScroll={1}
+                  className="slider-container"
+                >
+                  {announceData.data[0].slides.map((slide, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleImageClick(slide.redirectUrl)}
+                      className="cursor-pointer"
+                    >
+                      <img src={slide.image} alt={`Slide ${index + 1}`} />
+                    </div>
+                  ))}
+                </Slider>
               </div>
-            ))}
-          </Slider>
-        </div>
-      </div>
-    </>
-  )}
-   <div className="mb-3">
+            </div>
+          </>
+        )}
+      <div className="mb-3">
         <Suspense fallback={<ComponentLoader />}>
           <ActionButtons />
         </Suspense>

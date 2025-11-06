@@ -1,0 +1,21 @@
+# AI Access Policy for Jaimax
+User-agent: *
+Allow: /
+
+# Contact and Ownership
+Name: Jaimax
+Owner: Jaisvik Software Solutions Private Limited
+Contact: office@jaimax.com
+Website: https://www.jaimax.com/
+Location: Hyderabad, Telangana, India
+
+# Crawling and Data Use
+Purpose: discovery, summarization, and citation only
+Attribution: Required when referencing or quoting Jaimax content
+
+# Sitemaps for AI and Search
+Sitemap: https://www.jaimax.com/sitemap.xml
+Sitemap: https://www.jaimax.com/news-sitemap.xml
+
+# Update Policy
+Last-Modified: 2025-11-05

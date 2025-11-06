@@ -5,7 +5,7 @@ const CountryRoute = ({ countryCode }) => {
   const { data: userData, refetch } = useUserDataQuery(undefined, {});
   
   if (userData?.data?.countryCode !== 91) {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   // Allow access to nested routes

@@ -936,6 +936,7 @@ const JaimaxOverview = () => {
           <img
             src={about}
             alt="Jaimax Hero Banner"
+            title="Jaimax Coin – The Best Pre-Sale Crypto Coin in India for Smart Investments"
             className="absolute inset-0 w-full h-full object-cover" // This is where we control the image's size
           />
 
@@ -1017,35 +1018,38 @@ const JaimaxOverview = () => {
             {/* Images Grid */}
             <div className="grid grid-cols-2 gap-4 order-2 lg:order-1">
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="col-span-2 relative rounded-2xl overflow-hidden"
-              >
-                <img
-                  src="https://researchworld.com/uploads/attachments/cl5gw4sah25fd86tdzezrzu0f-gettyimages-1334086618.max.jpg"
-                  alt="Jaimax Global Reach"
-                  className="rounded-2xl w-full h-48 md:h-64 object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black/20 rounded-2xl"></div>
-              </motion.div>
+  whileHover={{ scale: 1.05 }}
+  className="col-span-2 relative rounded-2xl overflow-hidden"
+>
+  <img
+    src="https://researchworld.com/uploads/attachments/cl5gw4sah25fd86tdzezrzu0f-gettyimages-1334086618.max.jpg"
+    alt="Jaimax Global Reach"
+    title="Jaimax Global Presence - Expanding Cryptocurrency Worldwide"
+    className="rounded-2xl w-full h-48 md:h-64 object-cover"
+    loading="lazy"
+  />
+  <div className="absolute inset-0 bg-black/20 rounded-2xl"></div>
+</motion.div>
 
-              <motion.div whileHover={{ scale: 1.05 }} className="rounded-2xl overflow-hidden">
-                <img
-                  src="https://images.stockcake.com/public/a/8/5/a852b6e8-6b91-4957-b31a-c7082a74b56e_large/business-discussion-meeting-stockcake.jpg"
-                  alt="Business meeting"
-                  className="rounded-2xl w-full h-32 md:h-48 object-cover"
-                  loading="lazy"
-                />
-              </motion.div>
+<motion.div whileHover={{ scale: 1.05 }} className="rounded-2xl overflow-hidden">
+  <img
+    src="https://images.stockcake.com/public/a/8/5/a852b6e8-6b91-4957-b31a-c7082a74b56e_large/business-discussion-meeting-stockcake.jpg"
+    alt="Business meeting"
+    title="Strategic Business Meeting - Jaimax Team Collaboration"
+    className="rounded-2xl w-full h-32 md:h-48 object-cover"
+    loading="lazy"
+  />
+</motion.div>
 
-              <motion.div whileHover={{ scale: 1.05 }} className="rounded-2xl overflow-hidden">
-                <img
-                  src="https://bsmedia.business-standard.com/_media/bs/img/article/2022-03/30/full/1648657657-322.jpg?im=FeatureCrop,size=(826,465)"
-                  alt="Woman working"
-                  className="rounded-2xl w-full h-32 md:h-48 object-cover"
-                  loading="lazy"
-                />
-              </motion.div>
+<motion.div whileHover={{ scale: 1.05 }} className="rounded-2xl overflow-hidden">
+  <img
+    src="https://bsmedia.business-standard.com/_media/bs/img/article/2022-03/30/full/1648657657-322.jpg?im=FeatureCrop,size=(826,465)"
+    alt="Woman working"
+    title="Professional at Work - Jaimax Digital Workspace"
+    className="rounded-2xl w-full h-32 md:h-48 object-cover"
+    loading="lazy"
+  />
+</motion.div>
             </div>
 
             {/* Content */}
@@ -1135,6 +1139,7 @@ const JaimaxOverview = () => {
               <img
                 src="https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg"
                 alt="Blockchain Technology"
+                title="Blockchain Technology - Jaimax Secure Crypto Coin"
                 className="rounded-xl shadow-lg w-full max-w-lg object-cover h-64 sm:h-80 lg:h-[400px]"
                 loading="lazy"
               />

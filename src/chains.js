@@ -1,4 +1,3 @@
-// chains.ts
 import { defineChain } from 'viem'
 
 export const bsc = defineChain({

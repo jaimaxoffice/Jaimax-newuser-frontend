@@ -68,7 +68,7 @@ const OurMissionSectionContent = () => {
             <p className="text-white mb-6 text-sm sm:text-base">
               Discover diverse investment plans designed to maximize your returns, from small-scale investments to major growth opportunities, progressing through ICO slabs.
             </p>
-            <a href="/investment-plans" className="text-lime-400 hover:text-lime-300 font-medium flex items-center group">
+            <a href="/login" className="text-lime-400 hover:text-lime-300 font-medium flex items-center group">
               Learn more
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +124,7 @@ const OurMissionSectionContent = () => {
             <p className="text-white mb-6 text-sm sm:text-base">
               Benefit from seamless purchases of Jaimax Coins via an integrated payment gateway, with detailed transaction history and secure withdrawal options.
             </p>
-            <a href="/security" className="text-lime-400 hover:text-lime-300 font-medium flex items-center group">
+            <a href="/login" className="text-lime-400 hover:text-lime-300 font-medium flex items-center group">
               Learn more
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +201,9 @@ const LocationsSectionContent = () => {
               variants={flagVariants}
               whileHover={{ rotate: 15, scale: 1.1 }} // Hover animation for flags
             >
-              <img src={flagUrl} alt={`Country Flag ${index + 1}`} className="rounded-full w-full h-full object-cover"  loading='lazy'/>
+              <img src={flagUrl} alt={`Country Flag ${index + 1}`} className="rounded-full w-full h-full object-cover"  loading='lazy'
+              title={`Country Flag ${index + 1} - Jaimax Supported Region`}
+              />
             </motion.div>
           ))}
         </motion.div>
@@ -311,12 +313,14 @@ const ContactInformationSectionContent = () => {
   <div className="flex flex-col space-y-1">
     <a
       href="tel:+919121799947"
+      title="contact us for the support"
       className="hover:text-lime-400 transition-colors duration-200 cursor-pointer"
     >
       +91 9121799947
     </a>
     <a
       href="tel:+919121758880"
+       title="contact us for the support"
       className="hover:text-lime-400 transition-colors duration-200 cursor-pointer"
     >
       +91 9121758880
@@ -328,6 +332,7 @@ const ContactInformationSectionContent = () => {
                 <Mail className="h-6 w-6 text-lime-400 mr-3" />
                 <a 
                   href="mailto:office@jaimax.com" 
+                   title="contact us for the support"
                   className="hover:text-lime-400 transition-colors duration-200 cursor-pointer"
                 >
                   office@jaimax.com

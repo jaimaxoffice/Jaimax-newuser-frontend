@@ -117,6 +117,11 @@ export default defineConfig({
           "vendor-ui": ["react", "react-dom", "react-router-dom"],
         },
       },
+      onwarn(warning, defaultHandler) {
+        if (warning.code === 'PLUGIN_WARNING') return;
+        defaultHandler(warning);
+      },
     },
+    
   },
 });

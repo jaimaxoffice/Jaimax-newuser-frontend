@@ -1,8 +1,8 @@
-const Blog1 = "/images/Blog1poster.jpg";
-const Blog2 = "/images/Blog2poster.jpg";
-const Blog3 = "/images/Blog3poster.jpg";
-const Blog4 = "/images/Blog4poster.jpg";
-const Blog5 = "/images/Blog5poster.jpg";
+const Blog1 = "/images/Blog1poster.webp";
+const Blog2 = "/images/Blog2poster.webp";
+const Blog3 = "/images/Blog3poster.webp";
+const Blog4 = "/images/Blog4poster.webp";
+const Blog5 = "/images/Blog5poster.webp";
 
 export const blogsData = [
   {
@@ -1557,6 +1557,7 @@ const BlogLayout = () => {
                         <img
                           src={post.image}
                           alt={post.headline}
+                          title={post.headline}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

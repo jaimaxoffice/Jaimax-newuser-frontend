@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { debounce } from 'lodash';
-import image from '../../assets/Images/roadmap.png';
+import image from '../../assets/Images/roadmap.webp';
 const roadmapData = {
   2025: {
     title: "Innovation & Expansion",
@@ -71,9 +71,9 @@ export default function RoadmapTimeline() {
     <div className="min-h-screen  text-white bg-[#085056]">
       {/* Header */}
       <div className="text-center py-8  md:py-12 px-4">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-teal-300 to-cyan-300 bg-clip-text text-transparent mb-2">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-teal-300 to-cyan-300 bg-clip-text text-transparent mb-2">
           PROJECT NEXUS
-        </h1>
+        </h2>
         <p className="text-teal-400 text-xs md:text-sm uppercase tracking-wide">Roadmap Timeline</p>
       </div>
 
@@ -84,9 +84,10 @@ export default function RoadmapTimeline() {
             <div className="sticky top-8">
               <div className="relative">
                 <img
-                  // src="https://ninetheme.com/themes/cryptoland/wp-content/uploads/2018/10/road_map.png"
+                  
                   src={image}
                   alt="Roadmap Illustration"
+                  title='Jaimax Roadmap'
                   className="w-full h-auto max-h-[600px] object-contain opacity-60 hover:opacity-80 transition-opacity duration-300"
                 />
               </div>

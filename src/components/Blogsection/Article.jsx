@@ -24,11 +24,11 @@ import {
 } from "../../components/Blogsection/BlogEditorApiSlice";
 
 // Import your blog images
-import Blog1 from "../../../public/images/Blog1poster.jpg";
-import Blog2 from "../../../public/images/Blog2poster.jpg";
-import Blog3 from "../../../public/images/Blog3poster.jpg";
-import Blog4 from "../../../public/images/Blog4poster.jpg";
-import Blog5 from "../../../public/images/Blog5poster.jpg";
+import Blog1 from "../../../public/images/Blog1poster.webp";
+import Blog2 from "../../../public/images/Blog2poster.webp";
+import Blog3 from "../../../public/images/Blog3poster.webp";
+import Blog4 from "../../../public/images/Blog4poster.webp";
+import Blog5 from "../../../public/images/Blog5poster.webp";
 
 // Static Blog Data - Add this!
 export const staticBlogsData = [
@@ -1737,6 +1737,7 @@ const BlogPostDetail = () => {
                         <img
                           src={resultImage}
                           alt={resultTitle}
+                          title={resultTitle}
                           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
                         />
                       ) : (

@@ -11,6 +11,14 @@ export const kycApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    kycreward: builder.query({
+      query: () => {
+        return {
+          url: "/kyc/kyc-reward-claim",
+          method: "GET",
+        };
+      },
+    }),
     getkycDetails: builder.query({
       query: (id) => {
         return {
@@ -38,6 +46,8 @@ export const kycApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useKycaddMutation,
+  useKycrewardQuery,
+  useLazyKycrewardQuery,
   useGetkycDetailsQuery,
   useGetKycDataMutation,
    useUpdateBankDetailsMutation, 
