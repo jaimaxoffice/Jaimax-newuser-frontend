@@ -9,7 +9,7 @@ import { TbWorld } from "react-icons/tb";
 import { MdOutlineClose } from "react-icons/md";
 import { SlArrowDown } from "react-icons/sl";
 import { useGetChatSupportDataMutation, useSubmitUserLocationMutation } from "./chatApi.js";
- import logo from "../../assets/jcoin.png";
+ import logo from "../../assets/jcoin.webp";
 
 
 export default function HumanAssistant({ onclose }) {

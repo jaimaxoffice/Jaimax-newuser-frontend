@@ -20,7 +20,7 @@ import {
 } from "../DashboardApliSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import jcoin from "../../../../../assets/logo.png";
+import jcoin from "../../../../../assets/logo.webp";
 import Cookies from "js-cookie";
 // Static fallback data
 const staticSlabsData = [

@@ -241,10 +241,10 @@ const Home = () => {
                               text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]
                               text-3xl sm:text-4xl md:text-5xl lg:text-6xl space-y-1
                               opacity-0 translate-y-3 animate-fadeUp">
-                <span className="block text-[#b8cc26]">Secure Your</span>
-                <span className="block">Financial Tomorrow</span>
-                <span className="block">with Innovation</span>
-                <span className="block">and Trust</span>
+                <span className="block text-[#b8cc26]">Best Pre-Sale</span>
+                <span className="block">Crypto Coin in India</span>
+                <span className="block">Invest Early in </span>
+                <span className="block"> Jaimax</span>
               </h1>
 
               <p className="absolute bottom-6 right-4 sm:bottom-10 sm:right-10

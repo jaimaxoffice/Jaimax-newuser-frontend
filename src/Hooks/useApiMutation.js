@@ -1,78 +1,43 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "../components/ToastContainer";
 
 export const useApiMutation = (mutationHook, options = {}) => {
-  const {
-    onSuccess = null,
-    onError = null,
-    successMessage = 'Operation successful!',
-    errorMessage = 'Operation failed!',
-    showNotifications = true,
-  } = options;
-
   const [trigger, result] = mutationHook();
-  
-  const [state, setState] = useState({
-    showSuccess: false,
-    showError: false,
-    message: '',
-  });
+  const [isTriggered, setTriggered] = useState(false);
 
-  const execute = useCallback(async (data) => {
-    try {
-      setState({ showSuccess: false, showError: false, message: '' });
-      
-      const response = await trigger(data).unwrap();
-      
-      if (showNotifications) {
-        setState({
-          showSuccess: true,
-          showError: false,
-          message: successMessage,
-        });
-      }
-
-      if (onSuccess) {
-        onSuccess(response);
-      }
-
-      return response;
-    } catch (error) {
-      if (showNotifications) {
-        setState({
-          showSuccess: false,
-          showError: true,
-          message: error?.data?.message || errorMessage,
-        });
-      }
-
-      if (onError) {
-        onError(error);
-      }
-
-      throw error;
-    }
-  }, [trigger, onSuccess, onError, successMessage, errorMessage, showNotifications]);
-
-  const reset = useCallback(() => {
-    setState({ showSuccess: false, showError: false, message: '' });
-    if (result.reset) {
-      result.reset();
-    }
-  }, [result]);
-
-  const dismissNotification = useCallback(() => {
-    setState(prev => ({ ...prev, showSuccess: false, showError: false }));
-  }, []);
-
-  return {
-    execute,
+  const {
+    data,
+    error,
+    isLoading,
+    isSuccess,
+    isError,
     reset,
-    dismissNotification,
-    isLoading: result.isLoading,
-    isSuccess: result.isSuccess,
-    isError: result.isError,
-    data: result.data,
-    error: result.error,
-    ...state,
-  };
+  } = result;
+
+  const runMutation = useCallback(
+    async (...args) => {
+      setTriggered(true);
+      try {
+        const res = await trigger(...args).unwrap();
+        if (options?.showNotifications && options?.successMessage) {
+          toast.success("Success", { message: options.successMessage });
+        }
+        return res;
+      } catch (err) {
+        if (options?.showNotifications && options?.errorMessage) {
+          toast.error("Error", { message: options.errorMessage });
+        }
+        throw err;
+      }
+    },
+    [trigger, options]
+  );
+
+  useEffect(() => {
+    if (isError && isTriggered && options?.showNotifications && !options?.errorMessage) {
+      toast.error("Error", { message: error?.data?.message || "Something went wrong!" });
+    }
+  }, [isError, isTriggered, options, error]);
+
+  return { trigger: runMutation, data, error, isLoading, isSuccess, isError, reset };
 };

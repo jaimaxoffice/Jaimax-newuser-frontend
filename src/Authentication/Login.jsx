@@ -13,7 +13,7 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import icon from "../assets/Images/greencoin.png";
+import icon from "../assets/Images/greencoin.webp";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import {
@@ -313,121 +313,6 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
       });
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!validate()) {
-  //     setNotification({ type: "error", message: "Please fix the highlighted fields." });
-  //     return;
-  //   }
-
-  //   if (rememberMe) {
-  //     Cookies.set("email", formData.email?.trim(), { expires: 30 });
-  //     Cookies.set("rememberMe", "true", { expires: 30 });
-  //   } else {
-  //     Cookies.remove("email");
-  //     Cookies.remove("rememberMe");
-  //   }
-
-  //   try {
-  //     const response = await login({
-  //       email: formData.email?.trim(),
-  //       password: formData.password,
-  //       role: 1,
-  //     }).unwrap();
-
-  //     if (response?.success) {
-  //       Cookies.set("token", response?.data?.token, { expires: 7 });
-  //       sessionStorage.setItem("token", response?.data?.token);
-  //       Cookies.set("userData", JSON.stringify(response?.data), { expires: 7 });
-
-  //       setNotification({
-  //         type: "success",
-  //         message: response?.message || "Login successful! Redirecting...",
-  //       });
-
-  //       setTimeout(() => {
-  //         navigate("/kyc-information");
-  //         console.log("Redirecting to dashboard");
-  //       }, 1000);
-  //     } else {
-  //       setNotification({
-  //         type: "error",
-  //         message: response?.message || "Login failed.",
-  //       });
-  //     }
-  //   } catch (err) {
-  //     const errorMessage = err?.data?.message || "Login error";
-  //     setNotification({
-  //       type: "error",
-  //       message: errorMessage,
-  //     });
-  //   }
-  // };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!validate()) {
-  //     setNotification({
-  //       type: "error",
-  //       message: "Please fix the highlighted fields.",
-  //     });
-  //     return;
-  //   }
-
-  //   // Handle remember me functionality
-  //   if (rememberMe) {
-  //     localStorage.setItem("email", formData.email?.trim());
-  //     localStorage.setItem("rememberMe", "true");
-  //   } else {
-  //     localStorage.removeItem("email");
-  //     localStorage.removeItem("rememberMe");
-  //   }
-
-  //   try {
-  //     const response = await login({
-  //       email: formData.email?.trim(),
-  //       password: formData.password,
-  //       role: 1,
-  //     }).unwrap();
-
-  //     if (response?.success) {
-  //       // Store authentication data
-  //       localStorage.setItem("token", response?.data?.token);
-  //       localStorage.setItem("userData", JSON.stringify(response));
-
-  //       // Show success notification
-  //       setNotification({
-  //         type: "success",
-  //         message: response?.message || "Login successful! Redirecting...",
-  //       });
-
-  //       // Show toast notification
-  //       // toast.success(`${response?.message}`, {
-  //       //   position: "top-center",
-  //       // });
-
-  //       // Redirect after delay
-  //       setTimeout(() => {
-  //         navigate("/dashboard");
-  //       }, 1000);
-  //     } else {
-  //       setNotification({
-  //         type: "error",
-  //         message: response?.message || "Login failed.",
-  //       });
-  //     }
-  //   } catch (err) {
-  //     const errorMessage = err?.data?.message || "Login error";
-  //     setNotification({
-  //       type: "error",
-  //       message: errorMessage,
-  //     });
-  //     // toast.error(errorMessage, {
-  //     //   position: "top-center",
-  //     // });
-  //   }
-  // };
 
   return (
     <div

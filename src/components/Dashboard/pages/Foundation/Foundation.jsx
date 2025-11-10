@@ -5,8 +5,7 @@ import {
 } from "./foundationApiSlice";
 import confetti from "canvas-confetti";
 import Loader from "../../../../ReusableComponents/Loader/loader";
-import icon from "../../../../assets/Images/jaimaxcoin.png";
-import icon2 from "../../../../assets/Images/jaicoin.svg";
+import icon from "../../../../assets/Images/jaimaxcoin.webp";
 import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
 import Cookies from "js-cookie"
 const triggerConfetti = () => {

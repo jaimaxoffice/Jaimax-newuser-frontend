@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Calendar, Clock } from "lucide-react";
 import { useGetAllZoomMeetingsQuery } from "./MeetingsApiSlice";
 import Loader from "../../../../ReusableComponents/Loader/loader";
+import { useApiQuery } from "@/hooks/useApiQuery";
 const UserLayout = ({ children }) => (
   <div className="min-h-screen bg-gray-50">
     {" "}
@@ -27,12 +28,11 @@ function UserMeetingsShowcase() {
     setCurrentPage(1);
   }, [selectedType]);
 
-  const {
-    data: meetingsData,
-    isLoading,
-    error,
-  } = useGetAllZoomMeetingsQuery(queryParams);
 
+ const { data: meetingsData, isLoading, error, refetch } = useApiQuery(
+    useGetAllZoomMeetingsQuery,
+    queryParams
+  );
   const meetings = meetingsData?.data?.videos || [];
   const pagination = meetingsData?.data?.pagination || {};
   const totalPages = pagination.totalPages || 1;

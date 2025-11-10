@@ -24,11 +24,11 @@ import {
 } from "../../components/Blogsection/BlogEditorApiSlice";
 
 // Import your blog images
-import Blog1 from "../../../public/images/Blog1poster.webp";
-import Blog2 from "../../../public/images/Blog2poster.webp";
-import Blog3 from "../../../public/images/Blog3poster.webp";
-import Blog4 from "../../../public/images/Blog4poster.webp";
-import Blog5 from "../../../public/images/Blog5poster.webp";
+import Blog1 from "../../assets/Blog1poster.webp";
+import Blog2 from "../../assets/Blog2poster.webp";
+import Blog3 from "../../assets/Blog3poster.webp";
+import Blog4 from "../../assets/Blog4poster.webp";
+import Blog5 from "../../assets/Blog5poster.webp";
 
 // Static Blog Data - Add this!
 export const staticBlogsData = [

@@ -1,5 +1,5 @@
 import React from "react";
-import loaderImage from "../../assets/jcoin.png";
+import loaderImage from "../../assets/jcoin.webp";
 
 /**
  * Loader Component

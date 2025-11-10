@@ -220,11 +220,11 @@ import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import catlog from "../../assets/catlog.svg";
-import coinmarket from "../../assets/coinmarket.svg";
-import binance from "../../assets/binance.svg";
-import github from "../../assets/github.svg";
-import gecko from "../../assets/gecko.png";
+import catlog from "../../assets/catlog.webp";
+import coinmarket from "../../assets/coinmarket.webp";
+import binance from "../../assets/binance.webp";
+import github from "../../assets/github.webp";
+import gecko from "../../assets/gecko.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 

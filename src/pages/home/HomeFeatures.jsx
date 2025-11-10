@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { TrendingUp, Shield, Users, Globe, BookOpen, Settings, CreditCard, Headphones, ArrowRight } from 'lucide-react';
+// import icon from '../../assets/logo.webp'
 import icon from '../../assets/Images/loginReg.svg'
-import icon2 from '../../assets/Images/jaicoin.svg'
 import featureImage from "../../assets/websiteicons.webp"
 import { useNavigate } from 'react-router-dom';
 import Seo from '../../SeoContent/Seo'

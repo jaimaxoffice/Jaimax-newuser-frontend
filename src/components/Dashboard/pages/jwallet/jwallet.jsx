@@ -32,7 +32,7 @@ import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 import { useNavigate } from "react-router-dom";
-import icon2 from "../../../../../public/whitejaimaclogo.png";
+import icon2 from "../../../../assets/whitejaimaxlogo.webp";
 import "./jwallet.css";
 
 // Swap state reducer for better state management

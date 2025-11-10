@@ -1,4 +1,3 @@
-// hooks/useCopyToClipboard.js
 import { useState, useCallback } from 'react';
 
 export const useCopyToClipboard = () => {
@@ -15,8 +14,6 @@ export const useCopyToClipboard = () => {
       await navigator.clipboard.writeText(text);
       setCopiedText(text);
       setIsCopied(true);
-      
-      // Reset after 2 seconds
       setTimeout(() => setIsCopied(false), 2000);
       
       return true;

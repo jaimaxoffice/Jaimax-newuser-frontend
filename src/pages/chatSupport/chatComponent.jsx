@@ -15,7 +15,7 @@
   } from "lucide-react";
   import { motion, AnimatePresence } from "framer-motion";
   import JaimaxLogo from "../../assets/Images/logo.svg";
-  import logo from "../../assets/Images/whiteIcon.png";
+  import logo from "../../assets/Images/whiteIcon.webp";
   import { HiArrowLeft, HiX } from "react-icons/hi";
 
   import SupportBot from "./humanassistant";
