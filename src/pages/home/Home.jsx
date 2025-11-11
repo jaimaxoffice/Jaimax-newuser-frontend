@@ -8,9 +8,10 @@ import whatsapp from "../../assets/Images/whatsup copy.svg"
 const CryptoStakingSection = lazy(() => import('./HomeAbout'));
 const ServicesComponent = lazy(() => import('./Homeservices'));
 const GrowthPlanTimeline = lazy(() => import('./Phase'));
+const JaimaxContent = lazy(() => import('./Seosection'));
 const Partners = lazy(() => import('./Partners'));
-const AnimatedTestimonials = lazy(() => import('./Testimonals'));
 const JaimaxRoadmap = lazy(() => import('./RoadmapDup'));
+const AnimatedTestimonials = lazy(() => import('./Testimonals'));
 const JaimaxFAQ = lazy(() => import('./Faq'));
 const HomeContact = lazy(() => import('./HomeContact'));
 const HomeFooter = lazy(() => import('./HomeFoot'));
@@ -251,8 +252,7 @@ const Home = () => {
                             text-white text-sm sm:text-base md:text-lg lg:text-xl 
                             font-medium max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-lg text-right space-y-4
                             opacity-0 translate-y-3 animate-fadeUp delay-150">
-                Our expertly designed platform ensures a seamless and secure investment process,
-                allowing you to capitalize on the dynamic nature of the cryptocurrency market.
+                Our advanced platform simplifies your pre-sale crypto investment journey, offering a secure and transparent experience to help you grow with India’s most trusted<b className='text-[#aadc32]'> pre-sale crypto coin</b> - jaimax.
                 <button
                   type="button"
                   onClick={() => navigate('/login')}
@@ -263,7 +263,7 @@ const Home = () => {
                              rounded-full hover:scale-105 active:scale-95
                              transition-transform duration-300 px-4 py-2"
                 >
-                  Start Building
+                  Join Jaimax Pre-Sale
                 </button>
               </p>
             </div>
@@ -278,6 +278,7 @@ const Home = () => {
             { Component: ServicesComponent, id: 'services' },
             { Component: GrowthPlanTimeline, id: 'growth-plan' },
             { Component: Partners, id: 'partners' },
+            { Component: JaimaxContent, id: 'seo-section' },
             { Component: AnimatedTestimonials, id: 'testimonials' },
             { Component: JaimaxRoadmap, id: 'roadmap' },
             { Component: JaimaxFAQ, id: 'faq' },
