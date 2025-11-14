@@ -22,6 +22,7 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import KycAdvertisement from "../../../../ReusableComponents/Advertisements/Advertisement";
 // Lazy-loaded components
 const ActionButtons = lazy(() => import("./actionComponent/actionCompent"));
 const TopCards = lazy(() => import("./cards/cards"));
@@ -224,6 +225,7 @@ MobileTeamCards.displayName = "MobileTeamCards";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [showKycAd, setShowKycAd] = useState(true);
   const [queryState, setQueryState] = useState({
     currentPage: 1,
     perPage: 10,
@@ -316,6 +318,7 @@ const Dashboard = () => {
   const handlePageChange = useCallback((page) => {
     setQueryState((prev) => ({ ...prev, currentPage: page }));
   }, []);
+// KYC Advertisement Component - Horizontal Teal Theme
 
   return (
     <div className="min-h-screen p-2 bg-[#1d8e85] rounded-xl text-sm sm:text-base md:text-lg overflow-x-hidden">
@@ -328,6 +331,12 @@ const Dashboard = () => {
             console.log("Bonus popup closed");
           }}
           refetchUser={userRefetch}
+        />
+      )}
+      {userData?.data?.kycStatus === "" && showKycAd && (
+        <KycAdvertisement 
+          show={true}
+          onClose={() => setShowKycAd(false)}
         />
       )}
       {/* Announcement Slider - Mobile Only */}

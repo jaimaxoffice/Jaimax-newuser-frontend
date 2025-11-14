@@ -1322,7 +1322,40 @@ const KycInformation = () => {
   const [showBankModal, setShowBankModal] = useState(false);
   const [disableFieldsAfterKYC, setDisableFieldsAfterKYC] = useState(false);
   const location = useLocation();
+   const [focusedInput, setFocusedInput] = useState(null);
+const maskData = (
+  data = "",
+  visibleStart = 2,
+  visibleEnd = 2,
+  maskChar = "*"
+) => {
+  const dataStr = String(data || ""); // Ensure it's a string, handles null/undefined
 
+  // If there's no data, return an empty string.
+  if (!dataStr) {
+    return "";
+  }
+
+  // ***** THE FIX IS HERE *****
+  // Special case for full masking (when start and end are 0).
+  if (visibleStart === 0 && visibleEnd === 0) {
+    return maskChar.repeat(dataStr.length);
+  }
+
+  // The original logic for partial masking.
+  if (dataStr.length <= visibleStart + visibleEnd) {
+    return dataStr;
+  }
+
+  const maskedSection = maskChar.repeat(
+    Math.max(0, dataStr.length - (visibleStart + visibleEnd))
+  );
+
+  // A more robust way to handle the end slice to avoid the slice(-0) issue.
+  const endPart = visibleEnd > 0 ? dataStr.slice(-visibleEnd) : "";
+  
+  return dataStr.slice(0, visibleStart) + maskedSection + endPart;
+};
   // State for image previews
   const [previewImages, setPreviewImages] = useState({
     doc_front: null,
@@ -2009,16 +2042,16 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                     <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1.5">
                       Date of Birth <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      type="text"
-                      className="w-full bg-white px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-gray-100 transition-all duration-200"
-                      placeholder="Date of Birth"
-                      name="dob"
-                      value={formData.dob}
-                      onChange={handleChange}
-                      disabled
-                      readOnly
-                    />
+                     <input
+                          type="text"
+                          className="form-control shadow-none bg-transparent"
+                          placeholder="Date of Birth"
+                          name="dob"
+                          // CORRECTED: Simple masking for a read-only field
+                          value={maskData(formData.dob, 0, 0, 'X')}
+                          disabled
+                          readOnly
+                        />
                     {errors.dob && <p className="mt-1.5 text-sm text-red-500">{errors.dob}</p>}
                   </div>
                 )}
@@ -2028,25 +2061,32 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                     Mobile Number (As per Bank) <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="text"
-                    className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
-                    name="mobile_number"
-                    placeholder="Enter mobile number"
-                    value={formData.mobile_number}
-                    maxLength={getMaxLength()}
-                    disabled={
-                      (!enableFields && isCountryCodeIndia) ||
-                      kycdata?.data?.status === "open" ||
-                      (kycdata?.data?.status == "approve" && !isEditClicked)
-                    }
-                    onChange={handleChangeMobileNumber}
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    autoComplete="off"
-                  />
+                        type="text"
+                        className="form-control shadow-none bg-transparent"
+                        name="mobile_number"
+                        placeholder="Enter mobile number"
+                        // ***** CORRECTED: Conditional masking *****
+                        value={
+                          focusedInput === "mobile_number"
+                            ? formData.mobile_number
+                            : maskData(formData.mobile_number, 5, 2)
+                        }
+                        maxLength={getMaxLength()}
+                        disabled={
+                          (!enableFields && isCountryCodeIndia) ||
+                          kycdata?.data?.status === "open" ||
+                          (kycdata?.data?.status === "approve" && !isEditClicked)
+                        }
+                        onChange={handleChangeMobileNumber}
+                        onFocus={(e) => setFocusedInput(e.target.name)}
+                        onBlur={() => setFocusedInput(null)}
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        autoComplete="off"
+                      />
                   {errors.mobile_number && (
                     <p className="mt-1.5 text-sm text-red-500">{errors.mobile_number}</p>
                   )}
@@ -2057,19 +2097,26 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                     Address <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="text"
-                    autoComplete="off"
-                    className="w-full px-4 bg-white py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
-                    name="address"
-                    placeholder="Enter your address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    disabled={
-                      (!enableFields && isCountryCodeIndia) ||
-                      kycdata?.data?.status === "open" ||
-                      (kycdata?.data?.status == "approve" && !isEditClicked)
-                    }
-                  />
+                        type="text"
+                        autoComplete="off"
+                        className="form-control shadow-none bg-transparent"
+                        name="address"
+                        placeholder="Enter your address"
+                        // ***** CORRECTED: Conditional masking *****
+                        value={
+                          focusedInput === "address"
+                            ? formData.address
+                            : maskData(formData.address)
+                        }
+                        onChange={handleChange}
+                        onFocus={(e) => setFocusedInput(e.target.name)}
+                        onBlur={() => setFocusedInput(null)}
+                        disabled={
+                          (!enableFields && isCountryCodeIndia) ||
+                          kycdata?.data?.status === "open" ||
+                          (kycdata?.data?.status === "approve" && !isEditClicked)
+                        }
+                      />
                   {errors.address && (
                     <p className="mt-1.5 text-sm text-red-500">{errors.address}</p>
                   )}
@@ -2449,19 +2496,26 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                       PAN Number <span className="text-red-500">*</span>
                     </label>
                     <input
-                      type="text"
-                      className="w-full bg-white px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
-                      name="panNumber"
-                      placeholder="Enter PAN number"
-                      value={formData.panNumber}
-                      onChange={handleChange}
-                      disabled={
-                        (!enableFields && isCountryCodeIndia) ||
-                        disableFieldsAfterKYC ||
-                        kycdata?.data?.status === "open" ||
-                        (kycdata?.data?.status == "approve" && !isEditClicked)
-                      }
-                    />
+                          type="text"
+                          className="form-control shadow-none bg-transparent"
+                          name="panNumber"
+                          placeholder="Enter PAN number"
+                          // ***** CORRECTED: Conditional masking *****
+                          value={
+                            focusedInput === "panNumber"
+                              ? formData.panNumber
+                              : maskData(formData.panNumber)
+                          }
+                          onChange={handleChange}
+                          onFocus={(e) => setFocusedInput(e.target.name)}
+                          onBlur={() => setFocusedInput(null)}
+                          disabled={
+                            (!enableFields && isCountryCodeIndia) ||
+                            disableFieldsAfterKYC ||
+                            kycdata?.data?.status === "open" ||
+                            (kycdata?.data?.status === "approve" && !isEditClicked)
+                          }
+                        />
                     {errors.panNumber && (
                       <p className="mt-1.5 text-sm text-red-500">{errors.panNumber}</p>
                     )}
@@ -2483,19 +2537,26 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                       UPI Number
                     </label>
                     <input
-                      type="text"
-                      autoComplete="off"
-                      className="w-full bg-white px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
-                      name="upi_id"
-                      placeholder="Enter UPI number"
-                      value={formData.upi_id}
-                      onChange={handleChange}
-                      disabled={
-                        (!enableFields && isCountryCodeIndia) ||
-                        kycdata?.data?.status === "open" ||
-                        (kycdata?.data?.status == "approve" && !isEditClicked)
-                      }
-                    />
+                          type="text"
+                          autoComplete="off"
+                          className="form-control shadow-none bg-transparent"
+                          name="upi_id"
+                          placeholder="Enter UPI ID"
+                          // ***** CORRECTED: Conditional masking *****
+                          value={
+                            focusedInput === "upi_id"
+                              ? formData.upi_id
+                              : maskData(formData.upi_id, 3, 4)
+                          }
+                          onChange={handleChange}
+                          onFocus={(e) => setFocusedInput(e.target.name)}
+                          onBlur={() => setFocusedInput(null)}
+                          disabled={
+                            (!enableFields && isCountryCodeIndia) ||
+                            kycdata?.data?.status === "open" ||
+                            (kycdata?.data?.status === "approve" && !isEditClicked)
+                          }
+                        />
                     {errors.upi_id && (
                       <p className="mt-1.5 text-sm text-red-500">{errors.upi_id}</p>
                     )}
@@ -2506,25 +2567,32 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                   <label htmlFor="bank_account" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Bank Account Number <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    autoComplete="off"
-                    className="w-full bg-white px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
-                    name="bank_account"
-                    placeholder="Enter bank account number"
-                    value={formData.bank_account}
-                    onChange={handleChange}
-                    disabled={
-                      (!enableFields && isCountryCodeIndia) ||
-                      kycdata?.data?.status === "open" ||
-                      (kycdata?.data?.status == "approve" && !isEditClicked)
-                    }
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                  />
+                   <input
+                        type="text"
+                        autoComplete="off"
+                        className="form-control shadow-none bg-transparent"
+                        name="bank_account"
+                        placeholder="Enter bank account number"
+                        // ***** CORRECTED: Conditional masking *****
+                        value={
+                          focusedInput === "bank_account"
+                            ? formData.bank_account
+                            : maskData(formData.bank_account)
+                        }
+                        onChange={handleChange}
+                        onFocus={(e) => setFocusedInput(e.target.name)}
+                        onBlur={() => setFocusedInput(null)}
+                        disabled={
+                          (!enableFields && isCountryCodeIndia) ||
+                          kycdata?.data?.status === "open" ||
+                          (kycdata?.data?.status === "approve" && !isEditClicked)
+                        }
+                        onKeyPress={(event) => {
+                          if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                      />
                   {errors.bank_account && (
                     <p className="mt-1.5 text-sm text-red-500">{errors.bank_account}</p>
                   )}
@@ -2534,20 +2602,20 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                   <label htmlFor="bank_name" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Bank Name <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    autoComplete="off"
-                    className="w-full bg-white px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
-                    name="bank_name"
-                    placeholder="Enter bank name"
-                    value={formData.bank_name}
-                    onChange={handleChange}
-                    disabled={
-                      (!enableFields && isCountryCodeIndia) ||
-                      kycdata?.data?.status === "open" ||
-                      (kycdata?.data?.status == "approve" && !isEditClicked)
-                    }
-                  />
+                   <input
+                        type="text"
+                        autoComplete="off"
+                        className="form-control shadow-none bg-transparent"
+                        name="bank_name"
+                        placeholder="Enter bank name"
+                        value={formData.bank_name} // No masking for bank name
+                        onChange={handleChange}
+                        disabled={
+                          (!enableFields && isCountryCodeIndia) ||
+                          kycdata?.data?.status === "open" ||
+                          (kycdata?.data?.status === "approve" && !isEditClicked)
+                        }
+                      />
                   {errors.bank_name && (
                     <p className="mt-1.5 text-sm text-red-500">{errors.bank_name}</p>
                   )}
@@ -2557,20 +2625,27 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                   <label htmlFor="ifsc_code" className="block text-sm font-medium text-gray-700 mb-1.5">
                     Bank {isCountryCodeIndia && "IFSC"} Code <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    autoComplete="off"
-                    className="w-full bg-white px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
-                    name="ifsc_code"
-                    placeholder="Enter bank code"
-                    value={toUpperCase(formData.ifsc_code)}
-                    onChange={handleChange}
-                    disabled={
-                      (!enableFields && isCountryCodeIndia) ||
-                      kycdata?.data?.status === "open" ||
-                      (kycdata?.data?.status == "approve" && !isEditClicked)
-                    }
-                  />
+                 <input
+                        type="text"
+                        autoComplete="off"
+                        className="form-control shadow-none bg-transparent"
+                        name="ifsc_code"
+                        placeholder="Enter bank code"
+                        // ***** CORRECTED: Conditional masking and uppercase *****
+                        value={toUpperCase(
+                          focusedInput === "ifsc_code"
+                            ? formData.ifsc_code
+                            : maskData(formData.ifsc_code)
+                        )}
+                        onChange={handleChange}
+                        onFocus={(e) => setFocusedInput(e.target.name)}
+                        onBlur={() => setFocusedInput(null)}
+                        disabled={
+                          (!enableFields && isCountryCodeIndia) ||
+                          kycdata?.data?.status === "open" ||
+                          (kycdata?.data?.status === "approve" && !isEditClicked)
+                        }
+                      />
                   {errors.ifsc_code && (
                     <p className="mt-1.5 text-sm text-red-500">{errors.ifsc_code}</p>
                   )}
