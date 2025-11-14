@@ -37,8 +37,8 @@ import {
   BarChart,
   IndianRupee,
 } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "../../../../ReusableComponents/Toasts/Toasts";
+
 import Loader from "../../../../ReusableComponents/Loader/loader";
 const formatDateWithAmPm = (isoString) => {
   const date = new Date(isoString);

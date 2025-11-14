@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useBuyDetailsQuery } from "./buyHistoryApiSlice";
-import { toast } from "react-toastify";
+import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import Cookies from "js-cookie";
 const BuyHistory = () => {

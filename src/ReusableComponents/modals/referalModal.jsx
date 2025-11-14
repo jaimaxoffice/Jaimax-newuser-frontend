@@ -248,7 +248,7 @@
 
 // export default ReferralModal;
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "../../ReusableComponents/Toasts/Toasts";
 
 // ICONS (All Inline SVG Components)
 const CopyIcon = ({ size = 18 }) => (

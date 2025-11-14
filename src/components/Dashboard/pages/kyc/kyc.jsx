@@ -1288,7 +1288,7 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import digiLocker from "../../../../assets/digiLocker.webp";
 import editIcon from "../../../../assets/square-pen.svg";
 import showIcon from "../../../../assets/showIcon.svg";
@@ -1297,6 +1297,7 @@ import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
 import CryptoJS from "crypto-js";
 import DigiLockerModal from "./DigiLockerModal";
 import BankDetailsModal from "./BankDetailsModal";
+
 import {
   useGetKycDataMutation,
   useGetkycDetailsQuery,

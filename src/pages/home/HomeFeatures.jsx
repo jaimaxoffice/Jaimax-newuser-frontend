@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { TrendingUp, Shield, Users, Globe, BookOpen, Settings, CreditCard, Headphones, ArrowRight } from 'lucide-react';
 // import icon from '../../assets/logo.webp'
-import icon from '../../assets/Images/loginReg.svg'
+import icon from '../../assets/coin.svg'
 import featureImage from "../../assets/websiteicons.webp"
 import { useNavigate } from 'react-router-dom';
 import Seo from '../../SeoContent/Seo'
@@ -229,7 +229,7 @@ const JaimaxLanding = () => {
           src={icon} 
           alt="Geometric Pattern"
           title="Jaimax Crypto Coin - Geometric Background Pattern" 
-          className="absolute -top-0 -right-40 sm:-right-60 lg:-right-80 opacity-10 w-40 sm:w-60 lg:w-auto" 
+          className="absolute top-120 -right-40 sm:-right-60 lg:-right-80 opacity-10 w-40 sm:w-60 lg:w-auto" 
         />
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       </div>

@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLazyKycrewardQuery } from '../kyc/kycApiSlice';
-import { toast } from 'react-toastify';
+import { toast } from '../../../../ReusableComponents/Toasts/Toasts';
 
 const KycBonusPopup = ({ kycBonusEligible, kycBonusClaimed, refetchUser }) => {
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);

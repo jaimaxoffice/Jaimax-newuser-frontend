@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
-import {toast} from "../../../../ReusableComponents/Toasts/Toasts";
+import {toast,ToastContainer} from "../../../../ReusableComponents/Toasts/Toasts";
 import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice";
 import {
   useAddTransactionMutation,
@@ -205,277 +204,473 @@ const AddMoneyToWallet = () => {
     }
   };
 
-  const extractDetailsFromImage = (file) => {
-    if (!file) return;
+  // const extractDetailsFromImage = (file) => {
+  //   if (!file) return;
 
-    setIsLoading(true);
-    const reader = new FileReader();
+  //   setIsLoading(true);
+  //   const reader = new FileReader();
 
-    reader.onload = () => {
-      if (reader.result) {
-        Tesseract.recognize(reader.result, "eng")
-          .then(({ data: { text } }) => {
+  //   reader.onload = () => {
+  //     if (reader.result) {
+  //       Tesseract.recognize(reader.result, "eng")
+  //         .then(({ data: { text } }) => {
             
 
-            // Clean up the extracted text
-            let cleanedText = text.replace(/¥/g, "₹");
+  //           // Clean up the extracted text
+  //           let cleanedText = text.replace(/¥/g, "₹");
            
 
-            // Check recipient validation
-            const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
-            const paidToJaimax = /jaimaxcoin2024@upi/i.test(cleanedText);
-            const paidToJaimaxPartial = /jaimax/i.test(cleanedText);
-            const paidToJaisvikUpi = /vyapar.174327728615@hdfcbank/i.test(
-              cleanedText
-            );
-            const paidToCorrectRecipient =
-              paidToJaisvik ||
-              paidToJaimax ||
-              paidToJaimaxPartial ||
-              paidToJaisvikUpi;
+  //           // Check recipient validation
+  //           const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
+  //           const paidToJaimax = /jaimaxcoin2024@upi/i.test(cleanedText);
+  //           const paidToJaimaxPartial = /jaimax/i.test(cleanedText);
+  //           const paidToJaisvikUpi = /vyapar.174327728615@hdfcbank/i.test(
+  //             cleanedText
+  //           );
+  //           const paidToCorrectRecipient =
+  //             paidToJaisvik ||
+  //             paidToJaimax ||
+  //             paidToJaimaxPartial ||
+  //             paidToJaisvikUpi;
 
            
 
-            // Extract transaction ID
-            let transactionID = null;
-            let extractionMethod = "";
+  //           // Extract transaction ID
+  //           let transactionID = null;
+  //           let extractionMethod = "";
 
            
-            const transactionPatterns = [
-              /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i, // Transaction ID: 080254518184 (with colon/space)
-              /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
-              /Transaction ID[:\s]*(\w+)/i, // Transaction ID \n 080254518184 (next line)
-            ];
+  //           const transactionPatterns = [
+  //             /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i, // Transaction ID: 080254518184 (with colon/space)
+  //             /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
+  //             /Transaction ID[:\s]*(\w+)/i, // Transaction ID \n 080254518184 (next line)
+  //           ];
 
-            for (const pattern of transactionPatterns) {
-              const match = cleanedText.match(pattern);
-              if (match && !/date|time|am|pm/i.test(match[1])) {
-                // Exclude date/time words
-                transactionID = match[1];
-                extractionMethod = "Standard Transaction ID";
+  //           for (const pattern of transactionPatterns) {
+  //             const match = cleanedText.match(pattern);
+  //             if (match && !/date|time|am|pm/i.test(match[1])) {
+  //               // Exclude date/time words
+  //               transactionID = match[1];
+  //               extractionMethod = "Standard Transaction ID";
                
-                break;
-              }
-            }
+  //               break;
+  //             }
+  //           }
 
-            // Method 1b: Line-by-line search for Transaction ID format
-            if (!transactionID) {
+  //           // Method 1b: Line-by-line search for Transaction ID format
+  //           if (!transactionID) {
             
-              const lines = cleanedText.split(/\r?\n/);
+  //             const lines = cleanedText.split(/\r?\n/);
 
-              for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
+  //             for (let i = 0; i < lines.length; i++) {
+  //               const line = lines[i].trim();
 
-                // Look for "Transaction ID" and check next line
-                if (
-                  line.toLowerCase().includes("transaction id") &&
-                  i + 1 < lines.length
-                ) {
-                  const nextLine = lines[i + 1].trim();
+  //               // Look for "Transaction ID" and check next line
+  //               if (
+  //                 line.toLowerCase().includes("transaction id") &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
                   
 
-                  // Extract first number from next line (like 080254518184 @ 6th Jun)
-                  const numberMatch = nextLine.match(/^([0-9]{8,})/);
-                  if (numberMatch) {
-                    transactionID = numberMatch[1];
-                    extractionMethod = "Transaction ID next line";
+  //                 // Extract first number from next line (like 080254518184 @ 6th Jun)
+  //                 const numberMatch = nextLine.match(/^([0-9]{8,})/);
+  //                 if (numberMatch) {
+  //                   transactionID = numberMatch[1];
+  //                   extractionMethod = "Transaction ID next line";
                     
-                    break;
-                  }
-                }
-              }
-            }
+  //                   break;
+  //                 }
+  //               }
+  //             }
+  //           }
 
-            // Method 2: Tr. ID (ICICI format)
-            if (!transactionID) {
-              const trIdMatch = cleanedText.match(
-                /Tr\.?\s*ID\s*:?\s*([A-Za-z0-9]+)/i
-              );
-              if (trIdMatch) {
-                transactionID = trIdMatch[1];
-                extractionMethod = "Tr. ID (ICICI)";
+  //           // Method 2: Tr. ID (ICICI format)
+  //           if (!transactionID) {
+  //             const trIdMatch = cleanedText.match(
+  //               /Tr\.?\s*ID\s*:?\s*([A-Za-z0-9]+)/i
+  //             );
+  //             if (trIdMatch) {
+  //               transactionID = trIdMatch[1];
+  //               extractionMethod = "Tr. ID (ICICI)";
                
-              }
-            }
+  //             }
+  //           }
 
-            // Method 3: UTR/RRN/Reference patterns
-            if (!transactionID) {
-              // console.log("Trying Method 3 - UTR/RRN/Reference patterns...");
+  //           // Method 3: UTR/RRN/Reference patterns
+  //           if (!transactionID) {
+  //             // console.log("Trying Method 3 - UTR/RRN/Reference patterns...");
 
-              const utrPatterns = [
-                /UTR\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR No: AXOlR40001291624|GJW976DJ0368
-                /UTR\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR Number: AXOlR40001291624|GJW976DJ0368
-                /UTR\s*:?\s*([A-Za-z0-9|:\-_\.]{20,})/i, // UTR: AXOlR40001291624|GJW976DJ0368
-                /RRN\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // RRN: 123456789012
-                /Reference\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference No: 515123556929
-                /Reference\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference Number: 515123556929
-                /Ref\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Ref No: 515123556929
-                /Payment\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment ID: ABC123456
-                /Payment\s*Reference\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment Reference: ABC123456
-                /Order\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Order ID: ORD123456
-                /TXN\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN ID: ABC123456
-                /TXN\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN: ABC123456
-                /Acknowledgment\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Acknowledgment: ACK123456
-                /ACK\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // ACK: 987654321
-              ];
+  //             const utrPatterns = [
+  //               /UTR\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR No: AXOlR40001291624|GJW976DJ0368
+  //               /UTR\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i, // UTR Number: AXOlR40001291624|GJW976DJ0368
+  //               /UTR\s*:?\s*([A-Za-z0-9|:\-_\.]{20,})/i, // UTR: AXOlR40001291624|GJW976DJ0368
+  //               /RRN\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // RRN: 123456789012
+  //               /Reference\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference No: 515123556929
+  //               /Reference\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Reference Number: 515123556929
+  //               /Ref\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i, // Ref No: 515123556929
+  //               /Payment\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment ID: ABC123456
+  //               /Payment\s*Reference\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Payment Reference: ABC123456
+  //               /Order\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Order ID: ORD123456
+  //               /TXN\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN ID: ABC123456
+  //               /TXN\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // TXN: ABC123456
+  //               /Acknowledgment\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // Acknowledgment: ACK123456
+  //               /ACK\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i, // ACK: 987654321
+  //             ];
 
-              for (const pattern of utrPatterns) {
-                const match = cleanedText.match(pattern);
-                if (match) {
-                  transactionID = match[1];
-                  extractionMethod = "UTR/RRN/Reference pattern";
+  //             for (const pattern of utrPatterns) {
+  //               const match = cleanedText.match(pattern);
+  //               if (match) {
+  //                 transactionID = match[1];
+  //                 extractionMethod = "UTR/RRN/Reference pattern";
                  
+  //                 break;
+  //               }
+  //             }
+  //           }
+
+  //           // Method 4: Line-by-line search for Kotak format
+  //           if (!transactionID) {
+  //             const lines = cleanedText.split(/\r?\n/);
+              
+
+  //             for (let i = 0; i < lines.length; i++) {
+  //               const line = lines[i].trim();
+  //               // console.log(`Line ${i}: "${line}"`);
+
+  //               // Look for Reference No. (UTR No./RRN) pattern
+  //               if (
+  //                 line.toLowerCase().includes("reference") &&
+  //                 line.toLowerCase().includes("utr") &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
+  //                 // console.log(`Found reference line at ${i}: "${line}"`);
+  //                 // console.log(`Next line ${i + 1}: "${nextLine}"`);
+
+  //                 // Check if next line is a number
+  //                 const numberMatch = nextLine.match(/^([0-9]{10,})$/);
+  //                 if (numberMatch) {
+  //                   transactionID = numberMatch[1];
+  //                   extractionMethod = "Kotak Reference No. next line";
+                    
+  //                   break;
+  //                 }
+  //               }
+
+  //               // Look for UTR No. and get next line
+  //               if (
+  //                 line.toLowerCase().includes("utr no") &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
+  //                 const numberMatch = nextLine.match(
+  //                   /^([A-Za-z0-9|:\-_\.]{10,})$/
+  //                 );
+  //                 if (numberMatch) {
+  //                   transactionID = numberMatch[1];
+  //                   extractionMethod = "UTR No. next line";
+                   
+  //                   break;
+  //                 }
+  //               }
+
+  //               // Look for any label followed by ID on next line
+  //               if (
+  //                 (line.toLowerCase().includes("transaction") ||
+  //                   line.toLowerCase().includes("reference") ||
+  //                   line.toLowerCase().includes("utr") ||
+  //                   line.toLowerCase().includes("rrn")) &&
+  //                 i + 1 < lines.length
+  //               ) {
+  //                 const nextLine = lines[i + 1].trim();
+  //                 const idMatch = nextLine.match(/^([A-Za-z0-9|:\-_\.]{8,})$/);
+  //                 if (idMatch) {
+  //                   transactionID = idMatch[1];
+  //                   extractionMethod = "Generic label next line";
+                   
+  //                   break;
+  //                 }
+  //               }
+  //             }
+  //           }
+
+  //           // Method 5: Any long number fallback
+  //           if (!transactionID) {
+  //             const numberMatch = cleanedText.match(/\b([0-9]{12,})\b/);
+  //             if (numberMatch) {
+  //               transactionID = numberMatch[1];
+  //               extractionMethod = "Fallback long number";
+                
+  //             }
+  //           }
+
+  //           // console.log("=== EXTRACTION RESULT ===");
+  //           // console.log("Final transaction ID:", transactionID);
+  //           // console.log("Extraction method:", extractionMethod);
+
+  //           // Validation
+  //           if (!paidToCorrectRecipient) {
+  //             // console.log("❌ Recipient validation failed");
+  //             setIsLoading(false);
+  //             setFormData((prev) => ({
+  //               ...prev,
+  //               transactionId: "",
+  //               screenshot: null,
+  //             }));
+  //             setIsTransactionIdRead(false);
+  //             if (fileInputRef.current) {
+  //               fileInputRef.current.value = "";
+  //             }
+  //             setErrors((prevErrors) => ({
+  //               ...prevErrors,
+  //               screenshot:
+  //                 "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE",
+  //             }));
+  //             toast.error(
+  //               "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE"
+  //             );
+  //             return;
+  //           }
+
+  //           if (!transactionID) {
+  //             // console.log("❌ Transaction ID not found");
+  //             setIsLoading(false);
+  //             setFormData((prev) => ({
+  //               ...prev,
+  //               transactionId: "",
+  //               screenshot: null,
+  //             }));
+  //             setIsTransactionIdRead(false);
+  //             if (fileInputRef.current) {
+  //               fileInputRef.current.value = "";
+  //             }
+  //             setErrors((prevErrors) => ({
+  //               ...prevErrors,
+  //               screenshot:
+  //                 "Transaction ID not found in the screenshot. Please upload a clear payment screenshot.",
+  //             }));
+  //             toast.error(
+  //               "Transaction ID not found in the screenshot. Please upload a clear payment screenshot."
+  //             );
+  //             return;
+  //           }
+
+  //           // Success!
+           
+  //           setFormData((prev) => ({
+  //             ...prev,
+  //             transactionId: transactionID,
+  //           }));
+  //           setIsLoading(false);
+  //           setIsTransactionIdRead(false);
+  //           setErrors((prevErrors) => ({
+  //             ...prevErrors,
+  //             screenshot: "",
+  //           }));
+  //           toast.success(
+  //             `Transaction ID extracted successfully using ${extractionMethod}!`
+  //           );
+  //           // console.log("=== OCR EXTRACTION END ===");
+  //         })
+  //         .catch((error) => {
+  //           // console.error("Error during OCR:", error);
+  //           setIsLoading(false);
+  //           setFormData((prev) => ({
+  //             ...prev,
+  //             transactionId: "",
+  //             screenshot: null,
+  //           }));
+  //           setIsTransactionIdRead(false);
+  //           if (fileInputRef.current) {
+  //             fileInputRef.current.value = "";
+  //           }
+  //           setErrors((prevErrors) => ({
+  //             ...prevErrors,
+  //             screenshot:
+  //               "Failed to read screenshot. Please upload a clear image.",
+  //           }));
+  //           toast.error(
+  //             "Failed to read screenshot. Please upload a clear image."
+  //           );
+  //         });
+  //     }
+  //   };
+
+  //   reader.readAsDataURL(file);
+  // };
+const extractDetailsFromImage = (file) => {
+  if (!file) return;
+
+  setIsLoading(true);
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    if (reader.result) {
+      Tesseract.recognize(reader.result, "eng")
+        .then(({ data: { text } }) => {
+          // Clean up the extracted text
+          let cleanedText = text.replace(/¥/g, "₹");
+
+          // Check recipient validation
+          const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
+          const paidToJaimax = /jaimaxcoin2024@upi/i.test(cleanedText);
+          const paidToJaimaxPartial = /jaimax/i.test(cleanedText);
+          const paidToJaisvikUpi = /vyapar.174327728615@hdfcbank/i.test(
+            cleanedText
+          );
+          const paidToCorrectRecipient =
+            paidToJaisvik ||
+            paidToJaimax ||
+            paidToJaimaxPartial ||
+            paidToJaisvikUpi;
+
+          // Extract transaction ID
+          let transactionID = null;
+          let extractionMethod = "";
+
+          const transactionPatterns = [
+            /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i,
+            /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
+            /Transaction ID[:\s]*(\w+)/i,
+          ];
+
+          for (const pattern of transactionPatterns) {
+            const match = cleanedText.match(pattern);
+            if (match && !/date|time|am|pm/i.test(match[1])) {
+              transactionID = match[1];
+              extractionMethod = "Standard Transaction ID";
+              break;
+            }
+          }
+
+          // Method 1b: Line-by-line search for Transaction ID format
+          if (!transactionID) {
+            const lines = cleanedText.split(/\r?\n/);
+
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i].trim();
+
+              if (
+                line.toLowerCase().includes("transaction id") &&
+                i + 1 < lines.length
+              ) {
+                const nextLine = lines[i + 1].trim();
+                const numberMatch = nextLine.match(/^([0-9]{8,})/);
+                if (numberMatch) {
+                  transactionID = numberMatch[1];
+                  extractionMethod = "Transaction ID next line";
                   break;
                 }
               }
             }
+          }
 
-            // Method 4: Line-by-line search for Kotak format
-            if (!transactionID) {
-              const lines = cleanedText.split(/\r?\n/);
-              
-
-              for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                // console.log(`Line ${i}: "${line}"`);
-
-                // Look for Reference No. (UTR No./RRN) pattern
-                if (
-                  line.toLowerCase().includes("reference") &&
-                  line.toLowerCase().includes("utr") &&
-                  i + 1 < lines.length
-                ) {
-                  const nextLine = lines[i + 1].trim();
-                  // console.log(`Found reference line at ${i}: "${line}"`);
-                  // console.log(`Next line ${i + 1}: "${nextLine}"`);
-
-                  // Check if next line is a number
-                  const numberMatch = nextLine.match(/^([0-9]{10,})$/);
-                  if (numberMatch) {
-                    transactionID = numberMatch[1];
-                    extractionMethod = "Kotak Reference No. next line";
-                    
-                    break;
-                  }
-                }
-
-                // Look for UTR No. and get next line
-                if (
-                  line.toLowerCase().includes("utr no") &&
-                  i + 1 < lines.length
-                ) {
-                  const nextLine = lines[i + 1].trim();
-                  const numberMatch = nextLine.match(
-                    /^([A-Za-z0-9|:\-_\.]{10,})$/
-                  );
-                  if (numberMatch) {
-                    transactionID = numberMatch[1];
-                    extractionMethod = "UTR No. next line";
-                   
-                    break;
-                  }
-                }
-
-                // Look for any label followed by ID on next line
-                if (
-                  (line.toLowerCase().includes("transaction") ||
-                    line.toLowerCase().includes("reference") ||
-                    line.toLowerCase().includes("utr") ||
-                    line.toLowerCase().includes("rrn")) &&
-                  i + 1 < lines.length
-                ) {
-                  const nextLine = lines[i + 1].trim();
-                  const idMatch = nextLine.match(/^([A-Za-z0-9|:\-_\.]{8,})$/);
-                  if (idMatch) {
-                    transactionID = idMatch[1];
-                    extractionMethod = "Generic label next line";
-                   
-                    break;
-                  }
-                }
-              }
-            }
-
-            // Method 5: Any long number fallback
-            if (!transactionID) {
-              const numberMatch = cleanedText.match(/\b([0-9]{12,})\b/);
-              if (numberMatch) {
-                transactionID = numberMatch[1];
-                extractionMethod = "Fallback long number";
-                
-              }
-            }
-
-            // console.log("=== EXTRACTION RESULT ===");
-            // console.log("Final transaction ID:", transactionID);
-            // console.log("Extraction method:", extractionMethod);
-
-            // Validation
-            if (!paidToCorrectRecipient) {
-              // console.log("❌ Recipient validation failed");
-              setIsLoading(false);
-              setFormData((prev) => ({
-                ...prev,
-                transactionId: "",
-                screenshot: null,
-              }));
-              setIsTransactionIdRead(false);
-              if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-              }
-              setErrors((prevErrors) => ({
-                ...prevErrors,
-                screenshot:
-                  "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE",
-              }));
-              toast.error(
-                "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE"
-              );
-              return;
-            }
-
-            if (!transactionID) {
-              // console.log("❌ Transaction ID not found");
-              setIsLoading(false);
-              setFormData((prev) => ({
-                ...prev,
-                transactionId: "",
-                screenshot: null,
-              }));
-              setIsTransactionIdRead(false);
-              if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-              }
-              setErrors((prevErrors) => ({
-                ...prevErrors,
-                screenshot:
-                  "Transaction ID not found in the screenshot. Please upload a clear payment screenshot.",
-              }));
-              toast.error(
-                "Transaction ID not found in the screenshot. Please upload a clear payment screenshot."
-              );
-              return;
-            }
-
-            // Success!
-           
-            setFormData((prev) => ({
-              ...prev,
-              transactionId: transactionID,
-            }));
-            setIsLoading(false);
-            setIsTransactionIdRead(false);
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              screenshot: "",
-            }));
-            toast.success(
-              `Transaction ID extracted successfully using ${extractionMethod}!`
+          // Method 2: Tr. ID (ICICI format)
+          if (!transactionID) {
+            const trIdMatch = cleanedText.match(
+              /Tr\.?\s*ID\s*:?\s*([A-Za-z0-9]+)/i
             );
-            // console.log("=== OCR EXTRACTION END ===");
-          })
-          .catch((error) => {
-            // console.error("Error during OCR:", error);
+            if (trIdMatch) {
+              transactionID = trIdMatch[1];
+              extractionMethod = "Tr. ID (ICICI)";
+            }
+          }
+
+          // Method 3: UTR/RRN/Reference patterns
+          if (!transactionID) {
+            const utrPatterns = [
+              /UTR\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i,
+              /UTR\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i,
+              /UTR\s*:?\s*([A-Za-z0-9|:\-_\.]{20,})/i,
+              /RRN\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
+              /Reference\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
+              /Reference\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
+              /Ref\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
+              /Payment\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+              /Payment\s*Reference\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+              /Order\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+              /TXN\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+              /TXN\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+              /Acknowledgment\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+              /ACK\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+            ];
+
+            for (const pattern of utrPatterns) {
+              const match = cleanedText.match(pattern);
+              if (match) {
+                transactionID = match[1];
+                extractionMethod = "UTR/RRN/Reference pattern";
+                break;
+              }
+            }
+          }
+
+          // Method 4: Line-by-line search for Kotak format
+          if (!transactionID) {
+            const lines = cleanedText.split(/\r?\n/);
+
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i].trim();
+
+              if (
+                line.toLowerCase().includes("reference") &&
+                line.toLowerCase().includes("utr") &&
+                i + 1 < lines.length
+              ) {
+                const nextLine = lines[i + 1].trim();
+                const numberMatch = nextLine.match(/^([0-9]{10,})$/);
+                if (numberMatch) {
+                  transactionID = numberMatch[1];
+                  extractionMethod = "Kotak Reference No. next line";
+                  break;
+                }
+              }
+
+              if (
+                line.toLowerCase().includes("utr no") &&
+                i + 1 < lines.length
+              ) {
+                const nextLine = lines[i + 1].trim();
+                const numberMatch = nextLine.match(
+                  /^([A-Za-z0-9|:\-_\.]{10,})$/
+                );
+                if (numberMatch) {
+                  transactionID = numberMatch[1];
+                  extractionMethod = "UTR No. next line";
+                  break;
+                }
+              }
+
+              if (
+                (line.toLowerCase().includes("transaction") ||
+                  line.toLowerCase().includes("reference") ||
+                  line.toLowerCase().includes("utr") ||
+                  line.toLowerCase().includes("rrn")) &&
+                i + 1 < lines.length
+              ) {
+                const nextLine = lines[i + 1].trim();
+                const idMatch = nextLine.match(/^([A-Za-z0-9|:\-_\.]{8,})$/);
+                if (idMatch) {
+                  transactionID = idMatch[1];
+                  extractionMethod = "Generic label next line";
+                  break;
+                }
+              }
+            }
+          }
+
+          // Method 5: Any long number fallback
+          if (!transactionID) {
+            const numberMatch = cleanedText.match(/\b([0-9]{12,})\b/);
+            if (numberMatch) {
+              transactionID = numberMatch[1];
+              extractionMethod = "Fallback long number";
+            }
+          }
+
+          // Validation
+          if (!paidToCorrectRecipient) {
             setIsLoading(false);
             setFormData((prev) => ({
               ...prev,
@@ -489,18 +684,88 @@ const AddMoneyToWallet = () => {
             setErrors((prevErrors) => ({
               ...prevErrors,
               screenshot:
-                "Failed to read screenshot. Please upload a clear image.",
+                "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE",
             }));
+            
+            // Using the new toast system
             toast.error(
-              "Failed to read screenshot. Please upload a clear image."
+              "Invalid Recipient", 
+              "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE"
             );
-          });
-      }
-    };
+            return;
+          }
 
-    reader.readAsDataURL(file);
+          if (!transactionID) {
+            setIsLoading(false);
+            setFormData((prev) => ({
+              ...prev,
+              transactionId: "",
+              screenshot: null,
+            }));
+            setIsTransactionIdRead(false);
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              screenshot:
+                "Transaction ID not found in the screenshot. Please upload a clear payment screenshot.",
+            }));
+            
+            // Using the new toast system
+            toast.error(
+              "Transaction ID Not Found",
+              "Transaction ID not found in the screenshot. Please upload a clear payment screenshot."
+            );
+            return;
+          }
+
+          // Success!
+          setFormData((prev) => ({
+            ...prev,
+            transactionId: transactionID,
+          }));
+          setIsLoading(false);
+          setIsTransactionIdRead(false);
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            screenshot: "",
+          }));
+          
+          // Using the new toast system
+          toast.success(
+            "Extraction Successful",
+            `Transaction ID extracted successfully using ${extractionMethod}!`
+          );
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setFormData((prev) => ({
+            ...prev,
+            transactionId: "",
+            screenshot: null,
+          }));
+          setIsTransactionIdRead(false);
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            screenshot:
+              "Failed to read screenshot. Please upload a clear image.",
+          }));
+          
+          // Using the new toast system
+          toast.error(
+            "OCR Failed",
+            "Failed to read screenshot. Please upload a clear image."
+          );
+        });
+    }
   };
 
+  reader.readAsDataURL(file);
+};
   const handleChange = (e) => {
     const { name, value } = e.target;
     // Additional validation for specific fields
@@ -538,7 +803,7 @@ const AddMoneyToWallet = () => {
       if (!isToastShown) {
         toast.error("Please fill in all required fields.");
       } else {
-        toast.dismiss();
+        // toast.dismiss();
         toast.error("Please fill in all required fields.");
       }
       return;
@@ -565,7 +830,7 @@ const AddMoneyToWallet = () => {
       if (!isToastShown) {
         toast.error(error.data.message || "Form submission failed.");
       } else {
-        toast.dismiss();
+        // toast.dismiss();
         toast.error(error.data.message || "Form submission failed.");
       }
     } finally {
@@ -881,18 +1146,7 @@ const AddMoneyToWallet = () => {
 
 
     <div className="min-h-screen bg-gradient-to-b from-[#dffcf5] to-[#ebfffc] py-4 sm:py-6 md:py-8 px-2 sm:px-3 md:px-4">
-  <ToastContainer
-    position="top-right"
-    autoClose={3000}
-    hideProgressBar={false}
-    newestOnTop
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="colored"
-  />
+
   <div className="container max-w-7xl mx-auto">
     {/* Payment Method Selection - Responsive Grid */}
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 animate__animated animate__fadeInUp">

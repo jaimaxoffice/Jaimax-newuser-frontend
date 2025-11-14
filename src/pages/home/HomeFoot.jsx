@@ -144,7 +144,7 @@ export default function HomeFooter() {
                           />
                         </div>
                         <div className="text-left min-w-0">
-                          <div className="text-xs text-cyan-200">Get it on</div>
+                          <div className="text-xs text-cyan-200">Get it Now</div>
                           <div className="text-sm sm:text-base font-bold text-yellow-400 truncate">
                             Google Play
                           </div>
@@ -173,7 +173,7 @@ export default function HomeFooter() {
                         </div>
                         <div className="text-left min-w-0">
                           <div className="text-xs text-cyan-200">
-                            Download on
+                            Coming Soon
                           </div>
                           <div className="text-sm sm:text-base font-bold text-yellow-400 truncate">
                             App Store

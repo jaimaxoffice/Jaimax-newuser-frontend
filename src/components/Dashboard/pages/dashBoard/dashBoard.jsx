@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../../../src/App.css";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import Cookies from "js-cookie";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 import Pagination from "../../../../ReusableComponents/pagination/pagination";
@@ -319,18 +319,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen p-2 bg-[#1d8e85] rounded-xl text-sm sm:text-base md:text-lg overflow-x-hidden">
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+
       {userData?.data && (
         <KycBonusPopup
           kycBonusEligible={userData?.data?.kycBonusEligible}

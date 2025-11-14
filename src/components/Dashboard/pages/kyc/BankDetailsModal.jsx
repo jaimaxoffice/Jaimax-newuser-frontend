@@ -199,7 +199,7 @@
 
 // BankDetailsModal.jsx
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 
 const BankDetailsModal = ({ show, onClose, bankDetails, onSubmit, isCountryCodeIndia, loading }) => {
   const [formData, setFormData] = useState({

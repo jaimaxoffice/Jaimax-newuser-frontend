@@ -7,8 +7,7 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
@@ -63,6 +62,7 @@ import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/Goa
 import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation" 
 import PromotersPage from "./components/Dashboard/pages/Promoters/Promoters"
 import GuaranteedWealthDashboard from "./components/Dashboard/pages/GuaranteedWealthPlan/GuaranteedWealthPlan"
+import {  ToastContainer } from './ReusableComponents/Toasts/Toasts';
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -206,7 +206,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="relative flex h-screen bg-[#1d8d84] overflow-hidden ">
-      <ToastContainer
+      {/* <ToastContainer
         position="top-center"
         autoClose={3000}
         hideProgressBar={false}
@@ -217,7 +217,7 @@ const DashboardLayout = () => {
         draggable
         pauseOnHover
         theme="colored"
-      />
+      /> */}
       <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
         <Sidebar
           isOpen={sidebarOpen}
@@ -340,6 +340,7 @@ const App = () => {
     <>
           {showChat && (
         <>
+        <ToastContainer position="top-right" maxToasts={2} />
           <div className="fixed bottom-20 right-6 z-50 flex flex-col items-center">
             <button
               onClick={toggleChat}

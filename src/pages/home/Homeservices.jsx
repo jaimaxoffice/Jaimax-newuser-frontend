@@ -11,16 +11,7 @@ const ServicesSection = () => {
 
   // Your services data with links and image titles added
   const services = [
-    {
-      title: "Security Measures",
-      icon: frameTwo,
-      iconAlt: "Security shield icon representing account protection",
-      iconTitle: "Advanced Security Features",
-      description:
-        "KYC verification and Google Authenticator fortify your account from unauthorized access. Trust Jaimax to protect your digital assets.",
-      // link: "/services/security",
-      // linkTitle: "Learn more about our security measures",
-    },
+
     {
       title: "Secure Crypto Wallet",
       icon: jaicoins,
@@ -122,9 +113,7 @@ const ServicesSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-10">
-          <h4 className="text-slate-400 text-sm font-medium tracking-wider uppercase mb-4">
-            OUR SERVICES
-          </h4>
+          
           <h2 className="text-4xl lg:text-5xl font-bold text-white">
             What We Offer
           </h2>

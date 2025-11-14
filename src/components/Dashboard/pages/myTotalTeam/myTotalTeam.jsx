@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import {
   Users,
   Search,

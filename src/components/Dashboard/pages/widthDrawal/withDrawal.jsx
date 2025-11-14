@@ -20,7 +20,7 @@ import {
 } from "./withdrawApiSlice";
 import { useUserDataQuery } from "../../../Dashboard/pages/dashBoard/DashboardApliSlice";
 import { useGetkycDetailsQuery } from "../../../Dashboard/pages/kyc/kycApiSlice";
-import { toast } from "react-toastify";
+import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import Cookies from "js-cookie";
 
 const TransactionTable = ({

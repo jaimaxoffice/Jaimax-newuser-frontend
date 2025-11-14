@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaShareAlt, FaUser } from "react-icons/fa";
 import { TextField, InputAdornment } from "@mui/material";
-import { toast } from "react-toastify";
+import { toast } from "../../../../../ReusableComponents/Toasts/Toasts";
 import assets from "../../../../../assets/assets";
 import Cookies from "js-cookie";
 import {

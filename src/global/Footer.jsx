@@ -444,34 +444,7 @@ const Footer = () => {
             </div>
 
             {/* Trustpilot Section */}
-            <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-4 border border-gray-100">
-              <a
-                href="https://www.trustpilot.com/review/jaimax.com?utm_medium=trustbox&utm_source=TrustBoxReviewCollector"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Leave a review for Jaimax on Trustpilot"
-                className="block no-underline"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  {/* Trustpilot Stars */}
-                  <div className="text-[#00b67a] text-2xl tracking-tight">
-                    ★★★★★
-                  </div>
 
-                  {/* Trustpilot Logo */}
-                  <div className="flex items-center gap-1 mt-1">
-                    <span className="text-xs font-bold text-gray-800">
-                      Review Us On{" "}
-                      <span className="text-[#00b67a]">Trustpilot</span>
-                    </span>
-                  </div>
-
-                  <div className="text-xs text-gray-500 mt-1">
-                    Help others by sharing your experience
-                  </div>
-                </div>
-              </a>
-            </div>
           </form>
         </div>
       </div>

@@ -29,7 +29,7 @@ import USDTJSON from "./usdt.json";
 import trxJSON from "./trx.json";
 import USDCJSON from "./usdc.json";
 import { useBuyDetailsQuery } from "../buyHistory/buyHistoryApiSlice.js";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 import { useNavigate } from "react-router-dom";
 import icon2 from "../../../../assets/whitejaimaxlogo.webp";
@@ -1977,17 +1977,7 @@ const UserDetailsComponent = () => {
           </div>
         </div>
       )}
-      <ToastContainer
-        enableMultiContainer
-        containerId="wallet-toast"
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar
-        closeOnClick
-        draggable
-        pauseOnHover
-        className="wallet-toast-container"
-      />
+
     </>
   );
 };
