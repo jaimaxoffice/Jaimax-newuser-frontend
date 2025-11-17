@@ -318,7 +318,6 @@ const Home = () => {
         dots: [
           { start: { lat: 20.5937, lng: 78.9629 }, end: { lat: 51.1657, lng: 10.4515 } },
           { start: { lat: 37.0902, lng: -95.7129 }, end: { lat: 51.1657, lng: 10.4515 } },
-          { start: { lat: 35.8617, lng: 104.1954 }, end: { lat: 1.3521, lng: 103.8198 } },
           { start: { lat: -25.2744, lng: 133.7751 }, end: { lat: -30.5595, lng: 22.9375 } },
           { start: { lat: 46.2276, lng: 2.2137 }, end: { lat: 55.3781, lng: -3.4360 } },
           { start: { lat: -14.2350, lng: -51.9253 }, end: { lat: 23.6345, lng: -102.5528 } },
@@ -337,7 +336,6 @@ const Home = () => {
     },
             // { Component: Partners, id: "partners" },
             { Component: JaimaxContent, id: "seo-section" },
-            // {Component :WorldMap,id:'world-section'},
             { Component: ReviewsSection, id: "rating-section" },
             { Component: AnimatedTestimonials, id: "testimonials" },
             { Component: JaimaxRoadmap, id: "roadmap" },

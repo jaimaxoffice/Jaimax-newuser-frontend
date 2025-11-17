@@ -98,7 +98,7 @@ const KycAdvertisement = ({ show, onClose }) => {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-yellow-400 text-xs font-bold uppercase tracking-wider">
-                  Limited Offer
+                  Welcome Bonus
                 </span>
                 <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full animate-pulse">
                   NEW

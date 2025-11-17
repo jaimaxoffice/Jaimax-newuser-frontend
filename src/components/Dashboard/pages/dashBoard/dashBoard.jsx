@@ -323,7 +323,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen p-2 bg-[#1d8e85] rounded-xl text-sm sm:text-base md:text-lg overflow-x-hidden">
 
-      {userData?.data && (
+      {/* {userData?.data && (
         <KycBonusPopup
           kycBonusEligible={userData?.data?.kycBonusEligible}
           kycBonusClaimed={userData?.data?.kycBonusClaimed}
@@ -338,7 +338,7 @@ const Dashboard = () => {
           show={true}
           onClose={() => setShowKycAd(false)}
         />
-      )}
+      )} */}
       {/* Announcement Slider - Mobile Only */}
       {apiData?.data?.isActiveAnnouncement &&
         announceData?.data?.[0]?.slides && (

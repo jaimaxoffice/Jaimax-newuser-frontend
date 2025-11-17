@@ -156,6 +156,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useGetRoundQuery } from "../../components/Dashboard/pages/dashBoard/DashboardApliSlice";
 import bscscan from "../../assets/image.png";
+import logo from "../../../public/Images/site_logo.svg"
 const HomeAbout = () => {
   const contractAddress = "0xD898d23a082136f4d752e4dE31D8296EaEb94277";
   const [copied, setCopied] = useState(false);
@@ -258,19 +259,12 @@ const HomeAbout = () => {
             transition={{ duration: 0.5 }}
             className="relative"
           >
-            {/* Header Badge */}
-            <motion.div
-              className="flex justify-center mb-6"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-            >
-              <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#177338]/20 border border-[#b8cc26]/30">
-                <span className="text-[#b8cc26] text-xs font-bold tracking-wider uppercase">
-                  Contract Address
-                </span>
-              </div>
-            </motion.div>
+             <img
+    src={logo}
+    alt="Jaimax Logo"
+    className="mx-auto mb-6 w-80 object-contain"
+
+  />
 
             {/* Contract Container */}
             <motion.div
@@ -288,17 +282,7 @@ const HomeAbout = () => {
                     <h3 className="text-lg font-bold text-white">
                       CONTRACT <span className="text-[#b8cc26]">ADDRESS</span>
                     </h3>
-                    <motion.div
-                      animate={{
-                        boxShadow: [
-                          "0 0 0 0 rgba(184, 204, 38, 0)",
-                          "0 0 0 10px rgba(184, 204, 38, 0.2)",
-                          "0 0 0 0 rgba(184, 204, 38, 0)",
-                        ],
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="w-2 h-2 bg-[#b8cc26] rounded-full"
-                    />
+                   
                   </div>
 
                   {/* Address and Actions */}
@@ -352,19 +336,7 @@ const HomeAbout = () => {
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            {/* Live Update Header */}
-            <motion.div
-              className="flex items-center justify-center mb-6"
-              variants={itemVariants}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#b8cc26]"></div>
-                <h3 className="text-xl font-bold text-white">
-                  LIVE <span className="text-[#b8cc26]">UPDATE</span>
-                </h3>
-                <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#b8cc26]"></div>
-              </div>
-            </motion.div>
+           
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -380,11 +352,7 @@ const HomeAbout = () => {
                     <h2 className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
                       Live Price
                     </h2>
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="w-1.5 h-1.5 bg-[#b8cc26] rounded-full"
-                    />
+                    
                   </div>
                   <div className="flex items-baseline space-x-1">
                     <span className="text-2xl font-black text-[#b8cc26]">
@@ -410,11 +378,7 @@ const HomeAbout = () => {
                     <span className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
                       Sold Tokens
                     </span>
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                      className="w-1.5 h-1.5 bg-[#177338] rounded-full"
-                    />
+                   
                   </div>
                   <h2 className="text-3xl font-black text-white">
                     {soldTokens}
@@ -435,11 +399,7 @@ const HomeAbout = () => {
                     <span className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
                       Live Members
                     </span>
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                      className="w-1.5 h-1.5 bg-[#b8cc26] rounded-full"
-                    />
+                    
                   </div>
                   <div className="text-3xl font-black text-white">
                     {liveMembers}

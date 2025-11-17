@@ -8,7 +8,6 @@ const COUNTRY_COORDS = {
   germany: { lat: 51.1657, lng: 10.4515 },
   australia: { lat: -25.2744, lng: 133.7751 },
   usa: { lat: 37.0902, lng: -95.7129 },
-
   brazil: { lat: -14.235, lng: -51.9253 },
   france: { lat: 46.2276, lng: 2.2137 },
   "south africa": { lat: -30.5595, lng: 22.9375 },
@@ -47,119 +46,110 @@ export default function WorldMap({
   };
 
   return (
-    <div className="w-full flex flex-col items-center gap-6 py-0 ">
+<div className="w-full flex justify-center items-center px-4 py-10 lg:py-20 bg-[#085056]">
+  <div className="max-w-7xl w-full flex flex-col lg:flex-row items-center lg:items-start gap-12">
 
-      {/* ============================ */}
-      {/*        HEADING SECTION       */}
-      {/* ============================ */}
+    {/* ====== LEFT TEXT SECTION ====== */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="w-full lg:w-1/2 text-center lg:text-left flex flex-col justify-center"
+    >
+      <h2 className="text-4xl md:text-5xl font-extrabold leading-tight 
+                     bg-gradient-to-r from-[#b8ff3b] to-[#aadc32] 
+                     text-transparent bg-clip-text mb-5">
+        Jaimax Global Expansion
+      </h2>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center max-w-3xl px-4"
+      <p className="text-gray-200 text-lg md:text-xl leading-relaxed max-w-xl mx-auto lg:mx-0">
+        A rapidly growing blockchain ecosystem expanding across Asia, Europe,  
+        Africa, North America, and Australia. Explore the global reach and 
+        connections powering the Jaimax community worldwide.
+      </p>
+
+      {/* Elegant underline accent */}
+      <div className="w-28 h-1 bg-gradient-to-r from-[#aadc32] to-[#6cae28] rounded-full mt-5 mx-auto lg:mx-0"></div>
+    </motion.div>
+
+    {/* ====== RIGHT MAP SECTION ====== */}
+    <div className="w-full lg:w-1/2 relative aspect-[2/1] rounded-xl overflow-hidden ">
+      <img
+        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
+        className="h-full w-full"
+        alt="world map"
+      />
+
+      <svg
+        ref={svgRef}
+        viewBox="0 0 800 400"
+        className="absolute inset-0 w-full h-full pointer-events-none"
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-[#aadc32] dark:text-white mb-3">
-          Jaimax Global Expansion Map
-        </h2>
+        {/* Connecting lines */}
+        {dots.map((dot, i) => {
+          const start = projectPoint(dot.start.lat, dot.start.lng);
+          const end = projectPoint(dot.end.lat, dot.end.lng);
+          return (
+            <motion.path
+              key={i}
+              d={createCurvedPath(start, end)}
+              fill="none"
+              stroke="url(#path-gradient)"
+              strokeWidth="1.5"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.2, delay: i * 0.5 }}
+            />
+          );
+        })}
 
-        <p className="text-white  dark:text-gray-300 text-lg leading-relaxed">
-          Jaimax is building one of the fastest-growing crypto ecosystems with a global
-          footprint spreading across Asia, Europe, Africa, North America, and Australia.
-          This dynamic map highlights our worldwide user base, active countries, and 
-          expanding community connections powered by blockchain innovation.
-        </p>
-      </motion.div>
+        <defs>
+          <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="white" stopOpacity="0" />
+            <stop offset="6%" stopColor={lineColor} stopOpacity="1" />
+            <stop offset="94%" stopColor={lineColor} stopOpacity="1" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+        </defs>
 
-      {/* ============================ */}
-      {/*        WORLD MAP AREA        */}
-      {/* ============================ */}
+        {/* Pulsing dots */}
+        {dots.map((dot, i) => (
+          <g key={i}>
+            {["start", "end"].map((pos) => {
+              const p = projectPoint(dot[pos].lat, dot[pos].lng);
+              return (
+                <g key={pos}>
+                  <circle cx={p.x} cy={p.y} r="2.5" fill={lineColor} />
+                  <circle cx={p.x} cy={p.y} r="2.5" fill={lineColor} opacity="0.5">
+                    <animate attributeName="r" from="2" to="10" dur="1.5s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite" />
+                  </circle>
+                </g>
+              );
+            })}
+          </g>
+        ))}
 
-      <div className="w-full aspect-[2/1] bg-white dark:bg-black rounded-lg relative">
-        <img
-          src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-          className="h-full w-full pointer-events-none select-none"
-          alt="world map"
-        />
+        {/* Highlighted countries */}
+        {highlightedCountries.map((country, i) => {
+          const c = COUNTRY_COORDS[country.toLowerCase()];
+          if (!c) return null;
 
-        <svg
-          ref={svgRef}
-          viewBox="0 0 800 400"
-          className="w-full h-full absolute inset-0 pointer-events-none select-none"
-        >
-          {dots.map((dot, i) => {
-            const start = projectPoint(dot.start.lat, dot.start.lng);
-            const end = projectPoint(dot.end.lat, dot.end.lng);
-
-            return (
-              <motion.path
-                key={i}
-                d={createCurvedPath(start, end)}
-                fill="none"
-                stroke="url(#path-gradient)"
-                strokeWidth="1"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.2, delay: i * 0.5 }}
-              />
-            );
-          })}
-
-          <defs>
-            <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="white" stopOpacity="0" />
-              <stop offset="5%" stopColor={lineColor} stopOpacity="1" />
-              <stop offset="95%" stopColor={lineColor} stopOpacity="1" />
-              <stop offset="100%" stopColor="white" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
-          {dots.map((dot, i) => (
+          const { x, y } = projectPoint(c.lat, c.lng);
+          return (
             <g key={i}>
-              {["start", "end"].map((pos) => {
-                const p = projectPoint(dot[pos].lat, dot[pos].lng);
-                return (
-                  <g key={pos}>
-                    <circle cx={p.x} cy={p.y} r="2" fill={lineColor} />
-                    <circle cx={p.x} cy={p.y} r="2" fill={lineColor} opacity="0.5">
-                      <animate attributeName="r" from="2" to="8" dur="1.5s" repeatCount="indefinite" />
-                      <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite" />
-                    </circle>
-                  </g>
-                );
-              })}
+              <circle cx={x} cy={y} r="5" fill={lineColor} />
+              <circle cx={x} cy={y} r="5" fill={lineColor} opacity="0.5">
+                <animate attributeName="r" from="5" to="22" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" from="0.5" to="0" dur="2s" repeatCount="indefinite" />
+              </circle>
             </g>
-          ))}
-
-          {highlightedCountries.map((country, i) => {
-            const c = COUNTRY_COORDS[country.toLowerCase()];
-            if (!c) return null;
-
-            const { x, y } = projectPoint(c.lat, c.lng);
-
-            return (
-              <g key={i}>
-                <circle cx={x} cy={y} r="4" fill={lineColor} />
-                <circle cx={x} cy={y} r="4" fill={lineColor} opacity="0.5">
-                  <animate attributeName="r" from="4" to="20" dur="2s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" from="0.5" to="0" dur="2s" repeatCount="indefinite" />
-                </circle>
-
-                <motion.circle
-                  cx={x}
-                  cy={y}
-                  r="6"
-                  fill="none"
-                  stroke={lineColor}
-                  strokeWidth="1"
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
-              </g>
-            );
-          })}
-        </svg>
-      </div>
+          );
+        })}
+      </svg>
     </div>
+  </div>
+</div>
+
   );
 }

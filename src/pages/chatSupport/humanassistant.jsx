@@ -1365,7 +1365,7 @@ export default function HumanAssistant({ onclose }) {
         // Add success message to chat history
         const successMessage = {
           type: "bot",
-          text: `✅ **Query Submitted Successfully!**\n\nThank you ${name}! We have received your query and will get back to you soon at ${email} or ${phone}.\n\nYour query: "${query}"\n\nOur team will contact you within 24-48 hours.`,
+          text: ` Query Submitted Successfully!\n\nThank you ${name}! We have received your query and will get back to you soon at ${email} or ${phone}.\n\nYour query: "${query}"\n\nOur team will contact you within 2-3 hours.`,
           options: [],
           timestamp: new Date().toLocaleTimeString([], {
             hour: "2-digit",
@@ -1382,7 +1382,7 @@ export default function HumanAssistant({ onclose }) {
         setshowContactForm(false);
         const errorMessage = {
           type: "bot",
-          text: `❌ **Submission Failed**\n\nWe encountered an error while submitting your query. Please try again or contact us directly.\n\nError: ${err.error || err.message || "Unknown error"}`,
+          text: `Submission Failed\n\nWe encountered an error while submitting your query. Please try again or contact us directly.\n\nError: ${err.error || err.message || "Unknown error"}`,
           options: ["connect to Jaimax Team"],
           timestamp: new Date().toLocaleTimeString([], {
             hour: "2-digit",

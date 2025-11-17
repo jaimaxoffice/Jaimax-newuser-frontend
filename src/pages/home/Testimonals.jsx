@@ -35,42 +35,42 @@ const testimonials = [
     id: 5,
     name: "Vikram Singh",
     date: "5 January, 2025",
-    image: "/images/img/slide4x.jpg",
+    image: "https://media.istockphoto.com/id/2160830783/photo/positive-handsome-young-indian-man-head-shot-front-portrait.jpg?s=612x612&w=0&k=20&c=q8jNuQWO35W2-7luXuLdWGP2KKwKpdEUiVICJDjjku8=",
     text: "Downloaded the Jaimax mobile app a week ago, and it's impressive. It is modern, intuitive, and doesn't lag even on slower networks. The process of buying coins is very straightforward and easy for complete beginners. The support team helped me instantly when I had a query about swapping. Overall, a great project with huge potential for further scaling!",
   },
   {
     id: 6,
     name: "Neha Gupta",
     date: "3 January, 2025",
-    image: "/images/img/slide4x.jpg",
+    image: "https://static.vecteezy.com/system/resources/thumbnails/006/859/348/small/young-boy-indian-student-portrait-photo.jpg",
     text: "Been following Jaimax since the whitepaper release, and I'm really impressed. The team keeps delivering on each milestone as promised. I invested a little to start with, just to wet my feet. Everything is going excellently, so I've increased my holdings. This project feels trustworthy, as if it's built to last.",
   },
   {
     id: 7,
     name: "Arjun Mehta",
     date: "1 January, 2025",
-    image: "/images/img/slide4x.jpg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY8ApWQ90x6n82fZKCGfeAhmsEbNBLyClrSAhHjyYU8wWb2ZRYGjPMzXF_jHQa-z0wOOE&usqp=CAU",
     text: "Jaimax is exactly what crypto users have been waiting for! The application is lightweight, smooth, and promotes quick transactions. Buying the coins was easy, even for a complete beginner like myself. The constant updates and community engagement build real trust. Definitely a project I'll keep supporting as it grows.",
   },
   {
     id: 8,
-    name: "Kavya Reddy",
+    name: "jithendar Reddy",
     date: "28 December, 2024",
-    image: "/images/img/slide4x.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1682089787056-9ac0c78a2ac2?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8aW5kaWFuJTIwcGVvcGxlfGVufDB8fDB8fHww",
     text: "The first thing I notice with Jaimax is the quality of the design, it feels really premium. The transactions are instant, and I didn't face any downtime yet. I like how secure the login and system for KYC are. It's good to see them combine crypto with real-world usability. Can't wait to see future integrations they have planned!",
   },
   {
     id: 9,
     name: "Rohan Joshi",
     date: "25 December, 2024",
-    image: "/images/img/slide4x.jpg",
+    image: "https://images.unsplash.com/flagged/photo-1571367034861-e6729ad9c2d5?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW5kaWFuJTIwcGVvcGxlfGVufDB8fDB8fHww",
     text: "I have used Jaimax for more than one month and found it smooth. I love how easy it is to manage my wallet and keep track of my coins. Their tutorials made me grasp everything really fast. The app is constantly updated with new features and improved performance. Highly recommended to anyone starting in crypto!",
   },
   {
     id: 10,
     name: "Anjali Verma",
     date: "22 December, 2024",
-    image: "/images/img/slide4x.jpg",
+    image: "https://media.istockphoto.com/id/1528157373/photo/portrait-of-a-happy-smiling-woman-of-indian-origin-wearing-traditional-dress-sari.jpg?s=612x612&w=0&k=20&c=6JTBSXZojVJQKSIVDZIIW2Du6_B_iWg9DWShjHjNO6U=",
     text: "Just bought some Jaimax Coins after reading about their ecosystem plans. Everything worked seamlessly: no hidden fees or delays. The application interface feels up-to-date and safe to transact. Customer support is actually responsive, a true rarity these days. I'm already inviting my friends to join before it goes mainstream!",
   },
 ];
@@ -251,7 +251,7 @@ const TestimonialsSection = () => {
               >
                 <span
                   aria-label="Previous"
-                  className="text-4xl md:text-5xl font-thin leading-none block -mt-2"
+                  className="text-4xl md:text-5xl font-thin leading-none block -mt-0"
                 >
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>                </span>
               </motion.button>
@@ -262,7 +262,7 @@ const TestimonialsSection = () => {
               >
                 <span
                   aria-label="Next"
-                  className="text-4xl md:text-5xl font-thin leading-none block -mt-2"
+                  className="text-4xl md:text-5xl font-thin leading-none block -mt-0"
                 >
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-icon lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> 
                 </span>
