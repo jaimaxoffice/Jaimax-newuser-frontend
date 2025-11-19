@@ -262,6 +262,7 @@ const HomeAbout = () => {
              <img
     src={logo}
     alt="Jaimax Logo"
+    title="jaimax brand new crypto in market"
     className="mx-auto mb-6 w-80 object-contain"
 
   />
@@ -318,6 +319,7 @@ const HomeAbout = () => {
                           src={bscscan}
                           width={100}
                           alt="BscScan"
+                          title="BscSca"
                           className="drop-shadow-lg"
                         />
                       </motion.button>

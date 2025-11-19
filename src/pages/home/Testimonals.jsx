@@ -2,54 +2,57 @@ import rajkumar from "../../assets/Rajkumar.webp";
 import mahendar from "../../assets/mahender.webp";
 import krishnamraju from "../../assets/krishnamraju.webp";
 import shekar from "../../assets/Shekar.jpg"
+import anjanelu from "../../assets/B.veeranjaneyulu.jpg"
+import Ratnam from "../../assets/Ratnam.jpg";
+import pramod from "../../assets/pramod.jpg"
 const testimonials = [
   {
     id: 1,
-    name: "krishnamraju",
+    name: "Krishnamraju",
     date: "15 January, 2025",
     image: krishnamraju,
     text: "I started using the Jaimax app last month and it has been smooth so far. The interface is clean, fast, and really easy to navigate. Buying Jaimax Coins was easy, and the transaction was super fast. I love how transparent the project team is regarding updates and goals. Definitely, I recommend it to all those interested in crypto!",
   },
   {
     id: 2,
-    name: "mahendar",
+    name: "Mahendar",
     date: "12 January, 2025",
     image: mahendar,
     text: "First, I had my doubts about investing in Jaimax Coin, but now I'm glad I did. It was a smooth process, and my coins showed up instantly within my wallet. Their vision regarding digital payments is really unique among other projects. What's impressive is that the team actually responds to community feedback. ",
   },
   {
     id: 3,
-    name: "rajkumar",
+    name: "Nimmala Rajkumar",
     date: "10 January, 2025",
     image: rajkumar,
     text: "The Jaimax website looks professional; it also loads very fast. Setup was smooth, and KYC verification went without any problems. I bought a few coins to try it out, and everything went great. The real-time transactions that this dashboard shows are really helpful to me. Overall, a great experience; very excited to see how this project develops!",
   },
   {
     id: 4,
-    name: "shekar",
+    name: "Shekar.k",
     date: "8 January, 2025",
     image: shekar,
     text: "I've used a lot of crypto apps, but Jaimax really stands out with its simplicity. The wallet integration is very secure, and the payments are really lightning-fast. Nice to see an Indian company doing something innovative with blockchain. The roadmap instills confidence that this is a project that's here to stay. Already told my colleagues to check it out: it's totally worth it!",
   },
   {
     id: 5,
-    name: "Vikram Singh",
+    name: "Yella Rathnaiah",
     date: "5 January, 2025",
-    image: "https://media.istockphoto.com/id/2160830783/photo/positive-handsome-young-indian-man-head-shot-front-portrait.jpg?s=612x612&w=0&k=20&c=q8jNuQWO35W2-7luXuLdWGP2KKwKpdEUiVICJDjjku8=",
+    image: Ratnam,
     text: "Downloaded the Jaimax mobile app a week ago, and it's impressive. It is modern, intuitive, and doesn't lag even on slower networks. The process of buying coins is very straightforward and easy for complete beginners. The support team helped me instantly when I had a query about swapping. Overall, a great project with huge potential for further scaling!",
   },
   {
     id: 6,
-    name: "Neha Gupta",
+    name: "Pramod Kumar",
     date: "3 January, 2025",
-    image: "https://static.vecteezy.com/system/resources/thumbnails/006/859/348/small/young-boy-indian-student-portrait-photo.jpg",
+    image: pramod,
     text: "Been following Jaimax since the whitepaper release, and I'm really impressed. The team keeps delivering on each milestone as promised. I invested a little to start with, just to wet my feet. Everything is going excellently, so I've increased my holdings. This project feels trustworthy, as if it's built to last.",
   },
   {
     id: 7,
-    name: "Arjun Mehta",
+    name: "B.Veeranjaneyulu",
     date: "1 January, 2025",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY8ApWQ90x6n82fZKCGfeAhmsEbNBLyClrSAhHjyYU8wWb2ZRYGjPMzXF_jHQa-z0wOOE&usqp=CAU",
+    image: anjanelu,
     text: "Jaimax is exactly what crypto users have been waiting for! The application is lightweight, smooth, and promotes quick transactions. Buying the coins was easy, even for a complete beginner like myself. The constant updates and community engagement build real trust. Definitely a project I'll keep supporting as it grows.",
   },
   {
@@ -275,7 +278,7 @@ const TestimonialsSection = () => {
           </div>
 
           {/* CTA Section */}
-          <div className="text-center mt-12">
+          {/* <div className="text-center mt-12">
             <div className="inline-flex flex-col items-center gap-4 p-6 md:p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/20">
               <h3 className="text-xl md:text-2xl font-bold text-white">
                 Ready to Join the Presale?
@@ -292,7 +295,7 @@ const TestimonialsSection = () => {
                 Participate in Presale
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
@@ -309,7 +312,7 @@ const TestimonialCard = ({ testimonial, isActive }) => {
     group
     ${
       isActive
-        ? "bg-[#e0ecec]/90 backdrop-blur-xl border-2 border-[#b8cc26] shadow-2xl scale-100 opacity-100"
+        ? "bg-[#e0ecec]/90 backdrop-blur-xl border-2 border-[#b8cc26]  scale-100 opacity-100"
         : "bg-white/55 backdrop-blur-md border border-white/40 shadow-lg scale-95 opacity-75"
     }
     w-full max-w-[500px] sm:max-w-[420px] md:max-w-[460px] lg:min-w-[500px]
@@ -317,16 +320,7 @@ const TestimonialCard = ({ testimonial, isActive }) => {
   `}
 >
 
-      {/* Animated Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, #085056 1px, transparent 0)`,
-            backgroundSize: "24px 24px",
-          }}
-        ></div>
-      </div>
+      
 
       {/* Content Container */}
       <div className="relative z-10 p-6 md:p-7">
@@ -336,6 +330,7 @@ const TestimonialCard = ({ testimonial, isActive }) => {
           <div className="relative flex-shrink-0">
             <img
               src={testimonial.image}
+              title="Trusted Users of jaimax coin"
               className={`
                 relative w-24 h-24 md:w-16 md:h-16
                 rounded-full object-cover
@@ -359,9 +354,7 @@ const TestimonialCard = ({ testimonial, isActive }) => {
             >
               {testimonial.name}
             </h4>
-            <p className="text-sm text-[#177338] font-medium">
-              {testimonial.role}
-            </p>
+           
             <p className="text-xs text-gray-500 mt-0.5">{testimonial.date}</p>
           </div>
         </div>
