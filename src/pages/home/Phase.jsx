@@ -381,18 +381,6 @@ export default function GrowthPlanTimeline() {
                   )}
                 </button>
 
-                {/* Hover label (desktop only) */}
-                <div
-                  className={`
-                    hidden lg:block absolute mt-2 text-yellow-300 font-semibold 
-                    text-center text-sm drop-shadow-lg transition-opacity
-                    ${hoveredIndex === idx ? "opacity-100" : "opacity-0"}
-                  `}
-                  style={{ top: "56px" }}
-                >
-                  {phaseNo}
-                </div>
-
                 {/* Mobile label */}
                 <span className="mt-3 text-xs sm:text-sm font-semibold tracking-widest text-teal-100">
                   {phaseNo}

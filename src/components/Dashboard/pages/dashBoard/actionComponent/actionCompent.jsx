@@ -132,7 +132,7 @@ const ActionButtons = React.memo(() => {
             
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
-                Hi {getUserDisplayName()}
+                Hey {getUserDisplayName()}
               </h3>
               <p className="text-sm text-gray-600">Welcome to Jaimax</p>
             </div>
