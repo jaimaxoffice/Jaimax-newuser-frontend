@@ -499,7 +499,7 @@ const App = () => {
           <Route path="Margintrading" element={<Margintrading />} />
           <Route path="ApiTrading" element={<ApiTrading />} />
           <Route path="SpotTrading" element={<SpotTrading />} />
-          <Route path="best-pre-sale-crypto-coin-in-india" element={<PreSaleCryptoCoin />} />
+          <Route path="best-presale-crypto-coin-in-india" element={<PreSaleCryptoCoin />} />
           <Route path="FuturesTrading" element={<FuturesTrading />} />
           <Route path="PreSale" element={<PreSale />} />
           <Route path="Kyc-Pmla" element={<KycPmlaPolicy />} />

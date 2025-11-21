@@ -3,6 +3,7 @@ import { Rocket, Shield, Zap, TrendingUp, Coins, Users, Globe, ChevronRight, Che
 import { useGetRoundQuery } from "../components/Dashboard/pages/dashBoard/DashboardApliSlice";
 import presale1 from "../assets/Finalone.webp";
 import presale2 from "../assets/presalepngiconfinal.webp";
+import Seo from '../SeoContent/Seo';
 function PreSaleCryptoCoin() {
     const [isVisible, setIsVisible] = useState(false);
     // const [currentRound, setCurrentRound] = useState({ atPriceInr: "0.03" });
@@ -206,6 +207,7 @@ function PreSaleCryptoCoin() {
                     ]
                 })}
             </script>
+            <Seo page="presalecryptocoin" />
 
             <div className="relative min-h-screen bg-[#085056] text-white overflow-x-hidden">
                 {/* Grid Background Layer */}

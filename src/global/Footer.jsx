@@ -340,7 +340,7 @@ const Footer = () => {
                   { name: "API Trading", path: "/ApiTrading", title: "Explore Jaimax API trading solutions" },
                   { name: "Spot Trading", path: "/SpotTrading", title: "Start spot trading on Jaimax platform" },
                   { name: "Futures Trading", path: "/FuturesTrading", title: "Discover futures trading opportunities" },
-                  { name: "Pre Sale Crypto Coin", path: "/best-pre-sale-crypto-coin-in-india", title: "Discover futures trading opportunities" },
+                  // { name: "Pre Sale Crypto Coin", path: "/best-pre-sale-crypto-coin-in-india", title: "Discover futures trading opportunities" },
                 ].map((link) => (
                   <li key={link.name}>
                     <NavLink

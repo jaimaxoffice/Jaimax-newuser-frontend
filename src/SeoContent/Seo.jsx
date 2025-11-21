@@ -2,7 +2,7 @@ import MetaTags from './MetaTags';
 
 const seoContent = {
   homePage: {
-    title: "Jaimax Coin – The Best Pre-Sale Crypto Coin in India for Smart Investments",
+    title: "Jaimax Coin – The Best PreSale Crypto Coin in India for Smart Investments",
     description: "Jaimax Coin is India’s most trusted pre-sale crypto coin, designed for secure and profitable investments. Join early, grow faster, and be part of the next big blockchain innovation.",
     canonical: "https://www.jaimax.com/"
   },
@@ -72,6 +72,11 @@ const seoContent = {
     description: "Jaimax Coin follows strict Anti-Money Laundering (AML) and Counter-Terrorist Financing (CTF) policies to ensure a secure and transparent crypto ecosystem.",
     canonical: "https://www.jaimax.com/aml_ctf"
   },
+  presalecryptocoin:{
+    title:"Presale Crypto Coin in India | Best Pre-Sale Crypto Coin - Jaimax",
+    description:"Discover Jaimax, India’s most trusted presale crypto coin. Get early access at a low entry price, backed by the JMC-24 blockchain for speed, security and long-term growth.",
+    canonical:"https://www.jaimax.com/best-presale-crypto-coin-in-india"
+  }
 };
 
 const Seo = ({ page }) => {
