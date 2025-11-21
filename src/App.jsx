@@ -59,10 +59,11 @@ import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
 import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation";
-import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation" 
+import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation"
 import PromotersPage from "./components/Dashboard/pages/Promoters/Promoters"
 import GuaranteedWealthDashboard from "./components/Dashboard/pages/GuaranteedWealthPlan/GuaranteedWealthPlan"
-import {  ToastContainer } from './ReusableComponents/Toasts/Toasts';
+import { ToastContainer } from './ReusableComponents/Toasts/Toasts';
+import PreSaleCryptoCoin from "./services/PreSaleCryptoCoin";
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -227,9 +228,8 @@ const DashboardLayout = () => {
       </div>
 
       <div
-        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${
-          sidebarOpen ? "lg:ml-64" : "lg:ml-2"
-        } h-screen overflow-hidden`}
+        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
+          } h-screen overflow-hidden`}
       >
         <div className=" mb-1">
           <Header />
@@ -262,7 +262,7 @@ const DashboardLayout = () => {
 const PublicLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
- const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
+  const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
   return (
     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
@@ -338,9 +338,9 @@ const App = () => {
 
   return (
     <>
-          {showChat && (
+      {showChat && (
         <>
-        <ToastContainer position="top-right" maxToasts={2} />
+          <ToastContainer position="top-right" maxToasts={2} />
           <div className="fixed bottom-20 right-6 z-50 flex flex-col items-center">
             <button
               onClick={toggleChat}
@@ -484,7 +484,7 @@ const App = () => {
           <Route path="about" element={<JaimaxComponent />} />
           <Route path="contact" element={<Contact />} />
           <Route path="features" element={<FeaturesSection />} />
-          
+
           <Route path="blog">
             <Route index element={<BlogLayout />} />
             <Route path=":slug" element={<BlogDetailPage />} />
@@ -499,6 +499,7 @@ const App = () => {
           <Route path="Margintrading" element={<Margintrading />} />
           <Route path="ApiTrading" element={<ApiTrading />} />
           <Route path="SpotTrading" element={<SpotTrading />} />
+          <Route path="best-pre-sale-crypto-coin-in-india" element={<PreSaleCryptoCoin />} />
           <Route path="FuturesTrading" element={<FuturesTrading />} />
           <Route path="PreSale" element={<PreSale />} />
           <Route path="Kyc-Pmla" element={<KycPmlaPolicy />} />
