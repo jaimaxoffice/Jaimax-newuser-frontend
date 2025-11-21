@@ -52,7 +52,7 @@ function PreSaleCryptoCoin() {
 
     const ecosystem = [
         "Jaimax App", "Jaimax Wallet", "NFT Marketplace", "DeFi Tools",
-        "Crypto Education Hub", "dApps for Businesses", "JMC-24 Infrastructure"
+        "Crypto Education Hub", "dApps for Businesses", "JMC-24 Infrastructure", "Dev Tools & APIs"
     ];
 
     const benefits = [
@@ -336,12 +336,14 @@ function PreSaleCryptoCoin() {
                     </div>
                 </section>
 
+
+
                 {/* About Jaimax */}
                 <section className="py-20 px-4">
                     <div className="max-w-6xl mx-auto">
                         <div className="grid md:grid-cols-2 gap-12 items-center">
-                            {/* IMAGE FIRST ON MOBILE */}
-                            <div className="relative animate-fade-in-right order-1 md:order-2">
+                            {/* IMAGE LEFT */}
+                            <div className="relative animate-fade-in-right order-1">
                                 <div className="aspect-square rounded-3xl flex items-center justify-center animate-float">
                                     <img
                                         src={presale2}
@@ -351,8 +353,8 @@ function PreSaleCryptoCoin() {
                                 </div>
                             </div>
 
-                            {/* CONTENT SECOND ON MOBILE */}
-                            <div className="animate-fade-in-left order-2 md:order-1">
+                            {/* CONTENT RIGHT */}
+                            <div className="animate-fade-in-left order-2">
                                 <h2 className="text-4xl md:text-5xl font-bold mb-6">
                                     What Is <span className="text-[#c4d72d] animate-text-gradient">Jaimax Coin?</span>
                                 </h2>
@@ -378,6 +380,7 @@ function PreSaleCryptoCoin() {
                         </div>
                     </div>
                 </section>
+
 
                 {/* Benefits Section */}
                 <section className="py-10 px-4 bg-black/20">
