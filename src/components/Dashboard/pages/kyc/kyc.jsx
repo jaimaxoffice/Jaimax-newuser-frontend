@@ -2062,7 +2062,18 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                   </label>
                   <input
                         type="text"
-                        className="form-control shadow-none bg-transparent"
+                        className=" w-full
+    bg-transparent
+    border border-gray-300
+    rounded-lg
+    px-3 py-2
+    text-gray-800
+    focus:border-blue-500
+    focus:ring-2
+    focus:ring-blue-200
+    outline-none
+    transition-all
+    duration-200"
                         name="mobile_number"
                         placeholder="Enter mobile number"
                         // ***** CORRECTED: Conditional masking *****
@@ -2099,7 +2110,18 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                   <input
                         type="text"
                         autoComplete="off"
-                        className="form-control shadow-none bg-transparent"
+                        className=" w-full
+    bg-transparent
+    border border-gray-300
+    rounded-lg
+    px-3 py-2
+    text-gray-800
+    focus:border-blue-500
+    focus:ring-2
+    focus:ring-blue-200
+    outline-none
+    transition-all
+    duration-200"
                         name="address"
                         placeholder="Enter your address"
                         // ***** CORRECTED: Conditional masking *****
@@ -2539,7 +2561,18 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                     <input
                           type="text"
                           autoComplete="off"
-                          className="form-control shadow-none bg-transparent"
+                          className=" w-full
+    bg-transparent
+    border border-gray-300
+    rounded-lg
+    px-3 py-2
+    text-gray-800
+    focus:border-blue-500
+    focus:ring-2
+    focus:ring-blue-200
+    outline-none
+    transition-all
+    duration-200"
                           name="upi_id"
                           placeholder="Enter UPI ID"
                           // ***** CORRECTED: Conditional masking *****
@@ -2570,7 +2603,18 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                    <input
                         type="text"
                         autoComplete="off"
-                        className="form-control shadow-none bg-transparent"
+                        className=" w-full
+    bg-transparent
+    border border-gray-300
+    rounded-lg
+    px-3 py-2
+    text-gray-800
+    focus:border-blue-500
+    focus:ring-2
+    focus:ring-blue-200
+    outline-none
+    transition-all
+    duration-200"
                         name="bank_account"
                         placeholder="Enter bank account number"
                         // ***** CORRECTED: Conditional masking *****
@@ -2605,7 +2649,18 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                    <input
                         type="text"
                         autoComplete="off"
-                        className="form-control shadow-none bg-transparent"
+                        className=" w-full
+    bg-transparent
+    border border-gray-300
+    rounded-lg
+    px-3 py-2
+    text-gray-800
+    focus:border-blue-500
+    focus:ring-2
+    focus:ring-blue-200
+    outline-none
+    transition-all
+    duration-200"
                         name="bank_name"
                         placeholder="Enter bank name"
                         value={formData.bank_name} // No masking for bank name
@@ -2628,7 +2683,18 @@ code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile
                  <input
                         type="text"
                         autoComplete="off"
-                        className="form-control shadow-none bg-transparent"
+                        className=" w-full
+    bg-transparent
+    border border-gray-300
+    rounded-lg
+    px-3 py-2
+    text-gray-800
+    focus:border-blue-500
+    focus:ring-2
+    focus:ring-blue-200
+    outline-none
+    transition-all
+    duration-200"
                         name="ifsc_code"
                         placeholder="Enter bank code"
                         // ***** CORRECTED: Conditional masking and uppercase *****

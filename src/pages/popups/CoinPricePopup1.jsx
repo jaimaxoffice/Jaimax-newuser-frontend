@@ -577,7 +577,7 @@ const CountdownTimer = () => {
   const [isInTimeRange, setIsInTimeRange] = useState(false);
 
   useEffect(() => {
-    const startDate = new Date("2025-11-25T00:00:00").getTime();
+    const startDate = new Date("2025-11-26T00:00:00").getTime();
     const endDate = new Date("2025-12-01T00:00:00").getTime();
 
     const timer = setInterval(() => {
@@ -657,7 +657,7 @@ const CountdownTimer = () => {
               box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
             }
             50% {
-              box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+              box-shadow: 0 0 20px rgba(106, 103, 103, 0.8);
             }
           }
 
@@ -683,7 +683,7 @@ const CountdownTimer = () => {
   }
   50% {
     transform: scale(1.25);
-    box-shadow: 0 0 30px rgba(255,255,255,1);
+    box-shadow: 0 0 30px rgba(101, 97, 97, 1);
   }
   100% {
     transform: scale(1);
@@ -777,7 +777,7 @@ const CountdownTimer = () => {
 
             <div className="flex gap-1.5 md:gap-4">
               <div className="text-center">
-                <div className="bg-white/20 rounded-lg p-1.5 sm:md:p-0 md:p-3 min-w-[20px] sm:max-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                <div className="bg-white/20 rounded-[5px] p-1.5 sm:md:p-0 md:p-3 min-w-[20px] sm:max-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
                   <span 
                     key={timeLeft.days}
                     className="text-[9px] md:text-sm sm:text-[5px] font-semibold text-white block animate-flip"
@@ -789,7 +789,7 @@ const CountdownTimer = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-white/20 rounded-lg p-1.5 md:p-3 sm:md:p-0 min-w-[20px] sm:min-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                <div className="bg-white/20 rounded-[5px] p-1.5 md:p-3 sm:md:p-0 min-w-[20px] sm:min-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
                   <span 
                     key={timeLeft.hours}
                     className="text-[9px] md:text-sm sm:text-[5px] font-semibold text-white block animate-flip"
@@ -803,7 +803,7 @@ const CountdownTimer = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-white/20 rounded-lg p-1.5 md:p-3 sm:md:p-0 min-w-[20px] sm:min-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                <div className="bg-white/20 rounded-[5px] p-1.5 md:p-3 sm:md:p-0 min-w-[20px] sm:min-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
                   <span 
                     key={timeLeft.minutes}
                     className="text-[9px] md:text-sm sm:text-[5px] font-semibold text-white block animate-flip"
@@ -816,23 +816,25 @@ const CountdownTimer = () => {
                 </p>
               </div>
               
-             <div className="text-center">
-  <div className="bg-white/20 rounded-lg p-1.5 md:p-3 sm:md:p-0 
+<div className="text-center">
+  <div className="bg-white/80 rounded-[5px] p-1.5 md:p-3 sm:md:p-0 
                   min-w-[20px] sm:min-w-[20px] md:min-w-[60px] 
-                  hover:bg-white/30 transition-all duration-300 hover:scale-110 
+                  hover:bg-gray-100 transition-all duration-300 hover:scale-110 
                   animate-glow animate-pulse-explosion">
     <span 
       key={timeLeft.seconds}
-      className="text-[9px] md:text-sm sm:text-xs font-semibold text-white block 
+      className="text-[9px] md:text-sm sm:text-xs font-semibold text-black block 
                  animate-scale animate-shockwave animate-neon-flicker"
     >
       {String(timeLeft.seconds).padStart(2, "0")}
     </span>
   </div>
+
   <p className="text-white text-[6px] sm:text-xs md:text-xs mt-1 md:mt-2">
     Seconds
   </p>
 </div>
+
 
             </div>
           </div>
@@ -843,12 +845,12 @@ const CountdownTimer = () => {
           <img
             src={desktopcoin}
             alt="Desktop Coin"
-            className="hidden md:block w-full h-auto object-contain rounded-xl"
+            className="hidden md:block w-full h-auto object-contain "
           />
           <img
             src={mobilecoin}
             alt="Mobile Coin"
-            className="block md:hidden w-full h-auto object-contain rounded-xl"
+            className="block md:hidden w-full h-auto object-contain"
           />
         </div>
       </div>
