@@ -227,6 +227,7 @@ function PreSaleCryptoCoin() {
                     <div className="absolute inset-0 z-0">
                         <img
                             src={presale1}
+                            title='presale crypto coin in india'
                             alt="Abstract blockchain background"
                             className="w-full h-full object-cover blur-sm"
                         />
@@ -250,13 +251,13 @@ function PreSaleCryptoCoin() {
                         </div>
 
                         <h1 className="text-2xl md:text-6xl lg:text-5xl font-bold mb-6 leading-tight animate-fade-in-up max-w-4xl mx-auto" style={{ animationDelay: '0.1s' }}>
-                            Best Pre-Sale Crypto Coin in India{' '}
+                            Best PreSale Crypto Coin in India{' '}
                             <span className="text-[#c4d72d] animate-text-gradient">Invest Early in Jaimax 2025</span>
                         </h1>
 
                         <p className="text-lg text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed animate-fade-in px-4 sm:px-6 lg:px-8" style={{ animationDelay: '0.2s' }}>
                             Jaimax is India's fast-growing blockchain project offering investors a chance to buy the{' '}
-                            <span className="text-[#c4d72d] font-semibold">best pre-sale crypto coin in India</span> at the early price of{' '}
+                            <span className="text-[#c4d72d] font-semibold">best presale crypto coin in India</span> at the early price of{' '}
                             <span className="text-[#c4d72d] font-bold animate-pulse-number">₹{livePrice} per coin</span>.
                             Designed for scalability, transparency, and long-term adoption, Jaimax aims to become one of the
                             strongest digital assets in the Indian Web3 ecosystem.
@@ -273,6 +274,7 @@ function PreSaleCryptoCoin() {
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16 animate-fade-in" style={{ animationDelay: '0.8s' }}>
                             <a
                                 href="https://www.jaimax.com/register"
+                                title='jaimax best presale crypto coin in india'
                                 className="group relative px-[25px] py-2 bg-[#c4d72d] text-[#085056] font-semibold text-[0.8rem] rounded-full hover:bg-[#d4e73d] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#c4d72d]/50 flex items-center space-x-2 animate-bounce-subtle w-fit"
                             >
                                 <span className="relative z-10">Buy Jaimax Now</span>
@@ -281,6 +283,7 @@ function PreSaleCryptoCoin() {
                             </a>
                             <a
                                 href="https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax"
+                                title='jaimax Application'
                                 className="px-[25px] py-2 border-2 border-[#c4d72d] text-[#c4d72d] font-semibold text-[0.8rem] rounded-full hover:bg-[#c4d72d]/10 transition-all duration-300 hover:scale-105 flex items-center space-x-2 w-fit animate-bounce-subtle"
                             >
                                 <Download className="w-5 h-5" />
@@ -349,6 +352,7 @@ function PreSaleCryptoCoin() {
                                 <div className="aspect-square rounded-3xl flex items-center justify-center animate-float">
                                     <img
                                         src={presale2}
+                                        title='presale crypto coin in india'
                                         alt="Jaimax Coin"
                                         className="w-full h-full rounded-3xl object-cover"
                                     />
@@ -372,6 +376,7 @@ function PreSaleCryptoCoin() {
                                 <div className="mt-8 text-right">
                                     <a
                                         href="https://www.jaimax.com/whitepaper"
+                                        title='jaimax-whitepaper'
                                         className="inline-flex items-center space-x-2 px-[25px] py-2 bg-[#c4d72d]/20 border border-[#c4d72d] rounded-full text-[#c4d72d] hover:bg-[#c4d72d] hover:text-[#085056] transition-all duration-300 hover:scale-105 font-semibold text-[0.8rem] w-fit"
                                     >
                                         <FileText className="w-5 h-5" />
@@ -466,6 +471,7 @@ function PreSaleCryptoCoin() {
                         <div className="text-center animate-fade-in">
                             <a
                                 href="https://www.jaimax.com/whitepaper"
+                                title='jaimax-whitepaper'
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center space-x-2 text-[#c4d72d] hover:text-[#d4e73d] transition-colors duration-300 text-lg font-semibold hover:scale-105"
@@ -505,6 +511,7 @@ function PreSaleCryptoCoin() {
                         <div className="mt-12 animate-fade-in">
                             <a
                                 href="https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax"
+                                title='jaimax Application'
                                 className="inline-flex items-center space-x-2 px-[25px] py-2 bg-[#c4d72d] text-[#085056] rounded-full font-semibold text-[0.8rem] hover:scale-105 transition-all duration-300 animate-bounce-subtle w-fit"
                                 style={{ boxShadow: "0 0 30px rgba(196,215,45,0.3)" }}
                             >
@@ -550,6 +557,7 @@ function PreSaleCryptoCoin() {
                         <div className="text-center mt-12 animate-fade-in">
                             <a
                                 href="https://www.jaimax.com/register"
+                                title='jaimax Application'
                                 className="inline-flex items-center space-x-2 px-[25px] py-2 bg-[#c4d72d] text-[#085056] rounded-full font-semibold text-[0.8rem] hover:scale-105 transition-all duration-300 animate-bounce-subtle w-fit"
                                 style={{ boxShadow: "0 0 30px rgba(196,215,45,0.3)" }}
                             >
@@ -638,6 +646,7 @@ function PreSaleCryptoCoin() {
                         <div className="flex flex-col sm:flex-row gap-2 justify-center animate-fade-in">
                             <a
                                 href="https://www.jaimax.com/register"
+                                title='jaimax Register'
                                 className="px-[25px] py-2 bg-[#c4d72d] text-[#085056] rounded-full font-semibold text-[0.8rem] hover:scale-105 transition-all duration-300 animate-bounce-subtle w-fit"
                                 style={{ boxShadow: "0 0 30px rgba(196,215,45,0.3)" }}
                             >
@@ -645,6 +654,7 @@ function PreSaleCryptoCoin() {
                             </a>
                             <a
                                 href="https://www.jaimax.com/whitepaper"
+                                title='jaimax-whitepaper'
                                 className="px-[25px] py-2 bg-white/10 backdrop-blur-sm rounded-full font-semibold text-[0.8rem] hover:bg-white/20 transition-all duration-300 hover:scale-105 w-fit animate-bounce-subtle"
                                 style={{ boxShadow: "0 0 20px rgba(255,255,255,0.1)" }}
                             >
@@ -652,6 +662,7 @@ function PreSaleCryptoCoin() {
                             </a>
                             <a
                                 href="https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax"
+                                title='jaimax Application launch'
                                 className="px-[25px] py-2 bg-white/10 backdrop-blur-sm rounded-full font-semibold text-[0.8rem] hover:bg-white/20 transition-all duration-300 hover:scale-105 w-fit animate-bounce-subtle"
                                 style={{ boxShadow: "0 0 20px rgba(255,255,255,0.1)" }}
                             >
@@ -675,9 +686,9 @@ function PreSaleCryptoCoin() {
                     </div>
 
                     <div className="max-w-5xl mx-auto text-left relative z-10">
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-tight bg-gradient-to-r from-white to-[#c4d72d] bg-clip-text text-transparent text-center animate-fade-in-up">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-tight bg-gradient-to-r from-white to-[#c4d72d] bg-clip-text text-transparent text-center animate-fade-in-up">
                             India's Trusted Pre-Sale Crypto Coin – Jaimax
-                        </h1>
+                        </h2>
 
                         <div className="mx-auto space-y-6 sm:space-y-7 text-gray-200 text-sm sm:text-base md:text-lg leading-relaxed font-light">
                             <p className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
@@ -685,10 +696,11 @@ function PreSaleCryptoCoin() {
                                 <span className="text-[#c4d72d] font-bold">
                                     <a
                                         href="https://www.jaimax.com/"
+                                        title='jaimax best presale crypto coin in india'
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        best pre-sale crypto coin in India
+                                        best presale crypto coin in India
                                     </a>
                                 </span>,
                                 designed for investors who want to enter the crypto market early with a strong,
@@ -699,6 +711,7 @@ function PreSaleCryptoCoin() {
                                 transparency, and a long-term roadmap, which makes it one of the most promising <span className="text-[#c4d72d] font-bold">
                                     <a
                                         href="https://www.jaimax.com/"
+                                         title='jaimax best presale crypto coin in india'
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -714,6 +727,7 @@ function PreSaleCryptoCoin() {
                                 blockchain infrastructure.This combination of real-world use cases and early-stage pricing is what makes investors consider Jaimax amon  g the best <span className="text-[#c4d72d] font-bold">
                                     <a
                                         href="https://www.jaimax.com/"
+                                         title='jaimax best presale crypto coin in india'
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -764,6 +778,7 @@ function PreSaleCryptoCoin() {
                             <div className="mt-12 sm:mt-16 text-center animate-fade-in" style={{ animationDelay: '0.8s' }}>
                                 <a
                                     href="https://www.jaimax.com/register"
+                                     title='jaimax best presale crypto coin in india'
                                     className="inline-block px-[25px] py-2 bg-[#c4d72d] text-[#085056] rounded-full font-semibold text-[0.8rem] hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl animate-bounce-subtle w-fit"
                                 >
                                     BUY JAIMAX AT ₹{livePrice} NOW

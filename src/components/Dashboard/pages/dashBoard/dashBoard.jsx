@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../../../src/App.css";
-import {  toast } from "../../../../ReusableComponents/Toasts/Toasts";
+import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import Cookies from "js-cookie";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 import Pagination from "../../../../ReusableComponents/pagination/pagination";
@@ -27,7 +27,7 @@ import KycAdvertisement from "../../../../ReusableComponents/Advertisements/Adve
 const ActionButtons = lazy(() => import("./actionComponent/actionCompent"));
 const TopCards = lazy(() => import("./cards/cards"));
 const SlabTabs = lazy(() => import("./timeTracker/timeTracker"));
-
+import CountdownTimer from "../../../../pages/popups/CoinPricePopup1";
 // Loading fallback component
 const ComponentLoader = () => (
   <div className="p-4 bg-white/10 animate-pulse rounded-lg">
@@ -226,6 +226,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [showKycAd, setShowKycAd] = useState(true);
+    const [isInTimeRange, setIsInTimeRange] = useState(false);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   const [queryState, setQueryState] = useState({
     currentPage: 1,
     perPage: 10,
@@ -241,7 +248,6 @@ const Dashboard = () => {
   const { data: userData, fetch: userRefetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
-
 
   // Memoized query parameters
   const queryParams = useMemo(
@@ -318,11 +324,45 @@ const Dashboard = () => {
   const handlePageChange = useCallback((page) => {
     setQueryState((prev) => ({ ...prev, currentPage: page }));
   }, []);
-// KYC Advertisement Component - Horizontal Teal Theme
+  // KYC Advertisement Component - Horizontal Teal Theme
+  useEffect(() => {
+    const startDate = new Date("2025-11-24T00:00:00").getTime();
+    const endDate = new Date("2025-12-01T00:00:00").getTime();
 
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+
+      // Check if before start date or after end date
+      if (now < startDate || now > endDate) {
+        setIsInTimeRange(false);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      setIsInTimeRange(true);
+
+      const distance = endDate - now;
+
+      if (distance < 0) {
+        clearInterval(timer);
+        setIsInTimeRange(false);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      } else {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          ),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
   return (
-    <div className="min-h-screen p-2 bg-[#1d8e85] rounded-xl text-sm sm:text-base md:text-lg overflow-x-hidden">
-
+    <div className="min-h-screen p-0 bg-[#1d8e85] rounded-xl text-sm sm:text-base md:text-lg overflow-auto">
       {/* {userData?.data && (
         <KycBonusPopup
           kycBonusEligible={userData?.data?.kycBonusEligible}
@@ -431,6 +471,80 @@ const Dashboard = () => {
                       onClick={() => handleImageClick(slide.redirectUrl)}
                       className="cursor-pointer"
                     >
+                      <div
+                        className="
+          absolute 
+          top-[75%]       min-[640px]:top-[25%]      md:top-[50%]
+          left-[23%]      min-[640px]:left-[28%]     md:left-[30%]
+          -translate-x-1/2 
+          -translate-y-1/2 
+          z-10 mb-2
+        "
+                      >
+                        <div className="rounded-lg p-3 sm:p-4 md:p-6   transition-all duration-300">
+                          <h6 className="hidden sm:block text-white text-[8px] sm:text-xs md:text-sm font-bold mb-2 md:mb-4 text-center">
+                            Time Remaining
+                          </h6>
+
+                          <div className="flex gap-1.5 md:gap-4">
+                            <div className="text-center">
+                              <div className="bg-white/20 rounded-lg p-0.5 sm:md:p-0 md:p-3 min-w-[20px] sm:max-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                                <span
+                                  key={timeLeft.days}
+                                  className="text-[9px] md:text-sm sm:text-[5px] font-semibold text-white block animate-flip"
+                                >
+                                  {String(timeLeft.days).padStart(2, "0")}
+                                </span>
+                              </div>
+                              <p className="text-white text-[6px] sm:text-[5px] md:text-xs  md:mt-2">
+                                Days
+                              </p>
+                            </div>
+
+                            <div className="text-center">
+                              <div className="bg-white/20 rounded-lg p-0.5 md:p-3 sm:md:p-0 min-w-[20px] sm:min-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                                <span
+                                  key={timeLeft.hours}
+                                  className="text-[9px] md:text-sm sm:text-[5px] font-semibold text-white block animate-flip"
+                                >
+                                  {String(timeLeft.hours).padStart(2, "0")}
+                                </span>
+                              </div>
+                              <p className="text-white text-[6px] sm:text-[5px] md:text-xs  md:mt-2">
+                                Hours
+                              </p>
+                            </div>
+
+                            <div className="text-center">
+                              <div className="bg-white/20 rounded-lg p-0.5 md:p-3 sm:md:p-0 min-w-[20px] sm:min-w-[30px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110">
+                                <span
+                                  key={timeLeft.minutes}
+                                  className="text-[9px] md:text-sm sm:text-[5px] font-semibold text-white block animate-flip"
+                                >
+                                  {String(timeLeft.minutes).padStart(2, "0")}
+                                </span>
+                              </div>
+                              <p className="text-white text-[6px] sm:text-[5px] md:text-xs  md:mt-2">
+                                Minutes
+                              </p>
+                            </div>
+
+                            <div className="text-center">
+                              <div className="bg-white/20 rounded-lg p-0.5 md:p-3 sm:md:p-0 min-w-[20px] sm:min-w-[20px] md:min-w-[60px] hover:bg-white/30 transition-all duration-300 hover:scale-110 animate-glow">
+                                <span
+                                  key={timeLeft.seconds}
+                                  className="text-[9px] md:text-sm sm:text-xs font-semibold text-white block animate-scale"
+                                >
+                                  {String(timeLeft.seconds).padStart(2, "0")}
+                                </span>
+                              </div>
+                              <p className="text-white text-[6px] sm:text-xs md:text-xs  md:mt-2">
+                                Seconds
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <img src={slide.image} alt={`Slide ${index + 1}`} />
                     </div>
                   ))}
@@ -439,21 +553,28 @@ const Dashboard = () => {
             </div>
           </>
         )}
+     {/* CountdownTimer - Only visible on desktop (md and above) */}
+<div className="mb-3 hidden md:block">
+  <Suspense fallback={<Loader />}>
+    <CountdownTimer />
+  </Suspense>
+</div>
       <div className="mb-3">
-        <Suspense fallback={<ComponentLoader />}>
+        <Suspense fallback={<Loader />}>
           <ActionButtons />
         </Suspense>
       </div>
+
       {/* SlabTabs and TopCards - Responsive Layout */}
       <div className="flex flex-col lg:flex-row gap-2 mb-3">
         <div className="lg:w-1/3">
-          <Suspense fallback={<ComponentLoader />}>
+          <Suspense fallback={<Loader />}>
             <SlabTabs />
           </Suspense>
         </div>
 
         <div className="w-full">
-          <Suspense fallback={<ComponentLoader />}>
+          <Suspense fallback={<Loader />}>
             <TopCards />
           </Suspense>
         </div>
