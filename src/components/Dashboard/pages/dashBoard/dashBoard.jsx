@@ -1205,11 +1205,12 @@ const Dashboard = () => {
             .slider-container {
               overflow: visible !important;
               position: relative;
+              padding:3px;
             }
           `}</style>
 
-          <div className="w-full px-1 sm:px-2 mb-2 block md:hidden">
-            <div className="announcement-slider max-w-sm sm:max-w-md mx-auto rounded-lg relative">
+          <div className="w-full px-1 sm:px-2 mb-1 block md:hidden">
+            <div className="announcement-slider max-w-sm sm:max-w-md mx-auto rounded-lg relative ">
               {/* Countdown Overlay - Shows on top of slider when in time range */}
               <MobileCountdownOverlay
                 timeLeft={timeLeft}
@@ -1220,7 +1221,7 @@ const Dashboard = () => {
                 {...settings}
                 dotsClass="custom-dots"
                 customPaging={(i) => <button aria-label={`Slide ${i + 1}`} />}
-                className="slider-container"
+                className="slider-container "
               >
                 {announceData.data[0].slides.map((slide, index) => (
                   <div

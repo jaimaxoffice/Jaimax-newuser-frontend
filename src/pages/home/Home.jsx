@@ -239,7 +239,7 @@ const Home = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
       />
-<CountdownTimer className="fixed top-0 left-0 right-0 z-40" />
+<CountdownTimer className="" />
       <div className="outer-container overflow-y-auto scrollbar-hide">
         <header className="relative min-h-[100dvh] flex flex-col justify-center">
           <div className="absolute inset-0 w-full h-full">

@@ -563,7 +563,7 @@
 
 
 import { useState, useEffect } from "react";
-import mobilecoin from "../../assets/coinpricemobile.jpg";
+import mobilecoin from "../../assets/mobilecoin.webp";
 import desktopcoin from "../../assets/desktopcoinprice.webp";
 
 const CountdownTimer = () => {
