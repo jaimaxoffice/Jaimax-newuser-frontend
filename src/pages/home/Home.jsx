@@ -410,6 +410,11 @@ export default Home;
 //   Building2,
 //   LineChart,
 //   Flag,
+//   FileText ,
+//   Flame ,
+//   Building ,
+//   CreditCard ,
+//   HelpCircle 
 // } from "lucide-react";
 // import { motion, useScroll, useTransform, useInView } from "framer-motion";
 // import { Swiper, SwiperSlide } from "swiper/react";
@@ -737,6 +742,468 @@ export default Home;
 //   },
 // ];
 
+
+// const JaimaxFAQ = () => {
+//   const [openFaq, setOpenFaq] = useState(null);
+//   const [isVisible, setIsVisible] = useState(false);
+//   const [hoveredIndex, setHoveredIndex] = useState(null);
+//   const faqRef = useRef(null);
+
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setIsVisible(true);
+//         }
+//       },
+//       { threshold: 0.1 }
+//     );
+
+//     if (faqRef.current) {
+//       observer.observe(faqRef.current);
+//     }
+
+//     return () => observer.disconnect();
+//   }, []);
+
+//   const faqs = [
+//     {
+//       question: "What is Jaimax?",
+//       answer: "Jaimax is a digital ecosystem built on blockchain to provide secure, fast, and transparent financial transactions through its own cryptocurrency, JMC Coin.",
+//       icon: <Coins className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "Is it legal to invest in Jaimax Tokens in India?",
+//       answer: "Yes. Investing in cryptocurrencies like Jaimax Tokens is legal in India. However, such investments are taxable under the Finance Act, 2022. A 30% tax applies on profits, and a 1% TDS is deducted per transaction.",
+//       icon: <Shield className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "How can you say Jaimax is not a scam company?",
+//       answer: "Jaimax operates transparently with verified registration, a clear whitepaper, and funds securely held in regulated bank accounts. It follows compliance standards and ensures investor protection.",
+//       icon: <FileText className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "Are the funds raised through the ICO locked in a bank?",
+//       answer: "Yes, the funds are securely locked in regulated bank accounts to prevent misuse. The lock ensures that money is released only after project milestones are met.",
+//       icon: <Lock className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "What happens to unsold JMC tokens after presale?",
+//       answer: "Unsold JMC tokens are managed as per Jaimax's tokenomics policy. Some may be burned to reduce supply and maintain value stability, while others may be reallocated for future ecosystem needs.",
+//       icon: <Flame className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "What makes Jaimax unique from other coins?",
+//       answer: "Unlike speculative coins, Jaimax is linked to real business projects — including Blockchain Technology, Social Media Application, J-payment gateway, DApps, NFT Platform and De-Finance.",
+//       icon: <Sparkles className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "What is the main goal of Jaimax?",
+//       answer: "To bridge traditional finance and blockchain innovation by creating a secure, decentralized, and user-friendly digital finance system.",
+//       icon: <TrendingUp className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "On which blockchain is Jaimax built?",
+//       answer: "Jaimax is built on the Binance Smart Chain (BSC-20) — known for its speed, scalability, and low transaction fees.",
+//       icon: <Building className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "What is the price range of JMC in ICO?",
+//       answer: "The ICO price ranges from ₹0.01 to ₹4.10 across five phases.",
+//       icon: <DollarSign className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "How can investors buy Jaimax Coins?",
+//       answer: "Investors can buy using USDT, USDC, XRP, TRX, ADA, or INR (via UPI, PhonePe, Google Pay).",
+//       icon: <CreditCard className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "Will Jaimax be listed on global exchanges?",
+//       answer: "Yes, plans include listing on PancakeSwap, Uniswap, and major exchanges during later ICO phases.",
+//       icon: <Globe className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//     {
+//       question: "Can JMC be used for cross-border payments?",
+//       answer: "Yes, Jaimax enables global, borderless transfers without needing banks or currency conversion.",
+//       icon: <Globe className="w-5 h-5" />,
+//       color: "from-teal-400 to-teal-500",
+//       glow: "shadow-teal-500/50",
+//     },
+//   ];
+
+//   const leftColumnFaqs = faqs.slice(0, 6);
+//   const rightColumnFaqs = faqs.slice(6, 12);
+
+//   const renderFaqItem = (faq, index, columnOffset = 0) => {
+//     const actualIndex = index + columnOffset;
+//     const isOpen = openFaq === actualIndex;
+//     const isHovered = hoveredIndex === actualIndex;
+//     const delay = index * 100;
+
+//     return (
+//       <div
+//         key={actualIndex}
+//         className={`
+//           relative group cursor-pointer
+//           transform transition-all duration-500 ease-out
+//           ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
+//         `}
+//         style={{ 
+//           transitionDelay: `${delay}ms`,
+//           perspective: '1000px'
+//         }}
+//         onMouseEnter={() => setHoveredIndex(actualIndex)}
+//         onMouseLeave={() => setHoveredIndex(null)}
+//       >
+//         {/* Animated Background Glow */}
+//         <div 
+//           className={`
+//             absolute -inset-1 bg-gradient-to-r ${faq.color} rounded-2xl blur-lg
+//             transition-all duration-500 opacity-0 group-hover:opacity-30
+//             ${isOpen ? 'opacity-40' : ''}
+//           `}
+//         />
+        
+//         {/* Floating Particles */}
+//         <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+//           {isHovered && (
+//             <>
+//               <div className="absolute top-2 left-4 w-1 h-1 bg-white rounded-full animate-float-1" />
+//               <div className="absolute top-6 right-8 w-1.5 h-1.5 bg-white/70 rounded-full animate-float-2" />
+//               <div className="absolute bottom-4 left-12 w-1 h-1 bg-white/50 rounded-full animate-float-3" />
+//               <div className="absolute bottom-8 right-4 w-0.5 h-0.5 bg-white rounded-full animate-float-1" />
+//             </>
+//           )}
+//         </div>
+
+//         {/* Main Card */}
+//         <div 
+//           className={`
+//             relative bg-gradient-to-br from-white/10 to-white/5 
+//             backdrop-blur-xl rounded-2xl border overflow-hidden
+//             transition-all duration-500 ease-out
+//             ${isOpen 
+//               ? 'border-white/40 shadow-2xl ' + faq.glow 
+//               : 'border-white/20 hover:border-white/40'
+//             }
+//             ${isHovered && !isOpen ? 'scale-[1.02] shadow-xl' : 'scale-100'}
+//           `}
+//         >
+         
+
+//           {/* Question Button */}
+//           <button
+//             onClick={() => setOpenFaq(isOpen ? null : actualIndex)}
+//             className="relative w-full p-5 sm:p-6 flex items-center justify-between text-left transition-colors duration-300"
+//           >
+//             <div className="flex items-center gap-4 flex-1 min-w-0">
+//               {/* Animated Icon Container */}
+//               <div 
+//                 className={`
+//                   relative p-3 rounded-xl bg-gradient-to-br ${faq.color} 
+//                   flex-shrink-0 text-white shadow-lg ${faq.glow}
+//                   transform transition-all duration-500
+//                   ${isOpen ? 'rotate-0 scale-110' : 'rotate-0 scale-100'}
+//                   ${isHovered ? 'scale-110 rotate-3' : ''}
+//                 `}
+//               >
+//                 {/* Icon Pulse Ring */}
+//                 <div 
+//                   className={`
+//                     absolute inset-0 rounded-xl bg-gradient-to-br ${faq.color}
+//                     animate-ping opacity-30
+//                     ${isOpen || isHovered ? 'block' : 'hidden'}
+//                   `}
+//                 />
+//                 <div className="relative z-10">
+//                   {faq.icon}
+//                 </div>
+//               </div>
+
+//               {/* Question Text */}
+//               <span 
+//                 className={`
+//                   font-semibold text-sm sm:text-base leading-tight
+//                   transition-all duration-300
+//                   ${isOpen ? 'text-white' : 'text-white/90 group-hover:text-white'}
+//                 `}
+//               >
+//                 {faq.question}
+//               </span>
+//             </div>
+
+//             {/* Animated Chevron */}
+//             <div 
+//               className={`
+//                 relative w-10 h-10 rounded-full flex items-center justify-center
+//                 transition-all duration-500 flex-shrink-0 ml-3
+//                 ${isOpen 
+//                   ? `bg-gradient-to-br ${faq.color} shadow-lg ${faq.glow}` 
+//                   : 'bg-white/10 group-hover:bg-white/20'
+//                 }
+//               `}
+//             >
+//               <ChevronDown
+//                 className={`
+//                   w-5 h-5 text-white transition-all duration-500
+//                   ${isOpen ? 'rotate-180' : 'rotate-0'}
+//                 `}
+//               />
+//             </div>
+//           </button>
+
+//           {/* Answer Section */}
+//           <div
+//             className={`
+//               grid transition-all duration-500 ease-out
+//               ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}
+//             `}
+//           >
+//             <div className="overflow-hidden">
+//               <div className="px-5 sm:px-6 pb-5 sm:pb-6">
+//                 {/* Answer Card */}
+//                 <div 
+//                   className={`
+//                     relative p-4 rounded-xl bg-gradient-to-br from-white/10 to-white/5
+//                     border border-white/10
+//                     transform transition-all duration-500 delay-100
+//                     ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}
+//                   `}
+//                 >
+//                   {/* Accent Line */}
+//                   <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-gradient-to-b ${faq.color}`} />
+                  
+//                   <p className="text-gray-300 leading-relaxed text-sm pl-3">
+//                     {faq.answer}
+//                   </p>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Card Number Badge */}
+        
+//       </div>
+//     );
+//   };
+
+//   return (
+//     <section
+//       ref={faqRef}
+//       className="relative min-h-screen px-4 py-20 overflow-hidden bg-gradient-to-b from-[#0a5a61] via-[#085056] to-[#064248]"
+//     >
+//       {/* Animated Background Elements */}
+//       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+//         {/* Gradient Orbs */}
+//         <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl animate-pulse-slow" />
+//         <div className="absolute bottom-20 right-10 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
+//         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow animation-delay-4000" />
+        
+//         {/* Floating Grid Pattern */}
+//         <div 
+//           className="absolute inset-0 opacity-10"
+//           style={{
+//             backgroundImage: `
+//               linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+//               linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+//             `,
+//             backgroundSize: '50px 50px',
+//             animation: 'gridMove 20s linear infinite'
+//           }}
+//         />
+
+//         {/* Floating Particles */}
+//         {[...Array(20)].map((_, i) => (
+//           <div
+//             key={i}
+//             className="absolute w-1 h-1 bg-white/30 rounded-full animate-float-random"
+//             style={{
+//               left: `${Math.random() * 100}%`,
+//               top: `${Math.random() * 100}%`,
+//               animationDelay: `${Math.random() * 5}s`,
+//               animationDuration: `${5 + Math.random() * 10}s`
+//             }}
+//           />
+//         ))}
+//       </div>
+
+//       <div className="relative z-10 max-w-7xl mx-auto">
+//         {/* Header Section */}
+//         <div 
+//           className={`
+//             text-center mb-16 transform transition-all duration-1000
+//             ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0'}
+//           `}
+//         >
+//           {/* Badge */}
+//           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+//             <HelpCircle className="w-4 h-4 text-emerald-400" />
+//             <span className="text-sm text-white/80">Got Questions?</span>
+//           </div>
+
+//           {/* Title */}
+//           <h2 className="text-3xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-white mb-6">
+//             <span className="inline-block animate-title-word-1">Frequently</span>{' '}
+//             <span className="inline-block animate-title-word-2">Asked</span>{' '}
+//             <span className="inline-block bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent animate-title-word-3">
+//               Questions
+//             </span>
+//           </h2>
+
+//           {/* Subtitle */}
+//           <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-8">
+//             Everything you need to know about Jaimax and JMC Coin
+//           </p>
+
+//           {/* Animated Line */}
+//           <div className="flex justify-center gap-1">
+//             <div className="w-12 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full animate-line-1" />
+//             <div className="w-8 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full animate-line-2" />
+//             <div className="w-4 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full animate-line-3" />
+//           </div>
+//         </div>
+
+//         {/* FAQ Grid */}
+//         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+//           {/* Left Column */}
+//           <div className="space-y-5">
+//             {leftColumnFaqs.map((faq, index) => renderFaqItem(faq, index, 0))}
+//           </div>
+
+//           {/* Right Column */}
+//           <div className="space-y-5">
+//             {rightColumnFaqs.map((faq, index) => renderFaqItem(faq, index, 6))}
+//           </div>
+//         </div>
+
+
+//       </div>
+
+//       {/* Custom Animations */}
+//       <style jsx>{`
+//         @keyframes gridMove {
+//           0% { transform: translate(0, 0); }
+//           100% { transform: translate(50px, 50px); }
+//         }
+
+//         @keyframes float-1 {
+//           0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+//           50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+//         }
+
+//         @keyframes float-2 {
+//           0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+//           50% { transform: translateY(-15px) translateX(10px); opacity: 0.8; }
+//         }
+
+//         @keyframes float-3 {
+//           0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+//           50% { transform: translateY(-25px) rotate(180deg); opacity: 1; }
+//         }
+
+//         @keyframes float-random {
+//           0%, 100% { 
+//             transform: translateY(0) translateX(0);
+//             opacity: 0.3;
+//           }
+//           25% { 
+//             transform: translateY(-30px) translateX(20px);
+//             opacity: 0.6;
+//           }
+//           50% { 
+//             transform: translateY(-10px) translateX(-10px);
+//             opacity: 0.4;
+//           }
+//           75% { 
+//             transform: translateY(-40px) translateX(15px);
+//             opacity: 0.7;
+//           }
+//         }
+
+//         @keyframes pulse-slow {
+//           0%, 100% { opacity: 0.2; transform: scale(1); }
+//           50% { opacity: 0.3; transform: scale(1.1); }
+//         }
+
+//         .animate-float-1 { animation: float-1 3s ease-in-out infinite; }
+//         .animate-float-2 { animation: float-2 4s ease-in-out infinite; }
+//         .animate-float-3 { animation: float-3 5s ease-in-out infinite; }
+//         .animate-float-random { animation: float-random 8s ease-in-out infinite; }
+//         .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
+        
+//         .animation-delay-2000 { animation-delay: 2s; }
+//         .animation-delay-4000 { animation-delay: 4s; }
+
+//         .animate-title-word-1 {
+//           animation: fadeSlideUp 0.8s ease-out 0.2s both;
+//         }
+//         .animate-title-word-2 {
+//           animation: fadeSlideUp 0.8s ease-out 0.4s both;
+//         }
+//         .animate-title-word-3 {
+//           animation: fadeSlideUp 0.8s ease-out 0.6s both;
+//         }
+
+//         @keyframes fadeSlideUp {
+//           from {
+//             opacity: 0;
+//             transform: translateY(30px);
+//           }
+//           to {
+//             opacity: 1;
+//             transform: translateY(0);
+//           }
+//         }
+
+//         .animate-line-1 {
+//           animation: lineGrow 0.6s ease-out 0.8s both;
+//         }
+//         .animate-line-2 {
+//           animation: lineGrow 0.6s ease-out 1s both;
+//         }
+//         .animate-line-3 {
+//           animation: lineGrow 0.6s ease-out 1.2s both;
+//         }
+
+//         @keyframes lineGrow {
+//           from {
+//             width: 0;
+//             opacity: 0;
+//           }
+//           to {
+//             opacity: 1;
+//           }
+//         }
+//       `}</style>
+//     </section>
+//   );
+// };
+
+
+
 // const PhasesWheelSection = () => {
 //   const pinContainerRef = useRef(null);
 //   const contentContainerRef = useRef(null);
@@ -841,7 +1308,7 @@ export default Home;
 //   }, []);
 
 //   return (
-//     <section className="relative bg-gradient-to-b from-[#064248] via-[#085056] to-[#0a5a61] overflow-hidden">
+//     <section className="relative bg-gradient-to-b from-[#064248] via-[#7FF2D4] to-[#0AA5A6] overflow-hidden">
 //       {/* Background decorations */}
 //       <div className="absolute inset-0 opacity-10 pointer-events-none">
 //         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white rounded-full filter blur-[128px]"></div>
@@ -3360,58 +3827,9 @@ export default Home;
 //       </section>
 
 //       <BentoGallery />
-
+// <JaimaxFAQ/>
 //       {/* FAQ Section */}
-//       <section
-//         ref={faqRef}
-//         className="min-h-screen px-4 py-20 bg-gradient-to-b from-[#0a5a61] via-[#085056] to-[#064248]"
-//       >
-//         <div className="max-w-4xl mx-auto">
-//           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-20 text-white">
-//             Frequently Asked Questions
-//           </h2>
-
-//           <div className="space-y-4">
-//             {faqs.map((faq, index) => (
-//               <div
-//                 key={index}
-//                 className="faq-item bg-white/5 backdrop-blur-lg rounded-2xl border border-white/30 overflow-hidden hover:border-white/50 transition-all duration-300"
-//               >
-//                 <button
-//                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-//                   className="w-full p-4 sm:p-6 flex items-center justify-between text-left hover:bg-white/10 transition-colors duration-300"
-//                 >
-//                   <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-//                     <div
-//                       className={`p-2 sm:p-3 rounded-xl bg-gradient-to-r ${faq.gradient} flex-shrink-0 text-white`}
-//                     >
-//                       {faq.icon}
-//                     </div>
-//                     <span className="font-semibold text-base sm:text-lg text-white">
-//                       {faq.question}
-//                     </span>
-//                   </div>
-//                   <ChevronDown
-//                     className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 flex-shrink-0 ml-4 text-white ${
-//                       openFaq === index ? "rotate-180" : ""
-//                     }`}
-//                   />
-//                 </button>
-
-//                 <div
-//                   className={`overflow-hidden transition-all duration-300 ${
-//                     openFaq === index ? "max-h-96" : "max-h-0"
-//                   }`}
-//                 >
-//                   <p className="px-4 sm:px-6 pb-4 sm:pb-6 text-gray-300 leading-relaxed text-sm sm:text-base">
-//                     {faq.answer}
-//                   </p>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
+      
 
 //       <style jsx>{`
 //         .custom-scrollbar::-webkit-scrollbar {

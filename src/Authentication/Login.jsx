@@ -12,6 +12,8 @@ import {
   ChevronDown,
   AlertCircle,
   CheckCircle,
+  CreditCard ,
+  ChevronRight 
 } from "lucide-react";
 import icon from "../assets/Images/greencoin.webp";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
@@ -1501,6 +1503,1336 @@ useEffect(() => {
     </div>
   );
 };
+
+// const STEPS = [
+//   { id: 1, title: "Personal Info", icon: User },
+//   { id: 2, title: "KYC Verification", icon: CreditCard },
+//   { id: 3, title: "Security", icon: Shield },
+// ];
+
+// const RegisterComponent = ({
+//   onSubmit,
+//   onToggleMode,
+//   isVisible,
+//   showModal,
+//   onShowModal,
+//   onCloseModal,
+//   onAgreeTerms,
+//   isConfirmAgree,
+// }) => {
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   // Step management
+//   const [currentStep, setCurrentStep] = useState(1);
+
+//   // Password visibility
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+//   // OTP states
+//   const [otpSent, setOtpSent] = useState(false);
+//   const [selectedCode, setSelectedCode] = useState("+91");
+//   const [notification, setNotification] = useState(null);
+//   const [isOtpSending, setIsOtpSending] = useState(false);
+//   const [timer, setTimer] = useState(0);
+//   const [canResendOtp, setCanResendOtp] = useState(false);
+//   const [isChecked, setIsChecked] = useState(false);
+//   const [referralApplied, setReferralApplied] = useState(false);
+
+//   // Aadhaar verification states
+//   const [aadhaarOtpSent, setAadhaarOtpSent] = useState(false);
+//   const [aadhaarVerified, setAadhaarVerified] = useState(false);
+//   const [aadhaarTimer, setAadhaarTimer] = useState(0);
+//   const [canResendAadhaarOtp, setCanResendAadhaarOtp] = useState(false);
+//   const [aadhaarTransactionId, setAadhaarTransactionId] = useState("");
+
+//   // PAN verification states
+//   const [panVerified, setPanVerified] = useState(false);
+//   const [panVerifying, setPanVerifying] = useState(false);
+
+//   const [formData, setFormData] = useState({
+//     // Step 1: Personal Info
+//     name: "",
+//     phone: "",
+//     email: "",
+//     referralId: "",
+//     referralLocked: false,
+
+//     // Step 2: KYC Verification
+//     aadhaarNumber: "",
+//     aadhaarOtp: "",
+//     panNumber: "",
+//     panName: "", // Name as per PAN
+
+//     // Step 3: Security
+//     password: "",
+//     confirmPassword: "",
+//     otp: "",
+//   });
+
+//   const [errors, setErrors] = useState({});
+//   const [touched, setTouched] = useState({});
+
+//   // API mutations
+//   const [register, { isLoading: isRegisterLoading, error: registerError }] =
+//     useRegisterMutation();
+//   const [verify, { isLoading: isVerifyLoading, error: verifyError }] =
+//     useVerifyMutation();
+//   const [OTPresent, { isLoading: isOTPresentLoading, error: OTPresentError }] =
+//     useOTPresentMutation();
+
+//   // Mock mutations for Aadhaar and PAN - replace with your actual API calls
+//   const [verifyAadhaar, { isLoading: isAadhaarLoading }] =
+//     useRegisterMutation?.() || [() => Promise.resolve(), { isLoading: false }];
+//   const [verifyPan, { isLoading: isPanLoading }] =
+//     useVerifyMutation?.() || [() => Promise.resolve(), { isLoading: false }];
+
+//   // Referral code from URL
+//   useEffect(() => {
+//     const searchParams = new URLSearchParams(location.search);
+//     const referralCode = searchParams.get("referralCode");
+
+//     if (referralCode) {
+//       setFormData((prevData) => ({
+//         ...prevData,
+//         referralId: referralCode,
+//         referralLocked: true,
+//       }));
+//       setReferralApplied(true);
+//       setTouched((prev) => ({ ...prev, referralId: true }));
+
+//       const fieldError = validateField("referralId", referralCode);
+//       if (fieldError) {
+//         setErrors((prev) => ({ ...prev, referralId: fieldError }));
+//       }
+//     }
+//   }, [location.search]);
+
+//   const getCurrentCountry = () => {
+//     const country = countrycodes.find(
+//       (item) => item.country_code === selectedCode
+//     );
+//     return country;
+//   };
+
+//   // Validation schemas for each step
+//   const step1Schema = yup.object({
+//     name: yup
+//       .string()
+//       .required("Name is required")
+//       .min(2, "Name must be at least 2 characters")
+//       .matches(/^[a-zA-Z\s]*$/, "Name can only contain letters and spaces"),
+
+//     phone: yup
+//       .string()
+//       .required("Phone number is required")
+//       .matches(/^\d+$/, "Phone number can only contain digits")
+//       .test("phone-length", function (value) {
+//         const currentCountry = getCurrentCountry();
+//         const exactPhoneLength = currentCountry
+//           ? currentCountry.phone_number_length
+//           : 10;
+
+//         if (value && value.length !== exactPhoneLength) {
+//           return this.createError({
+//             message: `Phone number must be exactly ${exactPhoneLength} digits`,
+//           });
+//         }
+//         return true;
+//       }),
+
+//     email: yup
+//       .string()
+//       .required("Email is required")
+//       .matches(
+//         /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/,
+//         "Invalid email format"
+//       ),
+
+//     referralId: yup
+//       .string()
+//       .nullable()
+//       .test("referral-format", "Invalid referral ID format", function (value) {
+//         if (!value) return true;
+//         return /^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/.test(value);
+//       }),
+//   });
+
+//   const step2Schema = yup.object({
+//     aadhaarNumber: yup
+//       .string()
+//       .required("Aadhaar number is required")
+//       .matches(/^\d{12}$/, "Aadhaar number must be exactly 12 digits"),
+
+//     aadhaarOtp: yup.string().when("aadhaarOtpSent", {
+//       is: true,
+//       then: (schema) =>
+//         schema
+//           .required("Aadhaar OTP is required")
+//           .matches(/^\d{6}$/, "OTP must be 6 digits"),
+//       otherwise: (schema) => schema.nullable(),
+//     }),
+
+//     panNumber: yup
+//       .string()
+//       .required("PAN number is required")
+//       .matches(
+//         /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+//         "Invalid PAN format (e.g., ABCDE1234F)"
+//       ),
+
+//     panName: yup
+//       .string()
+//       .required("Name as per PAN is required")
+//       .min(2, "Name must be at least 2 characters"),
+//   });
+
+//   const step3Schema = yup.object({
+//     password: yup
+//       .string()
+//       .required("Password is required")
+//       .min(6, "Password must be at least 6 characters"),
+
+//     confirmPassword: yup
+//       .string()
+//       .required("Please confirm your password")
+//       .oneOf([yup.ref("password")], "Passwords must match"),
+
+//     otp: yup.string().when("otpSent", {
+//       is: true,
+//       then: (schema) =>
+//         schema
+//           .required("OTP is required")
+//           .matches(/^\d{6}$/, "OTP must be 6 digits"),
+//       otherwise: (schema) => schema.nullable(),
+//     }),
+//   });
+
+//   // Get current step schema
+//   const getCurrentSchema = () => {
+//     switch (currentStep) {
+//       case 1:
+//         return step1Schema;
+//       case 2:
+//         return step2Schema;
+//       case 3:
+//         return step3Schema;
+//       default:
+//         return step1Schema;
+//     }
+//   };
+
+//   // Validate single field
+//   const validateField = (fieldName, value) => {
+//     try {
+//       const schema = getCurrentSchema();
+//       const dataToValidate = {
+//         ...formData,
+//         [fieldName]: value,
+//         otpSent,
+//         aadhaarOtpSent,
+//       };
+//       schema.validateSyncAt(fieldName, dataToValidate);
+//       return null;
+//     } catch (error) {
+//       return error.message;
+//     }
+//   };
+
+//   // Validate current step
+//   const validateCurrentStep = () => {
+//     try {
+//       const schema = getCurrentSchema();
+//       const dataToValidate = { ...formData, otpSent, aadhaarOtpSent };
+//       schema.validateSync(dataToValidate, { abortEarly: false });
+//       return {};
+//     } catch (error) {
+//       const validationErrors = {};
+//       error.inner?.forEach((err) => {
+//         validationErrors[err.path] = err.message;
+//       });
+//       return validationErrors;
+//     }
+//   };
+
+//   // Handle input change
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+
+//     // Input restrictions
+//     if (name === "referralId" && referralApplied) return;
+//     if (name === "phone" && !/^\d*$/.test(value)) return;
+//     if (name === "name" && !/^[a-zA-Z\s]*$/.test(value)) return;
+//     if (name === "panName" && !/^[a-zA-Z\s]*$/.test(value)) return;
+//     if (name === "referralId" && !/^[A-Za-z0-9]*$/.test(value)) return;
+//     if (name === "otp" && !/^[0-9]*$/.test(value)) return;
+//     if (name === "aadhaarNumber" && !/^\d*$/.test(value)) return;
+//     if (name === "aadhaarOtp" && !/^\d*$/.test(value)) return;
+//     if (name === "panNumber") {
+//       const upperValue = value.toUpperCase();
+//       if (!/^[A-Z0-9]*$/.test(upperValue)) return;
+//       setFormData((prev) => ({ ...prev, [name]: upperValue }));
+//       if (touched[name]) {
+//         const fieldError = validateField(name, upperValue);
+//         setErrors((prev) => ({ ...prev, [name]: fieldError }));
+//       }
+//       return;
+//     }
+
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+
+//     if (touched[name]) {
+//       const fieldError = validateField(name, value);
+//       setErrors((prev) => ({ ...prev, [name]: fieldError }));
+//     }
+//   };
+
+//   // Handle blur
+//   const handleBlur = (e) => {
+//     const { name, value } = e.target;
+//     setTouched((prev) => ({ ...prev, [name]: true }));
+//     const fieldError = validateField(name, value);
+//     setErrors((prev) => ({ ...prev, [name]: fieldError }));
+//   };
+
+//   // Aadhaar Timer
+//   useEffect(() => {
+//     let interval;
+//     if (aadhaarOtpSent && aadhaarTimer > 0) {
+//       interval = setInterval(() => {
+//         setAadhaarTimer((prev) => prev - 1);
+//       }, 1000);
+//     } else if (aadhaarTimer === 0 && aadhaarOtpSent) {
+//       setCanResendAadhaarOtp(true);
+//       clearInterval(interval);
+//     }
+//     return () => clearInterval(interval);
+//   }, [aadhaarOtpSent, aadhaarTimer]);
+
+//   // Email OTP Timer
+//   useEffect(() => {
+//     let interval;
+//     if (otpSent && timer > 0) {
+//       interval = setInterval(() => {
+//         setTimer((prev) => prev - 1);
+//       }, 1000);
+//     } else if (timer === 0) {
+//       setCanResendOtp(true);
+//       clearInterval(interval);
+//     }
+//     return () => clearInterval(interval);
+//   }, [otpSent, timer]);
+
+//   // Send Aadhaar OTP
+//   const handleSendAadhaarOtp = async () => {
+//     setNotification(null);
+
+//     if (!/^\d{12}$/.test(formData.aadhaarNumber)) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         aadhaarNumber: "Please enter a valid 12-digit Aadhaar number",
+//       }));
+//       return;
+//     }
+
+//     try {
+//       // Replace with your actual Aadhaar OTP API call
+//       const response = await verifyAadhaar({
+//         aadhaarNumber: formData.aadhaarNumber,
+//         action: "sendOtp",
+//       }).unwrap();
+
+//       setAadhaarTransactionId(response?.transactionId || "mock-transaction-id");
+//       setAadhaarOtpSent(true);
+//       setAadhaarTimer(120);
+//       setCanResendAadhaarOtp(false);
+//       setNotification({
+//         type: "success",
+//         message: "OTP sent to your Aadhaar-linked mobile number!",
+//       });
+//     } catch (err) {
+//       // Mock success for development - remove in production
+//       setAadhaarOtpSent(true);
+//       setAadhaarTimer(120);
+//       setCanResendAadhaarOtp(false);
+//       setNotification({
+//         type: "success",
+//         message: "OTP sent to your Aadhaar-linked mobile number!",
+//       });
+//     }
+//   };
+
+//   // Verify Aadhaar OTP
+//   const handleVerifyAadhaarOtp = async () => {
+//     setNotification(null);
+
+//     if (!/^\d{6}$/.test(formData.aadhaarOtp)) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         aadhaarOtp: "Please enter a valid 6-digit OTP",
+//       }));
+//       return;
+//     }
+
+//     try {
+//       // Replace with your actual Aadhaar verification API call
+//       const response = await verifyAadhaar({
+//         aadhaarNumber: formData.aadhaarNumber,
+//         otp: formData.aadhaarOtp,
+//         transactionId: aadhaarTransactionId,
+//         action: "verifyOtp",
+//       }).unwrap();
+
+//       setAadhaarVerified(true);
+//       setNotification({
+//         type: "success",
+//         message: "Aadhaar verified successfully!",
+//       });
+//     } catch (err) {
+//       // Mock success for development - remove in production
+//       setAadhaarVerified(true);
+//       setNotification({
+//         type: "success",
+//         message: "Aadhaar verified successfully!",
+//       });
+//     }
+//   };
+
+//   // Verify PAN
+//   const handleVerifyPan = async () => {
+//     setNotification(null);
+
+//     if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber)) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         panNumber: "Please enter a valid PAN number",
+//       }));
+//       return;
+//     }
+
+//     if (!formData.panName.trim()) {
+//       setErrors((prev) => ({
+//         ...prev,
+//         panName: "Please enter name as per PAN",
+//       }));
+//       return;
+//     }
+
+//     setPanVerifying(true);
+
+//     try {
+//       // Replace with your actual PAN verification API call
+//       const response = await verifyPan({
+//         panNumber: formData.panNumber,
+//         name: formData.panName,
+//       }).unwrap();
+
+//       setPanVerified(true);
+//       setNotification({
+//         type: "success",
+//         message: "PAN verified successfully!",
+//       });
+//     } catch (err) {
+//       // Mock success for development - remove in production
+//       setPanVerified(true);
+//       setNotification({
+//         type: "success",
+//         message: "PAN verified successfully!",
+//       });
+//     } finally {
+//       setPanVerifying(false);
+//     }
+//   };
+
+//   // Handle step navigation
+//   const handleNextStep = () => {
+//     const validationErrors = validateCurrentStep();
+
+//     // Mark all current step fields as touched
+//     const currentStepFields = getStepFields(currentStep);
+//     const touchedFields = {};
+//     currentStepFields.forEach((field) => {
+//       touchedFields[field] = true;
+//     });
+//     setTouched((prev) => ({ ...prev, ...touchedFields }));
+
+//     // Filter errors for current step only
+//     const currentStepErrors = {};
+//     currentStepFields.forEach((field) => {
+//       if (validationErrors[field]) {
+//         currentStepErrors[field] = validationErrors[field];
+//       }
+//     });
+
+//     if (Object.keys(currentStepErrors).length > 0) {
+//       setErrors((prev) => ({ ...prev, ...currentStepErrors }));
+//       setNotification({
+//         type: "error",
+//         message: "Please fill all required fields correctly.",
+//       });
+//       return;
+//     }
+
+//     // Additional checks for step 2
+//     if (currentStep === 2) {
+//       if (!aadhaarVerified) {
+//         setNotification({
+//           type: "error",
+//           message: "Please verify your Aadhaar number first.",
+//         });
+//         return;
+//       }
+//       if (!panVerified) {
+//         setNotification({
+//           type: "error",
+//           message: "Please verify your PAN number first.",
+//         });
+//         return;
+//       }
+//     }
+
+//     setCurrentStep((prev) => Math.min(prev + 1, 3));
+//     setNotification(null);
+//   };
+
+//   const handlePrevStep = () => {
+//     setCurrentStep((prev) => Math.max(prev - 1, 1));
+//     setNotification(null);
+//   };
+
+//   const getStepFields = (step) => {
+//     switch (step) {
+//       case 1:
+//         return ["name", "phone", "email", "referralId"];
+//       case 2:
+//         return ["aadhaarNumber", "aadhaarOtp", "panNumber", "panName"];
+//       case 3:
+//         return ["password", "confirmPassword", "otp"];
+//       default:
+//         return [];
+//     }
+//   };
+
+//   // Handle email OTP
+//   const handleVerify = async (e) => {
+//     e.preventDefault();
+//     setNotification(null);
+
+//     const validationErrors = validateCurrentStep();
+//     const formErrorsExceptOtp =
+//       Object.keys(validationErrors).filter((key) => key !== "otp").length > 0;
+
+//     if (formErrorsExceptOtp) {
+//       const touchedFields = {};
+//       Object.keys(formData).forEach((key) => {
+//         touchedFields[key] = true;
+//       });
+//       setTouched(touchedFields);
+//       setErrors(validationErrors);
+//       setNotification({
+//         type: "error",
+//         message: "Please fill all required fields correctly.",
+//       });
+//       return;
+//     }
+
+//     setIsOtpSending(true);
+
+//     try {
+//       const currentCountry = getCurrentCountry();
+//       const payload = {
+//         name: formData.name,
+//         phone: formData.phone,
+//         email: formData.email,
+//         password: formData.password,
+//         confirmPwd: formData.confirmPassword,
+//         countryCode: currentCountry?.country_code || "+91",
+//         country: currentCountry?.country_name || "India",
+//         aadhaarNumber: formData.aadhaarNumber,
+//         panNumber: formData.panNumber,
+//       };
+
+//       const result = await register(payload).unwrap();
+
+//       if (result?.data?.username) {
+//         Cookies.set("username", result.data.username, { expires: 7 });
+//       }
+//       setOtpSent(true);
+//       setTimer(120);
+//       setCanResendOtp(false);
+//       setNotification({ type: "success", message: "OTP sent to your email!" });
+//     } catch (err) {
+//       if (err?.data?.message === "User verification pending") {
+//         try {
+//           const otpPayload = { email: formData.email, otpType: "register" };
+//           await OTPresent(otpPayload).unwrap();
+//           setOtpSent(true);
+//           setTimer(120);
+//           setCanResendOtp(false);
+//           setNotification({
+//             type: "success",
+//             message: "OTP resent to your email!",
+//           });
+//         } catch (otpErr) {
+//           setNotification({ type: "error", message: getErrorMessage(otpErr) });
+//         }
+//       } else {
+//         setNotification({ type: "error", message: getErrorMessage(err) });
+//       }
+//     } finally {
+//       setIsOtpSending(false);
+//     }
+//   };
+
+//   // Handle final submit
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setNotification(null);
+
+//     // Check terms
+//     if (!isChecked || !isConfirmAgree) {
+//       setNotification({
+//         type: "error",
+//         message: "Please accept the Terms & Conditions and Privacy Policy.",
+//       });
+//       return;
+//     }
+
+//     if (!otpSent) {
+//       setNotification({
+//         type: "error",
+//         message: "Please send OTP and verify your email first.",
+//       });
+//       return;
+//     }
+
+//     if (!formData.otp.trim()) {
+//       setNotification({
+//         type: "error",
+//         message: "OTP is required to complete registration.",
+//       });
+//       setErrors((prev) => ({ ...prev, otp: "OTP is required" }));
+//       return;
+//     }
+
+//     try {
+//       const verifyPayload = {
+//         email: formData.email,
+//         otp: Number(formData.otp),
+//         otpType: "register",
+//         referenceId: formData.referralId,
+//       };
+
+//       const res = await verify(verifyPayload).unwrap();
+
+//       if (!res.success) {
+//         setNotification({
+//           type: "error",
+//           message: res.message || "OTP verification failed.",
+//         });
+//         return;
+//       }
+
+//       const userRegisterData = {
+//         ...res,
+//         email: formData.email,
+//         name: formData.name,
+//         username: Cookies.get("username"),
+//       };
+
+//       Cookies.set("token", res?.data?.token, { expires: 7 });
+//       Cookies.set("userData", JSON.stringify(res?.data), { expires: 7 });
+//       Cookies.set("userRegisterData", JSON.stringify(userRegisterData), {
+//         expires: 7,
+//       });
+
+//       setNotification({
+//         type: "success",
+//         message: res?.message || "Registration completed successfully!",
+//       });
+
+//       setTimeout(() => {
+//         navigate("/dashboard");
+//       }, 1000);
+//     } catch (err) {
+//       setNotification({ type: "error", message: getErrorMessage(err) });
+//     }
+//   };
+
+//   const getErrorMessage = (error) => {
+//     if (error) {
+//       if (error.data && error.data.message) return error.data.message;
+//       if (error.error) return error.error;
+//       if (error.status) {
+//         if (error.status === 400)
+//           return error.data?.message || "Please check your input.";
+//         if (error.status === 401)
+//           return error.data?.message || "Invalid credentials.";
+//         if (error.status === 409)
+//           return error.data?.message || "User already exists.";
+//         if (error.status >= 500)
+//           return error.data?.message || "Server error. Please try again.";
+//         return error.data?.message || "An error occurred.";
+//       }
+//     }
+//     return "An unexpected error occurred.";
+//   };
+
+//   const handleCheckboxChange = (e) => {
+//     if (e.target.checked) {
+//       onShowModal();
+//     } else {
+//       setIsChecked(false);
+//     }
+//   };
+
+//   const handleTermsLinkClick = (e) => {
+//     e.preventDefault();
+//     onShowModal();
+//   };
+
+//   useEffect(() => {
+//     if (isConfirmAgree) {
+//       setIsChecked(true);
+//     } else {
+//       setIsChecked(false);
+//     }
+//   }, [isConfirmAgree]);
+
+//   // Error handling for API errors
+//   useEffect(() => {
+//     if (registerError) {
+//       setNotification({ type: "error", message: getErrorMessage(registerError) });
+//     }
+//   }, [registerError]);
+
+//   useEffect(() => {
+//     if (verifyError) {
+//       setNotification({ type: "error", message: getErrorMessage(verifyError) });
+//     }
+//   }, [verifyError]);
+
+//   useEffect(() => {
+//     if (OTPresentError) {
+//       setNotification({ type: "error", message: getErrorMessage(OTPresentError) });
+//     }
+//   }, [OTPresentError]);
+
+//   // Step indicator component
+//   const StepIndicator = () => (
+//     <div className="mb-8">
+//       <div className="flex items-center justify-between">
+//         {STEPS.map((step, index) => {
+//           const StepIcon = step.icon;
+//           const isCompleted = currentStep > step.id;
+//           const isCurrent = currentStep === step.id;
+
+//           return (
+//             <React.Fragment key={step.id}>
+//               <div className="flex flex-col items-center">
+//                 <div
+//                   className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+//                     isCompleted
+//                       ? "bg-green-500 text-white"
+//                       : isCurrent
+//                       ? "bg-teal-500 text-white ring-4 ring-teal-100"
+//                       : "bg-gray-200 text-gray-500"
+//                   }`}
+//                 >
+//                   {isCompleted ? (
+//                     <Check className="w-5 h-5" />
+//                   ) : (
+//                     <StepIcon className="w-5 h-5" />
+//                   )}
+//                 </div>
+//                 <span
+//                   className={`mt-2 text-xs font-medium ${
+//                     isCurrent ? "text-teal-600" : "text-gray-500"
+//                   }`}
+//                 >
+//                   {step.title}
+//                 </span>
+//               </div>
+//               {index < STEPS.length - 1 && (
+//                 <div
+//                   className={`flex-1 h-1 mx-2 rounded ${
+//                     currentStep > step.id ? "bg-green-500" : "bg-gray-200"
+//                   }`}
+//                 />
+//               )}
+//             </React.Fragment>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+
+//   // Step 1: Personal Information
+//   const renderStep1 = () => (
+//     <div className="space-y-4">
+//       {/* Name Field */}
+//       <div className="space-y-1">
+//         <div className="relative">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//             <User className="h-4 w-4 text-gray-400" />
+//           </div>
+//           <input
+//             type="text"
+//             name="name"
+//             value={formData.name}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Full Name"
+//             className={`w-full pl-10 bg-white pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//               errors.name && touched.name
+//                 ? "border-red-500 bg-red-50"
+//                 : "border-gray-300"
+//             }`}
+//           />
+//         </div>
+//         {errors.name && touched.name && (
+//           <p className="text-red-500 text-xs pl-1">{errors.name}</p>
+//         )}
+//       </div>
+
+//       {/* Phone Field */}
+//       <div className="space-y-0">
+//         <div
+//           className={`flex rounded-lg border transition-all duration-200 ${
+//             errors.phone && touched.phone
+//               ? "border-red-500 bg-red-50"
+//               : "border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500"
+//           }`}
+//         >
+//           <div className="flex-shrink-0">
+//             <CountryCodeDropdown
+//               value={selectedCode}
+//               onChange={setSelectedCode}
+//               className="bg-gray-50 py-2.5 px-2 text-sm border-r border-gray-200 hover:bg-gray-100 min-w-0"
+//               countryCodes={countrycodes}
+//             />
+//           </div>
+//           <div className="relative flex-1 min-w-0">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//               <Phone className="h-4 w-4 text-gray-400" />
+//             </div>
+//             <input
+//               type="tel"
+//               name="phone"
+//               value={formData.phone}
+//               onChange={handleInputChange}
+//               onBlur={handleBlur}
+//               placeholder="Phone Number"
+//               className="w-full pl-10 pr-3 py-2.5 text-sm border-0 bg-transparent outline-none"
+//             />
+//           </div>
+//         </div>
+//         {errors.phone && touched.phone && (
+//           <p className="text-red-500 text-xs pl-1">{errors.phone}</p>
+//         )}
+//       </div>
+
+//       {/* Email Field */}
+//       <div className="space-y-0">
+//         <div className="relative">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//             <Mail className="h-4 w-4 text-gray-400" />
+//           </div>
+//           <input
+//             type="email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Email"
+//             className={`w-full pl-10 pr-3 py-2.5 bg-white text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//               errors.email && touched.email
+//                 ? "border-red-500 bg-red-50"
+//                 : "border-gray-300"
+//             }`}
+//           />
+//         </div>
+//         {errors.email && touched.email && (
+//           <p className="text-red-500 text-xs pl-1">{errors.email}</p>
+//         )}
+//       </div>
+
+//       {/* Referral ID Field */}
+//       <div className="space-y-0">
+//         <div className="relative">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//             <Users className="h-4 w-4 text-gray-400" />
+//           </div>
+//           <input
+//             type="text"
+//             name="referralId"
+//             value={formData.referralId}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             readOnly={referralApplied}
+//             placeholder="Referral ID (Optional)"
+//             className={`w-full pl-10 pr-3 py-2.5 text-sm bg-white border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//               errors.referralId && touched.referralId
+//                 ? "border-red-500 bg-red-50"
+//                 : referralApplied && formData.referralId
+//                 ? "border-green-500 bg-green-50 cursor-not-allowed"
+//                 : "border-gray-300"
+//             }`}
+//           />
+//           {referralApplied && formData.referralId && !errors.referralId && (
+//             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+//               <Check className="h-5 w-5 text-green-500" />
+//             </div>
+//           )}
+//         </div>
+//         {errors.referralId && touched.referralId && (
+//           <p className="text-red-500 text-xs pl-1">{errors.referralId}</p>
+//         )}
+//         {referralApplied && formData.referralId && !errors.referralId && (
+//           <p className="text-green-600 text-xs pl-1">Referral code applied!</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+
+//   // Step 2: KYC Verification
+//   const renderStep2 = () => (
+//     <div className="space-y-4">
+//       {/* Aadhaar Section */}
+//       <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+//         <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+//           <CreditCard className="h-4 w-4" />
+//           Aadhaar Verification
+//           {aadhaarVerified && (
+//             <span className="ml-auto flex items-center gap-1 text-green-600 text-xs">
+//               <Check className="h-4 w-4" /> Verified
+//             </span>
+//           )}
+//         </h3>
+
+//         {/* Aadhaar Number */}
+//         <div className="space-y-1 mb-3">
+//           <div className="relative">
+//             <input
+//               type="text"
+//               name="aadhaarNumber"
+//               value={formData.aadhaarNumber}
+//               onChange={handleInputChange}
+//               onBlur={handleBlur}
+//               placeholder="Enter 12-digit Aadhaar Number"
+//               maxLength="12"
+//               disabled={aadhaarVerified}
+//               className={`w-full px-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//                 errors.aadhaarNumber && touched.aadhaarNumber
+//                   ? "border-red-500 bg-red-50"
+//                   : aadhaarVerified
+//                   ? "border-green-500 bg-green-50"
+//                   : "border-gray-300 bg-white"
+//               }`}
+//             />
+//           </div>
+//           {errors.aadhaarNumber && touched.aadhaarNumber && (
+//             <p className="text-red-500 text-xs pl-1">{errors.aadhaarNumber}</p>
+//           )}
+//         </div>
+
+//         {/* Aadhaar OTP */}
+//         {!aadhaarVerified && (
+//           <div className="flex gap-2">
+//             <div className="relative flex-1">
+//               <input
+//                 type="text"
+//                 name="aadhaarOtp"
+//                 value={formData.aadhaarOtp}
+//                 onChange={handleInputChange}
+//                 onBlur={handleBlur}
+//                 placeholder="Enter 6-digit OTP"
+//                 maxLength="6"
+//                 disabled={!aadhaarOtpSent}
+//                 className={`w-full px-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//                   errors.aadhaarOtp && touched.aadhaarOtp
+//                     ? "border-red-500 bg-red-50"
+//                     : !aadhaarOtpSent
+//                     ? "bg-gray-100"
+//                     : "border-gray-300 bg-white"
+//                 }`}
+//               />
+//             </div>
+//             {!aadhaarOtpSent ? (
+//               <button
+//                 type="button"
+//                 onClick={handleSendAadhaarOtp}
+//                 disabled={
+//                   isAadhaarLoading || !/^\d{12}$/.test(formData.aadhaarNumber)
+//                 }
+//                 className="px-4 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap bg-teal-500 text-white hover:bg-teal-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+//               >
+//                 {isAadhaarLoading ? "Sending..." : "Send OTP"}
+//               </button>
+//             ) : !canResendAadhaarOtp ? (
+//               <button
+//                 type="button"
+//                 onClick={handleVerifyAadhaarOtp}
+//                 disabled={
+//                   isAadhaarLoading || !/^\d{6}$/.test(formData.aadhaarOtp)
+//                 }
+//                 className="px-4 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap bg-green-500 text-white hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+//               >
+//                 {isAadhaarLoading ? "Verifying..." : `Verify (${aadhaarTimer}s)`}
+//               </button>
+//             ) : (
+//               <button
+//                 type="button"
+//                 onClick={handleSendAadhaarOtp}
+//                 disabled={isAadhaarLoading}
+//                 className="px-4 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap bg-teal-500 text-white hover:bg-teal-600 transition-all"
+//               >
+//                 Resend OTP
+//               </button>
+//             )}
+//           </div>
+//         )}
+//         {errors.aadhaarOtp && touched.aadhaarOtp && (
+//           <p className="text-red-500 text-xs pl-1 mt-1">{errors.aadhaarOtp}</p>
+//         )}
+//       </div>
+
+//       {/* PAN Section */}
+//       <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+//         <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+//           <FileText className="h-4 w-4" />
+//           PAN Verification
+//           {panVerified && (
+//             <span className="ml-auto flex items-center gap-1 text-green-600 text-xs">
+//               <Check className="h-4 w-4" /> Verified
+//             </span>
+//           )}
+//         </h3>
+
+//         {/* PAN Number */}
+//         <div className="space-y-1 mb-3">
+//           <div className="relative">
+//             <input
+//               type="text"
+//               name="panNumber"
+//               value={formData.panNumber}
+//               onChange={handleInputChange}
+//               onBlur={handleBlur}
+//               placeholder="Enter PAN Number (e.g., ABCDE1234F)"
+//               maxLength="10"
+//               disabled={panVerified}
+//               className={`w-full px-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 uppercase ${
+//                 errors.panNumber && touched.panNumber
+//                   ? "border-red-500 bg-red-50"
+//                   : panVerified
+//                   ? "border-green-500 bg-green-50"
+//                   : "border-gray-300 bg-white"
+//               }`}
+//             />
+//           </div>
+//           {errors.panNumber && touched.panNumber && (
+//             <p className="text-red-500 text-xs pl-1">{errors.panNumber}</p>
+//           )}
+//         </div>
+
+//         {/* Name as per PAN */}
+//         <div className="space-y-1 mb-3">
+//           <div className="relative">
+//             <input
+//               type="text"
+//               name="panName"
+//               value={formData.panName}
+//               onChange={handleInputChange}
+//               onBlur={handleBlur}
+//               placeholder="Name as per PAN"
+//               disabled={panVerified}
+//               className={`w-full px-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//                 errors.panName && touched.panName
+//                   ? "border-red-500 bg-red-50"
+//                   : panVerified
+//                   ? "border-green-500 bg-green-50"
+//                   : "border-gray-300 bg-white"
+//               }`}
+//             />
+//           </div>
+//           {errors.panName && touched.panName && (
+//             <p className="text-red-500 text-xs pl-1">{errors.panName}</p>
+//           )}
+//         </div>
+
+//         {/* Verify PAN Button */}
+//         {!panVerified && (
+//           <button
+//             type="button"
+//             onClick={handleVerifyPan}
+//             disabled={
+//               panVerifying ||
+//               !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber) ||
+//               !formData.panName.trim()
+//             }
+//             className="w-full px-4 py-2.5 text-sm rounded-lg font-medium bg-teal-500 text-white hover:bg-teal-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+//           >
+//             {panVerifying ? "Verifying..." : "Verify PAN"}
+//           </button>
+//         )}
+//       </div>
+//     </div>
+//   );
+
+//   // Step 3: Security
+//   const renderStep3 = () => (
+//     <div className="space-y-4">
+//       {/* Password Field */}
+//       <div className="space-y-0">
+//         <div className="relative">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//             <Lock className="h-4 w-4 text-gray-400" />
+//           </div>
+//           <input
+//             type={showPassword ? "text" : "password"}
+//             name="password"
+//             value={formData.password}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Password"
+//             className={`w-full pl-10 pr-10 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//               errors.password && touched.password
+//                 ? "border-red-500 bg-red-50"
+//                 : "border-gray-300"
+//             }`}
+//           />
+//           <button
+//             type="button"
+//             onClick={() => setShowPassword(!showPassword)}
+//             className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors z-10"
+//           >
+//             {showPassword ? (
+//               <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//             ) : (
+//               <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//             )}
+//           </button>
+//         </div>
+//         {errors.password && touched.password && (
+//           <p className="text-red-500 text-xs pl-1">{errors.password}</p>
+//         )}
+//       </div>
+
+//       {/* Confirm Password Field */}
+//       <div className="space-y-0">
+//         <div className="relative">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//             <Lock className="h-4 w-4 text-gray-400" />
+//           </div>
+//           <input
+//             type={showConfirmPassword ? "text" : "password"}
+//             name="confirmPassword"
+//             value={formData.confirmPassword}
+//             onChange={handleInputChange}
+//             onBlur={handleBlur}
+//             placeholder="Confirm Password"
+//             className={`w-full pl-10 pr-10 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//               errors.confirmPassword && touched.confirmPassword
+//                 ? "border-red-500 bg-red-50"
+//                 : "border-gray-300"
+//             }`}
+//           />
+//           <button
+//             type="button"
+//             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+//             className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors z-10"
+//           >
+//             {showConfirmPassword ? (
+//               <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//             ) : (
+//               <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+//             )}
+//           </button>
+//         </div>
+//         {errors.confirmPassword && touched.confirmPassword && (
+//           <p className="text-red-500 text-xs pl-1">{errors.confirmPassword}</p>
+//         )}
+//       </div>
+
+//       {/* Email OTP Field */}
+//       <div className="space-y-0">
+//         <div className="flex gap-2">
+//           <div className="relative flex-1">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+//               <Shield className="h-4 w-4 text-gray-400" />
+//             </div>
+//             <input
+//               type="text"
+//               name="otp"
+//               value={formData.otp}
+//               onChange={handleInputChange}
+//               onBlur={handleBlur}
+//               placeholder="Enter 6-digit Email OTP"
+//               maxLength="6"
+//               className={`w-full bg-white pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
+//                 errors.otp && touched.otp
+//                   ? "border-red-500 bg-red-50"
+//                   : "border-gray-300"
+//               }`}
+//             />
+//           </div>
+//           <button
+//             type="button"
+//             onClick={handleVerify}
+//             disabled={
+//               isRegisterLoading ||
+//               isOTPresentLoading ||
+//               (otpSent && !canResendOtp) ||
+//               !formData.password ||
+//               !formData.confirmPassword ||
+//               formData.password !== formData.confirmPassword
+//             }
+//             className={`px-3 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
+//               otpSent && !canResendOtp
+//                 ? "bg-green-100 text-green-700 cursor-default"
+//                 : isRegisterLoading || isOTPresentLoading
+//                 ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+//                 : "bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105"
+//             }`}
+//           >
+//             {isRegisterLoading || isOTPresentLoading
+//               ? "Sending..."
+//               : otpSent && !canResendOtp
+//               ? `Sent (${timer}s)`
+//               : canResendOtp
+//               ? "Resend OTP"
+//               : "Send OTP"}
+//           </button>
+//         </div>
+//         {errors.otp && touched.otp && (
+//           <p className="text-red-500 text-xs pl-1">{errors.otp}</p>
+//         )}
+//       </div>
+
+//       {/* Terms and Conditions */}
+//       <div className="flex items-start gap-2 pt-2">
+//         <input
+//           id="terms_and_conditions"
+//           type="checkbox"
+//           checked={isChecked && isConfirmAgree}
+//           onChange={handleCheckboxChange}
+//           className="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 flex-shrink-0"
+//         />
+//         <label
+//           htmlFor="terms_and_conditions"
+//           className="text-xs sm:text-sm text-gray-700 leading-relaxed"
+//         >
+//           I accept the{" "}
+//           <button
+//             type="button"
+//             onClick={handleTermsLinkClick}
+//             className="text-teal-600 hover:underline font-medium"
+//           >
+//             Terms & Conditions
+//           </button>{" "}
+//           and{" "}
+//           <button
+//             type="button"
+//             onClick={handleTermsLinkClick}
+//             className="text-teal-600 hover:underline font-medium"
+//           >
+//             Privacy Policy
+//           </button>
+//         </label>
+//       </div>
+//     </div>
+//   );
+
+//   return (
+//     <div
+//       className={`w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500 transform ${
+//         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+//       }`}
+//     >
+//       {notification && (
+//         <Notification
+//           type={notification.type}
+//           message={notification.message}
+//           onClose={() => setNotification(null)}
+//         />
+//       )}
+//       <Seo page="register" />
+
+//       <div className="text-center mb-4 sm:mb-6">
+//         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">
+//           REGISTER
+//         </h1>
+//         <p className="text-sm text-gray-600">
+//           Create a new account to get started
+//         </p>
+//       </div>
+
+//       {/* Step Indicator */}
+//       <StepIndicator />
+
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         {/* Render current step */}
+//         {currentStep === 1 && renderStep1()}
+//         {currentStep === 2 && renderStep2()}
+//         {currentStep === 3 && renderStep3()}
+
+//         {/* Navigation Buttons */}
+//         <div className="flex gap-3 pt-4">
+//           {currentStep > 1 && (
+//             <button
+//               type="button"
+//               onClick={handlePrevStep}
+//               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 transition-all"
+//             >
+//               <ChevronLeft className="w-4 h-4" />
+//               Back
+//             </button>
+//           )}
+
+//           {currentStep < 3 ? (
+//             <button
+//               type="button"
+//               onClick={handleNextStep}
+//               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-b from-[#0B736F] to-[#0B736F] rounded-full hover:opacity-90 transition-all"
+//             >
+//               Next
+//               <ChevronRight className="w-4 h-4" />
+//             </button>
+//           ) : (
+//             <button
+//               type="submit"
+//               disabled={
+//                 isVerifyLoading ||
+//                 !otpSent ||
+//                 !formData.otp.trim() ||
+//                 !isChecked ||
+//                 !isConfirmAgree
+//               }
+//               className="flex-1 bg-gradient-to-b from-[#0B736F] to-[#0B736F] text-white py-2.5 px-4 rounded-full font-medium focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
+//             >
+//               {isVerifyLoading ? "Verifying..." : "REGISTER"}
+//             </button>
+//           )}
+//         </div>
+//       </form>
+
+//       <div className="mt-4 sm:mt-6 text-center">
+//         <p className="text-sm text-gray-600">
+//           Already have an account?{" "}
+//           <button
+//             onClick={onToggleMode}
+//             className="text-teal-600 hover:text-teal-700 font-medium"
+//           >
+//             Sign in
+//           </button>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
+
+
 export default function AuthContainer() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1518,7 +2850,7 @@ export default function AuthContainer() {
   // ADD: Terms modal state management at AuthContainer level
   const [showModal, setShowModal] = useState(false);
   const [isConfirmAgree, setIsConfirmAgree] = useState(false);
-
+const handleBack = () => navigate("/");
   useEffect(() => {
     if (cluster === "login") {
       setIsLogin(true);
@@ -1583,7 +2915,22 @@ export default function AuthContainer() {
   return (
     <div className="min-h-screen w-full overflow-hidden bg-gray-50">
       {/* Desktop View */}
-      <div className="hidden lg:flex w-full h-screen relative">
+      <div className="hidden lg:flex w-full h-screen relative">\
+         <button
+    onClick={handleBack}
+    className="absolute top-[8%] left-0 z-50 text-white hover:text-gray-200 transition"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="2"
+      stroke="currentColor"
+      className="w-8 h-8"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
         {/* Left Section - Gradient Background */}
         <div
           className={`absolute inset-y-0 w-1/2 bg-gradient-to-br from-[#085358] via-teal-600 to-green-900 transform transition-all duration-1000 ease-out ${
@@ -1792,6 +3139,21 @@ export default function AuthContainer() {
       <div className="lg:hidden w-full min-h-screen flex flex-col">
         {/* Mobile Header */}
         <div className="bg-gradient-to-br from-[#085358] via-teal-600 to-green-900 relative overflow-hidden">
+          <button
+    onClick={handleBack}
+    className="absolute top-[7.8%] -left-1 z-50 text-white hover:text-gray-200 transition"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="2"
+      stroke="currentColor"
+      className="w-6 h-6"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
           {/* Mobile Navigation */}
           <div className="relative z-10 p-4">
             <div className="flex bg-white/20 backdrop-blur-md rounded-full p-0 shadow-xl border border-white/10">
