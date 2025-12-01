@@ -2,10 +2,21 @@
 
 import React from "react";
 import Seo from "../SeoContent/Seo";
+import { Helmet } from "react-helmet-async";
+
 const ReturnPolicy = () => {
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-       <Seo page="refund-policy" />
+       {/* <Seo page="refund-policy" /> */}
+       <Helmet>
+  <title>Refund Policy | Jaimax Coin</title>
+  <meta
+    name="description"
+    content="Read Jaimax Coin's refund policy to understand eligibility, conditions, and timelines for refund requests on cryptocurrency transactions."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/refund-policy" />
+</Helmet>
+
       <div className="max-w-9xl mx-auto space-y-8">
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">
           <h2 className="text-2xl font-bold text-teal-700 mb-4 flex items-center gap-2">

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Seo from "../../SeoContent/Seo";
+import { Helmet } from "react-helmet-async";
 
 const CryptoServicesFlipCards = () => {
   const navigate = useNavigate();
@@ -92,6 +93,7 @@ const CryptoServicesFlipCards = () => {
     >
       <div className="relative w-full h-full transform-style-preserve-3d transition-transform duration-700 group-hover:rotate-y-180">
         {/* Front of card */}
+
         <div
           className={`absolute inset-0 backface-hidden ${
             isPrimary
@@ -162,7 +164,16 @@ const CryptoServicesFlipCards = () => {
   return (
     <div className="min-h-screen py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-5 md:px-6 lg:px-4 bg-[#085056]">
       <div className="max-w-7xl mx-auto ">
-        <Seo page="services" />
+        {/* <Seo page="services" /> */}
+        <Helmet>
+  <title>Jaimax Coin Services | Unlock the Power of Secure Crypto Investments with Jaimax</title>
+  <meta
+    name="description"
+    content="Jaimax Coin offers secure digital currency services, enabling smooth transactions, investment, and asset management. Join us in the future of decentralized finance."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/services" />
+</Helmet>
+
         {/* Our Services Section */}
         <div className="mb-10 sm:mb-12 md:mb-14 lg:mb-20">
           {/* Header */}

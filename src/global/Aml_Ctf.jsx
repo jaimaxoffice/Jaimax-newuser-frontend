@@ -1,9 +1,20 @@
 import React from "react";
 import Seo from "../SeoContent/Seo";
+import { Helmet } from "react-helmet-async";
+
 const AmlCtfPolicy = () => {
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-       <Seo page="aml_ctf" />
+       {/* <Seo page="aml_ctf" /> */}
+       <Helmet>
+  <title>AML & CTF Policy | Jaimax Coin</title>
+  <meta
+    name="description"
+    content="Jaimax Coin follows strict Anti-Money Laundering (AML) and Counter-Terrorist Financing (CTF) policies to ensure a secure and transparent crypto ecosystem."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/aml_ctf" />
+</Helmet>
+
       <div className="max-w-9xl mx-auto space-y-8">
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">
           <h2 className="text-2xl font-bold text-teal-700 mb-2 flex items-center gap-2">

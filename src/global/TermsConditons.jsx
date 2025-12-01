@@ -1,9 +1,20 @@
 import React from "react";
 import Seo from "../SeoContent/Seo";
+import { Helmet } from "react-helmet-async";
+
 const TermsAndConditions = () => {
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-       <Seo page="terms-and-conditions" />
+       {/* <Seo page="terms-and-conditions" /> */}
+       <Helmet>
+  <title>Terms & Conditions | Jaimax Coin</title>
+  <meta
+    name="description"
+    content="Review the official terms and conditions of Jaimax Coin. Understand your rights, obligations, and compliance when investing or transacting with JMC."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/terms-and-conditions" />
+</Helmet>
+
       <div className="max-w-9xl mx-auto space-y-8">
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">
           <h2 className="text-2xl font-bold text-teal-700 mb-2 flex items-center gap-2">

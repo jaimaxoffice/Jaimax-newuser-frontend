@@ -1896,6 +1896,7 @@ const BlogPostDetail = () => {
           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
       }}
     >
+      
       <div className="w-full mx-auto max-w-screen">
         {/* Mobile Sidebar Toggle */}
         <div className="lg:hidden mb-4">

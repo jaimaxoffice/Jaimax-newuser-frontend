@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Helmet } from "react-helmet-async";
+
 import { useSubmitEnquiryMutation } from "../../pages/home/HomePageApiSlice";
 
 const OurMissionSectionContent = () => {
@@ -821,6 +823,15 @@ const ContactInformationSectionContent = () => {
 const CombinedSections = () => {
   return (
     <>
+    <Helmet>
+  <title>24/7 Support | Jaimax Help Center</title>
+  <meta
+    name="description"
+    content="Get instant 24/7 support from the Jaimax Help Center. Our dedicated team is available around the clock to resolve your cryptocurrency queries and issues."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/supporthome" />
+</Helmet>
+
       <ContactInformationSectionContent />
       <OurMissionSectionContent />
       <LocationsSectionContent />

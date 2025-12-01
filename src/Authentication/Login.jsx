@@ -25,6 +25,8 @@ import {
   useOTPresentMutation,
 } from "./authApiSlice";
 import Seo from "../SeoContent/Seo";
+import { Helmet } from "react-helmet-async";
+
 import countrycodes from "./countryCodes.json";
 import TermsConditionsModal from "./TermsAndConditions";
 import * as yup from "yup";
@@ -322,7 +324,16 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
-      <Seo page="login" />
+      {/* <Seo page="login" /> */}
+      <Helmet>
+  <title>Login to Your Account | Jaimax Coin</title>
+  <meta
+    name="description"
+    content="Access your Jaimax Coin account effortlessly. Log in to manage your cryptocurrency, track transactions, and explore exclusive features. Secure and easy access at your fingertips."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/login" />
+</Helmet>
+
 
       {notification && (
         <Notification
@@ -1119,7 +1130,16 @@ useEffect(() => {
           onClose={() => setNotification(null)}
         />
       )}
-      <Seo page="register" />
+      {/* <Seo page="register" /> */}
+      <Helmet>
+  <title>Create Your Account | Jaimax Coin</title>
+  <meta
+    name="description"
+    content="Join Jaimax Coin today! Sign up to start your cryptocurrency journey, enjoy secure transactions, and unlock exciting opportunities. Quick and easy registration process."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/register" />
+</Helmet>
+
       <div className="text-center mb-1 sm:mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">
           REGISTER

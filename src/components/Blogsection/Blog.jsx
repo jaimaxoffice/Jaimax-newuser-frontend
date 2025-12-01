@@ -1142,6 +1142,8 @@ import {
   ArrowRight,
   Share2,
 } from "lucide-react";
+import { Helmet } from "react-helmet-async";
+
 import {
   useGetPublishedPostsQuery,
   useGetPostBySlugQuery,
@@ -1311,6 +1313,16 @@ const BlogLayout = () => {
             "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
         }}
       >
+<Helmet>
+  <title>Jaimax Coin News | Latest Crypto Updates and Market Insights from Jaimax</title>
+  <meta
+    name="description"
+    content="Stay informed with the latest news and updates from Jaimax Coin, including market trends, new partnerships, and technological advancements in the cryptocurrency world."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/blog" />
+</Helmet>
+
+
         <div className="max-w-6xl mx-auto">
           <button
             onClick={handleBackClick}
@@ -1461,6 +1473,15 @@ const BlogLayout = () => {
           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
       }}
     >
+      <Helmet>
+  <title>Jaimax Coin News | Latest Crypto Updates and Market Insights from Jaimax</title>
+  <meta
+    name="description"
+    content="Stay informed with the latest news and updates from Jaimax Coin, including market trends, new partnerships, and technological advancements in the cryptocurrency world."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/blog" />
+</Helmet>
+
       <div className="w-full mx-0">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <aside className="lg:col-span-1 space-y-6">

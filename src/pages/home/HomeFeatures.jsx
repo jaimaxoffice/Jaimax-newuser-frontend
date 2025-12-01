@@ -6,6 +6,8 @@ import icon from '../../assets/coin.svg'
 import featureImage from "../../assets/websiteicons.webp"
 import { useNavigate } from 'react-router-dom';
 import Seo from '../../SeoContent/Seo'
+import { Helmet } from "react-helmet-async";
+
 const JaimaxLanding = () => {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate()
@@ -162,7 +164,16 @@ const JaimaxLanding = () => {
   return (
     <div className="min-h-screen text-white bg-[#085056]">
       {/* Hero Section */}
-      <Seo page="features" />
+      {/* <Seo page="features" /> */}
+      <Helmet>
+  <title>Jaimax Coin Features | Secure and Seamless Cryptocurrency Experience</title>
+  <meta
+    name="description"
+    content="Discover the powerful features of Jaimax Coin, including fast transactions, top-tier security, and scalable solutions for users looking to invest in digital assets."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/features" />
+</Helmet>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2 p-4 sm:p-5 items-center">
           

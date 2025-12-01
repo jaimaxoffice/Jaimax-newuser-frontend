@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { Helmet } from "react-helmet";
+import { HelmetProvider } from "react-helmet-async";
 import App from "./App.jsx";
 import { store } from "./services/store.js";
 import "./index.css";
@@ -20,6 +20,7 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
+      <HelmetProvider>
       <BrowserRouter>
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             </QueryClientProvider>
           </WagmiProvider>
       </BrowserRouter>
+      </HelmetProvider>
     </Provider>
   </React.StrictMode>
 );

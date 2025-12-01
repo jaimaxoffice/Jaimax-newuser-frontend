@@ -179,14 +179,14 @@ const MyTotalTeam = () => {
     const infoBoxes = useMemo(
       () => [
         {
-          title: "Total Active Members",
+          title: "Direct Active Members",
           value: totalUsers,
           icon: <Users className="w-4 h-4" />,
           gradient: "from-teal-500 to-teal-600",
           description: "All active members in your team",
         },
         {
-          title: "Foundation",
+          title: "Chain Active Members",
           value: totalChainUsers,
           icon: <UserCheck className="w-4 h-4" />,
           gradient: "from-teal-500 to-teal-600",

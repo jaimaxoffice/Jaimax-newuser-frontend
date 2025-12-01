@@ -4,6 +4,8 @@ import { useGetRoundQuery } from "../components/Dashboard/pages/dashBoard/Dashbo
 import presale1 from "../assets/Finalone.webp";
 import presale2 from "../assets/presalepngiconfinal.webp";
 import Seo from '../SeoContent/Seo';
+import { Helmet } from "react-helmet-async";
+
 function PreSaleCryptoCoin() {
     const [isVisible, setIsVisible] = useState(false);
     // const [currentRound, setCurrentRound] = useState({ atPriceInr: "0.03" });
@@ -207,7 +209,15 @@ function PreSaleCryptoCoin() {
                     ]
                 })}
             </script>
-            <Seo page="presalecryptocoin" />
+            {/* <Seo page="presalecryptocoin" /> */}
+<Helmet>
+  <title>Presale Crypto Coin in India | Best Pre-Sale Crypto Coin - Jaimax</title>
+  <meta
+    name="description"
+    content="Discover Jaimax, India’s most trusted presale crypto coin. Get early access at a low entry price, backed by the JMC-24 blockchain for speed, security and long-term growth."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/best-presale-crypto-coin-in-india" />
+</Helmet>
 
             <div className="relative min-h-screen bg-[#085056] text-white overflow-x-hidden">
                 {/* Grid Background Layer */}
