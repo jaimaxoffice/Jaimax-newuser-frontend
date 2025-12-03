@@ -3,6 +3,19 @@ import Seo from "../SeoContent/Seo";
 import { Helmet } from "react-helmet-async";
 
 const PrivacyPolicy = () => {
+  const policyschema={
+
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.jaimax.com/privacy-policy",
+  "url": "https://www.jaimax.com/privacy-policy",
+  "name": "Jaimax Privacy Policy",
+  "description": "Understand how Jaimax collects, uses and protects personal data, in line with applicable data protection and IT regulations.",
+  "inLanguage": "en",
+  "isPartOf": { "@id": "https://www.jaimax.com/#website" },
+  "publisher": { "@id": "https://www.jaimax.com/#organization" }
+
+  }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
  {/* <Seo page="privacy-policy" /> */}
@@ -13,6 +26,8 @@ const PrivacyPolicy = () => {
     content="Jaimax Coin values your privacy. Learn how we collect, protect, and use your personal data while ensuring secure cryptocurrency transactions."
   />
   <link rel="canonical" href="https://www.jaimax.com/privacy-policy" />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(policyschema) }}>
+  </script>
 </Helmet>
 
       <div className="max-w-9xl mx-auto space-y-8">

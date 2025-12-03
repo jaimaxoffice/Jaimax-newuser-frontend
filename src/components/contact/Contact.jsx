@@ -587,9 +587,9 @@ const ContactInformationSectionContent = () => {
             <p className="text-lime-400 text-sm uppercase tracking-wider font-semibold mb-2">
               GET IN TOUCH
             </p>
-            <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+            <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
               Contact information
-            </h2>
+            </h1>
             <p className="text-white max-w-3xl mx-auto text-base sm:text-lg">
               Our team is ready to assist you with your Jaimax Coin inquiries
               and support. Reach out to us for any questions.
@@ -821,15 +821,76 @@ const ContactInformationSectionContent = () => {
 
 
 const CombinedSections = () => {
+const contactschema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    // 1. Define the ContactPage
+    {
+      "@type": "ContactPage",
+      "@id": "https://www.jaimax.com/contact#contactpage",
+      "url": "https://www.jaimax.com/contact",
+      "name": "Contact Jaimax | Support & Enquiries",
+      "description": "Get in touch with the Jaimax team for product support, business enquiries, or partnership opportunities. Our 24/7 help center is here to assist you.",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://www.jaimax.com/#organization" },
+      "isPartOf": { "@id": "https://www.jaimax.com/#website" },
+      // Important: Reference the Organization entity as the main subject of the contact
+      "mainEntityOfPage": { "@id": "https://www.jaimax.com/#organization" }
+    },
+
+    // 2. Define the Organization (Jaimax) and its contact point
+    // This section is crucial for showing rich contact information in search results
+    {
+      "@type": "Organization",
+      "@id": "https://www.jaimax.com/#organization", // Matches the reference above
+      "name": "Jaimax",
+      "url": "https://www.jaimax.com/",
+      "logo": "https://www.jaimax.com/logo.png", // Replace with your actual logo URL
+      "sameAs": [
+        "https://twitter.com/jaimax_crypto", // Replace with actual social links
+        "https://linkedin.com/company/jaimax_crypto"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-98765-43210", // Replace with your primary support phone number
+          "contactType": "customer service",
+          "email": "support@jaimax.com", // Replace with your support email
+          "areaServed": ["IN", "Global"], // Specify India and Global service areas
+          "availableLanguage": ["en", "hi"], // English and Hindi
+          "hoursAvailable": "24/7" // Specify availability
+        },
+        {
+          "@type": "ContactPoint",
+          "email": "office@jaimax.com", // Replace with your business/partnership email
+          "contactType": "business enquiries",
+          "availableLanguage": "en"
+        }
+      ]
+    },
+
+    // 3. Define the WebSite (for completeness, assumed to be defined elsewhere, but good practice)
+    {
+      "@type": "WebSite",
+      "@id": "https://www.jaimax.com/#website",
+      "url": "https://www.jaimax.com/",
+      "name": "Jaimax - Building the Future of Digital Finance",
+      "publisher": { "@id": "https://www.jaimax.com/#organization" }
+    }
+  ]
+};
   return (
     <>
-    <Helmet>
-  <title>24/7 Support | Jaimax Help Center</title>
+
+<Helmet>
+  <title>Contact Jaimax | 24/7 Support & Help Center</title>
   <meta
     name="description"
-    content="Get instant 24/7 support from the Jaimax Help Center. Our dedicated team is available around the clock to resolve your cryptocurrency queries and issues."
+    content="Contact the Jaimax support team any time via phone, email or chat. Our 24/7 help center is here to assist you with wallet access, deposits, withdrawals and account-related queries."
   />
-  <link rel="canonical" href="https://www.jaimax.com/supporthome" />
+  <link rel="canonical" href="https://www.jaimax.com/contact" />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactschema) }}>
+    </script>
 </Helmet>
 
       <ContactInformationSectionContent />

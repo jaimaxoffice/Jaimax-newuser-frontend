@@ -3,6 +3,19 @@ import Seo from "../SeoContent/Seo";
 import { Helmet } from "react-helmet-async";
 
 const TermsAndConditions = () => {
+  const tacschema={
+
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.jaimax.com/terms-and-conditions",
+  "url": "https://www.jaimax.com/terms-and-conditions",
+  "name": "Jaimax Terms and Conditions",
+  "description": "Review the terms and conditions governing the use of the Jaimax platform, wallet and related digital finance services.",
+  "inLanguage": "en",
+  "isPartOf": { "@id": "https://www.jaimax.com/#website" },
+  "publisher": { "@id": "https://www.jaimax.com/#organization" }
+
+  }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
        {/* <Seo page="terms-and-conditions" /> */}
@@ -13,6 +26,7 @@ const TermsAndConditions = () => {
     content="Review the official terms and conditions of Jaimax Coin. Understand your rights, obligations, and compliance when investing or transacting with JMC."
   />
   <link rel="canonical" href="https://www.jaimax.com/terms-and-conditions" />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(tacschema) }}></script>
 </Helmet>
 
       <div className="max-w-9xl mx-auto space-y-8">

@@ -40,7 +40,7 @@ export default function ReviewsSection() {
               className="text-center pb-4 md:pb-0 border-b bg-[#ffff] md:border-b-0 md:border-r border-gray-200 cursor-pointer transition-transform hover:scale-105 active:scale-95 p-3 md:p-4 rounded-xl hover:bg-white/50"
               onClick={handleGoogleClick}
             >
-              <h2 className="text-xl md:text-4xl font-bold text-gray-800 mb-1 md:mb-2">800+ Reviews</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-1 md:mb-2">40+ Reviews</h2>
               <div className="flex items-center justify-center gap-2 text-gray-600">
                 <span className="text-base md:text-lg">on Google</span>
                 <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none">

@@ -605,6 +605,7 @@ import React, { useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Seo from '../../SeoContent/Seo'
+import { Helmet } from "react-helmet-async";
 // import about from '../../assets/Images/future.png'
 const about='https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg'
 // SVG Icons as React Components (These remain the same as they are functional)
@@ -885,7 +886,44 @@ const JaimaxOverview = () => {
   const navigateToLogin = () => {
     navigate('/login');
   };
+const aboutschema={
 
+
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": "https://www.jaimax.com/about",
+  "url": "https://www.jaimax.com/about",
+  "name": "About Jaimax | Building the Future of Digital Finance",
+  "description": "Learn about Jaimax, the digital finance ecosystem by Jaisvik Software Solutions Private Limited, and how it is building a secure, transparent blockchain-based future for India.",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://www.jaimax.com/#website"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.jaimax.com/#organization"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.jaimax.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://www.jaimax.com/about"
+      }
+    ]
+  }
+
+
+}
   // Variants for the "Why Choose Jaimax?" features list
   const featuresContainerVariants = {
     hidden: { opacity: 0 },
@@ -922,7 +960,19 @@ const JaimaxOverview = () => {
 
   return (
     <div className="relative min-h-screen text-white overflow-hidden bg-[#085056]">
-      <Seo page="about" />
+      
+<Helmet>
+  <title>About Jaimax | Our Vision for India’s Digital Finance Future</title>
+  <meta
+    name="description"
+    content="Learn about Jaimax, the digital finance ecosystem built by Jaisvik Software Solutions Private Limited. Discover our vision, mission and how we are building secure blockchain-based solutions for India."
+  />
+  <link rel="canonical" href="https://www.jaimax.com/about" />
+<script 
+    type="application/ld+json" 
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutschema) }} 
+  />
+</Helmet>
       <FloatingParticles />
 
       {/* This outer div now only handles the background and particle effect */}

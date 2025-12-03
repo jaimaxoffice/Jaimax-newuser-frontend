@@ -3,6 +3,19 @@ import Seo from "../SeoContent/Seo";
 import { Helmet } from "react-helmet-async";
 
 const AmlCtfPolicy = () => {
+  const amlschema={
+
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.jaimax.com/aml-ctf",
+  "url": "https://www.jaimax.com/aml-ctf",
+  "name": "Jaimax AML & CTF Policy",
+  "description": "Jaimax’s Anti-Money Laundering (AML) and Counter-Terrorist Financing (CTF) policies and monitoring measures for digital asset activity.",
+  "inLanguage": "en",
+  "isPartOf": { "@id": "https://www.jaimax.com/#website" },
+  "publisher": { "@id": "https://www.jaimax.com/#organization" }
+
+  }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
        {/* <Seo page="aml_ctf" /> */}
@@ -13,6 +26,9 @@ const AmlCtfPolicy = () => {
     content="Jaimax Coin follows strict Anti-Money Laundering (AML) and Counter-Terrorist Financing (CTF) policies to ensure a secure and transparent crypto ecosystem."
   />
   <link rel="canonical" href="https://www.jaimax.com/aml_ctf" />
+  
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(amlschema) }}>
+    </script>
 </Helmet>
 
       <div className="max-w-9xl mx-auto space-y-8">

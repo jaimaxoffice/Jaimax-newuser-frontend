@@ -5,6 +5,19 @@ import Seo from "../SeoContent/Seo";
 import { Helmet } from "react-helmet-async";
 
 const ReturnPolicy = () => {
+  const refundschema={
+
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.jaimax.com/refund-policy",
+  "url": "https://www.jaimax.com/refund-policy",
+  "name": "Jaimax Refund Policy",
+  "description": "Read the Jaimax refund and cancellation policy related to crypto deposits, service usage and platform fees.",
+  "inLanguage": "en",
+  "isPartOf": { "@id": "https://www.jaimax.com/#website" },
+  "publisher": { "@id": "https://www.jaimax.com/#organization" }
+
+  }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
        {/* <Seo page="refund-policy" /> */}
@@ -15,6 +28,7 @@ const ReturnPolicy = () => {
     content="Read Jaimax Coin's refund policy to understand eligibility, conditions, and timelines for refund requests on cryptocurrency transactions."
   />
   <link rel="canonical" href="https://www.jaimax.com/refund-policy" />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(refundschema) }}></script>
 </Helmet>
 
       <div className="max-w-9xl mx-auto space-y-8">

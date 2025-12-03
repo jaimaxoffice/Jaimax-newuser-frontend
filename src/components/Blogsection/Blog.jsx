@@ -1183,7 +1183,19 @@ const BlogLayout = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+ const blogschema={
 
+  "@context": "https://schema.org",
+  "@type": ["Blog", "CollectionPage"],
+  "@id": "https://www.jaimax.com/blog#blog",
+  "url": "https://www.jaimax.com/blog",
+  "name": "Jaimax Blog | Crypto, Blockchain & Digital Finance Insights",
+  "description": "Read educational articles from Jaimax on cryptocurrency, blockchain, digital finance, security and smart crypto usage for Indian and global users.",
+  "inLanguage": "en",
+  "publisher": { "@id": "https://www.jaimax.com/#organization" },
+  "isPartOf": { "@id": "https://www.jaimax.com/#website" }
+
+ }
   // Fetch dynamic posts
   const { data: dynamicPosts, isLoading: postsLoading } =
     useGetPublishedPostsQuery();
@@ -1320,6 +1332,7 @@ const BlogLayout = () => {
     content="Stay informed with the latest news and updates from Jaimax Coin, including market trends, new partnerships, and technological advancements in the cryptocurrency world."
   />
   <link rel="canonical" href="https://www.jaimax.com/blog" />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogschema) }}></script>
 </Helmet>
 
 
@@ -1480,6 +1493,7 @@ const BlogLayout = () => {
     content="Stay informed with the latest news and updates from Jaimax Coin, including market trends, new partnerships, and technological advancements in the cryptocurrency world."
   />
   <link rel="canonical" href="https://www.jaimax.com/blog" />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogschema) }}></script>
 </Helmet>
 
       <div className="w-full mx-0">

@@ -13,6 +13,31 @@ import { Helmet } from "react-helmet-async";
 
 const CryptoServicesFlipCards = () => {
   const navigate = useNavigate();
+  const servicesschema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.jaimax.com/services",
+        url: "https://www.jaimax.com/services",
+        name: "Jaimax Services | Digital Finance, Wallet & Blockchain Solutions",
+        description:
+          "Explore Jaimax services including digital wallet solutions, blockchain infrastructure, staking support and secure crypto transaction tools for users and businesses.",
+        inLanguage: "en",
+        isPartOf: { "@id": "https://www.jaimax.com/#website" },
+        publisher: { "@id": "https://www.jaimax.com/#organization" },
+      },
+      {
+        "@type": "Service",
+        "@id": "https://www.jaimax.com/services#service",
+        name: "Jaimax Digital Finance & Crypto Services",
+        provider: { "@id": "https://www.jaimax.com/#organization" },
+        serviceType: "Digital finance, crypto wallet and blockchain services",
+        areaServed: "IN",
+        url: "https://www.jaimax.com/services",
+      },
+    ],
+  };
   const mainServices = [
     {
       icon: <Shield size={48} />,
@@ -166,13 +191,18 @@ const CryptoServicesFlipCards = () => {
       <div className="max-w-7xl mx-auto ">
         {/* <Seo page="services" /> */}
         <Helmet>
-  <title>Jaimax Coin Services | Unlock the Power of Secure Crypto Investments with Jaimax</title>
-  <meta
-    name="description"
-    content="Jaimax Coin offers secure digital currency services, enabling smooth transactions, investment, and asset management. Join us in the future of decentralized finance."
-  />
-  <link rel="canonical" href="https://www.jaimax.com/services" />
-</Helmet>
+          <title>
+            Jaimax Coin Services | Unlock the Power of Secure Crypto Investments
+            with Jaimax
+          </title>
+          <meta
+            name="description"
+            content="Jaimax Coin offers secure digital currency services, enabling smooth transactions, investment, and asset management. Join us in the future of decentralized finance."
+          />
+          <link rel="canonical" href="https://www.jaimax.com/services" />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesschema) }}>
+          </script>
+        </Helmet>
 
         {/* Our Services Section */}
         <div className="mb-10 sm:mb-12 md:mb-14 lg:mb-20">

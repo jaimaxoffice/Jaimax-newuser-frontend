@@ -3,6 +3,19 @@ import Seo from "../SeoContent/Seo";
 import { Helmet } from "react-helmet-async";
 
 const KycPmlaPolicy = () => {
+  const kycpmlaschema={
+
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://www.jaimax.com/kyc-pmla",
+  "url": "https://www.jaimax.com/kyc-pmla",
+  "name": "Jaimax KYC & PMLA Policy",
+  "description": "Details of Jaimax’s Know Your Customer (KYC) and Prevention of Money Laundering Act (PMLA) compliance framework for users in India.",
+  "inLanguage": "en",
+  "isPartOf": { "@id": "https://www.jaimax.com/#website" },
+  "publisher": { "@id": "https://www.jaimax.com/#organization" }
+
+  }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
        {/* <Seo page="kyc_pmla" /> */}
@@ -12,7 +25,9 @@ const KycPmlaPolicy = () => {
     name="description"
     content="Understand Jaimax Coin’s KYC (Know Your Customer) and PMLA (Prevention of Money Laundering Act) compliance measures for safe crypto transactions."
   />
-  <link rel="canonical" href="https://www.jaimax.com/kyc_pmla" />
+  <link rel="canonical" href="https://www.jaimax.com/kyc-pmla" />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(kycpmlaschema) }}>
+  </script>
 </Helmet>
 
       <div className="max-w-9xl mx-auto space-y-8">
