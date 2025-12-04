@@ -293,8 +293,8 @@ function PreSaleCryptoCoin() {
   return (
     <>
 
-      {/* <Seo page="presalecryptocoin" /> */}
-      <Helmet>
+      <Seo page="presalecryptocoin" />
+      {/* <Helmet>
         <title>
           Presale Crypto Coin in India | Best Pre-Sale Crypto Coin - Jaimax
         </title>
@@ -308,7 +308,7 @@ function PreSaleCryptoCoin() {
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}>
         </script>
-      </Helmet>
+      </Helmet> */}
 
       <div className="relative min-h-screen bg-[#085056] text-white overflow-x-hidden">
         {/* Grid Background Layer */}

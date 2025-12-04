@@ -16,7 +16,6 @@ import icon from "../../assets/coin.svg";
 import featureImage from "../../assets/websiteicons.webp";
 import { useNavigate } from "react-router-dom";
 import Seo from "../../SeoContent/Seo";
-import { Helmet } from "react-helmet-async";
 
 const JaimaxLanding = () => {
     const featuresSchemaData = {
@@ -479,7 +478,8 @@ const JaimaxLanding = () => {
 
   return (
     <div className="min-h-screen text-white bg-[#085056]">
-      <Helmet>
+       <Seo page="features" />
+      {/* <Helmet>
         <title>
           Jaimax Coin Features | Secure and Seamless Cryptocurrency Experience
         </title>
@@ -490,7 +490,7 @@ const JaimaxLanding = () => {
         <link rel="canonical" href="https://www.jaimax.com/features" />
          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(featuresSchemaData) }}>
         </script>
-      </Helmet>
+      </Helmet> */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2 p-4 sm:p-5 items-center">

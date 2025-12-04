@@ -18,8 +18,8 @@ const TermsAndConditions = () => {
   }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-       {/* <Seo page="terms-and-conditions" /> */}
-       <Helmet>
+       <Seo page="terms-and-conditions" />
+       {/* <Helmet>
   <title>Terms & Conditions | Jaimax Coin</title>
   <meta
     name="description"
@@ -27,7 +27,7 @@ const TermsAndConditions = () => {
   />
   <link rel="canonical" href="https://www.jaimax.com/terms-and-conditions" />
   <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(tacschema) }}></script>
-</Helmet>
+</Helmet> */}
 
       <div className="max-w-9xl mx-auto space-y-8">
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">

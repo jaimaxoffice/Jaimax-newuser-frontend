@@ -6,7 +6,7 @@ import { useEffect } from "react";
  * @param {*} { title, description, canonical }
  * @return {*}
  */
-const MetaTags = ({ title, description, canonical }) => {
+const MetaTags = ({ title, description, canonical,schema  }) => {
   useEffect(() => {
     // Set document title
     document.title = title;
@@ -37,8 +37,23 @@ const MetaTags = ({ title, description, canonical }) => {
       // Remove canonical if not provided
       linkCanonical.remove();
     }
+const oldSchemaScripts = document.querySelectorAll(
+      "script[data-meta-schema='true']"
+    );
+    oldSchemaScripts.forEach((node) => node.remove());
 
-  }, [title, description, canonical]);
+    if (schema) {
+      const schemaArray = Array.isArray(schema) ? schema : [schema];
+
+      schemaArray.forEach((schemaObj) => {
+        const script = document.createElement("script");
+        script.type = "application/ld+json";
+        script.setAttribute("data-meta-schema", "true");
+        script.text = JSON.stringify(schemaObj);
+        document.head.appendChild(script);
+      });
+    }
+  }, [title, description, canonical,schema]);
 
   return null;
 };
@@ -47,6 +62,10 @@ MetaTags.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   canonical: PropTypes.string, // optional
+   schema: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.arrayOf(PropTypes.object),
+  ]),
 };
 
 export default MetaTags;

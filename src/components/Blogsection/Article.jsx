@@ -36,14 +36,14 @@ export const staticBlogsData = [
     id: 5,
     image: Blog5,
     headline: "Why Jaimax Is the Smart Move Right Now",
-    description: `In today’s rapidly evolving cryptocurrency market, making the right investment decisions requires insight, timing, and trust. Among the many <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coins</a> emerging globally,<a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">jaimax</a> stands out as a promising digital asset with unique potential for growth, especially within the Indian crypto ecosystem. This article explores why choosing Jaimax now is a smart move for anyone looking to be part of the future of blockchain and digital finance.`,
+    description: `In today’s rapidly evolving cryptocurrency market, making the right investment decisions requires insight, timing, and trust. Among the many <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coins</a> emerging globally,<a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">jaimax</a> stands out as a promising digital asset with unique potential for growth, especially within the Indian crypto ecosystem. This article explores why choosing Jaimax now is a smart move for anyone looking to be part of the future of blockchain and digital finance.`,
     date: "09 june 25",
     content: {
       title: "Jaimax: The Best Crypto Coin Emerging from India",
       sections: [
         {
           type: "paragraph",
-          content: `India is rapidly becoming a hotspot for cryptocurrency adoption, supported by a growing population of tech-savvy users and increasing blockchain awareness. As the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, Jaimax offers a rare opportunity to join a community focused on decentralized finance (DeFi), crypto innovation, and financial empowerment. With a low market price, it provides an attractive entry point for early adopters.`,
+          content: `India is rapidly becoming a hotspot for cryptocurrency adoption, supported by a growing population of tech-savvy users and increasing blockchain awareness. As the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, Jaimax offers a rare opportunity to join a community focused on decentralized finance (DeFi), crypto innovation, and financial empowerment. With a low market price, it provides an attractive entry point for early adopters.`,
         },
 
         {
@@ -188,17 +188,17 @@ export const staticBlogsData = [
         {
           type: "paragraph",
           content: `In a world driven by digital transformation and decentralized innovation,
-                    <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">Jaimax</a> is emerging as a pioneering
-                    <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">cryptocurrency</a> born in India, aiming to make a global mark.
+                    <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">Jaimax</a> is emerging as a pioneering
+                    <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">cryptocurrency</a> born in India, aiming to make a global mark.
                     Positioned at the intersection of
-                    <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">blockchain technology</a>, financial empowerment, and digital freedom,
+                    <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">blockchain technology</a>, financial empowerment, and digital freedom,
                     Jaimax isn't just another altcoin — it’s a vision, a movement, and a mission to redefine how the world interacts with finance.
-                    Discover why it's <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">India’s best crypto coin</a>.`,
+                    Discover why it's <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">India’s best crypto coin</a>.`,
         },
 
         {
           type: "paragraph",
-          content: `Backed by a powerful infrastructure, a strong team of dedicated innovators, and a roadmap grounded in sustainable growth, Jaimax is rapidly gaining traction as <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">India’s best crypto coin</a>. From grassroots education to international expansion, Jaimax is building a future where every digital transaction is secure, accessible, and rewarding.`,
+          content: `Backed by a powerful infrastructure, a strong team of dedicated innovators, and a roadmap grounded in sustainable growth, Jaimax is rapidly gaining traction as <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">India’s best crypto coin</a>. From grassroots education to international expansion, Jaimax is building a future where every digital transaction is secure, accessible, and rewarding.`,
         },
         {
           type: "heading",
@@ -387,11 +387,11 @@ export const staticBlogsData = [
         },
         {
           type: "paragraph",
-          content: `In the dynamic world of <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">cryptocurrency</a>, success often belongs to those who act early. The current digital era rewards investors who can recognize potential before the world catches on. Jaimax, a rising star in the Indian crypto ecosystem, is positioned to become the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, offering a rare chance to invest at a foundational level.`,
+          content: `In the dynamic world of <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">cryptocurrency</a>, success often belongs to those who act early. The current digital era rewards investors who can recognize potential before the world catches on. Jaimax, a rising star in the Indian crypto ecosystem, is positioned to become the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, offering a rare chance to invest at a foundational level.`,
         },
         {
           type: "paragraph",
-          content: `This article explores why early investment in Jaimax offers a powerful opportunity, and why it is already being considered by experts and early adopters as one of the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coins  to invest</a> in this year.`,
+          content: `This article explores why early investment in Jaimax offers a powerful opportunity, and why it is already being considered by experts and early adopters as one of the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coins  to invest</a> in this year.`,
         },
         {
           type: "subheading",
@@ -454,7 +454,7 @@ export const staticBlogsData = [
         },
         {
           type: "paragraph",
-          content: `The coin’s scarcity and responsible allocation create sustainable demand pressure — essential traits for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest</a>`,
+          content: `The coin’s scarcity and responsible allocation create sustainable demand pressure — essential traits for the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest</a>`,
         },
         {
           type: "subheading",
@@ -637,7 +637,7 @@ export const staticBlogsData = [
         },
         {
           type: "paragraph",
-          content: `The cryptocurrency world doesn’t wait. Jaimax, with its strategic entry price, local relevance, and long-term vision, is clearly one of the best crypto coins in India today. For those looking for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in 2025</a>, this is the moment to step in, while the door is still open.`,
+          content: `The cryptocurrency world doesn’t wait. Jaimax, with its strategic entry price, local relevance, and long-term vision, is clearly one of the best crypto coins in India today. For those looking for the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in 2025</a>, this is the moment to step in, while the door is still open.`,
         },
         {
           type: "paragraph",
@@ -660,7 +660,7 @@ export const staticBlogsData = [
       sections: [
         {
           type: "paragraph",
-          content: `Jaimax is revolutionizing the way India experiences cryptocurrency. As a forward-thinking digital currency designed for high performance, accessibility, and future scalability, Jaimax is rapidly gaining momentum as the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in india</a>. Built with precision and launched for growth, it provides a secure, powerful platform for users looking for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in India</a>.With an emphasis on cutting-edge technology, simplicity, and trust, Jaimax offers an opportunity for Indian investors to be part of a new financial ecosystem powered by blockchain innovation.`,
+          content: `Jaimax is revolutionizing the way India experiences cryptocurrency. As a forward-thinking digital currency designed for high performance, accessibility, and future scalability, Jaimax is rapidly gaining momentum as the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in india</a>. Built with precision and launched for growth, it provides a secure, powerful platform for users looking for the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in India</a>.With an emphasis on cutting-edge technology, simplicity, and trust, Jaimax offers an opportunity for Indian investors to be part of a new financial ecosystem powered by blockchain innovation.`,
         },
         {
           type: "paragraph",
@@ -692,7 +692,7 @@ export const staticBlogsData = [
         },
         {
           type: "paragraph",
-          content: `This architecture ensures Jaimax is not just a <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coin</a> for trading, but a practical, scalable platform for mainstream use in India and beyond.`,
+          content: `This architecture ensures Jaimax is not just a <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coin</a> for trading, but a practical, scalable platform for mainstream use in India and beyond.`,
         },
         {
           type: "subheading",
@@ -713,7 +713,7 @@ export const staticBlogsData = [
         },
         {
           type: "paragraph",
-          content: `This infrastructure allows real-world use cases — from DeFi platforms to NFT marketplaces — to thrive within the Jaimax ecosystem, reinforcing its position as a <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">top crypto coin in India</a>’s growing digital economy.`,
+          content: `This infrastructure allows real-world use cases — from DeFi platforms to NFT marketplaces — to thrive within the Jaimax ecosystem, reinforcing its position as a <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">top crypto coin in India</a>’s growing digital economy.`,
         },
         {
           type: "heading",
@@ -888,7 +888,7 @@ export const staticBlogsData = [
     id: 3,
     image: Blog3,
     headline: "Understanding Cryptocurrency: A Simple Guide for New Users",
-    description: `Cryptocurrency has dramatically transformed the financial landscape, offering an innovative and decentralized method of transactions that challenges traditional financial systems. If you’re new to the world of cryptocurrency, it may seem complex, but with the right knowledge and resources, anyone can understand and participate. This guide will break down cryptocurrency in simple terms and introduce you to the exciting opportunities it presents, including how Jaimax, a rising <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coin</a> in India, is making waves in the market.`,
+    description: `Cryptocurrency has dramatically transformed the financial landscape, offering an innovative and decentralized method of transactions that challenges traditional financial systems. If you’re new to the world of cryptocurrency, it may seem complex, but with the right knowledge and resources, anyone can understand and participate. This guide will break down cryptocurrency in simple terms and introduce you to the exciting opportunities it presents, including how Jaimax, a rising <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coin</a> in India, is making waves in the market.`,
     date: "13 may 25",
     content: {
       title: "What is Cryptocurrency?",
@@ -977,7 +977,7 @@ export const staticBlogsData = [
         },
         {
           type: "paragraph",
-          content: `Jaimax is an emerging crypto coin in India, offering a secure, decentralized solution for users seeking investment opportunities in the cryptocurrency market. With its focus on accessibility and community engagement, Jaimax is quickly becoming a <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">top cryptocurrency to invest in India</a>, particularly for those interested in early-stage investments in the cryptocurrency space.`,
+          content: `Jaimax is an emerging crypto coin in India, offering a secure, decentralized solution for users seeking investment opportunities in the cryptocurrency market. With its focus on accessibility and community engagement, Jaimax is quickly becoming a <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">top cryptocurrency to invest in India</a>, particularly for those interested in early-stage investments in the cryptocurrency space.`,
         },
 
         {
@@ -1140,7 +1140,7 @@ export const staticBlogsData = [
         },
         {
           type: "paragraph",
-          content: `For those looking for the <a href="https://jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in India</a>, Jaimax offers an intriguing opportunity. As a rising cryptocurrency in India, Jaimax is gaining attention for its unique approach and growing community. With a focus on user empowerment, Jaimax is poised to become a significant player in the Indian cryptocurrency market. Whether you’re new to crypto or an experienced investor, Jaimax is one of the best cryptocurrencies to invest in India due to its promising potential and increasing adoption.`,
+          content: `For those looking for the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto to invest in India</a>, Jaimax offers an intriguing opportunity. As a rising cryptocurrency in India, Jaimax is gaining attention for its unique approach and growing community. With a focus on user empowerment, Jaimax is poised to become a significant player in the Indian cryptocurrency market. Whether you’re new to crypto or an experienced investor, Jaimax is one of the best cryptocurrencies to invest in India due to its promising potential and increasing adoption.`,
         },
         {
           type: "heading",

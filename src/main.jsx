@@ -16,11 +16,11 @@ import { config, bsc, bscTestnet } from "./wagmi.js";
 import { registerSW } from 'virtual:pwa-register';
 registerSW({ immediate: true });
 const queryClient = new QueryClient();
-
+const helmetContext = {};
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <HelmetProvider>
+      <HelmetProvider context={helmetContext}>
       <BrowserRouter>
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>

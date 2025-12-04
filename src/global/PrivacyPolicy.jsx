@@ -18,8 +18,8 @@ const PrivacyPolicy = () => {
   }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
- {/* <Seo page="privacy-policy" /> */}
- <Helmet>
+ <Seo page="privacy-policy" />
+ {/* <Helmet>
   <title>Privacy Policy | Jaimax Coin</title>
   <meta
     name="description"
@@ -28,7 +28,7 @@ const PrivacyPolicy = () => {
   <link rel="canonical" href="https://www.jaimax.com/privacy-policy" />
   <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(policyschema) }}>
   </script>
-</Helmet>
+</Helmet> */}
 
       <div className="max-w-9xl mx-auto space-y-8">
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">

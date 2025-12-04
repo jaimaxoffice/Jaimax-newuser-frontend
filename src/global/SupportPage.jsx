@@ -7,15 +7,15 @@ import { Helmet } from "react-helmet-async";
 const SupportAndRiskDisclosure = () => {
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-       {/* <Seo page="supporthome" /> */}
-       <Helmet>
+       <Seo page="supportme" />
+       {/* <Helmet>
   <title>24/7 Support | Jaimax Help Center</title>
   <meta
     name="description"
     content="Get instant 24/7 support from the Jaimax Help Center. Our dedicated team is available around the clock to resolve your cryptocurrency queries and issues."
   />
   <link rel="canonical" href="https://www.jaimax.com/supporthome" />
-</Helmet>
+</Helmet> */}
 
       <div className="max-w-9xl mx-auto space-y-8">
         {/* 24/7 Support Section */}

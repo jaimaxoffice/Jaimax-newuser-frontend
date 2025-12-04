@@ -340,17 +340,8 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
-      {/* <Seo page="login" /> */}
-      <Helmet>
-        <title>Login to Your Account | Jaimax Coin</title>
-        <meta
-          name="description"
-          content="Access your Jaimax Coin account effortlessly. Log in to manage your cryptocurrency, track transactions, and explore exclusive features. Secure and easy access at your fingertips."
-        />
-        <link rel="canonical" href="https://www.jaimax.com/login" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(loginschema) }}>
-        </script>
-      </Helmet>
+      <Seo page="login" />
+
 
       {notification && (
         <Notification
@@ -1070,17 +1061,8 @@ const RegisterComponent = ({
           onClose={() => setNotification(null)}
         />
       )}
-      {/* <Seo page="register" /> */}
-      <Helmet>
-        <title>Create Your Account | Jaimax Coin</title>
-        <meta
-          name="description"
-          content="Join Jaimax Coin today! Sign up to start your cryptocurrency journey, enjoy secure transactions, and unlock exciting opportunities. Quick and easy registration process."
-        />
-        <link rel="canonical" href="https://www.jaimax.com/register" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(registerschema) }}>
-        </script>
-      </Helmet>
+      <Seo page="register" />
+
 
       <div className="text-center mb-1 sm:mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">

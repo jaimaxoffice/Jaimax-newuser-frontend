@@ -16,7 +16,7 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Helmet } from "react-helmet-async";
-
+import Seo from '../../SeoContent/Seo'
 import { useSubmitEnquiryMutation } from "../../pages/home/HomePageApiSlice";
 
 const OurMissionSectionContent = () => {
@@ -881,8 +881,8 @@ const contactschema = {
 };
   return (
     <>
-
-<Helmet>
+ <Seo page="contact" />
+{/* <Helmet>
   <title>Contact Jaimax | 24/7 Support & Help Center</title>
   <meta
     name="description"
@@ -891,7 +891,7 @@ const contactschema = {
   <link rel="canonical" href="https://www.jaimax.com/contact" />
   <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactschema) }}>
     </script>
-</Helmet>
+</Helmet> */}
 
       <ContactInformationSectionContent />
       <OurMissionSectionContent />

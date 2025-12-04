@@ -176,12 +176,12 @@ const TermsConditionsModal = ({ show, onHide, onAgree }) => {
                             <p className="text-gray-700 mb-8">
                                 Visit our support page:{" "}
                                 <a
-                                    href="https://jaimax.com/support-page"
+                                    href="https://www.jaimax.com/support-page"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-teal-600 hover:text-teal-800 underline"
                                 >
-                                    https://jaimax.com/support-page
+                                    https://www.jaimax.com/support-page
                                 </a>
                             </p>
 

@@ -20,8 +20,8 @@ const ReturnPolicy = () => {
   }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-       {/* <Seo page="refund-policy" /> */}
-       <Helmet>
+       <Seo page="refund-policy" />
+       {/* <Helmet>
   <title>Refund Policy | Jaimax Coin</title>
   <meta
     name="description"
@@ -29,7 +29,7 @@ const ReturnPolicy = () => {
   />
   <link rel="canonical" href="https://www.jaimax.com/refund-policy" />
   <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(refundschema) }}></script>
-</Helmet>
+</Helmet> */}
 
       <div className="max-w-9xl mx-auto space-y-8">
         <section className="bg-teal-50 rounded-lg shadow p-6 md:p-8">
