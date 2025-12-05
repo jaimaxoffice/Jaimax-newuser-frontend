@@ -299,18 +299,6 @@ const jsonLdData = {
     <>
 
       <Seo page="homePage" />
-{/* <Helmet>
-  <title>Jaimax Coin | India’s Emerging Digital Finance & Crypto Ecosystem</title>
-  <meta
-    name="description"
-    content="Jaimax Coin powers a growing digital finance ecosystem for India with secure crypto wallets, JMC-24 blockchain, staking and long-term value creation."
-  />
-  <link rel="canonical" href="https://www.jaimax.com/" />
-
-   <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}>
-        </script>
-</Helmet> */}
-
 <CountdownTimer className="" />
       <div className="outer-container overflow-y-auto scrollbar-hide">
         <header className="relative min-h-[100dvh] flex flex-col justify-center">
@@ -341,7 +329,7 @@ const jsonLdData = {
                               text-3xl sm:text-4xl md:text-5xl lg:text-6xl space-y-1
                               opacity-0 translate-y-3 animate-fadeUp"
               >
-                <span className="block text-[#b8cc26]">Best Pre-Sale</span>
+                <span className="block text-[#b8cc26]"><a href="https://www.jaimax.com/best-presale-crypto-coin-in-india">Best Pre-Sale</a></span>
                 <span className="block">Crypto Coin in India</span>
                 <span className="block">Invest Early in </span>
                 <span className="block"> Jaimax</span>
@@ -357,7 +345,7 @@ const jsonLdData = {
                 journey, offering a secure and transparent experience to help
                 you grow with India’s most trusted
                 <b className="text-[#aadc32]">
-                  <a href="https://www.jaimax.com"> pre-sale crypto coin</a>
+                  <a href="https://www.jaimax.com/best-presale-crypto-coin-in-india"> pre-sale crypto coin</a>
                 </b>{" "}
                 - jaimax.
                 <button

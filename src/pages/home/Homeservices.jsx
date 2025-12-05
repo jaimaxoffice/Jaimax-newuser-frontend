@@ -19,7 +19,7 @@ const ServicesSection = () => {
       iconTitle: "Secure Digital Wallet",
       description:
         "Your crypto is protected with top-tier encryption and real-time monitoring. Manage your assets securely from anywhere.",
-      // link: "/services/wallet",
+      link: "/about",
       // linkTitle: "Explore our secure crypto wallet features",
     },
     {
@@ -29,7 +29,7 @@ const ServicesSection = () => {
       iconTitle: "Easy Profit Access",
       description:
         "Convert your crypto into real-world gains. Flexible, fast, and built for your financial success.",
-      // link: "/services/profits",
+      link: "/terms-and-conditions",
       // linkTitle: "Discover how to access your profits",
     },
     {
@@ -39,7 +39,7 @@ const ServicesSection = () => {
       iconTitle: "Accelerate Your Growth",
       description:
         "Tailored plans aligned with your goals. Grow your portfolio with strategic crypto investments.",
-      // link: "/services/growth",
+      link: "privacy-policy",
       // linkTitle: "View our financial growth strategies",
     },
     {
@@ -49,7 +49,7 @@ const ServicesSection = () => {
       iconTitle: "Complete Fund Visibility",
       description:
         "Add, withdraw, and monitor investments effortlessly. Stay in control of your capital anytime, anywhere.",
-      // link: "/services/funds",
+      link: "/refund-policy",
       // linkTitle: "Manage your funds efficiently",
     },
   ];

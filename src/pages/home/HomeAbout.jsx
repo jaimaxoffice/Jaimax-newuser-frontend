@@ -1,158 +1,6 @@
-// import React, { useState, useEffect } from "react";
-// import { Copy, Users, Coins, TrendingUp, Check } from "lucide-react";
-// import logo from '../../../src/assets/Images/jaimaxlogo1.svg';
-// import { useNavigate } from "react-router-dom";
-// import { useGetRoundQuery } from "../../components/Dashboard/pages/dashBoard/DashboardApliSlice";
-// import { motion } from "framer-motion";
-// const HomeAbout = () => {
-//   const contractAddress = "0xD898d23a082136f4d752e4dE31D8296EaEb94277";
-//   const [copied, setCopied] = useState(false);
-//   const navigate = useNavigate();
-
-//   // Fetch data using RTK Query
-//   const { data: roundData, error, isLoading, refetch } = useGetRoundQuery();
-
-//   // Get live rounds (status = 1)
-//   const liveRounds = roundData?.data?.rounds?.filter(round => round.status === 1) || [];
-//   const currentRound = liveRounds[0];
-
-//   const handleCopy = async () => {
-//     try {
-//       await navigator.clipboard.writeText(contractAddress);
-//       setCopied(true);
-//       setTimeout(() => setCopied(false), 2000);
-//     } catch (err) {
-//       // console.error('Failed to copy:', err);
-//     }
-//   };
-
-//   // Auto-refresh data every 30 seconds
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       refetch();
-//     }, 30000);
-//     return () => clearInterval(interval);
-//   }, [refetch]);
-
-//   const handleNavigate = () => {
-//     navigate("/blog");
-//   };
-
-//   const formatNumber = (num) => {
-//     if (num >= 1000000) {
-//       return (num / 1000000).toFixed(1) + 'M';
-//     }
-//     if (num >= 1000) {
-//       return (num / 1000).toFixed(1) + 'K';
-//     }
-//     return num.toLocaleString();
-//   };
-//     const handleBSCScan = () => {
-//     window.open(`https://bscscan.com/address/${contractAddress}`, '_blank');
-//   };
-
-//   // Default stats data for when API data is loading or unavailable
-//   const livePrice = currentRound?.atPriceInr || "0.0000";
-//   const soldTokens = formatNumber(currentRound?.soldQty || 225765326);
-//   const liveMembers = formatNumber(currentRound?.totalMembers || 24567);
-
-//   return (
-//     <>
-//     <div className="max-w-3xl p-14 mx-auto bg-[#085056]">
-//               <h4 className="text-xl md:text-2xl font-semibold mb-6 text-gray-200">
-//                 CONTRACT ADDRESS
-//               </h4>
-//               <div className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 w-full">
-//                 <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 px-3 py-2 sm:px-4 sm:py-2">
-//                   <p className="flex-1 text-center sm:text-left font-mono text-sm sm:text-base md:text-lg text-white break-all leading-tight">
-//                     {contractAddress}
-//                   </p>
-
-//                   <button
-//                     onClick={handleCopy}
-//                     className="flex items-center justify-center space-x-0 sm:space-x-2 bg-teal-500 hover:bg-teal-600 text-white text-xs sm:text-sm font-medium px-4 py-1.5 sm:px-5 sm:py-2 rounded-full transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md"
-//                     title={copied ? 'Copied!' : 'Copy to clipboard'}
-//                   >
-//                     {copied ? (
-//                       <>
-//                         <Check className="hidden sm:inline" size={16} />
-//                         <span>Copied!</span>
-//                       </>
-//                     ) : (
-//                       <>
-//                         <Copy className="hidden sm:inline" size={16} />
-//                         <span>Copy</span>
-//                       </>
-//                     )}
-//                   </button>
-//                   <motion.button
-//                     onClick={handleBSCScan}
-//                     className="flex-1 lg:flex-initial px-4 sm:px-6 py-2.5 rounded-full font-semibold text-[#085056] text-sm bg-[#b8cc26] hover:bg-[#b8cc26]/80"
-//                     whileHover={{ scale: 1.02 }}
-//                     whileTap={{ scale: 0.98 }}
-//                   >
-//                     BSCScan
-//                   </motion.button>
-//                 </div>
-//               </div>
-//             </div>
-//       {/* Your existing JSX */}
-//       <section className="bg-[#085056] py-10 px-4 sm:px-6 lg:px-8">
-//         <div className="max-w-6xl mx-auto text-center mb-10">
-//           <h2 className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 via-green-300 to-emerald-400 uppercase mb-2">
-//             LIVE UPDATE
-//           </h2>
-//         </div>
-
-//         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-6xl mx-auto">
-//           {/* LIVE PRICE */}
-//           <div className="bg-[#063c40] border border-[#17bba3] rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-lg transition duration-300">
-//             <p className="text-white text-sm tracking-wide mb-2 uppercase">
-//               LIVE PRICE
-//             </p>
-//             <div className="flex items-center gap-1">
-//               <h3 className="text-2xl sm:text-3xl font-extrabold text-lime-400">
-//                 ₹{livePrice}
-//               </h3>
-//               {/* <TrendingUp className="w-4 h-4 text-lime-400" /> */}
-//             </div>
-//           </div>
-
-//           {/* SOLD TOKENS */}
-//           <div className="bg-[#063c40] border border-[#17bba3] rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-lg transition duration-300">
-//             <p className="text-white text-sm tracking-wide mb-2 uppercase">
-//               SOLD TOKENS
-//             </p>
-//             <div className="flex items-center gap-1">
-//               <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-//                 {soldTokens}
-//               </h3>
-//               {/* <TrendingUp className="w-4 h-4 text-white" /> */}
-//             </div>
-//           </div>
-
-//           {/* LIVE MEMBERS */}
-//           <div className="bg-[#063c40] border border-[#17bba3] rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-lg transition duration-300">
-//             <p className="text-white text-sm tracking-wide mb-2 uppercase">
-//               LIVE MEMBERS
-//             </p>
-//             <div className="flex items-center gap-1">
-//               <h3 className="text-2xl sm:text-3xl font-extrabold text-emerald-300">
-//                 {liveMembers}
-//               </h3>
-//               {/* <TrendingUp className="w-4 h-4 text-emerald-300" /> */}
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-//     </>
-//   );
-// };
-
-// export default HomeAbout;
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useGetRoundQuery } from "../../components/Dashboard/pages/dashBoard/DashboardApliSlice";
 import bscscan from "../../assets/image.png";
@@ -171,7 +19,28 @@ const HomeAbout = () => {
   const liveRounds =
     roundData?.data?.rounds?.filter((round) => round.status === 1) || [];
   const currentRound = liveRounds[0];
+  const quickLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/best-presale-crypto-coin-in-india', label: 'Presale' },
+    { to: '/about', label: 'About' },
+    { to: '/features', label: 'Features' },
+    { to: '/services', label: 'Services' },
+    { to: '/blog', label: 'Blog' },
+    { to: '/contact', label: 'Contact' },
+  ];
 
+  const authLinks = [
+    { to: '/login', label: 'Login' },
+    { to: '/register', label: 'Register' },
+  ];
+
+  const legalLinks = [
+    { to: '/privacy-policy', label: 'Privacy Policy' },
+    { to: '/terms-and-conditions', label: 'Terms & Conditions' },
+    { to: '/refund-policy', label: 'Refund Policy' },
+    { to: '/kyc-pmla', label: 'KYC/PMLA' },
+    { to: '/aml-ctf', label: 'AML/CTF Policy' },
+  ];
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(contractAddress);
@@ -234,7 +103,7 @@ const HomeAbout = () => {
   };
 
   return (
-    <div className="relative ">
+  <div className="relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
@@ -259,13 +128,15 @@ const HomeAbout = () => {
             transition={{ duration: 0.5 }}
             className="relative"
           >
-             <img
-    src={logo}
-    alt="Jaimax Logo"
-    title="jaimax brand new crypto in market"
-    className="mx-auto mb-6 w-80 object-contain"
-
-  />
+            {/* Logo with Link to Home - Fixes orphan */}
+            <Link to="/" title="Go to Jaimax Home">
+              <img
+                src={logo}
+                alt="Jaimax Logo"
+                title="Jaimax brand new crypto in market"
+                className="mx-auto mb-6 w-80 object-contain hover:scale-105 transition-transform"
+              />
+            </Link>
 
             {/* Contract Container */}
             <motion.div
@@ -283,7 +154,6 @@ const HomeAbout = () => {
                     <h3 className="text-lg font-bold text-white">
                       CONTRACT <span className="text-[#b8cc26]">ADDRESS</span>
                     </h3>
-                   
                   </div>
 
                   {/* Address and Actions */}
@@ -291,7 +161,7 @@ const HomeAbout = () => {
                     {/* Address Box */}
                     <motion.div
                       className="flex-1 bg-black/20 rounded-xl px-4 py-3 border border-[#177338]/30 group hover:border-[#b8cc26]/40 transition-colors"
-                      whileHover={{ backgroundColor: "rgba(0,0,0,0.3)" }}
+                      whileHover={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
                     >
                       <p className="font-mono text-[13px] sm:text-sm text-gray-300 break-all leading-relaxed">
                         {contractAddress}
@@ -306,7 +176,7 @@ const HomeAbout = () => {
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        {copied ? "COPIED" : "COPY"}
+                        {copied ? 'COPIED' : 'COPY'}
                       </motion.button>
 
                       <motion.button
@@ -319,7 +189,7 @@ const HomeAbout = () => {
                           src={bscscan}
                           width={100}
                           alt="BscScan"
-                          title="BscSca"
+                          title="BscScan"
                           className="drop-shadow-lg"
                         />
                       </motion.button>
@@ -336,85 +206,80 @@ const HomeAbout = () => {
             className="mt-8"
             variants={containerVariants}
             initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            animate={isInView ? 'visible' : 'hidden'}
           >
-           
-
             {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {/* Price Card */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ scale: 1.03, y: -3 }}
-                className="relative group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#b8cc26]/20 to-transparent rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-                <div className="relative bg-gradient-to-br from-[#085056] to-[#063c40] rounded-xl border border-[#b8cc26]/20 hover:border-[#b8cc26]/40 transition-colors p-5">
-                  <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
-                      Live Price
-                    </h2>
-                    
+              {/* Price Card - Link to Presale */}
+              <Link to="/best-presale-crypto-coin-in-india">
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.03, y: -3 }}
+                  className="relative group cursor-pointer"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#b8cc26]/20 to-transparent rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  <div className="relative bg-gradient-to-br from-[#085056] to-[#063c40] rounded-xl border border-[#b8cc26]/20 hover:border-[#b8cc26]/40 transition-colors p-5">
+                    <div className="flex justify-between items-start mb-2">
+                      <h2 className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
+                        Live Price
+                      </h2>
+                    </div>
+                    <div className="flex items-baseline space-x-1">
+                      <span className="text-2xl font-black text-[#b8cc26]">₹</span>
+                      <h2 className="text-3xl font-black text-white">{livePrice}</h2>
+                    </div>
+                    <div className="mt-2 h-[1px] bg-gradient-to-r from-[#b8cc26]/50 to-transparent"></div>
                   </div>
-                  <div className="flex items-baseline space-x-1">
-                    <span className="text-2xl font-black text-[#b8cc26]">
-                      ₹
-                    </span>
-                    <h2 className="text-3xl font-black text-white">
-                      {livePrice}
-                    </h2>
-                  </div>
-                  <div className="mt-2 h-[1px] bg-gradient-to-r from-[#b8cc26]/50 to-transparent"></div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
 
-              {/* Tokens Card */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ scale: 1.03, y: -3 }}
-                className="relative group"
-              >
-                <div className="absolute inset-0  to-transparent rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-                <div className="relative bg-gradient-to-br from-[#085056] to-[#063c40] rounded-xl border border-[#177338]/20 hover:border-[#177338]/40 transition-colors p-5">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
-                      Sold Tokens
-                    </span>
-                   
+              {/* Tokens Card - Link to Features */}
+              <Link to="/features">
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.03, y: -3 }}
+                  className="relative group cursor-pointer"
+                >
+                  <div className="absolute inset-0 to-transparent rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  <div className="relative bg-gradient-to-br from-[#085056] to-[#063c40] rounded-xl border border-[#177338]/20 hover:border-[#177338]/40 transition-colors p-5">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
+                        Sold Tokens
+                      </span>
+                    </div>
+                    <h2 className="text-3xl font-black text-white">{soldTokens}</h2>
+                    <div className="mt-2 h-[1px] bg-gradient-to-r from-[#177338]/50 to-transparent"></div>
                   </div>
-                  <h2 className="text-3xl font-black text-white">
-                    {soldTokens}
-                  </h2>
-                  <div className="mt-2 h-[1px] bg-gradient-to-r from-[#177338]/50 to-transparent"></div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
 
-              {/* Members Card */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{ scale: 1.03, y: -3 }}
-                className="relative group"
-              >
-                <div className="absolute inset-0   to-transparent rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-                <div className="relative  rounded-xl bg-gradient-to-br from-[#085056] to-[#063c40] border border-[#b8cc26]/20 hover:border-[#b8cc26]/40 transition-colors p-5">
-                  <div className="flex justify-between items-start mb-2 ">
-                    <span className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
-                      Live Members
-                    </span>
-                    
+              {/* Members Card - Link to About */}
+              <Link to="/about">
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.03, y: -3 }}
+                  className="relative group cursor-pointer"
+                >
+                  <div className="absolute inset-0 to-transparent rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  <div className="relative rounded-xl bg-gradient-to-br from-[#085056] to-[#063c40] border border-[#b8cc26]/20 hover:border-[#b8cc26]/40 transition-colors p-5">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
+                        Live Members
+                      </span>
+                    </div>
+                    <div className="text-3xl font-black text-white">{liveMembers}</div>
+                    <div className="mt-2 h-[1px] bg-gradient-to-r from-[#b8cc26]/50 to-transparent"></div>
                   </div>
-                  <div className="text-3xl font-black text-white">
-                    {liveMembers}
-                  </div>
-                  <div className="mt-2 h-[1px] bg-gradient-to-r from-[#b8cc26]/50 to-transparent"></div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             </div>
+
           </motion.div>
         </div>
       </motion.div>
     </div>
   );
 };
+
 
 export default HomeAbout;

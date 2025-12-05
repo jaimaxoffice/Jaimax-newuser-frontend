@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
     <loc>https://www.jaimax.com/</loc>
     <changefreq>daily</changefreq>
@@ -8,85 +7,86 @@
   </url>
 
   <url>
-    <loc>https://www.jaimax.com/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.jaimax.com/best-presale-crypto-coin-in-india</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
   </url>
 
   <url>
-    <loc>https://www.jaimax.com/services</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.jaimax.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
     <loc>https://www.jaimax.com/features</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/services</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.88</priority>
   </url>
 
   <url>
     <loc>https://www.jaimax.com/blog</loc>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <priority>0.92</priority>
   </url>
 
   <url>
     <loc>https://www.jaimax.com/contact</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.70</priority>
   </url>
-
-  <url>
-    <loc>https://www.jaimax.com/jaimax-whitepaper.pdf</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
   <url>
     <loc>https://www.jaimax.com/login</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.40</priority>
   </url>
 
   <url>
     <loc>https://www.jaimax.com/register</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <url>
-    <loc>https://www.jaimax.com/refund-policy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://www.jaimax.com/terms-and-conditions</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.45</priority>
   </url>
 
   <url>
     <loc>https://www.jaimax.com/privacy-policy</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.30</priority>
   </url>
+
+  <url>
+    <loc>https://www.jaimax.com/terms-and-conditions</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/refund-policy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+  </url>
+
   <url>
     <loc>https://www.jaimax.com/kyc-pmla</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.30</priority>
   </url>
+
   <url>
     <loc>https://www.jaimax.com/aml-ctf</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.jaimax.com/best-presale-crypto-coin-in-india</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.30</priority>
   </url>
 
+  <url>
+    <loc>https://www.jaimax.com/jaimax-whitepaper.pdf</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.20</priority>
+  </url>
 
 </urlset>

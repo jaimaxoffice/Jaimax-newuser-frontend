@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Seo from "../../SeoContent/Seo";
-
+import { Link } from 'react-router-dom';
 const CryptoServicesFlipCards = () => {
   const navigate = useNavigate();
   const servicesschema = {
@@ -186,174 +186,230 @@ const CryptoServicesFlipCards = () => {
   );
 
   return (
-    <div className="min-h-screen py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-5 md:px-6 lg:px-4 bg-[#085056]">
-      <div className="max-w-7xl mx-auto ">
-        <Seo page="services" />
-        {/* <Helmet>
-          <title>
-            Jaimax Coin Services | Unlock the Power of Secure Crypto Investments
-            with Jaimax
-          </title>
-          <meta
-            name="description"
-            content="Jaimax Coin offers secure digital currency services, enabling smooth transactions, investment, and asset management. Join us in the future of decentralized finance."
-          />
-          <link rel="canonical" href="https://www.jaimax.com/services" />
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesschema) }}>
-          </script>
-        </Helmet> */}
+<div className="min-h-screen py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-5 md:px-6 lg:px-4 bg-[#085056]">
+  <div className="max-w-7xl mx-auto">
+    <Seo page="services" />
 
-        {/* Our Services Section */}
-        <div className="mb-10 sm:mb-12 md:mb-14 lg:mb-20">
-          {/* Header */}
-          <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-5 md:mb-5 lg:mb-6 bg-gradient-to-r from-lime-400 to-green-600 bg-clip-text text-transparent px-4">
-              Our Service Offerings
-            </h1>
-            <p className="text-base sm:text-base md:text-lg lg:text-xl text-lime-400 max-w-3xl mx-auto mb-4 sm:mb-5 md:mb-5 lg:mb-6 font-semibold px-4">
-              Explore the Future of Digital Finance with Jaimax – The Best
-              Crypto Coin in India
-            </p>
-            <p className="text-gray-300 max-w-4xl mx-auto leading-relaxed text-sm sm:text-sm md:text-base lg:text-lg px-4">
-              At Jaimax, we provide a powerful range of crypto services designed
-              to help users grow, secure, and manage their digital assets with
-              ease. Whether you're a new investor or a crypto-savvy expert, our
-              platform delivers the tools and features you need to succeed in
-              the world of cryptocurrency. Discover why Jaimax is fast becoming
-              the best crypto coin in India.
-            </p>
-            <div className="w-16 sm:w-16 md:w-20 lg:w-24 h-1 bg-gradient-to-r from-teal-700 to-green-600 mx-auto mt-6 sm:mt-6 md:mt-7 lg:mt-8 rounded-full"></div>
-          </div>
+    {/* Our Services Section */}
+    <div className="mb-10 sm:mb-12 md:mb-14 lg:mb-20">
+      {/* Header */}
+      <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+        <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-5 md:mb-5 lg:mb-6 bg-gradient-to-r from-lime-400 to-green-600 bg-clip-text text-transparent px-4">
+          Our Service Offerings
+        </h1>
+        <p className="text-base sm:text-base md:text-lg lg:text-xl text-lime-400 max-w-3xl mx-auto mb-4 sm:mb-5 md:mb-5 lg:mb-6 font-semibold px-4">
+          Explore the Future of Digital Finance with{" "}
+          <Link to="/about" title="About Jaimax crypto coin" className="hover:underline">
+            Jaimax
+          </Link>{" "}
+          –{" "}
+          <Link 
+            to="/best-presale-crypto-coin-in-india" 
+            title="Best crypto coin in India - Jaimax presale"
+            className="hover:underline"
+          >
+            The Best Crypto Coin in India
+          </Link>
+        </p>
+        <p className="text-gray-300 max-w-4xl mx-auto leading-relaxed text-sm sm:text-sm md:text-base lg:text-lg px-4">
+          At{" "}
+          <Link to="/about" title="About Jaimax" className="text-lime-400 hover:underline">
+            Jaimax
+          </Link>
+          , we provide a powerful range of crypto services designed to help users grow, secure, and manage their digital assets with ease. Whether you're a{" "}
+          <Link to="/register" title="Register on Jaimax - New investor" className="text-lime-400 hover:underline">
+            new investor
+          </Link>{" "}
+          or a crypto-savvy expert, our platform delivers the tools and{" "}
+          <Link to="/features" title="Jaimax platform features" className="text-lime-400 hover:underline">
+            features
+          </Link>{" "}
+          you need to succeed in the world of cryptocurrency. Discover why{" "}
+          <Link to="/best-presale-crypto-coin-in-india" title="Why Jaimax is the best crypto coin" className="text-lime-400 hover:underline">
+            Jaimax is fast becoming the best crypto coin in India
+          </Link>.
+        </p>
+        <div className="w-16 sm:w-16 md:w-20 lg:w-24 h-1 bg-gradient-to-r from-teal-700 to-green-600 mx-auto mt-6 sm:mt-6 md:mt-7 lg:mt-8 rounded-full"></div>
+      </div>
 
-          {/* Services Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
-            {mainServices.map((service, index) => (
+      {/* Services Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
+        {mainServices.map((service, index) => {
+          // Map services to different pages for internal linking
+          const serviceLinks = [
+            "/features",
+            "/best-presale-crypto-coin-in-india",
+            "/about",
+            "/contact",
+            "/blog",
+            "/login"
+          ];
+          const serviceLink = serviceLinks[index % serviceLinks.length];
+          
+          return (
+            <Link 
+              to={serviceLink} 
+              title={`Learn more about ${service.title}`}
+              key={index}
+            >
               <FlipCard
-                key={index}
                 service={service}
                 index={index}
                 delay={index * 0.1 + 0.5}
               />
-            ))}
-          </div>
-        </div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
 
-        {/* Why Choose Us Section */}
-        <div>
-          {/* Header */}
-          <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-            <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-5 md:mb-5 lg:mb-6 px-4">
-              Why Choose Us?
-            </h2>
-            <p className="text-gray-300 max-w-3xl mx-auto leading-relaxed text-sm sm:text-sm md:text-base lg:text-lg mb-6 sm:mb-6 md:mb-7 lg:mb-8 px-4">
-              We are committed to our clients and maintain the highest
-              standards. Discover how unique benefits that set us apart and
-              ensure your best financial experience at your every journey.
-            </p>
-            <button
-              className="bg-lime-400 hover:bg-white text-teal-700 font-semibold px-6 sm:px-6 md:px-7 lg:px-8 py-2 sm:py-2 md:py-2.5 lg:py-3 rounded-full transition-all duration-300 text-sm sm:text-sm md:text-base lg:text-base hover:scale-105 active:scale-95"
-              onClick={() => navigate("/login")}
+    {/* Why Choose Us Section */}
+    <div>
+      {/* Header */}
+      <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+        <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-5 md:mb-5 lg:mb-6 px-4">
+          <Link to="/about" title="Why choose Jaimax crypto platform">
+            Why Choose Us?
+          </Link>
+        </h2>
+        <p className="text-gray-300 max-w-3xl mx-auto leading-relaxed text-sm sm:text-sm md:text-base lg:text-lg mb-6 sm:mb-6 md:mb-7 lg:mb-8 px-4">
+          We are committed to our clients and maintain the highest standards. Discover how unique{" "}
+          <Link to="/features" title="Jaimax benefits and features" className="text-lime-400 hover:underline">
+            benefits
+          </Link>{" "}
+          that set us apart and ensure your best financial experience at your every journey.
+        </p>
+        <Link
+          to="/register"
+          title="Join Jaimax - Register now"
+          className="inline-block bg-lime-400 hover:bg-white text-teal-700 font-semibold px-6 sm:px-6 md:px-7 lg:px-8 py-2 sm:py-2 md:py-2.5 lg:py-3 rounded-full transition-all duration-300 text-sm sm:text-sm md:text-base lg:text-base hover:scale-105 active:scale-95"
+        >
+          Join Now
+        </Link>
+      </div>
+
+      {/* Why Choose Us Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-5 lg:gap-6">
+        {whyChooseUs.map((item, index) => {
+          // Map why choose cards to pages
+          const whyChooseLinks = [
+            "/about",
+            "/contact",
+            "/features",
+            "/blog"
+          ];
+          const whyChooseLink = whyChooseLinks[index % whyChooseLinks.length];
+          
+          return (
+            <Link 
+              to={whyChooseLink} 
+              title={`${item.title} - Learn more`}
+              key={index + 10}
             >
-              Join Now
-            </button>
-          </div>
-
-          {/* Why Choose Us Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-5 lg:gap-6">
-            {whyChooseUs.map((item, index) => (
               <FlipCard
-                key={index + 10}
                 service={item}
                 index={index + 10}
                 delay={index * 0.1 + 1.6}
                 isPrimary={item.isPrimary}
               />
-            ))}
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="text-center mt-10 sm:mt-12 md:mt-14 lg:mt-20">
-          <div className="rounded-2xl p-6 sm:p-6 md:p-7 lg:p-8 hover:scale-105 transition-transform duration-300">
-            <h2 className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-3 md:mb-3 lg:mb-4 px-4">
-              Ready to Start Your Crypto Journey?
-            </h2>
-            <p className="text-white/90 mb-4 sm:mb-4 md:mb-5 lg:mb-6 text-base sm:text-base md:text-lg lg:text-lg px-4">
-              Join thousands of investors who trust Jaimax for their digital
-              asset management
-            </p>
-            <button
-              className="px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 bg-lime-400 text-teal-700 rounded-full font-semibold text-sm sm:text-base md:text-base hover:bg-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
-              onClick={() =>
-                window.open(
-                  "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax",
-                  "_blank"
-                )
-              }
-            >
-              Launch App
-            </button>
-          </div>
-        </div>
+            </Link>
+          );
+        })}
       </div>
-
-      <style jsx>{`
-        @keyframes fadeInScale {
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-        .transform-style-preserve-3d {
-          transform-style: preserve-3d;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-          transform: rotateY(180deg);
-        }
-        .group:hover .group-hover\\:rotate-y-180 {
-          transform: rotateY(180deg);
-        }
-
-        /* Fix for 1024px specifically */
-        @media (min-width: 768px) and (max-width: 1024px) {
-          .md\\:h-96 {
-            height: 24rem;
-          }
-
-          .md\\:grid-cols-3 > *,
-          .md\\:grid-cols-2 > * {
-            min-height: auto;
-          }
-
-          .md\\:text-xs {
-            font-size: 0.75rem;
-            line-height: 1rem;
-          }
-
-          .md\\:max-h-40 {
-            max-height: 10rem;
-          }
-        }
-
-        /* Touch device optimizations */
-        @media (hover: none) and (pointer: coarse) {
-          .group:active .group-hover\\:rotate-y-180 {
-            transform: rotateY(180deg);
-          }
-
-          .hover\\:scale-105:active {
-            transform: scale(1.05);
-          }
-        }
-      `}</style>
     </div>
+
+    {/* CTA Section */}
+    <div className="text-center mt-10 sm:mt-12 md:mt-14 lg:mt-20">
+      <div className="rounded-2xl p-6 sm:p-6 md:p-7 lg:p-8 hover:scale-105 transition-transform duration-300">
+        <h2 className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-3 md:mb-3 lg:mb-4 px-4">
+          Ready to Start Your{" "}
+          <Link to="/best-presale-crypto-coin-in-india" title="Start your crypto journey with Jaimax" className="text-lime-400 hover:underline">
+            Crypto Journey
+          </Link>?
+        </h2>
+        <p className="text-white/90 mb-4 sm:mb-4 md:mb-5 lg:mb-6 text-base sm:text-base md:text-lg lg:text-lg px-4">
+          Join thousands of investors who trust{" "}
+          <Link to="/about" title="About Jaimax - Trusted crypto platform" className="text-lime-400 hover:underline">
+            Jaimax
+          </Link>{" "}
+          for their{" "}
+          <Link to="/features" title="Digital asset management features" className="text-lime-400 hover:underline">
+            digital asset management
+          </Link>
+        </p>
+        <button
+          className="px-4 sm:px-5 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 bg-lime-400 text-teal-700 rounded-full font-semibold text-sm sm:text-base md:text-base hover:bg-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
+          onClick={() =>
+            window.open(
+              "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax",
+              "_blank"
+            )
+          }
+        >
+          Launch App
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <style jsx>{`
+    @keyframes fadeInScale {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-preserve-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    .group:hover .group-hover\\:rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    /* Fix for 1024px specifically */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .md\\:h-96 {
+        height: 24rem;
+      }
+
+      .md\\:grid-cols-3 > *,
+      .md\\:grid-cols-2 > * {
+        min-height: auto;
+      }
+
+      .md\\:text-xs {
+        font-size: 0.75rem;
+        line-height: 1rem;
+      }
+
+      .md\\:max-h-40 {
+        max-height: 10rem;
+      }
+    }
+
+    /* Touch device optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .group:active .group-hover\\:rotate-y-180 {
+        transform: rotateY(180deg);
+      }
+
+      .hover\\:scale-105:active {
+        transform: scale(1.05);
+      }
+    }
+  `}</style>
+</div>
   );
 };
 

@@ -18,7 +18,7 @@ import * as Yup from "yup";
 import { Helmet } from "react-helmet-async";
 import Seo from '../../SeoContent/Seo'
 import { useSubmitEnquiryMutation } from "../../pages/home/HomePageApiSlice";
-
+import { Link } from 'react-router-dom';
 const OurMissionSectionContent = () => {
   // Animation variants for the section title and description
   const sectionVariants = {
@@ -41,165 +41,219 @@ const OurMissionSectionContent = () => {
   };
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 font-inter bg-[#085056]">
-      <div className="max-w-7xl mx-auto bg-[#085056]">
-        {/* Title and Description */}
-        <motion.div
-          className="text-center lg:text-left mb-12"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={sectionVariants}
+<section className="py-16 px-4 sm:px-6 lg:px-8 font-inter bg-[#085056]">
+  <div className="max-w-7xl mx-auto bg-[#085056]">
+    {/* Title and Description */}
+    <motion.div
+      className="text-center lg:text-left mb-12"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={sectionVariants}
+    >
+      <p className="text-lime-400 text-sm uppercase tracking-wider font-semibold mb-2">
+        <Link to="/about" title="About Jaimax mission and vision">
+          OUR MISSION
+        </Link>
+      </p>
+      <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+        Unlock Your Financial Future with{" "}
+        <Link 
+          to="/best-presale-crypto-coin-in-india" 
+          title="Jaimax Coin - Best crypto presale in India"
+          className="text-lime-400 hover:underline"
         >
-          <p className="text-lime-400 text-sm uppercase tracking-wider font-semibold mb-2">
-            OUR MISSION
-          </p>
-          <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
-            Unlock Your Financial Future with Jaimax Coin
-          </h2>
-          <p className="text-white max-w-7xl lg:mx-0 mx-auto text-base sm:text-lg">
-            Welcome to Jaimax Coin – an all-in-one platform designed to help you
-            achieve your financial goals through tailored investment plans,
-            team-building opportunities, and innovative referral systems.
-            Whether you're an experienced investor or new to digital assets,
-            Jaimax Coin blends investment tools, strategies, and network growth
-            potential to empower your financial future.
-          </p>
-        </motion.div>
+          Jaimax Coin
+        </Link>
+      </h2>
+      <p className="text-white max-w-7xl lg:mx-0 mx-auto text-base sm:text-lg">
+        Welcome to{" "}
+        <Link to="/about" title="About Jaimax Coin platform" className="text-lime-400 hover:underline">
+          Jaimax Coin
+        </Link>{" "}
+        – an all-in-one platform designed to help you achieve your{" "}
+        <Link to="/features" title="Financial goals with Jaimax" className="text-lime-400 hover:underline">
+          financial goals
+        </Link>{" "}
+        through tailored{" "}
+        <Link to="/services" title="Investment plans and services" className="text-lime-400 hover:underline">
+          investment plans
+        </Link>
+        , team-building opportunities, and innovative referral systems. Whether you're an{" "}
+        <Link to="/login" title="Login for experienced investors" className="text-lime-400 hover:underline">
+          experienced investor
+        </Link>{" "}
+        or{" "}
+        <Link to="/register" title="Register - New to digital assets" className="text-lime-400 hover:underline">
+          new to digital assets
+        </Link>
+        , Jaimax Coin blends investment tools, strategies, and network growth potential to empower your financial future.
+      </p>
+    </motion.div>
 
-        {/* Cards Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.2, // Stagger animation for children
-              },
-            },
-          }}
+    {/* Cards Grid */}
+    <motion.div
+      className="grid grid-cols-1 md:grid-cols-3 gap-8"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={{
+        visible: {
+          transition: {
+            staggerChildren: 0.2,
+          },
+        },
+      }}
+    >
+      {/* Card 1: Tailored Investment Plans */}
+      <motion.div
+        className="bg-teal-900 rounded-xl p-8 flex flex-col items-center text-center shadow-2xl hover:shadow-xl transition-shadow duration-300"
+        variants={cardVariants}
+        whileHover={{ translateY: -10 }}
+      >
+        <Link to="/features" title="Jaimax investment features" className="mb-4 p-3 bg-lime-500/20 rounded-full hover:bg-lime-500/30 transition-colors">
+          <MessageSquare className="w-12 h-12 text-lime-400" />
+        </Link>
+        <h3 className="text-white text-xl font-semibold mb-3">
+          <Link to="/features" title="Tailored Investment Plans - Jaimax Features" className="hover:text-lime-400 transition-colors">
+            Tailored Investment Plans
+          </Link>
+        </h3>
+        <p className="text-white mb-6 text-sm sm:text-base">
+          Discover diverse{" "}
+          <Link to="/services" title="Investment plans and services" className="text-lime-400 hover:underline">
+            investment plans
+          </Link>{" "}
+          designed to maximize your returns, from small-scale investments to major growth opportunities, progressing through{" "}
+          <Link to="/best-presale-crypto-coin-in-india" title="Jaimax ICO slabs" className="text-lime-400 hover:underline">
+            ICO slabs
+          </Link>.
+        </p>
+        <Link
+          to="/features"
+          title="Learn more about Jaimax investment plans"
+          className="text-lime-400 hover:text-lime-300 font-medium flex items-center group"
         >
-          {/* Card 1: Tailored Investment Plans */}
-          <motion.div
-            className="bg-teal-900 rounded-xl p-8 flex flex-col items-center text-center shadow-2xl hover:shadow-xl transition-shadow duration-300"
-            variants={cardVariants}
-            whileHover={{ translateY: -10 }} // Simple hover animation
+          Learn more
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 ml-2 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-200"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            <div className="mb-4 p-3 bg-lime-500/20 rounded-full">
-              <MessageSquare className="w-12 h-12 text-lime-400" />
-            </div>
-            <h3 className="text-white text-xl font-semibold mb-3">
-              Tailored Investment Plans
-            </h3>
-            <p className="text-white mb-6 text-sm sm:text-base">
-              Discover diverse investment plans designed to maximize your
-              returns, from small-scale investments to major growth
-              opportunities, progressing through ICO slabs.
-            </p>
-            <a
-              href="/login"
-              className="text-lime-400 hover:text-lime-300 font-medium flex items-center group"
-            >
-              Learn more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-2 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-200"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-                />
-              </svg>
-            </a>
-          </motion.div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+            />
+          </svg>
+        </Link>
+      </motion.div>
 
-          {/* Card 2: Powerful Referral System */}
-          <motion.div
-            className="bg-teal-900 rounded-xl p-8 flex flex-col items-center text-center shadow-2xl hover:shadow-xl transition-shadow duration-300"
-            variants={cardVariants}
-            whileHover={{ translateY: -10 }}
+      {/* Card 2: Powerful Referral System */}
+      <motion.div
+        className="bg-teal-900 rounded-xl p-8 flex flex-col items-center text-center shadow-2xl hover:shadow-xl transition-shadow duration-300"
+        variants={cardVariants}
+        whileHover={{ translateY: -10 }}
+      >
+        <Link to="/services" title="Jaimax referral system" className="mb-4 p-3 bg-lime-500/20 rounded-full hover:bg-lime-500/30 transition-colors">
+          <Globe className="w-12 h-12 text-lime-400" />
+        </Link>
+        <h3 className="text-white text-xl font-semibold mb-3">
+          <Link to="/services" title="Powerful Referral System - Jaimax Services" className="hover:text-lime-400 transition-colors">
+            Powerful Referral System
+          </Link>
+        </h3>
+        <p className="text-white mb-6 text-sm sm:text-base">
+          Generate unique{" "}
+          <Link to="/register" title="Register and get referral codes" className="text-lime-400 hover:underline">
+            referral codes
+          </Link>
+          , build your team, and earn bonuses based on their activity and purchases, with easy tracking of your{" "}
+          <Link to="/about" title="Network growth with Jaimax" className="text-lime-400 hover:underline">
+            network
+          </Link>.
+        </p>
+        <Link
+          to="/services"
+          title="Learn more about Jaimax referral system"
+          className="text-lime-400 hover:text-lime-300 font-medium flex items-center group"
+        >
+          Learn more
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 ml-2 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-200"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            <div className="mb-4 p-3 bg-lime-500/20 rounded-full">
-              <Globe className="w-12 h-12 text-lime-400" />
-            </div>
-            <h3 className="text-white text-xl font-semibold mb-3">
-              Powerful Referral System
-            </h3>
-            <p className="text-white mb-6 text-sm sm:text-base">
-              Generate unique referral codes, build your team, and earn bonuses
-              based on their activity and purchases, with easy tracking of your
-              network.
-            </p>
-            <a
-              href="/login"
-              className="text-lime-400 hover:text-lime-300 font-medium flex items-center group"
-            >
-              Learn more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-2 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-200"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-                />
-              </svg>
-            </a>
-          </motion.div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+            />
+          </svg>
+        </Link>
+      </motion.div>
 
-          {/* Card 3: Secure & Transparent Transactions */}
-          <motion.div
-            className="bg-teal-900 rounded-xl p-8 flex flex-col items-center text-center shadow-2xl hover:shadow-xl transition-shadow duration-300"
-            variants={cardVariants}
-            whileHover={{ translateY: -10 }}
+      {/* Card 3: Secure & Transparent Transactions */}
+      <motion.div
+        className="bg-teal-900 rounded-xl p-8 flex flex-col items-center text-center shadow-2xl hover:shadow-xl transition-shadow duration-300"
+        variants={cardVariants}
+        whileHover={{ translateY: -10 }}
+      >
+        <Link to="/about" title="Secure Jaimax transactions" className="mb-4 p-3 bg-lime-500/20 rounded-full hover:bg-lime-500/30 transition-colors">
+          <Briefcase className="w-12 h-12 text-lime-400" />
+        </Link>
+        <h3 className="text-white text-xl font-semibold mb-3">
+          <Link to="/about" title="Secure & Transparent Transactions - About Jaimax" className="hover:text-lime-400 transition-colors">
+            Secure & Transparent Transactions
+          </Link>
+        </h3>
+        <p className="text-white mb-6 text-sm sm:text-base">
+          Benefit from seamless purchases of{" "}
+          <Link to="/best-presale-crypto-coin-in-india" title="Buy Jaimax Coins" className="text-lime-400 hover:underline">
+            Jaimax Coins
+          </Link>{" "}
+          via an integrated{" "}
+          <Link to="/services" title="Payment gateway services" className="text-lime-400 hover:underline">
+            payment gateway
+          </Link>
+          , with detailed transaction history and{" "}
+          <Link to="/login" title="Secure withdrawal options" className="text-lime-400 hover:underline">
+            secure withdrawal options
+          </Link>.
+        </p>
+        <Link
+          to="/about"
+          title="Learn more about Jaimax security"
+          className="text-lime-400 hover:text-lime-300 font-medium flex items-center group"
+        >
+          Learn more
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 ml-2 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-200"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            <div className="mb-4 p-3 bg-lime-500/20 rounded-full">
-              <Briefcase className="w-12 h-12 text-lime-400" />
-            </div>
-            <h3 className="text-white text-xl font-semibold mb-3">
-              Secure & Transparent Transactions
-            </h3>
-            <p className="text-white mb-6 text-sm sm:text-base">
-              Benefit from seamless purchases of Jaimax Coins via an integrated
-              payment gateway, with detailed transaction history and secure
-              withdrawal options.
-            </p>
-            <a
-              href="/login"
-              className="text-lime-400 hover:text-lime-300 font-medium flex items-center group"
-            >
-              Learn more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 ml-2 transform translate-x-0 group-hover:translate-x-1 transition-transform duration-200"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-                />
-              </svg>
-            </a>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+            />
+          </svg>
+        </Link>
+      </motion.div>
+    </motion.div>
+
+
+  </div>
+</section>
   );
 };
 
@@ -882,16 +936,6 @@ const contactschema = {
   return (
     <>
  <Seo page="contact" />
-{/* <Helmet>
-  <title>Contact Jaimax | 24/7 Support & Help Center</title>
-  <meta
-    name="description"
-    content="Contact the Jaimax support team any time via phone, email or chat. Our 24/7 help center is here to assist you with wallet access, deposits, withdrawals and account-related queries."
-  />
-  <link rel="canonical" href="https://www.jaimax.com/contact" />
-  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactschema) }}>
-    </script>
-</Helmet> */}
 
       <ContactInformationSectionContent />
       <OurMissionSectionContent />

@@ -3,6 +3,7 @@ import { motion, useAnimation, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Seo from '../../SeoContent/Seo'
 import { Helmet } from "react-helmet-async";
+import { Link } from 'react-router-dom';
 // import about from '../../assets/Images/future.png'
 const about='https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg'
 // SVG Icons as React Components (These remain the same as they are functional)
@@ -358,22 +359,7 @@ const aboutschema={
   return (
     <div className="relative min-h-screen text-white overflow-hidden bg-[#085056]">
        <Seo page="about" />
-{/* <Helmet>
-  <title>About Jaimax | Our Vision for India’s Digital Finance Future</title>
-  <meta
-    name="description"
-    content="Learn about Jaimax, the digital finance ecosystem built by Jaisvik Software Solutions Private Limited. Discover our vision, mission and how we are building secure blockchain-based solutions for India."
-  />
-  <link rel="canonical" href="https://www.jaimax.com/about" />
-<script 
-    type="application/ld+json" 
-    dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutschema) }} 
-  />
-</Helmet> */}
       <FloatingParticles />
-
-      {/* This outer div now only handles the background and particle effect */}
-      {/* Hero Section - Text on Image */}
       <AnimatedSection className="mb-20">
         <motion.div
           whileHover={{ scale: 1.01 }}
@@ -506,7 +492,7 @@ const aboutschema={
                 A Global Crypto Brand from India
               </h2>
               <p className="text-white mb-6 leading-relaxed text-center lg:text-left">
-                To position Jaimax Coin as a leading global crypto brand originating from India. We envision a world where <a href="http://www.jaimax.com" className="text-teal-300">blockchain technology</a> enables financial equality, where every transaction is secure, and where every investor can be part of a borderless digital economy.
+                To position Jaimax Coin as a leading global crypto brand originating from India. We envision a world where <a href="http://www.jaimax.com/services" className="text-teal-300">blockchain technology</a> enables financial equality, where every transaction is secure, and where every investor can be part of a borderless digital economy.
               </p>
               <p className="text-white mb-8 leading-relaxed text-center lg:text-left">
                 Our goal is to make Jaimax the most trusted cryptocurrency brand in India and across international markets.
@@ -626,7 +612,7 @@ const aboutschema={
                   <div className="text-teal-400 mt-1 flex-shrink-0">
                     <TeamIcon className="w-6 h-6" />
                   </div>
-                  <span className="text-white text-left">Community Powered: Our strength lies in our users — a united Jaimax community that believes in long-term value and shared growth.</span>
+                  <span className="text-white text-left">Community Powered: Our strength lies in our users — a united<a href="https://www.jaimax.com/about"> Jaimax community</a> that believes in long-term value and shared growth.</span>
                 </motion.div>
               </motion.div>
             </div>
