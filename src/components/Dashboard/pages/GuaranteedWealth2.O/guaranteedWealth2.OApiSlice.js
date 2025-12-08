@@ -42,7 +42,7 @@ export const guaranteedWealth2_OApiSlice = apiSlice.injectEndpoints({
     }),
     getWealth2_OOrderTransactions: builder.query({
       query: ({ orderId, page = 1, limit = 3 }) => ({
-        url: `/guaranted-wealth-2-0/wealth-order-transactions`,
+        url: `/guaranted-wealth-2-0/wealth-order-transactions-2`,
         method: "GET",
         params: { orderId, page, limit },
       }),

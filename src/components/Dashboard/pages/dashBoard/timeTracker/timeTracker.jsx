@@ -1116,9 +1116,9 @@ const SlabTabs = () => {
           isINR ? "₹" : "$"
         }${minAmount}.`;
       } else if (value > maxAmount) {
-        newErrors.amount = `Maximum amount should be ${
-          isINR ? "₹" : "$"
-        }${maxAmount}.`;
+        // newErrors.amount = `Maximum amount should be ${
+        //   isINR ? "₹" : "$"
+        // }${maxAmount}.`;
       }
     }
 

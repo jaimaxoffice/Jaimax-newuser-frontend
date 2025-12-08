@@ -398,7 +398,7 @@ const CompletedPlansTable = ({
           {emptyMessage || "No completed plans found"}
         </p>
         <p className="text-gray-400 text-xs mt-1 max-w-xs mx-auto">
-          Completed plans will appear here once you finish the 300-day period.
+          Completed plans will appear here once you finish the 400-day period.
         </p>
       </div>
     );
@@ -564,14 +564,14 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
 
   if (!isOpen || !orderDetails) return null;
 
-  const completedDays = orderDetails.wealthPalnDisbursedDays || 0;
-  const totalDays = 300;
+  const completedDays = orderDetails.wealthPalnDisbursedDays_2 || 0;
+  const totalDays = 400;
   const progressPercentage = (completedDays / totalDays) * 100;
   const totalAmountDisbursed =
-    orderDetails.totalAmountDisbursedForWealthPlan || 0;
-  const dailyAmount = orderDetails.guaranteedAmountToBeDisburse || 0;
+    orderDetails.totalAmountDisbursedForWealthPlan_2 || 0;
+  const dailyAmount = orderDetails.guaranteedAmountToBeDisburse_2 || 0;
   const totalExpectedAmount = dailyAmount * totalDays;
-  const tokensToCollect = orderDetails.guaranteedTokensToBeCollect || 0;
+  const tokensToCollect = orderDetails.guaranteedTokensToBeCollect_2 || 0;
 
   const remainingDays = totalDays - completedDays;
   const projectedCompletionDate = new Date();
@@ -680,7 +680,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                       <p className="text-orange-100 text-sm">Status</p>
                       <div>
                         <p className="font-semibold flex items-center text-sm">
-                          {orderDetails.isGuaranteedWealthOpted ? (
+                          {orderDetails.isGuaranteedWealthOpted_2 ? (
                             <>
                               <Check size={12} className="mr-1" /> Active
                             </>
@@ -700,8 +700,8 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                     <div>
                       <p className="text-orange-100 text-sm">Start Date</p>
                       <p className="font-semibold text-sm">
-                        {orderDetails.guaranteedWealthPlanChosenDate
-                          ? formatDate(orderDetails.guaranteedWealthPlanChosenDate)
+                        {orderDetails.guaranteedWealthPlanChosenDate_2
+                          ? formatDate(orderDetails.guaranteedWealthPlanChosenDate_2)
                           : "Not started"}
                       </p>
                     </div>
@@ -823,13 +823,13 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                       />
                       <MetricCard
                         title="Daily coins"
-                        value={`${orderDetails?.guaranteedTokensToBeCollect || 0}`}
+                        value={`${orderDetails?.guaranteedTokensToBeCollect_2 || 0}`}
                         icon={<Wallet size={16} />}
                         color="bg-orange-500"
                       />
                       <MetricCard
                         title="Total coins collected"
-                        value={`${orderDetails.totalCoinsCollectedFormUser.toLocaleString(
+                        value={`${orderDetails.totalCoinsCollectedFormUser_2.toLocaleString(
                           "en-IN"
                         )}`}
                         icon={<Wallet size={16} />}
@@ -846,9 +846,9 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                     Activity History
                   </h3>
 
-                  {orderDetails.guaranteedWealthPlanActivatedDates?.length > 0 ? (
+                  {orderDetails.guaranteedWealthPlanActivatedDates_2?.length > 0 ? (
                     <div className="border-l-2 border-orange-400 pl-4 pb-2 space-y-3 ml-2 text-xs md:text-sm">
-                      {orderDetails.guaranteedWealthPlanActivatedDates?.map(
+                      {orderDetails.guaranteedWealthPlanActivatedDates_2?.map(
                         (date, index) => (
                           <div key={`act-${index}`} className="relative">
                             <div className="absolute -left-[25px] mt-1 w-4 h-4 rounded-full bg-orange-500 border-2 border-white"></div>
@@ -864,7 +864,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                                 </span>
                               </p>
                             </div>
-                            {orderDetails.guaranteedWealthPlanDeactivatedDates?.[
+                            {orderDetails.guaranteedWealthPlanDeactivatedDates_2?.[
                               index
                             ] && (
                               <div className="mt-3 relative">
@@ -878,10 +878,10 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                                     <span className="text-gray-500 text-xs flex items-center">
                                       <Clock size={12} className="mr-1" />
                                       {orderDetails
-                                        .guaranteedWealthPlanDeactivatedDates[index]
+                                        .guaranteedWealthPlanDeactivatedDates_2[index]
                                         ? formatDateWithAmPm(
                                             orderDetails
-                                              .guaranteedWealthPlanDeactivatedDates[
+                                              .guaranteedWealthPlanDeactivatedDates_2[
                                               index
                                             ]
                                           )
@@ -1069,7 +1069,7 @@ const TermsModal = ({
                   </p>
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
-                    <span>Daily rewards = investment amount ÷ 300 days.</span>
+                    <span>Daily rewards = investment amount ÷ 400 days.</span>
                   </p>
 
                   <div className="bg-white p-2 rounded-lg ml-2 border border-amber-200 text-xs">
@@ -1100,7 +1100,7 @@ const TermsModal = ({
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
-                      Continues for 300 days unless paused/terminated.
+                      Continues for 400 days unless paused/terminated.
                     </span>
                   </p>
                 </div>
@@ -1114,7 +1114,7 @@ const TermsModal = ({
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
-                      After 300 days:{" "}
+                      After 400 days:{" "}
                       <span className="font-bold">remains 50% coins</span> of
                       plan token.
                     </span>
@@ -1122,7 +1122,7 @@ const TermsModal = ({
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
-                      Based on daily coin price over the 300-day period.
+                      Based on daily coin price over the 400-day period.
                     </span>
                   </p>
                 </div>
@@ -1242,7 +1242,7 @@ const OrdersTable = ({
 
   // Helper function to check if order should be highlighted
   const shouldHighlight = (order) => {
-    return order.firstTimeWealthPlanOpted && !order.isGuaranteedWealthOpted;
+    return order.firstTimeWealthPlanOpted_2 && !order.isGuaranteedWealthOpted_2;
   };
 
   // Mobile view - cards with enhanced styling
@@ -1276,12 +1276,12 @@ const OrdersTable = ({
               <div className="flex items-center gap-1">
                 <span
                   className={`px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    order.isGuaranteedWealthOpted
+                    order.isGuaranteedWealthOpted_2
                       ? "bg-green-100 text-green-800"
                       : "bg-gray-100 text-gray-800"
                   }`}
                 >
-                  {order.isGuaranteedWealthOpted ? (
+                  {order.isGuaranteedWealthOpted_2 ? (
                     <span className="flex items-center">
                       <Check size={10} className="mr-1" /> Active
                     </span>
@@ -1346,7 +1346,7 @@ const OrdersTable = ({
                         shouldHighlight(order) ? "text-yellow-700" : "text-orange-700"
                       }`}
                     >
-                      {order.wealthPalnDisbursedDays || 0}/300
+                      {order.wealthPalnDisbursedDays_2 || 0}/400
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
@@ -1358,7 +1358,7 @@ const OrdersTable = ({
                       }`}
                       style={{
                         width: `${
-                          ((order.wealthPalnDisbursedDays || 0) / 300) * 100
+                          ((order.wealthPalnDisbursedDays_2 || 0) / 400) * 100
                         }%`,
                       }}
                     ></div>
@@ -1367,7 +1367,7 @@ const OrdersTable = ({
               </div>
 
               <div className="mt-3 flex gap-1 text-xs">
-                {order.isGuaranteedWealthOpted ? (
+                {order.isGuaranteedWealthOpted_2 ? (
                   <button
                     onClick={() => onDeactivate(order._id || order.id)}
                     disabled={isProcessing}
@@ -1467,12 +1467,12 @@ const OrdersTable = ({
               <td className="px-3 py-2 whitespace-nowrap">
                 <span
                   className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    order.isGuaranteedWealthOpted
+                    order.isGuaranteedWealthOpted_2
                       ? "bg-green-100 text-green-800"
                       : "bg-gray-100 text-gray-800"
                   }`}
                 >
-                  {order.isGuaranteedWealthOpted ? (
+                  {order.isGuaranteedWealthOpted_2 ? (
                     <span className="flex items-center">
                       <Check size={10} className="mr-1" /> Active
                     </span>
@@ -1494,17 +1494,17 @@ const OrdersTable = ({
                       }`}
                       style={{
                         width: `${
-                          ((order.wealthPalnDisbursedDays || 0) / 300) * 100
+                          ((order.wealthPalnDisbursedDays_2 || 0) / 400) * 100
                         }%`,
                       }}
                     ></div>
                   </div>
-                  <span>{order.wealthPalnDisbursedDays || 0}/300</span>
+                  <span>{order.wealthPalnDisbursedDays_2 || 0}/400</span>
                 </div>
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium">
                 <div className="flex gap-1">
-                  {order.isGuaranteedWealthOpted ? (
+                  {order.isGuaranteedWealthOpted_2 ? (
                     <button
                       onClick={() => onDeactivate(order._id || order.id)}
                       disabled={isProcessing}
