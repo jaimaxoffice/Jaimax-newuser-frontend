@@ -508,6 +508,20 @@ const Navbar = () => {
                   About
                 </NavLink>
               </li>
+              {/* <li>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive
+                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                  }
+                  to="/landingpage"
+                  onClick={closeNavbar}
+                  title="About Jaimax - Building the Future of Cryptocurrency in India"
+                >
+                  Landingpage
+                </NavLink>
+              </li> */}
 
               <li>
                 <NavLink
@@ -687,6 +701,20 @@ const Navbar = () => {
                     About
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
+                        : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
+                    }
+                    to="/landingpage"
+                    title="About Jaimax - Building the Future of Cryptocurrency in India"
+                    onClick={closeNavbar}
+                  >
+                    Landingpage
+                  </NavLink>
+                </li>
 
                 <li>
                   <NavLink
@@ -695,7 +723,7 @@ const Navbar = () => {
                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
                     }
-                    to="/services"
+                    to="/services/"
                     title="Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
                     onClick={closeNavbar}
                   >
@@ -725,7 +753,7 @@ const Navbar = () => {
                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
                     }
-                    to="/blog"
+                    to="/blog/"
                     title="Jaimax Blog - Latest Crypto News, Insights & Market Analysis"
                     onClick={closeNavbar}
                   >

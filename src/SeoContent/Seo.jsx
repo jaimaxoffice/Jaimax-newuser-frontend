@@ -244,17 +244,17 @@ const seoContent = {
           ],
           url: [
             "https://www.jaimax.com/",
-            "https://www.jaimax.com/about",
-            "https://www.jaimax.com/services",
-            "https://www.jaimax.com/features",
-            "https://www.jaimax.com/blog",
-            "https://www.jaimax.com/contact",
-            "https://www.jaimax.com/best-presale-crypto-coin-in-india",
-            "https://www.jaimax.com/refund-policy",
-            "https://www.jaimax.com/terms-and-conditions",
-            "https://www.jaimax.com/privacy-policy",
-            "https://www.jaimax.com/aml-ctf",
-            "https://www.jaimax.com/kyc-pmla",
+            "https://www.jaimax.com/about/",
+            "https://www.jaimax.com/services/",
+            "https://www.jaimax.com/features/",
+            "https://www.jaimax.com/blog/",
+            "https://www.jaimax.com/contact/",
+            "https://www.jaimax.com/best-presale-crypto-coin-in-india/",
+            "https://www.jaimax.com/refund-policy/",
+            "https://www.jaimax.com/terms-and-conditions/",
+            "https://www.jaimax.com/privacy-policy/",
+            "https://www.jaimax.com/aml-ctf/",
+            "https://www.jaimax.com/kyc-pmla/",
           ],
         },
         {
@@ -277,12 +277,12 @@ const seoContent = {
       "About Jaimax Coin | Revolutionizing the Crypto World with Jaimax Coin",
     description:
       "Learn about Jaimax Coin, our vision, and how we are revolutionizing the cryptocurrency space by offering a secure, reliable, and user-friendly digital currency solution.",
-    canonical: "https://www.jaimax.com/about",
+    canonical: "https://www.jaimax.com/about/",
     schema: {
       "@context": "https://schema.org",
       "@type": "AboutPage",
-      "@id": "https://www.jaimax.com/about",
-      url: "https://www.jaimax.com/about",
+      "@id": "https://www.jaimax.com/about/",
+      url: "https://www.jaimax.com/about/",
       name: "About Jaimax | Building the Future of Digital Finance",
       description:
         "Learn about Jaimax, the digital finance ecosystem by Jaisvik Software Solutions Private Limited, and how it is building a secure, transparent blockchain-based future for India.",
@@ -308,7 +308,7 @@ const seoContent = {
             "@type": "ListItem",
             position: 2,
             name: "About",
-            item: "https://www.jaimax.com/about",
+            item: "https://www.jaimax.com/about/",
           },
         ],
       },
@@ -319,7 +319,7 @@ const seoContent = {
       "Jaimax Coin Features | Secure and Seamless Cryptocurrency Experience",
     description:
       "Discover the powerful features of Jaimax Coin, including fast transactions, top-tier security, and scalable solutions for users looking to invest in digital assets.",
-    canonical: "https://www.jaimax.com/features",
+    canonical: "https://www.jaimax.com/features/",
     schema: {
       "@context": "https://schema.org",
       "@graph": [
@@ -357,8 +357,8 @@ const seoContent = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://www.jaimax.com/features",
-          url: "https://www.jaimax.com/features",
+          "@id": "https://www.jaimax.com/features/",
+          url: "https://www.jaimax.com/features/",
           name: "Jaimax Coin Features | Secure and Seamless Cryptocurrency Experience",
           description:
             "Discover the powerful features of Jaimax Coin, including fast transactions, top-tier security, and scalable solutions for users looking to invest in digital assets.",
@@ -384,7 +384,7 @@ const seoContent = {
               "@type": "ListItem",
               position: 2,
               name: "Features",
-              item: "https://www.jaimax.com/features",
+              item: "https://www.jaimax.com/features/",
             },
           ],
         },
@@ -622,14 +622,14 @@ const seoContent = {
       "Jaimax Coin Services | Unlock the Power of Secure Crypto Investments with Jaimax",
     description:
       "Jaimax Coin offers secure digital currency services, enabling smooth transactions, investment, and asset management. Join us in the future of decentralized finance.",
-    canonical: "https://www.jaimax.com/services",
+    canonical: "https://www.jaimax.com/services/",
     schema: {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://www.jaimax.com/services",
-          url: "https://www.jaimax.com/services",
+          "@id": "https://www.jaimax.com/services/#webpage",
+          url: "https://www.jaimax.com/services/",
           name: "Jaimax Services | Digital Finance, Wallet & Blockchain Solutions",
           description:
             "Explore Jaimax services including digital wallet solutions, blockchain infrastructure, staking support and secure crypto transaction tools for users and businesses.",
@@ -644,7 +644,7 @@ const seoContent = {
           provider: { "@id": "https://www.jaimax.com/#organization" },
           serviceType: "Digital finance, crypto wallet and blockchain services",
           areaServed: "IN",
-          url: "https://www.jaimax.com/services",
+          url: "https://www.jaimax.com/services/",
         },
       ],
     },
@@ -654,7 +654,7 @@ const seoContent = {
       "Jaimax Coin News | Latest Crypto Updates and Market Insights from Jaimax",
     description:
       "Stay informed with the latest news and updates from Jaimax Coin, including market trends, new partnerships, and technological advancements in the cryptocurrency world.",
-    canonical: "https://www.jaimax.com/blog",
+    canonical: "https://www.jaimax.com/blog/",
     schema: {
       "@context": "https://schema.org",
       "@type": ["Blog", "CollectionPage"],
@@ -672,7 +672,7 @@ const seoContent = {
     title: "Contact Jaimax Coin | Get in Touch with the Jaimax Team",
     description:
       "Have questions or need support? Contact the Jaimax Coin team for assistance with your cryptocurrency investments and transactions. We're here to help!",
-    canonical: "https://www.jaimax.com/contact",
+    canonical: "https://www.jaimax.com/contact/",
     schema: {
       "@context": "https://schema.org",
       "@graph": [
@@ -680,7 +680,7 @@ const seoContent = {
         {
           "@type": "ContactPage",
           "@id": "https://www.jaimax.com/contact#contactpage",
-          url: "https://www.jaimax.com/contact",
+          url: "https://www.jaimax.com/contact/",
           name: "Contact Jaimax | Support & Enquiries",
           description:
             "Get in touch with the Jaimax team for product support, business enquiries, or partnership opportunities. Our 24/7 help center is here to assist you.",
@@ -737,12 +737,12 @@ const seoContent = {
     title: "Login to Your Account | Jaimax Coin",
     description:
       "Access your Jaimax Coin account effortlessly. Log in to manage your cryptocurrency, track transactions, and explore exclusive features. Secure and easy access at your fingertips.",
-    canonical: "https://www.jaimax.com/login",
+    canonical: "https://www.jaimax.com/login/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/login",
-      url: "https://www.jaimax.com/login",
+      "@id": "https://www.jaimax.com/login/",
+      url: "https://www.jaimax.com/login/",
       name: "Jaimax Account Login",
       description:
         "Securely log in to your Jaimax account to access your wallet, transactions and digital finance dashboard.",
@@ -753,7 +753,7 @@ const seoContent = {
       },
       potentialAction: {
         "@type": "LoginAction",
-        target: "https://www.jaimax.com/login",
+        target: "https://www.jaimax.com/login/",
       },
     },
   },
@@ -761,12 +761,12 @@ const seoContent = {
     title: "Create Your Account | Jaimax Coin",
     description:
       "Join Jaimax Coin today! Sign up to start your cryptocurrency journey, enjoy secure transactions, and unlock exciting opportunities. Quick and easy registration process.",
-    canonical: "https://www.jaimax.com/register",
+    canonical: "https://www.jaimax.com/register/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/register",
-      url: "https://www.jaimax.com/register",
+      "@id": "https://www.jaimax.com/register/",
+      url: "https://www.jaimax.com/register/",
       name: "Create Your Jaimax Account",
       description:
         "Register for a Jaimax account to start using the wallet, explore digital finance tools and participate in the Jaimax ecosystem.",
@@ -777,7 +777,7 @@ const seoContent = {
       },
       potentialAction: {
         "@type": "RegisterAction",
-        target: "https://www.jaimax.com/register",
+        target: "https://www.jaimax.com/register/",
       },
     },
   },
@@ -785,7 +785,7 @@ const seoContent = {
     title: "Jaimax",
     description:
       "Jaimax Coin is a secure and innovative cryptocurrency designed to provide you with seamless transactions and investment opportunities. Explore how our coin can help secure your financial future.",
-    canonical: "https://www.jaimax.com/dashboard",
+    canonical: "https://www.jaimax.com/dashboard/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
@@ -805,12 +805,12 @@ const seoContent = {
     title: "24/7 Support | Jaimax Help Center",
     description:
       "Get instant 24/7 support from the Jaimax Help Center. Our dedicated team is available around the clock to resolve your cryptocurrency queries and issues.",
-    canonical: "https://www.jaimax.com/supporthome",
+    canonical: "https://www.jaimax.com/supporthome/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/supporthome",
-      url: "https://www.jaimax.com/supporthome",
+      "@id": "https://www.jaimax.com/supporthome/",
+      url: "https://www.jaimax.com/supporthome/",
       name: "Jaimax Support Center",
       description:
         "Access Jaimax's 24/7 support center for assistance with your cryptocurrency account, transactions, and technical issues.",
@@ -823,12 +823,12 @@ const seoContent = {
     title: "Refund Policy | Jaimax Coin",
     description:
       "Read Jaimax Coin's refund policy to understand eligibility, conditions, and timelines for refund requests on cryptocurrency transactions.",
-    canonical: "https://www.jaimax.com/refund-policy",
+    canonical: "https://www.jaimax.com/refund-policy/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/refund-policy",
-      url: "https://www.jaimax.com/refund-policy",
+      "@id": "https://www.jaimax.com/refund-policy/",
+      url: "https://www.jaimax.com/refund-policy/",
       name: "Jaimax Refund Policy",
       description:
         "Read the Jaimax refund and cancellation policy related to crypto deposits, service usage and platform fees.",
@@ -841,12 +841,12 @@ const seoContent = {
     title: "Terms & Conditions | Jaimax Coin",
     description:
       "Review the official terms and conditions of Jaimax Coin. Understand your rights, obligations, and compliance when investing or transacting with JMC.",
-    canonical: "https://www.jaimax.com/terms-and-conditions",
+    canonical: "https://www.jaimax.com/terms-and-conditions/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/terms-and-conditions",
-      url: "https://www.jaimax.com/terms-and-conditions",
+      "@id": "https://www.jaimax.com/terms-and-conditions/",
+      url: "https://www.jaimax.com/terms-and-conditions/",
       name: "Jaimax Terms and Conditions",
       description:
         "Review the terms and conditions governing the use of the Jaimax platform, wallet and related digital finance services.",
@@ -859,12 +859,12 @@ const seoContent = {
     title: "Privacy Policy | Jaimax Coin",
     description:
       "Jaimax Coin values your privacy. Learn how we collect, protect, and use your personal data while ensuring secure cryptocurrency transactions.",
-    canonical: "https://www.jaimax.com/privacy-policy",
+    canonical: "https://www.jaimax.com/privacy-policy/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/privacy-policy",
-      url: "https://www.jaimax.com/privacy-policy",
+      "@id": "https://www.jaimax.com/privacy-policy/",
+      url: "https://www.jaimax.com/privacy-policy/",
       name: "Jaimax Privacy Policy",
       description:
         "Understand how Jaimax collects, uses and protects personal data, in line with applicable data protection and IT regulations.",
@@ -877,12 +877,12 @@ const seoContent = {
     title: "KYC & PMLA Compliance | Jaimax Coin",
     description:
       "Understand Jaimax Coin’s KYC (Know Your Customer) and PMLA (Prevention of Money Laundering Act) compliance measures for safe crypto transactions.",
-    canonical: "https://www.jaimax.com/kyc-pmla",
+    canonical: "https://www.jaimax.com/kyc-pmla/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/kyc-pmla",
-      url: "https://www.jaimax.com/kyc-pmla",
+      "@id": "https://www.jaimax.com/kyc-pmla/",
+      url: "https://www.jaimax.com/kyc-pmla/",
       name: "Jaimax KYC & PMLA Policy",
       description:
         "Details of Jaimax’s Know Your Customer (KYC) and Prevention of Money Laundering Act (PMLA) compliance framework for users in India.",
@@ -895,12 +895,12 @@ const seoContent = {
     title: "AML & CTF Policy | Jaimax Coin",
     description:
       "Jaimax Coin follows strict Anti-Money Laundering (AML) and Counter-Terrorist Financing (CTF) policies to ensure a secure and transparent crypto ecosystem.",
-    canonical: "https://www.jaimax.com/aml-ctf",
+    canonical: "https://www.jaimax.com/aml-ctf/",
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.jaimax.com/aml-ctf",
-      url: "https://www.jaimax.com/aml-ctf",
+      "@id": "https://www.jaimax.com/aml-ctf/",
+      url: "https://www.jaimax.com/aml-ctf/",
       name: "Jaimax AML & CTF Policy",
       description:
         "Jaimax’s Anti-Money Laundering (AML) and Counter-Terrorist Financing (CTF) policies and monitoring measures for digital asset activity.",
@@ -913,7 +913,7 @@ const seoContent = {
     title: "Presale Crypto Coin in India | Best Pre-Sale Crypto Coin - Jaimax",
     description:
       "Discover Jaimax, India’s most trusted presale crypto coin. Get early access at a low entry price, backed by the JMC-24 blockchain for speed, security and long-term growth.",
-    canonical: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+    canonical: "https://www.jaimax.com/best-presale-crypto-coin-in-india/",
     schema: {
       "@context": "https://schema.org",
       "@graph": [

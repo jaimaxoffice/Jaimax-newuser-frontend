@@ -13,6 +13,7 @@ import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
 import JaimaxSplash from "./global/Splashscreen";
 import FloatingWhatsapp from "./global/FloatingWhatsapp";
+import Landingpage from "./pages/components/Landingpage";
 import AuthContainer from "./Authentication/Login";
 import ForgotPassword from "./Authentication/ForgotPassword";
 import ErrorBoundary from "./pages/chatSupport/ErrorBoundary";
@@ -62,6 +63,7 @@ import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/Goa
 import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation"
 import PromotersPage from "./components/Dashboard/pages/Promoters/Promoters"
 import GuaranteedWealthDashboard from "./components/Dashboard/pages/GuaranteedWealthPlan/GuaranteedWealthPlan"
+import GuaranteedWealthDashboard2_O from "./components/Dashboard/pages/GuaranteedWealth2.O/GuaranteedWealth2.O"
 import { ToastContainer } from './ReusableComponents/Toasts/Toasts';
 import PreSaleCryptoCoin from "./services/PreSaleCryptoCoin";
 const getAuthToken = () => {
@@ -449,6 +451,9 @@ const App = () => {
           <Route path="/guaranteedwealthplan" element={<DashboardLayout />}>
             <Route index element={<GuaranteedWealthDashboard />} />
           </Route>
+          <Route path="/guaranteedwealthplan-2-0" element={<DashboardLayout />}>
+            <Route index element={<GuaranteedWealthDashboard2_O />} />
+          </Route>
           <Route path="/kyc-information" element={<DashboardLayout />}>
             <Route index element={<Kyc />} />
           </Route>
@@ -484,13 +489,13 @@ const App = () => {
           <Route path="about" element={<JaimaxComponent />} />
           <Route path="contact" element={<Contact />} />
           <Route path="features" element={<FeaturesSection />} />
-
-          <Route path="blog">
+            <Route path='landingpage' element={<Landingpage/>}/>
+          <Route path="blog/">
             <Route index element={<BlogLayout />} />
             <Route path=":slug" element={<BlogDetailPage />} />
           </Route>
 
-          <Route path="services" element={<CryptoServicesFlipCards />} />
+          <Route path="services/" element={<CryptoServicesFlipCards />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/supportpage" element={<SupportPage />} />
           <Route path="terms-and-conditions" element={<TermsConditions />} />

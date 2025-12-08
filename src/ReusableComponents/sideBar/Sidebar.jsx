@@ -17,7 +17,7 @@ import {
 } from "react-icons/hi";
 import { useState, useEffect } from "react";
 import { FaHandshake } from "react-icons/fa";
-import { TreePalm,HandCoins,Wallet,UserRound ,SwatchBook ,Handshake ,Landmark } from "lucide-react";
+import { TreePalm,HandCoins,Wallet,UserRound ,SwatchBook ,Handshake ,Landmark ,HousePlug} from "lucide-react";
 import logo from "../../assets/Images/jaimaxlogo1.svg";
 
 const navItems = [
@@ -28,6 +28,7 @@ const navItems = [
   { name: "J-Wallet", path: "/jwallet", icon: <HiOutlineCreditCard /> },
   { name: "Promoters", path: "/promoters", icon: <Handshake  size={18} /> },
   { name: "Guaranteed Wealth", path: "/guaranteedwealthplan", icon: <Landmark   size={18} /> },
+  { name: "Guaranteed Wealth 2.0", path: "/guaranteedwealthplan-2-0", icon: <HousePlug   size={18} /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },
   { name: "Foundation Bonus", path: "/foundation", icon: <SwatchBook size={18} /> },
   { name: "Locked Superbonus", path: "/locked-superbonus", icon: <HandCoins   size={16}/> },
