@@ -669,6 +669,12 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                         ₹{(orderDetails.amount || 0).toLocaleString("en-IN")}
                       </p>
                     </div>
+                    <div>
+                      <p className="text-orange-100 text-xs ml-10">Total Returns</p>
+                      <p className="text-2xl md:text-3xl font-bold">
+                        ₹{((orderDetails.amount || 0) + (orderDetails.amount || 0) / 2).toLocaleString("en-IN")}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="mt-3 flex justify-between items-center text-xs">
@@ -851,10 +857,10 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                       {orderDetails.guaranteedWealthPlanActivatedDates_2?.map(
                         (date, index) => (
                           <div key={`act-${index}`} className="relative">
-                            <div className="absolute -left-[25px] mt-1 w-4 h-4 rounded-full bg-orange-500 border-2 border-white"></div>
+                            <div className="absolute -left-[25px] mt-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white"></div>
                             <div className="bg-white rounded-lg shadow-sm p-2 border border-gray-100 transform transition hover:translate-x-1">
                               <p className="text-gray-700">
-                                <span className="font-medium text-orange-700 flex items-center mb-1">
+                                <span className="font-medium text-green-700 flex items-center mb-1">
                                   <Check size={14} className="mr-1" /> Plan
                                   Activated
                                 </span>
@@ -871,7 +877,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                                 <div className="absolute -left-[25px] mt-1 w-4 h-4 rounded-full bg-red-500 border-2 border-white"></div>
                                 <div className="bg-white rounded-lg shadow-sm p-2 border border-gray-100 transform transition hover:translate-x-1">
                                   <p className="text-gray-700">
-                                    <span className="font-medium text-red-700 flex items-center mb-1">
+                                    <span className="font-medium text-red-500 flex items-center mb-1">
                                       <X size={14} className="mr-1" /> Plan
                                       Deactivated
                                     </span>
@@ -1077,11 +1083,11 @@ const TermsModal = ({
                     <ul className="mt-1 space-y-1">
                       <li className="flex items-center">
                         <ArrowRight size={12} className="mr-1 text-amber-600" />
-                        ₹3,00,000 investment → ₹1,000/day
+                        ₹3,00,000 investment  + 1,50,000 → ₹1,125/day
                       </li>
                       <li className="flex items-center">
                         <ArrowRight size={12} className="mr-1 text-amber-600" />
-                        ₹5,00,000 investment → ₹1,666.67/day
+                        ₹5,00,000 investment + 2,50,000 → ₹1,875/day
                       </li>
                     </ul>
                   </div>
@@ -1115,7 +1121,7 @@ const TermsModal = ({
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
                       After 400 days:{" "}
-                      <span className="font-bold">remains 50% coins</span> of
+                      <span className="font-bold">remains 25% coins</span> of
                       plan token.
                     </span>
                   </p>
