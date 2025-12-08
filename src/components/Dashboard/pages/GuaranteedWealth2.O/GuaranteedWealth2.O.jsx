@@ -241,7 +241,7 @@ const GuaranteedWealth2Dashboard = () => {
           <StatsCard
             title="Total Wealth Income"
             value={`₹${
-              userData?.data?.totalWealthPlan2CollectedAmount?.toLocaleString(
+              userData?.data?.totalWealthPlanCollectedAmount_2?.toLocaleString(
                 "en-IN"
               ) || "0"
             }`}
