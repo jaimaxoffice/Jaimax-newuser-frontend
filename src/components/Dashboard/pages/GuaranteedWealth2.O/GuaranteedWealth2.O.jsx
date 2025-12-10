@@ -1,3 +1,1925 @@
+// import React, { useState, useEffect } from "react";
+// import {
+//   useGetOrdersAbove3LQuery,
+//   useGetAllWealth2_OPlanOrdersQuery,
+//   useActivateTheWealth2_OPlanMutation,
+//   useDeActivateTheWealth2_OPlanMutation,
+//   useGetAllCompletedWealth2_OPlanOrdersQuery,
+//   useGetWealth2_OOrderTransactionsQuery,
+// } from "./guaranteedWealth2.OApiSlice";
+// import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
+// import {
+//   Wallet,
+//   DollarSign,
+//   Clock,
+//   Users,
+//   ArrowRight,
+//   Info,
+//   Check,
+//   X,
+//   PieChart,
+//   Calendar,
+//   Activity,
+//   TrendingUp,
+//   CreditCard,
+//   Award,
+//   Gift,
+//   AlertCircle,
+//   Coins,
+//   CalendarClock,
+//   Target,
+//   Star,
+//   CheckCircle2,
+//   Receipt,
+//   ArrowDownRight,
+//   ChevronLeft,
+//   ChevronRight,
+//   BarChart,
+//   IndianRupee,
+//   Sparkles,
+// } from "lucide-react";
+// import { ToastContainer, toast } from "../../../../ReusableComponents/Toasts/Toasts";
+
+// import Loader from "../../../../ReusableComponents/Loader/loader";
+
+// const formatDateWithAmPm = (isoString) => {
+//   const date = new Date(isoString);
+//   const dd = String(date.getUTCDate()).padStart(2, "0");
+//   const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+//   const yyyy = date.getUTCFullYear();
+//   let hh = date.getUTCHours();
+//   const min = String(date.getUTCMinutes()).padStart(2, "0");
+//   const ampm = hh >= 12 ? "PM" : "AM";
+//   hh = hh % 12 || 12;
+//   return `${dd}-${mm}-${yyyy} ${hh}:${min} ${ampm}`;
+// };
+
+// const formatDate = (isoString) => {
+//   const date = new Date(isoString);
+//   const dd = String(date.getUTCDate()).padStart(2, "0");
+//   const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+//   const yyyy = date.getUTCFullYear();
+//   return `${dd}-${mm}-${yyyy}`;
+// };
+
+// const GuaranteedWealth2Dashboard = () => {
+//   const [activeTab, setActiveTab] = useState("above3L");
+//   const [selectedOrder, setSelectedOrder] = useState(null);
+//   const [showTermsModal, setShowTermsModal] = useState(false);
+//   const [showPlanDetailsModal, setShowPlanDetailsModal] = useState(false);
+//   const [termsAccepted, setTermsAccepted] = useState(false);
+//   const [pendingActivationId, setPendingActivationId] = useState(null);
+//   const [isMobileView, setIsMobileView] = useState(false);
+
+//   useEffect(() => {
+//     const handleResize = () => {
+//       setIsMobileView(window.innerWidth < 768);
+//     };
+
+//     handleResize();
+//     window.addEventListener("resize", handleResize);
+//     return () => window.removeEventListener("resize", handleResize);
+//   }, []);
+
+//   // API Hooks
+//   const {
+//     data: ordersAbove3LResponse,
+//     isLoading: loadingAbove3L,
+//     refetch: refetchAbove3L,
+//   } = useGetOrdersAbove3LQuery();
+//   const {
+//     data: allWealthOrdersResponse,
+//     isLoading: loadingAllOrders,
+//     refetch: refetchAllOrders,
+//   } = useGetAllWealth2_OPlanOrdersQuery();
+//   const {
+//     data: completedWealthPlansResponse,
+//     isLoading: loadingCompletedPlans,
+//     refetch: refetchCompletedPlans,
+//   } = useGetAllCompletedWealth2_OPlanOrdersQuery();
+//   const [activateWealthPlan, { isLoading: activating }] =
+//     useActivateTheWealth2_OPlanMutation();
+//   const [deactivateWealthPlan, { isLoading: deactivating }] =
+//     useDeActivateTheWealth2_OPlanMutation();
+//   const { data: userData, refetch } = useUserDataQuery();
+
+//   const ordersAbove3L = ordersAbove3LResponse?.data || [];
+//   const allWealthOrders = allWealthOrdersResponse?.data || [];
+//   const completedWealthPlans = completedWealthPlansResponse?.data || [];
+
+//   // Handle viewing plan details
+//   const handleViewPlanDetails = (order) => {
+//     setSelectedOrder(order);
+//     setShowPlanDetailsModal(true);
+//   };
+
+//   // Handle activate - Show terms first
+//   const handleActivateClick = (_id) => {
+//     refetchAbove3L();
+//     refetchAllOrders();
+//     refetchCompletedPlans();
+//     setPendingActivationId(_id);
+//     setShowTermsModal(true);
+//     setTermsAccepted(false);
+//   };
+
+//   useEffect(() => {
+//     refetchAbove3L();
+//     refetchAllOrders();
+//     refetchCompletedPlans();
+//     refetch();
+//   }, []);
+
+//   // Proceed with activation after terms accepted
+//   const handleActivateConfirm = async () => {
+//     if (!termsAccepted) {
+//       toast.error("Please accept the terms and conditions to proceed.");
+//       return;
+//     }
+
+//     try {
+//       const response = await activateWealthPlan(pendingActivationId).unwrap();
+//       refetchAbove3L();
+//       refetchAllOrders();
+//       refetchCompletedPlans();
+//       setShowTermsModal(false);
+//       setPendingActivationId(null);
+//       setTermsAccepted(false);
+
+//       if (response && response.message) {
+//         toast.success(response.message);
+//       } else {
+//         toast.success("Wealth Plan 2.0 activated successfully!");
+//       }
+//     } catch (error) {
+//       if (error.data && error.data.message) {
+//         toast.error(error.data.message);
+//       } else {
+//         toast.error("Failed to activate the wealth plan");
+//       }
+//     }
+//   };
+
+//   const handleDeactivate = async (_id) => {
+//     try {
+//       const response = await deactivateWealthPlan(_id).unwrap();
+//       refetchAbove3L();
+//       refetchAllOrders();
+//       refetchCompletedPlans();
+
+//       if (response && response.message) {
+//         toast.success(response.message);
+//       } else {
+//         toast.success("Wealth Plan 2.0 deactivated successfully!");
+//       }
+//     } catch (error) {
+//       if (error.data && error.data.message) {
+//         toast.error(error.data.message);
+//       } else {
+//         toast.error("Failed to deactivate the wealth plan");
+//       }
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 p-2 md:p-4">
+//       <ToastContainer
+//         position="top-right"
+//         autoClose={3000}
+//         hideProgressBar={false}
+//         newestOnTop
+//         closeOnClick
+//         rtl={false}
+//         pauseOnFocusLoss
+//         draggable
+//         pauseOnHover
+//         theme="colored"
+//       />
+
+//       <div className="max-w-7xl mx-auto">
+//         {/* Header */}
+//         <div className="bg-gradient-to-r from-orange-500 to-amber-600 rounded-xl shadow-md p-4 md:p-5 mb-4 border border-orange-400 text-white">
+//           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+//             <div>
+//               <h1 className="text-xl md:text-3xl font-bold flex items-center">
+               
+//                 Guaranteed Wealth Plan 2.0
+//               </h1>
+//               <p className="text-orange-100 text-sm mt-1">
+//                 Premium investment plan for orders above ₹3,00,000
+//               </p>
+//             </div>
+//             <div className="flex items-center space-x-2 text-white bg-orange-600/30 px-3 py-1 rounded-full">
+//               <Clock size={18} />
+//               <span className="text-xs md:text-sm font-medium">
+//                 {new Date().toLocaleDateString("en-IN")}
+//               </span>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Stats Cards */}
+//         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4">
+//           <StatsCard
+//             title="Orders Above 3L"
+//             value={ordersAbove3L.length}
+//             icon={<CreditCard size={16} className="md:w-5 md:h-5" />}
+//             color="from-orange-500 to-amber-600"
+//           />
+//           <StatsCard
+//             title="Active Wealth Plans"
+//             value={allWealthOrders.length}
+//             icon={<PieChart size={16} className="md:w-5 md:h-5" />}
+//             color="from-orange-500 to-amber-600"
+//           />
+//           <StatsCard
+//             title="Completed Plans"
+//             value={completedWealthPlans.length}
+//             icon={<TrendingUp size={16} className="md:w-5 md:h-5" />}
+//             color="from-orange-500 to-amber-600"
+//           />
+//           <StatsCard
+//             title="Total Wealth Income"
+//             value={`₹${
+//               userData?.data?.totalWealthPlanCollectedAmount_2?.toLocaleString(
+//                 "en-IN"
+//               ) || "0"
+//             }`}
+//             icon={<Coins size={16} className="md:w-5 md:h-5" />}
+//             color="from-orange-500 to-amber-600"
+//           />
+//         </div>
+
+//         {/* Tabs */}
+//         <div className="bg-white rounded-xl shadow-md border border-orange-100 overflow-hidden">
+//           <div className="border-b border-orange-100">
+//             <nav className="flex overflow-x-auto hide-scrollbar">
+//               <button
+//                 onClick={() => setActiveTab("above3L")}
+//                 className={`py-3 px-3 md:px-6 text-xs md:text-sm font-medium border-b-2 transition-all duration-200 whitespace-nowrap ${
+//                   activeTab === "above3L"
+//                     ? "border-orange-600 text-orange-600 bg-orange-50"
+//                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+//                 }`}
+//               >
+//                 <div className="flex items-center">
+//                   <CreditCard size={14} className="mr-1.5" />
+//                   Orders Above 3L
+//                   {ordersAbove3L.length > 0 && (
+//                     <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+//                       {ordersAbove3L.length}
+//                     </span>
+//                   )}
+//                 </div>
+//               </button>
+//               <button
+//                 onClick={() => setActiveTab("allOrders")}
+//                 className={`py-3 px-3 md:px-6 text-xs md:text-sm font-medium border-b-2 transition-all duration-200 whitespace-nowrap ${
+//                   activeTab === "allOrders"
+//                     ? "border-orange-600 text-orange-600 bg-orange-50"
+//                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+//                 }`}
+//               >
+//                 <div className="flex items-center">
+//                   <PieChart size={14} className="mr-1.5" />
+//                   Active Wealth Plans
+//                   {allWealthOrders.length > 0 && (
+//                     <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+//                       {allWealthOrders.length}
+//                     </span>
+//                   )}
+//                 </div>
+//               </button>
+//               <button
+//                 onClick={() => setActiveTab("completedPlans")}
+//                 className={`py-3 px-3 md:px-6 text-xs md:text-sm font-medium border-b-2 transition-all duration-200 whitespace-nowrap ${
+//                   activeTab === "completedPlans"
+//                     ? "border-orange-600 text-orange-600 bg-orange-50"
+//                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+//                 }`}
+//               >
+//                 <div className="flex items-center">
+//                   <CheckCircle2 size={14} className="mr-1.5" />
+//                   Completed Plans
+//                   {completedWealthPlans.length > 0 && (
+//                     <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+//                       {completedWealthPlans.length}
+//                     </span>
+//                   )}
+//                 </div>
+//               </button>
+//             </nav>
+//           </div>
+
+//           {/* Content */}
+//           <div className="p-3 md:p-4">
+//             {activeTab === "above3L" ? (
+//               <OrdersTable
+//                 orders={ordersAbove3L}
+//                 loading={loadingAbove3L}
+//                 onActivate={handleActivateClick}
+//                 onDeactivate={handleDeactivate}
+//                 onViewDetails={handleViewPlanDetails}
+//                 isProcessing={activating || deactivating}
+//                 emptyMessage="No orders above 3,00,000 found"
+//                 isMobileView={isMobileView}
+//               />
+//             ) : activeTab === "allOrders" ? (
+//               <OrdersTable
+//                 orders={allWealthOrders}
+//                 loading={loadingAllOrders}
+//                 onActivate={handleActivateClick}
+//                 onDeactivate={handleDeactivate}
+//                 onViewDetails={handleViewPlanDetails}
+//                 isProcessing={activating || deactivating}
+//                 emptyMessage="No wealth plan orders found"
+//                 isMobileView={isMobileView}
+//               />
+//             ) : (
+//               <CompletedPlansTable
+//                 plans={completedWealthPlans}
+//                 loading={loadingCompletedPlans}
+//                 onViewDetails={handleViewPlanDetails}
+//                 emptyMessage="No completed wealth plans found"
+//                 isMobileView={isMobileView}
+//               />
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Terms and Conditions Modal */}
+//       {showTermsModal && (
+//         <TermsModal
+//           isOpen={showTermsModal}
+//           onClose={() => {
+//             setShowTermsModal(false);
+//             setPendingActivationId(null);
+//             setTermsAccepted(false);
+//             toast.info("Activation cancelled");
+//           }}
+//           onAccept={handleActivateConfirm}
+//           termsAccepted={termsAccepted}
+//           setTermsAccepted={setTermsAccepted}
+//           isProcessing={activating}
+//         />
+//       )}
+
+//       {/* Plan Details Modal */}
+//       {showPlanDetailsModal && (
+//         <PlanDetailsModal
+//           isOpen={showPlanDetailsModal}
+//           onClose={() => setShowPlanDetailsModal(false)}
+//           orderDetails={selectedOrder}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// const CompletedPlansTable = ({
+//   plans,
+//   loading,
+//   onViewDetails,
+//   emptyMessage,
+//   isMobileView,
+// }) => {
+//   if (loading) {
+//     return <Loader />;
+//   }
+
+//   if (!Array.isArray(plans) || plans.length === 0) {
+//     return (
+//       <div className="text-center py-8 bg-gray-50 rounded-xl">
+//         <div className="text-gray-400 mb-3">
+//           <CheckCircle2 size={40} className="mx-auto text-orange-100" />
+//         </div>
+//         <p className="text-gray-500 text-sm md:text-base font-medium">
+//           {emptyMessage || "No completed plans found"}
+//         </p>
+//         <p className="text-gray-400 text-xs mt-1 max-w-xs mx-auto">
+//           Completed plans will appear here once you finish the 400-day period.
+//         </p>
+//       </div>
+//     );
+//   }
+
+//   // Mobile view - cards for completed plans
+//   if (isMobileView) {
+//     return (
+//       <div className="space-y-3">
+//         {plans.map((plan, index) => (
+//           <div
+//             key={plan._id || index}
+//             className="bg-white border border-orange-100 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px]"
+//           >
+//             <div className="bg-gradient-to-r from-orange-500 to-amber-600 p-2 border-b flex justify-between items-center">
+//               <div className="font-medium text-white text-xs flex items-center">
+//                 {plan._id ? plan._id : "N/A"}
+//               </div>
+//               <span className="px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+//                 <span className="flex items-center">
+//                   <Check size={10} className="mr-1" /> Completed
+//                 </span>
+//               </span>
+//             </div>
+
+//             <div className="p-2.5">
+//               <div className="space-y-2">
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     <IndianRupee size={12} className="mr-1 text-orange-600" />
+//                     Investment:
+//                   </span>
+//                   <span className="font-semibold text-orange-700 text-xs">
+//                     {plan.amount || 0}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     <Calendar size={12} className="mr-1 text-orange-600" />
+//                     Completed On:
+//                   </span>
+//                   <span className="text-gray-800 text-xs">
+//                     {formatDateWithAmPm(plan.guaranteedWealthPlanCompletedDate_2)}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     <Coins size={12} className="mr-1 text-orange-600" />
+//                     Total Earned:
+//                   </span>
+//                   <span className="text-gray-800 text-xs font-semibold">
+//                     {plan.totalAmountDisbursedForWealthPlan_2 || 0}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     <Gift size={12} className="mr-1 text-orange-600" />
+//                     Coins Collected:
+//                   </span>
+//                   <span className="text-gray-800 text-xs font-semibold">
+//                     {plan.totalCoinsCollectedFormUser_2 || 0}
+//                   </span>
+//                 </div>
+//               </div>
+
+//               <div className="mt-3">
+//                 <button
+//                   onClick={() => onViewDetails(plan)}
+//                   className="w-full px-2 py-1.5 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 font-medium flex items-center justify-center text-xs shadow-sm"
+//                 >
+//                   <Info size={12} className="mr-1" /> View Details
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     );
+//   }
+
+//   // Desktop view - table for completed plans
+//   return (
+//     <div className="overflow-x-auto rounded-lg border border-gray-200">
+//       <table className="min-w-full divide-y divide-gray-200">
+//         <thead className="bg-gradient-to-r from-orange-500 to-amber-600 text-white">
+//           <tr>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Plan ID
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Investment
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Completed On
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Total Earned
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Coins Collected
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Actions
+//             </th>
+//           </tr>
+//         </thead>
+//         <tbody className="bg-white divide-y divide-gray-200">
+//           {plans.map((plan, index) => (
+//             <tr
+//               key={plan._id || index}
+//               className="hover:bg-orange-50 transition-colors duration-150"
+//             >
+//               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+//                 {plan._id ? plan._id : "N/A"}
+//               </td>
+
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 <span className="font-semibold text-orange-700">
+//                   {plan.amount || 0}
+//                 </span>
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 {formatDateWithAmPm(plan.guaranteedWealthPlanCompletedDate_2)}
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700 font-semibold">
+//                 {plan.totalAmountDisbursedForWealthPlan_2 || 0}
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700 font-semibold">
+//                 {plan.totalCoinsCollectedFormUser_2 || 0}
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium">
+//                 <button
+//                   onClick={() => onViewDetails(plan)}
+//                   className="px-2 py-1.5 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 flex items-center shadow-sm"
+//                 >
+//                   <Info size={12} className="mr-1" /> View Details
+//                 </button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+// const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
+//   const [showTransactions, setShowTransactions] = useState(false);
+//   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 768);
+
+//   useEffect(() => {
+//     const handleResize = () => {
+//       setIsMobileView(window.innerWidth < 768);
+//     };
+
+//     handleResize();
+//     window.addEventListener("resize", handleResize);
+//     return () => window.removeEventListener("resize", handleResize);
+//   }, []);
+
+//   if (!isOpen || !orderDetails) return null;
+
+//   const completedDays = orderDetails.wealthPalnDisbursedDays_2 || 0;
+//   const totalDays = 400;
+//   const progressPercentage = (completedDays / totalDays) * 100;
+//   const totalAmountDisbursed =
+//     orderDetails.totalAmountDisbursedForWealthPlan_2 || 0;
+//   const dailyAmount = orderDetails.guaranteedAmountToBeDisburse_2 || 0;
+//   const totalExpectedAmount = dailyAmount * totalDays;
+//   const tokensToCollect = orderDetails.guaranteedTokensToBeCollect_2 || 0;
+
+//   const remainingDays = totalDays - completedDays;
+//   const projectedCompletionDate = new Date();
+//   projectedCompletionDate.setDate(
+//     projectedCompletionDate.getDate() + remainingDays
+//   );
+
+//   return (
+//     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/30 backdrop-blur-sm">
+//       <div className="flex min-h-full items-center justify-center p-2 md:p-4">
+//         <div className="relative w-full max-w-md md:max-w-3xl bg-gradient-to-b from-white to-orange-50 rounded-xl shadow-2xl overflow-hidden transition-all duration-200 animate-fadeIn">
+//           {/* Header with creative design */}
+//           <div className="relative overflow-hidden">
+//             <div className="absolute inset-0 bg-orange-600 opacity-90"></div>
+//             <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-500"></div>
+//             <div className="relative p-4 md:p-5 z-10">
+//               <div className="flex items-center justify-between">
+//                 <div className="flex items-center space-x-3">
+//                   <div className="bg-white/20 p-2 rounded-lg">
+//                     <Calendar className="text-white" size={22} />
+//                   </div>
+//                   <div>
+//                     <h2 className="text-lg md:text-xl font-bold text-white">
+//                       Wealth Plan 2.0 Details
+//                     </h2>
+//                   </div>
+//                 </div>
+//                 <button
+//                   onClick={onClose}
+//                   className="text-white hover:text-orange-200 transition-colors rounded-full bg-white/20 p-1.5"
+//                 >
+//                   <X size={18} />
+//                 </button>
+//               </div>
+//             </div>
+
+//             {/* Decorative waves */}
+//             <div className="absolute bottom-0 left-0 right-0">
+//               <svg
+//                 xmlns="http://www.w3.org/2000/svg"
+//                 viewBox="0 0 1440 120"
+//                 fill="white"
+//               >
+//                 <path d="M0,96L80,101.3C160,107,320,117,480,112C640,107,800,85,960,80C1120,75,1280,85,1360,90.7L1440,96L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+//               </svg>
+//             </div>
+//           </div>
+
+//           {/* Toggle between Details and Transactions */}
+//           <div className="bg-white border-b border-gray-200">
+//             <div className="flex">
+//               <button
+//                 onClick={() => setShowTransactions(false)}
+//                 className={`flex-1 py-2.5 px-4 text-sm font-medium border-b-2 transition-all duration-200 ${
+//                   !showTransactions
+//                     ? "border-orange-600 text-orange-600 bg-orange-50"
+//                     : "border-transparent text-gray-500 hover:text-gray-700"
+//                 }`}
+//               >
+//                 <div className="flex items-center justify-center">
+//                   Plan Details
+//                 </div>
+//               </button>
+//               <button
+//                 onClick={() => setShowTransactions(true)}
+//                 className={`flex-1 py-2.5 px-4 text-sm font-medium border-b-2 transition-all duration-200 ${
+//                   showTransactions
+//                     ? "border-orange-600 text-orange-600 bg-orange-50"
+//                     : "border-transparent text-gray-500 hover:text-gray-700"
+//                 }`}
+//               >
+//                 <div className="flex items-center justify-center">
+//                   Transactions
+//                   {completedDays > 0 && (
+//                     <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+//                       {completedDays}
+//                     </span>
+//                   )}
+//                 </div>
+//               </button>
+//             </div>
+//           </div>
+
+//           {/* Content */}
+//           <div className="p-4 md:p-6 max-h-[70vh] overflow-y-auto">
+//             {!showTransactions ? (
+//               // Original Plan Details Content
+//               <>
+//                 {/* Investment amount card with creative design */}
+//                 <div className="mb-5 bg-gradient-to-r from-orange-500 to-amber-600 rounded-xl text-white p-4 shadow-md transform hover:scale-[1.01] transition-all duration-200">
+//                   <div className="flex items-center justify-between">
+//                     <div>
+//                       <p className="text-orange-100 text-xs">Total Investment</p>
+//                       <p className="text-2xl md:text-3xl font-bold">
+//                         ₹{(orderDetails.amount || 0).toLocaleString("en-IN")}
+//                       </p>
+//                     </div>
+//                     <div>
+//                       <p className="text-orange-100 text-xs ml-10">Total Returns</p>
+//                       <p className="text-2xl md:text-3xl font-bold">
+//                         ₹{((orderDetails.amount || 0) + (orderDetails.amount || 0) / 2).toLocaleString("en-IN")}
+//                       </p>
+//                     </div>
+//                   </div>
+
+//                   <div className="mt-3 flex justify-between items-center text-xs">
+//                     <div>
+//                       <p className="text-orange-100 text-sm">Daily Reward</p>
+//                       <p className="font-semibold text-sm">₹{dailyAmount}</p>
+//                     </div>
+//                     <div>
+//                       <p className="text-orange-100 text-sm">Status</p>
+//                       <div>
+//                         <p className="font-semibold flex items-center text-sm">
+//                           {orderDetails.isGuaranteedWealthOpted_2 ? (
+//                             <>
+//                               <Check size={12} className="mr-1" /> Active
+//                             </>
+//                           ) : orderDetails.isCompleted ||
+//                             orderDetails.wealthPlanCompleted ? (
+//                             <>
+//                               <CheckCircle2 size={12} className="mr-1" /> Completed
+//                             </>
+//                           ) : (
+//                             <>
+//                               <X size={12} className="mr-1" /> Inactive
+//                             </>
+//                           )}
+//                         </p>
+//                       </div>
+//                     </div>
+//                     <div>
+//                       <p className="text-orange-100 text-sm">Start Date</p>
+//                       <p className="font-semibold text-sm">
+//                         {orderDetails.guaranteedWealthPlanChosenDate_2
+//                           ? formatDate(orderDetails.guaranteedWealthPlanChosenDate_2)
+//                           : "Not started"}
+//                       </p>
+//                     </div>
+//                   </div>
+//                 </div>
+
+//                 {/* Progress and metrics section */}
+//                 <div className="mb-5">
+//                   <h3 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+//                     <Target size={16} className="mr-2 text-orange-600" />
+//                     Plan Progress
+//                   </h3>
+
+//                   {/* Progress circular indicator */}
+//                   <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+//                     {/* Left side - circular progress */}
+//                     <div className="relative w-32 h-32">
+//                       <svg className="w-32 h-32" viewBox="0 0 100 100">
+//                         {/* Background circle */}
+//                         <circle
+//                           cx="50"
+//                           cy="50"
+//                           r="40"
+//                           fill="none"
+//                           stroke="#e6e6e6"
+//                           strokeWidth="8"
+//                         />
+
+//                         {/* Progress circle */}
+//                         <circle
+//                           cx="50"
+//                           cy="50"
+//                           r="40"
+//                           fill="none"
+//                           stroke={
+//                             orderDetails.isCompleted ? "#f59e0b" : "#ea580c"
+//                           }
+//                           strokeWidth="8"
+//                           strokeLinecap="round"
+//                           strokeDasharray={`${2 * Math.PI * 40}`}
+//                           strokeDashoffset={`${
+//                             2 * Math.PI * 40 * (1 - progressPercentage / 100)
+//                           }`}
+//                           transform="rotate(-90 50 50)"
+//                         />
+
+//                         {/* Text in the center */}
+//                         <text
+//                           x="50"
+//                           y="45"
+//                           textAnchor="middle"
+//                           fontSize="16"
+//                           fontWeight="bold"
+//                           fill={
+//                             orderDetails.isCompleted ? "#f59e0b" : "#ea580c"
+//                           }
+//                         >
+//                           {Math.round(progressPercentage)}%
+//                         </text>
+
+//                         <text
+//                           x="50"
+//                           y="65"
+//                           textAnchor="middle"
+//                           fontSize="10"
+//                           fill="#666"
+//                         >
+//                           Progress
+//                         </text>
+//                       </svg>
+//                     </div>
+
+//                     {/* Right side - metrics */}
+//                     <div className="flex-1 grid grid-cols-2 gap-2 w-full">
+//                       <MetricCard
+//                         title="Days Completed"
+//                         value={`${completedDays} / ${totalDays}`}
+//                         icon={<Calendar size={16} />}
+//                         color="bg-orange-500"
+//                       />
+
+//                       <MetricCard
+//                         title={
+//                           orderDetails.isCompleted
+//                             ? "Completion Date"
+//                             : "Days Remaining"
+//                         }
+//                         value={
+//                           orderDetails.isCompleted
+//                             ? orderDetails.completedDate
+//                               ? new Date(
+//                                   orderDetails.completedDate
+//                                 ).toLocaleDateString("en-IN")
+//                               : "N/A"
+//                             : remainingDays
+//                         }
+//                         icon={<Clock size={16} />}
+//                         color="bg-amber-500"
+//                       />
+
+//                       <MetricCard
+//                         title="Disbursed Amount"
+//                         value={`₹${totalAmountDisbursed.toLocaleString("en-IN")}`}
+//                         icon={<Wallet size={16} />}
+//                         color="bg-orange-500"
+//                       />
+//                       <MetricCard
+//                         title={
+//                           orderDetails.isCompleted ? "Total Earned" : "Remaining"
+//                         }
+//                         value={`₹${
+//                           orderDetails.isCompleted
+//                             ? totalAmountDisbursed.toLocaleString("en-IN")
+//                             : (
+//                                 orderDetails.amount - totalAmountDisbursed
+//                               ).toLocaleString("en-IN")
+//                         }`}
+//                         color="bg-amber-500"
+//                       />
+//                       <MetricCard
+//                         title="Daily coins"
+//                         value={`${orderDetails?.guaranteedTokensToBeCollect_2 || 0}`}
+//                         icon={<Wallet size={16} />}
+//                         color="bg-orange-500"
+//                       />
+//                       <MetricCard
+//                         title="Total coins collected"
+//                         value={`${orderDetails.totalCoinsCollectedFormUser_2.toLocaleString(
+//                           "en-IN"
+//                         )}`}
+//                         icon={<Wallet size={16} />}
+//                         color="bg-amber-500"
+//                       />
+//                     </div>
+//                   </div>
+//                 </div>
+
+//                 {/* Timeline - Activity History */}
+//                 <div className="border-t border-gray-200 pt-4 mb-3">
+//                   <h3 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+//                     <Activity size={16} className="mr-2 text-orange-600" />
+//                     Activity History
+//                   </h3>
+
+//                   {orderDetails.guaranteedWealthPlanActivatedDates_2?.length > 0 ? (
+//                     <div className="border-l-2 border-orange-400 pl-4 pb-2 space-y-3 ml-2 text-xs md:text-sm">
+//                       {orderDetails.guaranteedWealthPlanActivatedDates_2?.map(
+//                         (date, index) => (
+//                           <div key={`act-${index}`} className="relative">
+//                             <div className="absolute -left-[25px] mt-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white"></div>
+//                             <div className="bg-white rounded-lg shadow-sm p-2 border border-gray-100 transform transition hover:translate-x-1">
+//                               <p className="text-gray-700">
+//                                 <span className="font-medium text-green-700 flex items-center mb-1">
+//                                   <Check size={14} className="mr-1" /> Plan
+//                                   Activated
+//                                 </span>
+//                                 <span className="text-gray-500 text-xs flex items-center">
+//                                   <Clock size={12} className="mr-1" />
+//                                   {date ? formatDateWithAmPm(date) : "N/A"}
+//                                 </span>
+//                               </p>
+//                             </div>
+//                             {orderDetails.guaranteedWealthPlanDeactivatedDates_2?.[
+//                               index
+//                             ] && (
+//                               <div className="mt-3 relative">
+//                                 <div className="absolute -left-[25px] mt-1 w-4 h-4 rounded-full bg-red-500 border-2 border-white"></div>
+//                                 <div className="bg-white rounded-lg shadow-sm p-2 border border-gray-100 transform transition hover:translate-x-1">
+//                                   <p className="text-gray-700">
+//                                     <span className="font-medium text-red-500 flex items-center mb-1">
+//                                       <X size={14} className="mr-1" /> Plan
+//                                       Deactivated
+//                                     </span>
+//                                     <span className="text-gray-500 text-xs flex items-center">
+//                                       <Clock size={12} className="mr-1" />
+//                                       {orderDetails
+//                                         .guaranteedWealthPlanDeactivatedDates_2[index]
+//                                         ? formatDateWithAmPm(
+//                                             orderDetails
+//                                               .guaranteedWealthPlanDeactivatedDates_2[
+//                                               index
+//                                             ]
+//                                           )
+//                                         : "N/A"}
+//                                     </span>
+//                                   </p>
+//                                 </div>
+//                               </div>
+//                             )}
+//                           </div>
+//                         )
+//                       )}
+
+//                       {/* Show completion event if completed */}
+//                       {orderDetails.isCompleted && orderDetails.completedDate && (
+//                         <div className="relative">
+//                           <div className="absolute -left-[25px] mt-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white"></div>
+//                           <div className="bg-green-50 rounded-lg shadow-sm p-2 border border-green-100 transform transition hover:translate-x-1">
+//                             <p className="text-gray-700">
+//                               <span className="font-medium text-green-700 flex items-center mb-1">
+//                                 <CheckCircle2 size={14} className="mr-1" /> Plan
+//                                 Completed
+//                               </span>
+//                               <span className="text-gray-500 text-xs flex items-center">
+//                                 <Clock size={12} className="mr-1" />
+//                                 {new Date(
+//                                   orderDetails.completedDate
+//                                 ).toLocaleString("en-IN", {
+//                                   timeZone: "Asia/Kolkata",
+//                                   day: "2-digit",
+//                                   month: "short",
+//                                   year: "numeric",
+//                                   hour: "2-digit",
+//                                   minute: "2-digit",
+//                                   hour12: true,
+//                                 })}
+//                               </span>
+//                             </p>
+//                           </div>
+//                         </div>
+//                       )}
+//                     </div>
+//                   ) : (
+//                     <div className="py-2 text-center text-gray-500 text-sm italic bg-gray-50 rounded-lg">
+//                       No activation history available
+//                     </div>
+//                   )}
+//                 </div>
+
+//                 {/* Plan ID details in a compact format */}
+//                 <div className="bg-gray-50 rounded-lg p-3 mb-3 text-xs">
+//                   <div className="flex justify-between mb-1">
+//                     <span className="text-gray-500">Plan ID:</span>
+//                     <span className="font-medium text-gray-700">
+//                       {orderDetails._id}
+//                     </span>
+//                   </div>
+
+//                   <div className="flex justify-between">
+//                     <span className="text-gray-500">Created On:</span>
+//                     <span className="font-medium text-gray-700">
+//                       {orderDetails.createdAt
+//                         ? formatDateWithAmPm(orderDetails.createdAt)
+//                         : "N/A"}
+//                     </span>
+//                   </div>
+//                 </div>
+//               </>
+//             ) : (
+//               // Transaction History Tab
+//               <TransactionHistory
+//                 orderId={orderDetails._id}
+//                 isMobileView={isMobileView}
+//               />
+//             )}
+//           </div>
+
+//           {/* Footer */}
+//           <div className="bg-white border-t border-gray-200 p-3">
+//             <div className="flex justify-end">
+//               <button
+//                 onClick={onClose}
+//                 className="px-4 py-2 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 font-medium text-sm flex items-center shadow-sm"
+//               >
+//                 Close <X size={14} className="ml-1.5" />
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const MetricCard = ({ title, value, icon, color }) => {
+//   return (
+//     <div className="bg-white rounded-lg shadow-sm p-2 border border-gray-100 flex items-center">
+//       <div className="flex-1">
+//         <p className="text-xs text-gray-500">{title}</p>
+//         <p className="font-semibold text-gray-800">{value}</p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const TermsModal = ({
+//   isOpen,
+//   onClose,
+//   onAccept,
+//   termsAccepted,
+//   setTermsAccepted,
+//   isProcessing,
+// }) => {
+//   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+
+//   const handleScroll = (e) => {
+//     const { scrollTop, scrollHeight, clientHeight } = e.target;
+//     if (scrollHeight - scrollTop - clientHeight < 10) {
+//       setHasScrolledToBottom(true);
+//     }
+//   };
+
+//   if (!isOpen) return null;
+
+//   return (
+//     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/30 backdrop-blur-sm">
+//       <div className="flex min-h-full items-center justify-center p-2 md:p-4">
+//         <div className="relative w-full max-w-sm md:max-w-lg bg-white rounded-xl shadow-xl overflow-hidden animate-scaleIn">
+//           {/* Header */}
+//           <div className="sticky top-0 bg-gradient-to-r from-orange-600 to-amber-600 border-b border-orange-700 rounded-t-xl p-3 md:p-4 z-10">
+//             <div className="flex items-center justify-between">
+//               <div className="flex items-center">
+//                 <Award className="text-white mr-2" size={20} />
+//                 <h2 className="text-md md:text-lg font-bold text-white">
+//                   Wealth Plan 2.0 Terms & Conditions
+//                 </h2>
+//               </div>
+//               <button
+//                 onClick={onClose}
+//                 className="text-white hover:text-orange-200 transition-colors rounded-full bg-white/20 p-1.5"
+//               >
+//                 <X size={18} />
+//               </button>
+//             </div>
+//           </div>
+
+//           {/* Terms Content with enhanced design */}
+//           <div
+//             className="p-4 md:p-5 max-h-[50vh] overflow-y-auto text-sm md:text-base"
+//             onScroll={handleScroll}
+//           >
+//             <div className="space-y-4">
+//               <div className="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+//                 <h3 className="text-md font-bold text-orange-800 mb-2 flex items-center">
+//                   <Users className="mr-2" size={16} /> 1. Eligibility
+//                 </h3>
+//                 <div className="space-y-2 text-orange-700 text-sm">
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>
+//                       Open to all registered users who have completed KYC
+//                       verification.
+//                     </span>
+//                   </p>
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>
+//                       One active plan per user unless otherwise permitted.
+//                     </span>
+//                   </p>
+//                 </div>
+//               </div>
+
+//               <div className="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-500">
+//                 <h3 className="text-md font-bold text-amber-800 mb-2 flex items-center">
+//                   2. Investment Details
+//                 </h3>
+//                 <div className="space-y-2 text-amber-700 text-sm">
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>
+//                       Minimum investment:{" "}
+//                       <span className="font-bold">₹3,00,000</span>
+//                     </span>
+//                   </p>
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>Daily rewards = investment amount ÷ 400 days.</span>
+//                   </p>
+
+//                   <div className="bg-white p-2 rounded-lg ml-2 border border-amber-200 text-xs">
+//                     <p className="font-semibold text-amber-800">Examples:</p>
+//                     <ul className="mt-1 space-y-1">
+//                       <li className="flex items-center">
+//                         <ArrowRight size={12} className="mr-1 text-amber-600" />
+//                         ₹3,00,000 investment  + 1,50,000 → ₹1,125/day
+//                       </li>
+//                       <li className="flex items-center">
+//                         <ArrowRight size={12} className="mr-1 text-amber-600" />
+//                         ₹5,00,000 investment + 2,50,000 → ₹1,875/day
+//                       </li>
+//                     </ul>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+//                 <h3 className="text-md font-bold text-yellow-800 mb-2 flex items-center">
+//                   <Calendar className="mr-2" size={16} /> 3. Daily Rewards
+//                 </h3>
+//                 <div className="space-y-2 text-yellow-700 text-sm">
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>Rewards start from Day 1 after activation.</span>
+//                   </p>
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>
+//                       Continues for 400 days unless paused/terminated.
+//                     </span>
+//                   </p>
+//                 </div>
+//               </div>
+
+//               <div className="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+//                 <h3 className="text-md font-bold text-orange-800 mb-2 flex items-center">
+//                   <Coins className="mr-2" size={16} /> 4. Coins Distribution
+//                 </h3>
+//                 <div className="space-y-2 text-orange-700 text-sm">
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>
+//                       After 400 days:{" "}
+//                       <span className="font-bold">remains 25% coins</span> of
+//                       plan token.
+//                     </span>
+//                   </p>
+//                   <p className="flex items-start">
+//                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
+//                     <span>
+//                       Based on daily coin price over the 400-day period.
+//                     </span>
+//                   </p>
+//                 </div>
+//               </div>
+
+//               <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-t border-orange-100 p-4 rounded-lg">
+//                 <p className="font-semibold text-orange-800 mb-2 flex items-center">
+//                   <Star className="mr-2" size={16} />
+//                   By activating, you acknowledge:
+//                 </p>
+//                 <ul className="space-y-2 text-sm text-orange-700">
+//                   <li className="flex items-start">
+//                     <Check className="mr-2 flex-shrink-0 mt-0.5" size={14} />
+//                     <span>
+//                       You have read and agreed to these Terms and Conditions
+//                     </span>
+//                   </li>
+//                   <li className="flex items-start">
+//                     <Check className="mr-2 flex-shrink-0 mt-0.5" size={14} />
+//                     <span>
+//                       You understand the reward calculation and duration
+//                     </span>
+//                   </li>
+//                   <li className="flex items-start">
+//                     <Check className="mr-2 flex-shrink-0 mt-0.5" size={14} />
+//                     <span>The Company may modify the plan as necessary</span>
+//                   </li>
+//                 </ul>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Footer with Actions */}
+//           <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 rounded-b-xl p-3">
+//             <div className="space-y-2">
+//               <label className="flex items-start gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors">
+//                 <input
+//                   type="checkbox"
+//                   checked={termsAccepted}
+//                   onChange={(e) => setTermsAccepted(e.target.checked)}
+//                   disabled={!hasScrolledToBottom}
+//                   className="mt-1 w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 disabled:opacity-50"
+//                 />
+//                 <span
+//                   className={`text-xs ${
+//                     !hasScrolledToBottom ? "text-gray-400" : "text-gray-700"
+//                   }`}
+//                 >
+//                   I agree to the Terms & Conditions and understand this
+//                   investment carries risks.
+//                 </span>
+//               </label>
+
+//               <div className="flex gap-2 justify-end">
+//                 <button
+//                   onClick={onClose}
+//                   className="px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all duration-200 text-xs md:text-sm font-medium flex items-center"
+//                   disabled={isProcessing}
+//                 >
+//                   <X size={14} className="mr-1" /> Cancel
+//                 </button>
+//                 <button
+//                   onClick={onAccept}
+//                   disabled={!termsAccepted || isProcessing}
+//                   className="px-4 py-2 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 text-xs md:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 shadow-sm"
+//                 >
+//                   {isProcessing ? (
+//                     <>
+//                       <span className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></span>
+//                       Processing...
+//                     </>
+//                   ) : (
+//                     <>
+//                       <Check size={14} className="mr-1" /> Accept & Activate
+//                     </>
+//                   )}
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const OrdersTable = ({
+//   orders,
+//   loading,
+//   onActivate,
+//   onDeactivate,
+//   onViewDetails,
+//   isProcessing,
+//   emptyMessage,
+//   isMobileView,
+// }) => {
+//   if (loading) {
+//     return <Loader />;
+//   }
+
+//   if (!Array.isArray(orders) || orders.length === 0) {
+//     return (
+//       <div className="text-center py-8 bg-gray-50 rounded-xl">
+//         <div className="text-gray-400 mb-3">
+//           <PieChart size={40} className="mx-auto text-orange-100" />
+//         </div>
+//         <p className="text-gray-500 text-sm md:text-base font-medium">
+//           {emptyMessage || "No orders found"}
+//         </p>
+//         <p className="text-gray-400 text-xs mt-1 max-w-xs mx-auto">
+//           Orders will appear here once created. Check back later or create a new
+//           order.
+//         </p>
+//       </div>
+//     );
+//   }
+
+//   // Helper function to check if order should be highlighted
+//   const shouldHighlight = (order) => {
+//     return order.firstTimeWealthPlanOpted_2 && !order.isGuaranteedWealthOpted_2;
+//   };
+
+//   // Mobile view - cards with enhanced styling
+//   if (isMobileView) {
+//     return (
+//       <div className="space-y-3">
+//         {orders.map((order, index) => (
+//           <div
+//             key={order._id || index}
+//             className={`bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px] ${
+//               shouldHighlight(order)
+//                 ? "border-2 border-yellow-400 ring-2 ring-yellow-100"
+//                 : "border border-orange-100"
+//             }`}
+//           >
+//             <div
+//               className={`p-2 border-b flex justify-between items-center ${
+//                 shouldHighlight(order)
+//                   ? "text-gray-900 bg-gradient-to-r from-yellow-300 to-yellow-400"
+//                   : "text-white bg-gradient-to-r from-orange-500 to-amber-600"
+//               }`}
+//             >
+//               <div
+//                 className={`font-medium text-xs flex items-center ${
+//                   shouldHighlight(order) ? "text-gray-900" : "text-white"
+//                 }`}
+//               >
+//                 <CreditCard size={12} className="mr-1.5" />
+//                 {order._id ? order._id : "N/A"}
+//               </div>
+//               <div className="flex items-center gap-1">
+//                 <span
+//                   className={`px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${
+//                     order.isGuaranteedWealthOpted_2
+//                       ? "bg-green-100 text-green-800"
+//                       : "bg-gray-100 text-gray-800"
+//                   }`}
+//                 >
+//                   {order.isGuaranteedWealthOpted_2 ? (
+//                     <span className="flex items-center">
+//                       <Check size={10} className="mr-1" /> Active
+//                     </span>
+//                   ) : (
+//                     <span className="flex items-center">
+//                       <X size={10} className="mr-1" /> Inactive
+//                     </span>
+//                   )}
+//                 </span>
+//               </div>
+//             </div>
+
+//             <div
+//               className={`p-2.5 ${shouldHighlight(order) ? "bg-yellow-50/30" : ""}`}
+//             >
+//               <div className="space-y-2">
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     ₹ Amount:
+//                   </span>
+//                   <span
+//                     className={`font-semibold text-xs ${
+//                       shouldHighlight(order) ? "text-yellow-700" : "text-orange-700"
+//                     }`}
+//                   >
+//                     {order.amount || order.order_amount || 0}
+//                   </span>
+//                 </div>
+
+//                 <div className="flex justify-between items-center">
+//                   <span className="text-xs text-gray-600 flex items-center">
+//                     <Calendar
+//                       size={12}
+//                       className={`mr-1 ${
+//                         shouldHighlight(order) ? "text-yellow-600" : "text-orange-600"
+//                       }`}
+//                     />
+//                     Date:
+//                   </span>
+//                   <span className="text-gray-800 text-xs">
+//                     {order.date || order.createdAt
+//                       ? new Date(order.date || order.createdAt).toLocaleDateString(
+//                           "en-IN"
+//                         )
+//                       : "N/A"}
+//                   </span>
+//                 </div>
+
+//                 <div>
+//                   <div className="text-xs text-gray-600 mb-1 flex justify-between">
+//                     <span className="flex items-center">
+//                       <Activity
+//                         size={12}
+//                         className={`mr-1 ${
+//                           shouldHighlight(order) ? "text-yellow-600" : "text-orange-600"
+//                         }`}
+//                       />
+//                       Progress:
+//                     </span>
+//                     <span
+//                       className={`font-medium ${
+//                         shouldHighlight(order) ? "text-yellow-700" : "text-orange-700"
+//                       }`}
+//                     >
+//                       {order.wealthPalnDisbursedDays_2 || 0}/400
+//                     </span>
+//                   </div>
+//                   <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+//                     <div
+//                       className={`h-2 rounded-full ${
+//                         shouldHighlight(order)
+//                           ? "bg-gradient-to-r from-yellow-400 to-yellow-500"
+//                           : "bg-gradient-to-r from-orange-500 to-amber-500"
+//                       }`}
+//                       style={{
+//                         width: `${
+//                           ((order.wealthPalnDisbursedDays_2 || 0) / 400) * 100
+//                         }%`,
+//                       }}
+//                     ></div>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="mt-3 flex gap-1 text-xs">
+//                 {order.isGuaranteedWealthOpted_2 ? (
+//                   <button
+//                     onClick={() => onDeactivate(order._id || order.id)}
+//                     disabled={isProcessing}
+//                     className="flex-1 px-2 py-1.5 bg-red-50 text-red-700 rounded-lg border border-red-200 hover:bg-red-100 transition-all duration-200 font-medium flex items-center justify-center disabled:opacity-50"
+//                   >
+//                     <X size={12} className="mr-1" /> Deactivate
+//                   </button>
+//                 ) : (
+//                   <button
+//                     onClick={() => onActivate(order._id || order.id)}
+//                     className={`flex-1 px-2 py-1.5 rounded-lg transition-all duration-200 font-medium flex items-center justify-center disabled:opacity-50 shadow-sm ${
+//                       shouldHighlight(order)
+//                         ? "text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600"
+//                         : "text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700"
+//                     }`}
+//                     disabled={isProcessing}
+//                   >
+//                     <Check size={12} className="mr-1" /> Activate
+//                   </button>
+//                 )}
+//                 <button
+//                   onClick={() => onViewDetails(order)}
+//                   className={`flex-1 px-2 py-1.5 rounded-lg border transition-all duration-200 font-medium flex items-center justify-center ${
+//                     shouldHighlight(order)
+//                       ? "bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100"
+//                       : "bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100"
+//                   }`}
+//                 >
+//                   <Info size={12} className="mr-1" /> Details
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     );
+//   }
+
+//   // Desktop view - enhanced table
+//   return (
+//     <div className="overflow-x-auto rounded-lg border border-gray-200">
+//       <table className="min-w-full divide-y divide-gray-200">
+//         <thead className="bg-gradient-to-r from-orange-500 to-amber-600 text-white">
+//           <tr>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Order ID
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Amount
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Date
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Status
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Progress
+//             </th>
+//             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
+//               Actions
+//             </th>
+//           </tr>
+//         </thead>
+//         <tbody className="bg-white divide-y divide-gray-200">
+//           {orders.map((order, index) => (
+//             <tr
+//               key={order._id || index}
+//               className={`transition-colors duration-150 ${
+//                 shouldHighlight(order)
+//                   ? "bg-yellow-50/40 hover:bg-yellow-100/60 border-l-4 border-l-yellow-500"
+//                   : "hover:bg-orange-50"
+//               }`}
+//             >
+//               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+//                 <div className="flex flex-col">
+//                   <span>{order._id ? order._id : "N/A"}</span>
+//                 </div>
+//               </td>
+
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 <span
+//                   className={`font-semibold ${
+//                     shouldHighlight(order) ? "text-yellow-700" : "text-orange-700"
+//                   }`}
+//                 >
+//                   {order.amount || 0}
+//                 </span>
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 {order.date || order.createdAt
+//                   ? new Date(order.date || order.createdAt).toLocaleDateString(
+//                       "en-IN"
+//                     )
+//                   : "N/A"}
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap">
+//                 <span
+//                   className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+//                     order.isGuaranteedWealthOpted_2
+//                       ? "bg-green-100 text-green-800"
+//                       : "bg-gray-100 text-gray-800"
+//                   }`}
+//                 >
+//                   {order.isGuaranteedWealthOpted_2 ? (
+//                     <span className="flex items-center">
+//                       <Check size={10} className="mr-1" /> Active
+//                     </span>
+//                   ) : (
+//                     <span className="flex items-center">
+//                       <X size={10} className="mr-1" /> Inactive
+//                     </span>
+//                   )}
+//                 </span>
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
+//                 <div className="flex items-center">
+//                   <div className="w-20 bg-gray-200 rounded-full h-2 mr-2 overflow-hidden">
+//                     <div
+//                       className={`h-2 rounded-full ${
+//                         shouldHighlight(order)
+//                           ? "bg-gradient-to-r from-yellow-400 to-yellow-500"
+//                           : "bg-gradient-to-r from-orange-500 to-amber-500"
+//                       }`}
+//                       style={{
+//                         width: `${
+//                           ((order.wealthPalnDisbursedDays_2 || 0) / 400) * 100
+//                         }%`,
+//                       }}
+//                     ></div>
+//                   </div>
+//                   <span>{order.wealthPalnDisbursedDays_2 || 0}/400</span>
+//                 </div>
+//               </td>
+//               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium">
+//                 <div className="flex gap-1">
+//                   {order.isGuaranteedWealthOpted_2 ? (
+//                     <button
+//                       onClick={() => onDeactivate(order._id || order.id)}
+//                       disabled={isProcessing}
+//                       className="px-2 py-1.5 bg-red-50 text-red-700 rounded-lg border border-red-200 hover:bg-red-100 transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+//                     >
+//                       <X size={12} className="mr-1" /> Deactivate
+//                     </button>
+//                   ) : (
+//                     <button
+//                       onClick={() => onActivate(order._id || order.id)}
+//                       disabled={isProcessing}
+//                       className={`px-2 py-1.5 rounded-lg transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
+//                         shouldHighlight(order)
+//                           ? "text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600"
+//                           : "text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700"
+//                       }`}
+//                     >
+//                       <Check size={12} className="mr-1" /> Activate
+//                     </button>
+//                   )}
+//                   <button
+//                     onClick={() => onViewDetails(order)}
+//                     className={`px-2 py-1.5 rounded-lg border transition-all duration-200 flex items-center shadow-sm ${
+//                       shouldHighlight(order)
+//                         ? "bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100"
+//                         : "bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100"
+//                     }`}
+//                   >
+//                     <Info size={12} className="mr-1" /> Details
+//                   </button>
+//                 </div>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+// const StatsCard = ({ title, value, icon, color }) => {
+//   return (
+//     <div className="bg-white rounded-lg shadow-md p-3 border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-2px]">
+//       <div className="flex items-center justify-between">
+//         <div>
+//           <p className="text-gray-600 text-xs font-medium">{title}</p>
+//           <p className="text-sm md:text-lg font-bold text-gray-900 mt-1 line-clamp-1">
+//             {value}
+//           </p>
+//         </div>
+//         <div
+//           className={`p-1.5 md:p-2.5 rounded-lg bg-gradient-to-br ${color} text-white shadow-sm`}
+//         >
+//           {icon}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const TransactionHistory = ({ orderId, isMobileView }) => {
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [limit] = useState(3);
+
+//   const {
+//     data: transactionsResponse,
+//     isLoading: loadingTransactions,
+//     isFetching,
+//     refetch,
+//   } = useGetWealth2_OOrderTransactionsQuery(
+//     { orderId, page: currentPage, limit },
+//     { skip: !orderId }
+//   );
+
+//   const transactions = transactionsResponse?.data?.data || [];
+//   const totalPages = transactionsResponse?.data?.totalPages || 1;
+//   const totalTransactions = transactionsResponse?.data?.totalCount || 0;
+
+//   const firstTransactionAmount =
+//     transactions.length > 0 ? transactions[0].amountDisbursed : 0;
+
+//   const totalCountTimesAmount = totalTransactions * firstTransactionAmount;
+
+//   const handlePageChange = (newPage) => {
+//     if (newPage >= 1 && newPage <= totalPages) {
+//       setCurrentPage(newPage);
+//     }
+//   };
+
+//   const extractDayNumber = (reason) => {
+//     const match = reason?.match(/day (\d+)/i);
+//     return match ? match[1] : "N/A";
+//   };
+
+//   if (loadingTransactions) {
+//     return <Loader />;
+//   }
+
+//   if (!transactions || transactions.length === 0) {
+//     return (
+//       <div className="text-center py-6 bg-gray-50 rounded-lg">
+//         <p className="text-gray-500 text-sm">No transactions found</p>
+//         <p className="text-gray-400 text-xs mt-1">
+//           Transactions will appear here once daily rewards are disbursed
+//         </p>
+//       </div>
+//     );
+//   }
+
+//   // Mobile view - transaction cards
+//   if (isMobileView) {
+//     return (
+//       <div className="space-y-3">
+//         <div className="flex justify-between items-center mb-2">
+//           <h4 className="text-sm font-semibold text-gray-700 flex items-center">
+//             <Receipt size={14} className="mr-1.5 text-orange-600" />
+//             Transaction History
+//           </h4>
+//         </div>
+
+//         {transactions.map((transaction, index) => (
+//           <div
+//             key={transaction._id || index}
+//             className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-all duration-200"
+//           >
+//             {/* Transaction header with gradient */}
+//             <div className="bg-gradient-to-r from-orange-500 to-amber-500 p-2 text-white">
+//               <div className="flex justify-between items-center">
+//                 <div className="flex items-center">
+//                   <Calendar size={12} className="mr-1.5" />
+//                   <span className="text-xs font-medium">
+//                     Day {extractDayNumber(transaction.reason)}
+//                   </span>
+//                 </div>
+//                 <span className="text-xs">
+//                   {new Date(transaction.createdOn).toLocaleDateString("en-IN", {
+//                     day: "2-digit",
+//                     month: "short",
+//                     year: "numeric",
+//                   })}
+//                 </span>
+//               </div>
+//             </div>
+
+//             <div className="p-3">
+//               {/* Amount Disbursed */}
+//               <div className="flex justify-between items-center mb-2">
+//                 <div className="flex items-center">
+//                   <div className="p-1.5 rounded-full bg-green-100 mr-2">
+//                     <ArrowDownRight size={14} className="text-green-600" />
+//                   </div>
+//                   <div>
+//                     <p className="text-xs text-gray-600">Amount Disbursed</p>
+//                     <p className="text-sm font-semibold text-green-600">
+//                       +₹
+//                       {transaction.amountDisbursed?.toLocaleString("en-IN") || 0}
+//                     </p>
+//                   </div>
+//                 </div>
+//                 <div className="text-right">
+//                   <p className="text-xs text-gray-600">Coins Collected</p>
+//                   <p className="text-sm font-semibold text-amber-600 flex items-center justify-end">
+//                     <span className="text-amber-600">-</span>
+//                     {transaction.tokensCollected?.toLocaleString("en-IN") || 0}
+//                   </p>
+//                 </div>
+//               </div>
+
+//               {/* Transaction Details */}
+//               <div className="bg-gray-50 rounded-lg p-2 mt-2">
+//                 <p className="text-xs text-gray-600 mb-1">
+//                   Transaction Details:
+//                 </p>
+//                 <p className="text-xs text-gray-700 font-medium line-clamp-2">
+//                   {transaction.reason}
+//                 </p>
+//               </div>
+
+//               {/* Transaction ID and Name */}
+//               <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-100">
+//                 <div className="text-xs">
+//                   <span className="text-gray-500">TxID: </span>
+//                   <span className="font-mono text-gray-700">
+//                     {transaction.transactionId}
+//                   </span>
+//                 </div>
+//                 <div className="text-xs">
+//                   <span className="text-gray-500">Name: </span>
+//                   <span className="font-medium text-gray-700">
+//                     {transaction.name}
+//                   </span>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+
+//         {/* Mobile Pagination */}
+//         {totalPages > 1 && (
+//           <div className="flex justify-between items-center pt-4 mt-4 border-t border-orange-100">
+//             <button
+//               onClick={() => handlePageChange(currentPage - 1)}
+//               disabled={currentPage === 1 || isFetching}
+//               className="px-4 py-2 text-sm font-medium bg-orange-600 rounded-md shadow-sm text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 transition-all flex items-center"
+//             >
+//               <ChevronLeft size={16} className="mr-1.5" /> Previous
+//             </button>
+
+//             <span className="text-sm text-orange-700 font-medium px-3 py-1.5 bg-white border border-orange-200 rounded-md">
+//               Page {currentPage} of {totalPages}
+//             </span>
+
+//             <button
+//               onClick={() => handlePageChange(currentPage + 1)}
+//               disabled={currentPage === totalPages || isFetching}
+//               className="px-4 py-2 text-sm font-medium bg-orange-600 rounded-md shadow-sm text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 transition-all flex items-center"
+//             >
+//               Next <ChevronRight size={16} className="ml-1.5" />
+//             </button>
+//           </div>
+//         )}
+//       </div>
+//     );
+//   }
+
+//   // Desktop view - transaction table
+//   return (
+//     <div>
+//       <div className="flex justify-between items-center mb-4">
+//         <h4 className="text-sm font-semibold text-gray-700 flex items-center">
+//           <IndianRupee size={16} className="mr-2 text-orange-600" />
+//           Transaction History
+//         </h4>
+//       </div>
+
+//       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+//         <table className="min-w-full divide-y divide-gray-200">
+//           <thead className="bg-gradient-to-r from-orange-500 to-amber-500 text-white">
+//             <tr>
+//               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+//                 Day
+//               </th>
+//               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+//                 Date & Time
+//               </th>
+//               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+//                 Transaction ID
+//               </th>
+
+//               <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider">
+//                 Amount Disbursed
+//               </th>
+//               <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider">
+//                 Coins Collected
+//               </th>
+//             </tr>
+//           </thead>
+//           <tbody className="bg-white divide-y divide-gray-200">
+//             {transactions.map((transaction, index) => (
+//               <tr
+//                 key={transaction._id || index}
+//                 className="hover:bg-orange-50 transition-colors"
+//               >
+//                 <td className="px-4 py-3 whitespace-nowrap">
+//                   <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+//                     Day {extractDayNumber(transaction.reason)}
+//                   </span>
+//                 </td>
+//                 <td className="px-4 py-3 whitespace-nowrap text-sm ">
+//                   <div>
+//                     <p className="text-xs">
+//                       {formatDateWithAmPm(transaction.createdOn).split(" ")[0]}
+//                     </p>
+//                     <p className="text-gray-500 text-xs">
+//                       {formatDateWithAmPm(transaction.createdOn)
+//                         .split(" ")
+//                         .slice(1)
+//                         .join(" ")}
+//                     </p>
+//                   </div>
+//                 </td>
+//                 <td className="px-4 py-3 whitespace-nowrap">
+//                   <div className="flex items-center">
+//                     <span className=" text-xs text-gray-700">
+//                       {transaction.transactionId}
+//                     </span>
+//                   </div>
+//                 </td>
+
+//                 <td className="px-4 py-3 whitespace-nowrap text-right">
+//                   <div className="flex items-center justify-end">
+//                     <ArrowDownRight size={12} className="mr-1 text-green-500" />
+//                     <span className="text-sm font-semibold text-green-600">
+//                       +₹
+//                       {transaction.amountDisbursed?.toLocaleString("en-IN") || 0}
+//                     </span>
+//                   </div>
+//                 </td>
+//                 <td className="px-4 py-3 whitespace-nowrap text-right">
+//                   <div className="flex items-center justify-end">
+//                     <span className="text-amber-600">-</span>
+//                     <span className="text-sm font-semibold text-amber-600">
+//                       {transaction.tokensCollected?.toLocaleString("en-IN") || 0}
+//                     </span>
+//                   </div>
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+
+//       {/* Desktop Pagination */}
+//       {totalPages > 1 && (
+//         <div className="flex justify-between items-center mt-4">
+//           <div className="text-xs text-gray-600">
+//             Showing {(currentPage - 1) * limit + 1} to{" "}
+//             {Math.min(currentPage * limit, totalTransactions)} of{" "}
+//             {totalTransactions} transactions
+//           </div>
+
+//           <div className="flex items-center space-x-2">
+//             <button
+//               onClick={() => handlePageChange(currentPage - 1)}
+//               disabled={currentPage === 1 || isFetching}
+//               className="px-3 py-1.5 text-xs bg-orange-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-700 transition-colors flex items-center"
+//             >
+//               <ChevronLeft size={14} className="mr-1" /> Previous
+//             </button>
+
+//             <div className="flex space-x-1">
+//               {[...Array(Math.min(5, totalPages))].map((_, idx) => {
+//                 let pageNum;
+//                 if (totalPages <= 5) {
+//                   pageNum = idx + 1;
+//                 } else if (currentPage <= 3) {
+//                   pageNum = idx + 1;
+//                 } else if (currentPage >= totalPages - 2) {
+//                   pageNum = totalPages - 4 + idx;
+//                 } else {
+//                   pageNum = currentPage - 2 + idx;
+//                 }
+
+//                 return (
+//                   <button
+//                     key={idx}
+//                     onClick={() => handlePageChange(pageNum)}
+//                     disabled={isFetching}
+//                     className={`px-2.5 py-1 text-xs rounded-lg transition-colors ${
+//                       currentPage === pageNum
+//                         ? "bg-orange-600 text-white"
+//                         : "bg-white border border-orange-200 text-orange-700 hover:bg-orange-50"
+//                     } disabled:cursor-not-allowed`}
+//                   >
+//                     {pageNum}
+//                   </button>
+//                 );
+//               })}
+//             </div>
+
+//             <button
+//               onClick={() => handlePageChange(currentPage + 1)}
+//               disabled={currentPage === totalPages || isFetching}
+//               className="px-3 py-1.5 text-xs bg-orange-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-700 transition-colors flex items-center"
+//             >
+//               Next <ChevronRight size={14} className="ml-1" />
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// const style = document.createElement("style");
+// style.innerHTML = `
+//   @keyframes fadeIn {
+//     from { opacity: 0; }
+//     to { opacity: 1; }
+//   }
+  
+//   @keyframes scaleIn {
+//     from { transform: scale(0.95); opacity: 0; }
+//     to { transform: scale(1); opacity: 1; }
+//   }
+  
+//   .animate-fadeIn {
+//     animation: fadeIn 0.3s ease-out forwards;
+//   }
+  
+//   .animate-scaleIn {
+//     animation: scaleIn 0.2s ease-out forwards;
+//   }
+  
+//   .hide-scrollbar::-webkit-scrollbar {
+//     display: none;
+//   }
+  
+//   .hide-scrollbar {
+//     -ms-overflow-style: none;
+//     scrollbar-width: none;
+//   }
+// `;
+// document.head.appendChild(style);
+
+// export default GuaranteedWealth2Dashboard;
+
+
+
 import React, { useState, useEffect } from "react";
 import {
   useGetOrdersAbove3LQuery,
@@ -60,6 +1982,17 @@ const formatDate = (isoString) => {
   const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
   const yyyy = date.getUTCFullYear();
   return `${dd}-${mm}-${yyyy}`;
+};
+
+// Custom color palette based on #bbcf28
+const colors = {
+  primary: '#bbcf28',
+  primaryLight: '#d4e35a',
+  primaryLighter: '#e8f0a8',
+  primaryLightest: '#f5f8e5',
+  primaryDark: '#9fb422',
+  primaryDarker: '#83991c',
+  primaryDarkest: '#677d16',
 };
 
 const GuaranteedWealth2Dashboard = () => {
@@ -182,7 +2115,7 @@ const GuaranteedWealth2Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 p-2 md:p-4">
+    <div className="min-h-screen bg-[#e6fcf7] p-2 md:p-4">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -198,18 +2131,17 @@ const GuaranteedWealth2Dashboard = () => {
 
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-amber-600 rounded-xl shadow-md p-4 md:p-5 mb-4 border border-orange-400 text-white">
+        <div className="bg-gradient-to-r from-[#bbcf28] to-[#bbcf28] rounded-xl shadow-md p-4 md:p-5 mb-4 border border-[#a3b820] text-white">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
             <div>
               <h1 className="text-xl md:text-3xl font-bold flex items-center">
-               
                 Guaranteed Wealth Plan 2.0
               </h1>
-              <p className="text-orange-100 text-sm mt-1">
+              <p className="text-[#ffffff] text-sm mt-1">
                 Premium investment plan for orders above ₹3,00,000
               </p>
             </div>
-            <div className="flex items-center space-x-2 text-white bg-orange-600/30 px-3 py-1 rounded-full">
+            <div className="flex items-center space-x-2 text-white bg-[#9fb422]/30 px-3 py-1 rounded-full">
               <Clock size={18} />
               <span className="text-xs md:text-sm font-medium">
                 {new Date().toLocaleDateString("en-IN")}
@@ -224,19 +2156,19 @@ const GuaranteedWealth2Dashboard = () => {
             title="Orders Above 3L"
             value={ordersAbove3L.length}
             icon={<CreditCard size={16} className="md:w-5 md:h-5" />}
-            color="from-orange-500 to-amber-600"
+            color="from-[#bbcf28] to-[#9fb422]"
           />
           <StatsCard
             title="Active Wealth Plans"
             value={allWealthOrders.length}
             icon={<PieChart size={16} className="md:w-5 md:h-5" />}
-            color="from-orange-500 to-amber-600"
+            color="from-[#bbcf28] to-[#9fb422]"
           />
           <StatsCard
             title="Completed Plans"
             value={completedWealthPlans.length}
             icon={<TrendingUp size={16} className="md:w-5 md:h-5" />}
-            color="from-orange-500 to-amber-600"
+            color="from-[#bbcf28] to-[#9fb422]"
           />
           <StatsCard
             title="Total Wealth Income"
@@ -246,19 +2178,19 @@ const GuaranteedWealth2Dashboard = () => {
               ) || "0"
             }`}
             icon={<Coins size={16} className="md:w-5 md:h-5" />}
-            color="from-orange-500 to-amber-600"
+            color="from-[#bbcf28] to-[#9fb422]"
           />
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-xl shadow-md border border-orange-100 overflow-hidden">
-          <div className="border-b border-orange-100">
+        <div className="bg-white rounded-xl shadow-md border border-[#d4e35a] overflow-hidden">
+          <div className="border-b border-[#d4e35a]">
             <nav className="flex overflow-x-auto hide-scrollbar">
               <button
                 onClick={() => setActiveTab("above3L")}
                 className={`py-3 px-3 md:px-6 text-xs md:text-sm font-medium border-b-2 transition-all duration-200 whitespace-nowrap ${
                   activeTab === "above3L"
-                    ? "border-orange-600 text-orange-600 bg-orange-50"
+                    ? "border-[#bbcf28] text-[#83991c] bg-[#f5f8e5]"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
@@ -266,7 +2198,7 @@ const GuaranteedWealth2Dashboard = () => {
                   <CreditCard size={14} className="mr-1.5" />
                   Orders Above 3L
                   {ordersAbove3L.length > 0 && (
-                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-[#e8f0a8] text-[#677d16] rounded-full">
                       {ordersAbove3L.length}
                     </span>
                   )}
@@ -276,7 +2208,7 @@ const GuaranteedWealth2Dashboard = () => {
                 onClick={() => setActiveTab("allOrders")}
                 className={`py-3 px-3 md:px-6 text-xs md:text-sm font-medium border-b-2 transition-all duration-200 whitespace-nowrap ${
                   activeTab === "allOrders"
-                    ? "border-orange-600 text-orange-600 bg-orange-50"
+                    ? "border-[#bbcf28] text-[#83991c] bg-[#f5f8e5]"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
@@ -284,7 +2216,7 @@ const GuaranteedWealth2Dashboard = () => {
                   <PieChart size={14} className="mr-1.5" />
                   Active Wealth Plans
                   {allWealthOrders.length > 0 && (
-                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-[#e8f0a8] text-[#677d16] rounded-full">
                       {allWealthOrders.length}
                     </span>
                   )}
@@ -294,7 +2226,7 @@ const GuaranteedWealth2Dashboard = () => {
                 onClick={() => setActiveTab("completedPlans")}
                 className={`py-3 px-3 md:px-6 text-xs md:text-sm font-medium border-b-2 transition-all duration-200 whitespace-nowrap ${
                   activeTab === "completedPlans"
-                    ? "border-orange-600 text-orange-600 bg-orange-50"
+                    ? "border-[#bbcf28] text-[#83991c] bg-[#f5f8e5]"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
@@ -302,7 +2234,7 @@ const GuaranteedWealth2Dashboard = () => {
                   <CheckCircle2 size={14} className="mr-1.5" />
                   Completed Plans
                   {completedWealthPlans.length > 0 && (
-                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-[#e8f0a8] text-[#677d16] rounded-full">
                       {completedWealthPlans.length}
                     </span>
                   )}
@@ -392,7 +2324,7 @@ const CompletedPlansTable = ({
     return (
       <div className="text-center py-8 bg-gray-50 rounded-xl">
         <div className="text-gray-400 mb-3">
-          <CheckCircle2 size={40} className="mx-auto text-orange-100" />
+          <CheckCircle2 size={40} className="mx-auto text-[#d4e35a]" />
         </div>
         <p className="text-gray-500 text-sm md:text-base font-medium">
           {emptyMessage || "No completed plans found"}
@@ -411,9 +2343,9 @@ const CompletedPlansTable = ({
         {plans.map((plan, index) => (
           <div
             key={plan._id || index}
-            className="bg-white border border-orange-100 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px]"
+            className="bg-white border border-[#d4e35a] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px]"
           >
-            <div className="bg-gradient-to-r from-orange-500 to-amber-600 p-2 border-b flex justify-between items-center">
+            <div className="bg-gradient-to-r from-[#bbcf28] to-[#9fb422] p-2 border-b flex justify-between items-center">
               <div className="font-medium text-white text-xs flex items-center">
                 {plan._id ? plan._id : "N/A"}
               </div>
@@ -428,41 +2360,41 @@ const CompletedPlansTable = ({
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-gray-600 flex items-center">
-                    <IndianRupee size={12} className="mr-1 text-orange-600" />
+                    <IndianRupee size={12} className="mr-1 text-[#83991c]" />
                     Investment:
                   </span>
-                  <span className="font-semibold text-orange-700 text-xs">
+                  <span className="font-semibold text-[#677d16] text-xs">
                     {plan.amount || 0}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-gray-600 flex items-center">
-                    <Calendar size={12} className="mr-1 text-orange-600" />
+                    <Calendar size={12} className="mr-1 text-[#83991c]" />
                     Completed On:
                   </span>
                   <span className="text-gray-800 text-xs">
-                    {formatDateWithAmPm(plan.guaranteedWealthPlanCompletedDate)}
+                    {formatDateWithAmPm(plan.guaranteedWealthPlanCompletedDate_2)}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-gray-600 flex items-center">
-                    <Coins size={12} className="mr-1 text-orange-600" />
+                    <Coins size={12} className="mr-1 text-[#83991c]" />
                     Total Earned:
                   </span>
                   <span className="text-gray-800 text-xs font-semibold">
-                    {plan.totalAmountDisbursedForWealthPlan || 0}
+                    {plan.totalAmountDisbursedForWealthPlan_2 || 0}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-gray-600 flex items-center">
-                    <Gift size={12} className="mr-1 text-orange-600" />
+                    <Gift size={12} className="mr-1 text-[#83991c]" />
                     Coins Collected:
                   </span>
                   <span className="text-gray-800 text-xs font-semibold">
-                    {plan.totalCoinsCollectedFormUser}
+                    {plan.totalCoinsCollectedFormUser_2 || 0}
                   </span>
                 </div>
               </div>
@@ -470,7 +2402,7 @@ const CompletedPlansTable = ({
               <div className="mt-3">
                 <button
                   onClick={() => onViewDetails(plan)}
-                  className="w-full px-2 py-1.5 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 font-medium flex items-center justify-center text-xs shadow-sm"
+                  className="w-full px-2 py-1.5 bg-gradient-to-r from-[#bbcf28] to-[#9fb422] text-white rounded-lg hover:from-[#9fb422] hover:to-[#83991c] transition-all duration-200 font-medium flex items-center justify-center text-xs shadow-sm"
                 >
                   <Info size={12} className="mr-1" /> View Details
                 </button>
@@ -486,7 +2418,7 @@ const CompletedPlansTable = ({
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200">
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gradient-to-r from-orange-500 to-amber-600 text-white">
+        <thead className="bg-gradient-to-r from-[#bbcf28] to-[#9fb422] text-white">
           <tr>
             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
               Plan ID
@@ -512,30 +2444,30 @@ const CompletedPlansTable = ({
           {plans.map((plan, index) => (
             <tr
               key={plan._id || index}
-              className="hover:bg-orange-50 transition-colors duration-150"
+              className="hover:bg-[#f5f8e5] transition-colors duration-150"
             >
               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
                 {plan._id ? plan._id : "N/A"}
               </td>
 
               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
-                <span className="font-semibold text-orange-700">
+                <span className="font-semibold text-[#677d16]">
                   {plan.amount || 0}
                 </span>
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
-                {formatDateWithAmPm(plan.guaranteedWealthPlanCompletedDate)}
+                {formatDateWithAmPm(plan.guaranteedWealthPlanCompletedDate_2)}
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700 font-semibold">
-                {plan.totalAmountDisbursedForWealthPlan || 0}
+                {plan.totalAmountDisbursedForWealthPlan_2 || 0}
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700 font-semibold">
-                {plan.totalCoinsCollectedFormUser || 0}
+                {plan.totalCoinsCollectedFormUser_2 || 0}
               </td>
               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium">
                 <button
                   onClick={() => onViewDetails(plan)}
-                  className="px-2 py-1.5 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 flex items-center shadow-sm"
+                  className="px-2 py-1.5 bg-gradient-to-r from-[#bbcf28] to-[#9fb422] text-white rounded-lg hover:from-[#9fb422] hover:to-[#83991c] transition-all duration-200 flex items-center shadow-sm"
                 >
                   <Info size={12} className="mr-1" /> View Details
                 </button>
@@ -582,11 +2514,11 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/30 backdrop-blur-sm">
       <div className="flex min-h-full items-center justify-center p-2 md:p-4">
-        <div className="relative w-full max-w-md md:max-w-3xl bg-gradient-to-b from-white to-orange-50 rounded-xl shadow-2xl overflow-hidden transition-all duration-200 animate-fadeIn">
+        <div className="relative w-full max-w-md md:max-w-3xl bg-gradient-to-b from-white to-[#f5f8e5] rounded-xl shadow-2xl overflow-hidden transition-all duration-200 animate-fadeIn">
           {/* Header with creative design */}
           <div className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-orange-600 opacity-90"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-500"></div>
+            <div className="absolute inset-0 bg-[#bbcf28] opacity-90"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#bbcf28] to-[#9fb422]"></div>
             <div className="relative p-4 md:p-5 z-10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
@@ -601,7 +2533,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-white hover:text-orange-200 transition-colors rounded-full bg-white/20 p-1.5"
+                  className="text-white hover:text-[#e8f0a8] transition-colors rounded-full bg-white/20 p-1.5"
                 >
                   <X size={18} />
                 </button>
@@ -627,7 +2559,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                 onClick={() => setShowTransactions(false)}
                 className={`flex-1 py-2.5 px-4 text-sm font-medium border-b-2 transition-all duration-200 ${
                   !showTransactions
-                    ? "border-orange-600 text-orange-600 bg-orange-50"
+                    ? "border-[#bbcf28] text-[#83991c] bg-[#f5f8e5]"
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -639,14 +2571,14 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                 onClick={() => setShowTransactions(true)}
                 className={`flex-1 py-2.5 px-4 text-sm font-medium border-b-2 transition-all duration-200 ${
                   showTransactions
-                    ? "border-orange-600 text-orange-600 bg-orange-50"
+                    ? "border-[#bbcf28] text-[#83991c] bg-[#f5f8e5]"
                     : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
                 <div className="flex items-center justify-center">
                   Transactions
                   {completedDays > 0 && (
-                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-orange-100 text-orange-700 rounded-full">
+                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-[#e8f0a8] text-[#677d16] rounded-full">
                       {completedDays}
                     </span>
                   )}
@@ -661,16 +2593,16 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
               // Original Plan Details Content
               <>
                 {/* Investment amount card with creative design */}
-                <div className="mb-5 bg-gradient-to-r from-orange-500 to-amber-600 rounded-xl text-white p-4 shadow-md transform hover:scale-[1.01] transition-all duration-200">
+                <div className="mb-5 bg-gradient-to-r from-[#bbcf28] to-[#9fb422] rounded-xl text-white p-4 shadow-md transform hover:scale-[1.01] transition-all duration-200">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-orange-100 text-xs">Total Investment</p>
+                      <p className="text-[#e8f0a8] text-xs">Total Investment</p>
                       <p className="text-2xl md:text-3xl font-bold">
                         ₹{(orderDetails.amount || 0).toLocaleString("en-IN")}
                       </p>
                     </div>
                     <div>
-                      <p className="text-orange-100 text-xs ml-10">Total Returns</p>
+                      <p className="text-[#e8f0a8] text-xs ml-10">Total Returns</p>
                       <p className="text-2xl md:text-3xl font-bold">
                         ₹{((orderDetails.amount || 0) + (orderDetails.amount || 0) / 2).toLocaleString("en-IN")}
                       </p>
@@ -679,11 +2611,11 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
 
                   <div className="mt-3 flex justify-between items-center text-xs">
                     <div>
-                      <p className="text-orange-100 text-sm">Daily Reward</p>
+                      <p className="text-[#e8f0a8] text-sm">Daily Reward</p>
                       <p className="font-semibold text-sm">₹{dailyAmount}</p>
                     </div>
                     <div>
-                      <p className="text-orange-100 text-sm">Status</p>
+                      <p className="text-[#e8f0a8] text-sm">Status</p>
                       <div>
                         <p className="font-semibold flex items-center text-sm">
                           {orderDetails.isGuaranteedWealthOpted_2 ? (
@@ -704,7 +2636,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                       </div>
                     </div>
                     <div>
-                      <p className="text-orange-100 text-sm">Start Date</p>
+                      <p className="text-[#e8f0a8] text-sm">Start Date</p>
                       <p className="font-semibold text-sm">
                         {orderDetails.guaranteedWealthPlanChosenDate_2
                           ? formatDate(orderDetails.guaranteedWealthPlanChosenDate_2)
@@ -717,7 +2649,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                 {/* Progress and metrics section */}
                 <div className="mb-5">
                   <h3 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
-                    <Target size={16} className="mr-2 text-orange-600" />
+                    <Target size={16} className="mr-2 text-[#83991c]" />
                     Plan Progress
                   </h3>
 
@@ -743,7 +2675,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                           r="40"
                           fill="none"
                           stroke={
-                            orderDetails.isCompleted ? "#f59e0b" : "#ea580c"
+                            orderDetails.isCompleted ? "#9fb422" : "#bbcf28"
                           }
                           strokeWidth="8"
                           strokeLinecap="round"
@@ -762,7 +2694,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                           fontSize="16"
                           fontWeight="bold"
                           fill={
-                            orderDetails.isCompleted ? "#f59e0b" : "#ea580c"
+                            orderDetails.isCompleted ? "#9fb422" : "#83991c"
                           }
                         >
                           {Math.round(progressPercentage)}%
@@ -786,7 +2718,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                         title="Days Completed"
                         value={`${completedDays} / ${totalDays}`}
                         icon={<Calendar size={16} />}
-                        color="bg-orange-500"
+                        color="bg-[#bbcf28]"
                       />
 
                       <MetricCard
@@ -805,14 +2737,14 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                             : remainingDays
                         }
                         icon={<Clock size={16} />}
-                        color="bg-amber-500"
+                        color="bg-[#9fb422]"
                       />
 
                       <MetricCard
                         title="Disbursed Amount"
                         value={`₹${totalAmountDisbursed.toLocaleString("en-IN")}`}
                         icon={<Wallet size={16} />}
-                        color="bg-orange-500"
+                        color="bg-[#bbcf28]"
                       />
                       <MetricCard
                         title={
@@ -825,13 +2757,13 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                                 orderDetails.amount - totalAmountDisbursed
                               ).toLocaleString("en-IN")
                         }`}
-                        color="bg-amber-500"
+                        color="bg-[#9fb422]"
                       />
                       <MetricCard
                         title="Daily coins"
                         value={`${orderDetails?.guaranteedTokensToBeCollect_2 || 0}`}
                         icon={<Wallet size={16} />}
-                        color="bg-orange-500"
+                        color="bg-[#bbcf28]"
                       />
                       <MetricCard
                         title="Total coins collected"
@@ -839,7 +2771,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                           "en-IN"
                         )}`}
                         icon={<Wallet size={16} />}
-                        color="bg-amber-500"
+                        color="bg-[#9fb422]"
                       />
                     </div>
                   </div>
@@ -848,12 +2780,12 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
                 {/* Timeline - Activity History */}
                 <div className="border-t border-gray-200 pt-4 mb-3">
                   <h3 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
-                    <Activity size={16} className="mr-2 text-orange-600" />
+                    <Activity size={16} className="mr-2 text-[#83991c]" />
                     Activity History
                   </h3>
 
                   {orderDetails.guaranteedWealthPlanActivatedDates_2?.length > 0 ? (
-                    <div className="border-l-2 border-orange-400 pl-4 pb-2 space-y-3 ml-2 text-xs md:text-sm">
+                    <div className="border-l-2 border-[#bbcf28] pl-4 pb-2 space-y-3 ml-2 text-xs md:text-sm">
                       {orderDetails.guaranteedWealthPlanActivatedDates_2?.map(
                         (date, index) => (
                           <div key={`act-${index}`} className="relative">
@@ -970,7 +2902,7 @@ const PlanDetailsModal = ({ isOpen, onClose, orderDetails }) => {
             <div className="flex justify-end">
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 font-medium text-sm flex items-center shadow-sm"
+                className="px-4 py-2 bg-gradient-to-r from-[#bbcf28] to-[#9fb422] text-white rounded-lg hover:from-[#9fb422] hover:to-[#83991c] transition-all duration-200 font-medium text-sm flex items-center shadow-sm"
               >
                 Close <X size={14} className="ml-1.5" />
               </button>
@@ -1017,7 +2949,7 @@ const TermsModal = ({
       <div className="flex min-h-full items-center justify-center p-2 md:p-4">
         <div className="relative w-full max-w-sm md:max-w-lg bg-white rounded-xl shadow-xl overflow-hidden animate-scaleIn">
           {/* Header */}
-          <div className="sticky top-0 bg-gradient-to-r from-orange-600 to-amber-600 border-b border-orange-700 rounded-t-xl p-3 md:p-4 z-10">
+          <div className="sticky top-0 bg-gradient-to-r from-[#bbcf28] to-[#9fb422] border-b border-[#83991c] rounded-t-xl p-3 md:p-4 z-10">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <Award className="text-white mr-2" size={20} />
@@ -1027,7 +2959,7 @@ const TermsModal = ({
               </div>
               <button
                 onClick={onClose}
-                className="text-white hover:text-orange-200 transition-colors rounded-full bg-white/20 p-1.5"
+                className="text-white hover:text-[#e8f0a8] transition-colors rounded-full bg-white/20 p-1.5"
               >
                 <X size={18} />
               </button>
@@ -1040,11 +2972,11 @@ const TermsModal = ({
             onScroll={handleScroll}
           >
             <div className="space-y-4">
-              <div className="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
-                <h3 className="text-md font-bold text-orange-800 mb-2 flex items-center">
+              <div className="bg-[#f5f8e5] p-3 rounded-lg border-l-4 border-[#bbcf28]">
+                <h3 className="text-md font-bold text-[#677d16] mb-2 flex items-center">
                   <Users className="mr-2" size={16} /> 1. Eligibility
                 </h3>
-                <div className="space-y-2 text-orange-700 text-sm">
+                <div className="space-y-2 text-[#83991c] text-sm">
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
@@ -1061,11 +2993,11 @@ const TermsModal = ({
                 </div>
               </div>
 
-              <div className="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-500">
-                <h3 className="text-md font-bold text-amber-800 mb-2 flex items-center">
+              <div className="bg-[#e8f0a8] p-3 rounded-lg border-l-4 border-[#9fb422]">
+                <h3 className="text-md font-bold text-[#677d16] mb-2 flex items-center">
                   2. Investment Details
                 </h3>
-                <div className="space-y-2 text-amber-700 text-sm">
+                <div className="space-y-2 text-[#83991c] text-sm">
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
@@ -1078,15 +3010,15 @@ const TermsModal = ({
                     <span>Daily rewards = investment amount ÷ 400 days.</span>
                   </p>
 
-                  <div className="bg-white p-2 rounded-lg ml-2 border border-amber-200 text-xs">
-                    <p className="font-semibold text-amber-800">Examples:</p>
+                  <div className="bg-white p-2 rounded-lg ml-2 border border-[#d4e35a] text-xs">
+                    <p className="font-semibold text-[#677d16]">Examples:</p>
                     <ul className="mt-1 space-y-1">
                       <li className="flex items-center">
-                        <ArrowRight size={12} className="mr-1 text-amber-600" />
-                        ₹3,00,000 investment  + 1,50,000 → ₹1,125/day
+                        <ArrowRight size={12} className="mr-1 text-[#9fb422]" />
+                        ₹3,00,000 investment + 1,50,000 → ₹1,125/day
                       </li>
                       <li className="flex items-center">
-                        <ArrowRight size={12} className="mr-1 text-amber-600" />
+                        <ArrowRight size={12} className="mr-1 text-[#9fb422]" />
                         ₹5,00,000 investment + 2,50,000 → ₹1,875/day
                       </li>
                     </ul>
@@ -1094,11 +3026,11 @@ const TermsModal = ({
                 </div>
               </div>
 
-              <div className="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
-                <h3 className="text-md font-bold text-yellow-800 mb-2 flex items-center">
+              <div className="bg-[#f5f8e5] p-3 rounded-lg border-l-4 border-[#bbcf28]">
+                <h3 className="text-md font-bold text-[#677d16] mb-2 flex items-center">
                   <Calendar className="mr-2" size={16} /> 3. Daily Rewards
                 </h3>
-                <div className="space-y-2 text-yellow-700 text-sm">
+                <div className="space-y-2 text-[#83991c] text-sm">
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>Rewards start from Day 1 after activation.</span>
@@ -1112,11 +3044,11 @@ const TermsModal = ({
                 </div>
               </div>
 
-              <div className="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
-                <h3 className="text-md font-bold text-orange-800 mb-2 flex items-center">
+              <div className="bg-[#e8f0a8] p-3 rounded-lg border-l-4 border-[#9fb422]">
+                <h3 className="text-md font-bold text-[#677d16] mb-2 flex items-center">
                   <Coins className="mr-2" size={16} /> 4. Coins Distribution
                 </h3>
-                <div className="space-y-2 text-orange-700 text-sm">
+                <div className="space-y-2 text-[#83991c] text-sm">
                   <p className="flex items-start">
                     <Check className="mr-1 flex-shrink-0 mt-1" size={14} />
                     <span>
@@ -1134,12 +3066,12 @@ const TermsModal = ({
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-t border-orange-100 p-4 rounded-lg">
-                <p className="font-semibold text-orange-800 mb-2 flex items-center">
+              <div className="bg-gradient-to-r from-[#f5f8e5] to-[#e8f0a8] border-t border-[#d4e35a] p-4 rounded-lg">
+                <p className="font-semibold text-[#677d16] mb-2 flex items-center">
                   <Star className="mr-2" size={16} />
                   By activating, you acknowledge:
                 </p>
-                <ul className="space-y-2 text-sm text-orange-700">
+                <ul className="space-y-2 text-sm text-[#83991c]">
                   <li className="flex items-start">
                     <Check className="mr-2 flex-shrink-0 mt-0.5" size={14} />
                     <span>
@@ -1170,7 +3102,7 @@ const TermsModal = ({
                   checked={termsAccepted}
                   onChange={(e) => setTermsAccepted(e.target.checked)}
                   disabled={!hasScrolledToBottom}
-                  className="mt-1 w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 disabled:opacity-50"
+                  className="mt-1 w-4 h-4 text-[#bbcf28] border-gray-300 rounded focus:ring-[#bbcf28] disabled:opacity-50"
                 />
                 <span
                   className={`text-xs ${
@@ -1193,7 +3125,7 @@ const TermsModal = ({
                 <button
                   onClick={onAccept}
                   disabled={!termsAccepted || isProcessing}
-                  className="px-4 py-2 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 text-xs md:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 shadow-sm"
+                  className="px-4 py-2 bg-gradient-to-r from-[#bbcf28] to-[#9fb422] text-white rounded-lg hover:from-[#9fb422] hover:to-[#83991c] transition-all duration-200 text-xs md:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 shadow-sm"
                 >
                   {isProcessing ? (
                     <>
@@ -1233,7 +3165,7 @@ const OrdersTable = ({
     return (
       <div className="text-center py-8 bg-gray-50 rounded-xl">
         <div className="text-gray-400 mb-3">
-          <PieChart size={40} className="mx-auto text-orange-100" />
+          <PieChart size={40} className="mx-auto text-[#d4e35a]" />
         </div>
         <p className="text-gray-500 text-sm md:text-base font-medium">
           {emptyMessage || "No orders found"}
@@ -1261,14 +3193,14 @@ const OrdersTable = ({
             className={`bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 transform hover:translate-y-[-2px] ${
               shouldHighlight(order)
                 ? "border-2 border-yellow-400 ring-2 ring-yellow-100"
-                : "border border-orange-100"
+                : "border border-[#d4e35a]"
             }`}
           >
             <div
               className={`p-2 border-b flex justify-between items-center ${
                 shouldHighlight(order)
                   ? "text-gray-900 bg-gradient-to-r from-yellow-300 to-yellow-400"
-                  : "text-white bg-gradient-to-r from-orange-500 to-amber-600"
+                  : "text-white bg-gradient-to-r from-[#bbcf28] to-[#9fb422]"
               }`}
             >
               <div
@@ -1310,7 +3242,7 @@ const OrdersTable = ({
                   </span>
                   <span
                     className={`font-semibold text-xs ${
-                      shouldHighlight(order) ? "text-yellow-700" : "text-orange-700"
+                      shouldHighlight(order) ? "text-yellow-700" : "text-[#677d16]"
                     }`}
                   >
                     {order.amount || order.order_amount || 0}
@@ -1322,7 +3254,7 @@ const OrdersTable = ({
                     <Calendar
                       size={12}
                       className={`mr-1 ${
-                        shouldHighlight(order) ? "text-yellow-600" : "text-orange-600"
+                        shouldHighlight(order) ? "text-yellow-600" : "text-[#83991c]"
                       }`}
                     />
                     Date:
@@ -1342,14 +3274,14 @@ const OrdersTable = ({
                       <Activity
                         size={12}
                         className={`mr-1 ${
-                          shouldHighlight(order) ? "text-yellow-600" : "text-orange-600"
+                          shouldHighlight(order) ? "text-yellow-600" : "text-[#83991c]"
                         }`}
                       />
                       Progress:
                     </span>
                     <span
                       className={`font-medium ${
-                        shouldHighlight(order) ? "text-yellow-700" : "text-orange-700"
+                        shouldHighlight(order) ? "text-yellow-700" : "text-[#677d16]"
                       }`}
                     >
                       {order.wealthPalnDisbursedDays_2 || 0}/400
@@ -1360,7 +3292,7 @@ const OrdersTable = ({
                       className={`h-2 rounded-full ${
                         shouldHighlight(order)
                           ? "bg-gradient-to-r from-yellow-400 to-yellow-500"
-                          : "bg-gradient-to-r from-orange-500 to-amber-500"
+                          : "bg-gradient-to-r from-[#bbcf28] to-[#9fb422]"
                       }`}
                       style={{
                         width: `${
@@ -1387,7 +3319,7 @@ const OrdersTable = ({
                     className={`flex-1 px-2 py-1.5 rounded-lg transition-all duration-200 font-medium flex items-center justify-center disabled:opacity-50 shadow-sm ${
                       shouldHighlight(order)
                         ? "text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600"
-                        : "text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700"
+                        : "text-white bg-gradient-to-r from-[#bbcf28] to-[#9fb422] hover:from-[#9fb422] hover:to-[#83991c]"
                     }`}
                     disabled={isProcessing}
                   >
@@ -1399,7 +3331,7 @@ const OrdersTable = ({
                   className={`flex-1 px-2 py-1.5 rounded-lg border transition-all duration-200 font-medium flex items-center justify-center ${
                     shouldHighlight(order)
                       ? "bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100"
-                      : "bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100"
+                      : "bg-[#f5f8e5] text-[#677d16] border-[#d4e35a] hover:bg-[#e8f0a8]"
                   }`}
                 >
                   <Info size={12} className="mr-1" /> Details
@@ -1416,7 +3348,7 @@ const OrdersTable = ({
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200">
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gradient-to-r from-orange-500 to-amber-600 text-white">
+        <thead className="bg-gradient-to-r from-[#bbcf28] to-[#9fb422] text-white">
           <tr>
             <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider">
               Order ID
@@ -1445,7 +3377,7 @@ const OrdersTable = ({
               className={`transition-colors duration-150 ${
                 shouldHighlight(order)
                   ? "bg-yellow-50/40 hover:bg-yellow-100/60 border-l-4 border-l-yellow-500"
-                  : "hover:bg-orange-50"
+                  : "hover:bg-[#f5f8e5]"
               }`}
             >
               <td className="px-3 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
@@ -1457,7 +3389,7 @@ const OrdersTable = ({
               <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-700">
                 <span
                   className={`font-semibold ${
-                    shouldHighlight(order) ? "text-yellow-700" : "text-orange-700"
+                    shouldHighlight(order) ? "text-yellow-700" : "text-[#677d16]"
                   }`}
                 >
                   {order.amount || 0}
@@ -1496,7 +3428,7 @@ const OrdersTable = ({
                       className={`h-2 rounded-full ${
                         shouldHighlight(order)
                           ? "bg-gradient-to-r from-yellow-400 to-yellow-500"
-                          : "bg-gradient-to-r from-orange-500 to-amber-500"
+                          : "bg-gradient-to-r from-[#bbcf28] to-[#9fb422]"
                       }`}
                       style={{
                         width: `${
@@ -1525,7 +3457,7 @@ const OrdersTable = ({
                       className={`px-2 py-1.5 rounded-lg transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-sm ${
                         shouldHighlight(order)
                           ? "text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600"
-                          : "text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700"
+                          : "text-white bg-gradient-to-r from-[#bbcf28] to-[#9fb422] hover:from-[#9fb422] hover:to-[#83991c]"
                       }`}
                     >
                       <Check size={12} className="mr-1" /> Activate
@@ -1535,8 +3467,8 @@ const OrdersTable = ({
                     onClick={() => onViewDetails(order)}
                     className={`px-2 py-1.5 rounded-lg border transition-all duration-200 flex items-center shadow-sm ${
                       shouldHighlight(order)
-                        ? "bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100"
-                        : "bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100"
+                        ? "bg-yellow-50 text-black border-yellow-200 hover:bg-yellow-100"
+                        : "bg-[#f5f8e5] text-[#677d16] border-[#d4e35a] hover:bg-[#e8f0a8]"
                     }`}
                   >
                     <Info size={12} className="mr-1" /> Details
@@ -1626,7 +3558,7 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
       <div className="space-y-3">
         <div className="flex justify-between items-center mb-2">
           <h4 className="text-sm font-semibold text-gray-700 flex items-center">
-            <Receipt size={14} className="mr-1.5 text-orange-600" />
+            <Receipt size={14} className="mr-1.5 text-[#83991c]" />
             Transaction History
           </h4>
         </div>
@@ -1637,7 +3569,7 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
             className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-all duration-200"
           >
             {/* Transaction header with gradient */}
-            <div className="bg-gradient-to-r from-orange-500 to-amber-500 p-2 text-white">
+            <div className="bg-gradient-to-r from-[#bbcf28] to-[#9fb422] p-2 text-white">
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <Calendar size={12} className="mr-1.5" />
@@ -1672,8 +3604,8 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-gray-600">Coins Collected</p>
-                  <p className="text-sm font-semibold text-amber-600 flex items-center justify-end">
-                    <span className="text-amber-600">-</span>
+                  <p className="text-sm font-semibold text-[#9fb422] flex items-center justify-end">
+                    <span className="text-[#9fb422]">-</span>
                     {transaction.tokensCollected?.toLocaleString("en-IN") || 0}
                   </p>
                 </div>
@@ -1710,23 +3642,23 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
 
         {/* Mobile Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-between items-center pt-4 mt-4 border-t border-orange-100">
+          <div className="flex justify-between items-center pt-4 mt-4 border-t border-[#d4e35a]">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1 || isFetching}
-              className="px-4 py-2 text-sm font-medium bg-orange-600 rounded-md shadow-sm text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 transition-all flex items-center"
+              className="px-4 py-2 text-sm font-medium bg-[#bbcf28] rounded-md shadow-sm text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#9fb422] focus:outline-none focus:ring-2 focus:ring-[#bbcf28] focus:ring-offset-1 transition-all flex items-center"
             >
               <ChevronLeft size={16} className="mr-1.5" /> Previous
             </button>
 
-            <span className="text-sm text-orange-700 font-medium px-3 py-1.5 bg-white border border-orange-200 rounded-md">
+            <span className="text-sm text-[#677d16] font-medium px-3 py-1.5 bg-white border border-[#d4e35a] rounded-md">
               Page {currentPage} of {totalPages}
             </span>
 
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages || isFetching}
-              className="px-4 py-2 text-sm font-medium bg-orange-600 rounded-md shadow-sm text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 transition-all flex items-center"
+              className="px-4 py-2 text-sm font-medium bg-[#bbcf28] rounded-md shadow-sm text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#9fb422] focus:outline-none focus:ring-2 focus:ring-[#bbcf28] focus:ring-offset-1 transition-all flex items-center"
             >
               Next <ChevronRight size={16} className="ml-1.5" />
             </button>
@@ -1741,14 +3673,14 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h4 className="text-sm font-semibold text-gray-700 flex items-center">
-          <IndianRupee size={16} className="mr-2 text-orange-600" />
+          <IndianRupee size={16} className="mr-2 text-[#bbcf28]" />
           Transaction History
         </h4>
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gradient-to-r from-orange-500 to-amber-500 text-white">
+          <thead className="bg-gradient-to-r from-[#bbcf28] to-[#9fb422] text-white">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
                 Day
@@ -1772,10 +3704,10 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
             {transactions.map((transaction, index) => (
               <tr
                 key={transaction._id || index}
-                className="hover:bg-orange-50 transition-colors"
+                className="hover:bg-[#f5f8e5] transition-colors"
               >
                 <td className="px-4 py-3 whitespace-nowrap">
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#bbcf28] text-[#ffff]">
                     Day {extractDayNumber(transaction.reason)}
                   </span>
                 </td>
@@ -1811,8 +3743,8 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-right">
                   <div className="flex items-center justify-end">
-                    <span className="text-amber-600">-</span>
-                    <span className="text-sm font-semibold text-amber-600">
+                    <span className="text-[#9fb422]">-</span>
+                    <span className="text-sm font-semibold text-[#9fb422]">
                       {transaction.tokensCollected?.toLocaleString("en-IN") || 0}
                     </span>
                   </div>
@@ -1836,7 +3768,7 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1 || isFetching}
-              className="px-3 py-1.5 text-xs bg-orange-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-700 transition-colors flex items-center"
+              className="px-3 py-1.5 text-xs bg-[#bbcf28] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#9fb422] transition-colors flex items-center"
             >
               <ChevronLeft size={14} className="mr-1" /> Previous
             </button>
@@ -1861,8 +3793,8 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
                     disabled={isFetching}
                     className={`px-2.5 py-1 text-xs rounded-lg transition-colors ${
                       currentPage === pageNum
-                        ? "bg-orange-600 text-white"
-                        : "bg-white border border-orange-200 text-orange-700 hover:bg-orange-50"
+                        ? "bg-[#bbcf28] text-white"
+                        : "bg-white border border-[#d4e35a] text-[#677d16] hover:bg-[#f5f8e5]"
                     } disabled:cursor-not-allowed`}
                   >
                     {pageNum}
@@ -1874,7 +3806,7 @@ const TransactionHistory = ({ orderId, isMobileView }) => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages || isFetching}
-              className="px-3 py-1.5 text-xs bg-orange-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-700 transition-colors flex items-center"
+              className="px-3 py-1.5 text-xs bg-[#bbcf28] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#9fb422] transition-colors flex items-center"
             >
               Next <ChevronRight size={14} className="ml-1" />
             </button>
