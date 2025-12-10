@@ -508,7 +508,7 @@ const Navbar = () => {
                   About
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   className={({ isActive }) =>
                     isActive
@@ -521,7 +521,7 @@ const Navbar = () => {
                 >
                   Landingpage
                 </NavLink>
-              </li>
+              </li> */}
 
               <li>
                 <NavLink
@@ -701,7 +701,7 @@ const Navbar = () => {
                     About
                   </NavLink>
                 </li>
-                <li>
+                {/* <li>
                   <NavLink
                     className={({ isActive }) =>
                       isActive
@@ -714,7 +714,7 @@ const Navbar = () => {
                   >
                     Landingpage
                   </NavLink>
-                </li>
+                </li> */}
 
                 <li>
                   <NavLink

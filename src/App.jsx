@@ -13,7 +13,7 @@ import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
 import JaimaxSplash from "./global/Splashscreen";
 import FloatingWhatsapp from "./global/FloatingWhatsapp";
-import Landingpage from "./pages/components/Landingpage";
+import Landingpage from "./pages/home/Landingpage";
 import AuthContainer from "./Authentication/Login";
 import ForgotPassword from "./Authentication/ForgotPassword";
 import ErrorBoundary from "./pages/chatSupport/ErrorBoundary";

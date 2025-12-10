@@ -39,7 +39,31 @@ import {
   CreditCard,
   HelpCircle,
 } from "lucide-react";
-import { motion, useScroll, useTransform, useInView,useSpring } from "framer-motion";
+import {
+  FaShieldAlt,
+  FaRocket,
+  FaGlobe,
+  FaArrowRight ,
+  FaLock,
+  FaChartLine,
+  FaUsers,
+  FaGem,
+  FaCheckCircle,
+  FaBolt,
+  FaCube ,
+  FaHandshake,
+  FaCubes,
+  FaLightbulb,
+  FaPlay ,
+  FaArrowUp ,
+  FaMobileAlt ,
+  FaBell ,
+  FaChartArea ,
+  FaGooglePlay ,
+  FaApple ,
+  FaArrowDown 
+} from "react-icons/fa";
+import { motion, useScroll, useTransform, useInView,useSpring,AnimatePresence  } from "framer-motion";
 import homeBgDesktop from "../../assets/Images/HomeDesktop.webp";
 import homeBgMobile from "../../assets/Images/HomeMobile.webp";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -73,7 +97,7 @@ import shekar from "../../assets/Shekar.jpg";
 import anjanelu from "../../assets/B.veeranjaneyulu.jpg";
 import Ratnam from "../../assets/Ratnam.jpg";
 import pramod from "../../assets/pramod.jpg";
-import ContactForm from "../components/Contact";
+// import ContactForm from "../components/Contact";
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer, SplitText, Flip);
 
@@ -1285,280 +1309,6 @@ const PhasesWheelSection = () => {
 };
 
 
-const TextParallaxContent = ({ imgUrl, subheading, heading, children }) => {
-  return (
-    <div
-      style={{
-        paddingLeft: IMG_PADDING,
-        paddingRight: IMG_PADDING,
-      }}
-    >
-      <div className="relative h-[150vh]">
-        <StickyImage imgUrl={imgUrl} />
-        <OverlayCopy heading={heading} subheading={subheading} />
-      </div>
-      {children}
-    </div>
-  );
-};
-
-const StickyImage = ({ imgUrl }) => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["end end", "end start"],
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const blur = useTransform(scrollYProgress, [0, 1], [0, 10]);
-
-  // Smooth spring animations
-  const smoothScale = useSpring(scale, { stiffness: 100, damping: 30 });
-
-  return (
-    <motion.div
-      style={{
-        height: `calc(100vh - ${IMG_PADDING * 2}px)`,
-        top: IMG_PADDING,
-        scale: smoothScale,
-      }}
-      ref={targetRef}
-      className="sticky z-0 overflow-hidden rounded-3xl"
-    >
-      {/* Parallax Background Image */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${imgUrl})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: useTransform(blur, (v) => `blur(${v}px)`),
-        }}
-      />
-
-      {/* Animated Gradient Overlay */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          background: `
-            linear-gradient(
-              135deg,
-              rgba(8, 80, 86, 0.9) 0%,
-              rgba(8, 80, 86, 0.6) 50%,
-              rgba(8, 80, 86, 0.8) 100%
-            )
-          `,
-          opacity,
-        }}
-      />
-
-      {/* Animated Pattern Overlay */}
-      <motion.div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 25% 25%, white 1px, transparent 1px),
-            radial-gradient(circle at 75% 75%, white 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      {/* Floating Particles */}
-      <FloatingParticles />
-
-      {/* Corner Decorations */}
-      <CornerDecorations opacity={opacity} />
-
-      {/* Bottom Gradient Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/30 to-transparent" />
-    </motion.div>
-  );
-};
-
-const FloatingParticles = () => {
-  const particles = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 4 + 2,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 10 + 10,
-    delay: Math.random() * 5,
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute rounded-full bg-white/20"
-          style={{
-            width: particle.size,
-            height: particle.size,
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-          }}
-          animate={{
-            y: [0, -100, 0],
-            x: [0, Math.random() * 50 - 25, 0],
-            opacity: [0, 1, 0],
-            scale: [0, 1, 0],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-const CornerDecorations = ({ opacity }) => {
-  return (
-    <>
-      {/* Top Left */}
-      <motion.div
-        className="absolute top-8 left-8"
-        style={{ opacity }}
-      >
-        <motion.div
-          className="w-20 h-20 border-l-2 border-t-2 border-white/30 rounded-tl-2xl"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 4, repeat: Infinity }}
-        />
-      </motion.div>
-
-      {/* Top Right */}
-      <motion.div
-        className="absolute top-8 right-8"
-        style={{ opacity }}
-      >
-        <motion.div
-          className="w-20 h-20 border-r-2 border-t-2 border-white/30 rounded-tr-2xl"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-        />
-      </motion.div>
-
-      {/* Bottom Left */}
-      <motion.div
-        className="absolute bottom-8 left-8"
-        style={{ opacity }}
-      >
-        <motion.div
-          className="w-20 h-20 border-l-2 border-b-2 border-white/30 rounded-bl-2xl"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-        />
-      </motion.div>
-
-      {/* Bottom Right */}
-      <motion.div
-        className="absolute bottom-8 right-8"
-        style={{ opacity }}
-      >
-        <motion.div
-          className="w-20 h-20 border-r-2 border-b-2 border-white/30 rounded-br-2xl"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 4, repeat: Infinity, delay: 3 }}
-        />
-      </motion.div>
-    </>
-  );
-};
-
-const OverlayCopy = ({ subheading, heading }) => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start end", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [250, -250]);
-  const opacity = useTransform(scrollYProgress, [0.25, 0.5, 0.75], [0, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0.25, 0.5, 0.75], [0.8, 1, 0.8]);
-
-  // Smooth spring physics
-  const smoothY = useSpring(y, { stiffness: 100, damping: 30 });
-  const smoothScale = useSpring(scale, { stiffness: 100, damping: 30 });
-
-  return (
-    <motion.div
-      style={{
-        y: smoothY,
-        opacity,
-        scale: smoothScale,
-      }}
-      ref={targetRef}
-      className="absolute left-0 top-0 flex h-screen w-full flex-col items-center justify-center text-white"
-    >
-      {/* Decorative Line Above */}
-      <motion.div
-        className="w-24 h-1 bg-gradient-to-r from-transparent via-white to-transparent mb-8 rounded-full"
-        animate={{ scaleX: [0.5, 1, 0.5], opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 3, repeat: Infinity }}
-      />
-
-      {/* Subheading with Icon */}
-      <motion.div
-        className="flex items-center gap-3 mb-4"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <motion.span
-          className="text-2xl"
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        >
-          ✦
-        </motion.span>
-        <p className="text-center text-xl md:text-3xl font-light tracking-[0.3em] uppercase text-white/90">
-          {subheading}
-        </p>
-        <motion.span
-          className="text-2xl"
-          animate={{ rotate: [360, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        >
-          ✦
-        </motion.span>
-      </motion.div>
-
-      {/* Main Heading */}
-      <div className="relative">
-        <motion.h2
-          className="text-center text-5xl md:text-8xl font-bold tracking-tight"
-          style={{
-            textShadow: "0 4px 30px rgba(0, 0, 0, 0.3)",
-          }}
-        >
-          <AnimatedText text={heading} />
-        </motion.h2>
-
-        {/* Glowing Underline */}
-        <motion.div
-          className="absolute -bottom-4 left-1/2 h-1 bg-white rounded-full"
-          style={{ x: "-50%" }}
-          initial={{ width: 0 }}
-          whileInView={{ width: "60%" }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        />
-        <motion.div
-          className="absolute -bottom-4 left-1/2 h-1 bg-white rounded-full blur-md"
-          style={{ x: "-50%" }}
-          initial={{ width: 0 }}
-          whileInView={{ width: "60%" }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        />
-      </div>
-    </motion.div>
-  );
-};
 
 // Animated text component for letter-by-letter animation
 const AnimatedText = ({ text }) => {
@@ -1614,7 +1364,7 @@ const SecurityContent = () => (
   </div>
 );
 
-const SecuritySection=()=> {
+const SecuritySec=()=> {
   return (
     <div
       className="bg-cover bg-center bg-fixed"
@@ -2955,6 +2705,1920 @@ const HorizontalRoadmap = () => {
 };
 
 
+const TextParallaxContent = ({ imgUrl, subheading, heading, children }) => {
+  return (
+    <div
+      style={{
+        paddingLeft: IMG_PADDING,
+        paddingRight: IMG_PADDING,
+      }}
+    >
+      <div className="relative h-[100vh]">
+        <StickyImage imgUrl={imgUrl} />
+        <OverlayCopy heading={heading} subheading={subheading} />
+      </div>
+      {children}
+    </div>
+  );
+};
+
+const StickyImage = ({ imgUrl }) => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["end end", "end start"],
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const blur = useTransform(scrollYProgress, [0, 1], [0, 10]);
+
+  const smoothScale = useSpring(scale, { stiffness: 100, damping: 30 });
+
+  return (
+    <motion.div
+      style={{
+        height: `calc(100vh - ${IMG_PADDING * 2}px)`,
+        top: IMG_PADDING,
+        scale: smoothScale,
+      }}
+      ref={targetRef}
+      className="sticky z-0 overflow-hidden rounded-3xl"
+    >
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url(${imgUrl})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: useTransform(blur, (v) => `blur(${v}px)`),
+        }}
+      />
+
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          background: `
+            linear-gradient(
+              135deg,
+              rgba(8, 80, 86, 0.9) 0%,
+              rgba(8, 80, 86, 0.6) 50%,
+              rgba(8, 80, 86, 0.8) 100%
+            )
+          `,
+          opacity,
+        }}
+      />
+
+      <motion.div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 25% 25%, white 1px, transparent 1px),
+            radial-gradient(circle at 75% 75%, white 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <FloatingParticles />
+      <CornerDecorations opacity={opacity} />
+
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/30 to-transparent" />
+    </motion.div>
+  );
+};
+
+const FloatingParticles = () => {
+  const particles = Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 4 + 2,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 10 + 10,
+    delay: Math.random() * 5,
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute rounded-full bg-white/20"
+          style={{
+            width: particle.size,
+            height: particle.size,
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+          }}
+          animate={{
+            y: [0, -100, 0],
+            x: [0, Math.random() * 50 - 25, 0],
+            opacity: [0, 1, 0],
+            scale: [0, 1, 0],
+          }}
+          transition={{
+            duration: particle.duration,
+            repeat: Infinity,
+            delay: particle.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const CornerDecorations = ({ opacity }) => {
+  return (
+    <>
+      <motion.div className="absolute top-8 left-8" style={{ opacity }}>
+        <motion.div
+          className="w-20 h-20 border-l-2 border-t-2 border-white/30 rounded-tl-2xl"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        />
+      </motion.div>
+
+      <motion.div className="absolute top-8 right-8" style={{ opacity }}>
+        <motion.div
+          className="w-20 h-20 border-r-2 border-t-2 border-white/30 rounded-tr-2xl"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+        />
+      </motion.div>
+
+      <motion.div className="absolute bottom-8 left-8" style={{ opacity }}>
+        <motion.div
+          className="w-20 h-20 border-l-2 border-b-2 border-white/30 rounded-bl-2xl"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+        />
+      </motion.div>
+
+      <motion.div className="absolute bottom-8 right-8" style={{ opacity }}>
+        <motion.div
+          className="w-20 h-20 border-r-2 border-b-2 border-white/30 rounded-br-2xl"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 4, repeat: Infinity, delay: 3 }}
+        />
+      </motion.div>
+    </>
+  );
+};
+
+const OverlayCopy = ({ subheading, heading }) => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [250, -250]);
+  const opacity = useTransform(scrollYProgress, [0.25, 0.5, 0.75], [0, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0.25, 0.5, 0.75], [0.8, 1, 0.8]);
+
+  const smoothY = useSpring(y, { stiffness: 100, damping: 30 });
+  const smoothScale = useSpring(scale, { stiffness: 100, damping: 30 });
+
+  return (
+    <motion.div
+      style={{
+        y: smoothY,
+        opacity,
+        scale: smoothScale,
+      }}
+      ref={targetRef}
+      className="absolute left-0 top-0 flex h-screen w-full flex-col items-center justify-center text-white"
+    >
+      <motion.div
+        className="w-24 h-1 bg-gradient-to-r from-transparent via-white to-transparent mb-8 rounded-full"
+        animate={{ scaleX: [0.5, 1, 0.5], opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 3, repeat: Infinity }}
+      />
+
+      <motion.div
+        className="flex items-center gap-3 mb-4"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <motion.span
+          className="text-2xl"
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        >
+          ✦
+        </motion.span>
+        <p className="text-center text-xl md:text-3xl font-light tracking-[0.3em] uppercase text-white/90">
+          {subheading}
+        </p>
+        <motion.span
+          className="text-2xl"
+          animate={{ rotate: [360, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        >
+          ✦
+        </motion.span>
+      </motion.div>
+
+      <div className="relative">
+        <motion.h2
+          className="text-center text-5xl md:text-8xl font-bold tracking-tight"
+          style={{
+            textShadow: "0 4px 30px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          {heading}
+        </motion.h2>
+
+        <motion.div
+          className="absolute -bottom-4 left-1/2 h-1 bg-white rounded-full"
+          style={{ x: "-50%" }}
+          initial={{ width: 0 }}
+          whileInView={{ width: "60%" }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        />
+        <motion.div
+          className="absolute -bottom-4 left-1/2 h-1 bg-white rounded-full blur-md"
+          style={{ x: "-50%" }}
+          initial={{ width: 0 }}
+          whileInView={{ width: "60%" }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        />
+      </div>
+    </motion.div>
+  );
+};
+
+// ==================== JAIMAX CONTENT SECTION ====================
+
+const JaimaxContent = () => {
+  return (
+    <div className="relative bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
+      {/* Background Elements */}
+      <BackgroundElements />
+
+      {/* Main Content */}
+      <div className="relative z-10">
+
+        {/* Introduction Section */}
+        <IntroductionSection />
+
+        {/* Features Grid */}
+        <FeaturesSection />
+
+        {/* Security Section */}
+        <SecuritySection />
+
+        {/* Ecosystem Section */}
+        <EcosystemSection />
+
+        {/* App section */}
+        <AppSection/>
+      </div>
+    </div>
+  );  
+};
+
+const BackgroundElements = () => {
+  return (
+    <>
+      {/* Gradient Orbs */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/3 left-1/3 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+
+      {/* Grid Pattern */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: "50px 50px",
+        }}
+      />
+    </>
+  );
+};
+
+const IntroductionSection = () => {
+  const words = ["Innovation", "Transparency", "Stability", "Growth"];
+  const [currentWord, setCurrentWord] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWord((prev) => (prev + 1) % words.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="relative py-24 px-4 md:px-8 bg-white overflow-hidden min-h-screen flex items-center">
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
+        <svg
+          className="relative block w-full h-16 md:h-24"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="fill-[#085056]"
+          />
+        </svg>
+      </div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03]" style={{
+          backgroundImage: 'radial-gradient(#14b8a6 1.5px, transparent 1.5px)',
+          backgroundSize: '30px 30px'
+        }} />
+        
+        {/* Gradient Blobs */}
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-20 right-1/4 w-96 h-96 rounded-full bg-teal-200/30 blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-cyan-200/30 blur-3xl"
+        />
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Side - Creative Visual */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-5"
+          >
+            <div className="relative max-w-sm mx-auto">
+              {/* Main Card Stack */}
+              <div className="relative">
+                {/* Back Card */}
+                <motion.div
+                  animate={{ rotate: [6, 8, 6] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="absolute inset-0 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-3xl transform rotate-6"
+                />
+                
+                {/* Middle Card */}
+                <motion.div
+                  animate={{ rotate: [3, 4, 3] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 0.2 }}
+                  className="absolute inset-0 bg-gradient-to-br from-teal-500 to-teal-600 rounded-3xl transform rotate-3"
+                />
+                
+                {/* Front Card */}
+                <motion.div
+                  whileHover={{ y: -10 }}
+                  className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl p-8 shadow-2xl"
+                >
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
+                        <span className="text-white font-bold text-lg">J</span>
+                      </div>
+                      <div>
+                        <p className="text-white font-bold">JAIMAX</p>
+                        <p className="text-gray-400 text-xs">Premium Crypto</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <motion.div
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="w-2 h-2 rounded-full bg-green-400"
+                      />
+                      <span className="text-green-400 text-xs font-medium">Live</span>
+                    </div>
+                  </div>
+
+                  {/* Coin Display */}
+                  <div className="relative flex justify-center py-8">
+                    {/* Glow */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <motion.div
+                        animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.2, 0.5] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                        className="w-32 h-32 rounded-full bg-teal-500/30 blur-2xl"
+                      />
+                    </div>
+                    
+                    {/* 3D Coin */}
+                    <motion.div
+                      animate={{ rotateY: [0, 360] }}
+                      transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                      style={{ transformStyle: "preserve-3d" }}
+                      className="relative"
+                    >
+                      <div className="w-28 h-28 rounded-full bg-gradient-to-br from-teal-400 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-teal-300 to-teal-500 flex items-center justify-center border-4 border-teal-200/30">
+                          <span className="text-white font-black text-3xl">JMX</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Price Section */}
+                  <div className="text-center mb-6">
+                    <p className="text-gray-400 text-sm mb-1">Current Price</p>
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-white text-3xl font-bold">₹0.50</span>
+                      <span className="px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold flex items-center gap-1">
+                        <FaArrowUp className="text-[10px]" />
+                        12.5%
+                      </span>
+                    </div>
+                  </div>
+
+
+
+                  {/* Decorative Elements */}
+                  <div className="absolute top-4 right-4 w-20 h-20 opacity-10">
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      <circle cx="50" cy="50" r="45" fill="none" stroke="white" strokeWidth="2" strokeDasharray="10 5" />
+                    </svg>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Floating Elements Around Card */}
+              <motion.div
+                animate={{ y: [0, -10, 0], rotate: [0, 10, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute -top-6 -right-6 w-14 h-14 rounded-2xl bg-white shadow-xl shadow-teal-100 flex items-center justify-center border border-teal-100"
+              >
+                <FaChartLine className="text-teal-500 text-xl" />
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 10, 0], rotate: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute -bottom-4 -left-4 w-12 h-12 rounded-xl bg-white shadow-xl shadow-teal-100 flex items-center justify-center border border-teal-100"
+              >
+                <FaShieldAlt className="text-teal-500 text-lg" />
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity }}
+                className="absolute top-1/2 -left-8 w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg flex items-center justify-center"
+              >
+                <FaRocket className="text-white text-sm" />
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+                className="absolute top-1/4 -right-4 w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-teal-500 shadow-lg flex items-center justify-center"
+              >
+                <FaGem className="text-white text-xs" />
+              </motion.div>
+
+              {/* India Badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 bg-white rounded-full shadow-xl shadow-teal-100 border border-teal-100 flex items-center gap-2"
+              >
+                <span className="text-2xl">🇮🇳</span>
+                <span className="text-gray-800 font-bold text-sm">Made in India</span>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Right Side - Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7"
+          >
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 mb-6"
+            >
+              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+              <span className="text-teal-700 text-sm font-semibold">
+                India's #1 Pre-Sale Crypto
+              </span>
+            </motion.div>
+
+            {/* Animated Heading */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Built for{" "}
+              <span className="relative inline-block">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentWord}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-gradient-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent"
+                  >
+                    {words[currentWord]}
+                  </motion.span>
+                </AnimatePresence>
+                <motion.div
+                  animate={{ scaleX: [0, 1, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full origin-left"
+                />
+              </span>
+            </h2>
+
+            {/* Main Content */}
+            <div className="space-y-6">
+              {/* First Paragraph */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="relative pl-6 border-l-4"
+                style={{ borderImage: "linear-gradient(to bottom, #14b8a6, #06b6d4) 1" }}
+              >
+                <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+                  In the evolving world of digital finance,{" "}
+                  <span className="font-bold text-gray-900">Jaimax Coin</span> has emerged as{" "}
+                  <span className="relative inline-block">
+                    <span className="relative z-10 font-bold text-teal-600">
+                      India's best pre-sale crypto coin
+                    </span>
+                    <span className="absolute bottom-0 left-0 w-full h-2 bg-teal-100 -z-0" />
+                  </span>
+                  , built for investors who value innovation, transparency, and long-term stability.
+                </p>
+              </motion.div>
+
+              {/* Second Paragraph */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="relative group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-10 blur-xl transition-all duration-500" />
+                <div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-6 border border-teal-100">
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    As India embraces{" "}
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white shadow-sm text-teal-600 font-semibold">
+                      <FaCube className="text-sm" /> blockchain technology
+                    </span>{" "}
+                    and{" "}
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white shadow-sm text-cyan-600 font-semibold">
+                      <FaGlobe className="text-sm" /> decentralized finance
+                    </span>
+                    , Jaimax is shaping the future of how people invest and grow wealth.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Third Paragraph */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6 }}
+                className="flex items-start gap-4 p-6 rounded-2xl bg-white border-2 border-teal-200 shadow-lg shadow-teal-100/50"
+              >
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center"
+                >
+                  <FaGem className="text-2xl text-white" />
+                </motion.div>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  More than just a crypto coin, Jaimax represents{" "}
+                  <span className="font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                    a new era of secure, accessible, and rewarding investments
+                  </span>{" "}
+                  for everyone.
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const FeaturesSection = () => {
+  const features = [
+    {
+      icon: FaHandshake,
+      title: "Trust",
+      description: "Built on transparency and backed by a reputable company",
+    },
+    {
+      icon: FaCubes,
+      title: "Technology", 
+      description: "Advanced blockchain infrastructure for secure transactions",
+    },
+    {
+      icon: FaChartLine,
+      title: "Opportunity",
+      description: "Early access to India's most promising crypto project",
+    },
+    {
+      icon: FaBolt,
+      title: "Fast Transactions",
+      description: "Lightning-fast processing with minimal fees",
+    },
+    {
+      icon: FaShieldAlt,
+      title: "Strong Security",
+      description: "Industry-leading encryption and protection",
+    },
+    {
+      icon: FaGlobe,
+      title: "Transparent Model",
+      description: "Simple and clear investment structure",
+    },
+  ];
+
+  return (
+    <section className="relative py-20 md:py-32 px-4 bg-[#085056] overflow-hidden">
+      {/* Underwater lighting effect */}
+      <div className="absolute inset-0 opacity-60">
+        <motion.div
+          animate={{ 
+            opacity: [0.5, 0.7, 0.5], 
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute w-full h-full"
+          style={{
+            background: "radial-gradient(circle at 30% 30%, rgba(0,240,255,0.2), transparent 70%)"
+          }}
+        />
+        <motion.div
+          animate={{ 
+            opacity: [0.3, 0.5, 0.3], 
+            scale: [1.2, 1, 1.2]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute w-full h-full"
+          style={{
+            background: "radial-gradient(circle at 70% 60%, rgba(0,240,255,0.15), transparent 60%)"
+          }}
+        />
+      </div>
+      
+      {/* Bubbles effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-white/30 backdrop-blur-sm border border-white/40"
+            initial={{
+              x: Math.random() * 100 + "%",
+              y: "100%",
+              width: Math.random() * 30 + 10,
+              height: Math.random() * 30 + 10,
+            }}
+            animate={{
+              y: "-10%",
+              x: `calc(${Math.random() * 20 - 10}% + ${Math.sin(Math.random() * Math.PI) * 50}px)`,
+            }}
+            transition={{
+              duration: Math.random() * 20 + 15,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 20,
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Ocean floor texture */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-[#06424a]/50">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <pattern id="ocean-floor" x="0" y="0" width="80" height="20" patternUnits="userSpaceOnUse">
+            <path d="M0,10 Q10,15 20,10 Q30,5 40,10 Q50,15 60,10 Q70,5 80,10" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#ocean-floor)" />
+        </svg>
+      </div>
+      
+      {/* Swimming fish silhouettes */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute opacity-10"
+          initial={{
+            x: i % 2 === 0 ? "-10%" : "110%",
+            y: 100 + (i * 100),
+            scale: 0.5 + Math.random() * 0.5,
+          }}
+          animate={{
+            x: i % 2 === 0 ? "110%" : "-10%",
+          }}
+          transition={{
+            duration: 20 + Math.random() * 10,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          <svg width="100" height="40" viewBox="0 0 100 40" fill="white">
+            <path d="M20,20 Q30,5 50,5 Q70,5 80,20 Q70,35 50,35 Q30,35 20,20 Z" />
+            <path d="M80,20 L95,10 L95,30 Z" />
+            <circle cx="30" cy="15" r="2" />
+          </svg>
+        </motion.div>
+      ))}
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Title Section */}
+        <div className="text-center mb-20">
+          <motion.div
+            initial={{ y: -50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-8"
+          >
+            <div className="inline-block relative">
+              <span className="w-3 h-3 rounded-full bg-white absolute -left-6 top-1/2 transform -translate-y-1/2"></span>
+              <span className="text-white/70 uppercase tracking-widest text-sm font-medium">Why Choose Jaimax</span>
+              <span className="w-3 h-3 rounded-full bg-white absolute -right-6 top-1/2 transform -translate-y-1/2"></span>
+            </div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <h2 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
+              <span>Dive into the </span>
+              <span className="relative inline-block">
+                Future
+                <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 200 12">
+                  <motion.path 
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 1 }}
+                    d="M0,6 C50,-10 150,20 200,6" 
+                    fill="none" 
+                    stroke="rgba(255,255,255,0.5)" 
+                    strokeWidth="2"
+                  />
+                </svg>
+              </span>
+            </h2>
+          </motion.div>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto"
+          >
+            Explore the depths of our innovative blockchain technology that's transforming the way India invests in cryptocurrency.
+          </motion.p>
+        </div>
+        
+        {/* Features Display - Hexagonal Layout */}
+        <div className="relative">
+          {/* Central logo */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 100 }}
+            className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-40 h-40 rounded-full bg-white/10 backdrop-blur-md items-center justify-center"
+          >
+            <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center">
+              <span className="text-white font-bold text-4xl">JMX</span>
+            </div>
+            
+            {/* Pulsing rings */}
+            <motion.div
+              animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute inset-0 rounded-full border-2 border-white/30"
+            />
+            <motion.div
+              animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+              className="absolute inset-0 rounded-full border-2 border-white/20"
+            />
+          </motion.div>
+          
+          {/* Mobile Central Logo */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 100 }}
+            className="lg:hidden flex mx-auto mb-12 w-32 h-32 rounded-full bg-white/10 backdrop-blur-md items-center justify-center"
+          >
+            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center">
+              <span className="text-white font-bold text-3xl">JMX</span>
+            </div>
+          </motion.div>
+
+          {/* Features Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="group relative"
+              >
+                <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl group-hover:bg-white/10 transition-all duration-500 opacity-80"></div>
+                
+                <div className="relative backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 h-full transform transition-all duration-500 group-hover:border-white/40 group-hover:bg-white/15 overflow-hidden">
+                  {/* Wave Animation Inside Card */}
+                  <div className="absolute inset-x-0 bottom-0 h-16 opacity-20">
+                    <motion.div
+                      animate={{ 
+                        x: [-100, 100],
+                        y: [0, 5, 0]
+                      }}
+                      transition={{
+                        x: { duration: 10, repeat: Infinity, repeatType: "mirror" },
+                        y: { duration: 5, repeat: Infinity, repeatType: "mirror" }
+                      }}
+                    >
+                      <svg width="300" height="50" viewBox="0 0 300 50" preserveAspectRatio="none">
+                        <path 
+                          d="M0,25 C50,10 100,40 150,25 C200,10 250,40 300,25 L300,50 L0,50 Z" 
+                          fill="white"
+                        />
+                      </svg>
+                    </motion.div>
+                  </div>
+                  
+                  <div className="relative z-10">
+                    {/* Icon with glow effect */}
+                    <div className="w-16 h-16 flex items-center justify-center relative mb-5">
+                      <div className="absolute inset-0 bg-white rounded-full opacity-20 blur-md group-hover:opacity-30 transition-opacity"></div>
+                      <div className="relative bg-[#06424a] rounded-full w-14 h-14 flex items-center justify-center border border-white/30 group-hover:border-white/50 transition-colors">
+                        <feature.icon className="text-white text-2xl" />
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <h3 className="text-white text-xl font-bold mb-3 group-hover:text-white/90">{feature.title}</h3>
+                    <p className="text-white/70 mb-4 group-hover:text-white/80 transition-colors">{feature.description}</p>
+                    
+                    {/* Bottom Reveal Animation */}
+                    <div className="flex items-center justify-between">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "70%" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
+                        className="h-0.5 bg-gradient-to-r from-white/80 to-white/20 rounded-full"
+                      />
+                      <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                        <motion.div
+                          whileHover={{ rotate: 180 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <FaArrowRight className="text-white text-xs" />
+                        </motion.div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Animated Light Reflection */}
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-45 rounded-2xl"
+                  animate={{ x: ["-100%", "100%"] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Seaweed/Coral Decoration */}
+        <div className="absolute -bottom-10 left-10 opacity-20">
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              animate={{ 
+                rotateZ: [0, 5, -5, 0],
+                scaleY: [1, 1.02, 0.98, 1]
+              }}
+              transition={{
+                duration: 3 + i,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute bottom-0"
+              style={{
+                left: `${i * 15}px`,
+                height: `${80 + Math.random() * 60}px`,
+                width: '10px',
+                background: 'linear-gradient(to top, white, transparent)',
+                borderRadius: '0 0 10px 10px',
+                transformOrigin: 'bottom'
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Coral Right Side */}
+        <div className="absolute -bottom-5 right-20 opacity-20">
+          <motion.div
+            animate={{ 
+              scaleY: [1, 1.05, 0.95, 1]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="relative"
+            style={{
+              height: '60px',
+              width: '80px',
+            }}
+          >
+            <svg viewBox="0 0 100 70" fill="white">
+              <path d="M10,70 C0,40 30,30 20,0 C40,20 50,10 60,0 C65,30 85,20 90,0 C95,30 100,40 90,70 Z" />
+            </svg>
+          </motion.div>
+        </div>
+        
+        {/* Call to Action */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.8 }}
+          className="mt-20 text-center"
+        >
+          <motion.button
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 0 40px rgba(255,255,255,0.3)"
+            }}
+            whileTap={{ scale: 0.98 }}
+            className="bg-white px-10 py-4 rounded-full text-[#085056] font-bold text-lg shadow-lg shadow-white/10 relative overflow-hidden group"
+          >
+            <motion.span
+              initial={{ y: 0, opacity: 1 }}
+              whileHover={{ y: -30, opacity: 0 }}
+              className="inline-block"
+            >
+              Explore Features
+            </motion.span>
+            <motion.span
+              initial={{ y: 30, opacity: 0 }}
+              whileHover={{ y: 0, opacity: 1 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              Dive Deeper <FaArrowRight className="ml-2" />
+            </motion.span>
+          </motion.button>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const SecuritySection = () => {
+  const securityFeatures = [
+    {
+      icon: FaLock,
+      title: "Advanced Encryption",
+      description: "Every transaction protected by blockchain encryption",
+    },
+    {
+      icon: FaShieldAlt,
+      title: "Full Transparency",
+      description: "Zero manipulation with complete transaction visibility",
+    },
+    {
+      icon: FaCheckCircle,
+      title: "Industry Standards",
+      description: "Following industry-leading safety and compliance protocols",
+    },
+  ];
+
+  return (
+    <section className="relative py-20 px-4 md:px-8 bg-white overflow-hidden">
+      {/* Top Wave */}
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
+        <svg
+          className="relative block w-full h-16 md:h-24"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="fill-[#085056]"
+          />
+        </svg>
+      </div>
+
+      {/* Bottom Wave */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180">
+        <svg
+          className="relative block w-full h-16 md:h-24"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="fill-[#085056]"
+          />
+        </svg>
+      </div>
+
+
+      {/* Floating Bubbles/Circles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-teal-100/50 blur-3xl" />
+        <div className="absolute top-40 right-20 w-48 h-48 rounded-full bg-teal-200/30 blur-3xl" />
+        <div className="absolute bottom-20 left-1/4 w-40 h-40 rounded-full bg-teal-100/40 blur-3xl" />
+        <div className="absolute bottom-40 right-1/3 w-24 h-24 rounded-full bg-teal-300/20 blur-2xl" />
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left - Security Visualization */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="relative w-full aspect-square max-w-md mx-auto">
+              {/* Outer Ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 rounded-full border-2 border-dashed border-teal-300"
+              />
+
+              {/* Middle Ring */}
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-8 rounded-full border-2 border-dashed border-teal-400"
+              />
+
+              {/* Inner Ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-16 rounded-full border-2 border-dashed border-teal-500"
+              />
+
+              {/* Center Icon */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-32 h-32 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shadow-2xl shadow-teal-500/40"
+                >
+                  <FaShieldAlt className="text-5xl text-white" />
+                </motion.div>
+              </div>
+
+              {/* Floating Icons */}
+              {[
+                { icon: FaLock, position: "top-0 left-1/2 -translate-x-1/2" },
+                { icon: FaCheckCircle, position: "bottom-0 left-1/2 -translate-x-1/2" },
+                { icon: FaGlobe, position: "left-0 top-1/2 -translate-y-1/2" },
+                { icon: FaCubes, position: "right-0 top-1/2 -translate-y-1/2" },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
+                  className={`absolute ${item.position} w-12 h-12 rounded-xl bg-white border-2 border-teal-200 flex items-center justify-center shadow-lg shadow-teal-100`}
+                >
+                  <item.icon className="text-xl text-teal-600" />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right - Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Security at the{" "}
+              <span className="bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent">
+                Heart
+              </span>
+            </h2>
+
+            <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+              Security remains at the heart of the Jaimax ecosystem. Investors can
+              buy, hold, and trade Jaimax confidently, knowing that the platform
+              follows industry-leading standards for safety and compliance.
+            </p>
+
+            <div className="space-y-6">
+              {securityFeatures.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-start gap-4 p-4 rounded-xl bg-white/80 backdrop-blur-sm border border-teal-100 hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-teal-200">
+                    <feature.icon className="text-xl text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-gray-900 font-semibold mb-1">{feature.title}</h4>
+                    <p className="text-gray-600 text-sm">{feature.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const EcosystemSection = () => {
+  const ecosystemItems = [
+    { label: "DeFi", icon: FaChartLine },
+    { label: "NFTs", icon: FaGem },
+    { label: "dApps", icon: FaCubes },
+    { label: "Education", icon: FaLightbulb },
+    { label: "Community", icon: FaUsers },
+    { label: "Innovation", icon: FaRocket },
+  ];
+
+  return (
+    <section className="py-24 px-4 md:px-8 bg-[#085056] overflow-hidden relative">
+
+
+      {/* Background Animation Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated Grid */}
+        <motion.div
+          initial={{ opacity: 0.05 }}
+          animate={{
+            opacity: [0.03, 0.05, 0.03],
+            backgroundPosition: ["0px 0px", "50px 50px"]
+          }}
+          transition={{
+            opacity: { duration: 5, repeat: Infinity },
+            backgroundPosition: { duration: 20, repeat: Infinity, ease: "linear" }
+          }}
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
+          }}
+        />
+
+        {/* Floating Particles */}
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{
+              x: Math.random() * 100 + "%",
+              y: Math.random() * 100 + "%",
+              scale: Math.random() * 0.5 + 0.5,
+              opacity: Math.random() * 0.3 + 0.1
+            }}
+            animate={{
+              y: ["-10%", "110%"],
+              rotate: [0, 360]
+            }}
+            transition={{
+              duration: Math.random() * 20 + 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="absolute w-2 h-2 rounded-full bg-white/30"
+          />
+        ))}
+
+        {/* Gradient Blobs */}
+        <motion.div
+          animate={{ 
+            scale: [1, 1.2, 1], 
+            opacity: [0.1, 0.2, 0.1],
+            x: [-50, 50, -50],
+            y: [-20, 20, -20]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-white/10 blur-3xl"
+        />
+        <motion.div
+          animate={{ 
+            scale: [1.1, 1, 1.1], 
+            opacity: [0.15, 0.25, 0.15],
+            x: [30, -30, 30],
+            y: [10, -10, 10]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-teal-200/10 blur-3xl"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="max-w-6xl mx-auto relative z-10 mt-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8"
+          >
+            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+            <span className="text-white text-sm font-medium tracking-wide">COMPLETE SOLUTION</span>
+          </motion.div>
+          
+          {/* Heading with Wavy Underline */}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 relative inline-block">
+            Complete Blockchain{" "}
+            <span className="relative inline-block">
+              <span className="text-teal-200">
+                Ecosystem
+              </span>
+              <motion.svg 
+                width="100%" 
+                height="10" 
+                viewBox="0 0 200 10" 
+                className="absolute -bottom-4 left-0"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.5 }}
+              >
+                <motion.path
+                  d="M0,5 Q40,0 80,5 T160,5 T240,5"
+                  fill="none"
+                  stroke="url(#ecosystemGradient)"
+                  strokeWidth="3"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                />
+                <defs>
+                  <linearGradient id="ecosystemGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#a7f3d0" />
+                  </linearGradient>
+                </defs>
+              </motion.svg>
+            </span>
+          </h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="text-teal-100/80 text-lg max-w-3xl mx-auto leading-relaxed"
+          >
+            Unlike most projects that focus only on trading, Jaimax is creating a
+            complete blockchain ecosystem where investors, developers, and learners
+            come together.
+          </motion.p>
+        </motion.div>
+
+        {/* Ecosystem Diagram with Connection Lines */}
+        <div className="relative mb-20">
+          {/* Central Hub */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
+            className="relative z-20 w-32 h-32 bg-white rounded-full mx-auto mb-16 flex items-center justify-center shadow-xl shadow-white/20"
+          >
+            <div className="text-[#085056] font-bold text-xl">JAIMAX</div>
+            {/* Pulsing ring animation */}
+            <motion.div
+              animate={{ scale: [1, 1.4, 1], opacity: [0.7, 0, 0.7] }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="absolute inset-0 rounded-full border-2 border-white/30"
+            />
+            <motion.div
+              animate={{ scale: [1, 1.7, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+              className="absolute inset-0 rounded-full border-2 border-white/20"
+            />
+          </motion.div>
+
+          {/* Connection lines with animated dashes - we'll create these with SVG */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <svg className="w-full h-full max-w-2xl max-h-64" viewBox="0 0 500 150">
+              {/* Lines from center to each item */}
+              {Array.from({ length: 6 }).map((_, i) => {
+                const angle = (i * 60) * (Math.PI / 180);
+                const radius = 90; // Adjust based on layout
+                const x = 250 + radius * Math.cos(angle);
+                const y = 75 + radius * Math.sin(angle);
+                
+                return (
+                  <motion.line
+                    key={i}
+                    x1="250" y1="75"
+                    x2={x} y2={y}
+                    stroke="url(#lineGradient)"
+                    strokeWidth="2"
+                    strokeDasharray="5,5"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    whileInView={{ pathLength: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 + (i * 0.1), duration: 1 }}
+                    className="animate-dash"
+                  />
+                );
+              })}
+              
+              <defs>
+                <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#ffffff" />
+                  <stop offset="100%" stopColor="#a7f3d0" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          {/* Ecosystem Items in a Circle */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 relative z-20">
+            {ecosystemItems.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.8, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 + (index * 0.1), type: "spring" }}
+                whileHover={{ y: -15, scale: 1.05 }}
+                className="relative group"
+              >
+                {/* Glow effect on hover */}
+                <motion.div
+                  className="absolute -inset-1 bg-white/40 rounded-2xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                
+                {/* Card container */}
+                <div className="relative bg-[#06424a] shadow-xl rounded-2xl p-6 text-center border border-white/10 group-hover:border-white/30 transition-all duration-300 h-full flex flex-col items-center backdrop-blur-md">
+                  {/* Icon container with background wave */}
+                  <div className="relative w-16 h-16 mb-4">
+                    {/* Background wave */}
+                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <motion.path
+                        d="M0,50 Q25,40 50,50 T100,50 V100 H0 Z"
+                        fill="url(#iconGrad)"
+                        animate={{
+                          d: [
+                            "M0,50 Q25,40 50,50 T100,50 V100 H0 Z",
+                            "M0,50 Q25,60 50,50 T100,50 V100 H0 Z",
+                            "M0,50 Q25,40 50,50 T100,50 V100 H0 Z"
+                          ]
+                        }}
+                        transition={{ duration: 5, repeat: Infinity }}
+                      />
+                      <defs>
+                        <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#a7f3d0" />
+                          <stop offset="100%" stopColor="#ffffff" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    
+                    {/* Icon */}
+                    <motion.div
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                      className="relative z-10 w-16 h-16 rounded-full bg-white flex items-center justify-center"
+                    >
+                      <item.icon className="text-2xl text-[#085056]" />
+                    </motion.div>
+                  </div>
+                  
+                  {/* Label */}
+                  <span className="text-white font-semibold mb-2">{item.label}</span>
+                  
+                  {/* Animated underline */}
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "60%" }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 + (index * 0.1) }}
+                    className="h-0.5 bg-white/60 mx-auto rounded-full mt-auto"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Content */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="bg-white/10 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-10 mt-10 relative overflow-hidden"
+        >
+          {/* Background pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <pattern id="ecosystem-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M0 20 L40 20 M20 0 L20 40" stroke="#ffffff" strokeWidth="0.5" fill="none" />
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#ecosystem-pattern)" />
+            </svg>
+          </div>
+          
+          <p className="text-white/90 text-lg max-w-3xl mx-auto leading-relaxed relative z-10 text-center">
+            The Jaimax Coin is built to handle{" "}
+            <motion.span 
+              className="relative inline-block text-teal-200 font-semibold px-1"
+              whileHover={{ scale: 1.05 }}
+            >
+              real-world utility
+              <motion.div 
+                className="absolute bottom-0 left-0 w-full h-0.5 bg-teal-200/30"
+                initial={{ width: 0 }}
+                whileInView={{ width: "100%" }}
+                viewport={{ once: true }}
+              />
+            </motion.span>{" "}
+            — from DeFi and NFTs to decentralized applications — ensuring that each
+            coin holds{" "}
+            <motion.span 
+              className="relative inline-block text-teal-200 font-semibold px-1"
+              whileHover={{ scale: 1.05 }}
+            >
+              long-term value
+              <motion.div 
+                className="absolute bottom-0 left-0 w-full h-0.5 bg-teal-200/30" 
+                initial={{ width: 0 }}
+                whileInView={{ width: "100%" }}
+                viewport={{ once: true }}
+              />
+            </motion.span>{" "}
+            beyond speculation.
+          </p>
+          
+          {/* Call to action button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8 }}
+            className="mt-10 text-center"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white text-[#085056] font-bold py-3 px-8 rounded-xl shadow-lg shadow-black/20 relative overflow-hidden group"
+            >
+              {/* Shine effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-200/30 to-transparent -skew-x-45"
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+              />
+              <span className="relative z-10 flex items-center gap-2">
+                <span>Explore Ecosystem</span>
+                <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform" />
+              </span>
+            </motion.button>
+          </motion.div>
+        </motion.div>
+      </div>
+      
+      {/* Custom animations */}
+      <style jsx>{`
+        @keyframes dash {
+          to {
+            stroke-dashoffset: 20;
+          }
+        }
+        .animate-dash {
+          animation: dash 20s linear infinite;
+        }
+      `}</style>
+    </section>
+  );
+};
+const AppSection = () => {
+  const appFeatures = [
+    { 
+      icon: FaMobileAlt, 
+      title: "Real-time Trading", 
+      description: "Monitor prices and execute trades from anywhere, anytime" 
+    },
+    { 
+      icon: FaBell, 
+      title: "Price Alerts", 
+      description: "Set custom alerts for price movements and market trends" 
+    },
+    { 
+      icon: FaChartArea, 
+      title: "Live Analytics", 
+      description: "Advanced charts and technical indicators at your fingertips" 
+    },
+    { 
+      icon: FaShieldAlt, 
+      title: "Secure Wallet", 
+      description: "Industry-leading security for your digital assets" 
+    }
+  ];
+
+  return (
+    <section className="py-24 px-4 md:px-4 bg-[#085056] overflow-hidden relative">
+
+
+      {/* Floating Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{
+              x: Math.random() * 100 + "%",
+              y: Math.random() * 100 + "%",
+              scale: Math.random() * 0.4 + 0.2,
+              opacity: Math.random() * 0.3 + 0.1
+            }}
+            animate={{
+              y: ["-20%", "120%"],
+              x: [
+                `${parseFloat(Math.random() * 10 - 5 + i * 5)}%`,
+                `${parseFloat(Math.random() * 10 - 5 + i * 5)}%`
+              ],
+              rotate: [0, 360]
+            }}
+            transition={{
+              duration: Math.random() * 10 + 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="absolute w-3 h-3 rounded-full bg-white/20"
+          />
+        ))}
+
+        {/* Gradient Blobs */}
+        <motion.div
+          animate={{ 
+            scale: [1, 1.2, 1], 
+            opacity: [0.1, 0.2, 0.1],
+            x: [-50, 50, -50],
+            y: [-20, 20, -20]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-teal-300/10 blur-3xl"
+        />
+        <motion.div
+          animate={{ 
+            scale: [1.2, 1, 1.2], 
+            opacity: [0.15, 0.25, 0.15],
+            x: [30, -30, 30],
+            y: [10, -10, 10]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-teal-200/10 blur-3xl"
+        />
+      </div>
+
+      {/* Content Container */}
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content - App Info */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8"
+            >
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              <span className="text-white text-sm font-medium tracking-wide">MOBILE ACCESS</span>
+            </motion.div>
+            
+            {/* Title */}
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+              Jaimax in 
+              <span className="relative ml-2">
+                <span className="text-teal-200">Your Pocket</span>
+                <motion.svg 
+                  width="100%" 
+                  height="10" 
+                  viewBox="0 0 200 10" 
+                  className="absolute -bottom-3 left-0"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1 }}
+                >
+                  <motion.path
+                    d="M0,5 Q40,0 80,5 T160,5 T240,5"
+                    fill="none"
+                    stroke="url(#pocketGradient)"
+                    strokeWidth="3"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                  />
+                  <defs>
+                    <linearGradient id="pocketGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#ffffff" />
+                      <stop offset="100%" stopColor="#a7f3d0" />
+                    </linearGradient>
+                  </defs>
+                </motion.svg>
+              </span>
+            </h2>
+            
+            <p className="text-teal-100/80 text-lg mb-8 leading-relaxed">
+              Access the complete Jaimax ecosystem on-the-go with our powerful and secure mobile app. Trade, monitor, and manage your crypto investments from anywhere in the world.
+            </p>
+
+            {/* App Store Buttons */}
+            <div className="flex flex-wrap gap-4 mb-12">
+              {/* Google Play - Available */}
+              <motion.a 
+                href="#download-android"
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center gap-3 bg-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <FaGooglePlay className="text-[#085056] text-2xl" />
+                <div className="flex flex-col">
+                  <span className="text-xs text-gray-600">GET IT ON</span>
+                  <span className="text-[#085056] font-bold">Google Play</span>
+                </div>
+              </motion.a>
+              
+              {/* App Store - Coming Soon */}
+              <motion.div 
+                whileHover={{ scale: 1.03 }}
+                className="flex items-center gap-3 bg-white/20 border border-white/30 backdrop-blur-sm px-6 py-3 rounded-xl relative overflow-hidden group"
+              >
+                <FaApple className="text-white text-2xl" />
+                <div className="flex flex-col">
+                  <span className="text-xs text-teal-100">DOWNLOAD ON THE</span>
+                  <span className="text-white font-bold">App Store</span>
+                </div>
+                {/* Coming Soon Badge */}
+                <div className="absolute right-0 top-0 bg-white text-[#085056] text-xs font-bold px-3 py-1 rounded-bl-lg">
+                  Coming Soon
+                </div>
+              </motion.div>
+            </div>
+
+          </motion.div>
+          
+          {/* Right Content - Phone Mockups */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="relative h-[600px] max-w-[300px] mx-auto">
+              {/* Background Elements */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  className="w-64 h-64 rounded-full border-2 border-dashed border-white/30 absolute"
+                />
+                
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="w-40 h-40 rounded-full bg-white/5 blur-lg absolute"
+                />
+              </div>
+              
+              {/* Main Phone Mockup */}
+              <motion.div
+                animate={{ y: [-10, 10, -10] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="relative z-20 bg-gray-900 w-[280px] h-[580px] rounded-[3rem] shadow-2xl border-8 border-gray-800 mx-auto overflow-hidden"
+              >
+                {/* Status Bar */}
+                <div className="absolute top-0 inset-x-0 h-6 bg-black rounded-t-3xl flex items-center justify-center">
+                  <div className="w-20 h-4 rounded-full bg-black border border-gray-800" />
+                </div>
+                
+                {/* App Screenshot */}
+                <div className="absolute top-6 bottom-0 inset-x-0 bg-[#085056] overflow-hidden">
+                  {/* App Header */}
+                  <div className="pt-4 px-4 flex items-center justify-between">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                      <span className="text-[#085056] font-bold">J</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                      <span className="text-white text-xs">Live</span>
+                    </div>
+                  </div>
+                  
+                  {/* App Content */}
+                  <div className="p-4">
+                    <div className="bg-[#06424a] rounded-xl p-3 mb-4">
+                      <div className="text-white text-xs mb-1">Current Balance</div>
+                      <div className="text-white text-2xl font-bold mb-1">₹75,240.50</div>
+                      <div className="flex items-center gap-1 text-teal-200 text-xs">
+                        <FaArrowUp className="text-[10px]" />
+                        <span>18.24% this month</span>
+                      </div>
+                    </div>
+                    
+                    {/* Chart Mockup */}
+                    <div className="bg-[#06424a] rounded-xl p-3 h-40 mb-4 relative overflow-hidden">
+                      <div className="text-white text-xs mb-2">JMX/INR</div>
+                      <svg className="w-full h-24" viewBox="0 0 200 100">
+                        <defs>
+                          <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
+                            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                          </linearGradient>
+                        </defs>
+                        <motion.path
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ duration: 2 }}
+                          d="M0,80 C20,70 40,90 60,60 C80,30 100,50 120,40 C140,30 160,45 180,20 C190,10 200,5"
+                          fill="none"
+                          stroke="white"
+                          strokeWidth="2"
+                        />
+                        <motion.path
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 0.3 }}
+                          transition={{ duration: 1, delay: 1 }}
+                          d="M0,80 C20,70 40,90 60,60 C80,30 100,50 120,40 C140,30 160,45 180,20 C190,10 200,5 L200,100 L0,100 Z"
+                          fill="url(#chartGradient)"
+                        />
+                      </svg>
+                      <div className="flex justify-between text-xs text-white/60">
+                        <span>1H</span>
+                        <span>1D</span>
+                        <span>1W</span>
+                        <span className="text-white">1M</span>
+                        <span>1Y</span>
+                      </div>
+                    </div>
+                    
+                    {/* Actions */}
+                    <div className="flex gap-3 mb-4">
+                      <div className="flex-1 bg-white rounded-xl py-2 flex items-center justify-center gap-1 text-[#085056] font-semibold">
+                        <FaArrowDown className="text-xs" />
+                        <span>Buy</span>
+                      </div>
+                      <div className="flex-1 bg-[#06424a] rounded-xl py-2 flex items-center justify-center gap-1 text-white font-semibold">
+                        <FaArrowUp className="text-xs" />
+                        <span>Sell</span>
+                      </div>
+                    </div>
+                    
+                    {/* Portfolio Items */}
+                    <div className="space-y-3">
+                      <div className="bg-[#06424a] rounded-xl p-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                            <span className="text-[#085056] font-bold">J</span>
+                          </div>
+                          <div>
+                            <div className="text-white text-sm">Jaimax</div>
+                            <div className="text-teal-200/80 text-xs">JMX</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-white text-sm">₹0.50</div>
+                          <div className="text-teal-200 text-xs">+12.5%</div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-[#06424a]/50 rounded-xl p-3 flex items-center justify-between opacity-60">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                            <span className="text-white text-xs">BTC</span>
+                          </div>
+                          <div>
+                            <div className="text-white text-sm">Bitcoin</div>
+                            <div className="text-white/60 text-xs">BTC</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-white text-sm">₹49,30,150</div>
+                          <div className="text-red-300 text-xs">-2.1%</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Bottom Pill/Home Button */}
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-gray-700 rounded-full" />
+              </motion.div>
+              
+              {/* Second Phone (Back) */}
+              <motion.div
+                animate={{ y: [10, -10, 10], rotate: [5, 5, 5] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute left-0 top-10 z-10 bg-gray-900 w-[280px] h-[580px] rounded-[3rem] shadow-2xl border-8 border-gray-800 overflow-hidden opacity-20"
+              >
+                {/* Empty screen for depth effect */}
+                <div className="absolute inset-0 bg-[#085056]/80" />
+              </motion.div>
+            </div>
+            
+            {/* Download QR Code */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8, type: "spring" }}
+              className="absolute bottom-0 -right-10 bg-white rounded-2xl p-4 shadow-xl rotate-3"
+            >
+              <div className="w-24 h-24 bg-[#085056]/10 rounded-xl flex items-center justify-center">
+                {/* Mock QR Code */}
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                  <rect x="10" y="10" width="30" height="30" fill="#085056" rx="5" />
+                  <rect x="60" y="10" width="30" height="30" fill="#085056" rx="5" />
+                  <rect x="10" y="60" width="30" height="30" fill="#085056" rx="5" />
+                  <rect x="50" y="50" width="40" height="40" fill="#085056" rx="5" />
+                  <rect x="20" y="20" width="10" height="10" fill="white" />
+                  <rect x="70" y="20" width="10" height="10" fill="white" />
+                  <rect x="20" y="70" width="10" height="10" fill="white" />
+                  <rect x="65" y="65" width="10" height="10" fill="white" />
+                </svg>
+              </div>
+              <div className="text-center mt-2">
+                <div className="text-xs text-gray-600">Scan to</div>
+                <div className="text-[#085056] text-sm font-semibold">Download</div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+      </div>
+
+    </section>
+  );
+};
 
 const JaimaxLanding = () => {
   const [openFaq, setOpenFaq] = useState(null);
@@ -3591,10 +5255,17 @@ useEffect(() => {
           backgroundAttachment: 'fixed',
         }}>
 
-        <SecuritySection />
+        <SecuritySec />
       </div>
       <PhasesWheelSection />
       
+      <TextParallaxContent
+        imgUrl="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop"
+        subheading="Innovation"
+        heading="The Future is Here"
+      >
+        <JaimaxContent />
+      </TextParallaxContent>
       <section className="py-2  relative overflow-hidden">
         <div className="relative z-10 py-1 md:py-20">
           <div className="container max-w-7xl mx-auto px-4">
@@ -3810,17 +5481,11 @@ useEffect(() => {
           </div>
         </div>
       </section>
-      <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop"
-        subheading="Innovation"
-        heading="The Future is Here"
-      >
-      </TextParallaxContent>
       <BentoGallery />
        <ReviewsSection />
        <HorizontalRoadmap/>
       <JaimaxFAQ />
-      <ContactForm />
+      {/* <ContactForm /> */}
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
