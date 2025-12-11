@@ -9,9 +9,14 @@ import {
   ChevronDown,
   Globe,
   Shield,
+  Circle ,
+  Plus,
+  Minus,
   Star,
   CheckCircle,
   Mail,
+  Trophy ,
+  Crown ,
   Phone,
   MapPin,
   ArrowRight,
@@ -36,8 +41,15 @@ import {
   FileText,
   Flame,
   Building,
+  ChevronLeft ,
+  ChevronRight ,
   CreditCard,
+  Calendar ,
   HelpCircle,
+  MessageCircle ,
+  Send ,
+  X,
+  IndianRupee,
 } from "lucide-react";
 import {
   FaShieldAlt,
@@ -58,14 +70,17 @@ import {
   FaArrowUp ,
   FaMobileAlt ,
   FaBell ,
+  FaStar ,
   FaChartArea ,
   FaGooglePlay ,
   FaApple ,
-  FaArrowDown 
+  FaArrowDown ,
+  FaCoins ,
+  FaLongArrowAltRight ,
 } from "react-icons/fa";
 import { motion, useScroll, useTransform, useInView,useSpring,AnimatePresence  } from "framer-motion";
-import homeBgDesktop from "../../assets/Images/HomeDesktop.webp";
-import homeBgMobile from "../../assets/Images/HomeMobile.webp";
+import homeBgDesktop from "../../assets/websitepg.jpg";
+import homeBgMobile from "../../assets/mobilepg.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -73,6 +88,11 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Observer } from "gsap/Observer";
 import { SplitText } from "gsap/SplitText";
 import { Flip } from "gsap/Flip";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useSubmitEnquiryMutation } from "./HomePageApiSlice";
+
 import {
   Navigation,
   Pagination,
@@ -97,8 +117,7 @@ import shekar from "../../assets/Shekar.jpg";
 import anjanelu from "../../assets/B.veeranjaneyulu.jpg";
 import Ratnam from "../../assets/Ratnam.jpg";
 import pramod from "../../assets/pramod.jpg";
-// import ContactForm from "../components/Contact";
-// Register GSAP plugins
+import app from '../../assets/app.jpg'
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer, SplitText, Flip);
 
 const services = [
@@ -296,17 +315,17 @@ const IMG_PADDING = 12;
 const phases = [
   {
     status: "Live",
-    phaseNo: "Phase 1",
+    phaseNo: "1",
     tokens: "10 Billion Tokens",
     price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
     button: "Buy Now",
-    icon: <Rocket className="w-8 h-8" />,
+    icon: <TrendingUp className="w-8 h-8" />,
     color: "#10b981",
     progress: 45,
   },
   {
     status: "Upcoming",
-    phaseNo: "Phase 2",
+    phaseNo: "2",
     tokens: "20 Billion Tokens",
     price: "Price INR 0.05 - 0.50 Paisa (0.00061-0.0061 USD)",
     button: "Coming Soon",
@@ -316,567 +335,870 @@ const phases = [
   },
   {
     status: "Upcoming",
-    phaseNo: "Phase 3",
+    phaseNo: "3",
     tokens: "25 Billion Tokens",
     price: "Price INR 0.60 - 1.53 Paisa (0.0071-0.018 USD)",
     button: "Coming Soon",
-    icon: <Zap className="w-8 h-8" />,
+    icon: <TrendingUp className="w-8 h-8" />,
     color: "#8b5cf6",
     progress: 0,
   },
   {
     status: "Upcoming",
-    phaseNo: "Phase 4",
+    phaseNo: "4",
     tokens: "30 Billion Tokens",
     price: "Price INR 1.60 - 3.00 Paisa (0.019-0.036 USD)",
     button: "Coming Soon",
-    icon: <Coins className="w-8 h-8" />,
+    icon: <TrendingUp className="w-8 h-8" />,
     color: "#f59e0b",
     progress: 0,
   },
   {
     status: "Upcoming",
-    phaseNo: "Phase 5",
+    phaseNo: "5",
     tokens: "25 Billion Tokens",
     price: "Price INR 3.15 - 4.10 Paisa (0.037-0.049 USD)",
     button: "Coming Soon",
-    icon: <DollarSign className="w-8 h-8" />,
+    icon: <TrendingUp className="w-8 h-8" />,
     color: "#ef4444",
     progress: 0,
   },
 ];
 
 const JaimaxFAQ = () => {
-  const [openFaq, setOpenFaq] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const faqRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (faqRef.current) {
-      observer.observe(faqRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const faqs = [
     {
-      question: "What is Jaimax?",
-      answer:
-        "Jaimax is a digital ecosystem built on blockchain to provide secure, fast, and transparent financial transactions through its own cryptocurrency, JMC Coin.",
+      question: "What is Jaimax Coin?",
+      answer: "Jaimax Coin is a secure and innovative cryptocurrency that delivers fast, transparent, and low-cost blockchain-based transactions. Designed for both daily use and long-term crypto investment, Jaimax empowers users to take control of their financial future.",
       icon: <Coins className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
+      gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "Is it legal to invest in Jaimax Tokens in India?",
-      answer:
-        "Yes. Investing in cryptocurrencies like Jaimax Tokens is legal in India. However, such investments are taxable under the Finance Act, 2022. A 30% tax applies on profits, and a 1% TDS is deducted per transaction.",
-      icon: <Shield className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
-    },
-    {
-      question: "How can you say Jaimax is not a scam company?",
-      answer:
-        "Jaimax operates transparently with verified registration, a clear whitepaper, and funds securely held in regulated bank accounts. It follows compliance standards and ensures investor protection.",
-      icon: <FileText className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
-    },
-    {
-      question: "Are the funds raised through the ICO locked in a bank?",
-      answer:
-        "Yes, the funds are securely locked in regulated bank accounts to prevent misuse. The lock ensures that money is released only after project milestones are met.",
-      icon: <Lock className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
-    },
-    {
-      question: "What happens to unsold JMC tokens after presale?",
-      answer:
-        "Unsold JMC tokens are managed as per Jaimax's tokenomics policy. Some may be burned to reduce supply and maintain value stability, while others may be reallocated for future ecosystem needs.",
-      icon: <Flame className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
-    },
-    {
-      question: "What makes Jaimax unique from other coins?",
-      answer:
-        "Unlike speculative coins, Jaimax is linked to real business projects — including Blockchain Technology, Social Media Application, J-payment gateway, DApps, NFT Platform and De-Finance.",
+      question: "How is Jaimax Coin different from other cryptocurrencies?",
+      answer: "Jaimax Coin is more than just a digital asset. It offers users access to our exclusive Jaimax App, a built-in crypto wallet, and a powerful referral-based ecosystem. We focus on real-world usability, scalability, and building a strong crypto community in India and worldwide.",
       icon: <Sparkles className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
+      gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "What is the main goal of Jaimax?",
-      answer:
-        "To bridge traditional finance and blockchain innovation by creating a secure, decentralized, and user-friendly digital finance system.",
+      question: "Is Jaimax Coin safe to use?",
+      answer: "Yes. Jaimax Coin is built on a decentralized blockchain using strong cryptographic security protocols to ensure each transaction is transparent and tamper-proof. Our Jaimax Wallet inside the app adds another layer of protection for storing and managing your crypto assets.",
+      icon: <Shield className="w-5 h-5" />,
+      gradient: "from-green-500 to-teal-600"
+    },
+    {
+      question: "Where can I store my Jaimax Coins?",
+      answer: "You can store your Jaimax Coins securely in the official Jaimax Wallet, available in the Jaimax App. Our wallet is easy to use, supports fast transfers, and gives you full control over your digital assets with complete privacy and security.",
+      icon: <Wallet className="w-5 h-5" />,
+      gradient: "from-green-500 to-teal-600"
+    },
+    {
+      question: "How can I access Jaimax Coin?",
+      answer: "You can access Jaimax Coin directly through the Jaimax App, available for download on Android and iOS. From here, you can create a wallet, invest in Jaimax, track your balance, and manage referrals—all in one place.",
       icon: <TrendingUp className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
+      gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "On which blockchain is Jaimax built?",
-      answer:
-        "Jaimax is built on the Binance Smart Chain (BSC-20) — known for its speed, scalability, and low transaction fees.",
-      icon: <Building className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
-    },
-    {
-      question: "What is the price range of JMC in ICO?",
-      answer: "The ICO price ranges from ₹0.01 to ₹4.10 across five phases.",
+      question: "What can I do with Jaimax Coin?",
+      answer: "Jaimax Coin can be used for fast and secure digital transactions, stored safely in your Jaimax Wallet, and managed directly through the Jaimax App. As the Jaimax ecosystem grows, it will be integrated into more platforms and services, offering even greater utility and real-world use for crypto enthusiasts.",
       icon: <DollarSign className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
+      gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "How can investors buy Jaimax Coins?",
-      answer:
-        "Investors can buy using USDT, USDC, XRP, TRX, ADA, or INR (via UPI, PhonePe, Google Pay).",
-      icon: <CreditCard className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
-    },
-    {
-      question: "Will Jaimax be listed on global exchanges?",
-      answer:
-        "Yes, plans include listing on PancakeSwap, Uniswap, and major exchanges during later ICO phases.",
+      question: "Can I use Jaimax Coin for real-world transactions?",
+      answer: "Yes, Jaimax is working on expanding real-world utility through merchant partnerships, making it easier to use Jaimax for payments, services, and online transactions. We aim to make Jaimax a widely accepted digital currency for everyday use.",
       icon: <Globe className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
+      gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "Can JMC be used for cross-border payments?",
-      answer:
-        "Yes, Jaimax enables global, borderless transfers without needing banks or currency conversion.",
-      icon: <Globe className="w-5 h-5" />,
-      color: "from-teal-400 to-teal-500",
-      glow: "shadow-teal-500/50",
+      question: "Is Jaimax listed on any crypto exchanges?",
+      answer: "Jaimax Coin is currently available exclusively through our official Jaimax platform and app. We're planning future listings on popular crypto exchanges, which will enhance liquidity and accessibility. Stay tuned for updates on exchange integrations.",
+      icon: <TrendingUp className="w-5 h-5" />,
+      gradient: "from-green-500 to-teal-600"
+    },
+    {
+      question: "What blockchain is Jaimax Coin built on?",
+      answer: "Jaimax Coin is developed on a reliable and high-performance blockchain network that supports fast transactions, low gas fees, and smart contract functionality. Our tech ensures that your crypto experience is seamless and future-ready.",
+      icon: <Shield className="w-5 h-5" />,
+      gradient: "from-green-500 to-teal-600"
+    },
+    {
+      question: "How can I stay updated with Jaimax Coin news?",
+      answer: "Stay connected by following our official Jaimax social media channels, joining our community, and using the Jaimax App for real-time updates. You'll receive notifications about new features, roadmap progress, and exciting developments in the Jaimax ecosystem.",
+      icon: <Bell className="w-5 h-5" />,
+      gradient: "from-green-500 to-teal-600"
     },
   ];
 
-  const leftColumnFaqs = faqs.slice(0, 6);
-  const rightColumnFaqs = faqs.slice(6, 12);
-
-  const renderFaqItem = (faq, index, columnOffset = 0) => {
-    const actualIndex = index + columnOffset;
-    const isOpen = openFaq === actualIndex;
-    const isHovered = hoveredIndex === actualIndex;
-    const delay = index * 100;
-
-    return (
-      <div
-        key={actualIndex}
-        className={`
-          relative group cursor-pointer
-          transform transition-all duration-500 ease-out
-          ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          }
-        `}
-        style={{
-          transitionDelay: `${delay}ms`,
-          perspective: "1000px",
-        }}
-        onMouseEnter={() => setHoveredIndex(actualIndex)}
-        onMouseLeave={() => setHoveredIndex(null)}
-      >
-        {/* Animated Background Glow */}
-        <div
-          className={`
-            absolute -inset-1 bg-gradient-to-r ${faq.color} rounded-2xl blur-lg
-            transition-all duration-500 opacity-0 group-hover:opacity-30
-            ${isOpen ? "opacity-40" : ""}
-          `}
-        />
-
-        {/* Floating Particles */}
-        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-          {isHovered && (
-            <>
-              <div className="absolute top-2 left-4 w-1 h-1 bg-white rounded-full animate-float-1" />
-              <div className="absolute top-6 right-8 w-1.5 h-1.5 bg-white/70 rounded-full animate-float-2" />
-              <div className="absolute bottom-4 left-12 w-1 h-1 bg-white/50 rounded-full animate-float-3" />
-              <div className="absolute bottom-8 right-4 w-0.5 h-0.5 bg-white rounded-full animate-float-1" />
-            </>
-          )}
-        </div>
-
-        {/* Main Card */}
-        <div
-          className={`
-            relative bg-gradient-to-br from-white/10 to-white/5 
-            backdrop-blur-xl rounded-2xl border overflow-hidden
-            transition-all duration-500 ease-out
-            ${
-              isOpen
-                ? "border-white/40 shadow-2xl " + faq.glow
-                : "border-white/20 hover:border-white/40"
-            }
-            ${isHovered && !isOpen ? "scale-[1.02] shadow-xl" : "scale-100"}
-          `}
-        >
-          {/* Question Button */}
-          <button
-            onClick={() => setOpenFaq(isOpen ? null : actualIndex)}
-            className="relative w-full p-5 sm:p-6 flex items-center justify-between text-left transition-colors duration-300"
-          >
-            <div className="flex items-center gap-4 flex-1 min-w-0">
-              {/* Animated Icon Container */}
-              <div
-                className={`
-                  relative p-3 rounded-xl bg-gradient-to-br ${faq.color} 
-                  flex-shrink-0 text-white shadow-lg ${faq.glow}
-                  transform transition-all duration-500
-                  ${isOpen ? "rotate-0 scale-110" : "rotate-0 scale-100"}
-                  ${isHovered ? "scale-110 rotate-3" : ""}
-                `}
-              >
-                {/* Icon Pulse Ring */}
-                <div
-                  className={`
-                    absolute inset-0 rounded-xl bg-gradient-to-br ${faq.color}
-                    animate-ping opacity-30
-                    ${isOpen || isHovered ? "block" : "hidden"}
-                  `}
-                />
-                <div className="relative z-10">{faq.icon}</div>
-              </div>
-
-              {/* Question Text */}
-              <span
-                className={`
-                  font-semibold text-sm sm:text-base leading-tight
-                  transition-all duration-300
-                  ${
-                    isOpen
-                      ? "text-white"
-                      : "text-white/90 group-hover:text-white"
-                  }
-                `}
-              >
-                {faq.question}
-              </span>
-            </div>
-
-            {/* Animated Chevron */}
-            <div
-              className={`
-                relative w-10 h-10 rounded-full flex items-center justify-center
-                transition-all duration-500 flex-shrink-0 ml-3
-                ${
-                  isOpen
-                    ? `bg-gradient-to-br ${faq.color} shadow-lg ${faq.glow}`
-                    : "bg-white/10 group-hover:bg-white/20"
-                }
-              `}
-            >
-              <ChevronDown
-                className={`
-                  w-5 h-5 text-white transition-all duration-500
-                  ${isOpen ? "rotate-180" : "rotate-0"}
-                `}
-              />
-            </div>
-          </button>
-
-          {/* Answer Section */}
-          <div
-            className={`
-              grid transition-all duration-500 ease-out
-              ${
-                isOpen
-                  ? "grid-rows-[1fr] opacity-100"
-                  : "grid-rows-[0fr] opacity-0"
-              }
-            `}
-          >
-            <div className="overflow-hidden">
-              <div className="px-5 sm:px-6 pb-5 sm:pb-6">
-                {/* Answer Card */}
-                <div
-                  className={`
-                    relative p-4 rounded-xl bg-gradient-to-br from-white/10 to-white/5
-                    border border-white/10
-                    transform transition-all duration-500 delay-100
-                    ${
-                      isOpen
-                        ? "translate-y-0 opacity-100"
-                        : "-translate-y-4 opacity-0"
-                    }
-                  `}
-                >
-                  {/* Accent Line */}
-                  <div
-                    className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-gradient-to-b ${faq.color}`}
-                  />
-
-                  <p className="text-gray-300 leading-relaxed text-sm pl-3">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Card Number Badge */}
-      </div>
-    );
+  const toggleFAQ = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
-    <section
-      ref={faqRef}
-      className="relative min-h-screen px-4 py-20 overflow-hidden bg-gradient-to-b from-[#0a5a61] via-[#085056] to-[#064248]"
-    >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow animation-delay-4000" />
-
-        {/* Floating Grid Pattern */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: "50px 50px",
-            animation: "gridMove 20s linear infinite",
-          }}
-        />
-
-        {/* Floating Particles */}
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white/30 rounded-full animate-float-random"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 10}s`,
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-[#085056]">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle at 25% 25%, #4ecdc4 2px, transparent 2px), radial-gradient(circle at 75% 75%, #4ecdc4 1px, transparent 1px)',
+          backgroundSize: '80px 80px, 40px 40px'
+        }}></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div
-          className={`
-            text-center mb-16 transform transition-all duration-1000
-            ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "-translate-y-10 opacity-0"
-            }
-          `}
-        >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
-            <HelpCircle className="w-4 h-4 text-emerald-400" />
-            <span className="text-sm text-white/80">Got Questions?</span>
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-4 sm:py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto">
+          {/* Hero Header */}
+          <div className="text-center mb-12 sm:mb-16">
+           
+            <p className="text-lg sm:text-xl lg:text-2xl font-light text-slate-300 mb-6 sm:mb-8 max-w-3xl mx-auto">
+              Frequently Asked Questions
+            </p>
+            <div className="w-16 sm:w-20 h-1 bg-gradient-to-r from-[#4ecdc4] to-[#094e54] mx-auto rounded-full"></div>
           </div>
 
-          {/* Title */}
-          <h2 className="text-3xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-white mb-6">
-            <span className="inline-block animate-title-word-1">
-              Frequently
-            </span>{" "}
-            <span className="inline-block animate-title-word-2">Asked</span>{" "}
-            <span className="inline-block bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent animate-title-word-3">
-              Questions
-            </span>
-          </h2>
+          {/* FAQ Grid - Responsive Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-5">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="group"
+                style={{
+                  animation: `slideIn 0.6s ease-out ${index * 0.1}s both`
+                }}
+              >
+                <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 hover:bg-slate-800/70 hover:border-[#4ecdc4]/30 hover:shadow-lg hover:shadow-[#4ecdc4]/10">
+                  {/* Question */}
+                  <button
+                    onClick={() => toggleFAQ(index)}
+                    className="w-full p-4 sm:p-6 text-left flex items-center justify-between group/btn focus:outline-none focus:bg-slate-800/70 transition-colors duration-200"
+                  >
+                    <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+                      <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br ${faq.gradient} rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 flex-shrink-0`}>
+                        <div className="text-white">
+                          {faq.icon}
+                        </div>
+                      </div>
+                      <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-white group-hover/btn:text-[#4ecdc4] transition-colors duration-300 pr-2">
+                        {faq.question}
+                      </h3>
+                    </div>
 
-          {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-8">
-            Everything you need to know about Jaimax and JMC Coin
-          </p>
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-slate-700 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
+                      activeIndex === index ? 'rotate-180 bg-gradient-to-br from-[#4ecdc4] to-[#094e54]' : 'group-hover/btn:bg-slate-600'
+                    }`}>
+                      {activeIndex === index ? (
+                        <Minus className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                      ) : (
+                        <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300" />
+                      )}
+                    </div>
+                  </button>
 
-          {/* Animated Line */}
-          <div className="flex justify-center gap-1">
-            <div className="w-12 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full animate-line-1" />
-            <div className="w-8 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full animate-line-2" />
-            <div className="w-4 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full animate-line-3" />
+                  {/* Answer */}
+                  <div className={`overflow-hidden  transition-all duration-500 ease-out ${
+                    activeIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}>
+                    <div className="px-4 sm:px-6 pb-4  py-3 sm:pb-6">
+                      <div className="bg-slate-700/30 rounded-lg sm:rounded-xl p-4 sm:p-5 border-l-4 border-[#4ecdc4]/70">
+                        <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
 
-        {/* FAQ Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          {/* Left Column */}
-          <div className="space-y-5">
-            {leftColumnFaqs.map((faq, index) => renderFaqItem(faq, index, 0))}
-          </div>
-
-          {/* Right Column */}
-          <div className="space-y-5">
-            {rightColumnFaqs.map((faq, index) => renderFaqItem(faq, index, 6))}
-          </div>
+          {/* Bottom CTA Section */}
+          
         </div>
       </div>
 
-      {/* Custom Animations */}
       <style jsx>{`
-        @keyframes gridMove {
-          0% {
-            transform: translate(0, 0);
-          }
-          100% {
-            transform: translate(50px, 50px);
-          }
-        }
-
-        @keyframes float-1 {
-          0%,
-          100% {
-            transform: translateY(0) scale(1);
-            opacity: 0.7;
-          }
-          50% {
-            transform: translateY(-20px) scale(1.2);
-            opacity: 1;
-          }
-        }
-
-        @keyframes float-2 {
-          0%,
-          100% {
-            transform: translateY(0) translateX(0);
-            opacity: 0.5;
-          }
-          50% {
-            transform: translateY(-15px) translateX(10px);
-            opacity: 0.8;
-          }
-        }
-
-        @keyframes float-3 {
-          0%,
-          100% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0.6;
-          }
-          50% {
-            transform: translateY(-25px) rotate(180deg);
-            opacity: 1;
-          }
-        }
-
-        @keyframes float-random {
-          0%,
-          100% {
-            transform: translateY(0) translateX(0);
-            opacity: 0.3;
-          }
-          25% {
-            transform: translateY(-30px) translateX(20px);
-            opacity: 0.6;
-          }
-          50% {
-            transform: translateY(-10px) translateX(-10px);
-            opacity: 0.4;
-          }
-          75% {
-            transform: translateY(-40px) translateX(15px);
-            opacity: 0.7;
-          }
-        }
-
-        @keyframes pulse-slow {
-          0%,
-          100% {
-            opacity: 0.2;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.3;
-            transform: scale(1.1);
-          }
-        }
-
-        .animate-float-1 {
-          animation: float-1 3s ease-in-out infinite;
-        }
-        .animate-float-2 {
-          animation: float-2 4s ease-in-out infinite;
-        }
-        .animate-float-3 {
-          animation: float-3 5s ease-in-out infinite;
-        }
-        .animate-float-random {
-          animation: float-random 8s ease-in-out infinite;
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 6s ease-in-out infinite;
-        }
-
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-
-        .animate-title-word-1 {
-          animation: fadeSlideUp 0.8s ease-out 0.2s both;
-        }
-        .animate-title-word-2 {
-          animation: fadeSlideUp 0.8s ease-out 0.4s both;
-        }
-        .animate-title-word-3 {
-          animation: fadeSlideUp 0.8s ease-out 0.6s both;
-        }
-
-        @keyframes fadeSlideUp {
+        @keyframes slideIn {
           from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
           }
           to {
             opacity: 1;
             transform: translateY(0);
           }
         }
-
-        .animate-line-1 {
-          animation: lineGrow 0.6s ease-out 0.8s both;
-        }
-        .animate-line-2 {
-          animation: lineGrow 0.6s ease-out 1s both;
-        }
-        .animate-line-3 {
-          animation: lineGrow 0.6s ease-out 1.2s both;
-        }
-
-        @keyframes lineGrow {
-          from {
-            width: 0;
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
       `}</style>
-    </section>
+    </div>
+  );
+};
+
+
+// 3D Wheel Component (without floating particles)
+const Wheel3D = ({ 
+  wheelRef, 
+  activePhase, 
+  setActivePhase, 
+  phases, 
+  segmentAngle, 
+  tealColors, 
+  size = 'desktop' 
+}) => {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef(null);
+
+  const config = size === 'mobile' 
+    ? { outerRadius: 125, innerRadius: 35, centerSize: 'w-16 h-16', fontSize: 'text-lg' }
+    : { outerRadius: 170, innerRadius: 50, centerSize: 'w-28 h-28', fontSize: 'text-2xl' };
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current || size === 'mobile') return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    setMousePos({ x: x * 10, y: y * 10 });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setMousePos({ x: 0, y: 0 });
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      className="relative"
+      style={{ perspective: '1200px' }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Ambient Glow */}
+      <div 
+        className="absolute inset-0 rounded-full blur-3xl opacity-40 animate-pulse"
+        style={{ 
+          background: `radial-gradient(circle, ${tealColors.main}60 0%, transparent 70%)`,
+          transform: 'scale(1.3)'
+        }}
+      />
+
+      {/* 3D Wheel Container */}
+      <div
+        ref={wheelRef}
+        className="relative w-full h-full transition-transform duration-200 ease-out"
+        style={{ 
+          transformStyle: 'preserve-3d',
+          transform: size === 'desktop' 
+            ? `rotateX(${-mousePos.y}deg) rotateY(${mousePos.x}deg)` 
+            : 'none',
+          transformOrigin: 'center center'
+        }}
+      >
+        {/* Back shadow layer for depth */}
+        <svg 
+          className="absolute w-full h-full"
+          viewBox="0 0 400 400"
+          style={{ transform: 'translateZ(-30px)' }}
+        >
+          <defs>
+            <radialGradient id={`backGlow-${size}`} cx="40%" cy="40%">
+              <stop offset="0%" stopColor={tealColors.dark} stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#000" stopOpacity="0.4" />
+            </radialGradient>
+          </defs>
+          <circle 
+            cx="200" 
+            cy="200" 
+            r={config.outerRadius + 15} 
+            fill={`url(#backGlow-${size})`}
+            opacity="0.5"
+          />
+        </svg>
+
+        {/* Main 3D Wheel SVG */}
+        <svg className="w-full h-full relative" viewBox="0 0 400 400">
+          <defs>
+            {/* 3D Lighting Gradient */}
+            <radialGradient id={`lighting-${size}`} cx="30%" cy="30%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.4" />
+              <stop offset="50%" stopColor="#ffffff" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0.3" />
+            </radialGradient>
+
+            {/* Active Segment 3D Gradient */}
+            <linearGradient id={`activeGrad-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#3db8b8" />
+              <stop offset="40%" stopColor={tealColors.main} />
+              <stop offset="100%" stopColor={tealColors.dark} />
+            </linearGradient>
+
+            {/* Inactive Segment 3D Gradient */}
+            <linearGradient id={`inactiveGrad-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="50%" stopColor="#f8f8f8" />
+              <stop offset="100%" stopColor="#e8e8e8" />
+            </linearGradient>
+
+            {/* Glow Filter */}
+            <filter id={`glow3d-${size}`} x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+
+            {/* Bevel/Emboss Filter */}
+            <filter id={`bevel-${size}`} x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+              <feSpecularLighting in="blur" surfaceScale="5" specularConstant="0.8" 
+                                  specularExponent="25" lightingColor="#ffffff" result="specOut">
+                <fePointLight x="100" y="100" z="200"/>
+              </feSpecularLighting>
+              <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+              <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" 
+                           k1="0" k2="1" k3="1" k4="0"/>
+            </filter>
+
+            {/* Drop Shadow */}
+            <filter id={`dropShadow-${size}`} x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="3" dy="5" stdDeviation="4" floodColor="#000" floodOpacity="0.35"/>
+            </filter>
+
+            {/* Inner Shadow for depth */}
+            <filter id={`innerShadow-${size}`}>
+              <feComponentTransfer in="SourceAlpha">
+                <feFuncA type="table" tableValues="1 0"/>
+              </feComponentTransfer>
+              <feGaussianBlur stdDeviation="3"/>
+              <feOffset dx="2" dy="3" result="offsetblur"/>
+              <feFlood floodColor="#000" floodOpacity="0.4"/>
+              <feComposite in2="offsetblur" operator="in"/>
+              <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Outer Ring - 3D Rim Effect */}
+          <circle 
+            cx="200" 
+            cy="200" 
+            r={config.outerRadius + 8}
+            fill="none"
+            stroke={`url(#lighting-${size})`}
+            strokeWidth="12"
+            filter={`url(#dropShadow-${size})`}
+          />
+
+          {/* Segments */}
+          {phases.map((phase, index) => {
+            const startAngle = index * segmentAngle - 90;
+            const endAngle = (index + 1) * segmentAngle - 90;
+            const isActive = index === activePhase;
+            
+            const startAngleRad = (startAngle * Math.PI) / 180;
+            const endAngleRad = (endAngle * Math.PI) / 180;
+            
+            const { outerRadius, innerRadius } = config;
+            
+            const x1 = 200 + outerRadius * Math.cos(startAngleRad);
+            const y1 = 200 + outerRadius * Math.sin(startAngleRad);
+            const x2 = 200 + outerRadius * Math.cos(endAngleRad);
+            const y2 = 200 + outerRadius * Math.sin(endAngleRad);
+            const x3 = 200 + innerRadius * Math.cos(endAngleRad);
+            const y3 = 200 + innerRadius * Math.sin(endAngleRad);
+            const x4 = 200 + innerRadius * Math.cos(startAngleRad);
+            const y4 = 200 + innerRadius * Math.sin(startAngleRad);
+            
+            const largeArcFlag = segmentAngle > 180 ? 1 : 0;
+            
+            const pathData = [
+              `M ${x1} ${y1}`,
+              `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+              `L ${x3} ${y3}`,
+              `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4}`,
+              'Z'
+            ].join(' ');
+            
+            const textAngle = (startAngle + endAngle) / 2;
+            const textRadius = (outerRadius + innerRadius) / 2;
+            const textAngleRad = (textAngle * Math.PI) / 180;
+            const textX = 200 + textRadius * Math.cos(textAngleRad);
+            const textY = 200 + textRadius * Math.sin(textAngleRad);
+            
+            return (
+              <g key={index} className="transition-all duration-300">
+                {/* Shadow layer */}
+                <path
+                  d={pathData}
+                  fill={isActive ? tealColors.dark : '#999'}
+                  transform="translate(3, 4)"
+                  opacity="0.3"
+                />
+                
+                {/* Main Segment */}
+                <path
+                  d={pathData}
+                  fill={isActive ? `url(#activeGrad-${size})` : `url(#inactiveGrad-${size})`}
+                  stroke={isActive ? '#ffffff' : tealColors.main}
+                  strokeWidth={isActive ? "2.5" : "1.5"}
+                  className="cursor-pointer transition-all duration-300"
+                  onClick={() => setActivePhase(index)}
+                  filter={isActive ? `url(#glow3d-${size})` : `url(#bevel-${size})`}
+                />
+
+                {/* 3D Highlight Overlay */}
+                <path
+                  d={pathData}
+                  fill={`url(#lighting-${size})`}
+                  className="pointer-events-none"
+                  opacity={isActive ? "0.5" : "0.3"}
+                />
+
+                {/* Segment Number */}
+                <text
+                  x={textX}
+                  y={textY}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  className="pointer-events-none font-black"
+                  style={{
+                    fill: isActive ? '#ffffff' : tealColors.dark,
+                    fontSize: size === 'mobile' ? '12px' : '16px',
+                    filter: isActive ? 'drop-shadow(0 2px 3px rgba(0,0,0,0.5))' : 'none'
+                  }}
+                  transform={`rotate(${textAngle}, ${textX}, ${textY})`}
+                >
+                  {index + 1}
+                </text>
+
+                {/* Active indicator dot */}
+                {isActive && (
+                  <circle
+                    cx={textX}
+                    cy={textY + (size === 'mobile' ? 12 : 18)}
+                    r="3"
+                    fill="#ffffff"
+                    opacity="0.8"
+                    className="animate-pulse"
+                    transform={`rotate(${textAngle}, ${textX}, ${textY + (size === 'mobile' ? 12 : 18)})`}
+                  />
+                )}
+              </g>
+            );
+          })}
+
+          {/* Inner Ring 3D Effect */}
+          <circle 
+            cx="200" 
+            cy="200" 
+            r={config.innerRadius + 2}
+            fill="none"
+            stroke={tealColors.dark}
+            strokeWidth="4"
+            opacity="0.4"
+            filter={`url(#innerShadow-${size})`}
+          />
+        </svg>
+
+        {/* 3D Center Hub */}
+        <div 
+          className="absolute top-1/2 left-1/2"
+          style={{ 
+            transform: 'translate(-50%, -50%) translateZ(25px)',
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          {/* Hub Shadow */}
+          <div 
+            className={`absolute ${config.centerSize} rounded-full opacity-40`}
+            style={{ 
+              background: '#000',
+              filter: 'blur(8px)',
+              transform: 'translate(4px, 6px) translateZ(-10px)'
+            }}
+          />
+          
+          {/* Hub Base */}
+          <div 
+            className={`${config.centerSize} rounded-full flex items-center justify-center relative overflow-hidden`}
+            style={{ 
+              background: `linear-gradient(145deg, #3db8b8 0%, ${tealColors.main} 40%, ${tealColors.dark} 100%)`,
+              boxShadow: `
+                inset -3px -3px 10px rgba(0,0,0,0.4),
+                inset 3px 3px 10px rgba(255,255,255,0.2),
+                0 10px 40px rgba(0,0,0,0.4),
+                0 0 30px ${tealColors.main}50
+              `
+            }}
+          >
+            {/* Glossy Highlight */}
+            <div 
+              className="absolute top-1 left-3 w-1/2 h-1/4 rounded-full opacity-40"
+              style={{ 
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.8), transparent)',
+              }}
+            />
+            
+            {/* Hub Content */}
+            <div className="text-center relative z-10">
+              <div className={`text-white ${config.fontSize} font-black drop-shadow-lg`}>
+                {activePhase + 1}
+              </div>
+              <div className="text-white/70 text-[10px] font-bold tracking-widest">
+                PHASE
+              </div>
+            </div>
+
+            {/* Subtle ring */}
+            <div 
+              className="absolute inset-2 rounded-full border border-white/20"
+            />
+          </div>
+        </div>
+
+        {/* 3D Indicator Arrow */}
+        <div 
+          className="absolute top-0 left-1/2"
+          style={{ 
+            transform: 'translateX(-50%) translateZ(35px)',
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          {/* Arrow Shadow */}
+          <div 
+            className="absolute"
+            style={{
+              width: size === 'mobile' ? '12px' : '20px',
+              height: size === 'mobile' ? '20px' : '32px',
+              background: '#000',
+              clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
+              filter: 'blur(4px)',
+              opacity: 0.4,
+              transform: 'translate(3px, 4px)'
+            }}
+          />
+          
+          {/* Main Arrow */}
+          <div 
+            style={{
+              width: size === 'mobile' ? '12px' : '20px',
+              height: size === 'mobile' ? '20px' : '32px',
+              background: `linear-gradient(180deg, #3db8b8, ${tealColors.main}, ${tealColors.dark})`,
+              clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
+              boxShadow: `0 4px 15px ${tealColors.main}80`
+            }}
+          >
+            {/* Arrow Highlight */}
+            <div 
+              className="absolute top-0 left-0 w-1/2 h-1/2 opacity-50"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.6), transparent)',
+                clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)'
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 3D Card Component
+const Card3D = ({ phase, index, isActive, tealColors, isMobile }) => {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current || isMobile) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    setMousePos({ x: x * 8, y: y * 8 });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: 0, y: 0 });
+  };
+
+  return (
+    <div 
+      className="relative w-full"
+      style={{ 
+        perspective: '1000px',
+        transformStyle: 'preserve-3d'
+      }}
+    >
+      <div
+        ref={cardRef}
+        className="relative w-full transition-transform duration-300 ease-out"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          transform: !isMobile 
+            ? `rotateY(${mousePos.x}deg) rotateX(${-mousePos.y}deg) translateZ(${isActive ? '20px' : '0'})` 
+            : 'none',
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        {/* Card Shadow */}
+        <div 
+          className="absolute inset-0 rounded-2xl"
+          style={{
+            background: 'linear-gradient(145deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2))',
+            filter: 'blur(20px)',
+            transform: 'translateZ(-30px) translateY(10px) scaleX(0.9)',
+            opacity: 0.6
+          }}
+        />
+
+        {/* Main Card Container */}
+        <div 
+          className={`overflow-hidden ${isMobile ? 'rounded-xl' : 'rounded-2xl'} relative`}
+          style={{
+            background: 'linear-gradient(145deg, #ffffff, #f5f5f5)',
+            boxShadow: `
+              0 20px 60px rgba(0,0,0,0.2),
+              0 10px 20px rgba(0,0,0,0.15),
+              inset 0 -2px 5px rgba(0,0,0,0.1)
+            `
+          }}
+        >
+          {/* 3D Header */}
+          <div 
+            className={`${isMobile ? 'p-3' : 'p-5'} text-white relative overflow-hidden`}
+            style={{ 
+              background: `linear-gradient(135deg, ${tealColors.main}, ${tealColors.dark})`,
+              transformStyle: 'preserve-3d'
+            }}
+          >
+            {/* Header depth layer */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(45deg, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(255,255,255,0.1) 100%)',
+                transform: 'translateZ(5px)'
+              }}
+            />
+
+            {/* Glossy overlay */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%)',
+                transform: 'translateZ(10px)'
+              }}
+            />
+
+            <div className="relative z-10 flex justify-between items-start">
+              <div>
+                {/* 3D Status Badge */}
+                <div 
+                  className={`inline-flex items-center ${isMobile ? 'px-1.5 py-0.5' : 'px-2 py-1'} rounded-full text-xs font-semibold ${isMobile ? 'mb-1' : 'mb-2'}`}
+                  style={{
+                    background: phase.status === 'Live' 
+                      ? 'linear-gradient(135deg, #10b981, #059669)' 
+                      : 'linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1))',
+                    boxShadow: phase.status === 'Live'
+                      ? '0 4px 12px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255,255,255,0.3)'
+                      : 'inset 0 1px 0 rgba(255,255,255,0.3)',
+                    transform: 'translateZ(15px)'
+                  }}
+                >
+                  {phase.status === 'Live' && (
+                    <span className="w-1.5 h-1.5 bg-white rounded-full mr-1 animate-pulse shadow-lg" />
+                  )}
+                  {phase.status}
+                </div>
+
+                <h3 className={`${isMobile ? 'text-base' : 'text-2xl'} font-bold drop-shadow-lg`}>
+                  Phase {phase.phaseNo}
+                </h3>
+                <p className={`text-white/80 ${isMobile ? 'text-xs' : 'text-sm'}`}>Investment Round</p>
+              </div>
+              
+              {/* 3D Icon Container */}
+              <div 
+                className={`relative ${isMobile ? 'p-1' : 'p-2'} rounded-lg backdrop-blur-sm`}
+                style={{
+                  background: 'linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1))',
+                  boxShadow: `
+                    inset 1px 1px 2px rgba(255,255,255,0.3),
+                    inset -1px -1px 2px rgba(0,0,0,0.2),
+                    0 4px 8px rgba(0,0,0,0.2)
+                  `,
+                  transform: 'translateZ(20px)'
+                }}
+              >
+                {React.cloneElement(phase.icon, { 
+                  className: `${isMobile ? 'w-3 h-3' : 'w-5 h-5'} text-white filter drop-shadow-lg` 
+                })}
+              </div>
+            </div>
+          </div>
+          
+          {/* 3D Content */}
+          <div className={`${isMobile ? 'p-3' : 'p-5'} relative`}>
+            {/* Content background gradient */}
+            <div 
+              className="absolute inset-0 opacity-5"
+              style={{
+                background: `radial-gradient(circle at 30% 30%, ${tealColors.main}, transparent)`
+              }}
+            />
+
+            {/* 3D Progress Bar */}
+            <div className={`${isMobile ? 'mb-3' : 'mb-4'} relative`}>
+              <div className={`flex justify-between items-center ${isMobile ? 'mb-1' : 'mb-2'}`}>
+                <span className={`text-gray-600 font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>
+                  {isMobile ? 'Progress' : 'Phase Progress'}
+                </span>
+                <span 
+                  className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'}`}
+                  style={{ 
+                    color: tealColors.main,
+                    textShadow: `0 2px 4px ${tealColors.main}30`
+                  }}
+                >
+                  {phase.progress}%
+                </span>
+              </div>
+              
+              {/* 3D Progress Track */}
+              <div 
+                className={`${isMobile ? 'h-1.5' : 'h-3'} rounded-full overflow-hidden relative`}
+                style={{
+                  background: 'linear-gradient(180deg, #e5e5e5, #f0f0f0)',
+                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
+                }}
+              >
+                {/* Progress Fill */}
+                <div 
+                  className="h-full rounded-full transition-all duration-1000 relative"
+                  style={{ 
+                    width: `${phase.progress}%`,
+                    background: `linear-gradient(180deg, ${tealColors.main}, ${tealColors.dark})`,
+                    boxShadow: `
+                      0 2px 4px ${tealColors.main}50,
+                      inset 0 1px 0 rgba(255,255,255,0.3)
+                    `
+                  }}
+                >
+                  {/* Progress shine */}
+                  <div 
+                    className="absolute inset-0 opacity-30"
+                    style={{
+                      background: 'linear-gradient(180deg, rgba(255,255,255,0.5), transparent)'
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* 3D Token Details */}
+            <div className={`space-y-${isMobile ? '2' : '3'} ${isMobile ? 'mb-3' : 'mb-4'}`}>
+              {/* Token Supply */}
+              <div className="flex items-start gap-2">
+                <div 
+                  className={`${isMobile ? 'w-5 h-5' : 'w-10 h-10'} rounded-lg flex items-center justify-center relative`}
+                  style={{
+                    background: 'linear-gradient(145deg, #e8fffe, #d0f7f5)',
+                    boxShadow: `
+                      2px 2px 6px rgba(0,0,0,0.1),
+                      -2px -2px 6px rgba(255,255,255,0.8),
+                      inset 1px 1px 2px rgba(255,255,255,0.5)
+                    `
+                  }}
+                >
+                  <Coins className={`${isMobile ? 'w-2.5 h-2.5' : 'w-5 h-5'} text-[#0fcbcc]`} />
+                </div>
+                <div>
+                  <p className={`font-semibold text-gray-900 ${isMobile ? 'text-xs' : 'text-base'}`}>
+                    Token Supply
+                  </p>
+                  <p className="text-gray-600 text-xs">{phase.tokens}</p>
+                </div>
+              </div>
+              
+              {/* Price Range */}
+              <div className="flex items-start gap-2">
+                <div 
+                  className={`${isMobile ? 'w-5 h-5' : 'w-10 h-10'} rounded-lg flex items-center justify-center relative`}
+                  style={{
+                    background: 'linear-gradient(145deg, #e8fffe, #d0f7f5)',
+                    boxShadow: `
+                      2px 2px 6px rgba(0,0,0,0.1),
+                      -2px -2px 6px rgba(255,255,255,0.8),
+                      inset 1px 1px 2px rgba(255,255,255,0.5)
+                    `
+                  }}
+                >
+                  <IndianRupee className={`${isMobile ? 'w-2.5 h-2.5' : 'w-5 h-5'} text-[#0fcbcc]`} />
+                </div>
+                <div>
+                  <p className={`font-semibold text-gray-900 ${isMobile ? 'text-xs' : 'text-base'}`}>
+                    Price Range
+                  </p>
+                  <p className="text-gray-600 text-xs">{phase.price}</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* 3D Action Button */}
+            <button
+              className={`w-full ${isMobile ? 'py-2 text-sm' : 'py-3'} rounded-${isMobile ? 'lg' : 'full'} font-bold text-white transition-all duration-300 relative overflow-hidden`}
+              style={{ 
+                background: phase.status === 'Live' 
+                  ? `linear-gradient(135deg, ${tealColors.main}, ${tealColors.dark})` 
+                  : 'linear-gradient(135deg, #9ca3af, #6b7280)',
+                opacity: phase.status === 'Live' ? 1 : 0.7,
+                boxShadow: phase.status === 'Live'
+                  ? `
+                    0 4px 15px ${tealColors.main}40,
+                    inset 0 1px 0 rgba(255,255,255,0.2),
+                    inset 0 -2px 0 rgba(0,0,0,0.2)
+                  `
+                  : 'inset 0 1px 0 rgba(255,255,255,0.2)',
+                transform: phase.status === 'Live' ? 'translateZ(5px)' : 'none',
+                transformStyle: 'preserve-3d'
+              }}
+              disabled={phase.status !== 'Live'}
+            >
+              {/* Button shine effect */}
+              <div 
+                className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%)',
+                  animation: phase.status === 'Live' ? 'shine 3s infinite' : 'none'
+                }}
+              />
+              <span className="relative z-10">{phase.button}</span>
+            </button>
+            
+            {/* Footer */}
+            <div className={`flex justify-between items-center ${isMobile ? 'mt-2 pt-2' : 'mt-4 pt-4'} border-t border-gray-100`}>
+              <span className="text-gray-500 text-xs">
+                Phase {index + 1} of {phases.length}
+              </span>
+              {!isMobile && index < phases.length - 1 && (
+                <span 
+                  className="text-xs font-medium"
+                  style={{ 
+                    color: tealColors.main,
+                    textShadow: `0 1px 2px ${tealColors.main}20`
+                  }}
+                >
+                  Next: Phase {index + 2} →
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -884,462 +1206,317 @@ const PhasesWheelSection = () => {
   const pinContainerRef = useRef(null);
   const contentContainerRef = useRef(null);
   const wheelSectionRef = useRef(null);
-  const smallCircleContainerRef = useRef(null);
+  const wheelRef = useRef(null);
   const [activePhase, setActivePhase] = useState(0);
-  const [debugInfo, setDebugInfo] = useState({
-    progress: 0,
-    rotation: 0,
-    phase: 0,
-  });
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Teal color constants
   const tealColors = {
-    main: "#0fcbcc",
-    dark: "#064248",
-    medium: "#0a6972",
-    light: "#8cdfe0", 
+    main: "#268888ff",
+    dark: "#085056", 
+    medium: "#064046",
+    light: "#064046",
     bg: "#054248"
   };
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
-      // Kill existing wheel triggers
       ScrollTrigger.getAll().forEach((trigger) => {
-        if (
-          trigger.vars.id &&
-          trigger.vars.id.toString().includes("phases-wheel")
-        ) {
+        if (trigger.vars.id?.toString().includes("phases-wheel")) {
           trigger.kill();
         }
       });
 
-      if (
-        !smallCircleContainerRef.current ||
-        !contentContainerRef.current ||
-        !wheelSectionRef.current
-      ) {
+      if (!wheelRef.current || !contentContainerRef.current || !wheelSectionRef.current) {
         console.error("Required refs not found");
         return;
       }
 
-      const wheelHeight = wheelSectionRef.current.offsetHeight;
-
       const ctx = gsap.context(() => {
-        // Pin the content container
-        ScrollTrigger.create({
-          trigger: contentContainerRef.current,
-          endTrigger: pinContainerRef.current,
-          start: `top+=${wheelHeight / 2}px center`,
-          end: "bottom bottom",
-          pin: contentContainerRef.current,
-          id: "phases-wheel-pin",
-          markers: false,
-        });
-
-        // Rotate small circle with snapping
-        gsap.to(smallCircleContainerRef.current, {
-          rotation: 360,
-          ease: "none",
-          scrollTrigger: {
+        if (!isMobile) {
+          const wheelHeight = wheelSectionRef.current.offsetHeight;
+          
+          ScrollTrigger.create({
             trigger: contentContainerRef.current,
             endTrigger: pinContainerRef.current,
             start: `top+=${wheelHeight / 2}px center`,
             end: "bottom bottom",
-            scrub: 1,
-            snap: {
-              snapTo: 1 / phases.length,
-              duration: { min: 0.2, max: 0.4 },
-              ease: "power2.inOut",
-            },
-            onUpdate: (self) => {
-              const currentPhase = Math.floor(self.progress * phases.length);
-              const clampedPhase = Math.min(currentPhase, phases.length - 1);
-              setActivePhase(clampedPhase);
+            pin: contentContainerRef.current,
+            id: "phases-wheel-pin",
+            markers: false,
+          });
 
-              const currentRotation = gsap.getProperty(
-                smallCircleContainerRef.current,
-                "rotation"
-              );
-              setDebugInfo({
-                progress: (self.progress * 100).toFixed(1),
-                rotation: Math.round(currentRotation),
-                phase: clampedPhase + 1,
-              });
+          gsap.to(wheelRef.current, {
+            rotation: 360,
+            ease: "none",
+            scrollTrigger: {
+              trigger: contentContainerRef.current,
+              endTrigger: pinContainerRef.current, 
+              start: `top+=${wheelHeight / 2}px center`,
+              end: "bottom bottom",
+              scrub: 1,
+              snap: {
+                snapTo: 1 / phases.length,
+                duration: { min: 0.2, max: 0.4 },
+                ease: "power2.inOut",
+              },
+              onUpdate: (self) => {
+                const currentPhase = Math.floor(self.progress * phases.length);
+                const clampedPhase = Math.min(currentPhase, phases.length - 1);
+                setActivePhase(clampedPhase);
+              },
+              id: "phases-wheel-rotation",
             },
-            id: "phases-wheel-rotation",
-          },
-        });
+          });
+        } else {
+          const wheelHeight = wheelSectionRef.current.offsetHeight;
+          
+          ScrollTrigger.create({
+            trigger: contentContainerRef.current,
+            endTrigger: pinContainerRef.current,
+            start: `top+=${wheelHeight / 2}px center`,
+            end: "bottom bottom", 
+            pin: contentContainerRef.current,
+            id: "phases-wheel-pin-mobile",
+            markers: false,
+          });
+
+          gsap.to(wheelRef.current, {
+            rotation: 360,
+            ease: "none",
+            scrollTrigger: {
+              trigger: contentContainerRef.current,
+              endTrigger: pinContainerRef.current,
+              start: `top+=${wheelHeight / 2}px center`,
+              end: "bottom bottom",
+              scrub: 0.3,
+              snap: {
+                snapTo: 1 / phases.length,
+                duration: { min: 0.1, max: 0.2 },
+                ease: "power2.inOut",
+              },
+              onUpdate: (self) => {
+                const currentPhase = Math.floor(self.progress * phases.length);
+                const clampedPhase = Math.min(currentPhase, phases.length - 1);
+                setActivePhase(clampedPhase);
+              },
+              id: "phases-wheel-rotation-mobile",
+            },
+          });
+        }
       });
 
       ScrollTrigger.refresh();
-
-      return () => {
-        ctx.revert();
-      };
+      return () => ctx.revert();
     }, 300);
 
     return () => {
       clearTimeout(timer);
       ScrollTrigger.getAll().forEach((trigger) => {
-        if (
-          trigger.vars.id &&
-          trigger.vars.id.toString().includes("phases-wheel")
-        ) {
+        if (trigger.vars.id?.toString().includes("phases-wheel")) {
           trigger.kill();
         }
       });
     };
-  }, []);
+  }, [isMobile]);
+
+  const segmentAngle = 360 / phases.length;
 
   return (
-    <section className="relative overflow-hidden bg-[#054248]">
-      {/* Wavy Background */}
-      <div className="absolute inset-0 opacity-25 overflow-hidden">
-        <svg 
-          className="absolute top-0 left-0 w-full"
-          viewBox="0 0 1440 320" 
-          preserveAspectRatio="none"
-          style={{ height: "30%" }}
-        >
-          <path 
-            fill={tealColors.main} 
-            fillOpacity="0.3"
-            d="M0,192L60,176C120,160,240,128,360,138.7C480,149,600,203,720,208C840,213,960,171,1080,149.3C1200,128,1320,128,1380,128L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
-          ></path>
-        </svg>
-        
-        <svg 
-          className="absolute bottom-0 left-0 w-full"
-          viewBox="0 0 1440 320" 
-          preserveAspectRatio="none"
-          style={{ height: "30%" }}
-        >
-          <path 
-            fill={tealColors.main} 
-            fillOpacity="0.3"
-            d="M0,64L60,96C120,128,240,192,360,192C480,192,600,128,720,117.3C840,107,960,149,1080,170.7C1200,192,1320,192,1380,181.3L1440,171L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-          ></path>
-        </svg>
-        
-        <svg 
-          className="absolute top-1/2 left-0 w-full transform -translate-y-1/2"
-          viewBox="0 0 1440 320" 
-          preserveAspectRatio="none"
-          style={{ height: "40%" }}
-        >
-          <path 
-            fill={tealColors.main} 
-            fillOpacity="0.1"
-            d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          ></path>
-        </svg>
-      </div>
+    <>
+      <style jsx>{`
+        @keyframes shine {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(200%); }
+        }
+      `}</style>
 
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px),
-                           linear-gradient(90deg, rgba(255, 255, 255, 0.6) 1px, transparent 1px)`,
-            backgroundSize: "32px 32px",
-          }}
-        ></div>
-      </div>
-
-      {/* Header */}
-      <div className="relative z-10 text-center pt-10 pb-6 px-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#053137] mb-3">
-          <div className="w-1.5 h-1.5 bg-[#0fcbcc] rounded-full animate-pulse"></div>
-          <span className="text-white font-medium text-xs">Token Distribution</span>
-        </div>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-white">
-          Investment Phases
-        </h2>
-        <p className="text-sm text-white/80 max-w-lg mx-auto">
-          Strategic token release across {phases.length} phases
-        </p>
-      </div>
-
-      {/* Pin Container */}
-      <div
-        ref={pinContainerRef}
-        className="relative"
-        style={{ height: "320vh" }}
-      >
-        <div ref={contentContainerRef} className="w-full">
-          <div
-            ref={wheelSectionRef}
-            className="min-h-screen flex items-center justify-center px-4"
+      <section className="relative overflow-hidden bg-[#054248]">
+        {/* Background Waves */}
+        <div className="absolute inset-0 opacity-15 sm:opacity-25 overflow-hidden">
+          <svg 
+            className="absolute top-0 left-0 w-full h-[15%] sm:h-[30%]"
+            viewBox="0 0 1440 320" 
+            preserveAspectRatio="none"
           >
-            <div className="w-full max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-y-8 lg:gap-x-6">
-                {/* Wheel Column */}
-                <div className="lg:col-span-2 flex justify-center items-center relative order-2 lg:order-1">
-                  <div className="relative w-full max-w-[300px] aspect-square">
-                    {/* Outer glow */}
-                    <div
-                      className="absolute inset-0 rounded-full blur-lg opacity-30"
-                      style={{ backgroundColor: tealColors.main }}
-                    ></div>
+            <path 
+              fill={tealColors.main} 
+              fillOpacity="0.3"
+              d="M0,192L60,176C120,160,240,128,360,138.7C480,149,600,203,720,208C840,213,960,171,1080,149.3C1200,128,1320,128,1380,128L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
+            />
+          </svg>
+          
+          <svg 
+            className="absolute bottom-0 left-0 w-full h-[15%] sm:h-[30%]"
+            viewBox="0 0 1440 320" 
+            preserveAspectRatio="none"
+          >
+            <path 
+              fill={tealColors.main} 
+              fillOpacity="0.3"
+              d="M0,64L60,96C120,128,240,192,360,192C480,192,600,128,720,117.3C840,107,960,149,1080,170.7C1200,192,1320,192,1380,181.3L1440,171L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+            />
+          </svg>
+        </div>
 
-                    {/* Outer Decorative Rings */}
-                    <div className="absolute inset-0 rounded-full border-4 border-[#0a6972] opacity-20"></div>
-                    <div className="absolute inset-2 rounded-full border-2 border-[#0fcbcc] opacity-30"></div>
-                    
-                    {/* Main Circle Background */}
-                    <div className="absolute inset-4 rounded-full bg-[#05363b] border border-[#0fcbcc]"></div>
-                    
-                    {/* Rotating indicators */}
-                    <div
-                      ref={smallCircleContainerRef}
-                      className="absolute inset-0 w-full h-full"
-                      style={{ transformOrigin: "center center" }}
-                    >
-                      {/* Ticks around the circle */}
-                      {[...Array(12)].map((_, i) => (
-                        <div 
-                          key={i}
-                          className="absolute top-0 left-1/2 -ml-0.5 h-2 w-1 bg-white/20"
-                          style={{ 
-                            transformOrigin: "bottom center",
-                            transform: `rotate(${i * 30}deg) translateY(10px)`
-                          }}
-                        ></div>
-                      ))}
-                      
-                      {/* Orbiting circle */}
-                      <div 
-                        className="absolute"
-                        style={{ 
-                          top: '2%',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          filter: 'drop-shadow(0 0 8px rgba(15, 203, 204, 0.5))'
-                        }}
-                      >
-                        <div 
-                          className="h-12 w-12 rounded-full flex items-center justify-center shadow-lg"
-                          style={{ backgroundColor: tealColors.main }}
-                        >
-                          <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center">
-                            <span 
-                              className="text-xl font-bold"
-                              style={{ color: tealColors.main }}
-                            >
-                              {activePhase + 1}
-                            </span>
-                          </div>
-                        </div>
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.01] sm:opacity-[0.03]">
+          <div
+            className="h-full w-full"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+                             linear-gradient(90deg, rgba(255, 255, 255, 0.6) 1px, transparent 1px)`,
+              backgroundSize: "20px 20px",
+            }}
+          />
+        </div>
+
+        {/* Header */}
+        <div className="relative z-10 text-center pt-4 sm:pt-10 pb-3 sm:pb-6 px-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#053137] mb-2 sm:mb-3">
+            <div className="w-1.5 h-1.5 bg-[#085056] rounded-full animate-pulse" />
+            <span className="text-white font-medium text-xs">Token Distribution</span>
+          </div>
+          <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-1 sm:mb-2 text-white">
+            Investment Phases
+          </h2>
+        </div>
+
+        {/* Pin Container */}
+        <div
+          ref={pinContainerRef}
+          className="relative"
+          style={{ height: isMobile ? "200vh" : "320vh" }}
+        >
+          <div ref={contentContainerRef} className="w-full">
+            <div
+              ref={wheelSectionRef}
+              className={`${
+                isMobile 
+                  ? 'min-h-screen flex flex-col justify-center py-4' 
+                  : 'min-h-screen flex items-center justify-center'
+              } px-4`}
+            >
+              <div className="w-full max-w-7xl mx-auto">
+                
+                {/* Mobile Layout */}
+                {isMobile ? (
+                  <div className="flex flex-col items-center justify-center h-full space-y-5">
+                    {/* Mobile 3D Wheel */}
+                    <div className="flex justify-center items-center relative">
+                      <div className="relative w-72 h-72">
+                        <Wheel3D
+                          wheelRef={wheelRef}
+                          activePhase={activePhase}
+                          setActivePhase={setActivePhase}
+                          phases={phases}
+                          segmentAngle={segmentAngle}
+                          tealColors={tealColors}
+                          size="mobile"
+                        />
                       </div>
                     </div>
 
-                    {/* Center content */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="text-center">
-                        <div
-                          className="text-5xl sm:text-6xl font-black"
-                          style={{
-                            color: tealColors.main,
-                          }}
-                        >
-                          {activePhase + 1}
-                        </div>
-                        <div className="text-xs font-medium mt-1 text-white/90">
-                          of {phases.length}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Phase dots */}
-                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-                      {phases.map((_, index) => (
+                    {/* Mobile 3D Card */}
+                    <div className="w-full max-w-sm px-2">
+                      {phases.map((phase, index) => (
                         <div
                           key={index}
-                          className={`h-2.5 rounded-full transition-all duration-500 ${
-                            index === activePhase ? "w-7 opacity-100" : "w-2.5 opacity-40"
+                          className={`transition-all duration-500 ${
+                            index === activePhase ? "block" : "hidden"
                           }`}
-                          style={{
-                            backgroundColor: index === activePhase
-                              ? tealColors.main
-                              : "#ffffff"
-                          }}
-                        />
+                        >
+                          <Card3D
+                            phase={phase}
+                            index={index}
+                            isActive={index === activePhase}
+                            tealColors={tealColors}
+                            isMobile={true}
+                          />
+                        </div>
                       ))}
                     </div>
                   </div>
-                </div>
-
-                {/* TEAL & WHITE CARD DESIGN */}
-                <div className="lg:col-span-3 relative flex items-center justify-center order-1 lg:order-2">
-                  {phases.map((phase, index) => (
-                    <div
-                      key={index}
-                      className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ${
-                        index === activePhase
-                          ? "opacity-100 transform-none z-10"
-                          : "opacity-0 translate-y-8 z-0"
-                      }`}
-                    >
-                      <div className="w-full max-w-lg px-4">
-                        {/* Clean teal and white card */}
-                        <div className="overflow-hidden rounded-2xl shadow-2xl">
-                          {/* Header with teal background */}
-                          <div 
-                            className="py-5 px-6 bg-[#0fcbcc]"
-                          >
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <div className="inline-flex items-center px-2 py-1 rounded bg-white/20 text-xs text-white font-medium mb-2">
-                                  {phase.status === "Live" && (
-                                    <span className="w-1.5 h-1.5 bg-white rounded-full mr-1.5 animate-pulse"></span>
-                                  )}
-                                  {phase.status}
-                                </div>
-                                <h3 className="text-2xl font-bold text-white">Phase {phase.phaseNo}</h3>
-                                <p className="text-white/80 text-sm mt-1">Investment Round {index + 1}</p>
-                              </div>
-                              
-                              <div className="flex items-center gap-2">
-                                <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center">
-                                  <div className="text-2xl font-bold text-[#0fcbcc]">{phase.phaseNo}</div>
-                                </div>
-                                <div className="bg-white/20 p-2.5 rounded-lg">
-                                  {React.cloneElement(phase.icon, { className: "w-5 h-5 text-white" })}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Main Content Area - White Background */}
-                          <div className="bg-white p-6">
-                            {/* Progress bar */}
-                            <div className="mb-6">
-                              <div className="flex justify-between mb-2">
-                                <div className="text-[#064248] font-medium">Progress</div>
-                                <div className="text-[#0fcbcc] font-bold">{phase.progress}%</div>
-                              </div>
-                              <div className="h-2.5 w-full bg-[#e7f9f9] rounded-full overflow-hidden">
-                                <div 
-                                  className="h-full rounded-full"
-                                  style={{ 
-                                    width: `${phase.progress}%`,
-                                    backgroundColor: tealColors.main
-                                  }}
-                                ></div>
-                              </div>
-                            </div>
-                            
-                            {/* Key metrics */}
-                            <div className="grid grid-cols-2 gap-4 mb-6">
-                              <div className="p-3 rounded-xl border border-[#e7f9f9] bg-[#f7fdfd]">
-                                <div className="text-[#0a6972] text-xs font-medium mb-1">Total Supply</div>
-                                <div className="flex items-center">
-                                  <Coins className="w-4 h-4 mr-2 text-[#0fcbcc]" />
-                                  <div className="text-[#064248] font-bold">{phase.tokens}</div>
-                                </div>
-                              </div>
-                              
-                              <div className="p-3 rounded-xl border border-[#e7f9f9] bg-[#f7fdfd]">
-                                <div className="text-[#0a6972] text-xs font-medium mb-1">Price Range</div>
-                                <div className="flex items-center">
-                                  <DollarSign className="w-4 h-4 mr-2 text-[#0fcbcc]" />
-                                  <div className="text-[#064248] font-bold">{phase.price}</div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex gap-3 mb-4">
-                              <button
-                                className={`flex-1 py-3 rounded-xl font-bold text-white transition-all ${
-                                  phase.status === "Live"
-                                    ? "hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
-                                    : "opacity-60 cursor-not-allowed"
-                                }`}
-                                disabled={phase.status !== "Live"}
-                                style={{
-                                  backgroundColor: tealColors.main,
-                                  boxShadow: phase.status === "Live" ? `0 4px 14px 0 ${tealColors.main}30` : "none"
-                                }}
-                              >
-                                {phase.button}
-                              </button>
-                              
-                              <button
-                                className="px-4 py-3 rounded-xl border border-[#e7f9f9] hover:bg-[#f7fdfd] text-[#0a6972]"
-                              >
-                                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                              </button>
-                            </div>
-                            
-                            {/* Footer */}
-                            <div className="flex justify-between items-center text-sm text-[#0a6972]">
-                              <div>
-                                Phase {index + 1} of {phases.length}
-                              </div>
-                              {index < phases.length - 1 && (
-                                <div className="flex items-center cursor-pointer group text-[#0fcbcc]">
-                                  <span>Next Phase</span>
-                                  <svg 
-                                    width="16" 
-                                    height="16" 
-                                    viewBox="0 0 24 24" 
-                                    fill="none" 
-                                    className="ml-1 transition-transform group-hover:translate-x-0.5 text-[#0fcbcc]"
-                                  >
-                                    <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                  </svg>
-                                </div>
-                              )}
-                            </div>
-                          </div>
+                ) : (
+                  /* Desktop Layout */
+                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-y-6 lg:gap-x-8">
+                    
+                    {/* Desktop 3D Wheel */}
+                    <div className="lg:col-span-2 order-2 lg:order-1 flex justify-center items-center relative">
+                      <div className="relative w-full max-w-[300px] sm:max-w-[320px] lg:max-w-[380px] aspect-square">
+                        <Wheel3D
+                          wheelRef={wheelRef}
+                          activePhase={activePhase}
+                          setActivePhase={setActivePhase}
+                          phases={phases}
+                          segmentAngle={segmentAngle}
+                          tealColors={tealColors}
+                          size="desktop"
+                        />
+                        
+                        {/* Phase Dots */}
+                        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex gap-2">
+                          {phases.map((_, index) => (
+                            <button
+                              key={index}
+                              onClick={() => setActivePhase(index)}
+                              className={`h-2 rounded-full transition-all duration-500 ${
+                                index === activePhase 
+                                  ? "w-9 opacity-100" 
+                                  : "w-2 opacity-40"
+                              }`}
+                              style={{
+                                backgroundColor: index === activePhase ? tealColors.main : "#ffffff",
+                                boxShadow: index === activePhase ? `0 0 10px ${tealColors.main}` : 'none'
+                              }}
+                            />
+                          ))}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+
+                    {/* Desktop 3D Card */}
+                    <div className="lg:col-span-3 order-1 lg:order-2 relative flex items-center justify-center">
+                      {phases.map((phase, index) => (
+                        <div
+                          key={index}
+                          className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ${
+                            index === activePhase
+                              ? "opacity-100 transform-none z-10"
+                              : "opacity-0 translate-y-8 z-0"
+                          }`}
+                        >
+                          <div className="w-full max-w-lg px-4">
+                            <Card3D
+                              phase={phase}
+                              index={index}
+                              isActive={index === activePhase}
+                              tealColors={tealColors}
+                              isMobile={false}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
-
-
-
-// Animated text component for letter-by-letter animation
-const AnimatedText = ({ text }) => {
-  const words = text.split(" ");
-
-  return (
-    <span className="inline-flex flex-wrap justify-center gap-x-4">
-      {words.map((word, wordIndex) => (
-        <span key={wordIndex} className="inline-flex">
-          {word.split("").map((char, charIndex) => (
-            <motion.span
-              key={charIndex}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: wordIndex * 0.1 + charIndex * 0.03,
-                duration: 0.5,
-                ease: "easeOut",
-              }}
-              className="inline-block hover:text-white/80 transition-colors cursor-default"
-              whileHover={{ scale: 1.2, color: "#4ade80" }}
-            >
-              {char}
-            </motion.span>
-          ))}
-        </span>
-      ))}
-    </span>
-  );
-};
-
 
 const SecurityContent = () => (
   <div className="mx-auto max-w-4xl px-6 py-20 text-center">
@@ -1357,8 +1534,8 @@ const SecurityContent = () => (
 
 
     {/* Button */}
-    <button className="rounded-full bg-gradient-to-r mt-10 from-[#085056] to-[#0a6b73] px-10 py-4 text-xl text-white font-semibold shadow-md hover:shadow-[#0a6b73]/50 hover:scale-105 transition-all duration-300">
-      Explore Security Features 
+    <button className="rounded-full bg-gradient-to-r mt-10 from-[#085056] to-[#0a6b73] px-5 py-2 text-xl text-white font-semibold shadow-md hover:shadow-[#0a6b73]/50 hover:scale-105 transition-all duration-300">
+      Explore  Features 
       <ArrowRight className="inline ml-2" />
     </button>
   </div>
@@ -1377,417 +1554,6 @@ const SecuritySec=()=> {
     </div>
   );
 }
-
-const VelocityHero = () => {
-  const containerRef = useRef(null);
-  const text1Ref = useRef(null);
-  const text2Ref = useRef(null);
-  const text3Ref = useRef(null);
-  const text4Ref = useRef(null);
-  const videoRef = useRef(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  // Contract address - replace with your actual contract address
-  const CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890";
-  const BSCSCAN_URL = `https://bscscan.com/token/${CONTRACT_ADDRESS}`;
-
-  // Copy to clipboard function
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(CONTRACT_ADDRESS);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-    }
-  };
-
-  // Fetch data using RTK Query
-  const { data: roundData, error, isLoading, refetch } = useGetRoundQuery();
-
-  // Get live rounds (status = 1)
-  const liveRounds =
-    roundData?.data?.rounds?.filter((round) => round.status === 1) || [];
-  const currentRound = liveRounds[0];
-
-  // Auto-refresh data every 30 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refetch();
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [refetch]);
-
-  const formatNumber = (num) => {
-    if (num >= 1000000000) {
-      return (num / 1000000000).toFixed(1) + "B";
-    }
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + "M";
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + "K";
-    }
-    return num?.toLocaleString() || "0";
-  };
-
-  // Get stats data
-  const livePrice = currentRound?.atPriceInr || "0.0000";
-  const soldTokens = formatNumber(currentRound?.soldQty || 225765326);
-  const liveMembers = formatNumber(currentRound?.totalMembers || 24567);
-  const totalSupply = formatNumber(10000000000); // 10B
-
-  // GSAP Scroll Animations
-  useEffect(() => {
-    const initTimer = setTimeout(() => {
-      const ctx = gsap.context(() => {
-        if (
-          text1Ref.current &&
-          text2Ref.current &&
-          text3Ref.current &&
-          text4Ref.current
-        ) {
-          // Set initial positions
-          gsap.set(text1Ref.current, { x: "0%" });
-          gsap.set(text2Ref.current, { x: "-10%" });
-          gsap.set(text3Ref.current, { x: "0%" });
-          gsap.set(text4Ref.current, { x: "-15%" });
-
-          // Animate text 1 - move left
-          gsap.to(text1Ref.current, {
-            x: "-50%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 2,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          // Animate text 2 - move right
-          gsap.to(text2Ref.current, {
-            x: "50%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.5,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          // Animate text 3 - move left
-          gsap.to(text3Ref.current, {
-            x: "-45%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.5,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          // Animate text 4 - move right
-          gsap.to(text4Ref.current, {
-            x: "55%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.3,
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-      }, containerRef);
-
-      return () => ctx.revert();
-    }, 100);
-
-    return () => clearTimeout(initTimer);
-  }, []);
-
-  // Handle video load
-  useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.addEventListener("loadeddata", () => setVideoLoaded(true));
-    }
-  }, []);
-
-  return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen md:min-h-[120vh] overflow-hidden"
-    >
-      {/* Background Video */}
-      <div className="absolute inset-0 w-full h-full">
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'%3E%3Crect fill='%23085056' width='1920' height='1080'/%3E%3C/svg%3E"
-        >
-          <source
-            src="https://www.shutterstock.com/shutterstock/videos/3738718917/preview/stock-footage-futuristic-digital-globe-of-earth-with-glowing-data-points-network-connections-on-a-dark-background.webm"
-            type="video/webm"
-          />
-        </video>
-
-        {/* Dark overlay for better readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#085056]/80 via-[#085056]/70 to-[#085056]/90"></div>
-      </div>
-
-      {/* Grid overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-                           linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
-          }}
-        ></div>
-      </div>
-
-      {/* Gradient blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-white rounded-full filter blur-[100px] md:blur-[150px] opacity-10"></div>
-        <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-[#0a6b73] rounded-full filter blur-[100px] md:blur-[150px] opacity-10"></div>
-      </div>
-
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div className="h-full flex flex-col justify-between py-2 md:py-4">
-
-
-          {/* Center content */}
-          <div className="relative z-20 flex-1 flex items-center justify-center px-4 md:px-6 lg:px-8 my-4 md:my-8">
-            <div className="text-center max-w-6xl mx-auto w-full">
-              {/* Live Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full bg-slate-800 border border-slate-700 mb-4 md:mb-6 shadow-xl"
-              >
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-lg shadow-green-400/50"></div>
-                <span className="text-white font-bold text-xs md:text-sm lg:text-base uppercase tracking-wider">
-                  Live Pre-Sale • Phase {currentRound?.roundNo || 1}
-                </span>
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-lg shadow-green-400/50"></div>
-              </motion.div>
-
-              {/* Main Heading */}
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl font-black mb-4 md:mb-6 leading-tight px-2"
-              >
-                <span className="block text-white drop-shadow-2xl">
-                  Persistence & Determination
-                </span>
-              </motion.h2>
-
-              {/* Subtitle */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-200 max-w-4xl mx-auto mb-6 md:mb-8 leading-relaxed font-light px-2"
-              >
-                India's revolutionary cryptocurrency.{" "}
-                <span className="text-white font-semibold">Persistence</span>{" "}
-                and{" "}
-                <span className="text-white font-semibold">determination</span>{" "}
-                alone are omnipotent.
-              </motion.p>
-
-              {/* Stats Grid */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 px-2 mb-6"
-              >
-                {/* Live Price */}
-                <div className="bg-slate-800 border border-slate-700 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-slate-600 hover:bg-slate-750 transition-all duration-300 shadow-xl">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 md:mb-2 drop-shadow-lg">
-                    {isLoading ? (
-                      <span className="animate-pulse">...</span>
-                    ) : (
-                      `₹${livePrice}`
-                    )}
-                  </div>
-                  <div className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider font-semibold">
-                    Live Price (INR)
-                  </div>
-                </div>
-
-                {/* Tokens Sold */}
-                <div className="bg-slate-800 border border-slate-700 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-slate-600 hover:bg-slate-750 transition-all duration-300 shadow-xl">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 md:mb-2 drop-shadow-lg">
-                    {isLoading ? (
-                      <span className="animate-pulse">...</span>
-                    ) : (
-                      soldTokens
-                    )}
-                  </div>
-                  <div className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider font-semibold">
-                    Tokens Sold
-                  </div>
-                  {/* Progress bar */}
-                  <div className="mt-2 h-1 bg-slate-700 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000"
-                      style={{
-                        width: `${Math.min(
-                          ((currentRound?.soldQty || 0) / 10000000000) * 100,
-                          100
-                        )}%`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Active Investors */}
-                <div className="bg-slate-800 border border-slate-700 rounded-xl md:rounded-2xl p-4 md:p-6 hover:border-slate-600 hover:bg-slate-750 transition-all duration-300 shadow-xl">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1 md:mb-2 drop-shadow-lg">
-                    {isLoading ? (
-                      <span className="animate-pulse">...</span>
-                    ) : (
-                      liveMembers
-                    )}
-                  </div>
-                  <div className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider font-semibold">
-                    Active Investors
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Contract Address Section */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.9 }}
-                className="bg-slate-900 border border-slate-700 rounded-xl md:rounded-2xl p-4 md:p-6 mb-6 md:mb-8 mx-2 shadow-xl"
-              >
-                <div className="text-center">
-                  <h3 className="text-white font-bold text-sm md:text-base mb-4 uppercase tracking-wider">
-                    Contract Address
-                  </h3>
-                  
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    {/* Contract Address Display */}
-                    <div className="flex items-center bg-slate-800 rounded-lg px-4 py-3 border border-slate-600 min-w-0 flex-1 max-w-md">
-                      <span className="text-gray-300 text-xs md:text-sm font-mono truncate">
-                        {`${CONTRACT_ADDRESS}`}
-                      </span>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3">
-                      {/* Copy Button */}
-                      <button
-                        onClick={copyToClipboard}
-                        className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-all duration-200 text-xs md:text-sm font-semibold shadow-lg ${
-                          copied 
-                            ? 'bg-green-600 hover:bg-green-700 text-white' 
-                            : 'bg-blue-600 hover:bg-blue-700 text-white'
-                        }`}
-                      >
-                        {copied ? (
-                          <>
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                            Copied!
-                          </>
-                        ) : (
-                          <>
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-                              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
-                            </svg>
-                            Copy
-                          </>
-                        )}
-                      </button>
-
-                      {/* BSCscan Button */}
-                      <a
-                        href={BSCSCAN_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-3 rounded-lg transition-all duration-200 text-xs md:text-sm font-semibold shadow-lg"
-                      >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
-                          <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
-                        </svg>
-                        BSCscan
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Additional Info */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1 }}
-                className="flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm text-gray-300 px-2"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                  <span>Total Supply: {totalSupply}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                  <span>BSC Network</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                  <span>Verified Contract</span>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Third scrolling text */}
-          <div className="relative flex-shrink-0">
-            <div className="overflow-hidden">
-              <div
-                ref={text3Ref}
-                className="flex whitespace-nowrap"
-                style={{ willChange: "transform" }}
-              >
-                {[...Array(20)].map((_, i) => (
-                  <div key={i} className="flex items-center">
-                    <span className="text-xs sm:text-base md:text-xl lg:text-3xl font-medium text-white/10 mx-3 md:mx-6">
-                      Join the Future of Digital Finance
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const TestimonialCard = ({ testimonial, isActive }) => {
   return (
@@ -1910,275 +1676,6 @@ const TestimonialCard = ({ testimonial, isActive }) => {
         </svg>
       </div>
     </div>
-  );
-};
-const BentoGallery = () => {
-  const galleryWrapRef = useRef(null);
-  const galleryRef = useRef(null);
-  const securityContentRef = useRef(null);
-
-  const images = [
-    "https://i.pinimg.com/736x/54/07/79/5407796d4c71f0e2af99702a30fea41f.jpg",
-    "https://i.pinimg.com/1200x/b2/57/fd/b257fd44c315090e0c743427863f55f8.jpg",
-    "https://i.pinimg.com/736x/e8/f0/73/e8f07376379f694e5fed8f3e66cefe74.jpg",
-    "https://i.pinimg.com/1200x/68/f3/83/68f3838dd7423a0edaf8cd78cbb99532.jpg",
-    "https://i.pinimg.com/736x/f3/d7/63/f3d763d085b7a81c8d4d82b71f27c7fa.jpg",
-    "https://i.pinimg.com/1200x/92/a9/88/92a988838276b4cfaaae225aff3b9ede.jpg",
-    "https://i.pinimg.com/736x/cf/3b/dc/cf3bdcd596bb6aadd00a71799c03195b.jpg",
-    "https://i.pinimg.com/736x/c6/91/39/c69139966d1f2671ddef79ff476fc10f.jpg",
-    "https://i.pinimg.com/736x/51/b7/ba/51b7bac48af430afbbc955e7279e2b35.jpg",
-  ];
-
-  const securityFeatures = [
-    {
-      icon: "🔒",
-      title: "End-to-End Encryption",
-      description: "Military-grade encryption protects your data and transactions.",
-      color: "from-emerald-500 to-teal-600"
-    },
-    {
-      icon: "🛡️",
-      title: "Multi-Factor Authentication",
-      description: "Advanced security layers ensure only you can access your account.",
-      color: "from-blue-500 to-indigo-600"
-    },
-    {
-      icon: "🔐",
-      title: "Cold Storage",
-      description: "Your assets are stored offline in bank-grade security vaults.",
-      color: "from-purple-500 to-violet-600"
-    },
-    {
-      icon: "⚡",
-      title: "Real-time Monitoring",
-      description: "24/7 threat detection and instant alerts for suspicious activity.",
-      color: "from-orange-500 to-red-600"
-    }
-  ];
-
-  useEffect(() => {
-    let flipCtx;
-
-    const createFlipAnimation = () => {
-      const galleryElement = galleryRef.current;
-      const galleryWrap = galleryWrapRef.current;
-      const galleryItems = galleryElement?.querySelectorAll(".gallery-item");
-      const securityContent = securityContentRef.current;
-
-      if (!galleryElement || !galleryItems || galleryItems.length === 0) return;
-
-      if (flipCtx) {
-        flipCtx.revert();
-      }
-
-      galleryElement.classList.remove("gallery-final");
-
-      flipCtx = gsap.context(() => {
-        gsap.set(securityContent, {
-          opacity: 0,
-          y: -200,
-          scale: 0.8,
-          display: "none"
-        });
-
-        galleryElement.classList.add("gallery-final");
-        const flipState = Flip.getState(galleryItems);
-        galleryElement.classList.remove("gallery-final");
-
-        const flip = Flip.to(flipState, {
-          simple: true,
-          ease: "power2.inOut",
-          duration: 1,
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            id: "bento-gallery",
-            trigger: galleryElement,
-            start: "center center",
-            end: "+=300%",
-            scrub: true,
-            pin: galleryWrap,
-            anticipatePin: 1,
-          },
-        });
-
-        tl.add(flip);
-        tl.to({}, { duration: 2 });
-        tl.set(securityContent, { display: "block" }, "+=1");
-        
-        tl.to(securityContent, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.5,
-          ease: "power3.out"
-        }, "-=0.2");
-
-        const securityCards = securityContent?.querySelectorAll(".security-card");
-        if (securityCards) {
-          tl.fromTo(securityCards, 
-            {
-              y: -60,
-              opacity: 0,
-              rotationX: -20
-            },
-            {
-              y: 0,
-              opacity: 1,
-              rotationX: 0,
-              duration: 1,
-              stagger: 0.2,
-              ease: "power2.out"
-            }, "-=1"
-          );
-        }
-
-      }, galleryElement);
-    };
-
-    const timer = setTimeout(() => {
-      createFlipAnimation();
-      ScrollTrigger.refresh();
-    }, 200);
-
-    const handleResize = () => {
-      createFlipAnimation();
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      clearTimeout(timer);
-      if (flipCtx) {
-        flipCtx.revert();
-      }
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  return (
-    <>
-      {/* Gallery Section */}
-      <div
-        ref={galleryWrapRef}
-        className="gallery-wrap relative w-full h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-teal-600 via-teal-500 to-cyan-500"
-      >
-        <div
-          ref={galleryRef}
-          className="gallery-bento relative w-full h-full flex-none"
-        >
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className="gallery-item rounded-lg overflow-hidden"
-            >
-              <img
-                src={image}
-                alt={`Gallery item ${index + 1}`}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Security Content Overlay */}
-        <div
-          ref={securityContentRef}
-          className="absolute top-0 left-0 right-0 pointer-events-none z-20"
-          style={{ display: "none" }}
-        >
-          <div className="bg-gradient-to-b from-slate-900/95 via-slate-800/80 to-transparent pt-6 pb-20 px-6">
-            <div className="max-w-6xl mx-auto pointer-events-auto">
-              {/* Security Header */}
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-3 px-6 py-3 bg-white rounded-2xl shadow-xl mb-4">
-                  <span className="text-2xl">🔐</span>
-                  <span className="text-lg font-bold text-gray-800">Bank-Grade Security</span>
-                </div>
-                <p className="text-lg text-white max-w-2xl mx-auto">
-                  Your assets protected by industry-leading security measures
-                </p>
-              </div>
-
-              {/* Security Features Grid - New Card Style */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
-                {securityFeatures.map((feature, index) => (
-                  <div
-                    key={index}
-                    className="security-card group relative transform hover:-translate-y-3 transition-all duration-500"
-                  >
-                    {/* Clean White Card */}
-                    <div className="bg-white p-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 relative overflow-hidden">
-                      
-                      {/* Gradient accent bar */}
-                      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${feature.color}`} />
-                      
-                      {/* Content */}
-                      <div className="relative z-10">
-                        {/* Icon with gradient background */}
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                          <span className="text-white text-xl font-bold">
-                            {feature.icon}
-                          </span>
-                        </div>
-                        
-                        {/* Title */}
-                        <h3 className="text-sm font-bold text-gray-800 mb-2 leading-tight group-hover:text-gray-900">
-                          {feature.title}
-                        </h3>
-                        
-                        {/* Description */}
-                        <p className="text-xs text-gray-600 leading-relaxed group-hover:text-gray-700">
-                          {feature.description}
-                        </p>
-                      </div>
-
-                      {/* Subtle pattern overlay */}
-                      <div className="absolute top-4 right-4 w-8 h-8 opacity-5">
-                        <div className="w-full h-full bg-current rounded-full" />
-                      </div>
-                      
-                      {/* Hover glow effect */}
-                      <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA Button */}
-              <div className="text-center mt-8">
-                <button className="group inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-gray-50 text-gray-900 font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                  <span>Learn More About Security</span>
-                  <svg 
-                    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Trust indicators */}
-              <div className="flex justify-center items-center gap-6 mt-6">
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full">
-                  <span className="text-white text-xs font-medium">🏛️ Bank Partners</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full">
-                  <span className="text-white text-xs font-medium">🔍 Security Audited</span>
-                </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full">
-                  <span className="text-white text-xs font-medium">🛡️ Fully Insured</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
   );
 };
 
@@ -2353,358 +1850,6 @@ const ReviewsSection = () => {
   );
 };
 
-
-const HorizontalRoadmap = () => {
-  const containerRef = useRef(null);
-  const roadmapRef = useRef(null);
-  
-  const roadmapData = {
-    2024: {
-      title: "Foundation & Launch Phase",
-      status: "completed",
-      progress: 100,
-      phases: [
-        "• Concept development and team formation of the core Jaimax team.",
-        "• Official website launch introducing the Jaimax ecosystem.",
-        "• Publication of the detailed whitepaper outlining goals and tokenomics.",
-        "• Public ICO launch and community onboarding.",
-        "• Release of the Jaimax mobile application for early users.",
-      ],
-    },
-    2025: {
-      title: "Integration & Growth",
-      status: "active",
-      progress: 35,
-      phases: [
-        "• Launch of the Jaimax Wallet (J-Wallet) for secure token management.",
-        "• Integration of DigiLocker KYC for secure user verification.",
-        "• Launch of coin swapping within the Jaimax ecosystem.",
-        "• Enable users to buy JMC through Binance exchange wallet connectivity.",
-      ],
-    },
-    2026: {
-      title: "Blockchain & Platform Expansion",
-      status: "future",
-      progress: 0,
-      phases: [
-        "• Development of Jaimax's own blockchain infrastructure.",
-        "• Launch of DeFi features to enhance financial accessibility.",
-        "• Launch of the NFT Platform.",
-        "• Deployment of DApps across Education, Gaming, Tourism, and Finance.",
-        "• Launch of person-to-person (P2P) buying and selling functionality.",
-        "• Launch of Jaimax's own payment gateway for seamless transactions.",
-      ],
-    },
-    2027: {
-      title: "Global Presence",
-      status: "future",
-      progress: 0,
-      phases: [
-        "• Launch of the Jaimax Social Hub to connect users, traders, and developers.",
-        "• Launch of the Jaimax Exchange for direct token trading.",
-        "• Trading live for all verified users.",
-        "• Expansion to global exchange listings.",
-      ],
-    },
-  };
-
-  // Convert the object into an array for easier mapping
-  const roadmapArray = Object.keys(roadmapData).map((year) => ({
-    year,
-    ...roadmapData[year]
-  }));
-
-  // Status styling configuration
-  const getStatusConfig = (status) => {
-    switch (status) {
-      case 'completed':
-        return {
-          badge: "Completed",
-          badgeColor: "bg-teal-600",
-          borderColor: "border-teal-500",
-          bgColor: "from-teal-50 to-teal-100/50",
-          iconColor: "text-teal-600",
-          progressColor: "bg-teal-500",
-          progressBg: "bg-teal-200/50",
-          icon: "✓"
-        };
-      case 'active':
-        return {
-          badge: "In Progress",
-          badgeColor: "bg-teal-500",
-          borderColor: "border-teal-400",
-          bgColor: "from-teal-50 to-teal-100/40",
-          iconColor: "text-teal-500",
-          progressColor: "bg-teal-400",
-          progressBg: "bg-teal-200/40",
-          icon: "◉"
-        };
-      default:
-        return {
-          badge: "Upcoming",
-          badgeColor: "bg-teal-700/50",
-          borderColor: "border-teal-300/50",
-          bgColor: "from-teal-50/70 to-teal-100/30",
-          iconColor: "text-teal-600/50",
-          progressColor: "bg-teal-300/50",
-          progressBg: "bg-teal-100/50",
-          icon: "○"
-        };
-    }
-  };
-
-  useEffect(() => {
-    // Clean up previous instances
-    const cleanup = () => {
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.vars.id === "roadmapScroller") {
-          trigger.kill();
-        }
-      });
-    };
-
-    // Initialize ScrollTrigger with delay to ensure DOM is ready
-    const timer = setTimeout(() => {
-      cleanup();
-
-      const container = containerRef.current;
-      const roadmap = roadmapRef.current;
-
-      if (!container || !roadmap) return;
-
-      // Calculate the total width to ensure we can see all years
-      const totalWidth = roadmap.scrollWidth;
-      const viewportWidth = container.offsetWidth;
-      const scrollDistance = Math.max(0, totalWidth - viewportWidth);
-
-      // Set initial state for items
-      gsap.set(".roadmap-card", {
-        opacity: 0.6,
-        y: 20,
-        scale: 0.95
-      });
-
-      // Create horizontal scroll animation
-      gsap.to(roadmap, {
-        x: -scrollDistance,
-        ease: "none",
-        scrollTrigger: {
-          id: "roadmapScroller",
-          trigger: container,
-          start: "top center",
-          end: `+=${scrollDistance + 300}`, // Add extra distance for smoother scrolling
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: self => {
-            // Make cards more prominent as they come into view
-            const cards = document.querySelectorAll(".roadmap-card");
-            const containerCenter = viewportWidth / 2;
-            const scrollX = self.progress * scrollDistance;
-            
-            cards.forEach((card, i) => {
-              // Get the card's center position relative to the viewport
-              const cardRect = card.getBoundingClientRect();
-              const cardCenterX = cardRect.left + (cardRect.width / 2) - container.getBoundingClientRect().left;
-              
-              // Calculate distance from center (normalized)
-              const distFromCenter = Math.abs(cardCenterX - containerCenter) / (viewportWidth / 2);
-              const activeAmount = Math.max(0, 1 - distFromCenter);
-              
-              // Apply animations based on position
-              gsap.to(card, {
-                opacity: 0.6 + (activeAmount * 0.4),
-                y: 20 * (1 - activeAmount),
-                scale: 0.95 + (activeAmount * 0.05),
-                duration: 0.3
-              });
-              
-              // Animate phase items when card is active
-              const phaseItems = card.querySelectorAll(".phase-item");
-              if (activeAmount > 0.7) {
-                gsap.to(phaseItems, {
-                  opacity: 1,
-                  x: 0,
-                  stagger: 0.05,
-                  duration: 0.3
-                });
-              } else {
-                gsap.to(phaseItems, {
-                  opacity: 0.7,
-                  x: -10,
-                  duration: 0.3
-                });
-              }
-            });
-          }
-        }
-      });
-      
-      // Pre-set phase items
-      gsap.set(".phase-item", {
-        opacity: 0.7,
-        x: -10
-      });
-      
-      // Refresh ScrollTrigger
-      ScrollTrigger.refresh();
-    }, 600);
-
-    // Resize handler
-    const handleResize = () => {
-      ScrollTrigger.refresh();
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      clearTimeout(timer);
-      cleanup();
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  return (
-    <div className="w-full bg-gradient-to-b from-teal-50/40 to-teal-100/20 py-16 md:py-20 overflow-hidden">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-100/60 text-teal-700 text-sm font-medium mb-4">
-          <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
-          <span>Strategic Timeline</span>
-        </div>
-        <h2 className="text-4xl font-bold text-teal-800 mb-4">
-          Our Roadmap to Success
-        </h2>
-        <p className="text-teal-700 max-w-2xl">
-          Follow Jaimax's journey from concept to global presence - our strategic path to revolutionize digital finance
-        </p>
-      </div>
-
-      {/* Roadmap Container */}
-      <div 
-        ref={containerRef}
-        className="relative h-[600px] overflow-hidden"
-      >
-        {/* Left fade gradient */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none bg-gradient-to-r from-teal-50/40 to-transparent"></div>
-        
-        {/* Right fade gradient */}
-        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none bg-gradient-to-l from-teal-50/40 to-transparent"></div>
-        
-        <div 
-          ref={roadmapRef}
-          className="flex items-center h-full px-[10vw] gap-12 md:gap-16 lg:gap-20"
-          style={{ width: 'max-content', paddingTop: '0', paddingBottom: '0' }}
-        >
-          {/* Timeline Bar */}
-          <div className="absolute top-1/2 left-0 h-3 bg-gradient-to-r from-teal-200/30 via-teal-300/40 to-teal-200/30 rounded-full z-0"
-               style={{ width: '100%', transform: 'translateY(-50%)' }}/>
-          
-          {roadmapArray.map((item, index) => {
-            const statusConfig = getStatusConfig(item.status);
-            
-            return (
-              <div key={index} className="roadmap-card relative flex-shrink-0 w-[300px] md:w-[350px]">
-                {/* Year Circle */}
-                <div className="absolute left-1/2 -translate-x-1/2 -top-24 z-20">
-                  <div className={`w-20 h-20 rounded-full bg-gradient-to-b ${statusConfig.bgColor} border-4 ${statusConfig.borderColor} flex items-center justify-center shadow-lg`}>
-                    <div className="text-center">
-                      <div className={`text-xl font-bold ${statusConfig.iconColor}`}>{item.year}</div>
-                      <div className={`text-xs ${item.status === 'future' ? 'text-teal-600/50' : 'text-teal-500'}`}>
-                        {statusConfig.icon}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Main Card */}
-                <div className="relative mt-0 bg-gradient-to-br from-teal-50/80 to-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-teal-200/50 overflow-hidden transition-all duration-300 hover:shadow-xl">
-                  {/* Header */}
-                  <div className="bg-gradient-to-r from-teal-100/60 to-teal-50/60 p-4 border-b border-teal-200/50">
-                    <div className="flex justify-between items-center">
-                      <h3 className="text-lg md:text-xl font-bold text-teal-800">{item.title}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium text-white ${statusConfig.badgeColor}`}>
-                        {statusConfig.badge}
-                      </span>
-                    </div>
-                    
-                    {/* Progress Bar */}
-                    <div className="mt-3">
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-teal-700 font-medium">Progress</span>
-                        <span className={item.status === 'future' ? 'text-teal-600/50' : 'text-teal-700'}>
-                          {item.progress}%
-                        </span>
-                      </div>
-                      <div className={`h-2.5 w-full rounded-full ${statusConfig.progressBg}`}>
-                        <div 
-                          className={`h-full rounded-full ${statusConfig.progressColor} transition-all duration-1000 ease-out`}
-                          style={{ width: `${item.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="p-4 md:p-5 text-left max-h-[300px] overflow-y-auto custom-scrollbar">
-                    <h4 className="text-sm font-semibold text-teal-700 mb-3">Key Developments:</h4>
-                    <ul className="space-y-2.5 text-sm">
-                      {item.phases.map((phase, phaseIndex) => (
-                        <li 
-                          key={phaseIndex} 
-                          className="phase-item text-teal-800/90 leading-tight"
-                        >
-                          <span>{phase}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                
-                {/* Dot on timeline */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                  <div className={`w-5 h-5 rounded-full ${item.status === 'active' ? 'bg-teal-400' : item.status === 'completed' ? 'bg-teal-500' : 'bg-teal-300/50'} border-4 border-white/80 ${item.status === 'active' ? 'animate-pulse' : ''}`} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      
-      {/* Scroll Indicator */}
-      <div className="text-center mt-8">
-        <div className="inline-flex items-center text-teal-700 bg-teal-100/50 backdrop-blur-sm px-5 py-2 rounded-full shadow-sm border border-teal-200/50">
-          <span className="mr-2">Scroll to explore our journey</span>
-          <div className="animate-bounce">
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        </div>
-      </div>
-      
-      {/* Custom scrollbar styles */}
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(15, 118, 110, 0.05);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(15, 118, 110, 0.2);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(15, 118, 110, 0.3);
-        }
-      `}</style>
-    </div>
-  );
-};
-
-
 const TextParallaxContent = ({ imgUrl, subheading, heading, children }) => {
   return (
     <div
@@ -2832,7 +1977,7 @@ const FloatingParticles = () => {
 const CornerDecorations = ({ opacity }) => {
   return (
     <>
-      <motion.div className="absolute top-8 left-8" style={{ opacity }}>
+      <motion.div className="absolute top-8 left-0 right-0 h-2 z-0" style={{ opacity }}>
         <motion.div
           className="w-20 h-20 border-l-2 border-t-2 border-white/30 rounded-tl-2xl"
           animate={{ scale: [1, 1.1, 1] }}
@@ -2951,59 +2096,6 @@ const OverlayCopy = ({ subheading, heading }) => {
   );
 };
 
-// ==================== JAIMAX CONTENT SECTION ====================
-
-const JaimaxContent = () => {
-  return (
-    <div className="relative bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
-      {/* Background Elements */}
-      <BackgroundElements />
-
-      {/* Main Content */}
-      <div className="relative z-10">
-
-        {/* Introduction Section */}
-        <IntroductionSection />
-
-        {/* Features Grid */}
-        <FeaturesSection />
-
-        {/* Security Section */}
-        <SecuritySection />
-
-        {/* Ecosystem Section */}
-        <EcosystemSection />
-
-        {/* App section */}
-        <AppSection/>
-      </div>
-    </div>
-  );  
-};
-
-const BackgroundElements = () => {
-  return (
-    <>
-      {/* Gradient Orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
-      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/3 left-1/3 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-
-      {/* Grid Pattern */}
-      <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: "50px 50px",
-        }}
-      />
-    </>
-  );
-};
-
 const IntroductionSection = () => {
   const words = ["Innovation", "Transparency", "Stability", "Growth"];
   const [currentWord, setCurrentWord] = useState(0);
@@ -3016,7 +2108,7 @@ const IntroductionSection = () => {
   }, []);
 
   return (
-    <section className="relative py-24 px-4 md:px-8 bg-white overflow-hidden min-h-screen flex items-center">
+    <section className="relative py-24 px-4 md:px-8 bg-teal-50 overflow-hidden min-h-screen flex items-center">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
         <svg
@@ -3081,74 +2173,11 @@ const IntroductionSection = () => {
                 {/* Front Card */}
                 <motion.div
                   whileHover={{ y: -10 }}
-                  className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl p-8 shadow-2xl"
+                  className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl p-2 shadow-2xl"
                 >
                   {/* Card Header */}
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
-                        <span className="text-white font-bold text-lg">J</span>
-                      </div>
-                      <div>
-                        <p className="text-white font-bold">JAIMAX</p>
-                        <p className="text-gray-400 text-xs">Premium Crypto</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="w-2 h-2 rounded-full bg-green-400"
-                      />
-                      <span className="text-green-400 text-xs font-medium">Live</span>
-                    </div>
-                  </div>
-
-                  {/* Coin Display */}
-                  <div className="relative flex justify-center py-8">
-                    {/* Glow */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.div
-                        animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.2, 0.5] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                        className="w-32 h-32 rounded-full bg-teal-500/30 blur-2xl"
-                      />
-                    </div>
-                    
-                    {/* 3D Coin */}
-                    <motion.div
-                      animate={{ rotateY: [0, 360] }}
-                      transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                      style={{ transformStyle: "preserve-3d" }}
-                      className="relative"
-                    >
-                      <div className="w-28 h-28 rounded-full bg-gradient-to-br from-teal-400 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-teal-300 to-teal-500 flex items-center justify-center border-4 border-teal-200/30">
-                          <span className="text-white font-black text-3xl">JMX</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Price Section */}
-                  <div className="text-center mb-6">
-                    <p className="text-gray-400 text-sm mb-1">Current Price</p>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="text-white text-3xl font-bold">₹0.50</span>
-                      <span className="px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold flex items-center gap-1">
-                        <FaArrowUp className="text-[10px]" />
-                        12.5%
-                      </span>
-                    </div>
-                  </div>
-
-
-
-                  {/* Decorative Elements */}
-                  <div className="absolute top-4 right-4 w-20 h-20 opacity-10">
-                    <svg viewBox="0 0 100 100" className="w-full h-full">
-                      <circle cx="50" cy="50" r="45" fill="none" stroke="white" strokeWidth="2" strokeDasharray="10 5" />
-                    </svg>
+                  <div className="flex items-center justify-between mb-0">
+                    <img src="https://i.pinimg.com/736x/36/18/db/3618db8b1fa852459e23accdcb40aa7b.jpg" alt="" srcset="" />
                   </div>
                 </motion.div>
               </div>
@@ -3324,390 +2353,261 @@ const IntroductionSection = () => {
   );
 };
 
-const FeaturesSection = () => {
+const JaimaxUniqueFeature = ({ uniqueFeaturesRef }) => {
   const features = [
     {
-      icon: FaHandshake,
-      title: "Trust",
-      description: "Built on transparency and backed by a reputable company",
+      id: 1,
+      bgColor: '#085056',
+      title: 'Low Entry Point',
+      subtitle: 'Start Your Journey',
+      description:
+        'Begin investing in Jaimax with just ₹2500. A simple and accessible entry point designed to empower every Indian to step confidently into cryptocurrency.',
+      icon: <DollarSign className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />,
+      image:
+        'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80',
+      stats: { value: '₹50', label: 'Minimum' },
     },
     {
-      icon: FaCubes,
-      title: "Technology", 
-      description: "Advanced blockchain infrastructure for secure transactions",
+      id: 2,
+      bgColor: '#085056',
+      title: 'High Returns',
+      subtitle: 'Maximize Growth',
+      description:
+        'Early investors unlock powerful growth potential through the Jaimax pre-sale advantage, gaining access to premium pricing before public trading begins.',
+      icon: <TrendingUp className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />,
+      image:
+        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80',
+      stats: { value: '410%', label: 'ROI' },
     },
     {
-      icon: FaChartLine,
-      title: "Opportunity",
-      description: "Early access to India's most promising crypto project",
+      id: 3,
+      bgColor: '#085056',
+      title: 'Secure Platform',
+      subtitle: 'Trust & Safety',
+      description:
+        'Every Jaimax transaction is protected by advanced blockchain encryption, ensuring full transparency, zero manipulation, and industry-leading security.',
+      icon: <Shield className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />,
+      image:
+        'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&q=80',
+      stats: { value: '100%', label: 'Secure' },
     },
     {
-      icon: FaBolt,
-      title: "Fast Transactions",
-      description: "Lightning-fast processing with minimal fees",
+      id: 4,
+      bgColor: '#085056',
+      title: 'Community Driven',
+      subtitle: 'Growing Together',
+      description:
+        'Join a rapidly growing ecosystem where investors, developers, and learners unite to build a transparent, educational, and future-ready blockchain community.',
+      icon: <Users className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />,
+      image:
+        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
+      stats: { value: '10K+', label: 'Members' },
     },
     {
-      icon: FaShieldAlt,
-      title: "Strong Security",
-      description: "Industry-leading encryption and protection",
-    },
-    {
-      icon: FaGlobe,
-      title: "Transparent Model",
-      description: "Simple and clear investment structure",
+      id: 5,
+      bgColor: '#085056',
+      title: 'Future Ready',
+      subtitle: 'Innovation First',
+      description:
+        'Jaimax is building a complete blockchain ecosystem powering DeFi, NFTs, dApps, and real-world utility — connecting India to the next generation of digital finance.',
+      icon: <Zap className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16" />,
+      image:
+        'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
+      stats: { value: '2026', label: 'Launch' },
     },
   ];
 
   return (
-    <section className="relative py-20 md:py-32 px-4 bg-[#085056] overflow-hidden">
-      {/* Underwater lighting effect */}
-      <div className="absolute inset-0 opacity-60">
+    <>
+      {/* Section Title */}
+      <div className="text-center py-8 sm:py-12 md:py-16 lg:py-20 bg-[#085056] px-4 sm:px-6">
         <motion.div
-          animate={{ 
-            opacity: [0.5, 0.7, 0.5], 
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute w-full h-full"
-          style={{
-            background: "radial-gradient(circle at 30% 30%, rgba(0,240,255,0.2), transparent 70%)"
-          }}
-        />
-        <motion.div
-          animate={{ 
-            opacity: [0.3, 0.5, 0.3], 
-            scale: [1.2, 1, 1.2]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute w-full h-full"
-          style={{
-            background: "radial-gradient(circle at 70% 60%, rgba(0,240,255,0.15), transparent 60%)"
-          }}
-        />
-      </div>
-      
-      {/* Bubbles effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-white/30 backdrop-blur-sm border border-white/40"
-            initial={{
-              x: Math.random() * 100 + "%",
-              y: "100%",
-              width: Math.random() * 30 + 10,
-              height: Math.random() * 30 + 10,
-            }}
-            animate={{
-              y: "-10%",
-              x: `calc(${Math.random() * 20 - 10}% + ${Math.sin(Math.random() * Math.PI) * 50}px)`,
-            }}
-            transition={{
-              duration: Math.random() * 20 + 15,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 20,
-            }}
-          />
-        ))}
-      </div>
-      
-      {/* Ocean floor texture */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-[#06424a]/50">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <pattern id="ocean-floor" x="0" y="0" width="80" height="20" patternUnits="userSpaceOnUse">
-            <path d="M0,10 Q10,15 20,10 Q30,5 40,10 Q50,15 60,10 Q70,5 80,10" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#ocean-floor)" />
-        </svg>
-      </div>
-      
-      {/* Swimming fish silhouettes */}
-      {[...Array(5)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute opacity-10"
-          initial={{
-            x: i % 2 === 0 ? "-10%" : "110%",
-            y: 100 + (i * 100),
-            scale: 0.5 + Math.random() * 0.5,
-          }}
-          animate={{
-            x: i % 2 === 0 ? "110%" : "-10%",
-          }}
-          transition={{
-            duration: 20 + Math.random() * 10,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        >
-          <svg width="100" height="40" viewBox="0 0 100 40" fill="white">
-            <path d="M20,20 Q30,5 50,5 Q70,5 80,20 Q70,35 50,35 Q30,35 20,20 Z" />
-            <path d="M80,20 L95,10 L95,30 Z" />
-            <circle cx="30" cy="15" r="2" />
-          </svg>
-        </motion.div>
-      ))}
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Title Section */}
-        <div className="text-center mb-20">
-          <motion.div
-            initial={{ y: -50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="mb-8"
-          >
-            <div className="inline-block relative">
-              <span className="w-3 h-3 rounded-full bg-white absolute -left-6 top-1/2 transform -translate-y-1/2"></span>
-              <span className="text-white/70 uppercase tracking-widest text-sm font-medium">Why Choose Jaimax</span>
-              <span className="w-3 h-3 rounded-full bg-white absolute -right-6 top-1/2 transform -translate-y-1/2"></span>
-            </div>
-          </motion.div>
-          
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h2 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-              <span>Dive into the </span>
-              <span className="relative inline-block">
-                Future
-                <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 200 12">
-                  <motion.path 
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 1 }}
-                    d="M0,6 C50,-10 150,20 200,6" 
-                    fill="none" 
-                    stroke="rgba(255,255,255,0.5)" 
-                    strokeWidth="2"
-                  />
-                </svg>
-              </span>
-            </h2>
-          </motion.div>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto"
-          >
-            Explore the depths of our innovative blockchain technology that's transforming the way India invests in cryptocurrency.
-          </motion.p>
-        </div>
-        
-        {/* Features Display - Hexagonal Layout */}
-        <div className="relative">
-          {/* Central logo */}
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 100 }}
-            className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-40 h-40 rounded-full bg-white/10 backdrop-blur-md items-center justify-center"
-          >
-            <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center">
-              <span className="text-white font-bold text-4xl">JMX</span>
-            </div>
-            
-            {/* Pulsing rings */}
-            <motion.div
-              animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute inset-0 rounded-full border-2 border-white/30"
-            />
-            <motion.div
-              animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-              className="absolute inset-0 rounded-full border-2 border-white/20"
-            />
-          </motion.div>
-          
-          {/* Mobile Central Logo */}
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 100 }}
-            className="lg:hidden flex mx-auto mb-12 w-32 h-32 rounded-full bg-white/10 backdrop-blur-md items-center justify-center"
-          >
-            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center">
-              <span className="text-white font-bold text-3xl">JMX</span>
-            </div>
-          </motion.div>
-
-          {/* Features Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="group relative"
-              >
-                <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl group-hover:bg-white/10 transition-all duration-500 opacity-80"></div>
-                
-                <div className="relative backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 h-full transform transition-all duration-500 group-hover:border-white/40 group-hover:bg-white/15 overflow-hidden">
-                  {/* Wave Animation Inside Card */}
-                  <div className="absolute inset-x-0 bottom-0 h-16 opacity-20">
-                    <motion.div
-                      animate={{ 
-                        x: [-100, 100],
-                        y: [0, 5, 0]
-                      }}
-                      transition={{
-                        x: { duration: 10, repeat: Infinity, repeatType: "mirror" },
-                        y: { duration: 5, repeat: Infinity, repeatType: "mirror" }
-                      }}
-                    >
-                      <svg width="300" height="50" viewBox="0 0 300 50" preserveAspectRatio="none">
-                        <path 
-                          d="M0,25 C50,10 100,40 150,25 C200,10 250,40 300,25 L300,50 L0,50 Z" 
-                          fill="white"
-                        />
-                      </svg>
-                    </motion.div>
-                  </div>
-                  
-                  <div className="relative z-10">
-                    {/* Icon with glow effect */}
-                    <div className="w-16 h-16 flex items-center justify-center relative mb-5">
-                      <div className="absolute inset-0 bg-white rounded-full opacity-20 blur-md group-hover:opacity-30 transition-opacity"></div>
-                      <div className="relative bg-[#06424a] rounded-full w-14 h-14 flex items-center justify-center border border-white/30 group-hover:border-white/50 transition-colors">
-                        <feature.icon className="text-white text-2xl" />
-                      </div>
-                    </div>
-                    
-                    {/* Content */}
-                    <h3 className="text-white text-xl font-bold mb-3 group-hover:text-white/90">{feature.title}</h3>
-                    <p className="text-white/70 mb-4 group-hover:text-white/80 transition-colors">{feature.description}</p>
-                    
-                    {/* Bottom Reveal Animation */}
-                    <div className="flex items-center justify-between">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: "70%" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-                        className="h-0.5 bg-gradient-to-r from-white/80 to-white/20 rounded-full"
-                      />
-                      <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                        <motion.div
-                          whileHover={{ rotate: 180 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <FaArrowRight className="text-white text-xs" />
-                        </motion.div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Animated Light Reflection */}
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-45 rounded-2xl"
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Seaweed/Coral Decoration */}
-        <div className="absolute -bottom-10 left-10 opacity-20">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              animate={{ 
-                rotateZ: [0, 5, -5, 0],
-                scaleY: [1, 1.02, 0.98, 1]
-              }}
-              transition={{
-                duration: 3 + i,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute bottom-0"
-              style={{
-                left: `${i * 15}px`,
-                height: `${80 + Math.random() * 60}px`,
-                width: '10px',
-                background: 'linear-gradient(to top, white, transparent)',
-                borderRadius: '0 0 10px 10px',
-                transformOrigin: 'bottom'
-              }}
-            />
-          ))}
-        </div>
-        
-        {/* Coral Right Side */}
-        <div className="absolute -bottom-5 right-20 opacity-20">
-          <motion.div
-            animate={{ 
-              scaleY: [1, 1.05, 0.95, 1]
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="relative"
-            style={{
-              height: '60px',
-              width: '80px',
-            }}
-          >
-            <svg viewBox="0 0 100 70" fill="white">
-              <path d="M10,70 C0,40 30,30 20,0 C40,20 50,10 60,0 C65,30 85,20 90,0 C95,30 100,40 90,70 Z" />
-            </svg>
-          </motion.div>
-        </div>
-        
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.8 }}
-          className="mt-20 text-center"
+          className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 mb-3 sm:mb-4 md:mb-6"
         >
-          <motion.button
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 0 40px rgba(255,255,255,0.3)"
-            }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-white px-10 py-4 rounded-full text-[#085056] font-bold text-lg shadow-lg shadow-white/10 relative overflow-hidden group"
-          >
-            <motion.span
-              initial={{ y: 0, opacity: 1 }}
-              whileHover={{ y: -30, opacity: 0 }}
-              className="inline-block"
-            >
-              Explore Features
-            </motion.span>
-            <motion.span
-              initial={{ y: 30, opacity: 0 }}
-              whileHover={{ y: 0, opacity: 1 }}
-              className="absolute inset-0 flex items-center justify-center"
-            >
-              Dive Deeper <FaArrowRight className="ml-2" />
-            </motion.span>
-          </motion.button>
+          <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-teal-500 animate-pulse" />
+          <span className="text-teal-700 text-xs sm:text-sm font-semibold">
+            What Makes Us Different
+          </span>
         </motion.div>
+
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 sm:mb-3 md:mb-4"
+        >
+          What Makes Jaimax{" "}
+          <span className="bg-gradient-to-r from-teal-500 to-lime-500 bg-clip-text text-transparent">
+            Unique?
+          </span>
+        </motion.h2>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-3xl mx-auto"
+        >
+          Discover the features that make Jaimax India's most promising cryptocurrency
+        </motion.p>
       </div>
-    </section>
+
+      {/* Horizontal Scroll Container */}
+      <div 
+        ref={uniqueFeaturesRef}
+        className="relative overflow-hidden bg-[#085056]"
+        style={{ minHeight: '100vh', height: 'auto' }}
+      >
+        {features.map((feature) => (
+          <div
+            key={feature.id}
+            className={`unique-feature-${feature.id} absolute top-0 left-0 w-full h-full flex items-center justify-center py-8 sm:py-12`}
+            style={{ backgroundColor: feature.bgColor }}
+          >
+            {/* Background Pattern */}
+            <div className="absolute inset-0 overflow-hidden opacity-5">
+              <div className="h-full w-full" style={{
+                backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+                backgroundSize: '30px 30px'
+              }} />
+            </div>
+
+            <div className="feature-content w-full container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 xl:gap-16 items-center">
+                
+                {/* Content Side */}
+                <div className="max-w-lg mx-auto lg:mx-0 space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6 text-center lg:text-left order-2 lg:order-1">
+                  {/* Badge */}
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+                    <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-[#b8cc26] animate-pulse" />
+                    <span className="text-white text-xs sm:text-sm font-semibold">
+                      {feature.subtitle}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                    {feature.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 leading-relaxed">
+                    {feature.description}
+                  </p>
+
+                  {/* CTA Buttons */}
+                  <div className="flex flex-col xs:flex-row items-center justify-center lg:justify-start gap-2 xs:gap-3 sm:gap-4 pt-3 sm:pt-4">
+                    <button 
+                      onClick={() => window.location.href = "/login"}
+                      className="w-full xs:w-auto px-4 xs:px-5 sm:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] text-[#0f1c14] rounded-full font-bold hover:scale-105 transform transition-all duration-300 shadow-xl text-xs sm:text-sm md:text-base"
+                    >
+                      Get Started
+                    </button>
+                    <button className="w-full xs:w-auto px-4 xs:px-5 sm:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-full font-bold hover:bg-white/20 transition-all duration-300 text-xs sm:text-sm md:text-base">
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+
+                {/* Image Side */}
+                <div className="relative flex items-center justify-center order-1 lg:order-2 h-48 xs:h-56 sm:h-64 md:h-80 lg:h-auto mb-4 sm:mb-6 lg:mb-0">
+                  {/* Animated Background Circles - Scaled down on smaller screens */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div 
+                      animate={{ 
+                        scale: [1, 1.2, 1],
+                        opacity: [0.2, 0.4, 0.2]
+                      }}
+                      transition={{ 
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="w-32 h-32 xs:w-40 xs:h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full bg-white/10 blur-3xl"
+                    />
+                    <motion.div 
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [0.15, 0.3, 0.15]
+                      }}
+                      transition={{ 
+                        duration: 5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 0.5
+                      }}
+                      className="absolute w-24 h-24 xs:w-28 xs:h-28 sm:w-32 sm:h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full bg-[#b8cc26]/20 blur-2xl"
+                    />
+                  </div>
+                  
+                  {/* Main Image Container - Responsive sizing */}
+                  <motion.div 
+                    animate={{ 
+                      y: [0, -10, 0],
+                      rotate: [0, 2, 0]
+                    }}
+                    transition={{ 
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    className="relative z-10 w-32 h-32 xs:w-40 xs:h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-80 xl:h-80"
+                  >
+                    {/* Outer Ring with Gradient Border */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-white/20 to-white/10 backdrop-blur-sm border-2 sm:border-3 md:border-4 border-white/40 shadow-2xl overflow-hidden">
+                      {/* Image */}
+                      <img 
+                        src={feature.image}
+                        alt={feature.title}
+                        className="w-full h-full object-cover rounded-full opacity-80 hover:opacity-100 transition-opacity duration-500"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    {/* Rotating Gradient Border Effect */}
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 rounded-full opacity-50"
+                      style={{
+                        background: `conic-gradient(from 0deg, transparent, rgba(184, 204, 38, 0.6), transparent)`
+                      }}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+
+            {/* Feature Number - Better responsive sizing */}
+            <div className="absolute top-2 right-2 xs:top-3 xs:right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 lg:top-8 lg:right-8 text-white/5 font-bold pointer-events-none select-none" 
+              style={{ 
+                fontSize: 'clamp(4rem, 10vw, 12rem)', 
+                lineHeight: 0.8
+              }}>
+              0{feature.id}
+            </div>
+
+            {/* Progress Indicator */}
+            <div className="absolute bottom-3 xs:bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-1 xs:gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md px-2 xs:px-3 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-2.5 md:py-3 rounded-full border border-white/20">
+              {features.map((_, i) => (
+                <div 
+                  key={i}
+                  className={`rounded-full transition-all duration-500 ${
+                    i === feature.id - 1 
+                      ? 'w-5 xs:w-6 sm:w-8 md:w-10 lg:w-12 h-1 xs:h-1.5 md:h-2 bg-[#b8cc26] shadow-lg shadow-[#b8cc26]/50' 
+                      : 'w-1 xs:w-1.5 sm:w-2 h-1 xs:h-1.5 sm:h-2 bg-white/30 hover:bg-white/50'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
@@ -3731,7 +2631,7 @@ const SecuritySection = () => {
   ];
 
   return (
-    <section className="relative py-20 px-4 md:px-8 bg-white overflow-hidden">
+    <section className="relative py-20 px-4 md:px-8 bg-teal-50 overflow-hidden">
       {/* Top Wave */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
         <svg
@@ -3889,74 +2789,8 @@ const EcosystemSection = () => {
   ];
 
   return (
-    <section className="py-24 px-4 md:px-8 bg-[#085056] overflow-hidden relative">
+    <section className="py-6 px-4 md:px-8 bg-[#085056] overflow-hidden relative">
 
-
-      {/* Background Animation Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Animated Grid */}
-        <motion.div
-          initial={{ opacity: 0.05 }}
-          animate={{
-            opacity: [0.03, 0.05, 0.03],
-            backgroundPosition: ["0px 0px", "50px 50px"]
-          }}
-          transition={{
-            opacity: { duration: 5, repeat: Infinity },
-            backgroundPosition: { duration: 20, repeat: Infinity, ease: "linear" }
-          }}
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px'
-          }}
-        />
-
-        {/* Floating Particles */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{
-              x: Math.random() * 100 + "%",
-              y: Math.random() * 100 + "%",
-              scale: Math.random() * 0.5 + 0.5,
-              opacity: Math.random() * 0.3 + 0.1
-            }}
-            animate={{
-              y: ["-10%", "110%"],
-              rotate: [0, 360]
-            }}
-            transition={{
-              duration: Math.random() * 20 + 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            className="absolute w-2 h-2 rounded-full bg-white/30"
-          />
-        ))}
-
-        {/* Gradient Blobs */}
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1], 
-            opacity: [0.1, 0.2, 0.1],
-            x: [-50, 50, -50],
-            y: [-20, 20, -20]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-white/10 blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1.1, 1, 1.1], 
-            opacity: [0.15, 0.25, 0.15],
-            x: [30, -30, 30],
-            y: [10, -10, 10]
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-1/3 -right-20 w-80 h-80 rounded-full bg-teal-200/10 blur-3xl"
-        />
-      </div>
 
       {/* Content */}
       <div className="max-w-6xl mx-auto relative z-10 mt-8">
@@ -4039,7 +2873,8 @@ const EcosystemSection = () => {
             transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
             className="relative z-20 w-32 h-32 bg-white rounded-full mx-auto mb-16 flex items-center justify-center shadow-xl shadow-white/20"
           >
-            <div className="text-[#085056] font-bold text-xl">JAIMAX</div>
+            <div className="text-[#085056] font-bold text-xl"> <img src={jaicoins}/>
+          </div>
             {/* Pulsing ring animation */}
             <motion.div
               animate={{ scale: [1, 1.4, 1], opacity: [0.7, 0, 0.7] }}
@@ -4161,81 +2996,6 @@ const EcosystemSection = () => {
           </div>
         </div>
 
-        {/* Bottom Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="bg-white/10 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-10 mt-10 relative overflow-hidden"
-        >
-          {/* Background pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <pattern id="ecosystem-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M0 20 L40 20 M20 0 L20 40" stroke="#ffffff" strokeWidth="0.5" fill="none" />
-              </pattern>
-              <rect width="100%" height="100%" fill="url(#ecosystem-pattern)" />
-            </svg>
-          </div>
-          
-          <p className="text-white/90 text-lg max-w-3xl mx-auto leading-relaxed relative z-10 text-center">
-            The Jaimax Coin is built to handle{" "}
-            <motion.span 
-              className="relative inline-block text-teal-200 font-semibold px-1"
-              whileHover={{ scale: 1.05 }}
-            >
-              real-world utility
-              <motion.div 
-                className="absolute bottom-0 left-0 w-full h-0.5 bg-teal-200/30"
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-              />
-            </motion.span>{" "}
-            — from DeFi and NFTs to decentralized applications — ensuring that each
-            coin holds{" "}
-            <motion.span 
-              className="relative inline-block text-teal-200 font-semibold px-1"
-              whileHover={{ scale: 1.05 }}
-            >
-              long-term value
-              <motion.div 
-                className="absolute bottom-0 left-0 w-full h-0.5 bg-teal-200/30" 
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-              />
-            </motion.span>{" "}
-            beyond speculation.
-          </p>
-          
-          {/* Call to action button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.8 }}
-            className="mt-10 text-center"
-          >
-            <motion.button
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-white text-[#085056] font-bold py-3 px-8 rounded-xl shadow-lg shadow-black/20 relative overflow-hidden group"
-            >
-              {/* Shine effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-200/30 to-transparent -skew-x-45"
-                animate={{ x: ["-100%", "200%"] }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-              />
-              <span className="relative z-10 flex items-center gap-2">
-                <span>Explore Ecosystem</span>
-                <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform" />
-              </span>
-            </motion.button>
-          </motion.div>
-        </motion.div>
       </div>
       
       {/* Custom animations */}
@@ -4277,9 +3037,7 @@ const AppSection = () => {
   ];
 
   return (
-    <section className="py-24 px-4 md:px-4 bg-[#085056] overflow-hidden relative">
-
-
+    <section className="py-10 px-4 md:px-4 bg-[#085056] overflow-hidden relative">
       {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(15)].map((_, i) => (
@@ -4356,7 +3114,7 @@ const AppSection = () => {
             {/* Title */}
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Jaimax in 
-              <span className="relative ml-2">
+              <span className="relative inline-block ml-2">
                 <span className="text-teal-200">Your Pocket</span>
                 <motion.svg 
                   width="100%" 
@@ -4407,7 +3165,7 @@ const AppSection = () => {
                 </div>
               </motion.a>
               
-              {/* App Store - Coming Soon */}
+              {/* App Store - Coming Soon - Fixed Alignment */}
               <motion.div 
                 whileHover={{ scale: 1.03 }}
                 className="flex items-center gap-3 bg-white/20 border border-white/30 backdrop-blur-sm px-6 py-3 rounded-xl relative overflow-hidden group"
@@ -4417,11 +3175,26 @@ const AppSection = () => {
                   <span className="text-xs text-teal-100">DOWNLOAD ON THE</span>
                   <span className="text-white font-bold">App Store</span>
                 </div>
-                {/* Coming Soon Badge */}
-                <div className="absolute right-0 top-0 bg-white text-[#085056] text-xs font-bold px-3 py-1 rounded-bl-lg">
+                {/* Coming Soon Badge - Improved Positioning */}
+                <div className="absolute -right-3 -top-1 bg-white text-[#085056] text-xs font-semibold px-3 py-0.2 rounded-bl-xl shadow-md transform rotate-2">
                   Coming Soon
                 </div>
               </motion.div>
+            </div>
+
+            {/* Added Feature Highlights */}
+            <div className="grid grid-cols-2 gap-4">
+              {appFeatures.slice(0, 2).map((feature, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-teal-200/20 rounded-lg flex items-center justify-center mt-1">
+                    <feature.icon className="text-teal-200 text-lg" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-medium text-sm">{feature.title}</h3>
+                    <p className="text-teal-100/70 text-xs leading-relaxed">{feature.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
           </motion.div>
@@ -4450,11 +3223,12 @@ const AppSection = () => {
                 />
               </div>
               
-              {/* Main Phone Mockup */}
+              {/* Main Phone Mockup - Enhanced with glow effect */}
               <motion.div
                 animate={{ y: [-10, 10, -10] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 className="relative z-20 bg-gray-900 w-[280px] h-[580px] rounded-[3rem] shadow-2xl border-8 border-gray-800 mx-auto overflow-hidden"
+                style={{ boxShadow: "0 0 40px rgba(167, 243, 208, 0.1)" }}
               >
                 {/* Status Bar */}
                 <div className="absolute top-0 inset-x-0 h-6 bg-black rounded-t-3xl flex items-center justify-center">
@@ -4463,111 +3237,7 @@ const AppSection = () => {
                 
                 {/* App Screenshot */}
                 <div className="absolute top-6 bottom-0 inset-x-0 bg-[#085056] overflow-hidden">
-                  {/* App Header */}
-                  <div className="pt-4 px-4 flex items-center justify-between">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                      <span className="text-[#085056] font-bold">J</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                      <span className="text-white text-xs">Live</span>
-                    </div>
-                  </div>
-                  
-                  {/* App Content */}
-                  <div className="p-4">
-                    <div className="bg-[#06424a] rounded-xl p-3 mb-4">
-                      <div className="text-white text-xs mb-1">Current Balance</div>
-                      <div className="text-white text-2xl font-bold mb-1">₹75,240.50</div>
-                      <div className="flex items-center gap-1 text-teal-200 text-xs">
-                        <FaArrowUp className="text-[10px]" />
-                        <span>18.24% this month</span>
-                      </div>
-                    </div>
-                    
-                    {/* Chart Mockup */}
-                    <div className="bg-[#06424a] rounded-xl p-3 h-40 mb-4 relative overflow-hidden">
-                      <div className="text-white text-xs mb-2">JMX/INR</div>
-                      <svg className="w-full h-24" viewBox="0 0 200 100">
-                        <defs>
-                          <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
-                            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-                          </linearGradient>
-                        </defs>
-                        <motion.path
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          transition={{ duration: 2 }}
-                          d="M0,80 C20,70 40,90 60,60 C80,30 100,50 120,40 C140,30 160,45 180,20 C190,10 200,5"
-                          fill="none"
-                          stroke="white"
-                          strokeWidth="2"
-                        />
-                        <motion.path
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 0.3 }}
-                          transition={{ duration: 1, delay: 1 }}
-                          d="M0,80 C20,70 40,90 60,60 C80,30 100,50 120,40 C140,30 160,45 180,20 C190,10 200,5 L200,100 L0,100 Z"
-                          fill="url(#chartGradient)"
-                        />
-                      </svg>
-                      <div className="flex justify-between text-xs text-white/60">
-                        <span>1H</span>
-                        <span>1D</span>
-                        <span>1W</span>
-                        <span className="text-white">1M</span>
-                        <span>1Y</span>
-                      </div>
-                    </div>
-                    
-                    {/* Actions */}
-                    <div className="flex gap-3 mb-4">
-                      <div className="flex-1 bg-white rounded-xl py-2 flex items-center justify-center gap-1 text-[#085056] font-semibold">
-                        <FaArrowDown className="text-xs" />
-                        <span>Buy</span>
-                      </div>
-                      <div className="flex-1 bg-[#06424a] rounded-xl py-2 flex items-center justify-center gap-1 text-white font-semibold">
-                        <FaArrowUp className="text-xs" />
-                        <span>Sell</span>
-                      </div>
-                    </div>
-                    
-                    {/* Portfolio Items */}
-                    <div className="space-y-3">
-                      <div className="bg-[#06424a] rounded-xl p-3 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                            <span className="text-[#085056] font-bold">J</span>
-                          </div>
-                          <div>
-                            <div className="text-white text-sm">Jaimax</div>
-                            <div className="text-teal-200/80 text-xs">JMX</div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-white text-sm">₹0.50</div>
-                          <div className="text-teal-200 text-xs">+12.5%</div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-[#06424a]/50 rounded-xl p-3 flex items-center justify-between opacity-60">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
-                            <span className="text-white text-xs">BTC</span>
-                          </div>
-                          <div>
-                            <div className="text-white text-sm">Bitcoin</div>
-                            <div className="text-white/60 text-xs">BTC</div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-white text-sm">₹49,30,150</div>
-                          <div className="text-red-300 text-xs">-2.1%</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <img src={app} alt="" />
                 </div>
                 
                 {/* Bottom Pill/Home Button */}
@@ -4584,42 +3254,1293 @@ const AppSection = () => {
                 <div className="absolute inset-0 bg-[#085056]/80" />
               </motion.div>
             </div>
-            
-            {/* Download QR Code */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8, type: "spring" }}
-              className="absolute bottom-0 -right-10 bg-white rounded-2xl p-4 shadow-xl rotate-3"
-            >
-              <div className="w-24 h-24 bg-[#085056]/10 rounded-xl flex items-center justify-center">
-                {/* Mock QR Code */}
-                <svg viewBox="0 0 100 100" width="80" height="80">
-                  <rect x="10" y="10" width="30" height="30" fill="#085056" rx="5" />
-                  <rect x="60" y="10" width="30" height="30" fill="#085056" rx="5" />
-                  <rect x="10" y="60" width="30" height="30" fill="#085056" rx="5" />
-                  <rect x="50" y="50" width="40" height="40" fill="#085056" rx="5" />
-                  <rect x="20" y="20" width="10" height="10" fill="white" />
-                  <rect x="70" y="20" width="10" height="10" fill="white" />
-                  <rect x="20" y="70" width="10" height="10" fill="white" />
-                  <rect x="65" y="65" width="10" height="10" fill="white" />
-                </svg>
-              </div>
-              <div className="text-center mt-2">
-                <div className="text-xs text-gray-600">Scan to</div>
-                <div className="text-[#085056] text-sm font-semibold">Download</div>
-              </div>
-            </motion.div>
+
           </motion.div>
         </div>
 
       </div>
-
     </section>
   );
 };
 
+const JaimaxRoadmap = () => {
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
+  const progressBarRef = useRef(null);
+  const progressTextRef = useRef(null);
+  const timelineRef = useRef(null);
+
+  const years = Object.keys(roadmapData);
+
+  const totalPhases = years.reduce((acc, year) => acc + roadmapData[year].phases.length, 0);
+  const completedPhases = years.reduce((acc, year) => {
+    if (roadmapData[year].status === 'completed') return acc + roadmapData[year].phases.length;
+    if (roadmapData[year].status === 'active') return acc + Math.floor(roadmapData[year].phases.length * roadmapData[year].progress / 100);
+    return acc;
+  }, 0);
+  const overallProgress = Math.round((completedPhases / totalPhases) * 100);
+
+  useEffect(() => {
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.vars.id && trigger.vars.id.includes('jaimax-roadmap')) {
+        trigger.kill();
+      }
+    });
+
+    const container = containerRef.current;
+    const track = trackRef.current;
+    
+    if (!container || !track) {
+      console.error('Refs not found');
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const getScrollAmount = () => {
+        const trackWidth = track.scrollWidth;
+        const containerWidth = container.offsetWidth;
+        return trackWidth - containerWidth + 100;
+      };
+
+      const scrollTween = gsap.to(track, {
+        x: () => -(getScrollAmount()),
+        ease: "none"
+      });
+
+      ScrollTrigger.create({
+        id: 'jaimax-roadmap-main',
+        trigger: container,
+        start: "top top",
+        end: () => `+=${getScrollAmount()}`,
+        pin: true,
+        animation: scrollTween,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          if (progressBarRef.current && progressTextRef.current) {
+            const progress = Math.round(self.progress * 100);
+            progressBarRef.current.style.width = `${progress}%`;
+            progressTextRef.current.textContent = `${progress}%`;
+          }
+          
+          if (timelineRef.current) {
+            const progressLine = timelineRef.current.querySelector('.timeline-progress');
+            if (progressLine) {
+              progressLine.style.width = `${self.progress * 100}%`;
+            }
+          }
+        }
+      });
+
+      const cards = track.querySelectorAll('.roadmap-card');
+      cards.forEach((card, i) => {
+        gsap.fromTo(card,
+          { opacity: 0, y: 40, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              id: `jaimax-roadmap-card-${i}`,
+              trigger: card,
+              containerAnimation: scrollTween,
+              start: "left 85%",
+              end: "left 50%",
+              scrub: 1
+            }
+          }
+        );
+      });
+
+      const nodes = track.querySelectorAll('.roadmap-node');
+      nodes.forEach((node, i) => {
+        gsap.fromTo(node,
+          { scale: 0, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              id: `jaimax-roadmap-node-${i}`,
+              trigger: node,
+              containerAnimation: scrollTween,
+              start: "left 90%",
+              end: "left 70%",
+              scrub: 1
+            }
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars.id && trigger.vars.id.includes('jaimax-roadmap')) {
+          trigger.kill();
+        }
+      });
+    };
+  }, []);
+
+  const getStatusConfig = (status) => {
+    const configs = {
+      completed: {
+        nodeClass: 'bg-gradient-to-br from-teal-500 to-emerald-500 border-4 border-white shadow-lg shadow-teal-500/30',
+        cardClass: 'bg-white border-2 border-teal-100 hover:border-teal-200 hover:shadow-xl',
+        titleClass: 'text-teal-800',
+        textClass: 'text-gray-600',
+        badge: 'bg-teal-100 text-teal-700 border border-teal-200',
+        badgeText: '✓ Completed',
+        yearClass: 'text-teal-600',
+        dotClass: 'bg-teal-400',
+        lineClass: 'bg-gradient-to-b from-teal-500 to-teal-400'
+      },
+      active: {
+        nodeClass: 'bg-white border-4 border-teal-500 shadow-xl shadow-teal-500/40 ring-4 ring-teal-100',
+        cardClass: 'bg-gradient-to-br from-teal-600 via-teal-500 to-cyan-500 border-0 shadow-2xl shadow-teal-500/30',
+        titleClass: 'text-white',
+        textClass: 'text-teal-50',
+        badge: 'bg-white/20 text-white border border-white/30 backdrop-blur-sm',
+        badgeText: '● In Progress',
+        yearClass: 'text-teal-600 font-extrabold',
+        dotClass: 'bg-white/80',
+        lineClass: 'bg-gradient-to-b from-teal-500 to-teal-300'
+      },
+      future: {
+        nodeClass: 'bg-white border-4 border-gray-200 shadow-md',
+        cardClass: 'bg-gray-50 border-2 border-gray-100 hover:border-gray-200',
+        titleClass: 'text-gray-700',
+        textClass: 'text-gray-500',
+        badge: 'bg-gray-100 text-gray-500 border border-gray-200',
+        badgeText: 'Upcoming',
+        yearClass: 'text-gray-400',
+        dotClass: 'bg-gray-300',
+        lineClass: 'bg-gray-200'
+      }
+    };
+    return configs[status];
+  };
+
+  const cardWidth = 350;
+  const cardGap = 30;
+  const totalTimelineWidth = (years.length * (cardWidth + cardGap)) + 300;
+
+  return (
+    <div className="bg-[#085056">
+    
+      {/* Hero Section - Reduced height */}
+      <div className="min-h-[35vh] flex flex-col items-center justify-center text-center px-4 py-8">
+      
+        <div className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-teal-100 to-cyan-100 text-teal-700 rounded-full text-sm font-semibold mb-6 border border-teal-200/50 shadow-sm">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-500 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+          </span>
+          Building the Future
+        </div>
+        
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          <span className="bg-gradient-to-r from-lime-700 via-teal-600 to-lime-600 bg-clip-text text-transparent">
+            Jaimax Roadmap
+          </span>
+        </h1>
+        
+        <p className="text-gray-600 max-w-2xl mx-auto text-white md:text-lg mb-6 leading-relaxed">
+          Our journey to revolutionize the blockchain ecosystem. 
+          Scroll down to explore our milestones.
+        </p>
+
+        {/* Overall Progress - Compact */}
+        <div className="w-full max-w-sm mx-auto mb-4">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="text-white font-medium">Overall Progress</span>
+            <span className="text-teal-600 font-bold">{overallProgress}%</span>
+          </div>
+          <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+            <div 
+              className="h-full bg-gradient-to-r from-teal-500 via-teal-400 to-cyan-500 rounded-full transition-all duration-1000 relative"
+              style={{ width: `${overallProgress}%` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 animate-shimmer"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Horizontal Scroll Section */}
+      <div ref={containerRef} className="relative h-screen overflow-hidden bg-teal-100">
+        
+        {/* Progress Header - Moved up */}
+              <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
+        <svg
+          className="relative block w-full h-16 md:h-24"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="fill-[#085056]"
+          />
+        </svg>
+      </div>
+
+      {/* Bottom Wave */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180">
+        <svg
+          className="relative block w-full h-16 md:h-24"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="fill-[#085056]"
+          />
+        </svg>
+      </div>
+
+
+        {/* Track Container - Adjusted for better vertical centering */}
+        <div className="h-full flex items-start pt-16">
+          <div 
+            ref={trackRef} 
+            className="relative flex items-start pl-[12vw] pr-[25vw]" 
+            style={{ width: 'max-content' }}
+          >
+            
+            {/* TIMELINE - Positioned higher */}
+            <div 
+              ref={timelineRef}
+              className="absolute h-1 bg-gray-200 rounded-full"
+              style={{ 
+                width: `${totalTimelineWidth}px`,
+                left: '0',
+                top: '80px',
+              }}
+            >
+              <div 
+                className="timeline-progress h-full bg-gradient-to-r from-teal-500 via-teal-400 to-cyan-500 rounded-full transition-all duration-300 relative"
+                style={{ width: '0%' }}
+              >
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-teal-400 rounded-full shadow-lg shadow-teal-400/50">
+                  <div className="absolute inset-0 bg-teal-400 rounded-full animate-ping opacity-75"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* ROADMAP CARDS */}
+            {years.map((year, index) => {
+              const data = roadmapData[year];
+              const config = getStatusConfig(data.status);
+
+              return (
+                <div 
+                  key={year} 
+                  className="roadmap-card flex-shrink-0 relative"
+                  style={{ 
+                    width: `${cardWidth}px`, 
+                    marginRight: `${cardGap}px`,
+                  }}
+                >
+                  <div className="flex flex-col items-center">
+                    
+                    {/* NODE - On timeline (80px - 24px for half of 48px node) */}
+                    <div 
+                      className="relative"
+                      style={{ marginTop: '56px' }}
+                    >
+                      <div 
+                        className={`roadmap-node relative z-20 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer ${config.nodeClass}`}
+                      >
+                        {data.status === 'completed' ? (
+                          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : data.status === 'active' ? (
+                          <div className="relative">
+                            <div className="w-3 h-3 bg-teal-500 rounded-full animate-ping absolute inset-0"></div>
+                            <div className="w-3 h-3 bg-teal-500 rounded-full relative"></div>
+                          </div>
+                        ) : (
+                          <span className="text-gray-400 font-bold text-sm">{year.slice(-2)}</span>
+                        )}
+                        
+                        {data.status === 'active' && (
+                          <>
+                            <div className="absolute -inset-1.5 rounded-full border-2 border-teal-400/50 animate-ping"></div>
+                            <div className="absolute -inset-3 rounded-full bg-teal-400/10 animate-pulse"></div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* CONNECTOR LINE */}
+                    <div className={`w-0.5 h-6 ${config.lineClass}`} />
+
+                    {/* YEAR LABEL */}
+                    <div className={`text-xl font-bold mb-2 ${config.yearClass}`}>
+                      {year}
+                    </div>
+
+                    {/* CARD - Compact */}
+                    <div className={`w-full p-5 rounded-xl transition-all duration-300 ${config.cardClass}`}>
+                      {/* Header */}
+                      <div className="flex items-start justify-between gap-2 mb-3">
+                        <h3 className={`font-bold text-lg leading-tight ${config.titleClass}`}>
+                          {data.title}
+                        </h3>
+                        <span className={`px-2 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap ${config.badge}`}>
+                          {config.badgeText}
+                        </span>
+                      </div>
+
+                      {/* Progress for Active */}
+                      {data.status === 'active' && (
+                        <div className="mb-4">
+                          <div className="flex justify-between text-xs mb-1.5">
+                            <span className="text-teal-100">Progress</span>
+                            <span className="font-bold text-white">{data.progress}%</span>
+                          </div>
+                          <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-white rounded-full transition-all duration-500 relative overflow-hidden"
+                              style={{ width: `${data.progress}%` }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/50 to-white/0 animate-shimmer"></div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Phases */}
+                      <ul className="space-y-2">
+                        {data.phases.map((phase, idx) => (
+                          <li 
+                            key={idx} 
+                            className={`flex items-start gap-2 text-xs ${config.textClass}`}
+                          >
+                            <span className={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${config.dotClass}`} />
+                            <span className="leading-relaxed">{phase}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {/* Active Footer */}
+                      {data.status === 'active' && (
+                        <div className="mt-4 pt-3 border-t border-white/20">
+                          <div className="flex items-center gap-1.5 text-teal-100 text-xs">
+                            <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>In development</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* END MARKER */}
+            <div className="flex-shrink-0 relative" style={{ width: '250px' }}>
+              <div className="flex flex-col items-center">
+                
+                {/* End Node - On Timeline */}
+                <div 
+                  className="relative"
+                  style={{ marginTop: '52px' }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full blur-lg opacity-40 animate-pulse scale-150"></div>
+                  
+                  <div className="roadmap-node relative w-14 h-14 rounded-full bg-gradient-to-br from-teal-500 via-teal-400 to-cyan-500 flex items-center justify-center shadow-2xl border-4 border-white z-20">
+                   <img src={jaicoins} alt="" />
+                  </div>
+                </div>
+                
+                {/* Connector */}
+                <div className="w-0.5 h-6 bg-gradient-to-b from-cyan-400 to-cyan-200" />
+                
+                {/* Year Label */}
+                <div className="text-center mb-2">
+                  <span className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                    2028+
+                  </span>
+                  <p className="text-gray-500 text-xs mt-0.5">The Future</p>
+                </div>
+                
+                {/* Future Card */}
+                <div className="p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border-2 border-dashed border-gray-200 w-full">
+                  <div className="text-center">
+                    <div className="text-2xl mb-1"></div>
+                    <p className="text-gray-600 text-xs leading-relaxed">
+                      Endless possibilities ahead
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div>
+
+      {/* Custom Animations */}
+      <style jsx>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const ContactForm = () => {
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const formRef = useRef(null);
+  const infoRef = useRef(null);
+  const decorRef = useRef(null);
+  const formElements = useRef([]);
+  const infoElements = useRef([]);
+  
+  const [formState, setFormState] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  
+  const [focusedField, setFocusedField] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [formStatus, setFormStatus] = useState(null);
+  const [charCount, setCharCount] = useState(0);
+  const maxChars = 500;
+  
+  const addToFormElements = (el) => {
+    if (el && !formElements.current.includes(el)) {
+      formElements.current.push(el);
+    }
+  };
+
+  const addToInfoElements = (el) => {
+    if (el && !infoElements.current.includes(el)) {
+      infoElements.current.push(el);
+    }
+  };
+  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    if (name === 'message') {
+      if (value.length <= maxChars) {
+        setCharCount(value.length);
+        setFormState(prev => ({ ...prev, [name]: value }));
+      }
+    } else {
+      setFormState(prev => ({ ...prev, [name]: value }));
+    }
+    
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }));
+    }
+  };
+
+  const handleFocus = (field) => {
+    setFocusedField(field);
+  };
+
+  const handleBlur = () => {
+    setFocusedField(null);
+  };
+  
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formState.name.trim()) {
+      newErrors.name = 'Name is required';
+    } else if (formState.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    }
+    
+    if (!formState.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (formState.phone && !/^[\d\s\-+()]{10,}$/.test(formState.phone)) {
+      newErrors.phone = 'Please enter a valid phone number';
+    }
+    
+    if (!formState.subject.trim()) {
+      newErrors.subject = 'Subject is required';
+    }
+    
+    if (!formState.message.trim()) {
+      newErrors.message = 'Message is required';
+    } else if (formState.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (validateForm()) {
+      setFormStatus('submitting');
+      
+      // Simulate API call
+      setTimeout(() => {
+        if (Math.random() > 0.05) {
+          setFormStatus('success');
+          setFormState({
+            name: '',
+            email: '',
+            phone: '',
+            subject: '',
+            message: ''
+          });
+          setCharCount(0);
+          
+          // Success animation
+          gsap.fromTo(formRef.current,
+            { scale: 1 },
+            { 
+              scale: 1.02, 
+              duration: 0.2, 
+              yoyo: true, 
+              repeat: 1,
+              ease: "power2.inOut"
+            }
+          );
+          
+          setTimeout(() => setFormStatus(null), 5000);
+        } else {
+          setFormStatus('error');
+        }
+      }, 1500);
+    } else {
+      // Shake animation on error
+      gsap.to(formRef.current, {
+        x: [-15, 15, -10, 10, -5, 5, 0],
+        duration: 0.6,
+        ease: "power2.inOut"
+      });
+    }
+  };
+
+  const InputWrapper = ({ children, label, name, error, icon, required = false }) => (
+    <div ref={addToFormElements} className="relative group">
+      <label 
+        htmlFor={name} 
+        className={`absolute left-12 transition-all duration-300 pointer-events-none
+          ${focusedField === name || formState[name] 
+            ? '-top-2.5 text-xs bg-white px-2 text-teal-600 font-semibold' 
+            : 'top-3.5 text-gray-400'
+          }`}
+      >
+        {label} {required && <span className="text-red-400">*</span>}
+      </label>
+      <div className="absolute left-4 top-3.5 text-gray-400 group-focus-within:text-teal-500 transition-colors">
+        {icon}
+      </div>
+      {children}
+      {error && (
+        <p className="mt-1.5 text-red-500 text-sm flex items-center gap-1">
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+          {error}
+        </p>
+      )}
+    </div>
+  );
+
+  const contactInfo = [
+    {
+      icon: (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+        </svg>
+      ),
+      title: "Call Us",
+      lines: ["+91 9121799947", "+91 9121758880"]
+    },
+    {
+      icon: (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+        </svg>
+      ),
+      title: "Email Us",
+      lines: ["office@jaimax.com"]
+    },
+    {
+      icon: (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+        </svg>
+      ),
+      title: "Visit Our Office",
+      lines: ["Survey No: 18, India Building", "4th Floor, Vaishnavi's Cynosure", "Gachibowli, Hyderabad - 500081"]
+    },
+    {
+      icon: (
+        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+        </svg>
+      ),
+      title: "Business Hours",
+      lines: ["Mon - Fri: 9:00 AM - 6:00 PM", "Sat - Sun: Closed"]
+    }
+  ];
+
+  const socialLinks = [
+    { name: 'LinkedIn', icon: 'M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z', href: '#' },
+    { name: 'Twitter', icon: 'M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z', href: '#' },
+    { name: 'Facebook', icon: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z', href: '#' },
+    { name: 'Instagram', icon: 'M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z', href: '#' }
+  ];
+
+  return (
+    <section 
+      ref={sectionRef} 
+      className="relative py-24 px-4 overflow-hidden bg-gradient-to-br from-slate-50 via-teal-50 to-cyan-50"
+    >
+      {/* Animated Background Decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div 
+          ref={decorRef}
+          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-teal-200/30 to-cyan-200/30 rounded-full blur-3xl"
+        />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-teal-100/20 to-cyan-100/20 rounded-full blur-3xl" />
+        
+        {/* Floating shapes */}
+        <svg className="absolute top-20 left-20 w-20 h-20 text-teal-200/50 animate-bounce" style={{ animationDuration: '3s' }} viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" fill="currentColor" />
+        </svg>
+        <svg className="absolute bottom-40 right-20 w-16 h-16 text-cyan-200/50 animate-pulse" viewBox="0 0 100 100">
+          <rect x="10" y="10" width="80" height="80" rx="20" fill="currentColor" />
+        </svg>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header Section */}
+        <div ref={headingRef} className="text-center mb-16">
+          <span className="inline-block px-4 py-2 bg-teal-100 text-teal-700 rounded-full text-sm font-semibold mb-4 tracking-wide">
+            GET IN TOUCH
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
+            Contact Us
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            Have a question or want to work together? We'd love to hear from you. 
+            Send us a message and we'll respond as soon as possible.
+          </p>
+          <div className="flex justify-center mt-6">
+            <div className="flex items-center gap-2">
+              <span className="w-12 h-1 bg-gradient-to-r from-transparent to-teal-500 rounded-full"></span>
+              <span className="w-3 h-3 bg-teal-500 rounded-full animate-pulse"></span>
+              <span className="w-12 h-1 bg-gradient-to-l from-transparent to-teal-500 rounded-full"></span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+          {/* Contact Form - Takes 3 columns */}
+          <div 
+            ref={formRef} 
+            className="lg:col-span-3 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-teal-500/10 p-8 md:p-10 border border-white/50"
+          >
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/30">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800">Send us a Message</h3>
+                <p className="text-gray-500 text-sm">Fill out the form below and we'll get back to you</p>
+              </div>
+            </div>
+            
+            {/* Status Messages */}
+            {formStatus === 'success' && (
+              <div className="mb-6 p-5 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl flex items-start gap-4 animate-fadeIn">
+                <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="font-semibold text-green-800">Message sent successfully!</p>
+                  <p className="text-green-600 text-sm mt-1">Thank you for reaching out. We'll get back to you within 24 hours.</p>
+                </div>
+              </div>
+            )}
+            
+            {formStatus === 'error' && (
+              <div className="mb-6 p-5 bg-gradient-to-r from-red-50 to-rose-50 border border-red-200 rounded-2xl flex items-start gap-4 animate-fadeIn">
+                <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="font-semibold text-red-800">Failed to send message</p>
+                  <p className="text-red-600 text-sm mt-1">Please try again later or contact us directly via email.</p>
+                </div>
+              </div>
+            )}
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputWrapper 
+                  label="Full Name" 
+                  name="name" 
+                  error={errors.name}
+                  required
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  }
+                >
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formState.name}
+                    onChange={handleChange}
+                    onFocus={() => handleFocus('name')}
+                    onBlur={handleBlur}
+                    className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all duration-300 ${errors.name ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200'}`}
+                  />
+                </InputWrapper>
+                
+                <InputWrapper 
+                  label="Email Address" 
+                  name="email" 
+                  error={errors.email}
+                  required
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  }
+                >
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    onFocus={() => handleFocus('email')}
+                    onBlur={handleBlur}
+                    className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all duration-300 ${errors.email ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200'}`}
+                  />
+                </InputWrapper>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputWrapper 
+                  label="Phone Number" 
+                  name="phone" 
+                  error={errors.phone}
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  }
+                >
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formState.phone}
+                    onChange={handleChange}
+                    onFocus={() => handleFocus('phone')}
+                    onBlur={handleBlur}
+                    className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all duration-300 ${errors.phone ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200'}`}
+                  />
+                </InputWrapper>
+                
+                <InputWrapper 
+                  label="Subject" 
+                  name="subject" 
+                  error={errors.subject}
+                  required
+                  icon={
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                  }
+                >
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formState.subject}
+                    onChange={handleChange}
+                    onFocus={() => handleFocus('subject')}
+                    onBlur={handleBlur}
+                    className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all duration-300 ${errors.subject ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200'}`}
+                  />
+                </InputWrapper>
+              </div>
+              
+              <div ref={addToFormElements} className="relative group">
+                <label 
+                  htmlFor="message" 
+                  className={`absolute left-12 transition-all duration-300 pointer-events-none z-10
+                    ${focusedField === 'message' || formState.message 
+                      ? '-top-2.5 text-xs bg-white px-2 text-teal-600 font-semibold' 
+                      : 'top-3.5 text-gray-400'
+                    }`}
+                >
+                  Your Message <span className="text-red-400">*</span>
+                </label>
+                <div className="absolute left-4 top-3.5 text-gray-400 group-focus-within:text-teal-500 transition-colors">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
+                </div>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formState.message}
+                  onChange={handleChange}
+                  onFocus={() => handleFocus('message')}
+                  onBlur={handleBlur}
+                  rows="5"
+                  className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-teal-500/20 focus:border-teal-500 outline-none transition-all duration-300 resize-none ${errors.message ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-200'}`}
+                />
+                <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+                  <span className={charCount > maxChars * 0.9 ? 'text-orange-500' : ''}>{charCount}</span>/{maxChars}
+                </div>
+                {errors.message && (
+                  <p className="mt-1.5 text-red-500 text-sm flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {errors.message}
+                  </p>
+                )}
+              </div>
+              
+              <div ref={addToFormElements} className="pt-2">
+                <button 
+                  type="submit"
+                  disabled={formStatus === 'submitting'}
+                  className="group relative w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl hover:shadow-teal-500/30 disabled:transform-none disabled:shadow-none overflow-hidden"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/25 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+                  <span className="relative flex justify-center items-center gap-2">
+                    {formStatus === 'submitting' ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending Message...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </>
+                    )}
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+          
+          {/* Contact Information - Takes 2 columns */}
+          <div className="lg:col-span-2 space-y-6">
+            <div 
+              ref={infoRef} 
+              className="bg-gradient-to-br from-teal-600 via-teal-700 to-cyan-700 rounded-3xl shadow-2xl shadow-teal-500/20 p-8 text-white relative overflow-hidden"
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+              
+              <div className="relative z-10">
+                <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+                  <span className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                  </span>
+                  Contact Information
+                </h3>
+                
+                <div className="space-y-6">
+                  {contactInfo.map((item, index) => (
+                    <div 
+                      key={index}
+                      ref={addToInfoElements}
+                      className="flex items-start gap-4 p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/15 transition-colors duration-300 group cursor-pointer"
+                    >
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <p className="text-teal-200 text-sm font-medium">{item.title}</p>
+                        {item.lines.map((line, i) => (
+                          <p key={i} className="font-medium text-white/90">{line}</p>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* Custom Styles */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+      `}</style>
+    </section>
+  );
+};
+
+const TokenStats = () => {
+  const [copied, setCopied] = useState(false);
+
+  // Contract address
+  const CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890";
+  const BSCSCAN_URL = `https://bscscan.com/token/${CONTRACT_ADDRESS}`;
+
+  // Copy to clipboard
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTRACT_ADDRESS);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
+  // Fetch data
+  const { data: roundData, isLoading, refetch } = useGetRoundQuery();
+  const currentRound = roundData?.data?.rounds?.find((r) => r.status === 1) || {};
+
+  useEffect(() => {
+    const interval = setInterval(refetch, 30000);
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  const formatNumber = (num) => {
+    if (!num) return "0";
+    if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+    return num.toLocaleString();
+  };
+
+  // Stats
+  const livePrice = currentRound?.atPriceInr || "0.0000";
+  const soldTokens = formatNumber(currentRound?.soldQty || 0);
+  const liveMembers = formatNumber(currentRound?.totalMembers || 0);
+  const progressPercent = Math.min(((currentRound?.soldQty || 0) / 10000000000) * 100, 100);
+
+  // Truncate address for mobile
+  const truncateAddress = (address) => {
+    return `${address.slice(0, 8)}...${address.slice(-6)}`;
+  };
+
+  return (
+    <div className="w-full bg-[#085056] py-6 sm:py-8 md:py-14 lg:py-10 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
+      {/* Decorative elements - responsive sizes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[150px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[150px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-teal-200/5 rounded-full filter blur-[80px] sm:blur-[100px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[200px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-[200px] sm:h-[400px] md:h-[500px] lg:h-[600px] bg-teal-400/5 rounded-full filter blur-[100px] sm:blur-[120px]"></div>
+      </div>
+      
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(2); opacity: 0.7; }
+        }
+      `}</style>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header section */}
+        <div className="flex flex-col items-center mb-6 sm:mb-8 md:mb-10 lg:mb-14 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 bg-[#064046] rounded-full mb-3 sm:mb-4 border border-teal-800/70 shadow-lg shadow-teal-900/20"
+          >
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 rounded-full bg-teal-300 animate-pulse"></span>
+            <span className="text-white/90 text-[10px] sm:text-xs md:text-sm font-medium">Round {currentRound?.round || 1} Active</span>
+          </motion.div>
+          
+          <motion.h2
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-teal-100 mb-2 sm:mb-3 md:mb-4 px-4"
+          >
+            Jaimax Token Metrics
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-teal-100/60 max-w-lg sm:max-w-xl md:max-w-2xl text-xs sm:text-sm md:text-base lg:text-lg px-4"
+          >
+            Real-time analytics of our token performance and distribution
+          </motion.p>
+        </div>
+        
+        {/* Contract Address Card - Improved mobile layout */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 bg-[#064046] rounded-xl sm:rounded-2xl overflow-hidden border border-teal-800/70 shadow-xl relative"
+        >
+          <div className="absolute -right-10 sm:-right-20 -top-10 sm:-top-20 w-20 sm:w-40 md:w-60 h-20 sm:h-40 md:h-60 bg-teal-300/5 rounded-full filter blur-[30px] sm:blur-[50px]"></div>
+          
+          <div className="px-4 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6 lg:py-7 relative">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 md:gap-6">
+              <div className="flex-grow w-full lg:w-auto">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                  <div className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-[#053439]">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-white text-base sm:text-lg md:text-xl font-medium">Contract Address</h3>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                  {/* Mobile: Show truncated address, Desktop: Show full */}
+                  <div className="bg-[#053439] rounded-full py-1.5 sm:py-2 px-3 sm:px-4 font-mono text-xs sm:text-sm md:text-base text-teal-50 tracking-wider w-full sm:w-auto">
+                    <span className="sm:hidden">{truncateAddress(CONTRACT_ADDRESS)}</span>
+                    <span className="hidden sm:inline">{CONTRACT_ADDRESS}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <motion.button 
+                      onClick={copyToClipboard}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center justify-center gap-1.5 sm:gap-2 py-1.5 sm:py-2 px-3 sm:px-4 bg-[#053439] hover:bg-[#042d32] border border-teal-800/50 rounded-full text-white text-xs sm:text-sm md:text-base transition-all duration-300 flex-1 sm:flex-initial"
+                    >
+                      {copied ? (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                          <span>Copy</span>
+                        </>
+                      )}
+                    </motion.button>
+                    
+                    <motion.a 
+                      href={BSCSCAN_URL} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      className="flex items-center justify-center gap-1.5 sm:gap-2 py-1.5 sm:py-2 px-3 sm:px-4 bg-teal-400/20 hover:bg-teal-400/30 border border-teal-800/60 rounded-full text-white text-xs sm:text-sm md:text-base transition-all duration-300 flex-1 sm:flex-initial"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      <span>BscScan</span>
+                    </motion.a>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Round Status - Better mobile layout */}
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 bg-[#053439] p-1.5 sm:p-2 rounded-full border border-teal-800/60 shadow-lg w-full sm:w-auto justify-center">
+                <div className="flex flex-col items-center px-4 sm:px-5 md:px-6 py-1 sm:py-1.5 md:py-2 border-r border-teal-800/40">
+                  <span className="text-[10px] sm:text-xs text-white/50 uppercase tracking-widest">Round</span>
+                  <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white">{currentRound?.round || 1}</span>
+                </div>
+                <div className="flex flex-col items-center px-4 sm:px-5 md:px-6 py-1 sm:py-1.5 md:py-2">
+                  <span className="text-[10px] sm:text-xs text-white/50 uppercase tracking-widest">Status</span>
+                  <span className="text-[10px] sm:text-xs md:text-sm font-bold text-teal-300 flex items-center gap-1 sm:gap-1.5">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-300 rounded-full animate-pulse"></span>
+                    Active
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+        
+        {/* Stats Grid - Enhanced mobile responsiveness */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-6 sm:mb-8 md:mb-10 lg:mb-14">
+          {/* Live Price Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="group relative"
+          >
+            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
+              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
+                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <div className="w-full">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Current Price</h3>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
+                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">₹{livePrice}</div>
+                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">INR</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Tokens Sold Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="group relative"
+          >
+            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
+              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
+                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <div className="w-full">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Tokens Sold</h3>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
+                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">{soldTokens}</div>
+                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">JMC</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-auto">
+                  {/* Progress visualization */}
+                  <div className="mb-2">
+                    <div className="flex justify-between text-[10px] sm:text-xs text-white/70 mb-1">
+                      <span className="font-medium">{progressPercent.toFixed(1)}% Complete</span>
+                      <span>Goal: 10B</span>
+                    </div>
+                    <div className="h-2 sm:h-2.5 md:h-3 w-full bg-[#053439] rounded-full overflow-hidden relative">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progressPercent}%` }}
+                        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+                        className="h-full bg-gradient-to-r from-teal-300 to-teal-400 rounded-full absolute"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Community Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="group relative sm:col-span-2 xl:col-span-1"
+          >
+            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
+              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
+                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <div className="w-full">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Community</h3>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
+                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">{liveMembers}</div>
+                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">Members</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
 const JaimaxLanding = () => {
   const [openFaq, setOpenFaq] = useState(null);
   const navigate = useNavigate();
@@ -4632,22 +4553,31 @@ const JaimaxLanding = () => {
   const securityMainVideoRef = useRef(null);
   const securityLeftCardsRef = useRef(null);
   const securityRightCardsRef = useRef(null);
-  const roadmapRef = useRef(null);
-  const roadmapTimelineRef = useRef(null);
   const faqRef = useRef(null);
+  const uniqueFeaturesRef = useRef(null); 
   const [activeIndex, setActiveIndex] = useState(0);
 
 useEffect(() => {
   const timer = setTimeout(() => {
     // Clear existing ScrollTriggers more selectively
     ScrollTrigger.getAll().forEach((trigger) => {
+      const id = trigger.vars.id;
+      // Preserve specific animations
       if (
-        !trigger.vars.id ||
-        (!trigger.vars.id.toString().startsWith("card-") && 
-         trigger.vars.id !== "bento-gallery")
+        id &&
+        (id.toString().startsWith("card-") || 
+         id === "bento-gallery" ||
+         id === "phases-wheel-pin" ||
+         id === "phases-wheel-rotation" ||
+         id.toString().includes("roadmap") ||
+         id === "security-main" ||
+         id === "unique-features-horizontal" || // ✅ Added for horizontal scroll
+         id === "services-stack" ||
+         id.toString().startsWith("faq-"))
       ) {
-        trigger.kill();
+        return; // Don't kill these
       }
+      trigger.kill();
     });
 
     // Hero animations
@@ -4704,21 +4634,22 @@ useEffect(() => {
     }
 
     // Services section
-    if (servicesRef.current) {
+ if (servicesRef.current) {
       const cards = gsap.utils.toArray(".service-card");
       const totalCards = cards.length;
 
-      // Initial setup - stack cards
+      // Set initial positions - stacked horizontally
       gsap.set(cards, {
-        y: (i) => i * 15,
-        scale: (i) => 1 - i * 0.04,
-        opacity: (i) => 1 - i * 0.15,
+        x: (i) => i * 30, // Slight horizontal offset
+        scale: (i) => 1 - i * 0.05,
+        opacity: (i) => 1 - i * 0.2,
         zIndex: (i) => totalCards - i,
-        rotationX: 0,
+        rotationY: (i) => i * 5, // Slight Y rotation for depth
       });
 
       const serviceTl = gsap.timeline({
         scrollTrigger: {
+          id: "services-stack",
           trigger: servicesRef.current,
           start: "top top",
           end: `+=${totalCards * 500}`,
@@ -4731,28 +4662,29 @@ useEffect(() => {
 
       cards.forEach((card, index) => {
         if (index < totalCards - 1) {
-          // Animate current card out
+          // Move current card to the left
           serviceTl.to(
             card,
             {
-              y: -500,
+              x: -window.innerWidth, // Move completely off screen to the left
               opacity: 0,
-              scale: 0.9,
-              rotationX: -15,
+              scale: 0.8,
+              rotationY: -20, // Rotate as it moves away
               duration: 1,
               ease: "power2.inOut",
             },
             index
           );
 
-          // Update remaining cards
+          // Bring next cards forward
           cards.slice(index + 1).forEach((nextCard, nextIndex) => {
             serviceTl.to(
               nextCard,
               {
-                y: nextIndex * 15,
-                scale: 1 - nextIndex * 0.04,
-                opacity: 1 - nextIndex * 0.15,
+                x: nextIndex * 30,
+                scale: 1 - nextIndex * 0.05,
+                opacity: 1 - nextIndex * 0.2,
+                rotationY: nextIndex * 5,
                 duration: 1,
               },
               index
@@ -4770,6 +4702,7 @@ useEffect(() => {
         x: () => -(phasesContainer.scrollWidth - window.innerWidth + 100),
         ease: "none",
         scrollTrigger: {
+          id: "phases-horizontal",
           trigger: phasesRef.current,
           start: "top top",
           end: () => `+=${phasesContainer.scrollWidth}`,
@@ -4781,131 +4714,71 @@ useEffect(() => {
       });
     }
 
-    // IMPROVED Roadmap section
-    if (roadmapRef.current && roadmapTimelineRef.current) {
-      const timeline = roadmapTimelineRef.current;
-      const section = roadmapRef.current;
-      
-      // Calculate scroll distance more accurately
-      const getScrollDistance = () => {
-        const timelineWidth = timeline.scrollWidth;
-        const viewportWidth = window.innerWidth;
-        return Math.max(0, timelineWidth - viewportWidth);
-      };
+    // ✅ NEW: Unique Features Horizontal Scroll Section
+// ✅ UPDATED: Unique Features Horizontal Scroll Section
+if (uniqueFeaturesRef.current) {
+  const containerWidth = window.innerWidth;
+  
+  // Kill only this specific animation
+  const existingTrigger = ScrollTrigger.getById("unique-features-horizontal");
+  if (existingTrigger) existingTrigger.kill();
 
-      // Main horizontal scroll animation
-      const horizontalScroll = gsap.to(timeline, {
-        x: () => -getScrollDistance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${getScrollDistance() + window.innerHeight * 0.5}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          id: "roadmap-main", // Add ID for better management
-          onRefresh: () => {
-            // Recalculate on resize
-            gsap.set(timeline, { x: 0 });
-          }
-        },
-      });
+  // Set initial positions
+  gsap.set(".unique-feature-1", { x: "0vw", zIndex: 5 });
+  gsap.set(".unique-feature-2", { x: "100vw", zIndex: 4 });
+  gsap.set(".unique-feature-3", { x: "100vw", zIndex: 3 });
+  gsap.set(".unique-feature-4", { x: "100vw", zIndex: 2 });
+  gsap.set(".unique-feature-5", { x: "100vw", zIndex: 1 });
 
-      // Enhanced card animations
-      gsap.utils.toArray(".roadmap-card").forEach((card, index) => {
-        const phases = card.querySelectorAll(".phase-item");
+  const featuresTl = gsap.timeline({
+    scrollTrigger: {
+      id: "unique-features-horizontal",
+      trigger: uniqueFeaturesRef.current,
+      start: "top top",
+      end: "+=5000", // Increased for smoother transitions
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
+  });
 
-        // Card entrance animation with improved timing
-        gsap.fromTo(
-          card,
-          { 
-            scale: 0.85, 
-            opacity: 0.4,
-            y: 60,
-            rotationY: -15
-          },
-          {
-            scale: 1,
-            opacity: 1,
-            y: 0,
-            rotationY: 0,
-            duration: 0.8,
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: horizontalScroll,
-              start: "left 95%",
-              end: "left 60%",
-              scrub: 1,
-              id: `roadmap-card-${index}`,
-            },
-          }
-        );
+  // Feature 1 -> Feature 2 (0 to 1)
+  featuresTl.to(".unique-feature-1", { x: "-100vw", duration: 1, ease: "none" }, 0);
+  featuresTl.to(".unique-feature-2", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 0);
+  featuresTl.fromTo(".unique-feature-2 .feature-content", 
+    { opacity: 0, x: 100 }, 
+    { opacity: 1, x: 0, duration: 0.6 }, 
+    0.2
+  );
 
-        // Phase items stagger animation
-        gsap.fromTo(
-          phases,
-          { 
-            opacity: 0, 
-            x: -40,
-            scale: 0.9
-          },
-          {
-            opacity: 1,
-            x: 0,
-            scale: 1,
-            stagger: 0.06,
-            duration: 0.5,
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: horizontalScroll,
-              start: "left 75%",
-              end: "left 45%",
-              scrub: 1,
-              id: `roadmap-phases-${index}`,
-            },
-          }
-        );
+  // Feature 2 -> Feature 3 (1 to 2)
+  featuresTl.to(".unique-feature-2", { x: "-100vw", duration: 1, ease: "none" }, 1);
+  featuresTl.to(".unique-feature-3", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 1);
+  featuresTl.fromTo(".unique-feature-3 .feature-content", 
+    { opacity: 0, x: 100 }, 
+    { opacity: 1, x: 0, duration: 0.6 }, 
+    1.2
+  );
 
-        // Card highlight effect when in center view
-        gsap.to(card, {
-          scale: 1.02,
-          boxShadow: "0 20px 40px rgba(8, 80, 86, 0.3)",
-          scrollTrigger: {
-            trigger: card,
-            containerAnimation: horizontalScroll,
-            start: "left 65%",
-            end: "left 35%",
-            scrub: 1,
-            yoyo: true,
-            id: `roadmap-highlight-${index}`,
-          }
-        });
+  // Feature 3 -> Feature 4 (2 to 3)
+  featuresTl.to(".unique-feature-3", { x: "-100vw", duration: 1, ease: "none" }, 2);
+  featuresTl.to(".unique-feature-4", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 2);
+  featuresTl.fromTo(".unique-feature-4 .feature-content", 
+    { opacity: 0, x: 100 }, 
+    { opacity: 1, x: 0, duration: 0.6 }, 
+    2.2
+  );
 
-        // Progress bar animation
-        const progressBar = card.querySelector('.bg-\\[\\#085056\\]');
-        if (progressBar) {
-          gsap.fromTo(progressBar,
-            { width: "0%" },
-            {
-              width: `${roadmapData[Object.keys(roadmapData)[index]]?.progress || 0}%`,
-              duration: 1.5,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                containerAnimation: horizontalScroll,
-                start: "left 70%",
-                end: "left 40%",
-                scrub: 1,
-                id: `roadmap-progress-${index}`,
-              }
-            }
-          );
-        }
-      });
-    }
-
+  // Feature 4 -> Feature 5 (3 to 4)
+  featuresTl.to(".unique-feature-4", { x: "-100vw", duration: 1, ease: "none" }, 3);
+  featuresTl.to(".unique-feature-5", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 3);
+  featuresTl.fromTo(".unique-feature-5 .feature-content", 
+    { opacity: 0, x: 100 }, 
+    { opacity: 1, x: 0, duration: 0.6 }, 
+    3.2
+  );
+}
     // Security section
     if (securityVideoRef.current && securityMainVideoRef.current) {
       const calculateDimensions = () => {
@@ -4946,11 +4819,11 @@ useEffect(() => {
 
       const securityTl = gsap.timeline({
         scrollTrigger: {
+          id: "security-main",
           trigger: securityVideoRef.current,
           start: "top 45%",
           end: "bottom bottom",
           scrub: 0.3,
-          id: "security-main",
         },
         defaults: {
           ease: "none",
@@ -5008,22 +4881,21 @@ useEffect(() => {
             duration: 0.6,
             ease: "power2.out",
             scrollTrigger: {
+              id: `faq-${index}`,
               trigger: item,
               start: "top 90%",
               end: "top 70%",
               toggleActions: "play none none reverse",
-              id: `faq-${index}`,
             },
           }
         );
       });
     }
 
-    // Refresh ScrollTrigger after all animations are set up
     ScrollTrigger.refresh();
-  }, 150); // Slightly increased timeout for better initialization
+  }, 150);
 
-  // Improved resize handler with debouncing
+  // Resize handler with debouncing
   let resizeTimeout;
   const handleResize = () => {
     clearTimeout(resizeTimeout);
@@ -5038,217 +4910,200 @@ useEffect(() => {
     clearTimeout(timer);
     clearTimeout(resizeTimeout);
     window.removeEventListener("resize", handleResize);
-    
-    // More selective cleanup
-    ScrollTrigger.getAll().forEach((trigger) => {
-      const id = trigger.vars.id;
-      // Preserve card animations and bento gallery
-      if (
-        id &&
-        (id.toString().startsWith("card-") || 
-         id === "bento-gallery" ||
-         id.toString().startsWith("roadmap-"))
-      ) {
-        return; // Skip these
-      }
-      trigger.kill();
-    });
   };
 }, []);
 
   return (
     <div id="main-content" className="bg-[#085056] text-white">
-      <header
-        ref={heroRef}
-        className="relative min-h-[100dvh] flex flex-col justify-center"
+<header
+  ref={heroRef}
+  className="relative min-h-[100dvh] flex flex-col justify-center"
+>
+  <div className="absolute inset-0 w-full h-full">
+    <picture>
+      {/* Mobile image source */}
+      <source
+        media="(max-width: 767px)"
+        srcSet={homeBgMobile}
+        type="image/jpeg" // Adjust based on your image format
+      />
+      {/* Desktop image source */}
+      <source
+        media="(min-width: 768px)"
+        srcSet={homeBgDesktop}
+        type="image/jpeg" // Adjust based on your image format
+      />
+      {/* Fallback image */}
+      <img
+        src={homeBgDesktop}
+        alt="Secure, innovative, and trustworthy crypto investing with Jaimax"
+        title="Jaimax - Your Trusted Partner in Cryptocurrency Investment"
+        className="w-full h-full object-cover object-center"
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+        width="1920"
+        height="1080"
+      />
+    </picture>
+    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+  </div>
+
+  <div className="relative z-10 px-4 py-10 mx-auto w-full max-w-9xl">
+    {/* Rest of your content remains the same */}
+    <div className="relative w-full min-h-[100dvh] max-w-8xl mx-auto overflow-hidden px-4 sm:px-6 lg:px-8">
+      <h1
+        className="hero-title absolute top-10 left-4 sm:top-10 sm:left-10 font-600 leading-tight 
+        text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]
+        text-3xl sm:text-4xl md:text-5xl lg:text-6xl space-y-1"
       >
-        <div className="absolute inset-0 w-full h-full">
-          <picture>
-            <img
-              src={homeBgDesktop}
-              srcSet={`${homeBgMobile} 767w, ${homeBgDesktop} 1920w`}
-              sizes="100vw"
-              alt="Secure, innovative, and trustworthy crypto investing with Jaimax"
-              title="Jaimax - Your Trusted Partner in Cryptocurrency Investment"
-              className="w-full h-full object-cover object-center"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              width="1920"
-              height="1080"
-            />
-          </picture>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
-        </div>
+        <span className="block text-[#b8cc26]">Best Crypto Coin</span>
+        <span className="block"> in India</span>
+        <span className="block">Invest Early in </span>
+        <span className="block"> Jaimax</span>
+      </h1>
 
-        <div className="relative z-10 px-4 py-4 mx-auto w-full max-w-9xl">
-          <div className="relative w-full min-h-[100dvh] max-w-8xl mx-auto overflow-hidden px-4 sm:px-6 lg:px-8">
-            <h1
-              className="hero-title absolute top-6 left-4 sm:top-10 sm:left-10 font-600 leading-tight 
-              text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]
-              text-3xl sm:text-4xl md:text-5xl lg:text-6xl space-y-1"
-            >
-              <span className="block text-[#b8cc26]">Best Pre-Sale</span>
-              <span className="block">Crypto Coin in India</span>
-              <span className="block">Invest Early in </span>
-              <span className="block"> Jaimax</span>
-            </h1>
-
-            <p
-              className="hero-subtitle absolute bottom-6 right-4 sm:bottom-10 sm:right-10
-              text-white text-sm sm:text-base md:text-lg lg:text-xl 
-              font-medium max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-lg text-right space-y-4"
-            >
-              Our advanced platform simplifies your pre-sale crypto investment
-              journey, offering a secure and transparent experience to help you
-              grow with India's most trusted
-              <b className="text-[#aadc32]">
-                <a href="https://www.jaimax.com"> pre-sale crypto coin</a>
-              </b>{" "}
-              - jaimax.
-              <button
-                type="button"
-                onClick={() => navigate("/login")}
-                className="hero-button block ml-auto mt-4 font-bold text-center
-               bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
-               text-[#0f1c14] shadow-xl text-sm sm:text-base md:text-lg
-               rounded-full hover:scale-105 active:scale-95
-               transition-transform duration-300 px-4 py-2"
-              >
-                Join Jaimax Pre-Sale
-              </button>
-            </p>
-          </div>
-        </div>
-      </header>
-      <VelocityHero />
-      <section
-        ref={servicesRef}
-        className="min-h-screen relative px-4 py-20 bg-teal-50 flex items-center justify-center overflow-hidden"
+      <p
+        className="hero-subtitle absolute bottom-6 right-4 sm:bottom-10 sm:right-10
+        text-white text-sm sm:text-base md:text-lg lg:text-xl 
+        font-medium max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-lg text-right space-y-4"
       >
-        {/* Background decorations */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-teal-100 rounded-full blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 translate-x-1/2 translate-y-1/2" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-teal-50/50 to-cyan-50/50 rounded-full blur-3xl" />
+        Our advanced platform simplifies your pre-sale crypto investment
+        journey, offering a secure and transparent experience to help you
+        grow with India's most trusted
+        <b className="text-[#aadc32]">
+          <a href="https://www.jaimax.com"> pre-sale crypto coin</a>
+        </b>{" "}
+        - jaimax.
+        <button
+          type="button"
+          onClick={() => navigate("/login")}
+          className="hero-button block ml-auto mt-4 font-bold text-center
+           bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
+           text-[#0f1c14] shadow-xl text-sm sm:text-base md:text-lg
+           rounded-full hover:scale-105 active:scale-95
+           transition-transform duration-300 px-4 py-2"
+        >
+          Join Jaimax Pre-Sale
+        </button>
+      </p>
+    </div>
+  </div>
+</header>
+      <TokenStats />
 
-        <div className="w-full max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-full text-sm font-semibold mb-4 shadow-lg shadow-teal-500/25">
-              What We Offer
-            </span>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-              Our Services
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto">
-              Comprehensive solutions for your crypto journey
-            </p>
-          </div>
+<section
+  ref={servicesRef}
+  className="relative bg-[#085056]"
+>
+  {/* Background */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#b8cc26]/5 rounded-full blur-3xl" />
+    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
+  </div>
 
-          {/* Stacked Cards Container */}
+  {/* Content Container */}
+  <div className="relative min-h-screen flex flex-col">
+    {/* Header */}
+    <div className="pt-16 sm:pt-20 pb-8 sm:pb-12 text-center px-4 relative z-10">
+      <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#b8cc26]/10 border border-[#b8cc26]/30 rounded-full text-[#b8cc26] text-xs sm:text-sm font-medium mb-4">
+        <span className="w-2 h-2 rounded-full bg-[#b8cc26] animate-pulse" />
+        Our Services
+      </span>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+        What We <span className="text-[#b8cc26]">Offer</span>
+      </h2>
+      <p className="text-white/60 text-sm sm:text-base max-w-xl mx-auto">
+        Comprehensive solutions for your crypto journey
+      </p>
+    </div>
+
+    {/* Cards Container */}
+    <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 pb-20">
+      <div className="relative w-full max-w-4xl h-[420px] sm:h-[450px] md:h-[400px]">
+        {services.map((service, index) => (
           <div
-            className="relative w-full max-w-4xl mx-auto"
-            style={{ height: "500px", perspective: "1500px" }}
+            key={index}
+            className="service-card absolute top-0 left-0 w-full h-full"
           >
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="service-card absolute inset-0 bg-white rounded-3xl p-8 border border-gray-100 shadow-2xl"
-                style={{
-                  transformOrigin: "center center",
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "hidden",
-                }}
-              >
-                <div className="flex flex-col h-full">
-                  {/* Card Number Badge */}
-                  <div className="absolute top-6 right-6">
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-cyan-500 text-white font-bold text-sm shadow-lg">
-                      {`0${index + 1}`}
-                    </span>
-                  </div>
+            <div className="w-full h-full bg-[#064046] rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+              {/* Big Background Number */}
+              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8">
+                <span className="text-[80px] sm:text-[100px] md:text-[140px] font-black text-white/5 select-none leading-none">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </div>
 
-                  {/* Icon */}
-                  <div className="w-20 h-20 mb-6 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl shadow-teal-500/30">
+              {/* Content */}
+              <div className="relative h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center">
+                {/* Icon + Label Row */}
+                <div className="flex items-center gap-4 sm:gap-5 mb-4 sm:mb-6">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#b8cc26] to-teal-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-[#b8cc26]/20 flex-shrink-0">
                     <img
                       src={service.icon}
                       alt={service.iconAlt}
-                      className="w-12 h-12 filter brightness-0 invert"
+                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 filter brightness-0 invert"
                     />
                   </div>
-
-                  {/* Title */}
-                  <h3 className="text-3xl font-bold mb-4 text-gray-900">
-                    {service.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-gray-600 leading-relaxed text-lg flex-grow">
-                    {service.description}
-                  </p>
-
-                  {/* CTA Button */}
-                  <div className="mt-6 pt-6 border-t border-gray-100 flex items-center justify-between">
-                    <button className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-300 hover:-translate-y-1">
-                      Learn More
-                      <svg
-                        className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </button>
-
-                    {/* Progress indicator */}
-                    <div className="flex items-center gap-2">
-                      {services.map((_, i) => (
-                        <div
-                          key={i}
-                          className={`h-1.5 rounded-full transition-all duration-300 ${
-                            i === index
-                              ? "w-8 bg-gradient-to-r from-teal-500 to-cyan-500"
-                              : "w-1.5 bg-gray-200"
-                          }`}
-                        />
-                      ))}
-                    </div>
+                  <div>
+                    <span className="text-[#b8cc26] text-xs sm:text-sm font-bold uppercase tracking-wider">
+                      Service {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div className="h-px w-12 sm:w-16 bg-[#b8cc26]/30 mt-1" />
                   </div>
                 </div>
 
-                {/* Card decorations */}
-                <div className="absolute top-4 right-20 w-24 h-24 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-full blur-2xl opacity-60" />
-                <div className="absolute bottom-4 left-4 w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-xl opacity-40" />
-              </div>
-            ))}
-          </div>
+                {/* Title */}
+                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 max-w-lg">
+                  {service.title}
+                </h3>
 
-          {/* Scroll hint */}
-          <div className="text-center mt-8">
-            <p className="text-gray-400 text-sm flex items-center justify-center gap-2">
-              <svg
-                className="w-4 h-4 animate-bounce"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
-              Scroll to explore services
-            </p>
+                {/* Description */}
+                <p className="text-white/60 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8 max-w-xl line-clamp-3">
+                  {service.description}
+                </p>
+
+                {/* CTA + Progress Row */}
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <button className="group inline-flex items-center gap-2 bg-[#b8cc26] hover:bg-[#a3b821] text-[#085056] font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all text-sm sm:text-base">
+                    <span>Learn More</span>
+                    <svg 
+                      className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </button>
+
+                  {/* Progress Dots */}
+                  <div className="flex items-center gap-2">
+                    {services.map((_, i) => (
+                      <div
+                        key={i}
+                        className={`h-1.5 sm:h-2 rounded-full transition-all ${
+                          i === index 
+                            ? 'w-6 sm:w-8 bg-[#b8cc26]' 
+                            : 'w-1.5 sm:w-2 bg-white/20'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Corner Decorations */}
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#b8cc26]/10 rounded-full blur-3xl" />
+            </div>
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
+    </div>
+
+    
+  </div>
+</section>
       <div 
               style={{ 
           backgroundImage: 'linear-gradient(rgba(30, 43, 42, 0.9), rgba(11, 22, 21, 0.8)), url("https://i.pinimg.com/736x/69/d2/c1/69d2c1763cf91e13adad4f6069b283bc.jpg")',
@@ -5258,16 +5113,40 @@ useEffect(() => {
         <SecuritySec />
       </div>
       <PhasesWheelSection />
-      
       <TextParallaxContent
         imgUrl="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop"
         subheading="Innovation"
         heading="The Future is Here"
       >
-        <JaimaxContent />
+
+      {/* Main Content */}
+      <div className="relative bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
+      {/* Background Elements */}
+      
+
+      {/* Main Content */}
+      <div className="relative z-10">
+
+        {/* Introduction Section */}
+        <IntroductionSection />
+
+        {/* Features Grid */}
+           <JaimaxUniqueFeature uniqueFeaturesRef={uniqueFeaturesRef} />
+
+
+        {/* Security Section */}
+        <SecuritySection />
+
+        {/* Ecosystem Section */}
+        <EcosystemSection />
+
+        {/* App section */}
+        <AppSection/>
+      </div>
+    </div>
       </TextParallaxContent>
       <section className="py-2  relative overflow-hidden">
-        <div className="relative z-10 py-1 md:py-20">
+        <div className="relative z-10 py-1 md:py-8">
           <div className="container max-w-7xl mx-auto px-4">
             <section className="py-0 bg-[#085056] relative overflow-hidden">
               {/* Animated Background Elements */}
@@ -5481,11 +5360,10 @@ useEffect(() => {
           </div>
         </div>
       </section>
-      <BentoGallery />
+      <JaimaxRoadmap/>
        <ReviewsSection />
-       <HorizontalRoadmap/>
       <JaimaxFAQ />
-      {/* <ContactForm /> */}
+      <ContactForm />
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;

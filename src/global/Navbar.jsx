@@ -60,24 +60,21 @@
 //       }}
 //     >
 //       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12">
-//         <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20">
+//         <div className="flex items-center justify-between h-14 sm:h-16 lg:h-15">
 //           {/* Logo */}
 //           <NavLink
 //             className="flex-shrink-0 transition-transform duration-300 hover:scale-105 z-10"
 //             to="/"
+//             title="Jaimax Coin - Go to Homepage"
+//             aria-label="Jaimax Coin Home"
 //           >
-//             {/* <img 
-//               src={Logo} 
-//               className="h-6 w-auto xs:h-7 sm:h-8 md:h-9 lg:h-10 xl:h-12 filter drop-shadow-lg" 
-//               alt="Logo" 
-//             /> */}
 //             <img
 //               src={Logo}
 //               className="h-7 w-auto object-contain max-h-12 transform transition-transform duration-300
 //              xs:h-8 sm:h-9 md:h-10 lg:h-11 xl:h-12 2xl:h-14
 //              hover:scale-105 filter drop-shadow-lg"
-//               alt="Logo"
-//               title=" Jaimax Coin – Best Pre-Sale Crypto Coin in India | Smart Investments"
+//               alt="Jaimax Coin Logo"
+//               title="Jaimax Coin – Best Pre-Sale Crypto Coin in India | Smart Investments"
 //             />
 //           </NavLink>
 
@@ -88,12 +85,12 @@
 //                 <NavLink
 //                   className={({ isActive }) =>
 //                     isActive && location.pathname === "/" && !location.hash
-//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-//                       : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+//                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full  transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
 //                   aria-current="page"
 //                   to="/"
-//                   title= "Jaimax Coin - India's Leading Pre-Sale Cryptocurrency Platform"
+//                   title="Jaimax Coin - India's Leading Pre-Sale Cryptocurrency Platform"
 //                   onClick={closeNavbar}
 //                 >
 //                   Home
@@ -104,14 +101,28 @@
 //                 <NavLink
 //                   className={({ isActive }) =>
 //                     isActive
-//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-//                       : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+//                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full  transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
 //                   to="/about"
 //                   onClick={closeNavbar}
-//                   title="Building the Future of Cryptocurrency in India"
+//                   title="About Jaimax - Building the Future of Cryptocurrency in India"
 //                 >
 //                   About
+//                 </NavLink>
+//               </li>
+//               <li>
+//                 <NavLink
+//                   className={({ isActive }) =>
+//                     isActive
+//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+//                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full  transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+//                   }
+//                   to="/landingpage"
+//                   onClick={closeNavbar}
+//                   title="About Jaimax - Building the Future of Cryptocurrency in India"
+//                 >
+//                   Landingpage
 //                 </NavLink>
 //               </li>
 
@@ -119,11 +130,11 @@
 //                 <NavLink
 //                   className={({ isActive }) =>
 //                     isActive
-//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-//                       : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+//                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
 //                   to="/services"
-//                   title= "Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
+//                   title="Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
 //                   onClick={closeNavbar}
 //                 >
 //                   Services
@@ -134,11 +145,11 @@
 //                 <NavLink
 //                   className={({ isActive }) =>
 //                     isActive
-//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-//                       : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+//                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+//                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
 //                   to="/features"
-//                    title= "Jaimax Coin Features - Security, Speed & User-Friendly Interface"
+//                   title="Jaimax Coin Features - Security, Speed & User-Friendly Interface"
 //                   onClick={closeNavbar}
 //                 >
 //                   Features
@@ -150,10 +161,10 @@
 //                   className={({ isActive }) =>
 //                     isActive
 //                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-//                       : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+//                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
 //                   to="/blog"
-//                   title= "Jaimax Blog - Latest Crypto News, Insights & Market Analysis"
+//                   title="Jaimax Blog - Latest Crypto News, Insights & Market Analysis"
 //                   onClick={closeNavbar}
 //                 >
 //                   Blog
@@ -165,10 +176,10 @@
 //                   className={({ isActive }) =>
 //                     isActive
 //                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-//                       : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+//                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
 //                   to="/contact"
-//                   title= "Contact Jaimax - Get Support & Connect with Our Team"
+//                   title="Contact Jaimax - Get Support & Connect with Our Team"
 //                   onClick={closeNavbar}
 //                 >
 //                   Contact
@@ -177,10 +188,11 @@
 
 //               <li>
 //                 <NavLink
-//                   className="inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm whitespace-nowrap"
+//                   className="inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm whitespace-nowrap"
 //                   to="/jaimax-whitepaper.pdf"
-//                   title= "Jaimax Coin Whitepaper - Technical Documentation & Roadmap (PDF)"
+//                   title="Jaimax Coin Whitepaper - Technical Documentation & Roadmap (PDF)"
 //                   target="_blank"
+//                   rel="noopener noreferrer"
 //                 >
 //                   White Paper
 //                 </NavLink>
@@ -189,12 +201,14 @@
 
 //             {/* Action buttons */}
 //             <div className="flex items-center space-x-2 xl:space-x-3 ml-4 xl:ml-6">
-//               <NavLink to="/login" onClick={closeNavbar}
-//               title= "Login to Jaimax - Access Your Crypto Account Now"
+//               <NavLink 
+//                 to="/login" 
+//                 onClick={closeNavbar}
+//                 title="Login to Jaimax - Access Your Crypto Account Now"
 //               >
 //                 <button
 //                   type="button"
-//                   className="bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] text-[#0e0b0b] border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-2.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#b8cc26] hover:to-[#c5d82e] text-xs xl:text-sm whitespace-nowrap"
+//                   className="bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] text-[#0e0b0b] border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-1.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#b8cc26] hover:to-[#c5d82e] text-xs xl:text-sm whitespace-nowrap"
 //                   style={{
 //                     WebkitBackdropFilter: "blur(4px)",
 //                   }}
@@ -203,12 +217,14 @@
 //                 </button>
 //               </NavLink>
 
-//               <NavLink to="/register" onClick={closeNavbar}
-//               title= "Register on Jaimax - Start Your Crypto Investment Journey Today"
+//               <NavLink 
+//                 to="/register" 
+//                 onClick={closeNavbar}
+//                 title="Register on Jaimax - Start Your Crypto Investment Journey Today"
 //               >
 //                 <button
 //                   type="button"
-//                   className="bg-gradient-to-r from-[#20934a] to-[#16a34a] text-white border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-2.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#16a34a] hover:to-[#20934a] text-xs xl:text-sm whitespace-nowrap"
+//                   className="bg-gradient-to-r from-[#20934a] to-[#16a34a] text-white border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-1.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#16a34a] hover:to-[#20934a] text-xs xl:text-sm whitespace-nowrap"
 //                   style={{
 //                     WebkitBackdropFilter: "blur(4px)",
 //                   }}
@@ -226,7 +242,8 @@
 //             onClick={toggleNavbar}
 //             aria-controls="navbarNav"
 //             aria-expanded={isOpen}
-//             aria-label="Toggle navigation"
+//             aria-label="Toggle navigation menu"
+//             title="Open navigation menu"
 //           >
 //             <Hamburger
 //               toggled={isOpen}
@@ -266,7 +283,7 @@
 //                     }
 //                     aria-current="page"
 //                     to="/"
-//                     title= "Jaimax Coin - India's Leading Pre-Sale Cryptocurrency Platform"
+//                     title="Jaimax Coin - India's Leading Pre-Sale Cryptocurrency Platform"
 //                     onClick={closeNavbar}
 //                   >
 //                     Home
@@ -281,9 +298,24 @@
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
 //                     to="/about"
+//                     title="About Jaimax - Building the Future of Cryptocurrency in India"
 //                     onClick={closeNavbar}
 //                   >
 //                     About
+//                   </NavLink>
+//                 </li>
+//                 <li>
+//                   <NavLink
+//                     className={({ isActive }) =>
+//                       isActive
+//                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
+//                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
+//                     }
+//                     to="/landingpage"
+//                     title="About Jaimax - Building the Future of Cryptocurrency in India"
+//                     onClick={closeNavbar}
+//                   >
+//                     Landingpage
 //                   </NavLink>
 //                 </li>
 
@@ -294,7 +326,8 @@
 //                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
-//                     to="/services"
+//                     to="/services/"
+//                     title="Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
 //                     onClick={closeNavbar}
 //                   >
 //                     Services
@@ -309,6 +342,7 @@
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
 //                     to="/features"
+//                     title="Jaimax Coin Features - Security, Speed & User-Friendly Interface"
 //                     onClick={closeNavbar}
 //                   >
 //                     Features
@@ -322,7 +356,8 @@
 //                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
-//                     to="/blog"
+//                     to="/blog/"
+//                     title="Jaimax Blog - Latest Crypto News, Insights & Market Analysis"
 //                     onClick={closeNavbar}
 //                   >
 //                     Blog
@@ -337,6 +372,7 @@
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
 //                     to="/contact"
+//                     title="Contact Jaimax - Get Support & Connect with Our Team"
 //                     onClick={closeNavbar}
 //                   >
 //                     Contact
@@ -346,8 +382,10 @@
 //                 <li>
 //                   <NavLink
 //                     className="flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
-//                     to="/images/white_paper.pdf"
+//                     to="/jaimax-whitepaper.pdf"
 //                     target="_blank"
+//                     rel="noopener noreferrer"
+//                     title="Jaimax Coin Whitepaper - Technical Documentation & Roadmap (PDF)"
 //                     onClick={closeNavbar}
 //                   >
 //                     White Paper
@@ -356,8 +394,10 @@
 
 //                 <li className="pt-4 border-t border-white/10 mt-4">
 //                   <div className="flex flex-col space-y-3">
-//                     <NavLink to="/login" onClick={closeNavbar}
-//                     title= "Login to Jaimax - Access Your Crypto Account Now"
+//                     <NavLink 
+//                       to="/login" 
+//                       onClick={closeNavbar}
+//                       title="Login to Jaimax - Access Your Crypto Account Now"
 //                     >
 //                       <button
 //                         type="button"
@@ -370,8 +410,10 @@
 //                       </button>
 //                     </NavLink>
 
-//                     <NavLink to="/register" onClick={closeNavbar}
-//                     title= "Register on Jaimax - Start Your Crypto Investment Journey Today"
+//                     <NavLink 
+//                       to="/register" 
+//                       onClick={closeNavbar}
+//                       title="Register on Jaimax - Start Your Crypto Investment Journey Today"
 //                     >
 //                       <button
 //                         type="button"
@@ -395,7 +437,9 @@
 // };
 
 // export default Navbar;
-import { React, useEffect, useState } from "react";
+
+
+import { React, useEffect, useState, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../assets/Images/jaimaxlogo1.svg";
 import { Turn as Hamburger } from "hamburger-react";
@@ -403,10 +447,43 @@ import { Turn as Hamburger } from "hamburger-react";
 const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [show, setShow] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+
+  // Control navbar show/hide on scroll
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== 'undefined') {
+        // Current scroll position
+        const currentScrollY = window.scrollY;
+        
+        // If scrolling down, hide navbar
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          setShow(false);
+        } 
+        // If scrolling up, show navbar
+        else {
+          setShow(true);
+        }
+        
+        // Update last scroll position
+        setLastScrollY(currentScrollY);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar);
+
+      // Cleanup
+      return () => {
+        window.removeEventListener('scroll', controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
 
   // Close mobile menu when clicking outside or on resize
   useEffect(() => {
@@ -449,7 +526,9 @@ const Navbar = () => {
 
   return (
     <nav
-      className="sticky top-0 z-[1000] backdrop-blur-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.15)] border-b border-white/10"
+      className={`fixed top-0 left-0 right-0 z-[1000] backdrop-blur-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.15)] border-b border-white/10 transition-all duration-300 ease-in-out ${
+        show ? "translate-y-0" : "-translate-y-full"
+      }`}
       style={{
         background:
           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",
@@ -457,7 +536,8 @@ const Navbar = () => {
       }}
     >
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12">
-        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20">
+        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-15">
+          {/* Rest of your navbar content stays exactly the same */}
           {/* Logo */}
           <NavLink
             className="flex-shrink-0 transition-transform duration-300 hover:scale-105 z-10"
@@ -482,8 +562,8 @@ const Navbar = () => {
                 <NavLink
                   className={({ isActive }) =>
                     isActive && location.pathname === "/" && !location.hash
-                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+                      : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full  transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
                   aria-current="page"
                   to="/"
@@ -498,8 +578,8 @@ const Navbar = () => {
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+                      : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full  transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
                   to="/about"
                   onClick={closeNavbar}
@@ -508,12 +588,12 @@ const Navbar = () => {
                   About
                 </NavLink>
               </li>
-              {/* <li>
+              <li>
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+                      : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full  transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
                   to="/landingpage"
                   onClick={closeNavbar}
@@ -521,14 +601,14 @@ const Navbar = () => {
                 >
                   Landingpage
                 </NavLink>
-              </li> */}
+              </li>
 
               <li>
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+                      : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
                   to="/services"
                   title="Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
@@ -542,8 +622,8 @@ const Navbar = () => {
                 <NavLink
                   className={({ isActive }) =>
                     isActive
-                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                      ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
+                      : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
                   to="/features"
                   title="Jaimax Coin Features - Security, Speed & User-Friendly Interface"
@@ -558,7 +638,7 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     isActive
                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                      : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
                   to="/blog"
                   title="Jaimax Blog - Latest Crypto News, Insights & Market Analysis"
@@ -573,7 +653,7 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     isActive
                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
-                      : "inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
+                      : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
                   to="/contact"
                   title="Contact Jaimax - Get Support & Connect with Our Team"
@@ -585,7 +665,7 @@ const Navbar = () => {
 
               <li>
                 <NavLink
-                  className="inline-flex items-center text-white/90 px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm whitespace-nowrap"
+                  className="inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm whitespace-nowrap"
                   to="/jaimax-whitepaper.pdf"
                   title="Jaimax Coin Whitepaper - Technical Documentation & Roadmap (PDF)"
                   target="_blank"
@@ -605,7 +685,7 @@ const Navbar = () => {
               >
                 <button
                   type="button"
-                  className="bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] text-[#0e0b0b] border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-2.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#b8cc26] hover:to-[#c5d82e] text-xs xl:text-sm whitespace-nowrap"
+                  className="bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] text-[#0e0b0b] border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-1.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#b8cc26] hover:to-[#c5d82e] text-xs xl:text-sm whitespace-nowrap"
                   style={{
                     WebkitBackdropFilter: "blur(4px)",
                   }}
@@ -621,7 +701,7 @@ const Navbar = () => {
               >
                 <button
                   type="button"
-                  className="bg-gradient-to-r from-[#20934a] to-[#16a34a] text-white border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-2.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#16a34a] hover:to-[#20934a] text-xs xl:text-sm whitespace-nowrap"
+                  className="bg-gradient-to-r from-[#20934a] to-[#16a34a] text-white border border-white/20 rounded-full px-4 py-2 xl:px-6 xl:py-1.5 font-semibold transition-all duration-300 ease-in-out backdrop-blur-[4px] hover:shadow-lg hover:scale-105 hover:from-[#16a34a] hover:to-[#20934a] text-xs xl:text-sm whitespace-nowrap"
                   style={{
                     WebkitBackdropFilter: "blur(4px)",
                   }}
@@ -652,7 +732,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile navigation */}
+        {/* Mobile navigation - stays the same */}
         <div
           className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${
             isOpen
@@ -701,7 +781,7 @@ const Navbar = () => {
                     About
                   </NavLink>
                 </li>
-                {/* <li>
+                <li>
                   <NavLink
                     className={({ isActive }) =>
                       isActive
@@ -714,7 +794,7 @@ const Navbar = () => {
                   >
                     Landingpage
                   </NavLink>
-                </li> */}
+                </li>
 
                 <li>
                   <NavLink
