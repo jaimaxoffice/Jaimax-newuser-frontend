@@ -55,12 +55,13 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    // getRedeem: builder.mutation({
-    //   query: () => ({
-    //     url: "/User/reedem-welcome-bonus",
-    //     method: "GET",
-    //   }),
-    // }),
+getRegisterBonus: builder.mutation({
+      query: (jmc) => ({
+        url: "/user/get-welcome-bonus",
+        method: "POST",
+        body: { jmc },
+      }),
+    }),
 
    
   }),
@@ -75,5 +76,5 @@ export const {
   useCreatePaymentMutation,
   useCreatePaypalOrderMutation,
   useGetAnnounceQuery,
-  // useGetRedeemMutation ,
+  useGetRegisterBonusMutation,
 } = dashboardApiSlice;

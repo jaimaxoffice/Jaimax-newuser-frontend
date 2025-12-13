@@ -18,7 +18,6 @@ import { useGetRoundQuery } from "../components/Dashboard/pages/dashBoard/Dashbo
 import presale1 from "../assets/Finalone.webp";
 import presale2 from "../assets/presalepngiconfinal.webp";
 import Seo from "../SeoContent/Seo";
-import { Helmet } from "react-helmet-async";
 
 function PreSaleCryptoCoin() {
   const [isVisible, setIsVisible] = useState(false);

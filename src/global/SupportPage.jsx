@@ -2,7 +2,6 @@
 
 import React from "react";
 import Seo from "../SeoContent/Seo";
-import { Helmet } from "react-helmet-async";
 
 const SupportAndRiskDisclosure = () => {
   return (

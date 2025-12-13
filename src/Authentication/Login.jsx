@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext,useRef ,useCallback  } from "react";
 import { Link } from "react-router-dom";
 import {
   User,
@@ -14,6 +14,14 @@ import {
   CheckCircle,
   CreditCard,
   ChevronRight,
+  FileText ,
+  ArrowRight ,
+  Info ,
+  Calendar ,
+  ArrowLeft ,
+  Globe ,
+  Camera ,
+
 } from "lucide-react";
 import icon from "../assets/Images/greencoin.webp";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
@@ -23,14 +31,16 @@ import {
   useVerifyMutation,
   useLoginMutation,
   useOTPresentMutation,
+  useSendAadhaarOtpMutation,
+  useVerifyAadhaarOtpMutation,
+  useVerifyPanMutation,
 } from "./authApiSlice";
 import Seo from "../SeoContent/Seo";
-import { Helmet } from "react-helmet-async";
-
+import Loader from '../ReusableComponents/Loader/loader'
 import countrycodes from "./countryCodes.json";
 import TermsConditionsModal from "./TermsAndConditions";
 import * as yup from "yup";
-
+import Webcam from 'react-webcam';
 const Notification = ({ type, message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 5000);
@@ -474,8 +484,1481 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
     </div>
   );
 };
+
+
+// Steps Configuration
+const STEPS_INDIAN = [
+  { id: 1, title: "Country", icon: Globe },
+  { id: 2, title: "Aadhaar", icon: FileText },
+  { id: 3, title: "PAN", icon: CreditCard },
+  { id: 4, title: "Photo", icon: Camera },
+  { id: 5, title: "Details", icon: User },
+  { id: 6, title: "Setup", icon: Shield },
+];
+
+const STEPS_FOREIGN = [
+  { id: 1, title: "Country", icon: Globe },
+  { id: 2, title: "Details", icon: User },
+  { id: 3, title: "Photo", icon: Camera },
+  { id: 4, title: "Setup", icon: Shield },
+];
+
+// Progress Bar - Made Responsive
+const ProgressBar = ({ currentStep, steps }) => {
+  return (
+    <div className="w-full mb-4 sm:mb-6 lg:mb-8 px-2 sm:px-0">
+      <div className="flex justify-between items-center relative">
+        {/* Background line */}
+        <div className="absolute top-3 sm:top-4 lg:top-5 left-0 right-0 h-0.5 bg-gray-200 -z-10" />
+        
+        {/* Progress line */}
+        <div
+          className="absolute top-3 sm:top-4 lg:top-5 left-0 h-0.5 bg-gradient-to-r from-teal-500 to-teal-600 -z-10 transition-all duration-500"
+          style={{
+            width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
+          }}
+        />
+
+        {steps.map((step) => {
+          const StepIcon = step.icon;
+          const isCompleted = currentStep > step.id;
+          const isCurrent = currentStep === step.id;
+
+          return (
+            <div key={step.id} className="flex flex-col items-center z-10">
+              <div
+                className={`w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
+                  isCompleted
+                    ? "bg-teal-500 border-teal-500 text-white"
+                    : isCurrent
+                    ? "bg-white border-teal-500 text-teal-500 shadow-lg shadow-teal-200"
+                    : "bg-white border-gray-300 text-gray-400"
+                }`}
+              >
+                {isCompleted ? (
+                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                ) : (
+                  <StepIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                )}
+              </div>
+              <span
+                className={`mt-1 text-[8px] sm:text-[10px] lg:text-xs font-medium text-center max-w-[40px] sm:max-w-[60px] lg:max-w-[80px] leading-tight ${
+                  isCurrent
+                    ? "text-teal-600"
+                    : isCompleted
+                    ? "text-teal-500"
+                    : "text-gray-400"
+                }`}
+              >
+                {step.title}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// Country Selection Step - Made Responsive
+const CountrySelectionStep = ({
+  formData,
+  setFormData,
+  onNext,
+  setIsIndianUser,
+}) => {
+  const [selectedCountry, setSelectedCountry] = useState(formData.countryCode || "+91");
+
+  const handleContinue = () => {
+    const isIndian = selectedCountry === "+91";
+    setIsIndianUser(isIndian);
+    setFormData((prev) => ({ 
+      ...prev, 
+      countryCode: selectedCountry,
+      country: isIndian ? "India" : countrycodes.find(c => c.country_code === selectedCountry)?.country_name || "Other"
+    }));
+    onNext();
+  };
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <Globe className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Select Your Country</h2>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1 px-2 sm:px-4">
+          Choose your country to continue
+        </p>
+      </div>
+
+      <div className="space-y-1.5 sm:space-y-2">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Country</label>
+        <CountryCodeDropdown
+          value={selectedCountry}
+          onChange={setSelectedCountry}
+          className="w-full py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base border border-gray-300 
+                   rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
+          countryCodes={countrycodes}
+          showFullCountry={true}
+        />
+      </div>
+
+      {/* Information Box */}
+      <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
+        <div className="flex items-start gap-2 sm:gap-3">
+          <Info className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+          <div className="text-xs sm:text-sm text-gray-600">
+            {selectedCountry === "+91" ? (
+              <div>
+                <p className="font-medium mb-1">Indian Citizens:</p>
+                <ul className="list-disc pl-4 space-y-0.5">
+                  <li>Aadhaar verification required</li>
+                  <li>PAN verification required</li>
+                  <li>Live photo verification</li>
+                </ul>
+              </div>
+            ) : (
+              <div>
+                <p className="font-medium mb-1">International Users:</p>
+                <ul className="list-disc pl-4 space-y-0.5">
+                  <li>Photo ID verification</li>
+                  <li>Live photo capture</li>
+                  <li>Manual KYC review</li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={handleContinue}
+        className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 
+                 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 
+                 transition-all flex items-center justify-center gap-2"
+      >
+        Continue
+        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+      </button>
+    </div>
+  );
+};
+
+// Aadhaar Step - Made Responsive
+const AadhaarStep = ({
+  formData,
+  setFormData,
+  errors,
+  setErrors,
+  touched,
+  setTouched,
+  onNext,
+  onPrev,
+  setNotification,
+}) => {
+  const [aadhaarOtpSent, setAadhaarOtpSent] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [canResend, setCanResend] = useState(false);
+
+  const [sendAadhaarOtp, { isLoading: isSendingOtp }] = useSendAadhaarOtpMutation();
+  const [verifyAadhaarOtp, { isLoading: isVerifyingOtp }] = useVerifyAadhaarOtpMutation();
+
+  useEffect(() => {
+    let interval;
+    if (aadhaarOtpSent && timer > 0) {
+      interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+    } else if (timer === 0) {
+      setCanResend(true);
+    }
+    return () => clearInterval(interval);
+  }, [aadhaarOtpSent, timer]);
+
+  const handleSendAadhaarOtp = async () => {
+    if (!formData.aadhaarNumber || formData.aadhaarNumber.length !== 12) {
+      setErrors((prev) => ({
+        ...prev,
+        aadhaarNumber: "Please enter a valid 12-digit Aadhaar number",
+      }));
+      return;
+    }
+
+    try {
+      const result = await sendAadhaarOtp({
+        aadhaarNumber: formData.aadhaarNumber,
+      }).unwrap();
+
+      setFormData((prev) => ({
+        ...prev,
+        aadhaarTempId: result.data?.tempId || result.tempId,
+      }));
+
+      setAadhaarOtpSent(true);
+      setTimer(120);
+      setCanResend(false);
+      setNotification({ type: "success", message: "OTP sent to your Aadhaar-linked mobile!" });
+    } catch (err) {
+      setNotification({
+        type: "error",
+        message: err?.data?.message || "Failed to send OTP",
+      });
+    }
+  };
+
+  const handleVerifyAadhaar = async () => {
+    if (!formData.aadhaarOtp || formData.aadhaarOtp.length !== 6) {
+      setErrors((prev) => ({ ...prev, aadhaarOtp: "Please enter 6-digit OTP" }));
+      return;
+    }
+
+    try {
+      const result = await verifyAadhaarOtp({
+        tempId: formData.aadhaarTempId,
+        otp: formData.aadhaarOtp,
+      }).unwrap();
+
+      setFormData((prev) => ({
+        ...prev,
+        aadhaarVerified: true,
+        aadhaarData: result.data,
+        name: result.data?.name || prev.name,
+        dob: result.data?.dob || prev.dob,
+      }));
+
+      setNotification({ type: "success", message: "Aadhaar verified successfully!" });
+      setTimeout(() => onNext(), 1000);
+    } catch (err) {
+      setNotification({
+        type: "error",
+        message: err?.data?.message || "OTP verification failed",
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <FileText className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-teal-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Aadhaar Verification</h2>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+          Verify your identity with Aadhaar
+        </p>
+      </div>
+
+      {/* Aadhaar Number Input */}
+      <div className="space-y-1.5 sm:space-y-2">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Aadhaar Number</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            maxLength={12}
+            value={formData.aadhaarNumber || ""}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "");
+              setFormData((prev) => ({ ...prev, aadhaarNumber: value }));
+              if (errors.aadhaarNumber && value.length === 12) {
+                setErrors((prev) => ({ ...prev, aadhaarNumber: null }));
+              }
+            }}
+            placeholder="Enter 12-digit Aadhaar number"
+            disabled={aadhaarOtpSent && !canResend}
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all ${
+              errors.aadhaarNumber ? "border-red-500 bg-red-50" : "border-gray-300"
+            } ${aadhaarOtpSent && !canResend ? "bg-gray-100" : "bg-white"}`}
+          />
+        </div>
+        {errors.aadhaarNumber && (
+          <p className="text-red-500 text-xs">{errors.aadhaarNumber}</p>
+        )}
+      </div>
+
+      {/* OTP Section */}
+      {aadhaarOtpSent && (
+        <div className="space-y-1.5 sm:space-y-2 animate-fadeIn">
+          <label className="text-xs sm:text-sm font-medium text-gray-700">Enter OTP</label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              maxLength={6}
+              value={formData.aadhaarOtp || ""}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setFormData((prev) => ({ ...prev, aadhaarOtp: value }));
+              }}
+              placeholder="Enter 6-digit OTP"
+              className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
+            />
+          </div>
+          <p className="text-xs text-gray-500">
+            OTP sent to Aadhaar-linked mobile
+          </p>
+        </div>
+      )}
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <button
+          onClick={onPrev}
+          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          Back
+        </button>
+        
+        {!aadhaarOtpSent ? (
+          <button
+            onClick={handleSendAadhaarOtp}
+            disabled={isSendingOtp || !formData.aadhaarNumber || formData.aadhaarNumber.length !== 12}
+            className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+          >
+            {isSendingOtp ? (
+              <>
+                <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                Send OTP
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              </>
+            )}
+          </button>
+        ) : (
+          <div className="order-1 sm:order-2 flex-1 flex gap-2">
+            <button
+              onClick={handleSendAadhaarOtp}
+              disabled={!canResend || isSendingOtp}
+              className="px-3 sm:px-4 py-2.5 sm:py-3 border border-teal-500 text-teal-600 rounded-xl text-xs sm:text-sm font-medium hover:bg-teal-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
+            >
+              {timer > 0 ? `${timer}s` : "Resend"}
+            </button>
+            <button
+              onClick={handleVerifyAadhaar}
+              disabled={isVerifyingOtp || !formData.aadhaarOtp || formData.aadhaarOtp.length !== 6}
+              className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            >
+              {isVerifyingOtp ? (
+                <>
+                  <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                  Verifying...
+                </>
+              ) : (
+                <>
+                  Verify
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// PAN Step - Made Responsive
+const PanStep = ({
+  formData,
+  setFormData,
+  errors,
+  setErrors,
+  onNext,
+  onPrev,
+  setNotification,
+}) => {
+  const [verifyPan, { isLoading }] = useVerifyPanMutation();
+
+  const handleVerifyPan = async () => {
+    const panErrors = {};
+    
+    if (!formData.panNumber || !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber)) {
+      panErrors.panNumber = "Enter valid PAN (e.g., ABCDE1234F)";
+    }
+    if (!formData.panName) {
+      panErrors.panName = "Name is required";
+    }
+    if (!formData.panDob) {
+      panErrors.panDob = "Date of birth is required";
+    }
+
+    if (Object.keys(panErrors).length > 0) {
+      setErrors((prev) => ({ ...prev, ...panErrors }));
+      return;
+    }
+
+    try {
+      const result = await verifyPan({
+        tempId: formData.aadhaarTempId,
+        panNumber: formData.panNumber,
+        name: formData.panName,
+        dob: formData.panDob,
+      }).unwrap();
+
+      setFormData((prev) => ({
+        ...prev,
+        panVerified: true,
+        panData: result.data,
+      }));
+
+      setNotification({ type: "success", message: "PAN verified successfully!" });
+      setTimeout(() => onNext(), 1000);
+    } catch (err) {
+      setNotification({
+        type: "error",
+        message: err?.data?.message || "PAN verification failed",
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-4 sm:space-y-5">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <CreditCard className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">PAN Verification</h2>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+          Verify your PAN card details
+        </p>
+      </div>
+
+      {/* PAN Number */}
+      <div className="space-y-1.5 sm:space-y-2">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">PAN Number</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            maxLength={10}
+            value={formData.panNumber || ""}
+            onChange={(e) => {
+              const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+              setFormData((prev) => ({ ...prev, panNumber: value }));
+            }}
+            placeholder="ABCDE1234F"
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+              errors.panNumber ? "border-red-500 bg-red-50" : "border-gray-300"
+            }`}
+          />
+        </div>
+        {errors.panNumber && (
+          <p className="text-red-500 text-xs">{errors.panNumber}</p>
+        )}
+      </div>
+
+      {/* Name on PAN */}
+      <div className="space-y-1.5 sm:space-y-2">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Name (as on PAN)</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            value={formData.panName || formData.name || ""}
+            onChange={(e) => {
+              const value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+              setFormData((prev) => ({ ...prev, panName: value }));
+            }}
+            placeholder="Enter name as on PAN"
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+              errors.panName ? "border-red-500 bg-red-50" : "border-gray-300"
+            }`}
+          />
+        </div>
+        {errors.panName && (
+          <p className="text-red-500 text-xs">{errors.panName}</p>
+        )}
+      </div>
+
+      {/* Date of Birth */}
+      <div className="space-y-1.5 sm:space-y-2">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Date of Birth</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="date"
+            value={formData.panDob || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, panDob: e.target.value }))}
+            max={new Date().toISOString().split("T")[0]}
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+              errors.panDob ? "border-red-500 bg-red-50" : "border-gray-300"
+            }`}
+          />
+        </div>
+        {errors.panDob && (
+          <p className="text-red-500 text-xs">{errors.panDob}</p>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+        <button
+          onClick={onPrev}
+          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          Back
+        </button>
+        <button
+          onClick={handleVerifyPan}
+          disabled={isLoading}
+          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+        >
+          {isLoading ? (
+            <>
+              <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+              Verifying...
+            </>
+          ) : (
+            <>
+              Verify PAN
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Photo Capture Step - Made Responsive
+const PhotoCaptureStep = ({
+  formData,
+  setFormData,
+  onNext,
+  onPrev,
+  setNotification,
+}) => {
+  const webcamRef = useRef(null);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [capturedPhoto, setCapturedPhoto] = useState(formData.livePhoto || null);
+  const [facingMode, setFacingMode] = useState("user");
+  const [hasPermission, setHasPermission] = useState(true);
+
+  const videoConstraints = {
+    width: { ideal: 1280, min: 640 },
+    height: { ideal: 720, min: 480 },
+    facingMode: facingMode,
+    aspectRatio: { ideal: 1.333 }
+  };
+
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (imageSrc) {
+      setCapturedPhoto(imageSrc);
+      setFormData((prev) => ({ ...prev, livePhoto: imageSrc }));
+      setIsCapturing(false);
+    }
+  }, [webcamRef, setFormData]);
+
+  const retakePhoto = () => {
+    setCapturedPhoto(null);
+    setFormData((prev) => ({ ...prev, livePhoto: null }));
+    setIsCapturing(true);
+  };
+
+  const handleUserMediaError = () => {
+    setHasPermission(false);
+    setNotification({
+      type: "error",
+      message: "Camera access denied. Please allow camera access."
+    });
+  };
+
+  const handleNext = () => {
+    if (!capturedPhoto) {
+      setNotification({
+        type: "error",
+        message: "Please capture a photo to continue"
+      });
+      return;
+    }
+    onNext();
+  };
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <Camera className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-indigo-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Photo Verification</h2>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+          Take a live photo for verification
+        </p>
+      </div>
+
+      {/* Camera/Photo Display */}
+      <div className="relative bg-gray-100 rounded-xl overflow-hidden aspect-[4/3] sm:aspect-video max-h-[280px] sm:max-h-[320px] lg:max-h-[350px]">
+        {!isCapturing && !capturedPhoto && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+            <Camera className="w-10 h-10 sm:w-14 sm:h-14 text-gray-400 mb-3" />
+            <p className="text-sm text-gray-600 mb-3">Camera not active</p>
+            {hasPermission ? (
+              <button
+                onClick={() => setIsCapturing(true)}
+                className="px-4 py-2 text-sm bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-all"
+              >
+                Start Camera
+              </button>
+            ) : (
+              <div className="text-center">
+                <p className="text-xs text-red-600 mb-1">Camera permission denied</p>
+                <p className="text-xs text-gray-500">Enable camera in browser settings</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {isCapturing && hasPermission && (
+          <>
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+              onUserMediaError={handleUserMediaError}
+              className="w-full h-full object-cover"
+              mirrored={facingMode === "user"}
+            />
+            {/* Face guide */}
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+              <div className="w-28 h-36 sm:w-40 sm:h-52 border-2 border-white/70 rounded-xl"></div>
+            </div>
+            {/* Camera switch button */}
+            <button
+              onClick={() => setFacingMode(prev => prev === "user" ? "environment" : "user")}
+              className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-all shadow"
+            >
+              <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </button>
+          </>
+        )}
+
+        {capturedPhoto && (
+          <>
+            <img
+              src={capturedPhoto}
+              alt="Captured"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-medium flex items-center gap-1">
+              <CheckCircle className="w-3 h-3" />
+              Captured
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Instructions */}
+      <div className="bg-blue-50 rounded-xl p-3 sm:p-4">
+        <h4 className="text-xs sm:text-sm font-medium text-blue-900 mb-1">Photo Tips:</h4>
+        <ul className="text-[10px] sm:text-xs text-blue-700 space-y-0.5">
+          <li>• Face camera directly with good lighting</li>
+          <li>• Remove glasses if causing glare</li>
+          <li>• Keep neutral expression</li>
+        </ul>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <button
+          onClick={onPrev}
+          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          Back
+        </button>
+        
+        <div className="order-1 sm:order-2 flex-1 flex gap-2">
+          {isCapturing ? (
+            <button
+              onClick={capture}
+              className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+            >
+              <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
+              Capture
+            </button>
+          ) : capturedPhoto ? (
+            <>
+              <button
+                onClick={retakePhoto}
+                className="flex-1 border border-teal-500 text-teal-600 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:bg-teal-50 transition-all"
+              >
+                Retake
+              </button>
+              <button
+                onClick={handleNext}
+                className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+              >
+                Continue
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Personal Details Step - Made Responsive
+const PersonalDetailsStep = ({
+  formData,
+  setFormData,
+  errors,
+  setErrors,
+  onNext,
+  onPrev,
+  selectedCode,
+  setSelectedCode,
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const validateStep = () => {
+    const stepErrors = {};
+    if (!formData.name || formData.name.length < 2) stepErrors.name = "Name must be at least 2 characters";
+    if (!formData.phone || formData.phone.length !== 10) stepErrors.phone = "Enter valid 10-digit phone";
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) stepErrors.email = "Enter valid email";
+    if (!formData.password || formData.password.length < 6) stepErrors.password = "Password min 6 characters";
+    if (formData.password !== formData.confirmPassword) stepErrors.confirmPassword = "Passwords don't match";
+    setErrors((prev) => ({ ...prev, ...stepErrors }));
+    return Object.keys(stepErrors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep()) onNext();
+  };
+
+  return (
+    <div className="space-y-3 sm:space-y-4">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <User className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-purple-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Personal Details</h2>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">Enter your information</p>
+      </div>
+
+      {/* Name */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Full Name</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            value={formData.name || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value.replace(/[^a-zA-Z\s]/g, "") }))}
+            placeholder="Enter your full name"
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.name ? "border-red-500" : "border-gray-300"}`}
+          />
+        </div>
+        {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+      </div>
+
+      {/* Phone */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Phone Number</label>
+        <div className="flex rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
+          <div className="flex-shrink-0 bg-gray-50 border-r border-gray-300">
+            <CountryCodeDropdown
+              value={selectedCode}
+              onChange={setSelectedCode}
+              className="py-2.5 sm:py-3 px-2 sm:px-3"
+              countryCodes={countrycodes}
+            />
+          </div>
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+              <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            </div>
+            <input
+              type="tel"
+              maxLength={10}
+              value={formData.phone || ""}
+              onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value.replace(/\D/g, "") }))}
+              placeholder="Phone number"
+              className="w-full pl-8 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-0 outline-none bg-white"
+            />
+          </div>
+        </div>
+        {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+      </div>
+
+      {/* Email */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Email</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="email"
+            value={formData.email || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value.toLowerCase() }))}
+            placeholder="Enter your email"
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500" : "border-gray-300"}`}
+          />
+        </div>
+        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+      </div>
+
+      {/* Password */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Password</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type={showPassword ? "text" : "password"}
+            value={formData.password || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+            placeholder="Create password"
+            className={`w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500" : "border-gray-300"}`}
+          />
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
+            {showPassword ? <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /> : <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />}
+          </button>
+        </div>
+        {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+      </div>
+
+      {/* Confirm Password */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Confirm Password</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            value={formData.confirmPassword || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
+            placeholder="Confirm password"
+            className={`w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}`}
+          />
+          <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
+            {showConfirmPassword ? <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /> : <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />}
+          </button>
+        </div>
+        {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
+      </div>
+
+      {/* Referral ID */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">
+          Referral ID <span className="text-gray-400">(Optional)</span>
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Users className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            maxLength={13}
+            value={formData.referralId || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, referralId: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") }))}
+            placeholder="Enter referral ID"
+            className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white"
+          />
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+        <button
+          onClick={onPrev}
+          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          Back
+        </button>
+        <button
+          onClick={handleNext}
+          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+        >
+          Continue
+          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Account Setup Step - Made Responsive
+const AccountSetupStep = ({
+  formData,
+  setFormData,
+  errors,
+  setErrors,
+  onPrev,
+  setNotification,
+  isChecked,
+  setIsChecked,
+  isConfirmAgree,
+  onShowModal,
+}) => {
+  const [emailOtpSent, setEmailOtpSent] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [canResend, setCanResend] = useState(false);
+  const navigate = useNavigate();
+
+  const [register, { isLoading: isRegistering }] = useRegisterMutation();
+  const [verify, { isLoading: isVerifying }] = useVerifyMutation();
+  const [OTPresent, { isLoading: isResending }] = useOTPresentMutation();
+
+  useEffect(() => {
+    let interval;
+    if (emailOtpSent && timer > 0) {
+      interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+    } else if (timer === 0) {
+      setCanResend(true);
+    }
+    return () => clearInterval(interval);
+  }, [emailOtpSent, timer]);
+
+  const handleSendEmailOtp = async () => {
+    try {
+      const payload = {
+        tempId: formData.aadhaarTempId,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+        confirmPwd: formData.confirmPassword,
+        countryCode: "+91",
+        country: "India",
+        aadhaarNumber: formData.aadhaarNumber,
+        panNumber: formData.panNumber,
+        name: formData.name,
+        dob: formData.panDob,
+      };
+
+      const result = await register(payload).unwrap();
+      if (result?.data?.username) {
+        Cookies.set("username", result.data.username, { expires: 7 });
+      }
+      setEmailOtpSent(true);
+      setTimer(120);
+      setCanResend(false);
+      setNotification({ type: "success", message: "OTP sent to your email!" });
+    } catch (err) {
+      if (err?.data?.message === "User verification pending") {
+        try {
+          await OTPresent({ email: formData.email, otpType: "register", tempId: formData.aadhaarTempId }).unwrap();
+          setEmailOtpSent(true);
+          setTimer(120);
+          setCanResend(false);
+          setNotification({ type: "success", message: "OTP resent to your email!" });
+        } catch (otpErr) {
+          setNotification({ type: "error", message: otpErr?.data?.message || "Failed to resend OTP" });
+        }
+      } else {
+        setNotification({ type: "error", message: err?.data?.message || "Failed to send OTP" });
+      }
+    }
+  };
+
+  const handleFinalSubmit = async () => {
+    if (!isChecked || !isConfirmAgree) {
+      setNotification({ type: "error", message: "Please accept Terms & Conditions" });
+      return;
+    }
+    if (!formData.emailOtp || formData.emailOtp.length !== 6) {
+      setErrors((prev) => ({ ...prev, emailOtp: "Enter 6-digit OTP" }));
+      return;
+    }
+
+    try {
+      const res = await verify({
+        tempId: formData.aadhaarTempId,
+        email: formData.email,
+        otp: Number(formData.emailOtp),
+        otpType: "register",
+        referenceId: formData.referralId,
+      }).unwrap();
+
+      if (!res.success) {
+        setNotification({ type: "error", message: res.message || "Verification failed" });
+        return;
+      }
+
+      Cookies.set("token", res?.data?.token, { expires: 7 });
+      Cookies.set("userData", JSON.stringify(res?.data), { expires: 7 });
+      setNotification({ type: "success", message: "Registration successful!" });
+      setTimeout(() => navigate("/dashboard"), 1000);
+    } catch (err) {
+      setNotification({ type: "error", message: err?.data?.message || "Registration failed" });
+    }
+  };
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <Shield className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-green-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Account Setup</h2>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">Verify email to complete</p>
+      </div>
+
+      {/* Verification Summary */}
+      <div className="bg-gray-50 rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+        <h3 className="text-sm font-medium text-gray-700">Summary</h3>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-gray-600">Aadhaar Verified</span>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-gray-600">PAN Verified</span>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-gray-600">Photo Captured</span>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-gray-600">{formData.name}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Email OTP Section */}
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>
+            <p className="text-xs sm:text-sm font-medium text-gray-700">Email Verification</p>
+            <p className="text-xs text-gray-500 truncate max-w-[200px] sm:max-w-none">{formData.email}</p>
+          </div>
+          <button
+            onClick={handleSendEmailOtp}
+            disabled={isRegistering || isResending || (emailOtpSent && !canResend)}
+            className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+              emailOtpSent && !canResend
+                ? "bg-green-100 text-green-700"
+                : "bg-teal-500 text-white hover:bg-teal-600"
+            } disabled:opacity-50`}
+          >
+            {isRegistering || isResending ? "Sending..." : emailOtpSent && !canResend ? `Resend (${timer}s)` : emailOtpSent ? "Resend" : "Send OTP"}
+          </button>
+        </div>
+
+        {emailOtpSent && (
+          <div className="space-y-1 animate-fadeIn">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                maxLength={6}
+                value={formData.emailOtp || ""}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, emailOtp: e.target.value.replace(/\D/g, "") }));
+                  if (errors.emailOtp) setErrors((prev) => ({ ...prev, emailOtp: null }));
+                }}
+                placeholder="Enter 6-digit OTP"
+                className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.emailOtp ? "border-red-500" : "border-gray-300"}`}
+              />
+            </div>
+            {errors.emailOtp && <p className="text-red-500 text-xs">{errors.emailOtp}</p>}
+          </div>
+        )}
+      </div>
+
+      {/* Terms and Conditions */}
+      <div className="flex items-start gap-2 sm:gap-3">
+        <input
+          type="checkbox"
+          id="terms"
+          checked={isChecked && isConfirmAgree}
+          onChange={(e) => e.target.checked ? onShowModal() : setIsChecked(false)}
+          className="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+        />
+        <label htmlFor="terms" className="text-xs sm:text-sm text-gray-600">
+          I agree to the{" "}
+          <button type="button" onClick={onShowModal} className="text-teal-600 hover:underline font-medium">
+            Terms & Conditions
+          </button>{" "}
+          and{" "}
+          <button type="button" onClick={onShowModal} className="text-teal-600 hover:underline font-medium">
+            Privacy Policy
+          </button>
+        </label>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <button
+          onClick={onPrev}
+          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          Back
+        </button>
+        <button
+          onClick={handleFinalSubmit}
+          disabled={isVerifying || !emailOtpSent || !formData.emailOtp || formData.emailOtp.length !== 6 || !isChecked || !isConfirmAgree}
+          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+        >
+          {isVerifying ? (
+            <>
+              <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            <>
+              Complete
+              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Foreign Personal Details Step (Similar to PersonalDetailsStep but with minor differences)
+const ForeignPersonalDetailsStep = ({
+  formData,
+  setFormData,
+  errors,
+  setErrors,
+  onNext,
+  onPrev,
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const validateStep = () => {
+    const stepErrors = {};
+    if (!formData.name || formData.name.length < 2) stepErrors.name = "Name required";
+    if (!formData.phone || formData.phone.length < 8) stepErrors.phone = "Valid phone required";
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) stepErrors.email = "Valid email required";
+    if (!formData.password || formData.password.length < 6) stepErrors.password = "Min 6 characters";
+    if (formData.password !== formData.confirmPassword) stepErrors.confirmPassword = "Passwords don't match";
+    setErrors((prev) => ({ ...prev, ...stepErrors }));
+    return Object.keys(stepErrors).length === 0;
+  };
+
+  return (
+    <div className="space-y-3 sm:space-y-4">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <User className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-purple-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Personal Details</h2>
+      </div>
+
+      {/* Name */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Full Name</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <input
+            type="text"
+            value={formData.name || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+            placeholder="Enter full name"
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.name ? "border-red-500" : "border-gray-300"}`}
+          />
+        </div>
+        {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+      </div>
+
+      {/* Phone with pre-selected country */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Phone Number</label>
+        <div className="flex rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
+          <div className="flex-shrink-0 bg-gray-50 border-r border-gray-300 px-3 flex items-center">
+            <span className="text-sm text-gray-700 font-medium">{formData.countryCode}</span>
+          </div>
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Phone className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+            <input
+              type="tel"
+              value={formData.phone || ""}
+              onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value.replace(/[^\d]/g, "") }))}
+              placeholder="Phone number"
+              className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-0 outline-none bg-white"
+            />
+          </div>
+        </div>
+        {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+      </div>
+
+      {/* Email */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Email</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <input
+            type="email"
+            value={formData.email || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value.toLowerCase() }))}
+            placeholder="Enter email"
+            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500" : "border-gray-300"}`}
+          />
+        </div>
+        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+      </div>
+
+      {/* Password fields */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Password</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <input
+            type={showPassword ? "text" : "password"}
+            value={formData.password || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+            placeholder="Create password"
+            className={`w-full pl-9 sm:pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500" : "border-gray-300"}`}
+          />
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
+            {showPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+          </button>
+        </div>
+        {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Confirm Password</label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            value={formData.confirmPassword || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
+            placeholder="Confirm password"
+            className={`w-full pl-9 sm:pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}`}
+          />
+          <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
+            {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+          </button>
+        </div>
+        {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
+      </div>
+
+      {/* Referral */}
+      <div className="space-y-1">
+        <label className="text-xs sm:text-sm font-medium text-gray-700">Referral ID <span className="text-gray-400">(Optional)</span></label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Users className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <input
+            type="text"
+            maxLength={13}
+            value={formData.referralId || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, referralId: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") }))}
+            placeholder="Referral ID"
+            className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white"
+          />
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+        <button onClick={onPrev} className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 flex items-center justify-center gap-2">
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />Back
+        </button>
+        <button onClick={() => validateStep() && onNext()} className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 flex items-center justify-center gap-2">
+          Continue<ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Foreign Account Setup Step
+const ForeignAccountSetupStep = ({
+  formData,
+  setFormData,
+  errors,
+  setErrors,
+  onPrev,
+  setNotification,
+  isChecked,
+  setIsChecked,
+  isConfirmAgree,
+  onShowModal,
+}) => {
+  const [emailOtpSent, setEmailOtpSent] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [canResend, setCanResend] = useState(false);
+  const navigate = useNavigate();
+
+  const [registerForeign, { isLoading: isRegistering }] = useRegisterMutation();
+  const [verifyForeign, { isLoading: isVerifying }] = useVerifyMutation();
+
+  useEffect(() => {
+    let interval;
+    if (emailOtpSent && timer > 0) {
+      interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+    } else if (timer === 0) {
+      setCanResend(true);
+    }
+    return () => clearInterval(interval);
+  }, [emailOtpSent, timer]);
+
+  const handleSendEmailOtp = async () => {
+    try {
+      const result = await registerForeign({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+        confirmPwd: formData.confirmPassword,
+        countryCode: formData.countryCode,
+        country: formData.country,
+        referralId: formData.referralId,
+      }).unwrap();
+
+      if (result?.data?.username) Cookies.set("username", result.data.username, { expires: 7 });
+      setEmailOtpSent(true);
+      setTimer(120);
+      setCanResend(false);
+      setNotification({ type: "success", message: "OTP sent!" });
+    } catch (err) {
+      setNotification({ type: "error", message: err?.data?.message || "Failed to send OTP" });
+    }
+  };
+
+  const handleFinalSubmit = async () => {
+    if (!isChecked || !isConfirmAgree) {
+      setNotification({ type: "error", message: "Accept Terms & Conditions" });
+      return;
+    }
+    if (!formData.emailOtp || formData.emailOtp.length !== 6) {
+      setErrors((prev) => ({ ...prev, emailOtp: "Enter 6-digit OTP" }));
+      return;
+    }
+
+    try {
+      const res = await verifyForeign({
+        email: formData.email,
+        otp: Number(formData.emailOtp),
+        otpType: "register",
+      }).unwrap();
+
+      if (!res.success) {
+        setNotification({ type: "error", message: res.message || "Verification failed" });
+        return;
+      }
+
+      Cookies.set("token", res?.data?.token, { expires: 7 });
+      Cookies.set("userData", JSON.stringify(res?.data), { expires: 7 });
+      setNotification({ type: "success", message: "Registration successful!" });
+      setTimeout(() => navigate("/dashboard"), 1000);
+    } catch (err) {
+      setNotification({ type: "error", message: err?.data?.message || "Registration failed" });
+    }
+  };
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <Shield className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-green-600" />
+        </div>
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Account Setup</h2>
+      </div>
+
+      {/* Summary */}
+      <div className="bg-gray-50 rounded-xl p-3 sm:p-4 space-y-2">
+        <h3 className="text-sm font-medium text-gray-700">Summary</h3>
+        <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /><span className="text-xs sm:text-sm text-gray-600">Details Completed</span></div>
+        <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /><span className="text-xs sm:text-sm text-gray-600">Photo Captured</span></div>
+      </div>
+
+      {/* Email OTP */}
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>
+            <p className="text-xs sm:text-sm font-medium text-gray-700">Email Verification</p>
+            <p className="text-xs text-gray-500 truncate max-w-[200px]">{formData.email}</p>
+          </div>
+          <button
+            onClick={handleSendEmailOtp}
+            disabled={isRegistering || (emailOtpSent && !canResend)}
+            className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium ${emailOtpSent && !canResend ? "bg-green-100 text-green-700" : "bg-teal-500 text-white hover:bg-teal-600"} disabled:opacity-50`}
+          >
+            {isRegistering ? "Sending..." : emailOtpSent && !canResend ? `Resend (${timer}s)` : emailOtpSent ? "Resend" : "Send OTP"}
+          </button>
+        </div>
+
+        {emailOtpSent && (
+          <div className="space-y-1 animate-fadeIn">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Shield className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+              <input
+                type="text"
+                maxLength={6}
+                value={formData.emailOtp || ""}
+                onChange={(e) => setFormData((prev) => ({ ...prev, emailOtp: e.target.value.replace(/\D/g, "") }))}
+                placeholder="Enter 6-digit OTP"
+                className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.emailOtp ? "border-red-500" : "border-gray-300"}`}
+              />
+            </div>
+            {errors.emailOtp && <p className="text-red-500 text-xs">{errors.emailOtp}</p>}
+          </div>
+        )}
+      </div>
+
+      {/* Terms */}
+      <div className="flex items-start gap-2 sm:gap-3">
+        <input
+          type="checkbox"
+          id="foreignTerms"
+          checked={isChecked && isConfirmAgree}
+          onChange={(e) => e.target.checked ? onShowModal() : setIsChecked(false)}
+          className="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-600"
+        />
+        <label htmlFor="foreignTerms" className="text-xs sm:text-sm text-gray-600">
+          I agree to <button type="button" onClick={onShowModal} className="text-teal-600 hover:underline">Terms & Conditions</button>
+        </label>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <button onClick={onPrev} className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 flex items-center justify-center gap-2">
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />Back
+        </button>
+        <button
+          onClick={handleFinalSubmit}
+          disabled={isVerifying || !emailOtpSent || !formData.emailOtp || formData.emailOtp.length !== 6 || !isChecked || !isConfirmAgree}
+          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {isVerifying ? <><Loader className="w-4 h-4 animate-spin" />Creating...</> : <>Complete<CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" /></>}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+
+// Main Register Component (Modified)
 const RegisterComponent = ({
-  onSubmit,
   onToggleMode,
   isVisible,
   showModal,
@@ -485,569 +1968,205 @@ const RegisterComponent = ({
   isConfirmAgree,
 }) => {
   const location = useLocation();
-  const navigate = useNavigate();
-  // const location = useLocation();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [selectedCode, setSelectedCode] = useState("+91");
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isIndianUser, setIsIndianUser] = useState(true);
   const [notification, setNotification] = useState(null);
-  const [isOtpSending, setIsOtpSending] = useState(false);
-  const [timer, setTimer] = useState(0);
-  const [canResendOtp, setCanResendOtp] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [referralApplied, setReferralApplied] = useState(false);
+  
   const [formData, setFormData] = useState({
+    // Country
+    countryCode: "+91",
+    country: "India",
+    // Common fields
     name: "",
     phone: "",
     email: "",
     password: "",
     confirmPassword: "",
     referralId: "",
-    referralLocked: false,
-    otp: "",
+    emailOtp: "",
+    // Indian specific
+    aadhaarNumber: "",
+    aadhaarOtp: "",
+    aadhaarTempId: "",
+    aadhaarVerified: false,
+    aadhaarData: null,
+    panNumber: "",
+    panName: "",
+    panDob: "",
+    panVerified: false,
+    panData: null,
+    // Foreign specific
+    livePhoto: null,
   });
+  
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  const registerschema={
 
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": "https://www.jaimax.com/register",
-  "url": "https://www.jaimax.com/register",
-  "name": "Create Your Jaimax Account",
-  "description": "Register for a Jaimax account to start using the wallet, explore digital finance tools and participate in the Jaimax ecosystem.",
-  "inLanguage": "en",
-  "isPartOf": { "@id": "https://www.jaimax.com/#website" },
-  "about": {
-    "@id": "https://www.jaimax.com/#organization" 
-  },
-  "potentialAction": {
-    "@type": "RegisterAction",
-    "target": "https://www.jaimax.com/register"
-  }
+  // Get appropriate steps based on user type
+  const STEPS = isIndianUser ? STEPS_INDIAN : STEPS_FOREIGN;
 
-  }
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const referralCode = searchParams.get("referralCode");
-
-    if (referralCode) {
-      // console.log("Referral code found in URL:", referralCode);
-
-      setFormData((prevData) => ({
-        ...prevData,
-        referralId: referralCode,
-      }));
-
-      setReferralApplied(true);
-
-      // Mark as touched for validation purposes
-      setTouched((prev) => ({
-        ...prev,
-        referralId: true,
-      }));
-
-      // Validate referral code
-      const fieldError = validateField("referralId", referralCode);
-      if (fieldError) {
-        // console.log("Referral code validation error:", fieldError);
-        setErrors((prev) => ({
-          ...prev,
-          referralId: fieldError,
-        }));
-      }
-    }
-  }, [location.search]);
-  const [register, { isLoading: isRegisterLoading, error: registerError }] =
-    useRegisterMutation();
-  const [verify, { isLoading: isVerifyLoading, error: verifyError }] =
-    useVerifyMutation();
-  const [OTPresent, { isLoading: isOTPresentLoading, error: OTPresentError }] =
-    useOTPresentMutation();
-
-  // when component mounts, check URL for referralCode
+  // Handle referral code from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const referralCode = params.get("referralCode");
     if (referralCode) {
-      setFormData((prev) => ({
-        ...prev,
-        referralId: referralCode,
-        referralLocked: true, // ✅ lock only for link-based refs
-      }));
+      setFormData((prev) => ({ ...prev, referralId: referralCode }));
     }
   }, [location.search]);
 
-  const getCurrentCountry = () => {
-    const country = countrycodes.find(
-      (item) => item.country_code === selectedCode
-    );
-    return country;
-  };
-
-  // Yup validation schema
-  const validationSchema = yup.object({
-    name: yup
-      .string()
-      .required("Name is required")
-      .min(2, "Name must be at least 2 characters")
-      .matches(/^[a-zA-Z\s]*$/, "Name can only contain letters and spaces"),
-
-    phone: yup
-      .string()
-      .required("Phone number is required")
-      .matches(/^\d+$/, "Phone number can only contain digits")
-      .test("phone-length", function (value) {
-        const currentCountry = getCurrentCountry();
-        const exactPhoneLength = currentCountry
-          ? currentCountry.phone_number_length
-          : 10;
-
-        if (value && value.length !== exactPhoneLength) {
-          return this.createError({
-            message: `Phone number must be exactly ${exactPhoneLength} digits for ${
-              currentCountry?.country_name || "selected country"
-            }`,
-          });
-        }
-        return true;
-      }),
-
-    email: yup
-      .string()
-      .required("Email is required")
-      .matches(
-        /^(?=[a-z0-9._%+-]*[a-z])[a-z0-9._%+-]+@(?:(?:[a-zA-Z0-9-]+\.)+(?:com|in|org|net|edu|gov|mil|info|co|io|me|biz)|jaimax\.com|test\.com)$/,
-        "Invalid email(must contain at least one letter)"
-      ),
-
-    password: yup
-      .string()
-      .required("Password is required")
-      .min(6, "Password must be at least 8 characters"),
-    // .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-    // .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    // .matches(/\d/, 'Password must contain at least one number')
-    // .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
-    confirmPassword: yup
-      .string()
-      .required("Please confirm your password")
-      .oneOf([yup.ref("password")], "Passwords must match"),
-
-    referralId: yup
-      .string()
-      .nullable()
-      .test(
-        "referral-format",
-        "Referral ID can only contain letters and numbers length 13",
-        function (value) {
-          if (!value) return true; // Optional field
-          return /^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/.test(value);
-        }
-      ),
-
-    otp: yup.string().when("otpSent", {
-      is: true,
-      then: (schema) =>
-        schema
-          .required("OTP is required")
-          .matches(/^\d{6}$/, "OTP must be 6 digits"),
-      otherwise: (schema) => schema.nullable(),
-    }),
-  });
-
-  const handleKeyDown = (e) => {
-    if (
-      e.key === "Enter" &&
-      !isVerifyLoading &&
-      !isRegisterLoading &&
-      !isOTPresentLoading
-    ) {
-      e.preventDefault();
-
-      // If OTP is not sent yet, try to send OTP
-      if (!otpSent) {
-        const validationErrors = validate();
-        const formErrorsExceptOtp =
-          Object.keys(validationErrors).filter((key) => key !== "otp").length >
-          0;
-
-        if (!formErrorsExceptOtp) {
-          handleVerify(e);
-        }
-      }
-      // If OTP is sent and form is complete, submit the form
-      else if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
-        handleSubmit(e);
-      }
-    }
-  };
-
-  const handleOtpKeyDown = (e) => {
-    if (e.key === "Enter" && !isVerifyLoading) {
-      e.preventDefault();
-
-      // If form is complete and OTP is entered, submit
-      if (otpSent && formData.otp.trim() && isChecked && isConfirmAgree) {
-        handleSubmit(e);
-      }
-      // If OTP field has 4 digits and can resend, allow sending OTP
-      else if (!otpSent || (canResendOtp && formData.otp.length === 4)) {
-        handleVerify(e);
-      }
-    }
-  };
-
-  const handleCheckboxChange = (e) => {
-    const isChecked = e.target.checked;
-
-    if (isChecked) {
-      // User wants to check the box - show modal first
-      onShowModal();
-    } else {
-      // User unchecked the box - reset everything
-      setIsChecked(false);
-    }
-  };
-
-  const handleTermsLinkClick = (e) => {
-    e.preventDefault();
-    onShowModal();
-  };
-
-  // Update checkbox state when terms are confirmed
+  // Sync checkbox state with terms confirmation
   useEffect(() => {
-    if (isConfirmAgree) {
-      setIsChecked(true);
-    } else {
-      setIsChecked(false);
-    }
+    setIsChecked(isConfirmAgree);
   }, [isConfirmAgree]);
 
-  const getErrorMessage = (error) => {
-    if (error) {
-      if (error.data && error.data.message) {
-        return error.data.message;
-      } else if (error.error) {
-        return error.error;
-      } else if (error.status) {
-        if (error.status === 400)
-          return `Bad Request: ${
-            error.data?.message || "Please check your input."
-          }`;
-        if (error.status === 401)
-          return `Unauthorized: ${
-            error.data?.message || "Invalid credentials."
-          }`;
-        if (error.status === 409)
-          return `Conflict: ${
-            error.data?.message || "User already exists or other conflict."
-          }`;
-        if (error.status >= 500)
-          return `Server Error: ${
-            error.data?.message || "Please try again later."
-          }`;
-        return `Error ${error.status}: ${
-          error.data?.message || "An API error occurred."
-        }`;
+  const handleNext = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, STEPS.length));
+  };
+
+  const handlePrev = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const renderStep = () => {
+    // Country selection is always step 1
+    if (currentStep === 1) {
+      return (
+        <CountrySelectionStep
+          formData={formData}
+          setFormData={setFormData}
+          onNext={handleNext}
+          setIsIndianUser={setIsIndianUser}
+        />
+      );
+    }
+
+    // Indian flow
+    if (isIndianUser) {
+      switch (currentStep) {
+        case 2:
+          return (
+            <AadhaarStep
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              touched={touched}
+              setTouched={setTouched}
+              onNext={handleNext}
+              onPrev={handlePrev}
+              notification={notification}
+              setNotification={setNotification}
+            />
+          );
+        case 3:
+          return (
+            <PanStep
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              touched={touched}
+              setTouched={setTouched}
+              onNext={handleNext}
+              onPrev={handlePrev}
+              notification={notification}
+              setNotification={setNotification}
+            />
+          );
+        case 4:
+          return (
+            <PhotoCaptureStep
+              formData={formData}
+              setFormData={setFormData}
+              onNext={handleNext}
+              onPrev={handlePrev}
+              notification={notification}
+              setNotification={setNotification}
+            />
+          );
+        case 5:
+          return (
+            <PersonalDetailsStep
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              touched={touched}
+              setTouched={setTouched}
+              onNext={handleNext}
+              onPrev={handlePrev}
+              selectedCode={formData.countryCode}
+              setSelectedCode={(code) => setFormData(prev => ({ ...prev, countryCode: code }))}
+            />
+          );
+        case 6:
+          return (
+            <AccountSetupStep
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              onPrev={handlePrev}
+              notification={notification}
+              setNotification={setNotification}
+              isChecked={isChecked}
+              setIsChecked={setIsChecked}
+              isConfirmAgree={isConfirmAgree}
+              onShowModal={onShowModal}
+            />
+          );
+        default:
+          return null;
+      }
+    } 
+    // Foreign flow
+    else {
+      switch (currentStep) {
+        case 2:
+          return (
+            <ForeignPersonalDetailsStep
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              onNext={handleNext}
+              onPrev={handlePrev}
+            />
+          );
+        case 3:
+          return (
+            <PhotoCaptureStep
+              formData={formData}
+              setFormData={setFormData}
+              onNext={handleNext}
+              onPrev={handlePrev}
+              notification={notification}
+              setNotification={setNotification}
+            />
+          );
+        case 4:
+          return (
+            <ForeignAccountSetupStep
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              onPrev={handlePrev}
+              notification={notification}
+              setNotification={setNotification}
+              isChecked={isChecked}
+              setIsChecked={setIsChecked}
+              isConfirmAgree={isConfirmAgree}
+              onShowModal={onShowModal}
+            />
+          );
+        default:
+          return null;
       }
     }
-    return "An unexpected error occurred. Please try again.";
   };
 
-  useEffect(() => {
-    if (registerError) {
-      setNotification({
-        type: "error",
-        message: getErrorMessage(registerError),
-      });
-    }
-  }, [registerError]);
-
-  useEffect(() => {
-    if (verifyError) {
-      setNotification({ type: "error", message: getErrorMessage(verifyError) });
-    }
-  }, [verifyError]);
-
-  useEffect(() => {
-    if (OTPresentError) {
-      setNotification({
-        type: "error",
-        message: getErrorMessage(OTPresentError),
-      });
-    }
-  }, [OTPresentError]);
-
-  useEffect(() => {
-    let interval;
-    if (otpSent && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-    } else if (timer === 0) {
-      setCanResendOtp(true);
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [otpSent, timer]);
-
-  // Validate single field
-  const validateField = (fieldName, value) => {
-    try {
-      const dataToValidate = { ...formData, [fieldName]: value, otpSent };
-      validationSchema.validateSyncAt(fieldName, dataToValidate);
-      return null;
-    } catch (error) {
-      return error.message;
-    }
-  };
-
-  // Validate all fields
-  const validateAll = () => {
-    try {
-      const dataToValidate = { ...formData, otpSent };
-      validationSchema.validateSync(dataToValidate, { abortEarly: false });
-      return {};
-    } catch (error) {
-      const validationErrors = {};
-      error.inner.forEach((err) => {
-        validationErrors[err.path] = err.message;
-      });
-      return validationErrors;
-    }
-  };
-
-  // Legacy validate function for backward compatibility
-  const validate = () => {
-    return validateAll();
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    // Don't allow changing referral code if it was applied from URL
-    if (name === "referralId" && referralApplied) {
-      return;
-    }
-
-    if (name === "phone" && !/^\d*$/.test(value)) {
-      return;
-    }
-    if (name === "name" && !/^[a-zA-Z\s]*$/.test(value)) {
-      return;
-    }
-    if (name === "referralId" && !/^[A-Za-z0-9]*$/.test(value)) {
-      return;
-    }
-    if (name === "otp" && !/^[0-9]*$/.test(value)) {
-      return;
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Only validate and show error if field was touched
-    if (touched[name]) {
-      const fieldError = validateField(name, value);
-      setErrors((prev) => ({
-        ...prev,
-        [name]: fieldError,
-      }));
-    }
-  };
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-
-    // Mark field as touched
-    setTouched((prev) => ({
-      ...prev,
-      [name]: true,
-    }));
-
-    // Validate only this field on blur
-    const fieldError = validateField(name, value);
-    setErrors((prev) => ({
-      ...prev,
-      [name]: fieldError,
-    }));
-  };
-
-  const handleVerify = async (e) => {
-    e.preventDefault();
-    setNotification(null);
-
-    const validationErrors = validateAll();
-    const formErrorsExceptOtp =
-      Object.keys(validationErrors).filter((key) => key !== "otp").length > 0;
-
-    if (formErrorsExceptOtp) {
-      // Mark all fields as touched and show all errors
-      const touchedFields = {};
-      Object.keys(formData).forEach((key) => {
-        touchedFields[key] = true;
-      });
-      setTouched(touchedFields);
-      setErrors(validationErrors);
-
-      setNotification({
-        type: "error",
-        message: "Please fill all required fields correctly.",
-      });
-      return;
-    }
-
-    setIsOtpSending(true);
-
-    try {
-      const currentCountry = getCurrentCountry();
-
-      const payload = {
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        password: formData.password,
-        confirmPwd: formData.confirmPassword,
-        countryCode: currentCountry?.country_code || "+91",
-        country: currentCountry?.country_name || "India",
-      };
-
-      const result = await register(payload).unwrap();
-
-      // if (result?.data?.username) {
-      //   localStorage.setItem("username", result.data.username);
-      // }
-      if (result?.data?.username) {
-        Cookies.set("username", result.data.username, { expires: 7 }); // expires in 7 days
-      }
-      setOtpSent(true);
-      setTimer(120);
-      setCanResendOtp(false);
-      setNotification({ type: "success", message: "OTP sent to your email!" });
-    } catch (err) {
-      if (err?.data?.message === "User verification pending") {
-        try {
-          const otpPayload = {
-            email: formData.email,
-            otpType: "register",
-          };
-          const ress = await OTPresent(otpPayload).unwrap();
-          setOtpSent(true);
-          setTimer(120);
-          setCanResendOtp(false);
-          setNotification({
-            type: "success",
-            message: "OTP resent to your email!",
-          });
-        } catch (otpErr) {
-          setNotification({ type: "error", message: getErrorMessage(otpErr) });
-        }
-      } else {
-        setNotification({ type: "error", message: getErrorMessage(err) });
-      }
-    } finally {
-      setIsOtpSending(false);
-    }
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setNotification(null);
-
-    // Mark all fields as touched for final validation
-    const touchedFields = {};
-    Object.keys(formData).forEach((key) => {
-      touchedFields[key] = true;
-    });
-    setTouched(touchedFields);
-
-    const validationErrors = validateAll();
-    setErrors(validationErrors);
-
-    // Check if terms are accepted
-    if (!isChecked || !isConfirmAgree) {
-      setNotification({
-        type: "error",
-        message:
-          "Please accept the Terms & Conditions and Privacy Policy to continue.",
-      });
-      return;
-    }
-
-    if (Object.keys(validationErrors).length > 0) {
-      setNotification({
-        type: "error",
-        message: "Please correct the highlighted fields.",
-      });
-      return;
-    }
-
-    if (!otpSent) {
-      setNotification({
-        type: "error",
-        message: "Please send OTP and verify your phone number first.",
-      });
-      return;
-    }
-
-    if (!formData.otp.trim()) {
-      setNotification({
-        type: "error",
-        message: "OTP is required to complete registration.",
-      });
-      setErrors((prev) => ({ ...prev, otp: "OTP is required" }));
-      return;
-    }
-
-    try {
-      const verifyPayload = {
-        email: formData.email,
-        otp: Number(formData.otp),
-        otpType: "register",
-        referenceId: formData.referralId,
-      };
-
-      const res = await verify(verifyPayload).unwrap();
-
-      if (!res.success) {
-        setNotification({
-          type: "error",
-          message: res.message || "OTP verification failed. Please try again.",
-        });
-        return;
-      }
-
-      const userRegisterData = {
-        ...res,
-        email: formData.email,
-        name: formData.name,
-        username: Cookies.get("username"), // Changed from localStorage
-      };
-
-      // Set cookies instead of localStorage
-      Cookies.set("token", res?.data?.token, { expires: 7 }); // expires in 7 days
-      Cookies.set("userData", JSON.stringify(res?.data), { expires: 7 });
-      const userData = JSON.parse(Cookies.get("userData") || "{}");
-      // console.log("User Data:", userData);
-      Cookies.set("userRegisterData", JSON.stringify(userRegisterData), {
-        expires: 7,
-      });
-
-      setNotification({
-        type: "success",
-        message: res?.message || "Registration completed successfully!",
-      });
-
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
-    } catch (err) {
-      setNotification({ type: "error", message: getErrorMessage(err) });
-    }
-  };
   return (
     <div
       className={`w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500 transform ${
@@ -1061,352 +2180,17 @@ const RegisterComponent = ({
           onClose={() => setNotification(null)}
         />
       )}
-      <Seo page="register" />
 
+      {/* Progress Bar */}
+      <ProgressBar currentStep={currentStep} steps={STEPS} />
 
-      <div className="text-center mb-1 sm:mb-6">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">
-          REGISTER
-        </h1>
-        <p className="text-sm text-gray-600">
-          Create a new account to get started
-        </p>
+      {/* Step Content */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+        {renderStep()}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name Field */}
-        <div className="space-y-1">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-              <User className="h-4 w-4 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
-              placeholder="Full Name"
-              className={`w-full pl-10 bg-white pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.name && touched.name
-                  ? "border-red-500 bg-red-50"
-                  : "border-gray-300"
-              }`}
-            />
-          </div>
-          {errors.name && touched.name && (
-            <p className="text-red-500 text-xs pl-1">{errors.name}</p>
-          )}
-        </div>
-
-        {/* Phone Field */}
-        <div className="space-y-0">
-          <div
-            className={`flex rounded-lg border transition-all duration-200 ${
-              errors.phone && touched.phone
-                ? "border-red-500 bg-red-50"
-                : "border-gray-300 focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500"
-            }`}
-          >
-            <div className="flex-shrink-0">
-              <CountryCodeDropdown
-                value={selectedCode}
-                onChange={setSelectedCode}
-                className="bg-gray-50 py-2.5 px-2 text-sm border-r border-gray-200 hover:bg-gray-100 min-w-0"
-                countryCodes={countrycodes}
-              />
-            </div>
-            <div className="relative flex-1 min-w-0">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                <Phone className="h-4 w-4 text-gray-400" />
-              </div>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onBlur={handleBlur}
-                placeholder="Phone Number"
-                className="w-full pl-10 pr-3 py-2.5 text-sm border-0 bg-transparent outline-none"
-              />
-            </div>
-          </div>
-          {errors.phone && touched.phone && (
-            <p className="text-red-500 text-xs pl-1">{errors.phone}</p>
-          )}
-        </div>
-
-        {/* Email Field */}
-        <div className="space-y-0">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-              <Mail className="h-4 w-4 text-gray-400" />
-            </div>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
-              placeholder="Email"
-              className={`w-full pl-10 pr-3 py-2.5  bg-white text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.email && touched.email
-                  ? "border-red-500 bg-red-50"
-                  : "border-gray-300"
-              }`}
-            />
-          </div>
-          {errors.email && touched.email && (
-            <p className="text-red-500 text-xs pl-1">{errors.email}</p>
-          )}
-        </div>
-
-        {/* Password Field */}
-        <div className="space-y-0">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-              <Lock className="h-4 w-4 text-gray-400" />
-            </div>
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
-              placeholder="Password"
-              className={`w-full pl-10 pr-10 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.password && touched.password
-                  ? "border-red-500 bg-red-50"
-                  : "border-gray-300"
-              }`}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors z-10"
-            >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-              ) : (
-                <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-              )}
-            </button>
-          </div>
-          {errors.password && touched.password && (
-            <p className="text-red-500 text-xs pl-1">{errors.password}</p>
-          )}
-        </div>
-
-        {/* Confirm Password Field */}
-        <div className="space-y-0">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-              <Lock className="h-4 w-4 text-gray-400" />
-            </div>
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onKeyDown={handleKeyDown}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              placeholder="Confirm Password"
-              className={`w-full pl-10 pr-10 bg-white py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.confirmPassword && touched.confirmPassword
-                  ? "border-red-500 bg-red-50"
-                  : "border-gray-300"
-              }`}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-lg transition-colors z-10"
-            >
-              {showConfirmPassword ? (
-                <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-              ) : (
-                <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-              )}
-            </button>
-          </div>
-          {errors.confirmPassword && touched.confirmPassword && (
-            <p className="text-red-500 text-xs pl-1">
-              {errors.confirmPassword}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-0">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-              <Users className="h-4 w-4 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              name="referralId"
-              value={formData.referralId}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
-              readOnly={referralApplied}
-              placeholder="Referral ID (Optional)"
-              className={`w-full pl-10 pr-3 py-2.5 text-sm bg-white border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                errors.referralId && touched.referralId
-                  ? "border-red-500 bg-red-50"
-                  : referralApplied && formData.referralId
-                  ? "border-green-500 bg-green-50 cursor-not-allowed"
-                  : "border-gray-300"
-              }`}
-            />
-            {referralApplied && formData.referralId && !errors.referralId && (
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                <span className="text-green-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-              </div>
-            )}
-          </div>
-          {errors.referralId && touched.referralId && (
-            <p className="text-red-500 text-xs pl-1">{errors.referralId}</p>
-          )}
-          {referralApplied && formData.referralId && !errors.referralId && (
-            <p className="text-green-600 text-xs pl-1">
-              Referral code applied!
-            </p>
-          )}
-        </div>
-
-        {/* OTP Field */}
-        <div className="space-y-0">
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                <Shield className="h-4 w-4 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                name="otp"
-                value={formData.otp}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onBlur={handleBlur}
-                placeholder="Enter 6-digit OTP"
-                maxLength="6"
-                className={`w-full bg-white pl-10 pr-3 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all duration-200 ${
-                  errors.otp && touched.otp
-                    ? "border-red-500 bg-red-50"
-                    : "border-gray-300"
-                }`}
-              />
-            </div>
-            <button
-              type="button"
-              onClick={handleVerify}
-              disabled={
-                isRegisterLoading ||
-                isOTPresentLoading ||
-                (otpSent && !canResendOtp) ||
-                Object.keys(validate()).filter((key) => !["otp"].includes(key))
-                  .length > 0
-              }
-              className={`px-3 py-2.5 text-sm rounded-lg font-medium whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
-                otpSent && !canResendOtp
-                  ? "bg-green-100 text-green-700 cursor-default"
-                  : isRegisterLoading || isOTPresentLoading
-                  ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                  : Object.keys(validate()).filter(
-                      (key) => !["otp"].includes(key)
-                    ).length > 0
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-teal-500 text-white hover:bg-teal-600 transform hover:scale-105"
-              }`}
-            >
-              {isRegisterLoading || isOTPresentLoading
-                ? "Sending..."
-                : otpSent && !canResendOtp
-                ? `Sent (${timer}s)`
-                : canResendOtp
-                ? "Send OTP"
-                : "Resend"}
-            </button>
-          </div>
-          {errors.otp && touched.otp && (
-            <p className="text-red-500 text-xs pl-1">{errors.otp}</p>
-          )}
-        </div>
-
-        {/* Terms and Conditions */}
-        <div className="flex items-start gap-2 pt-2">
-          <input
-            id="terms_and_conditions"
-            type="checkbox"
-            checked={isChecked && isConfirmAgree}
-            onChange={handleCheckboxChange}
-            className="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 flex-shrink-0"
-          />
-          <label
-            htmlFor="terms_and_conditions"
-            className="text-xs sm:text-sm text-gray-700 leading-relaxed"
-          >
-            I accept the{" "}
-            <button
-              type="button"
-              onClick={handleTermsLinkClick}
-              className="text-teal-600 hover:underline font-medium"
-            >
-              Terms & Conditions
-            </button>{" "}
-            and{" "}
-            <button
-              type="button"
-              onClick={handleTermsLinkClick}
-              className="text-teal-600 hover:underline font-medium"
-            >
-              Privacy Policy
-            </button>
-          </label>
-        </div>
-
-        {/* Register Button */}
-        <button
-          type="submit"
-          disabled={
-            isVerifyLoading ||
-            !otpSent ||
-            !formData.otp.trim() ||
-            !isChecked ||
-            !isConfirmAgree ||
-            !formData.name.trim() ||
-            !formData.phone.trim() ||
-            !formData.email.trim() ||
-            !formData.password ||
-            !formData.confirmPassword ||
-            formData.password !== formData.confirmPassword ||
-            (formData.referralId &&
-              !/^(?=.*[A-Z])(?=.*\d)[A-Z0-9]{13}$/.test(formData.referralId))
-          }
-          className="w-full  bg-gradient-to-b from-[#0B736F]  to-[#0B736F] text-white py-2.5 px-4 rounded-full font-medium as focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
-        >
-          {isVerifyLoading ? "Verifying OTP..." : "REGISTER"}
-        </button>
-      </form>
-
-      <div className="mt-4 sm:mt-6 text-center">
+      {/* Login Link */}
+      <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
           Already have an account?{" "}
           <button
@@ -1420,6 +2204,8 @@ const RegisterComponent = ({
     </div>
   );
 };
+
+
 
 export default function AuthContainer() {
   const navigate = useNavigate();

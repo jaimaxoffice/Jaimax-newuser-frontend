@@ -2,7 +2,6 @@ import React, { lazy, Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Seo from "../../SeoContent/Seo";
 import '../../index.css'
-import { Helmet } from "react-helmet-async";
 
 import homeBgDesktop from "../../assets/Images/HomeDesktop.webp";
 import homeBgMobile from "../../assets/Images/HomeMobile.webp";

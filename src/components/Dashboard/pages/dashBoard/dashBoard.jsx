@@ -709,7 +709,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import KycAdvertisement from "../../../../ReusableComponents/Advertisements/Advertisement";
-
+import CoinRewardModal from './CoinReward'
 // Lazy-loaded components
 const ActionButtons = lazy(() => import("./actionComponent/actionCompent"));
 const TopCards = lazy(() => import("./cards/cards"));
@@ -982,6 +982,9 @@ MobileCountdownOverlay.displayName = "MobileCountdownOverlay";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+   const [showModal, setShowModal] = useState(false);
+     const [modalShownOnce, setModalShownOnce] = useState(false);
+  const [totalCoins, setTotalCoins] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [showKycAd, setShowKycAd] = useState(true);
   const [isInTimeRange, setIsInTimeRange] = useState(false);
@@ -998,6 +1001,14 @@ const Dashboard = () => {
   });
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const token = Cookies.get("token");
+const handleComplete = (coins) => {
+  setShowModal(false);
+  setTotalCoins((prev) => prev + coins);
+  console.log(`User earned ${coins} coins!`);
+
+  // Reload the page
+  window.location.reload();
+};
 
   useEffect(() => {
     if (token) {
@@ -1008,7 +1019,6 @@ const Dashboard = () => {
   const { data: userData, fetch: userRefetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
-
   // Memoized query parameters
   const queryParams = useMemo(
     () => `limit=${queryState.perPage}&page=${queryState.currentPage}`,
@@ -1087,6 +1097,16 @@ const Dashboard = () => {
 
     return () => clearInterval(timer);
   }, []);
+  useEffect(() => {
+    if (
+      userData?.data &&
+      userData?.data?.isRegistrationBonusAwarded === false &&
+      !modalShownOnce
+    ) {
+      setShowModal(true);
+      setModalShownOnce(true);
+    }
+  }, [userData, modalShownOnce]);
 
   // Debounced search handler
   const handleSearch = useCallback((e) => {
@@ -1132,6 +1152,10 @@ const Dashboard = () => {
   const handlePageChange = useCallback((page) => {
     setQueryState((prev) => ({ ...prev, currentPage: page }));
   }, []);
+if (!localStorage.getItem("reg_bonus_shown")) {
+  setShowModal(true);
+  localStorage.setItem("reg_bonus_shown", "true");
+}
 
   // Check if announcement slider should show
   const showAnnouncementSlider =
@@ -1248,7 +1272,13 @@ const Dashboard = () => {
           <CountdownTimer />
         </Suspense>
       </div>
-
+<div className="bg-gray-900 flex flex-col items-center justify-center gap-6">
+      <CoinRewardModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onComplete={handleComplete}
+      />
+    </div>
       {/* Action Buttons */}
       <div className="mb-3">
         <Suspense fallback={<ComponentLoader />}>

@@ -55,6 +55,7 @@ import {
   FaShieldAlt,
   FaRocket,
   FaGlobe,
+  FaDownload ,
   FaArrowRight ,
   FaLock,
   FaChartLine,
@@ -907,7 +908,6 @@ const Wheel3D = ({
   );
 };
 
-// 3D Card Component
 const Card3D = ({ phase, index, isActive, tealColors, isMobile }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
@@ -1228,106 +1228,227 @@ const PhasesWheelSection = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.id?.toString().includes("phases-wheel")) {
-          trigger.kill();
-        }
-      });
+useEffect(() => {
+  const timer = setTimeout(() => {
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.vars.id?.toString().includes("phases-wheel")) {
+        trigger.kill();
+      }
+    });
 
-      if (!wheelRef.current || !contentContainerRef.current || !wheelSectionRef.current) {
-        console.error("Required refs not found");
+    if (!wheelRef.current || !contentContainerRef.current || !wheelSectionRef.current) {
+      console.error("Required refs not found");
+      return;
+    }
+
+    let currentPhaseIndex = 0;
+    let isAnimating = false;
+    let isPinned = false; // Track if section is pinned
+    const totalPhases = phases.length;
+    const rotationPerPhase = 360 / totalPhases;
+
+    // Function to navigate to specific phase
+    const navigateToPhase = (index) => {
+      if (isAnimating || index === currentPhaseIndex || index < 0 || index >= totalPhases) {
         return;
       }
 
-      const ctx = gsap.context(() => {
-        if (!isMobile) {
-          const wheelHeight = wheelSectionRef.current.offsetHeight;
-          
-          ScrollTrigger.create({
-            trigger: contentContainerRef.current,
-            endTrigger: pinContainerRef.current,
-            start: `top+=${wheelHeight / 2}px center`,
-            end: "bottom bottom",
-            pin: contentContainerRef.current,
-            id: "phases-wheel-pin",
-            markers: false,
-          });
+      isAnimating = true;
+      currentPhaseIndex = index;
 
-          gsap.to(wheelRef.current, {
-            rotation: 360,
-            ease: "none",
-            scrollTrigger: {
-              trigger: contentContainerRef.current,
-              endTrigger: pinContainerRef.current, 
-              start: `top+=${wheelHeight / 2}px center`,
-              end: "bottom bottom",
-              scrub: 1,
-              snap: {
-                snapTo: 1 / phases.length,
-                duration: { min: 0.2, max: 0.4 },
-                ease: "power2.inOut",
-              },
-              onUpdate: (self) => {
-                const currentPhase = Math.floor(self.progress * phases.length);
-                const clampedPhase = Math.min(currentPhase, phases.length - 1);
-                setActivePhase(clampedPhase);
-              },
-              id: "phases-wheel-rotation",
-            },
-          });
-        } else {
-          const wheelHeight = wheelSectionRef.current.offsetHeight;
-          
-          ScrollTrigger.create({
-            trigger: contentContainerRef.current,
-            endTrigger: pinContainerRef.current,
-            start: `top+=${wheelHeight / 2}px center`,
-            end: "bottom bottom", 
-            pin: contentContainerRef.current,
-            id: "phases-wheel-pin-mobile",
-            markers: false,
-          });
-
-          gsap.to(wheelRef.current, {
-            rotation: 360,
-            ease: "none",
-            scrollTrigger: {
-              trigger: contentContainerRef.current,
-              endTrigger: pinContainerRef.current,
-              start: `top+=${wheelHeight / 2}px center`,
-              end: "bottom bottom",
-              scrub: 0.3,
-              snap: {
-                snapTo: 1 / phases.length,
-                duration: { min: 0.1, max: 0.2 },
-                ease: "power2.inOut",
-              },
-              onUpdate: (self) => {
-                const currentPhase = Math.floor(self.progress * phases.length);
-                const clampedPhase = Math.min(currentPhase, phases.length - 1);
-                setActivePhase(clampedPhase);
-              },
-              id: "phases-wheel-rotation-mobile",
-            },
-          });
+      // Rotate wheel to new position
+      gsap.to(wheelRef.current, {
+        rotation: currentPhaseIndex * rotationPerPhase,
+        duration: isMobile ? 0.4 : 0.6,
+        ease: "power2.inOut",
+        onComplete: () => {
+          isAnimating = false;
         }
       });
 
-      ScrollTrigger.refresh();
-      return () => ctx.revert();
-    }, 300);
-
-    return () => {
-      clearTimeout(timer);
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.id?.toString().includes("phases-wheel")) {
-          trigger.kill();
-        }
-      });
+      setActivePhase(currentPhaseIndex);
     };
-  }, [isMobile]);
+
+    const ctx = gsap.context(() => {
+      const wheelHeight = wheelSectionRef.current.offsetHeight;
+      
+      // Pin the section and track pin state
+      ScrollTrigger.create({
+        trigger: contentContainerRef.current,
+        endTrigger: pinContainerRef.current,
+        start: `top+=${wheelHeight / 2}px center`,
+        end: "bottom bottom",
+        pin: contentContainerRef.current,
+        id: isMobile ? "phases-wheel-pin-mobile" : "phases-wheel-pin",
+        markers: false,
+        onEnter: () => {
+          currentPhaseIndex = 0;
+          isPinned = true; // Section is now pinned
+          gsap.set(wheelRef.current, { rotation: 0 });
+          setActivePhase(0);
+        },
+        onLeave: () => {
+          isPinned = false; // Section is no longer pinned
+        },
+        onEnterBack: () => {
+          isPinned = true; // Section is pinned again
+        },
+        onLeaveBack: () => {
+          currentPhaseIndex = 0;
+          isPinned = false; // Section is no longer pinned
+          gsap.set(wheelRef.current, { rotation: 0 });
+          setActivePhase(0);
+        },
+      });
+
+      if (!isMobile) {
+        // Desktop wheel event handler
+        let lastWheelTime = 0;
+        const wheelCooldown = 600;
+
+        const handleWheel = (e) => {
+          // Only handle wheel events when section is pinned
+          if (!isPinned) {
+            return; // Allow normal scrolling
+          }
+
+          const currentTime = Date.now();
+          
+          // If at boundaries, allow normal scroll
+          if ((currentPhaseIndex === 0 && e.deltaY < 0) || 
+              (currentPhaseIndex === totalPhases - 1 && e.deltaY > 0)) {
+            return; 
+          }
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (currentTime - lastWheelTime < wheelCooldown || isAnimating) {
+            return;
+          }
+
+          const delta = e.deltaY;
+
+          if (Math.abs(delta) > 5) {
+            if (delta > 0) {
+              if (currentPhaseIndex < totalPhases - 1) {
+                lastWheelTime = currentTime;
+                navigateToPhase(currentPhaseIndex + 1);
+              }
+            } else {
+              if (currentPhaseIndex > 0) {
+                lastWheelTime = currentTime;
+                navigateToPhase(currentPhaseIndex - 1);
+              }
+            }
+          }
+        };
+
+        window.addEventListener('wheel', handleWheel, { passive: false });
+        
+        window.phasesWheelCleanup = () => {
+          window.removeEventListener('wheel', handleWheel);
+        };
+
+      } else {
+        // Mobile touch handler
+        let touchStartY = 0;
+        let touchStartX = 0;
+        let lastTouchTime = 0;
+        const touchCooldown = 500;
+
+        const handleTouchStart = (e) => {
+          // Only handle touch when section is pinned
+          if (!isPinned) return;
+          
+          touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
+        };
+
+        const handleTouchMove = (e) => {
+          // Only handle touch when section is pinned
+          if (!isPinned) return;
+
+          // If at boundaries, allow normal scroll
+          if ((currentPhaseIndex === 0 && e.touches[0].clientY > touchStartY) || 
+              (currentPhaseIndex === totalPhases - 1 && e.touches[0].clientY < touchStartY)) {
+            return; 
+          }
+
+          // Prevent default to stop normal scrolling
+          e.preventDefault();
+        };
+
+        const handleTouchEnd = (e) => {
+          // Only handle touch when section is pinned
+          if (!isPinned) return;
+
+          const currentTime = Date.now();
+          
+          if (currentTime - lastTouchTime < touchCooldown || isAnimating) {
+            return;
+          }
+
+          const touchEndY = e.changedTouches[0].clientY;
+          const touchEndX = e.changedTouches[0].clientX;
+          
+          const deltaY = touchStartY - touchEndY;
+          const deltaX = Math.abs(touchStartX - touchEndX);
+          
+          // Make sure it's a vertical swipe (not horizontal)
+          if (Math.abs(deltaY) > 30 && deltaX < 100) {
+            if (deltaY > 0 && currentPhaseIndex < totalPhases - 1) {
+              // Swipe up - next phase
+              lastTouchTime = currentTime;
+              navigateToPhase(currentPhaseIndex + 1);
+            } else if (deltaY < 0 && currentPhaseIndex > 0) {
+              // Swipe down - previous phase
+              lastTouchTime = currentTime;
+              navigateToPhase(currentPhaseIndex - 1);
+            }
+          }
+        };
+
+        // For mobile, attach to the body to catch all touch events
+        document.body.addEventListener('touchstart', handleTouchStart, { passive: false });
+        document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.body.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+        window.phasesWheelCleanup = () => {
+          document.body.removeEventListener('touchstart', handleTouchStart);
+          document.body.removeEventListener('touchmove', handleTouchMove);
+          document.body.removeEventListener('touchend', handleTouchEnd);
+        };
+      }
+
+      // Phase dots click handler
+      const handlePhaseClick = (index) => {
+        if (!isAnimating && isPinned) {
+          navigateToPhase(index);
+        }
+      };
+
+      // Expose the click handler
+      window.navigateToPhase = handlePhaseClick;
+    });
+
+    ScrollTrigger.refresh();
+    return () => ctx.revert();
+  }, 300);
+
+  return () => {
+    clearTimeout(timer);
+    if (window.phasesWheelCleanup) {
+      window.phasesWheelCleanup();
+      delete window.phasesWheelCleanup;
+    }
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.vars.id?.toString().includes("phases-wheel")) {
+        trigger.kill();
+      }
+    });
+  };
+}, [isMobile]);
 
   const segmentAngle = 360 / phases.length;
 
@@ -1534,7 +1655,7 @@ const SecurityContent = () => (
 
 
     {/* Button */}
-    <button className="rounded-full bg-gradient-to-r mt-10 from-[#085056] to-[#0a6b73] px-5 py-2 text-xl text-white font-semibold shadow-md hover:shadow-[#0a6b73]/50 hover:scale-105 transition-all duration-300">
+    <button className="rounded-full bg-gradient-to-r mt-10 from-[#085056] to-[#0a6b73] px-5 py-2 lg:text-xl sm:text-xs text-white font-semibold shadow-md hover:shadow-[#0a6b73]/50 hover:scale-105 transition-all duration-300">
       Explore  Features 
       <ArrowRight className="inline ml-2" />
     </button>
@@ -2096,6 +2217,7 @@ const OverlayCopy = ({ subheading, heading }) => {
   );
 };
 
+
 const IntroductionSection = () => {
   const words = ["Innovation", "Transparency", "Stability", "Growth"];
   const [currentWord, setCurrentWord] = useState(0);
@@ -2108,11 +2230,11 @@ const IntroductionSection = () => {
   }, []);
 
   return (
-    <section className="relative py-24 px-4 md:px-8 bg-teal-50 overflow-hidden min-h-screen flex items-center">
-      {/* Background Elements */}
+    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 bg-teal-50 overflow-hidden min-h-screen flex items-center">
+      {/* Background Wave Element */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
         <svg
-          className="relative block w-full h-16 md:h-24"
+          className="relative block w-full h-12 sm:h-16 md:h-20 lg:h-24"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
@@ -2123,27 +2245,32 @@ const IntroductionSection = () => {
           />
         </svg>
       </div>
+
+      {/* Background Pattern & Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03]" style={{
-          backgroundImage: 'radial-gradient(#14b8a6 1.5px, transparent 1.5px)',
-          backgroundSize: '30px 30px'
-        }} />
+        <div 
+          className="absolute top-0 left-0 w-full h-full opacity-[0.03]" 
+          style={{
+            backgroundImage: 'radial-gradient(#14b8a6 1.5px, transparent 1.5px)',
+            backgroundSize: '20px 20px'
+          }} 
+        />
         
-        {/* Gradient Blobs */}
+        {/* Gradient Blobs - Responsive sizes */}
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-20 right-1/4 w-96 h-96 rounded-full bg-teal-200/30 blur-3xl"
+          className="absolute top-10 sm:top-20 right-1/4 w-48 sm:w-64 md:w-80 lg:w-96 h-48 sm:h-64 md:h-80 lg:h-96 rounded-full bg-teal-200/30 blur-3xl"
         />
         <motion.div
           animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
           transition={{ duration: 10, repeat: Infinity }}
-          className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-cyan-200/30 blur-3xl"
+          className="absolute bottom-10 sm:bottom-20 left-1/4 w-40 sm:w-56 md:w-72 lg:w-80 h-40 sm:h-56 md:h-72 lg:h-80 rounded-full bg-cyan-200/30 blur-3xl"
         />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 md:gap-12 items-center">
           
           {/* Left Side - Creative Visual */}
           <motion.div
@@ -2151,68 +2278,89 @@ const IntroductionSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="lg:col-span-5"
+            className="lg:col-span-5 order-2 lg:order-1"
           >
-            <div className="relative max-w-sm mx-auto">
+            <div className="relative w-full max-w-[200px] sm:max-w-[250px] md:max-w-[280px] lg:max-w-sm mx-auto">
               {/* Main Card Stack */}
               <div className="relative">
                 {/* Back Card */}
                 <motion.div
                   animate={{ rotate: [6, 8, 6] }}
                   transition={{ duration: 4, repeat: Infinity }}
-                  className="absolute inset-0 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-3xl transform rotate-6"
+                  className="absolute inset-0 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-2xl sm:rounded-3xl transform rotate-6"
                 />
                 
                 {/* Middle Card */}
                 <motion.div
                   animate={{ rotate: [3, 4, 3] }}
                   transition={{ duration: 4, repeat: Infinity, delay: 0.2 }}
-                  className="absolute inset-0 bg-gradient-to-br from-teal-500 to-teal-600 rounded-3xl transform rotate-3"
+                  className="absolute inset-0 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl sm:rounded-3xl transform rotate-3"
                 />
                 
                 {/* Front Card */}
                 <motion.div
                   whileHover={{ y: -10 }}
-                  className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl p-2 shadow-2xl"
+                  className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl sm:rounded-3xl p-1.5 sm:p-2 shadow-2xl"
                 >
-                  {/* Card Header */}
-                  <div className="flex items-center justify-between mb-0">
-                    <img src="https://i.pinimg.com/736x/36/18/db/3618db8b1fa852459e23accdcb40aa7b.jpg" alt="" srcset="" />
+                  {/* Card Content */}
+                  <div className="flex items-center justify-between">
+                    <img 
+                      src="https://i.pinimg.com/736x/36/18/db/3618db8b1fa852459e23accdcb40aa7b.jpg" 
+                      alt="Jaimax Coin" 
+                      className="w-full h-auto rounded-xl sm:rounded-2xl object-cover"
+                      loading="lazy"
+                    />
                   </div>
                 </motion.div>
               </div>
 
-              {/* Floating Elements Around Card */}
+              {/* Floating Elements - Responsive positioning and sizes */}
+              {/* Top Right - Chart Icon */}
               <motion.div
                 animate={{ y: [0, -10, 0], rotate: [0, 10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-6 -right-6 w-14 h-14 rounded-2xl bg-white shadow-xl shadow-teal-100 flex items-center justify-center border border-teal-100"
+                className="absolute -top-3 sm:-top-4 md:-top-6 -right-3 sm:-right-4 md:-right-6 
+                           w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 
+                           rounded-xl sm:rounded-2xl bg-white shadow-xl shadow-teal-100 
+                           flex items-center justify-center border border-teal-100"
               >
-                <FaChartLine className="text-teal-500 text-xl" />
+                <FaChartLine className="text-teal-500 text-base sm:text-lg md:text-xl" />
               </motion.div>
 
+              {/* Bottom Left - Shield Icon */}
               <motion.div
                 animate={{ y: [0, 10, 0], rotate: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute -bottom-4 -left-4 w-12 h-12 rounded-xl bg-white shadow-xl shadow-teal-100 flex items-center justify-center border border-teal-100"
+                className="absolute -bottom-2 sm:-bottom-3 md:-bottom-4 -left-2 sm:-left-3 md:-left-4 
+                           w-8 sm:w-10 md:w-12 h-8 sm:h-10 md:h-12 
+                           rounded-lg sm:rounded-xl bg-white shadow-xl shadow-teal-100 
+                           flex items-center justify-center border border-teal-100"
               >
-                <FaShieldAlt className="text-teal-500 text-lg" />
+                <FaShieldAlt className="text-teal-500 text-sm sm:text-base md:text-lg" />
               </motion.div>
 
+              {/* Left Middle - Rocket Icon */}
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 3.5, repeat: Infinity }}
-                className="absolute top-1/2 -left-8 w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg flex items-center justify-center"
+                className="absolute top-1/2 -translate-y-1/2 -left-4 sm:-left-6 md:-left-8 
+                           w-7 sm:w-8 md:w-10 h-7 sm:h-8 md:h-10 
+                           rounded-md sm:rounded-lg bg-gradient-to-br from-teal-500 to-cyan-500 
+                           shadow-lg flex items-center justify-center"
               >
-                <FaRocket className="text-white text-sm" />
+                <FaRocket className="text-white text-xs sm:text-sm" />
               </motion.div>
 
+              {/* Right Top - Gem Icon */}
               <motion.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 2.5, repeat: Infinity }}
-                className="absolute top-1/4 -right-4 w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-teal-500 shadow-lg flex items-center justify-center"
+                className="absolute top-1/4 -right-2 sm:-right-3 md:-right-4 
+                           w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8 
+                           rounded-md sm:rounded-lg bg-gradient-to-br from-cyan-400 to-teal-500 
+                           shadow-lg flex items-center justify-center"
               >
-                <FaGem className="text-white text-xs" />
+                <FaGem className="text-white text-[10px] sm:text-xs" />
               </motion.div>
 
               {/* India Badge */}
@@ -2221,10 +2369,15 @@ const IntroductionSection = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
-                className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 bg-white rounded-full shadow-xl shadow-teal-100 border border-teal-100 flex items-center gap-2"
+                className="absolute -bottom-6 sm:-bottom-7 md:-bottom-8 left-1/2 -translate-x-1/2 
+                           px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 
+                           bg-white rounded-full shadow-xl shadow-teal-100 
+                           border border-teal-100 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"
               >
-                <span className="text-2xl">🇮🇳</span>
-                <span className="text-gray-800 font-bold text-sm">Made in India</span>
+                <span className="text-lg sm:text-xl md:text-2xl">🇮🇳</span>
+                <span className="text-gray-800 font-bold text-[10px] sm:text-xs md:text-sm">
+                  Made in India
+                </span>
               </motion.div>
             </div>
           </motion.div>
@@ -2235,23 +2388,26 @@ const IntroductionSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="lg:col-span-7"
+            className="lg:col-span-7 order-1 lg:order-2"
           >
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 mb-6"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 
+                         rounded-full bg-gradient-to-r from-teal-50 to-cyan-50 
+                         border border-teal-200 mb-4 sm:mb-5 md:mb-6"
             >
-              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
-              <span className="text-teal-700 text-sm font-semibold">
+              <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-teal-500 animate-pulse" />
+              <span className="text-teal-700 text-xs sm:text-sm font-semibold">
                 India's #1 Pre-Sale Crypto
               </span>
             </motion.div>
 
             {/* Animated Heading */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 
+                           font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 leading-tight">
               Built for{" "}
               <span className="relative inline-block">
                 <AnimatePresence mode="wait">
@@ -2269,30 +2425,31 @@ const IntroductionSection = () => {
                 <motion.div
                   animate={{ scaleX: [0, 1, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full origin-left"
+                  className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-0.5 sm:h-1 
+                             bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full origin-left"
                 />
               </span>
             </h2>
 
             {/* Main Content */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-5 md:space-y-6">
               {/* First Paragraph */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="relative pl-6 border-l-4"
+                className="relative pl-4 sm:pl-5 md:pl-6 border-l-2 sm:border-l-4"
                 style={{ borderImage: "linear-gradient(to bottom, #14b8a6, #06b6d4) 1" }}
               >
-                <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed">
                   In the evolving world of digital finance,{" "}
                   <span className="font-bold text-gray-900">Jaimax Coin</span> has emerged as{" "}
                   <span className="relative inline-block">
                     <span className="relative z-10 font-bold text-teal-600">
                       India's best pre-sale crypto coin
                     </span>
-                    <span className="absolute bottom-0 left-0 w-full h-2 bg-teal-100 -z-0" />
+                    <span className="absolute bottom-0 left-0 w-full h-1.5 sm:h-2 bg-teal-100 -z-0" />
                   </span>
                   , built for investors who value innovation, transparency, and long-term stability.
                 </p>
@@ -2306,16 +2463,27 @@ const IntroductionSection = () => {
                 transition={{ delay: 0.4 }}
                 className="relative group"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-10 blur-xl transition-all duration-500" />
-                <div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-6 border border-teal-100">
-                  <p className="text-lg text-gray-700 leading-relaxed">
+                <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-cyan-500 
+                                rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-10 
+                                blur-xl transition-all duration-500" />
+                <div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 
+                                rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-teal-100">
+                  <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                     As India embraces{" "}
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white shadow-sm text-teal-600 font-semibold">
-                      <FaCube className="text-sm" /> blockchain technology
+                    <span className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 
+                                     rounded-md sm:rounded-lg bg-white shadow-sm text-teal-600 
+                                     font-semibold text-xs sm:text-sm md:text-base">
+                      <FaCube className="text-[10px] sm:text-xs md:text-sm" /> 
+                      <span className="hidden xs:inline">blockchain</span>
+                      <span className="xs:hidden">blockchain</span> technology
                     </span>{" "}
                     and{" "}
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white shadow-sm text-cyan-600 font-semibold">
-                      <FaGlobe className="text-sm" /> decentralized finance
+                    <span className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 
+                                     rounded-md sm:rounded-lg bg-white shadow-sm text-cyan-600 
+                                     font-semibold text-xs sm:text-sm md:text-base">
+                      <FaGlobe className="text-[10px] sm:text-xs md:text-sm" /> 
+                      <span className="hidden sm:inline">decentralized finance</span>
+                      <span className="sm:hidden">DeFi</span>
                     </span>
                     , Jaimax is shaping the future of how people invest and grow wealth.
                   </p>
@@ -2328,18 +2496,23 @@ const IntroductionSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.6 }}
-                className="flex items-start gap-4 p-6 rounded-2xl bg-white border-2 border-teal-200 shadow-lg shadow-teal-100/50"
+                className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 
+                           p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl bg-white 
+                           border-2 border-teal-200 shadow-lg shadow-teal-100/50"
               >
                 <motion.div
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 4, repeat: Infinity }}
-                  className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center"
+                  className="flex-shrink-0 w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 
+                             rounded-lg sm:rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 
+                             flex items-center justify-center"
                 >
-                  <FaGem className="text-2xl text-white" />
+                  <FaGem className="text-lg sm:text-xl md:text-2xl text-white" />
                 </motion.div>
-                <p className="text-lg text-gray-700 leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                   More than just a crypto coin, Jaimax represents{" "}
-                  <span className="font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                  <span className="font-bold bg-gradient-to-r from-teal-600 to-cyan-600 
+                                   bg-clip-text text-transparent">
                     a new era of secure, accessible, and rewarding investments
                   </span>{" "}
                   for everyone.
@@ -2507,9 +2680,7 @@ const JaimaxUniqueFeature = ({ uniqueFeaturesRef }) => {
                     >
                       Get Started
                     </button>
-                    <button className="w-full xs:w-auto px-4 xs:px-5 sm:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-full font-bold hover:bg-white/20 transition-all duration-300 text-xs sm:text-sm md:text-base">
-                      Learn More
-                    </button>
+                   
                   </div>
                 </div>
 
@@ -2592,7 +2763,7 @@ const JaimaxUniqueFeature = ({ uniqueFeaturesRef }) => {
             </div>
 
             {/* Progress Indicator */}
-            <div className="absolute bottom-3 xs:bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-1 xs:gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md px-2 xs:px-3 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-2.5 md:py-3 rounded-full border border-white/20">
+            <div className="absolute bottom-3 xs:bottom-10 sm:bottom-10 md:bottom-8 lg:bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-1 xs:gap-1.5 sm:gap-2  px-2 xs:px-3 sm:px-4 md:px-6 py-1.5 xs:py-2 sm:py-2.5 md:py-3 rounded-full ">
               {features.map((_, i) => (
                 <div 
                   key={i}
@@ -3012,256 +3183,397 @@ const EcosystemSection = () => {
     </section>
   );
 };
+
 const AppSection = () => {
   const appFeatures = [
     { 
       icon: FaMobileAlt, 
       title: "Real-time Trading", 
-      description: "Monitor prices and execute trades from anywhere, anytime" 
+      description: "Trade from anywhere" 
     },
     { 
       icon: FaBell, 
       title: "Price Alerts", 
-      description: "Set custom alerts for price movements and market trends" 
+      description: "Never miss a move" 
     },
     { 
       icon: FaChartArea, 
       title: "Live Analytics", 
-      description: "Advanced charts and technical indicators at your fingertips" 
+      description: "Advanced charts" 
     },
     { 
       icon: FaShieldAlt, 
       title: "Secure Wallet", 
-      description: "Industry-leading security for your digital assets" 
+      description: "Bank-grade security" 
     }
   ];
 
   return (
-    <section className="py-10 px-4 md:px-4 bg-[#085056] overflow-hidden relative">
-      {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{
-              x: Math.random() * 100 + "%",
-              y: Math.random() * 100 + "%",
-              scale: Math.random() * 0.4 + 0.2,
-              opacity: Math.random() * 0.3 + 0.1
-            }}
-            animate={{
-              y: ["-20%", "120%"],
-              x: [
-                `${parseFloat(Math.random() * 10 - 5 + i * 5)}%`,
-                `${parseFloat(Math.random() * 10 - 5 + i * 5)}%`
-              ],
-              rotate: [0, 360]
-            }}
-            transition={{
-              duration: Math.random() * 10 + 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            className="absolute w-3 h-3 rounded-full bg-white/20"
-          />
-        ))}
+    <section className="relative bg-[#085056] overflow-hidden">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#085056] via-[#0a6b6b] to-[#085056]" />
+      
+      {/* Subtle Pattern */}
+      <div 
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+          backgroundSize: '40px 40px'
+        }}
+      />
 
-        {/* Gradient Blobs */}
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1], 
-            opacity: [0.1, 0.2, 0.1],
-            x: [-50, 50, -50],
-            y: [-20, 20, -20]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-teal-300/10 blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1.2, 1, 1.2], 
-            opacity: [0.15, 0.25, 0.15],
-            x: [30, -30, 30],
-            y: [10, -10, 10]
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-teal-200/10 blur-3xl"
-        />
-      </div>
+      {/* Glow Effects */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-teal-400/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-cyan-400/10 rounded-full blur-3xl" />
 
-      {/* Content Container */}
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content - App Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
+      {/* Main Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        
+        {/* ============================================ */}
+        {/* MOBILE LAYOUT (Default - Stacked) */}
+        {/* ============================================ */}
+        <div className="lg:hidden">
+          {/* Header - Centered */}
+          <div className="text-center mb-8">
             {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm mb-8"
-            >
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              <span className="text-white text-sm font-medium tracking-wide">MOBILE ACCESS</span>
-            </motion.div>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-4">
+              <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+              <span className="text-white text-xs font-medium">MOBILE APP</span>
+            </div>
             
             {/* Title */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Jaimax in 
-              <span className="relative inline-block ml-2">
-                <span className="text-teal-200">Your Pocket</span>
-                <motion.svg 
-                  width="100%" 
-                  height="10" 
-                  viewBox="0 0 200 10" 
-                  className="absolute -bottom-3 left-0"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1 }}
-                >
-                  <motion.path
-                    d="M0,5 Q40,0 80,5 T160,5 T240,5"
-                    fill="none"
-                    stroke="url(#pocketGradient)"
-                    strokeWidth="3"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                  />
-                  <defs>
-                    <linearGradient id="pocketGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#ffffff" />
-                      <stop offset="100%" stopColor="#a7f3d0" />
-                    </linearGradient>
-                  </defs>
-                </motion.svg>
-              </span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+              Jaimax in Your
+              <span className="block text-teal-300">Pocket</span>
             </h2>
             
-            <p className="text-teal-100/80 text-lg mb-8 leading-relaxed">
-              Access the complete Jaimax ecosystem on-the-go with our powerful and secure mobile app. Trade, monitor, and manage your crypto investments from anywhere in the world.
+            {/* Description */}
+            <p className="text-teal-100/80 text-sm sm:text-base max-w-md mx-auto">
+              Trade, monitor, and manage your crypto investments from anywhere with our mobile app.
             </p>
+          </div>
 
-            {/* App Store Buttons */}
-            <div className="flex flex-wrap gap-4 mb-12">
-              {/* Google Play - Available */}
-              <motion.a 
-                href="#download-android"
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-3 bg-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <FaGooglePlay className="text-[#085056] text-2xl" />
-                <div className="flex flex-col">
-                  <span className="text-xs text-gray-600">GET IT ON</span>
-                  <span className="text-[#085056] font-bold">Google Play</span>
-                </div>
-              </motion.a>
+          {/* Phone Mockup - Centered */}
+          <div className="flex justify-center mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              {/* Glow behind phone */}
+              <div className="absolute inset-0 bg-teal-400/20 blur-3xl rounded-full scale-75" />
               
-              {/* App Store - Coming Soon - Fixed Alignment */}
-              <motion.div 
-                whileHover={{ scale: 1.03 }}
-                className="flex items-center gap-3 bg-white/20 border border-white/30 backdrop-blur-sm px-6 py-3 rounded-xl relative overflow-hidden group"
+              {/* Phone Frame */}
+              <div className="relative bg-gray-900 rounded-[2.5rem] p-2 shadow-2xl border-4 border-gray-800">
+                {/* Screen */}
+                <div className="relative w-48 sm:w-56 h-96 sm:h-[420px] rounded-[2rem] overflow-hidden bg-[#085056]">
+                  {/* Notch */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-b-2xl z-10" />
+                  
+                  {/* App Screenshot */}
+                  <img 
+                    src={app} 
+                    alt="Jaimax App" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                {/* Home Indicator */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-24 h-1 bg-gray-600 rounded-full" />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Download Buttons - Stacked */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+            {/* Google Play */}
+            <a 
+              href="#download"
+              className="flex items-center justify-center gap-3 bg-white text-[#085056] px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <FaGooglePlay className="text-xl" />
+              <div className="text-left">
+                <div className="text-[10px] text-gray-500 leading-none">GET IT ON</div>
+                <div className="text-sm font-bold leading-tight">Google Play</div>
+              </div>
+            </a>
+            
+            {/* App Store */}
+            <div className="flex items-center justify-center gap-3 bg-white/10 border border-white/20 text-white px-6 py-3 rounded-xl relative">
+              <FaApple className="text-xl" />
+              <div className="text-left">
+                <div className="text-[10px] text-teal-200 leading-none">COMING SOON</div>
+                <div className="text-sm font-bold leading-tight">App Store</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Features Grid - 2x2 */}
+          <div className="grid grid-cols-2 gap-3">
+            {appFeatures.map((feature, index) => (
+              <div 
+                key={index}
+                className="bg-white/5 border border-white/10 rounded-xl p-3 text-center"
               >
-                <FaApple className="text-white text-2xl" />
-                <div className="flex flex-col">
-                  <span className="text-xs text-teal-100">DOWNLOAD ON THE</span>
-                  <span className="text-white font-bold">App Store</span>
+                <div className="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <feature.icon className="text-teal-300 text-lg" />
                 </div>
-                {/* Coming Soon Badge - Improved Positioning */}
-                <div className="absolute -right-3 -top-1 bg-white text-[#085056] text-xs font-semibold px-3 py-0.2 rounded-bl-xl shadow-md transform rotate-2">
-                  Coming Soon
+                <h3 className="text-white text-xs font-semibold mb-0.5">{feature.title}</h3>
+                <p className="text-teal-100/60 text-[10px]">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ============================================ */}
+        {/* DESKTOP LAYOUT (lg and above - Side by Side) */}
+        {/* ============================================ */}
+        <div className="hidden lg:block">
+          <div className="flex items-center gap-12 xl:gap-20">
+            
+            {/* Left - Content */}
+            <div className="flex-1 max-w-xl">
+              {/* Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 border border-white/20 mb-6"
+              >
+                <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+                <span className="text-white text-sm font-medium tracking-wide">MOBILE ACCESS</span>
+              </motion.div>
+
+              {/* Title */}
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-5 leading-tight"
+              >
+                Jaimax in
+                <span className="text-teal-300 ml-3">Your Pocket</span>
+              </motion.h2>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="text-teal-100/80 text-lg xl:text-xl mb-8 leading-relaxed"
+              >
+                Access the complete Jaimax ecosystem on-the-go with our powerful and secure mobile app. Trade, monitor, and manage your crypto investments from anywhere in the world.
+              </motion.p>
+
+              {/* Download Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="flex flex-wrap gap-4 mb-10"
+              >
+                {/* Google Play */}
+                <a 
+                  href="#download"
+                  className="flex items-center gap-3 bg-white text-[#085056] px-6 py-3.5 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                >
+                  <FaGooglePlay className="text-2xl" />
+                  <div className="text-left">
+                    <div className="text-[10px] text-gray-500 leading-none">GET IT ON</div>
+                    <div className="text-base font-bold leading-tight">Google Play</div>
+                  </div>
+                </a>
+                
+                {/* App Store */}
+                <div className="flex items-center gap-3 bg-white/10 border border-white/20 text-white px-6 py-3.5 rounded-xl cursor-not-allowed relative overflow-hidden">
+                  <FaApple className="text-2xl" />
+                  <div className="text-left">
+                    <div className="text-[10px] text-teal-200 leading-none">COMING SOON</div>
+                    <div className="text-base font-bold leading-tight">App Store</div>
+                  </div>
+                  {/* Diagonal ribbon */}
+                  <div className="absolute -right-8 -top-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-[#085056] text-[8px] font-bold px-8 py-1 rotate-45">
+                    SOON
+                  </div>
                 </div>
+              </motion.div>
+
+              {/* Features - Horizontal */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="grid grid-cols-2 gap-4"
+              >
+                {appFeatures.map((feature, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-3 hover:bg-white/10 transition-colors"
+                  >
+                    <div className="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <feature.icon className="text-teal-300 text-lg" />
+                    </div>
+                    <div>
+                      <h3 className="text-white text-sm font-semibold">{feature.title}</h3>
+                      <p className="text-teal-100/60 text-xs">{feature.description}</p>
+                    </div>
+                  </div>
+                ))}
               </motion.div>
             </div>
 
-            {/* Added Feature Highlights */}
-            <div className="grid grid-cols-2 gap-4">
-              {appFeatures.slice(0, 2).map((feature, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-teal-200/20 rounded-lg flex items-center justify-center mt-1">
-                    <feature.icon className="text-teal-200 text-lg" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-medium text-sm">{feature.title}</h3>
-                    <p className="text-teal-100/70 text-xs leading-relaxed">{feature.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </motion.div>
-          
-          {/* Right Content - Phone Mockups */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
-          >
-            <div className="relative h-[600px] max-w-[300px] mx-auto">
-              {/* Background Elements */}
+            {/* Right - Phone Mockup */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="flex-shrink-0 relative"
+            >
+              {/* Decorative circles */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                  className="w-64 h-64 rounded-full border-2 border-dashed border-white/30 absolute"
+                  className="w-80 h-80 rounded-full border-2 border-dashed border-white/10 absolute"
                 />
-                
                 <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="w-40 h-40 rounded-full bg-white/5 blur-lg absolute"
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                  className="w-96 h-96 rounded-full border border-white/5 absolute"
                 />
               </div>
-              
-              {/* Main Phone Mockup - Enhanced with glow effect */}
-              <motion.div
-                animate={{ y: [-10, 10, -10] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="relative z-20 bg-gray-900 w-[280px] h-[580px] rounded-[3rem] shadow-2xl border-8 border-gray-800 mx-auto overflow-hidden"
-                style={{ boxShadow: "0 0 40px rgba(167, 243, 208, 0.1)" }}
-              >
-                {/* Status Bar */}
-                <div className="absolute top-0 inset-x-0 h-6 bg-black rounded-t-3xl flex items-center justify-center">
-                  <div className="w-20 h-4 rounded-full bg-black border border-gray-800" />
-                </div>
-                
-                {/* App Screenshot */}
-                <div className="absolute top-6 bottom-0 inset-x-0 bg-[#085056] overflow-hidden">
-                  <img src={app} alt="" />
-                </div>
-                
-                {/* Bottom Pill/Home Button */}
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-gray-700 rounded-full" />
-              </motion.div>
-              
-              {/* Second Phone (Back) */}
-              <motion.div
-                animate={{ y: [10, -10, 10], rotate: [5, 5, 5] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute left-0 top-10 z-10 bg-gray-900 w-[280px] h-[580px] rounded-[3rem] shadow-2xl border-8 border-gray-800 overflow-hidden opacity-20"
-              >
-                {/* Empty screen for depth effect */}
-                <div className="absolute inset-0 bg-[#085056]/80" />
-              </motion.div>
-            </div>
 
-          </motion.div>
+              {/* Glow Effect */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-64 h-64 bg-teal-400/20 rounded-full blur-3xl" />
+              </div>
+
+              {/* Phone Stack */}
+              <div className="relative">
+                {/* Back Phone (Shadow) */}
+                <motion.div
+                  animate={{ y: [5, -5, 5] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute left-6 top-6 bg-gray-900 rounded-[3rem] p-2 border-4 border-gray-800 opacity-20 blur-[1px]"
+                >
+                  <div className="w-64 xl:w-72 h-[500px] xl:h-[560px] rounded-[2.5rem] bg-gray-800" />
+                </motion.div>
+
+                {/* Main Phone */}
+                <motion.div
+                  animate={{ y: [-8, 8, -8] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative z-10 bg-gray-900 rounded-[3rem] p-2 shadow-2xl border-4 border-gray-800"
+                  style={{ boxShadow: '0 25px 80px rgba(0,0,0,0.5), 0 0 40px rgba(20, 184, 166, 0.2)' }}
+                >
+                  {/* Screen */}
+                  <div className="relative w-64 xl:w-72 h-[500px] xl:h-[560px] rounded-[2.5rem] overflow-hidden bg-[#085056]">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-gray-900 rounded-b-3xl z-10 flex items-center justify-center">
+                      <div className="w-16 h-4 bg-gray-800 rounded-full" />
+                    </div>
+                    
+                    {/* App Screenshot */}
+                    <img 
+                      src={app} 
+                      alt="Jaimax App" 
+                      className="w-full h-full object-cover"
+                    />
+                    
+                    {/* Screen Glare Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  
+                  {/* Home Indicator */}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-28 h-1 bg-gray-600 rounded-full" />
+                </motion.div>
+
+                {/* Floating Badges */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  animate={{ y: [-5, 5, -5] }}
+                  transition={{ 
+                    y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                    opacity: { duration: 0.5 },
+                    scale: { duration: 0.5 }
+                  }}
+                  className="absolute -left-16 top-1/4 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-xl"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                      <FaChartArea className="text-green-400 text-sm" />
+                    </div>
+                    <div>
+                      <p className="text-white text-xs font-semibold">Live Charts</p>
+                      <p className="text-teal-200/60 text-[10px]">Real-time</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  animate={{ y: [5, -5, 5] }}
+                  transition={{ 
+                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    opacity: { duration: 0.5, delay: 0.2 },
+                    scale: { duration: 0.5, delay: 0.2 }
+                  }}
+                  className="absolute -right-16 top-1/2 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-xl"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+                      <FaStar className="text-yellow-400 text-sm" />
+                    </div>
+                    <div>
+                      <p className="text-white text-xs font-semibold">4.9 Rating</p>
+                      <p className="text-teal-200/60 text-[10px]">50K+ Reviews</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  animate={{ y: [-3, 3, -3] }}
+                  transition={{ 
+                    y: { duration: 3.5, repeat: Infinity, ease: "easeInOut" },
+                    opacity: { duration: 0.5, delay: 0.4 },
+                    scale: { duration: 0.5, delay: 0.4 }
+                  }}
+                  className="absolute -right-12 bottom-1/4 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-xl"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                      <FaDownload className="text-blue-400 text-sm" />
+                    </div>
+                    <div>
+                      <p className="text-white text-xs font-semibold">100K+</p>
+                      <p className="text-teal-200/60 text-[10px]">Downloads</p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
       </div>
     </section>
   );
 };
+
+
 
 const JaimaxRoadmap = () => {
   const containerRef = useRef(null);
@@ -4717,67 +5029,102 @@ useEffect(() => {
     // ✅ NEW: Unique Features Horizontal Scroll Section
 // ✅ UPDATED: Unique Features Horizontal Scroll Section
 if (uniqueFeaturesRef.current) {
-  const containerWidth = window.innerWidth;
-  
-  // Kill only this specific animation
   const existingTrigger = ScrollTrigger.getById("unique-features-horizontal");
   if (existingTrigger) existingTrigger.kill();
 
-  // Set initial positions
-  gsap.set(".unique-feature-1", { x: "0vw", zIndex: 5 });
-  gsap.set(".unique-feature-2", { x: "100vw", zIndex: 4 });
-  gsap.set(".unique-feature-3", { x: "100vw", zIndex: 3 });
-  gsap.set(".unique-feature-4", { x: "100vw", zIndex: 2 });
-  gsap.set(".unique-feature-5", { x: "100vw", zIndex: 1 });
+  const totalFeatures = 5;
+  const isMobile = window.innerWidth < 768;
 
-  const featuresTl = gsap.timeline({
+  // Set initial positions
+  gsap.set(".unique-feature-1", { x: "0vw", zIndex: 5, opacity: 1 });
+  gsap.set(".unique-feature-2", { x: "100vw", zIndex: 4, opacity: 0 });
+  gsap.set(".unique-feature-3", { x: "100vw", zIndex: 3, opacity: 0 });
+  gsap.set(".unique-feature-4", { x: "100vw", zIndex: 2, opacity: 0 });
+  gsap.set(".unique-feature-5", { x: "100vw", zIndex: 1, opacity: 0 });
+
+  // Mobile-optimized timeline
+  const tl = gsap.timeline({
     scrollTrigger: {
       id: "unique-features-horizontal",
       trigger: uniqueFeaturesRef.current,
       start: "top top",
-      end: "+=5000", // Increased for smoother transitions
-      scrub: 1,
+      end: isMobile ? "+=300%" : "+=400%", // Shorter scroll distance on mobile
+      scrub: isMobile ? 0.3 : 0.5, // More responsive on mobile
       pin: true,
       anticipatePin: 1,
-      invalidateOnRefresh: true,
-    },
+      snap: {
+        snapTo: [0, 0.25, 0.5, 0.75, 1],
+        duration: { min: 0.1, max: 0.3 }, // Faster snapping on mobile
+        ease: "power1.inOut"
+      },
+      onUpdate: (self) => {
+        const progress = self.progress;
+        let activeIndex = 0;
+        
+        if (progress <= 0.125) activeIndex = 0;
+        else if (progress <= 0.375) activeIndex = 1;
+        else if (progress <= 0.625) activeIndex = 2;
+        else if (progress <= 0.875) activeIndex = 3;
+        else activeIndex = 4;
+
+        // Update dots
+        gsap.utils.toArray('.progress-indicator div').forEach((dot, i) => {
+          if (i === activeIndex) {
+            gsap.set(dot, { 
+              width: isMobile ? "1rem" : "2rem", 
+              backgroundColor: "#b8cc26"
+            });
+          } else {
+            gsap.set(dot, { 
+              width: isMobile ? "0.375rem" : "0.5rem", 
+              backgroundColor: "rgba(255,255,255,0.3)"
+            });
+          }
+        });
+      }
+    }
   });
 
-  // Feature 1 -> Feature 2 (0 to 1)
-  featuresTl.to(".unique-feature-1", { x: "-100vw", duration: 1, ease: "none" }, 0);
-  featuresTl.to(".unique-feature-2", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 0);
-  featuresTl.fromTo(".unique-feature-2 .feature-content", 
-    { opacity: 0, x: 100 }, 
-    { opacity: 1, x: 0, duration: 0.6 }, 
-    0.2
-  );
+  // Faster transitions on mobile
+  const duration = isMobile ? 0.6 : 1;
+  const ease = isMobile ? "power1.inOut" : "power2.inOut";
 
-  // Feature 2 -> Feature 3 (1 to 2)
-  featuresTl.to(".unique-feature-2", { x: "-100vw", duration: 1, ease: "none" }, 1);
-  featuresTl.to(".unique-feature-3", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 1);
-  featuresTl.fromTo(".unique-feature-3 .feature-content", 
-    { opacity: 0, x: 100 }, 
-    { opacity: 1, x: 0, duration: 0.6 }, 
-    1.2
-  );
+  // Build timeline with mobile-optimized timing
+  tl.to(".unique-feature-1", { x: "-100vw", duration, ease }, 0)
+    .set(".unique-feature-2", { x: "100vw", zIndex: 5 }, 0)
+    .to(".unique-feature-2", { x: "0vw", opacity: 1, duration, ease }, 0)
+    .fromTo(".unique-feature-2 .feature-content", 
+      { opacity: 0, scale: 0.95 }, 
+      { opacity: 1, scale: 1, duration: duration * 0.5 }, 
+      0.1
+    )
 
-  // Feature 3 -> Feature 4 (2 to 3)
-  featuresTl.to(".unique-feature-3", { x: "-100vw", duration: 1, ease: "none" }, 2);
-  featuresTl.to(".unique-feature-4", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 2);
-  featuresTl.fromTo(".unique-feature-4 .feature-content", 
-    { opacity: 0, x: 100 }, 
-    { opacity: 1, x: 0, duration: 0.6 }, 
-    2.2
-  );
+    .to(".unique-feature-2", { x: "-100vw", duration, ease }, 1)
+    .set(".unique-feature-3", { x: "100vw", zIndex: 5 }, 1)
+    .to(".unique-feature-3", { x: "0vw", opacity: 1, duration, ease }, 1)
+    .fromTo(".unique-feature-3 .feature-content", 
+      { opacity: 0, scale: 0.95 }, 
+      { opacity: 1, scale: 1, duration: duration * 0.5 }, 
+      1.1
+    )
 
-  // Feature 4 -> Feature 5 (3 to 4)
-  featuresTl.to(".unique-feature-4", { x: "-100vw", duration: 1, ease: "none" }, 3);
-  featuresTl.to(".unique-feature-5", { x: "0vw", zIndex: 5, duration: 1, ease: "none" }, 3);
-  featuresTl.fromTo(".unique-feature-5 .feature-content", 
-    { opacity: 0, x: 100 }, 
-    { opacity: 1, x: 0, duration: 0.6 }, 
-    3.2
-  );
+    .to(".unique-feature-3", { x: "-100vw", duration, ease }, 2)
+    .set(".unique-feature-4", { x: "100vw", zIndex: 5 }, 2)
+    .to(".unique-feature-4", { x: "0vw", opacity: 1, duration, ease }, 2)
+    .fromTo(".unique-feature-4 .feature-content", 
+      { opacity: 0, scale: 0.95 }, 
+      { opacity: 1, scale: 1, duration: duration * 0.5 }, 
+      2.1
+    )
+
+    .to(".unique-feature-4", { x: "-100vw", duration, ease }, 3)
+    .set(".unique-feature-5", { x: "100vw", zIndex: 5 }, 3)
+    .to(".unique-feature-5", { x: "0vw", opacity: 1, duration, ease }, 3)
+    .fromTo(".unique-feature-5 .feature-content", 
+      { opacity: 0, scale: 0.95 }, 
+      { opacity: 1, scale: 1, duration: duration * 0.5 }, 
+      3.1
+    );
 }
     // Security section
     if (securityVideoRef.current && securityMainVideoRef.current) {
@@ -4915,195 +5262,235 @@ if (uniqueFeaturesRef.current) {
 
   return (
     <div id="main-content" className="bg-[#085056] text-white">
-<header
-  ref={heroRef}
-  className="relative min-h-[100dvh] flex flex-col justify-center"
->
-  <div className="absolute inset-0 w-full h-full">
-    <picture>
-      {/* Mobile image source */}
-      <source
-        media="(max-width: 767px)"
-        srcSet={homeBgMobile}
-        type="image/jpeg" // Adjust based on your image format
-      />
-      {/* Desktop image source */}
-      <source
-        media="(min-width: 768px)"
-        srcSet={homeBgDesktop}
-        type="image/jpeg" // Adjust based on your image format
-      />
-      {/* Fallback image */}
-      <img
-        src={homeBgDesktop}
-        alt="Secure, innovative, and trustworthy crypto investing with Jaimax"
-        title="Jaimax - Your Trusted Partner in Cryptocurrency Investment"
-        className="w-full h-full object-cover object-center"
-        loading="eager"
-        fetchPriority="high"
-        decoding="async"
-        width="1920"
-        height="1080"
-      />
-    </picture>
-    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
-  </div>
+    <header
+      ref={heroRef}
+      className="relative min-h-[100dvh] flex flex-col justify-center"
+    >
+      <div className="absolute inset-0 w-full h-full">
+        <picture>
+          {/* Mobile image source */}
+          <source
+            media="(max-width: 767px)"
+            srcSet={homeBgMobile}
+            type="image/jpeg"
+          />
+          {/* Desktop image source */}
+          <source
+            media="(min-width: 768px)"
+            srcSet={homeBgDesktop}
+            type="image/jpeg"
+          />
+          {/* Fallback image */}
+          <img
+            src={homeBgDesktop}
+            alt="Secure, innovative, and trustworthy crypto investing with Jaimax"
+            title="Jaimax - Your Trusted Partner in Cryptocurrency Investment"
+            className="w-full h-full object-cover object-center"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            width="1920"
+            height="1080"
+          />
+        </picture>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+      </div>
 
-  <div className="relative z-10 px-4 py-10 mx-auto w-full max-w-9xl">
-    {/* Rest of your content remains the same */}
-    <div className="relative w-full min-h-[100dvh] max-w-8xl mx-auto overflow-hidden px-4 sm:px-6 lg:px-8">
-      <h1
-        className="hero-title absolute top-10 left-4 sm:top-10 sm:left-10 font-600 leading-tight 
-        text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]
-        text-3xl sm:text-4xl md:text-5xl lg:text-6xl space-y-1"
-      >
-        <span className="block text-[#b8cc26]">Best Crypto Coin</span>
-        <span className="block"> in India</span>
-        <span className="block">Invest Early in </span>
-        <span className="block"> Jaimax</span>
-      </h1>
-
-      <p
-        className="hero-subtitle absolute bottom-6 right-4 sm:bottom-10 sm:right-10
-        text-white text-sm sm:text-base md:text-lg lg:text-xl 
-        font-medium max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-lg text-right space-y-4"
-      >
-        Our advanced platform simplifies your pre-sale crypto investment
-        journey, offering a secure and transparent experience to help you
-        grow with India's most trusted
-        <b className="text-[#aadc32]">
-          <a href="https://www.jaimax.com"> pre-sale crypto coin</a>
-        </b>{" "}
-        - jaimax.
-        <button
-          type="button"
-          onClick={() => navigate("/login")}
-          className="hero-button block ml-auto mt-4 font-bold text-center
-           bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
-           text-[#0f1c14] shadow-xl text-sm sm:text-base md:text-lg
-           rounded-full hover:scale-105 active:scale-95
-           transition-transform duration-300 px-4 py-2"
-        >
-          Join Jaimax Pre-Sale
-        </button>
-      </p>
-    </div>
-  </div>
-</header>
-      <TokenStats />
-
-<section
-  ref={servicesRef}
-  className="relative bg-[#085056]"
->
-  {/* Background */}
-  <div className="absolute inset-0 pointer-events-none">
-    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#b8cc26]/5 rounded-full blur-3xl" />
-    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
-  </div>
-
-  {/* Content Container */}
-  <div className="relative min-h-screen flex flex-col">
-    {/* Header */}
-    <div className="pt-16 sm:pt-20 pb-8 sm:pb-12 text-center px-4 relative z-10">
-      <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#b8cc26]/10 border border-[#b8cc26]/30 rounded-full text-[#b8cc26] text-xs sm:text-sm font-medium mb-4">
-        <span className="w-2 h-2 rounded-full bg-[#b8cc26] animate-pulse" />
-        Our Services
-      </span>
-      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-        What We <span className="text-[#b8cc26]">Offer</span>
-      </h2>
-      <p className="text-white/60 text-sm sm:text-base max-w-xl mx-auto">
-        Comprehensive solutions for your crypto journey
-      </p>
-    </div>
-
-    {/* Cards Container */}
-    <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 pb-20">
-      <div className="relative w-full max-w-4xl h-[420px] sm:h-[450px] md:h-[400px]">
-        {services.map((service, index) => (
-          <div
-            key={index}
-            className="service-card absolute top-0 left-0 w-full h-full"
+      <div className="relative z-10 px-4 py-10 mx-auto w-full max-w-9xl mt-14 sm:mt-16 lg:mt-0">
+        <div className="relative w-full min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)] lg:min-h-[100dvh] max-w-8xl mx-auto overflow-hidden px-4 sm:px-6 lg:px-8">
+          <h1
+            className="hero-title absolute 
+            top-4 left-4
+            sm:top-10 sm:left-10
+            lg:top-20 lg:left-10
+            font-600 leading-tight 
+            text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]
+            text-3xl sm:text-4xl md:text-5xl lg:text-6xl space-y-1"
           >
-            <div className="w-full h-full bg-[#064046] rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
-              {/* Big Background Number */}
-              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8">
-                <span className="text-[80px] sm:text-[100px] md:text-[140px] font-black text-white/5 select-none leading-none">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-              </div>
+            <span className="block text-[#b8cc26]">Best Crypto Coin</span>
+            <span className="block"> in India</span>
+            <span className="block">Invest Early in </span>
+            <span className="block"> Jaimax</span>
+          </h1>
 
-              {/* Content */}
-              <div className="relative h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center">
-                {/* Icon + Label Row */}
-                <div className="flex items-center gap-4 sm:gap-5 mb-4 sm:mb-6">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#b8cc26] to-teal-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-[#b8cc26]/20 flex-shrink-0">
-                    <img
-                      src={service.icon}
-                      alt={service.iconAlt}
-                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 filter brightness-0 invert"
-                    />
-                  </div>
-                  <div>
-                    <span className="text-[#b8cc26] text-xs sm:text-sm font-bold uppercase tracking-wider">
-                      Service {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <div className="h-px w-12 sm:w-16 bg-[#b8cc26]/30 mt-1" />
+          <p
+            className="hero-subtitle absolute 
+            bottom-20 right-4
+            sm:bottom-24 sm:right-10
+            md:bottom-32 lg:bottom-40
+            text-white text-sm sm:text-base md:text-lg lg:text-xl 
+            font-medium max-w-[300px] sm:max-w-sm md:max-w-md lg:max-w-lg text-right space-y-4"
+          >
+            Our advanced platform simplifies your pre-sale crypto investment
+            journey, offering a secure and transparent experience to help you
+            grow with India's most trusted
+            <b className="text-[#aadc32]">
+              <a href="https://www.jaimax.com"> pre-sale crypto coin</a>
+            </b>{" "}
+            - jaimax.
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="hero-button block ml-auto mt-4 font-bold text-center
+              bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
+              text-[#0f1c14] shadow-xl text-sm sm:text-base md:text-lg
+              rounded-full hover:scale-105 active:scale-95
+              transition-transform duration-300 px-4 py-2"
+            >
+              Join Jaimax Pre-Sale
+            </button>
+          </p>
+        </div>
+      </div>
+    </header>
+      <TokenStats />
+      <section
+        ref={servicesRef}
+        className="relative bg-[#085056] overflow-x-hidden"
+      >
+        {/* Content Container */}
+        <div className="relative min-h-screen flex flex-col overflow-hidden">
+          {/* Header - Fully responsive */}
+          <div className="pt-[8vh] pb-[4vh] text-center px-4 relative z-10">
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#b8cc26]/10 border border-[#b8cc26]/30 rounded-full text-[#b8cc26] font-medium mb-4" 
+              style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
+              <span className="w-2 h-2 rounded-full bg-[#b8cc26] animate-pulse" />
+              Our Services
+            </span>
+            <h2 className="font-bold text-white mb-4" 
+              style={{ fontSize: 'clamp(1.5rem, 5vw, 4rem)' }}>
+              What We <span className="text-[#b8cc26]">Offer</span>
+            </h2>
+            <p className="text-white/60 max-w-xl mx-auto" 
+              style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
+              Comprehensive solutions for your crypto journey
+            </p>
+          </div>
+
+          {/* Cards Container - Viewport based sizing */}
+          <div className="flex-1 flex items-center justify-center px-4 pb-[8vh]">
+            <div className="relative w-full max-w-[90vw] md:max-w-4xl" 
+              style={{ height: 'clamp(350px, 45vh, 550px)' }}>
+              {services.map((service, index) => (
+                <div
+                  key={index}
+                  className="service-card absolute top-0 left-0 w-full h-full"
+                >
+                  <div className="w-full h-full bg-[#064046] rounded-2xl border border-white/10 shadow-2xl overflow-hidden relative">
+                    {/* Big Background Number - Viewport responsive */}
+                    <div className="absolute top-4 right-4 overflow-hidden">
+                      <span className="font-black text-white/5 select-none leading-none"
+                        style={{ fontSize: 'clamp(3rem, 12vw, 8rem)' }}>
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    {/* Content - Viewport responsive padding */}
+                    <div className="relative h-full flex flex-col justify-center overflow-hidden"
+                      style={{ padding: 'clamp(1rem, 4vw, 3rem)' }}>
+                      
+                      {/* Icon + Label Row */}
+                      <div className="flex items-center mb-4" 
+                        style={{ gap: 'clamp(0.75rem, 2vw, 1.25rem)' }}>
+                        <div className="bg-gradient-to-br from-[#b8cc26] to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-[#b8cc26]/20 flex-shrink-0"
+                          style={{ 
+                            width: 'clamp(2.5rem, 6vw, 5rem)',
+                            height: 'clamp(2.5rem, 6vw, 5rem)'
+                          }}>
+                          <img
+                            src={service.icon}
+                            alt={service.iconAlt}
+                            className="filter brightness-0 invert"
+                            style={{ 
+                              width: 'clamp(1.25rem, 3vw, 2.5rem)',
+                              height: 'clamp(1.25rem, 3vw, 2.5rem)'
+                            }}
+                          />
+                        </div>
+                        <div className="overflow-hidden">
+                          <span className="text-[#b8cc26] font-bold uppercase tracking-wider block"
+                            style={{ fontSize: 'clamp(0.625rem, 1.5vw, 0.875rem)' }}>
+                            Service {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <div className="h-px bg-[#b8cc26]/30 mt-1" 
+                            style={{ width: 'clamp(2rem, 4vw, 4rem)' }} />
+                        </div>
+                      </div>
+
+                      {/* Title - Viewport responsive */}
+                      <h3 className="font-bold text-white mb-3 max-w-lg leading-tight"
+                        style={{ fontSize: 'clamp(1rem, 3vw, 2.5rem)' }}>
+                        {service.title}
+                      </h3>
+
+                      {/* Description - Fixed and responsive */}
+                      <p className="text-white/60 leading-relaxed mb-6 max-w-xl"
+                        style={{ 
+                          fontSize: 'clamp(0.75rem, 1.8vw, 1.125rem)',
+                          display: '-webkit-box',
+                          WebkitLineClamp: '3',
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden'
+                        }}>
+                        {service.description}
+                      </p>
+
+                      {/* CTA + Progress Row */}
+                      <div className="flex items-center justify-between flex-wrap gap-4">
+                        <button className="group inline-flex items-center gap-2 bg-[#b8cc26] hover:bg-[#a3b821] text-[#085056] font-bold rounded-full transition-all"
+                          style={{ 
+                            padding: 'clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 3vw, 1.5rem)',
+                            fontSize: 'clamp(0.75rem, 1.5vw, 1rem)'
+                          }}>
+                          <span>Learn More</span>
+                          <svg 
+                            className="group-hover:translate-x-1 transition-transform" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                            style={{ 
+                              width: 'clamp(0.875rem, 2vw, 1.25rem)',
+                              height: 'clamp(0.875rem, 2vw, 1.25rem)'
+                            }}>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </button>
+
+                        {/* Progress Dots - Viewport responsive */}
+                        <div className="flex items-center" style={{ gap: 'clamp(0.375rem, 1vw, 0.5rem)' }}>
+                          {services.map((_, i) => (
+                            <div
+                              key={i}
+                              className={`rounded-full transition-all ${
+                                i === index 
+                                  ? 'bg-[#b8cc26]' 
+                                  : 'bg-white/20'
+                              }`}
+                              style={{
+                                width: i === index 
+                                  ? 'clamp(1rem, 3vw, 2rem)' 
+                                  : 'clamp(0.375rem, 1vw, 0.5rem)',
+                                height: 'clamp(0.375rem, 1vw, 0.5rem)'
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Corner Decorations - Viewport responsive */}
+                    <div className="absolute bottom-0 left-0 bg-[#b8cc26]/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"
+                      style={{ 
+                        width: 'clamp(6rem, 15vw, 10rem)',
+                        height: 'clamp(6rem, 15vw, 10rem)'
+                      }} />
                   </div>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 max-w-lg">
-                  {service.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-white/60 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8 max-w-xl line-clamp-3">
-                  {service.description}
-                </p>
-
-                {/* CTA + Progress Row */}
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <button className="group inline-flex items-center gap-2 bg-[#b8cc26] hover:bg-[#a3b821] text-[#085056] font-bold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all text-sm sm:text-base">
-                    <span>Learn More</span>
-                    <svg 
-                      className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </button>
-
-                  {/* Progress Dots */}
-                  <div className="flex items-center gap-2">
-                    {services.map((_, i) => (
-                      <div
-                        key={i}
-                        className={`h-1.5 sm:h-2 rounded-full transition-all ${
-                          i === index 
-                            ? 'w-6 sm:w-8 bg-[#b8cc26]' 
-                            : 'w-1.5 sm:w-2 bg-white/20'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Corner Decorations */}
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#b8cc26]/10 rounded-full blur-3xl" />
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-
-    
-  </div>
-</section>
+        </div>
+      </section>
       <div 
               style={{ 
           backgroundImage: 'linear-gradient(rgba(30, 43, 42, 0.9), rgba(11, 22, 21, 0.8)), url("https://i.pinimg.com/736x/69/d2/c1/69d2c1763cf91e13adad4f6069b283bc.jpg")',

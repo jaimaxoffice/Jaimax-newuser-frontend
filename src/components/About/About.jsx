@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Seo from '../../SeoContent/Seo'
-import { Helmet } from "react-helmet-async";
 import { Link } from 'react-router-dom';
 // import about from '../../assets/Images/future.png'
 const about='https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg'
