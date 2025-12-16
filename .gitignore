@@ -6,6 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.env.production
+.env.development
+.env.test
+.env.staging
 
 node_modules
 dist
@@ -25,6 +29,7 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
 npmrc
 .pnpm-debug.log*
 yarn-error.log*

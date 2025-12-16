@@ -1178,11 +1178,10 @@ export default function Profile3DForm() {
         const res = await update(formDataToSend);
 
         if (res?.data?.status_code === 200) {
-          toast.dismiss();
+         
           toast.success(res?.data?.message, { position: "top-center" });
         }
       } catch (error) {
-        toast.dismiss();
         toast.error(error?.message || "Update failed", { position: "top-center" });
       } finally {
         setLoading(false);
@@ -1236,7 +1235,7 @@ export default function Profile3DForm() {
       setIsOtpSending(true);
       try {
         await changePwdReq({ password: formData.password }).unwrap();
-        toast.dismiss();
+       
         toast.success("OTP sent to your email", { position: "top-center" });
         setOtpSent(true);
         if (resendOtp) {
@@ -1244,7 +1243,6 @@ export default function Profile3DForm() {
           setTimer(120);
         }
       } catch (error) {
-        toast.dismiss();
         toast.error(error?.data?.message, { position: "top-center" });
       } finally {
         setIsOtpSending(false);
@@ -1260,12 +1258,10 @@ export default function Profile3DForm() {
           otp: Number(formData.otp),
           otpType: "ChangePassword",
         }).unwrap();
-        toast.dismiss();
         toast.success("OTP verified successfully", { position: "top-center" });
         setOtpVerified(true);
         setResendOtp(true);
       } catch (error) {
-        toast.dismiss();
         toast.error(error?.data?.message, { position: "top-center" });
       }
     }
@@ -1286,7 +1282,6 @@ export default function Profile3DForm() {
         setOtpVerified(false);
         window.location.href = "/login";
       } catch (error) {
-        toast.dismiss();
         toast.error(error?.data?.message, { position: "top-center" });
       }
     }
@@ -1799,9 +1794,9 @@ export default function Profile3DForm() {
                       name="otp"
                       value={formData.otp}
                       onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
-                      placeholder="Enter 4-digit OTP"
+                      placeholder="Enter 6-digit OTP"
                       disabled={!otpSent || otpVerified}
-                      maxLength={4}
+                      maxLength={6}
                       className={`${inputClass(errors.otp)} flex-1 ${
                         !otpSent || otpVerified ? "opacity-60 cursor-not-allowed" : ""
                       }`}
