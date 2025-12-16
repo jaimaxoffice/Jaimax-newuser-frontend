@@ -485,7 +485,6 @@ const LoginComponent = ({ onToggleMode, isVisible }) => {
   );
 };
 
-
 // Steps Configuration
 const STEPS_INDIAN = [
   { id: 1, title: "Country", icon: Globe },
@@ -581,38 +580,39 @@ const CountrySelectionStep = ({
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <Globe className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-600" />
+    <div className="space-y-3">
+      {/* Compact Header */}
+      <div className="flex items-center mb-2">
+        <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+          <Globe className="h-5 w-5 text-blue-600" />
         </div>
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Select Your Country</h2>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1 px-2 sm:px-4">
-          Choose your country to continue
-        </p>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Select Your Country</h2>
+          <p className="text-xs text-gray-500">Choose your country to continue registration</p>
+        </div>
       </div>
 
-      <div className="space-y-1.5 sm:space-y-2">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Country</label>
+      {/* Country Dropdown */}
+      <div>
+        <label className="text-xs font-medium text-gray-700 mb-1 inline-block">Country</label>
         <CountryCodeDropdown
           value={selectedCountry}
           onChange={setSelectedCountry}
-          className="w-full py-2.5 sm:py-3 px-3 sm:px-4 text-sm sm:text-base border border-gray-300 
-                   rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
+          className="w-full py-2 px-3 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
           countryCodes={countrycodes}
           showFullCountry={true}
         />
       </div>
 
-      {/* Information Box */}
-      <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-        <div className="flex items-start gap-2 sm:gap-3">
-          <Info className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-          <div className="text-xs sm:text-sm text-gray-600">
+      {/* Compact Information Box */}
+      <div className="bg-gray-50 rounded-lg p-2 text-xs">
+        <div className="flex items-start gap-1.5">
+          <Info className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" />
+          <div className="text-gray-600">
             {selectedCountry === "+91" ? (
               <div>
-                <p className="font-medium mb-1">Indian Citizens:</p>
-                <ul className="list-disc pl-4 space-y-0.5">
+                <p className="font-medium">Indian Citizens:</p>
+                <ul className="list-disc pl-3.5 space-y-0.5 mt-0.5">
                   <li>Aadhaar verification required</li>
                   <li>PAN verification required</li>
                   <li>Live photo verification</li>
@@ -620,11 +620,11 @@ const CountrySelectionStep = ({
               </div>
             ) : (
               <div>
-                <p className="font-medium mb-1">International Users:</p>
-                <ul className="list-disc pl-4 space-y-0.5">
-                  <li>Photo ID verification</li>
-                  <li>Live photo capture</li>
-                  <li>Manual KYC review</li>
+                <p className="font-medium">International Users:</p>
+                <ul className="list-disc pl-3.5 space-y-0.5 mt-0.5">
+                  <li>Photo ID verification required</li>
+                  <li>Live photo capture for identity</li>
+                  <li>Manual KYC review process</li>
                 </ul>
               </div>
             )}
@@ -634,12 +634,12 @@ const CountrySelectionStep = ({
 
       <button
         onClick={handleContinue}
-        className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 
-                 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 
-                 transition-all flex items-center justify-center gap-2"
+        className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2 
+                 rounded-full text-sm font-medium hover:from-teal-600 hover:to-teal-700 
+                 transition-all flex items-center justify-center gap-1.5 mt-2"
       >
         Continue
-        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+        <ArrowRight className="w-4 h-4" />
       </button>
     </div>
   );
@@ -736,23 +736,24 @@ const AadhaarStep = ({
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <FileText className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-teal-600" />
+    <div className="space-y-3">
+      {/* Compact Header with Side Icon */}
+      <div className="flex items-center mb-2">
+        <div className="h-10 w-10 bg-teal-100 rounded-full flex items-center justify-center mr-3">
+          <FileText className="h-5 w-5 text-teal-600" />
         </div>
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Aadhaar Verification</h2>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1">
-          Verify your identity with Aadhaar
-        </p>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Aadhaar Verification</h2>
+          <p className="text-xs text-gray-500">Verify your identity with Aadhaar</p>
+        </div>
       </div>
 
       {/* Aadhaar Number Input */}
-      <div className="space-y-1.5 sm:space-y-2">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Aadhaar Number</label>
+      <div className="space-y-1">
+        <label className="text-xs font-medium text-gray-700">Aadhaar Number</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <FileText className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="text"
@@ -767,7 +768,7 @@ const AadhaarStep = ({
             }}
             placeholder="Enter 12-digit Aadhaar number"
             disabled={aadhaarOtpSent && !canResend}
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all ${
               errors.aadhaarNumber ? "border-red-500 bg-red-50" : "border-gray-300"
             } ${aadhaarOtpSent && !canResend ? "bg-gray-100" : "bg-white"}`}
           />
@@ -775,15 +776,18 @@ const AadhaarStep = ({
         {errors.aadhaarNumber && (
           <p className="text-red-500 text-xs">{errors.aadhaarNumber}</p>
         )}
+        <p className="text-xs text-gray-500">
+          Format: XXXX XXXX XXXX (12 digits)
+        </p>
       </div>
 
       {/* OTP Section */}
       {aadhaarOtpSent && (
-        <div className="space-y-1.5 sm:space-y-2 animate-fadeIn">
-          <label className="text-xs sm:text-sm font-medium text-gray-700">Enter OTP</label>
+        <div className="space-y-1 animate-fadeIn">
+          <label className="text-xs font-medium text-gray-700">Enter OTP</label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+              <Shield className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="text"
@@ -794,70 +798,62 @@ const AadhaarStep = ({
                 setFormData((prev) => ({ ...prev, aadhaarOtp: value }));
               }}
               placeholder="Enter 6-digit OTP"
-              className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
             />
           </div>
           <p className="text-xs text-gray-500">
-            OTP sent to Aadhaar-linked mobile
+            OTP sent to your Aadhaar-linked mobile number
           </p>
         </div>
       )}
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-        <button
-          onClick={onPrev}
-          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
-        >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-          Back
-        </button>
-        
+      <div className="flex gap-3 pt-2">
         {!aadhaarOtpSent ? (
           <button
             onClick={handleSendAadhaarOtp}
             disabled={isSendingOtp || !formData.aadhaarNumber || formData.aadhaarNumber.length !== 12}
-            className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
             {isSendingOtp ? (
               <>
-                <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                Sending...
+                <Loader className="w-5 h-5 animate-spin" />
+                Sending OTP...
               </>
             ) : (
               <>
                 Send OTP
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ArrowRight className="w-5 h-5" />
               </>
             )}
           </button>
         ) : (
-          <div className="order-1 sm:order-2 flex-1 flex gap-2">
+          <>
             <button
               onClick={handleSendAadhaarOtp}
               disabled={!canResend || isSendingOtp}
-              className="px-3 sm:px-4 py-2.5 sm:py-3 border border-teal-500 text-teal-600 rounded-xl text-xs sm:text-sm font-medium hover:bg-teal-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
+              className="px-4 py-3 border border-teal-500 text-teal-600 rounded-full font-medium hover:bg-teal-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-              {timer > 0 ? `${timer}s` : "Resend"}
+              {timer > 0 ? `Resend (${timer}s)` : "Resend OTP"}
             </button>
             <button
               onClick={handleVerifyAadhaar}
               disabled={isVerifyingOtp || !formData.aadhaarOtp || formData.aadhaarOtp.length !== 6}
-              className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+              className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
               {isVerifyingOtp ? (
                 <>
-                  <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                  <Loader className="w-5 h-5 animate-spin" />
                   Verifying...
                 </>
               ) : (
                 <>
-                  Verify
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  Verify & Continue
+                  <ArrowRight className="w-5 h-5" />
                 </>
               )}
             </button>
-          </div>
+          </>
         )}
       </div>
     </div>
@@ -919,23 +915,24 @@ const PanStep = ({
   };
 
   return (
-    <div className="space-y-4 sm:space-y-5">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <CreditCard className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-600" />
+    <div className="space-y-3">
+      {/* Compact Header with Side Icon */}
+      <div className="flex items-center mb-2">
+        <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+          <CreditCard className="h-5 w-5 text-blue-600" />
         </div>
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">PAN Verification</h2>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1">
-          Verify your PAN card details
-        </p>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">PAN Verification</h2>
+          <p className="text-xs text-gray-500">Verify your PAN card details</p>
+        </div>
       </div>
 
       {/* PAN Number */}
-      <div className="space-y-1.5 sm:space-y-2">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">PAN Number</label>
+      <div className="space-y-1">
+        <label className="text-xs font-medium text-gray-700">PAN Number</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <CreditCard className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="text"
@@ -945,8 +942,8 @@ const PanStep = ({
               const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
               setFormData((prev) => ({ ...prev, panNumber: value }));
             }}
-            placeholder="ABCDE1234F"
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+            placeholder="Enter PAN number (e.g., ABCDE1234F)"
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
               errors.panNumber ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -957,11 +954,11 @@ const PanStep = ({
       </div>
 
       {/* Name on PAN */}
-      <div className="space-y-1.5 sm:space-y-2">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Name (as on PAN)</label>
+      <div className="space-y-1">
+        <label className="text-xs font-medium text-gray-700">Name (as on PAN)</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <User className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="text"
@@ -970,8 +967,8 @@ const PanStep = ({
               const value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
               setFormData((prev) => ({ ...prev, panName: value }));
             }}
-            placeholder="Enter name as on PAN"
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+            placeholder="Enter name as on PAN card"
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
               errors.panName ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -982,18 +979,18 @@ const PanStep = ({
       </div>
 
       {/* Date of Birth */}
-      <div className="space-y-1.5 sm:space-y-2">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Date of Birth</label>
+      <div className="space-y-1">
+        <label className="text-xs font-medium text-gray-700">Date of Birth</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <Calendar className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="date"
             value={formData.panDob || ""}
             onChange={(e) => setFormData((prev) => ({ ...prev, panDob: e.target.value }))}
             max={new Date().toISOString().split("T")[0]}
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
               errors.panDob ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -1004,28 +1001,28 @@ const PanStep = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+      <div className="flex gap-3 pt-2">
         <button
           onClick={onPrev}
-          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+          className="px-6 py-3 border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowLeft className="w-5 h-5" />
           Back
         </button>
         <button
           onClick={handleVerifyPan}
           disabled={isLoading}
-          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
         >
           {isLoading ? (
             <>
-              <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+              <Loader className="w-5 h-5 animate-spin" />
               Verifying...
             </>
           ) : (
             <>
               Verify PAN
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ArrowRight className="w-5 h-5" />
             </>
           )}
         </button>
@@ -1051,8 +1048,7 @@ const PhotoCaptureStep = ({
   const videoConstraints = {
     width: { ideal: 1280, min: 640 },
     height: { ideal: 720, min: 480 },
-    facingMode: facingMode,
-    aspectRatio: { ideal: 1.333 }
+    facingMode: facingMode
   };
 
   const capture = useCallback(() => {
@@ -1090,41 +1086,38 @@ const PhotoCaptureStep = ({
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <Camera className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-indigo-600" />
+    <div className="space-y-2">
+      {/* Minimal Header */}
+      <div className="flex items-center mb-1.5">
+        <div className="h-8 w-8 bg-indigo-100 rounded-full flex items-center justify-center mr-2">
+          <Camera className="h-4 w-4 text-indigo-600" />
         </div>
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Photo Verification</h2>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1">
-          Take a live photo for verification
-        </p>
+        <h2 className="text-sm font-bold text-gray-800">Photo Verification</h2>
       </div>
 
-      {/* Camera/Photo Display */}
-      <div className="relative bg-gray-100 rounded-xl overflow-hidden aspect-[4/3] sm:aspect-video max-h-[280px] sm:max-h-[320px] lg:max-h-[350px]">
+      {/* Camera/Photo Display - Reduced height */}
+      <div className="relative bg-gray-100 rounded overflow-hidden h-[190px]">
         {!isCapturing && !capturedPhoto && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-            <Camera className="w-10 h-10 sm:w-14 sm:h-14 text-gray-400 mb-3" />
-            <p className="text-sm text-gray-600 mb-3">Camera not active</p>
+          <div className="flex flex-col items-center justify-center h-full p-2">
+            <Camera className="w-8 h-8 text-gray-400 mb-1" />
+            <p className="text-xs text-gray-600 mb-1.5">Camera not active</p>
             {hasPermission ? (
               <button
                 onClick={() => setIsCapturing(true)}
-                className="px-4 py-2 text-sm bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-all"
+                className="px-3 py-1.5 bg-teal-500 text-white rounded text-xs hover:bg-teal-600"
               >
                 Start Camera
               </button>
             ) : (
               <div className="text-center">
-                <p className="text-xs text-red-600 mb-1">Camera permission denied</p>
-                <p className="text-xs text-gray-500">Enable camera in browser settings</p>
+                <p className="text-[10px] text-red-600">Camera permission denied</p>
               </div>
             )}
           </div>
         )}
 
         {isCapturing && hasPermission && (
-          <>
+          <div className="relative w-full h-full">
             <Webcam
               audio={false}
               ref={webcamRef}
@@ -1134,84 +1127,80 @@ const PhotoCaptureStep = ({
               className="w-full h-full object-cover"
               mirrored={facingMode === "user"}
             />
-            {/* Face guide */}
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-              <div className="w-28 h-36 sm:w-40 sm:h-52 border-2 border-white/70 rounded-xl"></div>
+            {/* Face guide overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-24 h-32 border-2 border-white/80 rounded shadow"></div>
             </div>
             {/* Camera switch button */}
             <button
               onClick={() => setFacingMode(prev => prev === "user" ? "environment" : "user")}
-              className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-all shadow"
+              className="absolute top-1 right-1 p-1.5 bg-white/70 rounded-full hover:bg-white/90 shadow-sm"
             >
-              <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </button>
-          </>
+          </div>
         )}
 
         {capturedPhoto && (
-          <>
+          <div className="relative w-full h-full">
             <img
               src={capturedPhoto}
               alt="Captured"
               className="w-full h-full object-cover"
             />
-            <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-medium flex items-center gap-1">
-              <CheckCircle className="w-3 h-3" />
-              Captured
+            <div className="absolute top-1 right-1 bg-green-500 text-white px-1.5 py-0.5 rounded-sm text-xs">
+              ✓ Photo Captured
             </div>
-          </>
+          </div>
         )}
       </div>
 
-      {/* Instructions */}
-      <div className="bg-blue-50 rounded-xl p-3 sm:p-4">
-        <h4 className="text-xs sm:text-sm font-medium text-blue-900 mb-1">Photo Tips:</h4>
-        <ul className="text-[10px] sm:text-xs text-blue-700 space-y-0.5">
-          <li>• Face camera directly with good lighting</li>
-          <li>• Remove glasses if causing glare</li>
-          <li>• Keep neutral expression</li>
-        </ul>
+      {/* Minimal Instructions - Inline */}
+      <div className="bg-blue-50 rounded p-1.5 text-[10px] flex items-start gap-1">
+        <Info className="w-3 h-3 text-blue-400 mt-0.5 flex-shrink-0" />
+        <div className="text-blue-700">
+          <span className="font-medium">Tips: </span>
+          Face camera directly • Good lighting • No glare from glasses
+        </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+      {/* Action Buttons - Compact */}
+      <div className="flex gap-1.5">
         <button
           onClick={onPrev}
-          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+          className="px-2.5 py-1.5 border border-gray-300 text-gray-700 rounded text-xs font-medium hover:bg-gray-50"
         >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowLeft className="w-3.5 h-3.5 inline mr-1" />
           Back
         </button>
         
-        <div className="order-1 sm:order-2 flex-1 flex gap-2">
-          {isCapturing ? (
+        {isCapturing ? (
+          <button
+            onClick={capture}
+            className="flex-1 bg-teal-500 text-white py-1.5 rounded text-xs font-medium hover:bg-teal-600 flex items-center justify-center"
+          >
+            <Camera className="w-3.5 h-3.5 mr-1" />
+            Capture
+          </button>
+        ) : capturedPhoto ? (
+          <>
             <button
-              onClick={capture}
-              className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+              onClick={retakePhoto}
+              className="flex-1 border border-teal-500 text-teal-600 py-1.5 rounded text-xs font-medium hover:bg-teal-50"
             >
-              <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
-              Capture
+              Retake
             </button>
-          ) : capturedPhoto ? (
-            <>
-              <button
-                onClick={retakePhoto}
-                className="flex-1 border border-teal-500 text-teal-600 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:bg-teal-50 transition-all"
-              >
-                Retake
-              </button>
-              <button
-                onClick={handleNext}
-                className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </>
-          ) : null}
-        </div>
+            <button
+              onClick={handleNext}
+              className="flex-1 bg-teal-500 text-white py-1.5 rounded-full text-xs font-medium hover:bg-teal-600 flex items-center justify-center"
+            >
+              Continue
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            </button>
+          </>
+        ) : null}
       </div>
     </div>
   );
@@ -1233,7 +1222,6 @@ const PersonalDetailsStep = ({
 
   const validateStep = () => {
     const stepErrors = {};
-    if (!formData.name || formData.name.length < 2) stepErrors.name = "Name must be at least 2 characters";
     if (!formData.phone || formData.phone.length !== 10) stepErrors.phone = "Enter valid 10-digit phone";
     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) stepErrors.email = "Enter valid email";
     if (!formData.password || formData.password.length < 6) stepErrors.password = "Password min 6 characters";
@@ -1247,48 +1235,26 @@ const PersonalDetailsStep = ({
   };
 
   return (
-    <div className="space-y-3 sm:space-y-4">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <User className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-purple-600" />
+    <div className="space-y-3">
+      {/* Compact Header with Side Icon */}
+      <div className="flex items-center mb-2">
+        <div className="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+          <User className="h-5 w-5 text-purple-600" />
         </div>
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Personal Details</h2>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1">Enter your information</p>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Personal Details</h2>
+          <p className="text-xs text-gray-500">Enter your personal information</p>
+        </div>
       </div>
 
-      {/* Name */}
-      <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Full Name</label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            value={formData.name || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value.replace(/[^a-zA-Z\s]/g, "") }))}
-            placeholder="Enter your full name"
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.name ? "border-red-500" : "border-gray-300"}`}
-          />
-        </div>
-        {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
-      </div>
 
       {/* Phone */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Phone Number</label>
-        <div className="flex rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
-          <div className="flex-shrink-0 bg-gray-50 border-r border-gray-300">
-            <CountryCodeDropdown
-              value={selectedCode}
-              onChange={setSelectedCode}
-              className="py-2.5 sm:py-3 px-2 sm:px-3"
-              countryCodes={countrycodes}
-            />
-          </div>
+        <label className="text-xs font-medium text-gray-700">Phone Number</label>
+        <div className="flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
           <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
-              <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+              <Phone className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="tel"
@@ -1296,7 +1262,7 @@ const PersonalDetailsStep = ({
               value={formData.phone || ""}
               onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value.replace(/\D/g, "") }))}
               placeholder="Phone number"
-              className="w-full pl-8 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-0 outline-none bg-white"
+              className="w-full pl-8 pr-4 py-2.5 border-0 outline-none bg-white"
             />
           </div>
         </div>
@@ -1305,72 +1271,74 @@ const PersonalDetailsStep = ({
 
       {/* Email */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Email</label>
+        <label className="text-xs font-medium text-gray-700">Email Address</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <Mail className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="email"
             value={formData.email || ""}
             onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value.toLowerCase() }))}
             placeholder="Enter your email"
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500" : "border-gray-300"}`}
+            className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"}`}
           />
         </div>
         {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
       </div>
 
-      {/* Password */}
+      {/* Password and Confirm Password in one line */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Password</label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+        <label className="text-xs font-medium text-gray-700">Password</label>
+        <div className="grid grid-cols-2 gap-2">
+          {/* Password */}
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Lock className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={formData.password || ""}
+              onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+              placeholder="Create password"
+              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+            />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
+              {showPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+            </button>
           </div>
-          <input
-            type={showPassword ? "text" : "password"}
-            value={formData.password || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
-            placeholder="Create password"
-            className={`w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500" : "border-gray-300"}`}
-          />
-          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            {showPassword ? <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /> : <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />}
-          </button>
-        </div>
-        {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
-      </div>
-
-      {/* Confirm Password */}
-      <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Confirm Password</label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+          
+          {/* Confirm Password */}
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Lock className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={formData.confirmPassword || ""}
+              onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
+              placeholder="Confirm password"
+              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+            />
+            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
+              {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+            </button>
           </div>
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            value={formData.confirmPassword || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
-            placeholder="Confirm password"
-            className={`w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}`}
-          />
-          <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            {showConfirmPassword ? <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /> : <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />}
-          </button>
         </div>
-        {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
+        <div className="flex justify-between">
+          {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+          {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
+        </div>
       </div>
 
       {/* Referral ID */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">
+        <label className="text-xs font-medium text-gray-700">
           Referral ID <span className="text-gray-400">(Optional)</span>
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Users className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+            <Users className="h-5 w-5 text-gray-400" />
           </div>
           <input
             type="text"
@@ -1378,32 +1346,34 @@ const PersonalDetailsStep = ({
             value={formData.referralId || ""}
             onChange={(e) => setFormData((prev) => ({ ...prev, referralId: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") }))}
             placeholder="Enter referral ID"
-            className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white"
+            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white"
           />
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+      <div className="flex gap-3 pt-2">
         <button
           onClick={onPrev}
-          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+          className="px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
         >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowLeft className="w-5 h-5" />
           Back
         </button>
         <button
           onClick={handleNext}
-          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-lg font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
         >
           Continue
-          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowRight className="w-5 h-5" />
         </button>
       </div>
     </div>
   );
 };
 
+// Account Setup Step - Made Responsive
+// Account Setup Step - Made Responsive
 // Account Setup Step - Made Responsive
 const AccountSetupStep = ({
   formData,
@@ -1416,6 +1386,7 @@ const AccountSetupStep = ({
   setIsChecked,
   isConfirmAgree,
   onShowModal,
+  onComplete,
 }) => {
   const [emailOtpSent, setEmailOtpSent] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -1436,6 +1407,27 @@ const AccountSetupStep = ({
     return () => clearInterval(interval);
   }, [emailOtpSent, timer]);
 
+  // Helper function to extract only required user data
+  const getEssentialUserData = (data) => {
+    return {
+      _id: data._id,
+      name: data.name,
+      role: data.role,
+      email: data.email,
+      country: data.country,
+      city: data.city || "N/A",
+      state: data.state || "N/A",
+      address: data.address || "N/A",
+      phone: data.phone,
+      countryCode: data.countryCode,
+      username: data.username,
+      permissions: data.permissions || [],
+      walletadress: data.walletadress,
+      kycVerified: data.kycVerified,
+      token: data.token
+    };
+  };
+
   const handleSendEmailOtp = async () => {
     try {
       const payload = {
@@ -1444,26 +1436,40 @@ const AccountSetupStep = ({
         email: formData.email,
         password: formData.password,
         confirmPwd: formData.confirmPassword,
-        countryCode: "+91",
-        country: "India",
-        aadhaarNumber: formData.aadhaarNumber,
-        panNumber: formData.panNumber,
-        name: formData.name,
-        dob: formData.panDob,
+        countryCode: formData.countryCode || "+91",
+        country: formData.country || "India",
+        livePhoto: formData.livePhoto,
       };
 
       const result = await register(payload).unwrap();
-      if (result?.data?.username) {
-        Cookies.set("username", result.data.username, { expires: 7 });
+      console.log("Registration Response:", result);
+
+      // Save only essential data
+      if (result?.data) {
+        const essentialData = getEssentialUserData(result.data);
+        
+        // Save token
+        Cookies.set("token", essentialData.token, { expires: 7 });
+        sessionStorage.setItem("token", essentialData.token);
+        
+        // Save userData
+        Cookies.set("userData", JSON.stringify(essentialData), { expires: 7 });
       }
+
       setEmailOtpSent(true);
       setTimer(120);
       setCanResend(false);
       setNotification({ type: "success", message: "OTP sent to your email!" });
     } catch (err) {
+      console.error("Registration Error:", err);
+
       if (err?.data?.message === "User verification pending") {
         try {
-          await OTPresent({ email: formData.email, otpType: "register", tempId: formData.aadhaarTempId }).unwrap();
+          await OTPresent({
+            email: formData.email,
+            otpType: "register",
+            tempId: formData.aadhaarTempId,
+          }).unwrap();
           setEmailOtpSent(true);
           setTimer(120);
           setCanResend(false);
@@ -1493,7 +1499,7 @@ const AccountSetupStep = ({
         email: formData.email,
         otp: Number(formData.emailOtp),
         otpType: "register",
-        referenceId: formData.referralId,
+        referenceId: formData.referralId || "",
       }).unwrap();
 
       if (!res.success) {
@@ -1501,11 +1507,27 @@ const AccountSetupStep = ({
         return;
       }
 
-      Cookies.set("token", res?.data?.token, { expires: 7 });
-      Cookies.set("userData", JSON.stringify(res?.data), { expires: 7 });
+      // Save only essential data
+      if (res?.data) {
+        const essentialData = getEssentialUserData(res.data);
+        
+        // Save token
+        Cookies.set("token", essentialData.token, { expires: 7 });
+        sessionStorage.setItem("token", essentialData.token);
+        
+        // Save userData
+        Cookies.set("userData", JSON.stringify(essentialData), { expires: 7 });
+      }
+
+      // Clear registration progress
+      if (onComplete) {
+        onComplete();
+      }
+
       setNotification({ type: "success", message: "Registration successful!" });
-      setTimeout(() => navigate("/dashboard"), 1000);
+      setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
+      console.error("Verification Error:", err);
       setNotification({ type: "error", message: err?.data?.message || "Registration failed" });
     }
   };
@@ -1538,7 +1560,7 @@ const AccountSetupStep = ({
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-            <span className="text-xs sm:text-sm text-gray-600">{formData.name}</span>
+            <span className="text-xs sm:text-sm text-gray-600">{formData.name || formData.panName || "Details Provided"}</span>
           </div>
         </div>
       </div>
@@ -1637,7 +1659,6 @@ const AccountSetupStep = ({
     </div>
   );
 };
-
 // Foreign Personal Details Step (Similar to PersonalDetailsStep but with minor differences)
 const ForeignPersonalDetailsStep = ({
   formData,
@@ -1662,45 +1683,53 @@ const ForeignPersonalDetailsStep = ({
   };
 
   return (
-    <div className="space-y-3 sm:space-y-4">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <User className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-purple-600" />
+    <div className="space-y-3">
+      {/* Horizontal Header */}
+      <div className="flex items-center mb-2">
+        <div className="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+          <User className="h-5 w-5 text-purple-600" />
         </div>
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Personal Details</h2>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Personal Details</h2>
+          <p className="text-xs text-gray-500">Enter your personal information</p>
+        </div>
       </div>
 
       {/* Name */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Full Name</label>
+        <label className="text-xs font-medium text-gray-700">Full Name</label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <User className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             type="text"
             value={formData.name || ""}
             onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
-            placeholder="Enter full name"
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.name ? "border-red-500" : "border-gray-300"}`}
+            placeholder="Enter your full name"
+            className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.name ? "border-red-500 bg-red-50" : "border-gray-300"}`}
           />
         </div>
         {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
       </div>
 
-      {/* Phone with pre-selected country */}
+      {/* Phone */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Phone Number</label>
-        <div className="flex rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
-          <div className="flex-shrink-0 bg-gray-50 border-r border-gray-300 px-3 flex items-center">
+        <label className="text-xs font-medium text-gray-700">Phone Number</label>
+        <div className="flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
+          <div className="flex-shrink-0 bg-gray-50 border-r border-gray-300 px-2 flex items-center">
             <span className="text-sm text-gray-700 font-medium">{formData.countryCode}</span>
           </div>
           <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Phone className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Phone className="h-5 w-5 text-gray-400" />
+            </div>
             <input
               type="tel"
               value={formData.phone || ""}
               onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value.replace(/[^\d]/g, "") }))}
-              placeholder="Phone number"
-              className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border-0 outline-none bg-white"
+              placeholder="Enter phone number"
+              className="w-full pl-9 pr-4 py-2.5 border-0 outline-none bg-white"
             />
           </div>
         </div>
@@ -1709,80 +1738,101 @@ const ForeignPersonalDetailsStep = ({
 
       {/* Email */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Email</label>
+        <label className="text-xs font-medium text-gray-700">Email Address</label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Mail className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             type="email"
             value={formData.email || ""}
             onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value.toLowerCase() }))}
-            placeholder="Enter email"
-            className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500" : "border-gray-300"}`}
+            placeholder="Enter your email"
+            className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"}`}
           />
         </div>
         {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
       </div>
 
-      {/* Password fields */}
+      {/* Password and Confirm Password in one line */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Password</label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
-          <input
-            type={showPassword ? "text" : "password"}
-            value={formData.password || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
-            placeholder="Create password"
-            className={`w-full pl-9 sm:pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500" : "border-gray-300"}`}
-          />
-          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            {showPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
-          </button>
+        <label className="text-xs font-medium text-gray-700">Password</label>
+        <div className="grid grid-cols-2 gap-2">
+          {/* Password */}
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Lock className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={formData.password || ""}
+              onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+              placeholder="Create password"
+              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+            />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
+              {showPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+            </button>
+          </div>
+          
+          {/* Confirm Password */}
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Lock className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={formData.confirmPassword || ""}
+              onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
+              placeholder="Confirm password"
+              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+            />
+            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
+              {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+            </button>
+          </div>
         </div>
-        {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+        <div className="flex justify-between">
+          {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+          {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
+        </div>
       </div>
 
+      {/* Referral ID */}
       <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Confirm Password</label>
+        <label className="text-xs font-medium text-gray-700">
+          Referral ID <span className="text-gray-400">(Optional)</span>
+        </label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            value={formData.confirmPassword || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
-            placeholder="Confirm password"
-            className={`w-full pl-9 sm:pl-10 pr-10 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}`}
-          />
-          <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
-          </button>
-        </div>
-        {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
-      </div>
-
-      {/* Referral */}
-      <div className="space-y-1">
-        <label className="text-xs sm:text-sm font-medium text-gray-700">Referral ID <span className="text-gray-400">(Optional)</span></label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center"><Users className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" /></div>
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Users className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             type="text"
             maxLength={13}
             value={formData.referralId || ""}
             onChange={(e) => setFormData((prev) => ({ ...prev, referralId: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") }))}
-            placeholder="Referral ID"
-            className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white"
+            placeholder="Enter referral ID"
+            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white"
           />
         </div>
       </div>
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
-        <button onClick={onPrev} className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 flex items-center justify-center gap-2">
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />Back
+      {/* Action Buttons */}
+      <div className="flex gap-3 pt-2">
+        <button
+          onClick={onPrev}
+          className="px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          Back
         </button>
-        <button onClick={() => validateStep() && onNext()} className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 flex items-center justify-center gap-2">
-          Continue<ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+        <button
+          onClick={() => validateStep() && onNext()}
+          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-lg font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+        >
+          Continue
+          <ArrowRight className="w-5 h-5" />
         </button>
       </div>
     </div>
@@ -1831,6 +1881,7 @@ const ForeignAccountSetupStep = ({
         countryCode: formData.countryCode,
         country: formData.country,
         referralId: formData.referralId,
+        livePhoto:formData.livePhoto
       }).unwrap();
 
       if (result?.data?.username) Cookies.set("username", result.data.username, { expires: 7 });
@@ -1955,9 +2006,6 @@ const ForeignAccountSetupStep = ({
   );
 };
 
-
-
-// Main Register Component (Modified)
 const RegisterComponent = ({
   onToggleMode,
   isVisible,
@@ -1968,10 +2016,13 @@ const RegisterComponent = ({
   isConfirmAgree,
 }) => {
   const location = useLocation();
-  const [currentStep, setCurrentStep] = useState(1);
-  const [isIndianUser, setIsIndianUser] = useState(true);
   const [notification, setNotification] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
+  
+  // Initialize with default values
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isIndianUser, setIsIndianUser] = useState(true);
+  const [registrationKey, setRegistrationKey] = useState(null);
   
   const [formData, setFormData] = useState({
     // Country
@@ -2006,11 +2057,101 @@ const RegisterComponent = ({
   // Get appropriate steps based on user type
   const STEPS = isIndianUser ? STEPS_INDIAN : STEPS_FOREIGN;
 
+  // Check for existing registration session on component mount
+  useEffect(() => {
+    // Check if there's an active registration session
+    const activeSession = localStorage.getItem('active_registration_session');
+    if (activeSession) {
+      try {
+        const sessionData = JSON.parse(activeSession);
+        const currentTime = new Date().getTime();
+        const hoursPassed = (currentTime - sessionData.timestamp) / (1000 * 60 * 60);
+        
+        // Only restore if less than 24 hours old
+        if (hoursPassed < 24) {
+          // Set the registration key
+          setRegistrationKey(sessionData.key);
+          
+          // Try to load the saved step data
+          const savedStepData = localStorage.getItem(sessionData.key);
+          if (savedStepData) {
+            const parsed = JSON.parse(savedStepData);
+            setCurrentStep(parsed.step);
+            setIsIndianUser(parsed.isIndianUser);
+            
+            // Restore minimal data needed for key generation
+            if (sessionData.isIndianUser && sessionData.aadhaarTempId) {
+              setFormData(prev => ({ ...prev, aadhaarTempId: sessionData.aadhaarTempId }));
+            } else if (!sessionData.isIndianUser && sessionData.email) {
+              setFormData(prev => ({ ...prev, email: sessionData.email }));
+            }
+            
+            setNotification({ 
+              type: 'info', 
+              message: `Welcome back! Resuming from step ${parsed.step}` 
+            });
+          }
+        } else {
+          // Clear expired session
+          localStorage.removeItem('active_registration_session');
+          localStorage.removeItem(sessionData.key);
+        }
+      } catch (error) {
+        console.error('Error loading session:', error);
+      }
+    }
+  }, []);
+
+  // Generate storage key based on aadhaarTempId for Indian users or email for foreign users
+  const getStorageKey = () => {
+    if (isIndianUser && formData.aadhaarTempId) {
+      return `reg_step_aadhaar_${formData.aadhaarTempId}`;
+    } else if (!isIndianUser && formData.email) {
+      return `reg_step_email_${formData.email.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+    }
+    return null;
+  };
+
+  // Save session info when key is generated
+  useEffect(() => {
+    const key = getStorageKey();
+    if (key && key !== registrationKey) {
+      setRegistrationKey(key);
+      
+      // Save active session info
+      const sessionData = {
+        key: key,
+        isIndianUser: isIndianUser,
+        timestamp: new Date().getTime(),
+        // Store minimal identifiers
+        ...(isIndianUser && formData.aadhaarTempId ? { aadhaarTempId: formData.aadhaarTempId } : {}),
+        ...(!isIndianUser && formData.email ? { email: formData.email } : {})
+      };
+      localStorage.setItem('active_registration_session', JSON.stringify(sessionData));
+    }
+  }, [formData.aadhaarTempId, formData.email, isIndianUser]);
+
+  // Save current step when it changes
+  useEffect(() => {
+    if (registrationKey && currentStep > 1) {
+      try {
+        const dataToSave = {
+          step: currentStep,
+          isIndianUser: isIndianUser,
+          timestamp: new Date().getTime()
+        };
+        localStorage.setItem(registrationKey, JSON.stringify(dataToSave));
+      } catch (error) {
+        console.error('Error saving step:', error);
+      }
+    }
+  }, [currentStep, isIndianUser, registrationKey]);
+
   // Handle referral code from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const referralCode = params.get("referralCode");
-    if (referralCode) {
+    if (referralCode && !formData.referralId) {
       setFormData((prev) => ({ ...prev, referralId: referralCode }));
     }
   }, [location.search]);
@@ -2026,6 +2167,30 @@ const RegisterComponent = ({
 
   const handlePrev = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  // Clear saved progress when registration is complete
+  const clearProgress = () => {
+    if (registrationKey) {
+      localStorage.removeItem(registrationKey);
+    }
+    localStorage.removeItem('active_registration_session');
+  };
+
+  // Clear all registration progress (optional utility)
+  const clearAllRegistrationProgress = () => {
+    // Clear active session
+    localStorage.removeItem('active_registration_session');
+    
+    // Clear all step data
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.startsWith('reg_step_aadhaar_') || key.startsWith('reg_step_email_'))) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
   };
 
   const renderStep = () => {
@@ -2055,7 +2220,6 @@ const RegisterComponent = ({
               setTouched={setTouched}
               onNext={handleNext}
               onPrev={handlePrev}
-              notification={notification}
               setNotification={setNotification}
             />
           );
@@ -2066,11 +2230,8 @@ const RegisterComponent = ({
               setFormData={setFormData}
               errors={errors}
               setErrors={setErrors}
-              touched={touched}
-              setTouched={setTouched}
               onNext={handleNext}
               onPrev={handlePrev}
-              notification={notification}
               setNotification={setNotification}
             />
           );
@@ -2081,7 +2242,6 @@ const RegisterComponent = ({
               setFormData={setFormData}
               onNext={handleNext}
               onPrev={handlePrev}
-              notification={notification}
               setNotification={setNotification}
             />
           );
@@ -2092,8 +2252,6 @@ const RegisterComponent = ({
               setFormData={setFormData}
               errors={errors}
               setErrors={setErrors}
-              touched={touched}
-              setTouched={setTouched}
               onNext={handleNext}
               onPrev={handlePrev}
               selectedCode={formData.countryCode}
@@ -2108,12 +2266,12 @@ const RegisterComponent = ({
               errors={errors}
               setErrors={setErrors}
               onPrev={handlePrev}
-              notification={notification}
               setNotification={setNotification}
               isChecked={isChecked}
               setIsChecked={setIsChecked}
               isConfirmAgree={isConfirmAgree}
               onShowModal={onShowModal}
+              onComplete={clearProgress}
             />
           );
         default:
@@ -2141,7 +2299,6 @@ const RegisterComponent = ({
               setFormData={setFormData}
               onNext={handleNext}
               onPrev={handlePrev}
-              notification={notification}
               setNotification={setNotification}
             />
           );
@@ -2153,12 +2310,12 @@ const RegisterComponent = ({
               errors={errors}
               setErrors={setErrors}
               onPrev={handlePrev}
-              notification={notification}
               setNotification={setNotification}
               isChecked={isChecked}
               setIsChecked={setIsChecked}
               isConfirmAgree={isConfirmAgree}
               onShowModal={onShowModal}
+              onComplete={clearProgress}
             />
           );
         default:
@@ -2169,7 +2326,7 @@ const RegisterComponent = ({
 
   return (
     <div
-      className={`w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500 transform ${
+      className={`max-w-[120%] mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500 transform ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
@@ -2185,12 +2342,12 @@ const RegisterComponent = ({
       <ProgressBar currentStep={currentStep} steps={STEPS} />
 
       {/* Step Content */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+      <div className="bg-white rounded-2xl shadow-lg p-2 sm:p-8">
         {renderStep()}
       </div>
 
       {/* Login Link */}
-      <div className="mt-6 text-center">
+      <div className="mt-3 text-center">
         <p className="text-sm text-gray-600">
           Already have an account?{" "}
           <button
@@ -2204,8 +2361,6 @@ const RegisterComponent = ({
     </div>
   );
 };
-
-
 
 export default function AuthContainer() {
   const navigate = useNavigate();
@@ -2483,12 +2638,12 @@ export default function AuthContainer() {
         </div>
         {/* Right Section - Form */}
         <div
-          className={`absolute inset-y-0 w-1/2 bg-white shadow-2xl transform transition-all duration-1000 ease-out ${
+          className={`absolute inset-y-0 w-1/2 bg-white shadow-2xl transform transition-all duration-1000 ease-out overflow-auto ${
             isLogin ? "right-0 translate-x-0" : "right-1/2 translate-x-0"
           }`}
         >
-          <div className="flex items-start justify-center w-full h-full p-12">
-            <div className="w-full max-w-md">
+          <div className="flex items-start justify-center w-full h-full p-12 ">
+            <div className="w-full max-w-[100%]">
               {isLogin ? (
                 <LoginComponent
                   onSubmit={handleLoginSubmit}

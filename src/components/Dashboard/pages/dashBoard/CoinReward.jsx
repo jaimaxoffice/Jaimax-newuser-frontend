@@ -25,7 +25,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
       };
     } else {
       return {
-        coins: Math.floor(Math.random() * 301) + 700, // 700-1000
+        coins: Math.floor(Math.random() * 100) + 700, // 700-1000
         jackpot: true,
       };    
     }
