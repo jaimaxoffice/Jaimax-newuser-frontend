@@ -8,6 +8,7 @@ import {
   EyeOff,
   Phone,
   Users,
+  Sparkles ,
   Shield,
   ChevronDown,
   AlertCircle,
@@ -491,15 +492,14 @@ const STEPS_INDIAN = [
   { id: 2, title: "Aadhaar", icon: FileText },
   { id: 3, title: "PAN", icon: CreditCard },
   { id: 4, title: "Photo", icon: Camera },
-  { id: 5, title: "Details", icon: User },
-  { id: 6, title: "Setup", icon: Shield },
+  { id: 5, title: "Complete", icon: "UserCheck" },
 ];
 
 const STEPS_FOREIGN = [
   { id: 1, title: "Country", icon: Globe },
   { id: 2, title: "Details", icon: User },
   { id: 3, title: "Photo", icon: Camera },
-  { id: 4, title: "Setup", icon: Shield },
+  { id: 4, title: "Complete", icon: "UserCheck" },
 ];
 
 // Progress Bar - Made Responsive
@@ -768,7 +768,7 @@ const AadhaarStep = ({
             }}
             placeholder="Enter 12-digit Aadhaar number"
             disabled={aadhaarOtpSent && !canResend}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all ${
+            className={`w-full pl-10 pr-4 py-1 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all ${
               errors.aadhaarNumber ? "border-red-500 bg-red-50" : "border-gray-300"
             } ${aadhaarOtpSent && !canResend ? "bg-gray-100" : "bg-white"}`}
           />
@@ -798,7 +798,7 @@ const AadhaarStep = ({
                 setFormData((prev) => ({ ...prev, aadhaarOtp: value }));
               }}
               placeholder="Enter 6-digit OTP"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
+              className="w-full pl-10 pr-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white"
             />
           </div>
           <p className="text-xs text-gray-500">
@@ -968,7 +968,7 @@ const PanStep = ({
               setFormData((prev) => ({ ...prev, panName: value }));
             }}
             placeholder="Enter name as on PAN card"
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+            className={`w-full pl-10 pr-4 py-1 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
               errors.panName ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -990,7 +990,7 @@ const PanStep = ({
             value={formData.panDob || ""}
             onChange={(e) => setFormData((prev) => ({ ...prev, panDob: e.target.value }))}
             max={new Date().toISOString().split("T")[0]}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+            className={`w-full pl-10 pr-4 py-1 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
               errors.panDob ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -1206,176 +1206,7 @@ const PhotoCaptureStep = ({
   );
 };
 
-// Personal Details Step - Made Responsive
-const PersonalDetailsStep = ({
-  formData,
-  setFormData,
-  errors,
-  setErrors,
-  onNext,
-  onPrev,
-  selectedCode,
-  setSelectedCode,
-}) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const validateStep = () => {
-    const stepErrors = {};
-    if (!formData.phone || formData.phone.length !== 10) stepErrors.phone = "Enter valid 10-digit phone";
-    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) stepErrors.email = "Enter valid email";
-    if (!formData.password || formData.password.length < 6) stepErrors.password = "Password min 6 characters";
-    if (formData.password !== formData.confirmPassword) stepErrors.confirmPassword = "Passwords don't match";
-    setErrors((prev) => ({ ...prev, ...stepErrors }));
-    return Object.keys(stepErrors).length === 0;
-  };
-
-  const handleNext = () => {
-    if (validateStep()) onNext();
-  };
-
-  return (
-    <div className="space-y-3">
-      {/* Compact Header with Side Icon */}
-      <div className="flex items-center mb-2">
-        <div className="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-          <User className="h-5 w-5 text-purple-600" />
-        </div>
-        <div>
-          <h2 className="text-base font-bold text-gray-800">Personal Details</h2>
-          <p className="text-xs text-gray-500">Enter your personal information</p>
-        </div>
-      </div>
-
-
-      {/* Phone */}
-      <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-700">Phone Number</label>
-        <div className="flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
-          <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-              <Phone className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="tel"
-              maxLength={10}
-              value={formData.phone || ""}
-              onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value.replace(/\D/g, "") }))}
-              placeholder="Phone number"
-              className="w-full pl-8 pr-4 py-2.5 border-0 outline-none bg-white"
-            />
-          </div>
-        </div>
-        {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
-      </div>
-
-      {/* Email */}
-      <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-700">Email Address</label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Mail className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type="email"
-            value={formData.email || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value.toLowerCase() }))}
-            placeholder="Enter your email"
-            className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"}`}
-          />
-        </div>
-        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
-      </div>
-
-      {/* Password and Confirm Password in one line */}
-      <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-700">Password</label>
-        <div className="grid grid-cols-2 gap-2">
-          {/* Password */}
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type={showPassword ? "text" : "password"}
-              value={formData.password || ""}
-              onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
-              placeholder="Create password"
-              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"}`}
-            />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
-              {showPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
-            </button>
-          </div>
-          
-          {/* Confirm Password */}
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              value={formData.confirmPassword || ""}
-              onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
-              placeholder="Confirm password"
-              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500 bg-red-50" : "border-gray-300"}`}
-            />
-            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
-              {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
-          {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
-        </div>
-      </div>
-
-      {/* Referral ID */}
-      <div className="space-y-1">
-        <label className="text-xs font-medium text-gray-700">
-          Referral ID <span className="text-gray-400">(Optional)</span>
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Users className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            maxLength={13}
-            value={formData.referralId || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, referralId: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") }))}
-            placeholder="Enter referral ID"
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white"
-          />
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex gap-3 pt-2">
-        <button
-          onClick={onPrev}
-          className="px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Back
-        </button>
-        <button
-          onClick={handleNext}
-          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-lg font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
-        >
-          Continue
-          <ArrowRight className="w-5 h-5" />
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// Account Setup Step - Made Responsive
-// Account Setup Step - Made Responsive
-// Account Setup Step - Made Responsive
-const AccountSetupStep = ({
+const PersonalDetailsAndSetupStep = ({
   formData,
   setFormData,
   errors,
@@ -1388,9 +1219,12 @@ const AccountSetupStep = ({
   onShowModal,
   onComplete,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [emailOtpSent, setEmailOtpSent] = useState(false);
   const [timer, setTimer] = useState(0);
   const [canResend, setCanResend] = useState(false);
+
   const navigate = useNavigate();
 
   const [register, { isLoading: isRegistering }] = useRegisterMutation();
@@ -1401,34 +1235,43 @@ const AccountSetupStep = ({
     let interval;
     if (emailOtpSent && timer > 0) {
       interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-    } else if (timer === 0) {
+    } else if (timer === 0 && emailOtpSent) {
       setCanResend(true);
     }
     return () => clearInterval(interval);
   }, [emailOtpSent, timer]);
 
-  // Helper function to extract only required user data
-  const getEssentialUserData = (data) => {
-    return {
-      _id: data._id,
-      name: data.name,
-      role: data.role,
-      email: data.email,
-      country: data.country,
-      city: data.city || "N/A",
-      state: data.state || "N/A",
-      address: data.address || "N/A",
-      phone: data.phone,
-      countryCode: data.countryCode,
-      username: data.username,
-      permissions: data.permissions || [],
-      walletadress: data.walletadress,
-      kycVerified: data.kycVerified,
-      token: data.token
-    };
+  const validatePersonalDetails = () => {
+    const stepErrors = {};
+    if (!formData.phone || formData.phone.length !== 10) stepErrors.phone = "Enter valid 10-digit phone";
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) stepErrors.email = "Enter valid email";
+    if (!formData.password || formData.password.length < 6) stepErrors.password = "Min 6 characters";
+    if (formData.password !== formData.confirmPassword) stepErrors.confirmPassword = "Passwords don't match";
+    setErrors((prev) => ({ ...prev, ...stepErrors }));
+    return Object.keys(stepErrors).length === 0;
   };
 
+  const getEssentialUserData = (data) => ({
+    _id: data._id,
+    name: data.name,
+    role: data.role,
+    email: data.email,
+    country: data.country,
+    city: data.city || "N/A",
+    state: data.state || "N/A",
+    address: data.address || "N/A",
+    phone: data.phone,
+    countryCode: data.countryCode,
+    username: data.username,
+    permissions: data.permissions || [],
+    walletadress: data.walletadress,
+    kycVerified: data.kycVerified,
+    token: data.token,
+  });
+
   const handleSendEmailOtp = async () => {
+    if (!validatePersonalDetails()) return;
+
     try {
       const payload = {
         tempId: formData.aadhaarTempId,
@@ -1442,17 +1285,11 @@ const AccountSetupStep = ({
       };
 
       const result = await register(payload).unwrap();
-      console.log("Registration Response:", result);
 
-      // Save only essential data
       if (result?.data) {
         const essentialData = getEssentialUserData(result.data);
-        
-        // Save token
         Cookies.set("token", essentialData.token, { expires: 7 });
         sessionStorage.setItem("token", essentialData.token);
-        
-        // Save userData
         Cookies.set("userData", JSON.stringify(essentialData), { expires: 7 });
       }
 
@@ -1461,25 +1298,30 @@ const AccountSetupStep = ({
       setCanResend(false);
       setNotification({ type: "success", message: "OTP sent to your email!" });
     } catch (err) {
-      console.error("Registration Error:", err);
-
       if (err?.data?.message === "User verification pending") {
         try {
-          await OTPresent({
-            email: formData.email,
-            otpType: "register",
-            tempId: formData.aadhaarTempId,
-          }).unwrap();
+          await OTPresent({ email: formData.email, otpType: "register", tempId: formData.aadhaarTempId }).unwrap();
           setEmailOtpSent(true);
           setTimer(120);
           setCanResend(false);
-          setNotification({ type: "success", message: "OTP resent to your email!" });
+          setNotification({ type: "success", message: "OTP resent!" });
         } catch (otpErr) {
           setNotification({ type: "error", message: otpErr?.data?.message || "Failed to resend OTP" });
         }
       } else {
         setNotification({ type: "error", message: err?.data?.message || "Failed to send OTP" });
       }
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      await OTPresent({ email: formData.email, otpType: "register", tempId: formData.aadhaarTempId }).unwrap();
+      setTimer(120);
+      setCanResend(false);
+      setNotification({ type: "success", message: "OTP resent!" });
+    } catch (err) {
+      setNotification({ type: "error", message: err?.data?.message || "Failed to resend OTP" });
     }
   };
 
@@ -1507,117 +1349,299 @@ const AccountSetupStep = ({
         return;
       }
 
-      // Save only essential data
       if (res?.data) {
         const essentialData = getEssentialUserData(res.data);
-        
-        // Save token
         Cookies.set("token", essentialData.token, { expires: 7 });
         sessionStorage.setItem("token", essentialData.token);
-        
-        // Save userData
         Cookies.set("userData", JSON.stringify(essentialData), { expires: 7 });
       }
 
-      // Clear registration progress
-      if (onComplete) {
-        onComplete();
-      }
-
+      onComplete?.();
       setNotification({ type: "success", message: "Registration successful!" });
       setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
-      console.error("Verification Error:", err);
       setNotification({ type: "error", message: err?.data?.message || "Registration failed" });
     }
   };
 
+  const isFormValid =
+    formData.phone?.length === 10 &&
+    formData.email &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+    formData.password?.length >= 6 &&
+    formData.password === formData.confirmPassword;
+
+  const canSubmit =
+    emailOtpSent && formData.emailOtp?.length === 6 && isChecked && isConfirmAgree;
+
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <Shield className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-green-600" />
-        </div>
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">Account Setup</h2>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1">Verify email to complete</p>
-      </div>
-
-      {/* Verification Summary */}
-      <div className="bg-gray-50 rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
-        <h3 className="text-sm font-medium text-gray-700">Summary</h3>
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-            <span className="text-xs sm:text-sm text-gray-600">Aadhaar Verified</span>
+    <div className="space-y-3">
+      {/* Compact Header with Verification Badges */}
+      <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg flex items-center justify-center shadow-sm">
+            <Sparkles className="h-4 w-4 text-white" />
           </div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-            <span className="text-xs sm:text-sm text-gray-600">PAN Verified</span>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-            <span className="text-xs sm:text-sm text-gray-600">Photo Captured</span>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-            <span className="text-xs sm:text-sm text-gray-600">{formData.name || formData.panName || "Details Provided"}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Email OTP Section */}
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <p className="text-xs sm:text-sm font-medium text-gray-700">Email Verification</p>
-            <p className="text-xs text-gray-500 truncate max-w-[200px] sm:max-w-none">{formData.email}</p>
+            <h2 className="text-sm font-semibold text-gray-800">Complete Registration</h2>
+            <p className="text-[10px] text-gray-500">Final step - verify your email</p>
           </div>
-          <button
-            onClick={handleSendEmailOtp}
-            disabled={isRegistering || isResending || (emailOtpSent && !canResend)}
-            className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-              emailOtpSent && !canResend
-                ? "bg-green-100 text-green-700"
-                : "bg-teal-500 text-white hover:bg-teal-600"
-            } disabled:opacity-50`}
-          >
-            {isRegistering || isResending ? "Sending..." : emailOtpSent && !canResend ? `Resend (${timer}s)` : emailOtpSent ? "Resend" : "Send OTP"}
-          </button>
         </div>
+        {/* Inline Verification Badges */}
+        <div className="hidden sm:flex items-center gap-1.5">
+          {["Aadhaar", "PAN", "Photo"].map((item) => (
+            <span key={item} className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-50 text-green-700 rounded text-[10px] font-medium">
+              <CheckCircle className="w-2.5 h-2.5" />
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
 
-        {emailOtpSent && (
-          <div className="space-y-1 animate-fadeIn">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                maxLength={6}
-                value={formData.emailOtp || ""}
-                onChange={(e) => {
-                  setFormData((prev) => ({ ...prev, emailOtp: e.target.value.replace(/\D/g, "") }));
-                  if (errors.emailOtp) setErrors((prev) => ({ ...prev, emailOtp: null }));
-                }}
-                placeholder="Enter 6-digit OTP"
-                className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.emailOtp ? "border-red-500" : "border-gray-300"}`}
-              />
-            </div>
-            {errors.emailOtp && <p className="text-red-500 text-xs">{errors.emailOtp}</p>}
-          </div>
+      {/* Mobile Verification Badges */}
+      <div className="flex sm:hidden items-center gap-1.5 flex-wrap">
+        {["Aadhaar", "PAN", "Photo"].map((item) => (
+          <span key={item} className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-50 text-green-700 rounded text-[10px] font-medium">
+            <CheckCircle className="w-2.5 h-2.5" />
+            {item}
+          </span>
+        ))}
+        {formData.name && (
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded text-[10px] font-medium truncate max-w-[100px]">
+            <User className="w-2.5 h-2.5" />
+            {formData.name}
+          </span>
         )}
       </div>
 
-      {/* Terms and Conditions */}
-      <div className="flex items-start gap-2 sm:gap-3">
+      {/* Form Grid - Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        {/* Phone */}
+        <div className="space-y-0.5">
+          <label className="text-[11px] font-medium text-gray-600">Phone Number</label>
+          <div className="relative">
+            {/* FIXED: Added pointer-events-none to icon container */}
+            <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+              <Phone className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type="tel"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="tel"
+              maxLength={10}
+              value={formData.phone || ""}
+              onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value.replace(/\D/g, "") }))}
+              placeholder="10-digit number"
+              disabled={emailOtpSent}
+              className={`w-full pl-8 pr-3 py-2.5 text-sm border rounded-lg 
+                focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all
+                ${emailOtpSent ? "bg-gray-50 text-gray-500" : "bg-white"}
+                ${errors.phone ? "border-red-400 bg-red-50/50" : "border-gray-200"}`}
+            />
+          </div>
+          {errors.phone && <p className="text-red-500 text-[10px]">{errors.phone}</p>}
+        </div>
+
+        {/* Email */}
+        <div className="space-y-0.5">
+          <label className="text-[11px] font-medium text-gray-600">Email Address</label>
+          <div className="relative">
+            <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+              <Mail className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              value={formData.email || ""}
+              onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value.toLowerCase() }))}
+              placeholder="your@email.com"
+              disabled={emailOtpSent}
+              className={`w-full pl-8 pr-3 py-2.5 text-sm border rounded-lg 
+                focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all
+                ${emailOtpSent ? "bg-gray-50 text-gray-500" : "bg-white"}
+                ${errors.email ? "border-red-400 bg-red-50/50" : "border-gray-200"}`}
+            />
+          </div>
+          {errors.email && <p className="text-red-500 text-[10px]">{errors.email}</p>}
+        </div>
+
+        {/* Password */}
+        <div className="space-y-0.5">
+          <label className="text-[11px] font-medium text-gray-600">Password</label>
+          <div className="relative">
+            <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+              <Lock className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
+              value={formData.password || ""}
+              onChange={(e) => setFormData((p) => ({ ...p, password: e.target.value }))}
+              placeholder="Min 6 characters"
+              disabled={emailOtpSent}
+              className={`w-full pl-8 pr-9 py-2.5 text-sm border rounded-lg 
+                focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all
+                ${emailOtpSent ? "bg-gray-50 text-gray-500" : "bg-white"}
+                ${errors.password ? "border-red-400 bg-red-50/50" : "border-gray-200"}`}
+            />
+            {/* FIXED: Proper touch target for toggle button */}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              disabled={emailOtpSent}
+              className="absolute right-0 top-0 h-full px-2.5 flex items-center justify-center 
+                text-gray-400 hover:text-gray-600 disabled:opacity-50 touch-manipulation"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+          {errors.password && <p className="text-red-500 text-[10px]">{errors.password}</p>}
+        </div>
+
+        {/* Confirm Password */}
+        <div className="space-y-0.5">
+          <label className="text-[11px] font-medium text-gray-600">Confirm Password</label>
+          <div className="relative">
+            <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+              <Lock className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              autoComplete="new-password"
+              value={formData.confirmPassword || ""}
+              onChange={(e) => setFormData((p) => ({ ...p, confirmPassword: e.target.value }))}
+              placeholder="Re-enter password"
+              disabled={emailOtpSent}
+              className={`w-full pl-8 pr-9 py-2.5 text-sm border rounded-lg 
+                focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all
+                ${emailOtpSent ? "bg-gray-50 text-gray-500" : "bg-white"}
+                ${errors.confirmPassword ? "border-red-400 bg-red-50/50" : "border-gray-200"}`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              disabled={emailOtpSent}
+              className="absolute right-0 top-0 h-full px-2.5 flex items-center justify-center 
+                text-gray-400 hover:text-gray-600 disabled:opacity-50 touch-manipulation"
+              aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+            >
+              {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+          {errors.confirmPassword && <p className="text-red-500 text-[10px]">{errors.confirmPassword}</p>}
+        </div>
+      </div>
+
+      {/* Referral - Full Width */}
+      <div className="space-y-0.5">
+        <label className="text-[11px] font-medium text-gray-600">
+          Referral ID <span className="text-gray-400 font-normal">(Optional)</span>
+        </label>
+        <div className="relative">
+          <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+            <Users className="h-4 w-4 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            autoComplete="off"
+            maxLength={13}
+            value={formData.referralId || ""}
+            onChange={(e) => setFormData((p) => ({ ...p, referralId: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") }))}
+            placeholder="Enter referral code"
+            disabled={emailOtpSent}
+            className={`w-full pl-8 pr-3 py-2.5 text-sm border rounded-lg 
+              focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all
+              ${emailOtpSent ? "bg-gray-50 text-gray-500" : "bg-white border-gray-200"}`}
+          />
+        </div>
+      </div>
+
+      {/* OTP Section */}
+      {!emailOtpSent ? (
+        <button
+          onClick={handleSendEmailOtp}
+          disabled={isRegistering || !isFormValid}
+          className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-xl text-sm font-medium 
+            hover:from-teal-600 hover:to-teal-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 
+            disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md touch-manipulation"
+        >
+          {isRegistering ? (
+            <>
+              <Loader className="w-4 h-4 animate-spin" />
+              <span>Sending OTP...</span>
+            </>
+          ) : (
+            <>
+              <Mail className="w-4 h-4" />
+              <span>Send OTP to Email</span>
+            </>
+          )}
+        </button>
+      ) : (
+        <div className="p-2.5 bg-gradient-to-r from-teal-50 to-green-50 rounded-xl border border-teal-100">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5">
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-3 h-3 text-white" />
+              </div>
+              <span className="text-xs text-gray-600 truncate">
+                OTP sent to <span className="font-medium text-gray-800">{formData.email?.slice(0, 15)}...</span>
+              </span>
+            </div>
+            <button
+              onClick={handleResendOtp}
+              disabled={isResending || !canResend}
+              className={`text-xs font-medium px-2 py-1 rounded-md transition-all flex-shrink-0 touch-manipulation ${
+                canResend ? "text-teal-600 hover:bg-teal-100 active:bg-teal-200" : "text-gray-400"
+              }`}
+            >
+              {isResending ? (
+                <Loader className="w-3 h-3 animate-spin" />
+              ) : canResend ? (
+                "Resend"
+              ) : (
+                <span className="tabular-nums">{timer}s</span>
+              )}
+            </button>
+          </div>
+
+          <div className="relative">
+            <div className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+              <Shield className="h-4 w-4 text-teal-500" />
+            </div>
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="one-time-code"
+              maxLength={6}
+              value={formData.emailOtp || ""}
+              onChange={(e) => {
+                setFormData((p) => ({ ...p, emailOtp: e.target.value.replace(/\D/g, "") }));
+                if (errors.emailOtp) setErrors((p) => ({ ...p, emailOtp: null }));
+              }}
+              placeholder="Enter 6-digit OTP"
+              className={`w-full pl-8 pr-3 py-2.5 text-sm border rounded-lg text-center tracking-[0.3em] font-mono
+                focus:ring-2 focus:ring-teal-500 outline-none bg-white
+                ${errors.emailOtp ? "border-red-400" : "border-teal-200"}`}
+            />
+          </div>
+          {errors.emailOtp && <p className="text-red-500 text-[10px] text-center mt-1">{errors.emailOtp}</p>}
+        </div>
+      )}
+
+      {/* Terms - Compact */}
+      <label className="flex items-start gap-2 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 active:bg-gray-200 transition-colors touch-manipulation">
         <input
           type="checkbox"
-          id="terms"
           checked={isChecked && isConfirmAgree}
-          onChange={(e) => e.target.checked ? onShowModal() : setIsChecked(false)}
+          onChange={(e) => (e.target.checked ? onShowModal() : setIsChecked(false))}
           className="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
         />
-        <label htmlFor="terms" className="text-xs sm:text-sm text-gray-600">
+        <span className="text-[11px] text-gray-600 leading-relaxed">
           I agree to the{" "}
           <button type="button" onClick={onShowModal} className="text-teal-600 hover:underline font-medium">
             Terms & Conditions
@@ -1626,32 +1650,36 @@ const AccountSetupStep = ({
           <button type="button" onClick={onShowModal} className="text-teal-600 hover:underline font-medium">
             Privacy Policy
           </button>
-        </label>
-      </div>
+        </span>
+      </label>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+      {/* Action Buttons - Compact */}
+      <div className="flex gap-2 pt-1">
         <button
           onClick={onPrev}
-          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+          disabled={isVerifying}
+          className="px-3 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium 
+            hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center gap-1.5 disabled:opacity-50 touch-manipulation"
         >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-          Back
+          <ArrowLeft className="w-4 h-4" />
+          <span className="hidden sm:inline">Back</span>
         </button>
         <button
           onClick={handleFinalSubmit}
-          disabled={isVerifying || !emailOtpSent || !formData.emailOtp || formData.emailOtp.length !== 6 || !isChecked || !isConfirmAgree}
-          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+          disabled={isVerifying || !canSubmit}
+          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-xl text-sm font-medium 
+            hover:from-teal-600 hover:to-teal-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed 
+            transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md touch-manipulation"
         >
           {isVerifying ? (
             <>
-              <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-              Creating...
+              <Loader className="w-4 h-4 animate-spin" />
+              <span>Creating...</span>
             </>
           ) : (
             <>
-              Complete
-              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span>Complete Registration</span>
+              <CheckCircle className="w-4 h-4" />
             </>
           )}
         </button>
@@ -1659,6 +1687,456 @@ const AccountSetupStep = ({
     </div>
   );
 };
+
+// const PersonalDetailsStep = ({
+//   formData,
+//   setFormData,
+//   errors,
+//   setErrors,
+//   onNext,
+//   onPrev,
+//   selectedCode,
+//   setSelectedCode,
+// }) => {
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+//   const validateStep = () => {
+//     const stepErrors = {};
+//     if (!formData.phone || formData.phone.length !== 10) stepErrors.phone = "Enter valid 10-digit phone";
+//     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) stepErrors.email = "Enter valid email";
+//     if (!formData.password || formData.password.length < 6) stepErrors.password = "Password min 6 characters";
+//     if (formData.password !== formData.confirmPassword) stepErrors.confirmPassword = "Passwords don't match";
+//     setErrors((prev) => ({ ...prev, ...stepErrors }));
+//     return Object.keys(stepErrors).length === 0;
+//   };
+
+//   const handleNext = () => {
+//     if (validateStep()) onNext();
+//   };
+
+//   return (
+//     <div className="space-y-3">
+//       {/* Compact Header with Side Icon */}
+//       <div className="flex items-center mb-2">
+//         <div className="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+//           <User className="h-5 w-5 text-purple-600" />
+//         </div>
+//         <div>
+//           <h2 className="text-base font-bold text-gray-800">Personal Details</h2>
+//           <p className="text-xs text-gray-500">Enter your personal information</p>
+//         </div>
+//       </div>
+
+
+//       {/* Phone */}
+//       <div className="space-y-1">
+//         <label className="text-xs font-medium text-gray-700">Phone Number</label>
+//         <div className="flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
+//           <div className="relative flex-1">
+//             <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+//               <Phone className="h-5 w-5 text-gray-400" />
+//             </div>
+//             <input
+//               type="tel"
+//               maxLength={10}
+//               value={formData.phone || ""}
+//               onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value.replace(/\D/g, "") }))}
+//               placeholder="Phone number"
+//               className="w-full pl-8 pr-4 py-2.5 border-0 outline-none bg-white"
+//             />
+//           </div>
+//         </div>
+//         {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+//       </div>
+
+//       {/* Email */}
+//       <div className="space-y-1">
+//         <label className="text-xs font-medium text-gray-700">Email Address</label>
+//         <div className="relative">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Mail className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="email"
+//             value={formData.email || ""}
+//             onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value.toLowerCase() }))}
+//             placeholder="Enter your email"
+//             className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.email ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+//           />
+//         </div>
+//         {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+//       </div>
+
+//       {/* Password and Confirm Password in one line */}
+//       <div className="space-y-1">
+//         <label className="text-xs font-medium text-gray-700">Password</label>
+//         <div className="grid grid-cols-2 gap-2">
+//           {/* Password */}
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//               <Lock className="h-5 w-5 text-gray-400" />
+//             </div>
+//             <input
+//               type={showPassword ? "text" : "password"}
+//               value={formData.password || ""}
+//               onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+//               placeholder="Create password"
+//               className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.password ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+//             />
+//             <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
+//               {showPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+//             </button>
+//           </div>
+          
+//           {/* Confirm Password */}
+//           <div className="relative">
+//             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//               <Lock className="h-5 w-5 text-gray-400" />
+//             </div>
+//             <input
+//               type={showConfirmPassword ? "text" : "password"}
+//               value={formData.confirmPassword || ""}
+//               onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
+//               placeholder="Confirm password"
+//               className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.confirmPassword ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+//             />
+//             <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-2 flex items-center">
+//               {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
+//             </button>
+//           </div>
+//         </div>
+//         <div className="flex justify-between">
+//           {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+//           {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
+//         </div>
+//       </div>
+
+//       {/* Referral ID */}
+//       <div className="space-y-1">
+//         <label className="text-xs font-medium text-gray-700">
+//           Referral ID <span className="text-gray-400">(Optional)</span>
+//         </label>
+//         <div className="relative">
+//           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//             <Users className="h-5 w-5 text-gray-400" />
+//           </div>
+//           <input
+//             type="text"
+//             maxLength={13}
+//             value={formData.referralId || ""}
+//             onChange={(e) => setFormData((prev) => ({ ...prev, referralId: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") }))}
+//             placeholder="Enter referral ID"
+//             className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white"
+//           />
+//         </div>
+//       </div>
+
+//       {/* Action Buttons */}
+//       <div className="flex gap-3 pt-2">
+//         <button
+//           onClick={onPrev}
+//           className="px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
+//         >
+//           <ArrowLeft className="w-5 h-5" />
+//           Back
+//         </button>
+//         <button
+//           onClick={handleNext}
+//           className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-lg font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+//         >
+//           Continue
+//           <ArrowRight className="w-5 h-5" />
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const AccountSetupStep = ({
+//   formData,
+//   setFormData,
+//   errors,
+//   setErrors,
+//   onPrev,
+//   setNotification,
+//   isChecked,
+//   setIsChecked,
+//   isConfirmAgree,
+//   onShowModal,
+//   onComplete,
+// }) => {
+//   const [emailOtpSent, setEmailOtpSent] = useState(false);
+//   const [timer, setTimer] = useState(0);
+//   const [canResend, setCanResend] = useState(false);
+//   const navigate = useNavigate();
+
+//   const [register, { isLoading: isRegistering }] = useRegisterMutation();
+//   const [verify, { isLoading: isVerifying }] = useVerifyMutation();
+//   const [OTPresent, { isLoading: isResending }] = useOTPresentMutation();
+
+//   useEffect(() => {
+//     let interval;
+//     if (emailOtpSent && timer > 0) {
+//       interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+//     } else if (timer === 0) {
+//       setCanResend(true);
+//     }
+//     return () => clearInterval(interval);
+//   }, [emailOtpSent, timer]);
+
+//   // Helper function to extract only required user data
+//   const getEssentialUserData = (data) => {
+//     return {
+//       _id: data._id,
+//       name: data.name,
+//       role: data.role,
+//       email: data.email,
+//       country: data.country,
+//       city: data.city || "N/A",
+//       state: data.state || "N/A",
+//       address: data.address || "N/A",
+//       phone: data.phone,
+//       countryCode: data.countryCode,
+//       username: data.username,
+//       permissions: data.permissions || [],
+//       walletadress: data.walletadress,
+//       kycVerified: data.kycVerified,
+//       token: data.token
+//     };
+//   };
+
+//   const handleSendEmailOtp = async () => {
+//     try {
+//       const payload = {
+//         tempId: formData.aadhaarTempId,
+//         phone: formData.phone,
+//         email: formData.email,
+//         password: formData.password,
+//         confirmPwd: formData.confirmPassword,
+//         countryCode: formData.countryCode || "+91",
+//         country: formData.country || "India",
+//         livePhoto: formData.livePhoto,
+//       };
+
+//       const result = await register(payload).unwrap();
+//       console.log("Registration Response:", result);
+
+//       // Save only essential data
+//       if (result?.data) {
+//         const essentialData = getEssentialUserData(result.data);
+        
+//         // Save token
+//         Cookies.set("token", essentialData.token, { expires: 7 });
+//         sessionStorage.setItem("token", essentialData.token);
+        
+//         // Save userData
+//         Cookies.set("userData", JSON.stringify(essentialData), { expires: 7 });
+//       }
+
+//       setEmailOtpSent(true);
+//       setTimer(120);
+//       setCanResend(false);
+//       setNotification({ type: "success", message: "OTP sent to your email!" });
+//     } catch (err) {
+//       console.error("Registration Error:", err);
+
+//       if (err?.data?.message === "User verification pending") {
+//         try {
+//           await OTPresent({
+//             email: formData.email,
+//             otpType: "register",
+//             tempId: formData.aadhaarTempId,
+//           }).unwrap();
+//           setEmailOtpSent(true);
+//           setTimer(120);
+//           setCanResend(false);
+//           setNotification({ type: "success", message: "OTP resent to your email!" });
+//         } catch (otpErr) {
+//           setNotification({ type: "error", message: otpErr?.data?.message || "Failed to resend OTP" });
+//         }
+//       } else {
+//         setNotification({ type: "error", message: err?.data?.message || "Failed to send OTP" });
+//       }
+//     }
+//   };
+
+//   const handleFinalSubmit = async () => {
+//     if (!isChecked || !isConfirmAgree) {
+//       setNotification({ type: "error", message: "Please accept Terms & Conditions" });
+//       return;
+//     }
+//     if (!formData.emailOtp || formData.emailOtp.length !== 6) {
+//       setErrors((prev) => ({ ...prev, emailOtp: "Enter 6-digit OTP" }));
+//       return;
+//     }
+
+//     try {
+//       const res = await verify({
+//         tempId: formData.aadhaarTempId,
+//         email: formData.email,
+//         otp: Number(formData.emailOtp),
+//         otpType: "register",
+//         referenceId: formData.referralId || "",
+//       }).unwrap();
+
+//       if (!res.success) {
+//         setNotification({ type: "error", message: res.message || "Verification failed" });
+//         return;
+//       }
+
+//       // Save only essential data
+//       if (res?.data) {
+//         const essentialData = getEssentialUserData(res.data);
+        
+//         // Save token
+//         Cookies.set("token", essentialData.token, { expires: 7 });
+//         sessionStorage.setItem("token", essentialData.token);
+        
+//         // Save userData
+//         Cookies.set("userData", JSON.stringify(essentialData), { expires: 7 });
+//       }
+
+//       // Clear registration progress
+//       if (onComplete) {
+//         onComplete();
+//       }
+
+//       setNotification({ type: "success", message: "Registration successful!" });
+//       setTimeout(() => navigate("/dashboard"), 1500);
+//     } catch (err) {
+//       console.error("Verification Error:", err);
+//       setNotification({ type: "error", message: err?.data?.message || "Registration failed" });
+//     }
+//   };
+
+//   return (
+//     <div className="space-y-4 sm:space-y-6">
+//       <div className="text-center mb-4 sm:mb-6">
+//         <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+//           <Shield className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-green-600" />
+//         </div>
+//         <h2 className="text-lg sm:text-xl font-bold text-gray-800">Account Setup</h2>
+//         <p className="text-xs sm:text-sm text-gray-500 mt-1">Verify email to complete</p>
+//       </div>
+
+//       {/* Verification Summary */}
+//       <div className="bg-gray-50 rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+//         <h3 className="text-sm font-medium text-gray-700">Summary</h3>
+//         <div className="space-y-2">
+//           <div className="flex items-center gap-2 sm:gap-3">
+//             <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+//             <span className="text-xs sm:text-sm text-gray-600">Aadhaar Verified</span>
+//           </div>
+//           <div className="flex items-center gap-2 sm:gap-3">
+//             <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+//             <span className="text-xs sm:text-sm text-gray-600">PAN Verified</span>
+//           </div>
+//           <div className="flex items-center gap-2 sm:gap-3">
+//             <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+//             <span className="text-xs sm:text-sm text-gray-600">Photo Captured</span>
+//           </div>
+//           <div className="flex items-center gap-2 sm:gap-3">
+//             <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+//             <span className="text-xs sm:text-sm text-gray-600">{formData.name || formData.panName || "Details Provided"}</span>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Email OTP Section */}
+//       <div className="space-y-3">
+//         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+//           <div>
+//             <p className="text-xs sm:text-sm font-medium text-gray-700">Email Verification</p>
+//             <p className="text-xs text-gray-500 truncate max-w-[200px] sm:max-w-none">{formData.email}</p>
+//           </div>
+//           <button
+//             onClick={handleSendEmailOtp}
+//             disabled={isRegistering || isResending || (emailOtpSent && !canResend)}
+//             className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+//               emailOtpSent && !canResend
+//                 ? "bg-green-100 text-green-700"
+//                 : "bg-teal-500 text-white hover:bg-teal-600"
+//             } disabled:opacity-50`}
+//           >
+//             {isRegistering || isResending ? "Sending..." : emailOtpSent && !canResend ? `Resend (${timer}s)` : emailOtpSent ? "Resend" : "Send OTP"}
+//           </button>
+//         </div>
+
+//         {emailOtpSent && (
+//           <div className="space-y-1 animate-fadeIn">
+//             <div className="relative">
+//               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                 <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+//               </div>
+//               <input
+//                 type="text"
+//                 maxLength={6}
+//                 value={formData.emailOtp || ""}
+//                 onChange={(e) => {
+//                   setFormData((prev) => ({ ...prev, emailOtp: e.target.value.replace(/\D/g, "") }));
+//                   if (errors.emailOtp) setErrors((prev) => ({ ...prev, emailOtp: null }));
+//                 }}
+//                 placeholder="Enter 6-digit OTP"
+//                 className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${errors.emailOtp ? "border-red-500" : "border-gray-300"}`}
+//               />
+//             </div>
+//             {errors.emailOtp && <p className="text-red-500 text-xs">{errors.emailOtp}</p>}
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Terms and Conditions */}
+//       <div className="flex items-start gap-2 sm:gap-3">
+//         <input
+//           type="checkbox"
+//           id="terms"
+//           checked={isChecked && isConfirmAgree}
+//           onChange={(e) => e.target.checked ? onShowModal() : setIsChecked(false)}
+//           className="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+//         />
+//         <label htmlFor="terms" className="text-xs sm:text-sm text-gray-600">
+//           I agree to the{" "}
+//           <button type="button" onClick={onShowModal} className="text-teal-600 hover:underline font-medium">
+//             Terms & Conditions
+//           </button>{" "}
+//           and{" "}
+//           <button type="button" onClick={onShowModal} className="text-teal-600 hover:underline font-medium">
+//             Privacy Policy
+//           </button>
+//         </label>
+//       </div>
+
+//       {/* Action Buttons */}
+//       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+//         <button
+//           onClick={onPrev}
+//           className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+//         >
+//           <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+//           Back
+//         </button>
+//         <button
+//           onClick={handleFinalSubmit}
+//           disabled={isVerifying || !emailOtpSent || !formData.emailOtp || formData.emailOtp.length !== 6 || !isChecked || !isConfirmAgree}
+//           className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+//         >
+//           {isVerifying ? (
+//             <>
+//               <Loader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+//               Creating...
+//             </>
+//           ) : (
+//             <>
+//               Complete
+//               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+//             </>
+//           )}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 // Foreign Personal Details Step (Similar to PersonalDetailsStep but with minor differences)
 const ForeignPersonalDetailsStep = ({
   formData,
@@ -2019,7 +2497,6 @@ const RegisterComponent = ({
   const [notification, setNotification] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   
-  // Initialize with default values
   const [currentStep, setCurrentStep] = useState(1);
   const [isIndianUser, setIsIndianUser] = useState(true);
   const [registrationKey, setRegistrationKey] = useState(null);
@@ -2054,12 +2531,13 @@ const RegisterComponent = ({
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
+
   // Get appropriate steps based on user type
   const STEPS = isIndianUser ? STEPS_INDIAN : STEPS_FOREIGN;
 
-  // Check for existing registration session on component mount
+  // ... (keep all useEffect hooks the same)
+
   useEffect(() => {
-    // Check if there's an active registration session
     const activeSession = localStorage.getItem('active_registration_session');
     if (activeSession) {
       try {
@@ -2067,19 +2545,14 @@ const RegisterComponent = ({
         const currentTime = new Date().getTime();
         const hoursPassed = (currentTime - sessionData.timestamp) / (1000 * 60 * 60);
         
-        // Only restore if less than 24 hours old
         if (hoursPassed < 24) {
-          // Set the registration key
           setRegistrationKey(sessionData.key);
-          
-          // Try to load the saved step data
           const savedStepData = localStorage.getItem(sessionData.key);
           if (savedStepData) {
             const parsed = JSON.parse(savedStepData);
             setCurrentStep(parsed.step);
             setIsIndianUser(parsed.isIndianUser);
             
-            // Restore minimal data needed for key generation
             if (sessionData.isIndianUser && sessionData.aadhaarTempId) {
               setFormData(prev => ({ ...prev, aadhaarTempId: sessionData.aadhaarTempId }));
             } else if (!sessionData.isIndianUser && sessionData.email) {
@@ -2092,7 +2565,6 @@ const RegisterComponent = ({
             });
           }
         } else {
-          // Clear expired session
           localStorage.removeItem('active_registration_session');
           localStorage.removeItem(sessionData.key);
         }
@@ -2102,52 +2574,6 @@ const RegisterComponent = ({
     }
   }, []);
 
-  // Generate storage key based on aadhaarTempId for Indian users or email for foreign users
-  const getStorageKey = () => {
-    if (isIndianUser && formData.aadhaarTempId) {
-      return `reg_step_aadhaar_${formData.aadhaarTempId}`;
-    } else if (!isIndianUser && formData.email) {
-      return `reg_step_email_${formData.email.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
-    }
-    return null;
-  };
-
-  // Save session info when key is generated
-  useEffect(() => {
-    const key = getStorageKey();
-    if (key && key !== registrationKey) {
-      setRegistrationKey(key);
-      
-      // Save active session info
-      const sessionData = {
-        key: key,
-        isIndianUser: isIndianUser,
-        timestamp: new Date().getTime(),
-        // Store minimal identifiers
-        ...(isIndianUser && formData.aadhaarTempId ? { aadhaarTempId: formData.aadhaarTempId } : {}),
-        ...(!isIndianUser && formData.email ? { email: formData.email } : {})
-      };
-      localStorage.setItem('active_registration_session', JSON.stringify(sessionData));
-    }
-  }, [formData.aadhaarTempId, formData.email, isIndianUser]);
-
-  // Save current step when it changes
-  useEffect(() => {
-    if (registrationKey && currentStep > 1) {
-      try {
-        const dataToSave = {
-          step: currentStep,
-          isIndianUser: isIndianUser,
-          timestamp: new Date().getTime()
-        };
-        localStorage.setItem(registrationKey, JSON.stringify(dataToSave));
-      } catch (error) {
-        console.error('Error saving step:', error);
-      }
-    }
-  }, [currentStep, isIndianUser, registrationKey]);
-
-  // Handle referral code from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const referralCode = params.get("referralCode");
@@ -2156,7 +2582,6 @@ const RegisterComponent = ({
     }
   }, [location.search]);
 
-  // Sync checkbox state with terms confirmation
   useEffect(() => {
     setIsChecked(isConfirmAgree);
   }, [isConfirmAgree]);
@@ -2169,7 +2594,6 @@ const RegisterComponent = ({
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-  // Clear saved progress when registration is complete
   const clearProgress = () => {
     if (registrationKey) {
       localStorage.removeItem(registrationKey);
@@ -2177,12 +2601,8 @@ const RegisterComponent = ({
     localStorage.removeItem('active_registration_session');
   };
 
-  // Clear all registration progress (optional utility)
   const clearAllRegistrationProgress = () => {
-    // Clear active session
     localStorage.removeItem('active_registration_session');
-    
-    // Clear all step data
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -2206,7 +2626,7 @@ const RegisterComponent = ({
       );
     }
 
-    // Indian flow
+    // Indian flow (now 5 steps instead of 6)
     if (isIndianUser) {
       switch (currentStep) {
         case 2:
@@ -2246,21 +2666,9 @@ const RegisterComponent = ({
             />
           );
         case 5:
+          // Combined Personal Details + Account Setup
           return (
-            <PersonalDetailsStep
-              formData={formData}
-              setFormData={setFormData}
-              errors={errors}
-              setErrors={setErrors}
-              onNext={handleNext}
-              onPrev={handlePrev}
-              selectedCode={formData.countryCode}
-              setSelectedCode={(code) => setFormData(prev => ({ ...prev, countryCode: code }))}
-            />
-          );
-        case 6:
-          return (
-            <AccountSetupStep
+            <PersonalDetailsAndSetupStep
               formData={formData}
               setFormData={setFormData}
               errors={errors}
@@ -2278,7 +2686,7 @@ const RegisterComponent = ({
           return null;
       }
     } 
-    // Foreign flow
+    // Foreign flow (now 4 steps)
     else {
       switch (currentStep) {
         case 2:
@@ -2303,6 +2711,7 @@ const RegisterComponent = ({
             />
           );
         case 4:
+          // Combined Foreign Account Setup
           return (
             <ForeignAccountSetupStep
               formData={formData}
@@ -2361,6 +2770,8 @@ const RegisterComponent = ({
     </div>
   );
 };
+
+
 
 export default function AuthContainer() {
   const navigate = useNavigate();
@@ -2756,8 +3167,8 @@ export default function AuthContainer() {
         </div>
 
         {/* Mobile Form Content */}
-        <div className="flex-1 bg-white p-6 overflow-y-auto">
-          <div className="w-full max-w-sm mx-auto">
+        <div className="flex-1 bg-white p-3 overflow-y-auto">
+          <div className="w-full max-w-lg">
             {isLogin ? (
               <LoginComponent
                 onSubmit={handleLoginSubmit}

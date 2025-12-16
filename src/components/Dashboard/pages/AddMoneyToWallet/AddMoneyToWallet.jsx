@@ -2765,7 +2765,7 @@ const AddMoneyToWallet = () => {
             {countryCode === 91 ? "UPI" : "PayPal"}
           </label>
         </div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <input
             className="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500 cursor-pointer"
             type="radio"
@@ -2780,7 +2780,7 @@ const AddMoneyToWallet = () => {
           >
             Others
           </label>
-        </div>
+        </div> */}
       </div>
 
       <div className="container mx-auto px-4">

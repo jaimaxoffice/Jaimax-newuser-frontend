@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback,useRef  } from "react";
 import { X, Star, Trophy, Loader2 } from "lucide-react";
 import { useGetRegisterBonusMutation } from './DashboardApliSlice';
 
@@ -20,12 +20,12 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
     
     if (random < 0.9) {
       return {
-        coins: Math.floor(Math.random() * 201) + 500, // 500-700
+        coins: Math.floor(Math.random() * 201) + 500,
         jackpot: false,
       };
     } else {
       return {
-        coins: Math.floor(Math.random() * 100) + 700, // 700-1000
+        coins: Math.floor(Math.random() * 101) + 700, 
         jackpot: true,
       };    
     }
@@ -182,7 +182,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
                         <Star className="w-5 h-5 text-teal-600 fill-teal-600" />
                       </div>
                       <h2 className="text-2xl font-bold text-gray-800">
-                        You Won JMC Coins!
+                        You got JMC Coins!
                       </h2>
                     </>
                   )}
@@ -231,22 +231,6 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
               </div>
             )}
 
-            {/* Jackpot Badge */}
-            {isJackpot && phase === "celebrating" && (
-              <div className="flex justify-center mb-6">
-                <div className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl shadow-lg shadow-teal-200">
-                  <Star
-                    className="w-5 h-5 text-white fill-white animate-spin"
-                    style={{ animationDuration: "3s" }}
-                  />
-                  <span className="text-white font-bold">Top 10% Winner!</span>
-                  <Star
-                    className="w-5 h-5 text-white fill-white animate-spin"
-                    style={{ animationDuration: "3s", animationDirection: "reverse" }}
-                  />
-                </div>
-              </div>
-            )}
 
             {/* Status text during counting */}
             {phase === "counting" && (
@@ -323,39 +307,60 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
   );
 };
 
-// Scrolling Digit Slot Component
+// Scrolling Digit Slot Component - FIXED
 const ScrollingDigitSlot = ({ targetDigit, isSpinning, delay, duration }) => {
   const [scrollY, setScrollY] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showFinal, setShowFinal] = useState(false);
+  const hasAnimatedRef = useRef(false);
 
   const digitHeight = 80;
   const totalDigits = 10;
   const extraSpins = 3;
 
+  // Reset only when starting fresh (not after animation completes)
+  useEffect(() => {
+    if (!isSpinning && !hasAnimatedRef.current) {
+      // Initial state - reset everything
+      setScrollY(0);
+      setIsAnimating(false);
+      setShowFinal(false);
+    }
+  }, [isSpinning]);
+
+  // Reset the animation flag when targetDigit changes to 0 (modal reopens)
+  useEffect(() => {
+    if (targetDigit === 0) {
+      hasAnimatedRef.current = false;
+      setScrollY(0);
+      setIsAnimating(false);
+      setShowFinal(false);
+    }
+  }, [targetDigit]);
+
+  // Main animation effect
   useEffect(() => {
     if (isSpinning) {
+      hasAnimatedRef.current = true;
       setShowFinal(false);
       setIsAnimating(true);
 
       const delayTimer = setTimeout(() => {
         const finalPosition = (extraSpins * totalDigits + targetDigit) * digitHeight;
         setScrollY(finalPosition);
-
-        const completeTimer = setTimeout(() => {
-          setIsAnimating(false);
-          setShowFinal(true);
-        }, duration * 1000);
-
-        return () => clearTimeout(completeTimer);
       }, delay * 1000);
 
-      return () => clearTimeout(delayTimer);
-    } else {
-      setScrollY(0);
-      setIsAnimating(false);
-      setShowFinal(false);
+      const stopTimer = setTimeout(() => {
+        setIsAnimating(false);
+        setShowFinal(true);
+      }, (delay + duration) * 1000);
+
+      return () => {
+        clearTimeout(delayTimer);
+        clearTimeout(stopTimer);
+      };
     }
+    // NOTE: No else block here - we want to preserve the final position!
   }, [isSpinning, targetDigit, delay, duration]);
 
   const numbers = [];

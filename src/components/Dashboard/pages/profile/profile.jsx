@@ -1326,7 +1326,7 @@ export default function Profile3DForm() {
 
   return (
     <div className="bg-[#1d8e85] min-h-screen">
-      <div className="max-w-7xl mx-auto p-2 sm:p-4">
+      <div className="max-w-8xl mx-auto p-2 sm:p-4">
         <div className="flex flex-col xl:flex-row gap-4 lg:gap-6">
           
           {/* Left Section - Scrollable Profile Info (Hidden Scrollbar) */}
