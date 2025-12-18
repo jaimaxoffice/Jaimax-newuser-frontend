@@ -250,16 +250,7 @@ const TopCards = React.memo(() => {
         isCompleted: false,
       },
 
-      {
-        label: "Super Bonus",
-        value: `${currencySymbol}${Number(
-          userData?.data?.super_bonus || 0
-        ).toFixed(2)}`,
-        image: assets.superBonus,
-        hoverImage: assets.superBonus1,
-        iconBg: "#f1f8e9",
-        isCompleted: false,
-      },
+
     ],
     [userData, currencySymbol, isSuperBonusCompleted]
   );

@@ -496,14 +496,14 @@ const STEPS_INDIAN = [
   { id: 2, title: "Aadhaar", icon: FileText },
   { id: 3, title: "PAN", icon: CreditCard },
   { id: 4, title: "Photo", icon: Camera },
-  { id: 5, title: "Complete", icon: User },
+  { id: 5, title: "Register", icon: User },
 ];
 
 const STEPS_FOREIGN = [
   { id: 1, title: "Country", icon: Globe },
   { id: 2, title: "Details", icon: User },
   { id: 3, title: "Photo", icon: Camera },
-  { id: 4, title: "Complete", icon: User },
+  { id: 4, title: "Register", icon: User },
 ];
 
 // Progress Bar - Made Responsive
@@ -858,7 +858,7 @@ toggleLoader?.(true);
               !formData.aadhaarNumber ||
               formData.aadhaarNumber.length !== 12
             }
-            className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
             {isSendingOtp ? (
               <>
@@ -877,7 +877,7 @@ toggleLoader?.(true);
             <button
               onClick={handleSendAadhaarOtp}
               disabled={!canResend || isSendingOtp}
-              className="px-4 py-3 border border-teal-500 text-teal-600 rounded-full font-medium hover:bg-teal-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="px-4 py-1 border border-teal-500 text-teal-600 rounded-full font-medium hover:bg-teal-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {timer > 0 ? `Resend (${timer}s)` : "Resend OTP"}
             </button>
@@ -888,7 +888,7 @@ toggleLoader?.(true);
                 !formData.aadhaarOtp ||
                 formData.aadhaarOtp.length !== 6
               }
-              className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+              className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
               {isVerifyingOtp ? (
                 <>
@@ -897,7 +897,7 @@ toggleLoader?.(true);
                 </>
               ) : (
                 <>
-                  Verify & Continue
+                  Verify
                   <ArrowRight className="w-5 h-5" />
                 </>
               )}
@@ -1007,7 +1007,7 @@ const PanStep = ({
               setFormData((prev) => ({ ...prev, panNumber: value }));
             }}
             placeholder="Enter PAN number (e.g., ABCDE1234F)"
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
+            className={`w-full pl-10 pr-4 py-1 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
               errors.panNumber ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -1176,7 +1176,7 @@ const PhotoCaptureStep = ({
             {hasPermission ? (
               <button
                 onClick={() => setIsCapturing(true)}
-                className="px-3 py-1.5 bg-teal-500 text-white rounded text-xs hover:bg-teal-600"
+                className="px-3 py-1.5 bg-teal-500 text-white rounded-full text-xs hover:bg-teal-600"
               >
                 Start Camera
               </button>
@@ -1258,7 +1258,7 @@ const PhotoCaptureStep = ({
       <div className="flex gap-1.5">
         <button
           onClick={onPrev}
-          className="px-2.5 py-1.5 border border-gray-300 text-gray-700 rounded text-xs font-medium hover:bg-gray-50"
+          className="px-2.5 py-1.5 border border-gray-300 text-gray-700 rounded-full text-xs font-medium hover:bg-gray-50"
         >
           <ArrowLeft className="w-3.5 h-3.5 inline mr-1" />
           Back
@@ -1267,7 +1267,7 @@ const PhotoCaptureStep = ({
         {isCapturing ? (
           <button
             onClick={capture}
-            className="flex-1 bg-teal-500 text-white py-1.5 rounded text-xs font-medium hover:bg-teal-600 flex items-center justify-center"
+            className="flex-1 bg-teal-500 text-white py-1.5 rounded-full text-xs font-medium hover:bg-teal-600 flex items-center justify-center"
           >
             <Camera className="w-3.5 h-3.5 mr-1" />
             Capture
@@ -1276,7 +1276,7 @@ const PhotoCaptureStep = ({
           <>
             <button
               onClick={retakePhoto}
-              className="flex-1 border border-teal-500 text-teal-600 py-1.5 rounded text-xs font-medium hover:bg-teal-50"
+              className="flex-1 border border-teal-500 text-teal-600 py-1.5 rounded-full text-xs font-medium hover:bg-teal-50"
             >
               Retake
             </button>
@@ -1775,7 +1775,7 @@ toggleLoader?.(true);
         <button
           onClick={handleSendEmailOtp}
           disabled={isRegistering || !isFormValid}
-          className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-xl text-sm font-medium 
+          className="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-full text-sm font-medium 
             hover:from-teal-600 hover:to-teal-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 
             disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md touch-manipulation"
         >
@@ -1808,7 +1808,7 @@ toggleLoader?.(true);
            <button
   onClick={handleResendOtp}
   disabled={isResending || !canResend}
-  className={`text-xs font-medium px-2 py-1 rounded-md transition-all flex-shrink-0 touch-manipulation ${
+  className={`text-xs font-medium px-2 py-1 rounded-full transition-all flex-shrink-0 touch-manipulation ${
     canResend
       ? "text-teal-600 hover:bg-teal-100 active:bg-teal-200"
       : "text-gray-400"
@@ -1884,15 +1884,7 @@ toggleLoader?.(true);
 
       {/* Action Buttons - Compact */}
       <div className="flex gap-2 pt-1">
-        <button
-          onClick={onPrev}
-          disabled={isVerifying}
-          className="px-3 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium 
-            hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center gap-1.5 disabled:opacity-50 touch-manipulation"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="hidden sm:inline">Back</span>
-        </button>
+
         <button
           onClick={handleFinalSubmit}
           disabled={isVerifying || !canSubmit}
@@ -1945,7 +1937,7 @@ const ForeignPersonalDetailsStep = ({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {/* Horizontal Header */}
       <div className="flex items-center mb-2">
         <div className="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
@@ -1975,7 +1967,7 @@ const ForeignPersonalDetailsStep = ({
               setFormData((prev) => ({ ...prev, name: e.target.value }))
             }
             placeholder="Enter your full name"
-            className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
+            className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
               errors.name ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -1989,11 +1981,6 @@ const ForeignPersonalDetailsStep = ({
           Phone Number
         </label>
         <div className="flex rounded-lg border border-gray-300 focus-within:ring-2 focus-within:ring-teal-500 overflow-hidden">
-          <div className="flex-shrink-0 bg-gray-50 border-r border-gray-300 px-2 flex items-center">
-            <span className="text-sm text-gray-700 font-medium">
-              {formData.countryCode}
-            </span>
-          </div>
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-1 flex items-center pointer-events-none">
               <Phone className="h-5 w-5 text-gray-400" />
@@ -2008,7 +1995,7 @@ const ForeignPersonalDetailsStep = ({
                 }))
               }
               placeholder="Enter phone number"
-              className="w-full pl-9 pr-4 py-2.5 border-0 outline-none bg-white"
+              className="w-full pl-9 pr-4 py-2 border-0 outline-none bg-white"
             />
           </div>
         </div>
@@ -2034,7 +2021,7 @@ const ForeignPersonalDetailsStep = ({
               }))
             }
             placeholder="Enter your email"
-            className={`w-full pl-10 pr-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
+            className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
               errors.email ? "border-red-500 bg-red-50" : "border-gray-300"
             }`}
           />
@@ -2058,7 +2045,7 @@ const ForeignPersonalDetailsStep = ({
                 setFormData((prev) => ({ ...prev, password: e.target.value }))
               }
               placeholder="Create password"
-              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
+              className={`w-full pl-10 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
                 errors.password ? "border-red-500 bg-red-50" : "border-gray-300"
               }`}
             />
@@ -2090,7 +2077,7 @@ const ForeignPersonalDetailsStep = ({
                 }))
               }
               placeholder="Confirm password"
-              className={`w-full pl-10 pr-8 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
+              className={`w-full pl-10 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
                 errors.confirmPassword
                   ? "border-red-500 bg-red-50"
                   : "border-gray-300"
@@ -2141,7 +2128,7 @@ const ForeignPersonalDetailsStep = ({
               }))
             }
             placeholder="Enter referral ID"
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none bg-white"
           />
         </div>
       </div>
@@ -2150,14 +2137,14 @@ const ForeignPersonalDetailsStep = ({
       <div className="flex gap-3 pt-2">
         <button
           onClick={onPrev}
-          className="px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
+          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition-all flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
           Back
         </button>
         <button
           onClick={() => validateStep() && onNext()}
-          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-lg font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
+          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2 rounded-full font-medium hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2"
         >
           Continue
           <ArrowRight className="w-5 h-5" />
@@ -2178,6 +2165,7 @@ const ForeignAccountSetupStep = ({
   setIsChecked,
   isConfirmAgree,
   onShowModal,
+   toggleLoader
 }) => {
   const [emailOtpSent, setEmailOtpSent] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -2312,7 +2300,7 @@ const ForeignAccountSetupStep = ({
           <button
             onClick={handleSendEmailOtp}
             disabled={isRegistering || (emailOtpSent && !canResend)}
-            className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium ${
+            className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium ${
               emailOtpSent && !canResend
                 ? "bg-green-100 text-green-700"
                 : "bg-teal-500 text-white hover:bg-teal-600"
@@ -2345,7 +2333,7 @@ const ForeignAccountSetupStep = ({
                   }))
                 }
                 placeholder="Enter 6-digit OTP"
-                className={`w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
+                className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none bg-white ${
                   errors.emailOtp ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -2385,13 +2373,7 @@ const ForeignAccountSetupStep = ({
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-        <button
-          onClick={onPrev}
-          className="order-2 sm:order-1 px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 text-gray-700 rounded-xl text-sm sm:text-base font-medium hover:bg-gray-50 flex items-center justify-center gap-2"
-        >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-          Back
-        </button>
+
         <button
           onClick={handleFinalSubmit}
           disabled={
@@ -2402,7 +2384,7 @@ const ForeignAccountSetupStep = ({
             !isChecked ||
             !isConfirmAgree
           }
-          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-medium disabled:opacity-50 flex items-center justify-center gap-2"
+          className="order-1 sm:order-2 flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2 sm:py-2 rounded-full text-sm sm:text-base font-medium disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {isVerifying ? (
             <>
@@ -2837,13 +2819,13 @@ export default function AuthContainer() {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`flex-1 py-2.5 sm:py-3 md:py-3.5 lg:py-4 px-3 sm:px-4 md:px-5 lg:px-6 
+      className={`flex-1 py-1 sm:py-1 md:py-2 lg:py-2 px-4 sm:px-4 md:px-5 lg:px-6 
         rounded-full font-bold transition-all duration-500 
         text-xs sm:text-sm md:text-base
         ${
           active
-            ? "bg-white/90 text-teal-700 shadow-lg md:shadow-xl transform scale-[1.02] md:scale-105 backdrop-blur-sm"
-            : "text-white/80 hover:text-white hover:bg-white/10"
+            ? "bg-white/90 text-teal-700 shadow-lg md:shadow-xl transform scale-[1] md:scale-100 backdrop-blur-sm"
+            : "text-white/80 hover:text-white "
         } 
         ${disabled ? "opacity-50 cursor-not-allowed" : ""}
         ${className}`}
@@ -2852,16 +2834,7 @@ export default function AuthContainer() {
     </button>
   );
 
-  // Background Decorative SVG Component
-  const DecorativeSVG = ({ className, children }) => (
-    <svg
-      className={`absolute opacity-10 ${className}`}
-      viewBox="0 0 24 24"
-      fill="white"
-    >
-      {children}
-    </svg>
-  );
+
 
   return (
     <div className="min-h-screen w-full overflow-hidden bg-gray-50">
@@ -2909,19 +2882,7 @@ export default function AuthContainer() {
 
           {/* Icon Section - Desktop */}
           <div className="relative text-center text-white px-6 xl:px-8 flex flex-col items-center justify-center h-full overflow-hidden pt-20">
-            {/* Decorative Background SVGs */}
-            <DecorativeSVG className="w-16 xl:w-20 h-16 xl:h-20 top-16 left-8 animate-pulse">
-              <path d="M12 2L15 8H9L12 2Z" />
-            </DecorativeSVG>
-            <DecorativeSVG className="w-20 xl:w-24 h-20 xl:h-24 top-20 right-12">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
-            </DecorativeSVG>
-            <DecorativeSVG className="w-18 xl:w-20 h-18 xl:h-20 bottom-24 left-16">
-              <path d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4z" />
-            </DecorativeSVG>
-            <DecorativeSVG className="w-16 xl:w-20 h-16 xl:h-20 bottom-16 right-20">
-              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.018 3.018 0 0 0 0-1.39l7.05-4.11a2.99 2.99 0 1 0-.96-1.72L8 9.59a3 3 0 1 0 0 4.83l7.05 4.11c.12.62.45 1.17.95 1.56.5.39 1.14.61 1.8.61a3 3 0 1 0 0-6z" />
-            </DecorativeSVG>
+
 
             {/* Main Icon */}
             <div
@@ -2936,18 +2897,7 @@ export default function AuthContainer() {
                 className="relative w-full h-full object-contain drop-shadow-2xl"
                 loading="lazy"
               />
-              <div
-                className="absolute -top-2 -right-2 w-3 h-3 xl:w-4 xl:h-4 bg-yellow-400 rounded-full animate-bounce"
-                style={{ animationDelay: "0.3s" }}
-              ></div>
-              <div
-                className="absolute -bottom-2 -left-2 w-2 h-2 xl:w-3 xl:h-3 bg-blue-400 rounded-full animate-bounce"
-                style={{ animationDelay: "0.7s" }}
-              ></div>
-              <div
-                className="absolute top-1/2 -right-4 w-2 h-2 bg-green-400 rounded-full animate-ping"
-                style={{ animationDelay: "0.5s" }}
-              ></div>
+
             </div>
 
             {/* Text Content */}
@@ -2982,7 +2932,7 @@ export default function AuthContainer() {
         {/* Right Section - Form (Sliding) */}
         <div
           className={`absolute inset-y-0 w-1/2 bg-white shadow-2xl transform transition-all duration-1000 ease-out 
-            overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300
+            overflow-y-auto scrollbar-none scrollbar-thumb-gray-10
             ${isLogin ? "right-0 translate-x-0" : "right-1/2 translate-x-0"}`}
         >
           <div className="flex items-start justify-center w-full min-h-full p-6 lg:p-8 xl:p-12 pt-8 lg:pt-12">
@@ -3071,11 +3021,7 @@ export default function AuthContainer() {
                     className="w-full h-full object-contain"
                     loading="lazy"
                   />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></div>
-                  <div
-                    className="absolute -bottom-1 -left-1 w-2 h-2 bg-blue-400 rounded-full animate-bounce"
-                    style={{ animationDelay: "0.5s" }}
-                  ></div>
+
                 </div>
               </div>
 
@@ -3198,11 +3144,7 @@ export default function AuthContainer() {
                     className="w-full h-full object-contain"
                     loading="lazy"
                   />
-                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-yellow-400 rounded-full animate-bounce"></div>
-                  <div
-                    className="absolute -bottom-0.5 -left-0.5 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full animate-bounce"
-                    style={{ animationDelay: "0.5s" }}
-                  ></div>
+
                 </div>
               </div>
 
@@ -3305,7 +3247,7 @@ export default function AuthContainer() {
 
         /* Custom Scrollbar */
         .scrollbar-thin {
-          scrollbar-width: thin;
+          scrollbar-width: none;
         }
 
         .scrollbar-thumb-gray-300::-webkit-scrollbar {

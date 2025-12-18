@@ -941,7 +941,7 @@
 //     </div>
 //   );
 // }
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef ,useMemo} from "react";
 import {
   LockKeyhole,
   User,
@@ -970,7 +970,7 @@ import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
 import { useUpdateAddressMutation } from "./profileApiSlice";
 import countryCodes from "../../../../Authentication/countryCodes.json";
 import Cookies from "js-cookie";
-
+import CryptoJS from "crypto-js";
 export default function Profile3DForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -995,7 +995,8 @@ export default function Profile3DForm() {
   const [showAadhaar, setShowAadhaar] = useState(false);
   const [showPan, setShowPan] = useState(false);
   const [avatarHover, setAvatarHover] = useState(false);
-
+  const [aadhaarPlain, setAadhaarPlain] = useState("");
+const [panPlain, setPanPlain] = useState("");
   const { data: userData } = useUserDataQuery();
   const user = userData?.data;
   const profileRef = useRef(null);
@@ -1039,18 +1040,186 @@ export default function Profile3DForm() {
     return () => clearInterval(countdown);
   }, [otpSent, timer]);
 
-  // Helper functions
-  const maskAadhaar = (aadhaar) => {
-    if (!aadhaar) return "";
-    if (showAadhaar) return aadhaar.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
-    return `XXXX-XXXX-${aadhaar.slice(-4)}`;
-  };
+const hexToU8 = (hex) => {
+  if (!hex || typeof hex !== "string" || hex.length % 2 !== 0) return new Uint8Array();
+  const out = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) {
+    out[i / 2] = parseInt(hex.slice(i, i + 2), 16);
+  }
+  return out;
+};
 
-  const maskPan = (pan) => {
-    if (!pan) return "";
-    if (showPan) return pan;
-    return `${pan.slice(0, 2)}XXXXX${pan.slice(-3)}`;
+
+const safeLog = (label, value) => {
+  const s = String(value || "");
+  console.log(
+    `[KYC] ${label}: len=${s.length}, prefix=${s.slice(0, 3)}, suffix=${s.slice(-3)}`
+  );
+};
+
+const looksLikeAadhaar = (s) => /^\d{12}$/.test(String(s || "").replace(/\D/g, ""));
+const looksLikePAN = (s) => /^[A-Z]{5}\d{4}[A-Z]$/i.test(String(s || "").trim());
+const isSha256Hex = (s) => /^[a-f0-9]{64}$/i.test(String(s || "").trim());
+console.log("pan is hash?", isSha256Hex(panPlain));
+// PAN normalize
+const normalizePan = (s) => {
+  if (!s) return "";
+  const cleaned = String(s)
+    .replace(/[\u0000-\u001F\u007F]/g, "") // remove control chars
+    .trim()
+    .toUpperCase();
+
+  // extract valid PAN from anywhere in the string
+  const match = cleaned.match(/[A-Z]{5}\d{4}[A-Z]/);
+  return match ? match[0] : cleaned.replace(/[^A-Z0-9]/g, "");
+};
+
+const importAesKeyFromHex = async (hexKey) => {
+  const keyBytes = hexToU8(hexKey);
+
+  if (keyBytes.length !== 32) {
+    console.warn("[KYC] KEY must be 32 bytes (64 hex chars). Got bytes:", keyBytes.length);
+  }
+
+  return crypto.subtle.importKey(
+    "raw",
+    keyBytes,
+    { name: "AES-GCM" },
+    false,
+    ["decrypt"]
+  );
+};
+
+const decryptKycGCM = async (payload, type) => {
+  const t = String(type || "").toLowerCase();
+  if (!payload) return "";
+
+  const raw = String(payload).trim();
+
+  // already masked or already plain
+  if (raw.toUpperCase().includes("X")) return raw;
+  if (t === "aadhaar" && looksLikeAadhaar(raw)) return raw.replace(/\D/g, "");
+  if (t === "pan" && looksLikePAN(raw)) return raw.trim().toUpperCase();
+
+  const parts = raw.split(":");
+
+  console.group(`[KYC] decrypt ${t}`);
+  console.log("[KYC] parts:", parts.length);
+
+  if (parts.length !== 3) {
+    console.warn("[KYC] ❌ Expected iv:tag:cipher (3 parts). Got:", parts.length);
+    safeLog("payload", raw);
+    console.groupEnd();
+    return "";
+  }
+
+  const [ivHex, tagHex, cipherHex] = parts;
+
+  const iv = hexToU8(ivHex);         // should be 12 bytes
+  const tag = hexToU8(tagHex);       // should be 16 bytes
+  const cipher = hexToU8(cipherHex); // variable length
+
+  console.log("[KYC] iv bytes:", iv.length, "| tag bytes:", tag.length, "| cipher bytes:", cipher.length);
+
+  if (iv.length !== 12) console.warn("[KYC] ⚠️ iv should be 12 bytes for aes-256-gcm");
+  if (tag.length !== 16) console.warn("[KYC] ⚠️ authTag should be 16 bytes for aes-256-gcm");
+
+  try {
+    const keyHex = import.meta.env.VITE_KYC_AES_KEY; // MUST be 64 hex chars
+    const key = await importAesKeyFromHex(keyHex);
+
+    // WebCrypto expects cipher + tag appended
+    const combined = new Uint8Array(cipher.length + tag.length);
+    combined.set(cipher, 0);
+    combined.set(tag, cipher.length);
+
+    const decryptedBuf = await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv, tagLength: 128 },
+      key,
+      combined
+    );
+
+    let decrypted = new TextDecoder().decode(decryptedBuf);
+
+    // Debug full JSON view (shows hidden chars too)
+    console.log("[KYC] raw decrypted (json):", JSON.stringify(decrypted));
+
+    // normalize depending on type
+    if (t === "aadhaar") {
+      decrypted = decrypted.replace(/\D/g, "");
+    } else if (t === "pan") {
+      decrypted = normalizePan(decrypted);
+      console.log("[KYC] pan normalized:", JSON.stringify(decrypted));
+    }
+
+    safeLog("decrypted", decrypted);
+
+    const aadhaarOk = t === "aadhaar" ? looksLikeAadhaar(decrypted) : null;
+    const panOk = t === "pan" ? looksLikePAN(decrypted) : null;
+
+    console.log("[KYC] aadhaar valid?", aadhaarOk ?? "n/a");
+    console.log("[KYC] pan valid?", panOk ?? "n/a");
+
+    console.groupEnd();
+
+    // Return only valid values for safety
+    if (t === "aadhaar") return aadhaarOk ? decrypted : "";
+    if (t === "pan") return panOk ? decrypted : "";
+
+    return decrypted || "";
+  } catch (e) {
+    console.error("[KYC] ❌ decrypt failed:", e?.message || e);
+    console.groupEnd();
+    return "";
+  }
+};
+
+// useEffect
+useEffect(() => {
+  let mounted = true;
+
+  (async () => {
+    const a = await decryptKycGCM(user?.aadhaarNumber, "aadhaar");
+    const p = await decryptKycGCM(user?.panNumber, "pan");
+
+    if (mounted) {
+      setAadhaarPlain(a);
+      setPanPlain(p);
+    }
+  })();
+
+  return () => {
+    mounted = false;
   };
+}, [user?.aadhaarNumber, user?.panNumber]);
+
+const maskAadhaar = (aadhaar, showAadhaar) => {
+  if (!aadhaar) return "";
+
+  const raw = String(aadhaar).trim();
+  if (raw.toUpperCase().includes("X")) return raw;
+
+  const clean = raw.replace(/\D/g, "");
+  if (clean.length < 12) return raw;
+
+  if (showAadhaar) return clean.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
+  return `XXXX-XXXX-${clean.slice(-4)}`;
+};
+
+const maskPan = (pan, showPan) => {
+  if (!pan) return "";
+
+  const raw = String(pan).trim();
+  if (raw.toUpperCase().includes("X")) return raw.toUpperCase();
+
+  const clean = normalizePan(raw);
+  if (clean.length < 10) return raw.toUpperCase();
+
+  if (showPan) return clean.slice(0, 10);
+  return `${clean.slice(0, 2)}XXXXX${clean.slice(-3)}`;
+};
+
+
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -1623,7 +1792,7 @@ export default function Profile3DForm() {
                         <div className="relative">
                           <input
                             type="text"
-                            value={maskAadhaar(user.aadhaarNumber)}
+                            value={maskAadhaar(aadhaarPlain )}
                             readOnly
                             className={readOnlyInputClass}
                           />
@@ -1651,7 +1820,7 @@ export default function Profile3DForm() {
                         <div className="relative">
                           <input
                             type="text"
-                            value={maskPan(user.panNumber)}
+                            value={maskPan(panPlain)}
                             readOnly
                             className={readOnlyInputClass}
                           />
