@@ -401,9 +401,8 @@ const images = useMemo(() => {
         </>
       )}
       <>
-  <Snowfall
+  {/* <Snowfall
     color="white"
-    // snowflakeCount={60}
     radius={[1, 3]}
     speed={[0.5, 2]}
     wind={[-0.5, 1]}
@@ -416,7 +415,6 @@ const images = useMemo(() => {
   />
 <Snowfall
       images={images}
-      // snowflakeCount={20}
       radius={[6, 10]}
       speed={[0.1, 0.4]}
       rotationSpeed={[-1, 1]}      // optional (nice)
@@ -441,7 +439,7 @@ const images = useMemo(() => {
       pointerEvents: "none",
       zIndex: 9999,
     }}
-  />
+  /> */}
 
 </>
 

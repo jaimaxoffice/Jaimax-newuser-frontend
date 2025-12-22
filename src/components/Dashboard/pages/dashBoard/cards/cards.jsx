@@ -4,13 +4,20 @@ import { useNavigate } from "react-router-dom";
 import assets from "../../../../../assets/assets";
 import { useUserDataQuery, useGetRoundQuery, useGetBonusLogsQuery} from "../DashboardApliSlice";
 import Cookies from "js-cookie";
-
+import BonusLogsModal from './BonusLogsModal';
 import { useGetAnnounceQuery } from "../../Announements/AnnouncementsApiSlice";
 
 const CardItem = React.memo(
-  ({ item, index, hoveredCard, setHoveredCard, onViewDetails }) => {
+  ({ item, index, hoveredCard, setHoveredCard, onViewDetails ,onClick }) => {
     const isCompleted = item.isCompleted;
     const isHovered = hoveredCard === index;
+    const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else if (onViewDetails) {
+      onViewDetails();
+    }
+  };
 
     return (
       <div
@@ -22,6 +29,7 @@ const CardItem = React.memo(
         hover:border-[#26a69a]`}
         onMouseEnter={() => setHoveredCard(index)}
         onMouseLeave={() => setHoveredCard(null)}
+        onClick={handleClick}
       >
         {/* Gradient Overlay on Hover */}
         <div
@@ -110,6 +118,7 @@ const CardItem = React.memo(
               </div>
             </div>
           )}
+          
         </div>
 
         {/* Bottom Accent Line */}
@@ -119,6 +128,14 @@ const CardItem = React.memo(
           transition-all duration-300
           ${isHovered ? "opacity-100" : "opacity-0"}`}
         />
+        {item.isClickable && (
+          <div className="flex items-center gap-1 text-green-600 text-xs font-bold absolute bottom-2 left-4  ">
+            <span>View History</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        )}
       </div>
     );
   }
@@ -134,11 +151,13 @@ const TopCards = React.memo(() => {
   const [currency, setCurrency] = useState("");
   const [currencySymbol, setCurrencySymbol] = useState("");
   const token = Cookies.get("token");
+   const [isBonusModalOpen, setIsBonusModalOpen] = useState(false);
   const { data: apiData, refetch: refetchRounds } = useGetRoundQuery();
   const { data: userData, refetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
   const { data: bonusLogsData } = useGetBonusLogsQuery();
+  console.log("bonusLogsData:", bonusLogsData);
   const {
     data: announceData,
     Loading,
@@ -155,6 +174,14 @@ const TopCards = React.memo(() => {
     setHoveredCard(index);
   }, []);
 
+  const handleOpenBonusLogs = useCallback(() => {
+    setIsBonusModalOpen(true);
+  }, []);
+
+  // Handler to close bonus logs modal
+  const handleCloseBonusLogs = useCallback(() => {
+    setIsBonusModalOpen(false);
+  }, []);
   // Verify token only once
   useEffect(() => {
     if (token) {
@@ -262,18 +289,17 @@ const TopCards = React.memo(() => {
       },
       {
         label: "Bonus Received",
-        value: `${currencySymbol}${Number(
-          userData?.data?.registrationBonusAmount || 0
-        ).toFixed(2)}`,
+        
         image: assets.bonus,
         hoverImage: assets.bonus1,
         iconBg: "#e8f5e9",
-
+        isClickable: true, // Make this card clickable
+        onClick: handleOpenBonusLogs, // Add click handler
       }
 
 
     ],
-    [userData, currencySymbol, isSuperBonusCompleted]
+    [userData, currencySymbol, isSuperBonusCompleted,handleOpenBonusLogs]
   );
 
   return (
@@ -281,17 +307,24 @@ const TopCards = React.memo(() => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {cards.map((item, idx) => (
           <CardItem
-            key={idx}
-            item={item}
-            index={idx}
-            hoveredCard={hoveredCard}
-            setHoveredCard={handleSetHoveredCard}
-            onViewDetails={
-              item.hasViewButton ? handleNavigateToSuperbonus : null
-            }
-          />
+              key={idx}
+              item={item}
+              index={idx}
+              hoveredCard={hoveredCard}
+              setHoveredCard={handleSetHoveredCard}
+              onViewDetails={
+                item.hasViewButton ? handleNavigateToSuperbonus : null
+              }
+              onClick={item.isClickable ? item.onClick : null} // Pass click handler
+            />
         ))}
       </div>
+       <BonusLogsModal
+        isOpen={isBonusModalOpen}
+        onClose={handleCloseBonusLogs}
+        bonusLogsData={bonusLogsData}
+        currencySymbol={currencySymbol}
+      />
     </div>
   );
 });

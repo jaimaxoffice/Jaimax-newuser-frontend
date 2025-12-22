@@ -2161,8 +2161,8 @@ import {
   Phone,
   UserCheck,
   BadgeCheck,
-  Camera,
-  Save,
+  X,
+  Expand,
 } from "lucide-react";
 import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import {
@@ -2171,163 +2171,176 @@ import {
   useVerifyMutation,
 } from "../../../../Authentication/authApiSlice";
 import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
-import { useUpdateAddressMutation } from "./profileApiSlice";
-import countryCodes from "../../../../Authentication/countryCodes.json";
 import Cookies from "js-cookie";
 
-// ==================== DECRYPTION UTILITIES (Outside Component) ====================
+// ==================== DECRYPTION UTILITIES (Using Web Crypto API) ====================
 
-// ==================== DECRYPTION UTILITIES (Outside Component) ====================
-
-const hexToU8 = (hex) => {
+const hexToUint8Array = (hex) => {
   if (!hex || typeof hex !== "string" || hex.length % 2 !== 0) {
     return new Uint8Array();
   }
-  const out = new Uint8Array(hex.length / 2);
+  const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {
-    out[i / 2] = parseInt(hex.slice(i, i + 2), 16);
+    bytes[i / 2] = parseInt(hex.slice(i, i + 2), 16);
   }
-  return out;
+  return bytes;
 };
 
-const importAesKeyFromHex = async (hexKey) => {
-  const keyBytes = hexToU8(hexKey);
+const importAesKey = async (hexKey) => {
+  const keyBytes = hexToUint8Array(hexKey);
   if (keyBytes.length !== 32) {
-    throw new Error(`Invalid key length: ${keyBytes.length} bytes (expected 32)`);
+    throw new Error(
+      `Invalid key length: ${keyBytes.length} bytes (expected 32 for AES-256)`
+    );
   }
-  return crypto.subtle.importKey(
-    "raw",
-    keyBytes,
-    { name: "AES-GCM" },
-    false,
-    ["decrypt"]
-  );
+  return crypto.subtle.importKey("raw", keyBytes, { name: "AES-GCM" }, false, [
+    "decrypt",
+  ]);
 };
 
-// Main decryption function
-const decryptKycValue = async (encryptedPayload, valueType) => {
-  const type = String(valueType || "").toLowerCase();
-  
-  console.log(`[Decrypt] Starting for ${type}`);
-  console.log(`[Decrypt] Payload (first 50): ${String(encryptedPayload || "").substring(0, 50)}`);
-  
-  if (!encryptedPayload) {
-    console.log(`[Decrypt] No payload for ${type}`);
+const decryptAesGcm = async (encryptedData, type) => {
+  console.log(`[Decrypt ${type}] Starting decryption...`);
+
+  if (!encryptedData) {
+    console.log(`[Decrypt ${type}] No data to decrypt`);
     return "";
   }
 
-  const raw = String(encryptedPayload).trim();
-
-  // Check if already masked
-  if (raw.toUpperCase().includes("X")) {
-    console.log(`[Decrypt] ${type} already masked`);
-    return raw;
+  // Check if already decrypted/masked
+  const dataStr = String(encryptedData).trim();
+  if (dataStr.includes("X") || dataStr.includes("x")) {
+    console.log(`[Decrypt ${type}] Already masked:`, dataStr);
+    return dataStr;
   }
 
-  // Parse encrypted format: iv:tag:cipher
-  const parts = raw.split(":");
+  // Parse the encrypted format: iv:tag:cipher
+  const parts = dataStr.split(":");
   if (parts.length !== 3) {
-    console.error(`[Decrypt] Invalid format for ${type}. Parts: ${parts.length}`);
+    console.error(
+      `[Decrypt ${type}] Invalid format. Expected iv:tag:cipher, got:`,
+      parts.length,
+      "parts"
+    );
     return "";
   }
 
   const [ivHex, tagHex, cipherHex] = parts;
-
-  const iv = hexToU8(ivHex);
-  const tag = hexToU8(tagHex);
-  const cipher = hexToU8(cipherHex);
-
-  // Validate lengths
-  if (iv.length !== 12 || tag.length !== 16 || cipher.length === 0) {
-    console.error(`[Decrypt] Invalid lengths - IV: ${iv.length}, Tag: ${tag.length}, Cipher: ${cipher.length}`);
-    return "";
-  }
+  console.log(
+    `[Decrypt ${type}] IV length: ${ivHex.length}, Tag length: ${tagHex.length}, Cipher length: ${cipherHex.length}`
+  );
 
   try {
     const keyHex = import.meta.env.VITE_KYC_AES_KEY;
     if (!keyHex) {
-      console.error("[Decrypt] Missing VITE_KYC_AES_KEY");
+      console.error("[Decrypt] Missing VITE_KYC_AES_KEY environment variable");
       return "";
     }
 
-    const key = await importAesKeyFromHex(keyHex);
+    // Convert hex strings to Uint8Arrays
+    const iv = hexToUint8Array(ivHex);
+    const tag = hexToUint8Array(tagHex);
+    const ciphertext = hexToUint8Array(cipherHex);
 
-    // Combine cipher and tag for WebCrypto API
-    const combined = new Uint8Array(cipher.length + tag.length);
-    combined.set(cipher, 0);
-    combined.set(tag, cipher.length);
+    console.log(
+      `[Decrypt ${type}] Byte lengths - IV: ${iv.length}, Tag: ${tag.length}, Cipher: ${ciphertext.length}`
+    );
 
+    // Validate lengths
+    if (iv.length !== 12) {
+      console.error(
+        `[Decrypt ${type}] Invalid IV length: ${iv.length} (expected 12)`
+      );
+      return "";
+    }
+    if (tag.length !== 16) {
+      console.error(
+        `[Decrypt ${type}] Invalid tag length: ${tag.length} (expected 16)`
+      );
+      return "";
+    }
+
+    // Import the key
+    const cryptoKey = await importAesKey(keyHex);
+
+    // For AES-GCM, combine ciphertext and tag
+    const combined = new Uint8Array(ciphertext.length + tag.length);
+    combined.set(ciphertext, 0);
+    combined.set(tag, ciphertext.length);
+
+    // Decrypt
     const decryptedBuffer = await crypto.subtle.decrypt(
-      { name: "AES-GCM", iv, tagLength: 128 },
-      key,
+      {
+        name: "AES-GCM",
+        iv: iv,
+        tagLength: 128,
+      },
+      cryptoKey,
       combined
     );
 
+    // Convert decrypted bytes to string
     const decryptedText = new TextDecoder().decode(decryptedBuffer);
-    console.log(`[Decrypt] Raw decrypted ${type}:`, decryptedText);
+    console.log(`[Decrypt ${type}] Decrypted successfully`);
 
     // Process based on type
     if (type === "aadhaar") {
       // Extract only digits
-      const aadhaarDigits = decryptedText.replace(/\D/g, "");
-      console.log(`[Decrypt] Aadhaar digits:`, aadhaarDigits);
-      
-      if (aadhaarDigits.length === 12) {
-        return aadhaarDigits;
+      const digits = decryptedText.replace(/\D/g, "");
+      console.log(
+        `[Decrypt ${type}] Extracted digits:`,
+        digits.substring(0, 4) + "****"
+      );
+      if (digits.length === 12) {
+        return digits;
       }
-      console.error(`[Decrypt] Invalid Aadhaar length: ${aadhaarDigits.length}`);
+      console.error(
+        `[Decrypt ${type}] Invalid Aadhaar length: ${digits.length}`
+      );
       return "";
-    }
-
-    if (type === "pan") {
-      // Try multiple extraction methods
-      let panValue = "";
-      
-      // Method 1: Direct PAN pattern match
-      const panMatch = decryptedText.match(/[A-Z]{5}[0-9]{4}[A-Z]/i);
+    } else if (type === "pan") {
+      // Try to extract PAN pattern
+      const panMatch = decryptedText
+        .replace(/\s+/g, "")
+        .match(/[A-Z]{5}[0-9]{4}[A-Z]/i);
       if (panMatch) {
-        panValue = panMatch[0].toUpperCase();
-        console.log(`[Decrypt] PAN found by pattern:`, panValue);
-        return panValue;
+        const pan = panMatch[0].toUpperCase();
+        console.log(
+          `[Decrypt ${type}] Extracted PAN:`,
+          pan.substring(0, 2) + "****"
+        );
+        return pan;
       }
-      
-      // Method 2: Clean and check
+
+      // If no pattern match, clean and check
       const cleaned = decryptedText.replace(/[^A-Z0-9]/gi, "").toUpperCase();
-      if (cleaned.length >= 10) {
-        // Check if it matches PAN pattern
-        if (/^[A-Z]{5}[0-9]{4}[A-Z]/.test(cleaned)) {
-          panValue = cleaned.substring(0, 10);
-          console.log(`[Decrypt] PAN found after cleaning:`, panValue);
-          return panValue;
-        }
-      }
-      
-      // Method 3: If it's exactly 10 chars, assume it's PAN
-      if (cleaned.length === 10) {
-        console.log(`[Decrypt] Assuming 10-char string is PAN:`, cleaned);
+      if (cleaned.length === 10 && /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(cleaned)) {
+        console.log(
+          `[Decrypt ${type}] Cleaned PAN:`,
+          cleaned.substring(0, 2) + "****"
+        );
         return cleaned;
       }
-      
-      console.error(`[Decrypt] Could not extract valid PAN from:`, decryptedText);
+
+      console.error(
+        `[Decrypt ${type}] Could not extract valid PAN from:`,
+        decryptedText
+      );
       return "";
     }
 
     return decryptedText;
   } catch (error) {
-    console.error(`[Decrypt] Error for ${type}:`, error.message);
+    console.error(`[Decrypt ${type}] Decryption failed:`, error.message);
     return "";
   }
 };
 
 // Masking functions
-const maskAadhaarNumber = (aadhaar, showFull) => {
-  if (!aadhaar) return "Not Available";
-  
-  const raw = String(aadhaar).trim();
-  if (raw.toUpperCase().includes("X")) return raw;
+const maskAadhaar = (aadhaar, showFull) => {
+  if (!aadhaar || aadhaar === "") return "Decryption Failed";
 
-  const clean = raw.replace(/\D/g, "");
-  if (clean.length !== 12) return raw || "Invalid";
+  const clean = String(aadhaar).replace(/\D/g, "");
+  if (clean.length !== 12) return "Invalid Format";
 
   if (showFull) {
     return `${clean.slice(0, 4)}-${clean.slice(4, 8)}-${clean.slice(8, 12)}`;
@@ -2335,14 +2348,11 @@ const maskAadhaarNumber = (aadhaar, showFull) => {
   return `XXXX-XXXX-${clean.slice(-4)}`;
 };
 
-const maskPanNumber = (pan, showFull) => {
-  if (!pan) return "Not Available";
-  
-  const raw = String(pan).trim().toUpperCase();
-  if (raw.includes("X")) return raw;
+const maskPan = (pan, showFull) => {
+  if (!pan || pan === "") return "Decryption Failed";
 
-  const clean = normalizePan(raw);
-  if (clean.length !== 10) return raw || "Invalid";
+  const clean = String(pan).trim().toUpperCase();
+  if (clean.length !== 10) return "Invalid Format";
 
   if (showFull) {
     return clean;
@@ -2350,7 +2360,42 @@ const maskPanNumber = (pan, showFull) => {
   return `${clean.slice(0, 2)}XXXXX${clean.slice(-3)}`;
 };
 
-// ==================== COMPONENT ====================
+// ==================== IMAGE MODAL COMPONENT ====================
+const ImageModal = ({ isOpen, onClose, imageSrc, userName }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl p-2"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition"
+        >
+          <X className="w-6 h-6 text-gray-700" />
+        </button>
+
+        <div className="flex flex-col items-center">
+          <img
+            src={imageSrc}
+            alt={`${userName}'s profile`}
+            className="max-w-full max-h-[80vh] object-contain rounded-xl"
+          />
+          <p className="mt-4 text-center text-gray-700 font-medium">
+            {userName}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ==================== MAIN COMPONENT ====================
 
 export default function Profile3DForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -2369,54 +2414,49 @@ export default function Profile3DForm() {
   const [changePwd, { isLoading }] = useChangePwdMutation();
   const [changePwdReq] = useChangePwdReqMutation();
   const [verify, { isLoading: isVerifying }] = useVerifyMutation();
-  const [update, { isLoading: updateLoader }] = useUpdateAddressMutation();
-  const [loading, setLoading] = useState(false);
-  const [profileImage, setProfileImage] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
   const [showAadhaar, setShowAadhaar] = useState(false);
   const [showPan, setShowPan] = useState(false);
-  const [avatarHover, setAvatarHover] = useState(false);
-  
+  const [showImageModal, setShowImageModal] = useState(false);
+
   // Separate states for decrypted values
   const [aadhaarPlain, setAadhaarPlain] = useState("");
   const [panPlain, setPanPlain] = useState("");
   const [isDecryptingAadhaar, setIsDecryptingAadhaar] = useState(false);
   const [isDecryptingPan, setIsDecryptingPan] = useState(false);
-  
+
   const { data: userData } = useUserDataQuery();
   const user = userData?.data;
-  const profileRef = useRef(null);
 
-  // Editable state
-  const [state, setState] = useState({
-    name: "",
-    _id: "",
-    address: "",
-    city: "",
-    country: "",
-    state: "",
-    profile: "",
-  });
+  // Check browser support
+  useEffect(() => {
+    if (!window.crypto?.subtle) {
+      console.error("Web Crypto API not supported in this browser!");
+      toast.error(
+        "Your browser doesn't support secure decryption. Please use a modern browser.",
+        {
+          position: "top-center",
+        }
+      );
+    }
+  }, []);
 
   // ==================== DECRYPT AADHAAR ====================
   useEffect(() => {
     const decryptAadhaar = async () => {
-      if (!user?.aadhaarNumber) {
+      if (!user?.aadhaarNumber || !window.crypto?.subtle) {
         setAadhaarPlain("");
         return;
       }
 
-      console.log("[Effect] Decrypting Aadhaar...");
-      console.log("[Effect] Aadhaar encrypted value:", user.aadhaarNumber.substring(0, 50) + "...");
-      
+      console.log("[Aadhaar] Encrypted value:", user.aadhaarNumber);
       setIsDecryptingAadhaar(true);
-      
+
       try {
-        const decrypted = await decryptKycValue(user.aadhaarNumber, "aadhaar");
-        console.log("[Effect] Aadhaar decrypted result:", decrypted ? `${decrypted.substring(0, 4)}****` : "EMPTY");
+        const decrypted = await decryptAesGcm(user.aadhaarNumber, "aadhaar");
         setAadhaarPlain(decrypted);
       } catch (error) {
-        console.error("[Effect] Aadhaar decryption error:", error);
+        console.error("[Aadhaar] Decryption error:", error);
         setAadhaarPlain("");
       } finally {
         setIsDecryptingAadhaar(false);
@@ -2429,22 +2469,19 @@ export default function Profile3DForm() {
   // ==================== DECRYPT PAN ====================
   useEffect(() => {
     const decryptPan = async () => {
-      if (!user?.panNumber) {
+      if (!user?.panNumber || !window.crypto?.subtle) {
         setPanPlain("");
         return;
       }
 
-      console.log("[Effect] Decrypting PAN...");
-      console.log("[Effect] PAN encrypted value:", user.panNumber.substring(0, 50) + "...");
-      
+      console.log("[PAN] Encrypted value:", user.panNumber);
       setIsDecryptingPan(true);
-      
+
       try {
-        const decrypted = await decryptKycValue(user.panNumber, "pan");
-        console.log("[Effect] PAN decrypted result:", decrypted ? `${decrypted.substring(0, 2)}****` : "EMPTY");
+        const decrypted = await decryptAesGcm(user.panNumber, "pan");
         setPanPlain(decrypted);
       } catch (error) {
-        console.error("[Effect] PAN decryption error:", error);
+        console.error("[PAN] Decryption error:", error);
         setPanPlain("");
       } finally {
         setIsDecryptingPan(false);
@@ -2453,29 +2490,6 @@ export default function Profile3DForm() {
 
     decryptPan();
   }, [user?.panNumber]);
-
-  // Debug: Log current values
-  useEffect(() => {
-    console.log("=== Current Decrypted Values ===");
-    console.log("Aadhaar Plain:", aadhaarPlain);
-    console.log("PAN Plain:", panPlain);
-    console.log("Are they same?", aadhaarPlain === panPlain);
-  }, [aadhaarPlain, panPlain]);
-
-  // Update state when userData changes
-  useEffect(() => {
-    if (user) {
-      setState({
-        name: user.name || "",
-        _id: user._id || "",
-        address: user.address || user.aadhaarKycData?.full_address || "",
-        city: user.city || user.aadhaarKycData?.address?.district || "",
-        country: user.country || user.aadhaarKycData?.address?.country || "",
-        state: user.state || user.aadhaarKycData?.address?.state || "",
-        profile: user.profile || "",
-      });
-    }
-  }, [user]);
 
   // Timer for resend OTP
   useEffect(() => {
@@ -2505,9 +2519,7 @@ export default function Profile3DForm() {
   };
 
   const getProfileImage = () => {
-    if (profileImage) return profileImage;
-    if (state.profile && typeof state.profile === "string")
-      return state.profile;
+    if (user?.profile && typeof user.profile === "string") return user.profile;
     if (user?.aadhaarKycData?.photo)
       return `data:image/jpeg;base64,${user.aadhaarKycData.photo}`;
     return null;
@@ -2521,120 +2533,6 @@ export default function Profile3DForm() {
   };
 
   const togglePassword = () => setShowPassword(!showPassword);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const acceptedFormats = ["image/png", "image/jpeg", "image/jpg"];
-    if (!acceptedFormats.includes(file.type)) {
-      toast.warning("Only JPG / PNG files are allowed", {
-        position: "top-center",
-      });
-      profileRef.current.value = "";
-      return;
-    }
-
-    const imageUrl = URL.createObjectURL(file);
-    setState((prevState) => ({ ...prevState, profile: file }));
-    setProfileImage(imageUrl);
-  };
-
-  // Validation
-  const validateForm = () => {
-    let formErrors = {};
-
-    if (!state.address.trim()) {
-      formErrors.address = "Address is required.";
-    } else if (state.address.trim().length < 5) {
-      formErrors.address = "Address must be at least 5 characters.";
-    } else if (state.address.trim().length > 200) {
-      formErrors.address = "Address cannot exceed 200 characters.";
-    }
-
-    if (!state.city.trim()) {
-      formErrors.city = "City is required.";
-    } else if (state.city.trim().length < 2) {
-      formErrors.city = "City must be at least 2 characters.";
-    } else if (!/^[a-zA-Z\s-]+$/.test(state.city.trim())) {
-      formErrors.city = "City can only contain letters, spaces, and hyphens.";
-    }
-
-    if (!state.state.trim()) {
-      formErrors.state = "State is required.";
-    } else if (state.state.trim().length < 2) {
-      formErrors.state = "State must be at least 2 characters.";
-    } else if (!/^[a-zA-Z\s-]+$/.test(state.state.trim())) {
-      formErrors.state = "State can only contain letters, spaces, and hyphens.";
-    }
-
-    if (!state.country.trim()) {
-      formErrors.country = "Country is required.";
-    }
-
-    return formErrors;
-  };
-
-  const handleProfileSubmit = async (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      const hasChanged =
-        state.address !==
-          (user?.address || user?.aadhaarKycData?.full_address || "") ||
-        state.city !==
-          (user?.city || user?.aadhaarKycData?.address?.district || "") ||
-        state.state !==
-          (user?.state || user?.aadhaarKycData?.address?.state || "") ||
-        state.country !==
-          (user?.country || user?.aadhaarKycData?.address?.country || "") ||
-        state.profile instanceof File;
-
-      if (!hasChanged) {
-        toast.info("No changes detected to update", { position: "top-center" });
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append("_id", state._id);
-        formDataToSend.append("address", state.address);
-        formDataToSend.append("city", state.city);
-        formDataToSend.append("country", state.country);
-        formDataToSend.append("state", state.state);
-
-        if (state.profile instanceof File) {
-          formDataToSend.append("profile", state.profile);
-        }
-
-        const res = await update(formDataToSend);
-
-        if (res?.data?.status_code === 200) {
-          toast.success(res?.data?.message, { position: "top-center" });
-        }
-      } catch (error) {
-        toast.error(error?.message || "Update failed", {
-          position: "top-center",
-        });
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
 
   // Password validation functions
   const validateOldPassword = () => {
@@ -2669,8 +2567,8 @@ export default function Profile3DForm() {
       formErrors.otp = "OTP is required";
     } else if (!numberRegex.test(formData.otp)) {
       formErrors.otp = "OTP must be a number";
-    } else if (formData.otp.length < 4) {
-      formErrors.otp = "OTP must be 4 Numbers";
+    } else if (formData.otp.length < 6) {
+      formErrors.otp = "OTP must be 6 digits";
     }
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
@@ -2688,7 +2586,9 @@ export default function Profile3DForm() {
           setTimer(120);
         }
       } catch (error) {
-        toast.error(error?.data?.message, { position: "top-center" });
+        toast.error(error?.data?.message || "Failed to send OTP", {
+          position: "top-center",
+        });
       } finally {
         setIsOtpSending(false);
       }
@@ -2707,7 +2607,9 @@ export default function Profile3DForm() {
         setOtpVerified(true);
         setResendOtp(true);
       } catch (error) {
-        toast.error(error?.data?.message, { position: "top-center" });
+        toast.error(error?.data?.message || "Invalid OTP", {
+          position: "top-center",
+        });
       }
     }
   };
@@ -2720,14 +2622,18 @@ export default function Profile3DForm() {
           newPassword: formData.newPassword,
           email: user?.email,
         }).unwrap();
-        toast.success(res?.message, { position: "top-center" });
+        toast.success(res?.message || "Password changed successfully", {
+          position: "top-center",
+        });
         Cookies.remove("token");
         setFormData({ password: "", newPassword: "", confirmPwd: "", otp: "" });
         setOtpSent(false);
         setOtpVerified(false);
         window.location.href = "/login";
       } catch (error) {
-        toast.error(error?.data?.message, { position: "top-center" });
+        toast.error(error?.data?.message || "Failed to change password", {
+          position: "top-center",
+        });
       }
     }
   };
@@ -2740,15 +2646,10 @@ export default function Profile3DForm() {
   }
 
   const readOnlyInputClass =
-    "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-600 bg-gray-100 cursor-not-allowed focus:outline-none";
-
-  const editableInputClass = (hasError) =>
-    `w-full border rounded-xl px-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 transition bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-400 focus:outline-none ${
-      hasError ? "border-red-500" : "border-gray-300"
-    }`;
+    "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-600 bg-gray-50 cursor-not-allowed focus:outline-none";
 
   const inputClass = (hasError) =>
-    `w-full border focus:border-teal-500 focus:ring-2 focus:ring-teal-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 transition bg-white shadow-inner ${
+    `w-full border focus:border-teal-500 focus:ring-2 focus:ring-teal-400 rounded-xl px-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 transition bg-white shadow-inner focus:outline-none ${
       hasError ? "border-red-500" : "border-gray-300"
     }`;
 
@@ -2769,99 +2670,101 @@ export default function Profile3DForm() {
   );
 
   // Calculate displayed values
-  const displayedAadhaar = isDecryptingAadhaar 
-    ? "Decrypting..." 
-    : maskAadhaarNumber(aadhaarPlain, showAadhaar);
-  
-  const displayedPan = isDecryptingPan 
-    ? "Decrypting..." 
-    : maskPanNumber(panPlain, showPan);
+  const displayedAadhaar = isDecryptingAadhaar
+    ? "Decrypting..."
+    : maskAadhaar(aadhaarPlain, showAadhaar);
+
+  const displayedPan = isDecryptingPan
+    ? "Decrypting..."
+    : maskPan(panPlain, showPan);
 
   return (
-    <div className="bg-[#1d8e85] min-h-screen">
-      <div className="max-w-8xl mx-auto p-2 sm:p-4">
-        <div className="flex flex-col xl:flex-row gap-4 lg:gap-6">
-          {/* Left Section */}
-          <div className="w-full xl:w-2/3 xl:h-[calc(100vh-2rem)] xl:overflow-y-auto scrollbar-hide">
-            <div className="bg-white bg-opacity-95 backdrop-blur rounded-2xl shadow-2xl p-4 sm:p-6">
-              {/* Profile Header */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-6">
-                <div className="relative flex-shrink-0">
-                  <div
-                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-teal-600 to-teal-400 p-1 shadow-lg cursor-pointer transition-transform hover:scale-105"
-                    onClick={() => profileRef.current?.click()}
-                    onMouseEnter={() => setAvatarHover(true)}
-                    onMouseLeave={() => setAvatarHover(false)}
-                  >
-                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
-                      {getProfileImage() ? (
-                        <img
-                          src={getProfileImage()}
-                          alt="Profile"
-                          className="w-full h-full object-cover rounded-full"
-                        />
-                      ) : (
-                        <User className="text-teal-600 w-12 h-12" />
-                      )}
-                      <div
-                        className={`absolute inset-0 bg-black/50 rounded-full flex items-center justify-center transition-opacity duration-300 ${
-                          avatarHover ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        <Camera className="w-6 h-6 text-white" />
+    <>
+      <div className="bg-[#1d8e85] min-h-screen">
+        <div className="max-w-8xl mx-auto p-2 sm:p-4">
+          <div className="flex flex-col xl:flex-row gap-4 lg:gap-6">
+            {/* Left Section */}
+            <div className="w-full xl:w-2/3 xl:h-[calc(100vh-2rem)] xl:overflow-y-auto scrollbar-hide">
+              <div className="bg-white bg-opacity-95 backdrop-blur rounded-2xl shadow-2xl p-4 sm:p-6">
+                {/* Profile Header */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-6">
+                  <div className="relative flex-shrink-0 group">
+                    <div
+                      className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-teal-600 to-teal-400 p-1 shadow-lg cursor-pointer transition-transform hover:scale-105"
+                      onClick={() =>
+                        getProfileImage() && setShowImageModal(true)
+                      }
+                    >
+                      <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
+                        {getProfileImage() ? (
+                          <img
+                            src={getProfileImage()}
+                            alt="Profile"
+                            className="w-full h-full object-cover rounded-full"
+                          />
+                        ) : (
+                          <User className="text-teal-600 w-12 h-12" />
+                        )}
+                        {/* Hover Overlay */}
+                        {getProfileImage() && (
+                          <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <Expand className="w-6 h-6 text-white" />
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
-                  {user?.isMiniKycVerified && (
-                    <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 shadow-md">
-                      <BadgeCheck className="w-5 h-5 text-white" />
-                    </div>
-                  )}
-                  <input
-                    type="file"
-                    ref={profileRef}
-                    accept=".png,.jpg,.jpeg"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                </div>
-
-                <div className="text-center sm:text-left flex-1">
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-                    {user?.name || "User Profile"}
                     {user?.isMiniKycVerified && (
-                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
-                        Mini-KYC Verified
-                      </span>
+                      <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 shadow-md">
+                        <BadgeCheck className="w-5 h-5 text-white" />
+                      </div>
                     )}
-                  </h2>
-                  <p className="text-sm text-gray-500 mt-1">{user?.username}</p>
-                 
-                 
-                </div>
-              </div>
+                  </div>
 
-              {/* Profile Form */}
-              <form onSubmit={handleProfileSubmit}>
+                  <div className="text-center sm:text-left flex-1">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+                      {user?.name || "User Profile"}
+                      {user?.isMiniKycVerified && (
+                        <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                          MINI-KYC Verified
+                        </span>
+                      )}
+                    </h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {user?.username}
+                    </p>
+                  </div>
+                </div>
+
                 {/* Personal Information */}
                 <div className="bg-gray-50 rounded-xl p-4 sm:p-5 mb-4">
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-4">
                     <UserCheck className="text-teal-600 w-5 h-5" />
                     Personal Information
-                    <span className="text-xs text-gray-400 font-normal">(From KYC - Read Only)</span>
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Full Name</label>
-                      <input type="text" value={user?.name || ""} readOnly className={readOnlyInputClass} />
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={user?.name || ""}
+                        readOnly
+                        className={readOnlyInputClass}
+                      />
                     </div>
 
                     <div className="space-y-1">
                       <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center gap-1">
                         <Mail className="w-3 h-3" /> Email Address
                       </label>
-                      <input type="email" value={user?.email || ""} readOnly className={readOnlyInputClass} />
+                      <input
+                        type="email"
+                        value={user?.email || ""}
+                        readOnly
+                        className={readOnlyInputClass}
+                      />
                     </div>
 
                     <div className="space-y-1">
@@ -2870,25 +2773,50 @@ export default function Profile3DForm() {
                       </label>
                       <input
                         type="text"
-                        value={user?.countryCode ? `+${user.countryCode} ${user.phone}` : user?.phone || ""}
+                        value={
+                          user?.countryCode
+                            ? `+${user.countryCode} ${user.phone}`
+                            : user?.phone || ""
+                        }
                         readOnly
                         className={readOnlyInputClass}
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Date of Birth</label>
-                      <input type="text" value={user?.aadhaarKycData?.date_of_birth || ""} readOnly className={readOnlyInputClass} />
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Date of Birth
+                      </label>
+                      <input
+                        type="text"
+                        value={user?.aadhaarKycData?.date_of_birth || ""}
+                        readOnly
+                        className={readOnlyInputClass}
+                      />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Gender</label>
-                      <input type="text" value={getGenderDisplay(user?.aadhaarKycData?.gender)} readOnly className={readOnlyInputClass} />
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Gender
+                      </label>
+                      <input
+                        type="text"
+                        value={getGenderDisplay(user?.aadhaarKycData?.gender)}
+                        readOnly
+                        className={readOnlyInputClass}
+                      />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Care Of</label>
-                      <input type="text" value={user?.aadhaarKycData?.care_of || ""} readOnly className={readOnlyInputClass} />
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Care Of
+                      </label>
+                      <input
+                        type="text"
+                        value={user?.aadhaarKycData?.care_of || ""}
+                        readOnly
+                        className={readOnlyInputClass}
+                      />
                     </div>
                   </div>
                 </div>
@@ -2898,326 +2826,414 @@ export default function Profile3DForm() {
                   <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-4">
                     <MapPin className="text-teal-600 w-5 h-5" />
                     Address Information
-                    <span className="text-xs text-blue-600 font-normal">(Editable)</span>
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1 sm:col-span-2">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Full Address *</label>
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Full Address
+                      </label>
                       <textarea
-                        name="address"
-                        value={state.address}
-                        onChange={handleChange}
+                        value={
+                          user?.address ||
+                          user?.aadhaarKycData?.full_address ||
+                          ""
+                        }
+                        readOnly
                         rows={2}
-                        placeholder="Enter your full address"
-                        className={`${editableInputClass(errors.address)} resize-none`}
+                        className={`${readOnlyInputClass} resize-none`}
                       />
-                      {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">City / District *</label>
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        City / District
+                      </label>
                       <input
                         type="text"
-                        name="city"
-                        value={state.city}
-                        onChange={handleChange}
-                        placeholder="Enter your city"
-                        className={editableInputClass(errors.city)}
+                        value={
+                          user?.city ||
+                          user?.aadhaarKycData?.address?.district ||
+                          ""
+                        }
+                        readOnly
+                        className={readOnlyInputClass}
                       />
-                      {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">State *</label>
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        State
+                      </label>
                       <input
                         type="text"
-                        name="state"
-                        value={state.state}
-                        onChange={handleChange}
-                        placeholder="Enter your state"
-                        className={editableInputClass(errors.state)}
+                        value={
+                          user?.state ||
+                          user?.aadhaarKycData?.address?.state ||
+                          ""
+                        }
+                        readOnly
+                        className={readOnlyInputClass}
                       />
-                      {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Country *</label>
-                      <select
-                        name="country"
-                        value={state.country}
-                        onChange={handleChange}
-                        className={editableInputClass(errors.country)}
-                      >
-                        <option value="">Select Country</option>
-                        {countryCodes?.map(({ country_name }) => (
-                          <option key={country_name} value={country_name}>{country_name}</option>
-                        ))}
-                      </select>
-                      {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country}</p>}
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Country
+                      </label>
+                      <input
+                        type="text"
+                        value={
+                          user?.country ||
+                          user?.aadhaarKycData?.address?.country ||
+                          ""
+                        }
+                        readOnly
+                        className={readOnlyInputClass}
+                      />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Pincode</label>
-                      <input type="text" value={user?.aadhaarKycData?.address?.pincode || ""} readOnly className={readOnlyInputClass} />
+                      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        value={user?.aadhaarKycData?.address?.pincode || ""}
+                        readOnly
+                        className={readOnlyInputClass}
+                      />
                     </div>
                   </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading || updateLoader}
-                    className={`w-full mt-4 py-2.5 rounded-xl font-semibold transition shadow-md text-sm sm:text-base flex items-center justify-center gap-2 ${
-                      loading || updateLoader
-                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                        : "bg-teal-600 hover:bg-teal-700 text-white"
-                    }`}
-                  >
-                    <Save className="w-4 h-4" />
-                    {loading || updateLoader ? "Updating..." : "Update Profile"}
-                  </button>
                 </div>
-              </form>
 
-              {/* KYC Information */}
-              {(user?.aadhaarNumber || user?.panNumber) && (
-                <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 sm:p-5 border border-teal-100">
-                  <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-4">
-                    <Shield className="text-teal-600 w-5 h-5" />
-                    Mini-KYC Verification
-                    {user?.isMiniKycVerified && <StatusBadge isValid={true} label="Completed" />}
-                  </h3>
+                {/* KYC Information */}
+                {(user?.aadhaarNumber || user?.panNumber) && (
+                  <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 sm:p-5 border border-teal-100">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-4">
+                      <Shield className="text-teal-600 w-5 h-5" />
+                      Mini - KYC Verification
+                      {user?.isMiniKycVerified && (
+                        <StatusBadge isValid={true} label="Completed" />
+                      )}
+                    </h3>
 
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Aadhaar Number */}
-                    {user?.aadhaarNumber && (
-                      <div className="space-y-1">
-                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center justify-between">
-                          <span className="flex items-center gap-1">
-                            <CreditCard className="w-3 h-3 text-orange-500" />
-                            Aadhaar Number
-                          </span>
-                          <StatusBadge isValid={user?.aadhaarKycData?.status === "VALID"} />
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={displayedAadhaar}
-                            readOnly
-                            className={readOnlyInputClass}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowAadhaar((v) => !v)}
-                            disabled={isDecryptingAadhaar || !aadhaarPlain}
-                            className="absolute right-3 top-2.5 text-gray-500 hover:text-teal-600 transition disabled:opacity-50"
-                          >
-                            {showAadhaar ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                          </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* Aadhaar Number */}
+                      {user?.aadhaarNumber && (
+                        <div className="space-y-1">
+                          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center justify-between">
+                            <span className="flex items-center gap-1">
+                              <CreditCard className="w-3 h-3 text-orange-500" />
+                              Aadhaar Number
+                            </span>
+                            <StatusBadge
+                              isValid={user?.aadhaarKycData?.status === "VALID"}
+                            />
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="text"
+                              value={displayedAadhaar}
+                              readOnly
+                              className={readOnlyInputClass}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowAadhaar((v) => !v)}
+                              disabled={isDecryptingAadhaar || !aadhaarPlain}
+                              className="absolute right-3 top-2.5 text-gray-500 hover:text-teal-600 transition disabled:opacity-50"
+                              title={
+                                showAadhaar ? "Hide Aadhaar" : "Show Aadhaar"
+                              }
+                            >
+                              {showAadhaar ? (
+                                <EyeOff className="w-4 h-4" />
+                              ) : (
+                                <Eye className="w-4 h-4" />
+                              )}
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {/* PAN Number */}
-                    {user?.panNumber && (
-                      <div className="space-y-1">
-                        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center justify-between">
-                          <span className="flex items-center gap-1">
-                            <CreditCard className="w-3 h-3 text-blue-500" />
-                            PAN Number
-                          </span>
-                          <StatusBadge isValid={String(user?.panKycData?.status).toLowerCase() === "valid"} />
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={displayedPan}
-                            readOnly
-                            className={readOnlyInputClass}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPan((v) => !v)}
-                            disabled={isDecryptingPan || !panPlain}
-                            className="absolute right-3 top-2.5 text-gray-500 hover:text-teal-600 transition disabled:opacity-50"
-                          >
-                            {showPan ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                          </button>
+                      {/* PAN Number */}
+                      {user?.panNumber && (
+                        <div className="space-y-1">
+                          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center justify-between">
+                            <span className="flex items-center gap-1">
+                              <CreditCard className="w-3 h-3 text-blue-500" />
+                              PAN Number
+                            </span>
+                            <StatusBadge
+                              isValid={
+                                String(
+                                  user?.panKycData?.status
+                                ).toLowerCase() === "valid"
+                              }
+                            />
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="text"
+                              value={displayedPan}
+                              readOnly
+                              className={readOnlyInputClass}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPan((v) => !v)}
+                              disabled={isDecryptingPan || !panPlain}
+                              className="absolute right-3 top-2.5 text-gray-500 hover:text-teal-600 transition disabled:opacity-50"
+                              title={showPan ? "Hide PAN" : "Show PAN"}
+                            >
+                              {showPan ? (
+                                <EyeOff className="w-4 h-4" />
+                              ) : (
+                                <Eye className="w-4 h-4" />
+                              )}
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    )}
-
-                    {/* PAN Category */}
-
-
-
+                      )}
+                    </div>
                   </div>
-
-                  {/* Verification Checks */}
-
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Right Section - Password Change */}
-          <div className="w-full xl:w-1/3 xl:sticky xl:top-4 xl:h-fit">
-            <div className="bg-white bg-opacity-95 backdrop-blur rounded-2xl shadow-2xl p-4 sm:p-6">
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 text-sm text-amber-900 shadow-sm mb-4">
-                <p className="font-semibold mb-1 text-xs sm:text-sm flex items-center gap-1">
-                  <Shield className="w-4 h-4" />
-                  Security Reminder
-                </p>
-                <p className="leading-relaxed text-xs sm:text-sm">
-                  Enter your current password before making changes. This helps verify your identity.
-                </p>
-              </div>
-
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 flex items-center gap-2 mb-4">
-                <LockKeyhole className="text-teal-600 w-5 h-5 sm:w-6 sm:h-6" />
-                Change Password
-              </h3>
-
-              <div className="flex flex-col gap-3 sm:gap-4">
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Current Password *</label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      placeholder="Enter your current password"
-                      readOnly={otpVerified}
-                      className={`${inputClass(errors.password)} pr-10 ${otpVerified ? "opacity-60" : ""}`}
-                    />
-                    <button
-                      type="button"
-                      onClick={togglePassword}
-                      disabled={otpVerified}
-                      className="absolute right-3 top-2.5 text-gray-600 hover:text-teal-600 disabled:opacity-50"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+            {/* Right Section - Password Change */}
+            <div className="w-full xl:w-1/3 xl:sticky xl:top-4 xl:h-fit">
+              <div className="bg-white bg-opacity-95 backdrop-blur rounded-2xl shadow-2xl p-4 sm:p-6">
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 text-sm text-amber-900 shadow-sm mb-4">
+                  <p className="font-semibold mb-1 text-xs sm:text-sm flex items-center gap-1">
+                    <Shield className="w-4 h-4" />
+                    Security Reminder
+                  </p>
+                  <p className="leading-relaxed text-xs sm:text-sm">
+                    Enter your current password before making changes. This
+                    helps verify your identity.
+                  </p>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">OTP *</label>
-                  <div className="flex gap-2 sm:gap-3">
-                    <input
-                      type="text"
-                      name="otp"
-                      value={formData.otp}
-                      onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
-                      placeholder="Enter 6-digit OTP"
-                      disabled={!otpSent || otpVerified}
-                      maxLength={6}
-                      className={`${inputClass(errors.otp)} flex-1 ${!otpSent || otpVerified ? "opacity-60 cursor-not-allowed" : ""}`}
-                    />
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 flex items-center gap-2 mb-4">
+                  <LockKeyhole className="text-teal-600 w-5 h-5 sm:w-6 sm:h-6" />
+                  Change Password
+                </h3>
+
+                <div className="flex flex-col gap-3 sm:gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Current Password *
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formData.password}
+                        onChange={(e) =>
+                          setFormData({ ...formData, password: e.target.value })
+                        }
+                        placeholder="Enter your current password"
+                        readOnly={otpVerified}
+                        className={`${inputClass(errors.password)} pr-10 ${
+                          otpVerified ? "opacity-60" : ""
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={togglePassword}
+                        disabled={otpVerified}
+                        className="absolute right-3 top-2.5 text-gray-600 hover:text-teal-600 disabled:opacity-50"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      OTP *
+                    </label>
+                    <div className="flex gap-2 sm:gap-3">
+                      <input
+                        type="text"
+                        name="otp"
+                        value={formData.otp}
+                        onChange={(e) =>
+                          setFormData({ ...formData, otp: e.target.value })
+                        }
+                        placeholder="Enter 6-digit OTP"
+                        disabled={!otpSent || otpVerified}
+                        maxLength={6}
+                        className={`${inputClass(errors.otp)} flex-1 ${
+                          !otpSent || otpVerified
+                            ? "opacity-60 cursor-not-allowed"
+                            : ""
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleSendOtp}
+                        disabled={
+                          (otpSent && !resendOtp) || otpVerified || isOtpSending
+                        }
+                        className="px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-medium transition whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm flex-shrink-0"
+                      >
+                        {isOtpSending
+                          ? "Sending..."
+                          : otpSent && !resendOtp
+                          ? `${Math.floor(timer / 60)}:${
+                              timer % 60 < 10 ? `0${timer % 60}` : timer % 60
+                            }`
+                          : otpSent && resendOtp
+                          ? "Resend"
+                          : "Get OTP"}
+                      </button>
+                    </div>
+                    {errors.otp && (
+                      <p className="text-red-500 text-xs mt-1">{errors.otp}</p>
+                    )}
+                  </div>
+
+                  {!otpVerified && otpSent && (
                     <button
                       type="button"
-                      onClick={handleSendOtp}
-                      disabled={(otpSent && !resendOtp) || otpVerified || isOtpSending}
-                      className="px-3 sm:px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-medium transition whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm flex-shrink-0"
+                      onClick={handleVerifyOtp}
+                      disabled={isVerifying}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl font-medium transition shadow disabled:opacity-50"
                     >
-                      {isOtpSending
-                        ? "Sending..."
-                        : otpSent && !resendOtp
-                        ? `${Math.floor(timer / 60)}:${timer % 60 < 10 ? `0${timer % 60}` : timer % 60}`
-                        : otpSent && resendOtp
-                        ? "Resend"
-                        : "Get OTP"}
+                      {isVerifying ? "Verifying..." : "Verify OTP"}
                     </button>
-                  </div>
-                  {errors.otp && <p className="text-red-500 text-xs mt-1">{errors.otp}</p>}
+                  )}
+
+                  {otpVerified && (
+                    <div className="space-y-4 pt-2 border-t border-gray-200">
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">
+                          New Password *
+                        </label>
+                        <input
+                          type="password"
+                          name="newPassword"
+                          value={formData.newPassword}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              newPassword: e.target.value,
+                            })
+                          }
+                          placeholder="Enter new password (min 6 characters)"
+                          className={inputClass(errors.newPassword)}
+                        />
+                        {errors.newPassword && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.newPassword}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Confirm New Password *
+                        </label>
+                        <input
+                          type="password"
+                          name="confirmPwd"
+                          value={formData.confirmPwd}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              confirmPwd: e.target.value,
+                            })
+                          }
+                          placeholder="Confirm your new password"
+                          className={inputClass(errors.confirmPwd)}
+                        />
+                        {errors.confirmPwd && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.confirmPwd}
+                          </p>
+                        )}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleChangePassword}
+                        disabled={isLoading}
+                        className="w-full bg-teal-700 hover:bg-teal-800 text-white py-2.5 rounded-xl font-semibold transition shadow disabled:opacity-50"
+                      >
+                        {isLoading ? "Changing..." : "Change Password"}
+                      </button>
+                    </div>
+                  )}
                 </div>
 
-                {!otpVerified && otpSent && (
-                  <button
-                    type="button"
-                    onClick={handleVerifyOtp}
-                    disabled={isVerifying}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-xl font-medium transition shadow disabled:opacity-50"
-                  >
-                    {isVerifying ? "Verifying..." : "Verify OTP"}
-                  </button>
-                )}
-
-                {otpVerified && (
-                  <div className="space-y-4 pt-2 border-t border-gray-200">
-                    <div className="space-y-1">
-                      <label className="block text-sm font-medium text-gray-700">New Password *</label>
-                      <input
-                        type="password"
-                        name="newPassword"
-                        value={formData.newPassword}
-                        onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
-                        placeholder="Enter new password (min 6 characters)"
-                        className={inputClass(errors.newPassword)}
-                      />
-                      {errors.newPassword && <p className="text-red-500 text-xs mt-1">{errors.newPassword}</p>}
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                    Account Details
+                  </h4>
+                  <div className="space-y-2 text-xs text-gray-500">
+                    <div className="flex justify-between">
+                      <span>Username:</span>
+                      <span className="font-medium text-gray-700">
+                        {user?.username}
+                      </span>
                     </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-sm font-medium text-gray-700">Confirm New Password *</label>
-                      <input
-                        type="password"
-                        name="confirmPwd"
-                        value={formData.confirmPwd}
-                        onChange={(e) => setFormData({ ...formData, confirmPwd: e.target.value })}
-                        placeholder="Confirm your new password"
-                        className={inputClass(errors.confirmPwd)}
-                      />
-                      {errors.confirmPwd && <p className="text-red-500 text-xs mt-1">{errors.confirmPwd}</p>}
+                    <div className="flex justify-between items-start">
+                      <span>Reference ID:</span>
+                      <span className="font-medium text-gray-700 text-right break-all max-w-[60%]">
+                        {user?.referenceId}
+                      </span>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={handleChangePassword}
-                      disabled={isLoading}
-                      className="w-full bg-teal-700 hover:bg-teal-800 text-white py-2.5 rounded-xl font-semibold transition shadow disabled:opacity-50"
-                    >
-                      {isLoading ? "Changing..." : "Change Password"}
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-gray-200">
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Account Details</h4>
-                <div className="space-y-2 text-xs text-gray-500">
-                  <div className="flex justify-between">
-                    <span>Username:</span>
-                    <span className="font-medium text-gray-700">{user?.username}</span>
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <span>Reference ID:</span>
-                    <span className="font-medium text-gray-700 text-right break-all max-w-[60%]">{user?.referenceId}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Wallet:</span>
-                    <span className="font-medium text-gray-700 truncate max-w-[150px]" title={user?.walletadress}>
-                      {user?.walletadress ? `${user.walletadress.slice(0, 6)}...${user.walletadress.slice(-4)}` : "N/A"}
-                    </span>
+                    <div className="flex justify-between items-center">
+                      <span>Wallet:</span>
+                      <span
+                        className="font-medium text-gray-700 truncate max-w-[150px]"
+                        title={user?.walletadress}
+                      >
+                        {user?.walletadress
+                          ? `${user.walletadress.slice(
+                              0,
+                              6
+                            )}...${user.walletadress.slice(-4)}`
+                          : "N/A"}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <style jsx>{`
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
       </div>
 
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-    </div>
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        imageSrc={getProfileImage()}
+        userName={user?.name}
+      />
+    </>
   );
 }

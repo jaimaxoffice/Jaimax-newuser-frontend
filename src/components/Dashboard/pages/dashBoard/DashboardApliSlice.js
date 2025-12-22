@@ -63,7 +63,7 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getBonusLogs: builder.query({
-      query: () => ({
+      query: (queryParams) => ({
         url: `/user/user-registration-bonuslogs?${queryParams}`,
         method: "GET",
       }),
