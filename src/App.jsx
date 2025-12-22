@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback,useMemo  } from "react";
 import {
   Routes,
   Route,
@@ -7,7 +7,6 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-
 
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
@@ -55,17 +54,18 @@ import Shareholders from "./components/Dashboard/pages/shareholders/shareholders
 import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet";
 import UserMeetingsShowcase from "./components/Dashboard/pages/Meetings/Zoommeetings";
 import PrivateRoute from "./router/PrivateRoute";
-import SuperBonusInfo from "./components/Dashboard/pages/lockedSuperBouns/LockedSuperbonus"
+import SuperBonusInfo from "./components/Dashboard/pages/lockedSuperBouns/LockedSuperbonus";
 import UserDetailsComponent from "./components/Dashboard/pages/jwallet/jwallet";
 import Cookies from "js-cookie";
 import PublicRoute from "./router/PublicRoute";
 import MarketingPlanReferrals from "./components/Dashboard/pages/GoaVacation/GoaVacation";
-import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation"
-import PromotersPage from "./components/Dashboard/pages/Promoters/Promoters"
-import GuaranteedWealthDashboard from "./components/Dashboard/pages/GuaranteedWealthPlan/GuaranteedWealthPlan"
-import GuaranteedWealthDashboard2_O from "./components/Dashboard/pages/GuaranteedWealth2.O/GuaranteedWealth2.O"
-import { ToastContainer } from './ReusableComponents/Toasts/Toasts';
+import FoundationBonusUI from "./components/Dashboard/pages/Foundation/Foundation";
+import PromotersPage from "./components/Dashboard/pages/Promoters/Promoters";
+import GuaranteedWealthDashboard from "./components/Dashboard/pages/GuaranteedWealthPlan/GuaranteedWealthPlan";
+import GuaranteedWealthDashboard2_O from "./components/Dashboard/pages/GuaranteedWealth2.O/GuaranteedWealth2.O";
+import { ToastContainer } from "./ReusableComponents/Toasts/Toasts";
 import PreSaleCryptoCoin from "./services/PreSaleCryptoCoin";
+import Snowfall from "react-snowfall";
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -230,8 +230,9 @@ const DashboardLayout = () => {
       </div>
 
       <div
-        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${sidebarOpen ? "lg:ml-64" : "lg:ml-2"
-          } h-screen overflow-hidden`}
+        className={`transition-all duration-300 ease-in-out flex-1 flex flex-col ml-1 mr-1 ${
+          sidebarOpen ? "lg:ml-64" : "lg:ml-2"
+        } h-screen overflow-hidden`}
       >
         <div className=" mb-1">
           <Header />
@@ -268,7 +269,6 @@ const PublicLayout = () => {
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
   return (
     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
-
       {!shouldHideNavbar && <Navbar />}
       <main className="flex-1">
         <Outlet />
@@ -335,7 +335,11 @@ const App = () => {
 
     return () => clearInterval(interval);
   }, [showSplash]);
-
+const images = useMemo(() => {
+    const img = new Image();
+    img.src = "/poster.png";
+    return [img];
+  }, []);
   if (showSplash) return <JaimaxSplash />;
 
   return (
@@ -396,6 +400,49 @@ const App = () => {
           )}
         </>
       )}
+      <>
+  {/* <Snowfall
+    color="white"
+    radius={[1, 3]}
+    speed={[0.5, 2]}
+    wind={[-0.5, 1]}
+    style={{
+      position: "fixed",
+      inset: 0,
+      pointerEvents: "none",
+      zIndex: 9999,
+    }}
+  />
+<Snowfall
+      images={images}
+      radius={[6, 10]}
+      speed={[0.1, 0.4]}
+      rotationSpeed={[-1, 1]}      // optional (nice)
+      enable3DRotation={true}      // optional (premium look)
+      style={{
+        position: "fixed",
+        inset: 0,
+        pointerEvents: "none",
+        zIndex: 9998,
+      }}
+    />
+
+  <Snowfall
+    color="red"
+    // snowflakeCount={40}
+    radius={[1, 2]}
+    speed={[0.6, 2.2]}
+    wind={[-0.3, 0.8]}
+    style={{
+      position: "fixed",
+      inset: 0,
+      pointerEvents: "none",
+      zIndex: 9999,
+    }}
+  /> */}
+
+</>
+
       <FloatingWhatsapp />
       <Routes>
         <Route element={<PrivateRoute />}>
@@ -481,6 +528,7 @@ const App = () => {
               )
             }
           />
+
           <Route element={<PublicRoute />}>
             <Route path="login" element={<AuthContainer />} />
             <Route path="register" element={<AuthContainer />} />
@@ -489,7 +537,7 @@ const App = () => {
           <Route path="about" element={<JaimaxComponent />} />
           <Route path="contact" element={<Contact />} />
           <Route path="features" element={<FeaturesSection />} />
-            <Route path='landingpage' element={<Landingpage/>}/>
+          <Route path="landingpage" element={<Landingpage />} />
           <Route path="blog/">
             <Route index element={<BlogLayout />} />
             <Route path=":slug" element={<BlogDetailPage />} />
@@ -504,7 +552,10 @@ const App = () => {
           <Route path="Margintrading" element={<Margintrading />} />
           <Route path="ApiTrading" element={<ApiTrading />} />
           <Route path="SpotTrading" element={<SpotTrading />} />
-          <Route path="best-presale-crypto-coin-in-india" element={<PreSaleCryptoCoin />} />
+          <Route
+            path="best-presale-crypto-coin-in-india"
+            element={<PreSaleCryptoCoin />}
+          />
           <Route path="FuturesTrading" element={<FuturesTrading />} />
           <Route path="PreSale" element={<PreSale />} />
           <Route path="Kyc-Pmla" element={<KycPmlaPolicy />} />

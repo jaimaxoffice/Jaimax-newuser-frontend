@@ -12,7 +12,8 @@ import {
   Filter,
   ChevronDown,
   Share2,
-  Check
+  Check,
+  Phone
 } from "lucide-react";
 import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import { useUserDetailsQuery } from "./myTotalTeamApiSlice";
@@ -570,6 +571,10 @@ const MyTotalTeam = () => {
           <Mail className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
           <p className="text-gray-600 truncate">{data.email || "N/A"}</p>
         </div>
+        <div className="flex items-center gap-2 mb-3 text-xs">
+          <Phone className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+          <p className="text-gray-600 truncate">{data.phone || "N/A"}</p>
+        </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-2">
@@ -611,6 +616,7 @@ const MyTotalTeam = () => {
                   <th className="py-2 px-4 font-medium">Name</th>
                   <th className="py-2 px-4 font-medium">Email</th>
                   <th className="py-2 px-4 font-medium">Username</th>
+                  <th className="py-2 px-4 font-medium">Phone</th>
                   <th className="py-2 px-4 font-medium">Referrals</th>
                   <th className="py-2 px-4 font-medium">Join Date</th>
                   <th className="py-2 px-4 font-medium">Status</th>
@@ -667,6 +673,9 @@ const MyTotalTeam = () => {
                       </td>
                       <td className="py-3 px-4 text-teal-600 font-medium">
                         {data.username || "N/A"}
+                      </td>
+                      <td className="py-3 px-4 text-gray-600 font-medium">
+                        {data.phone || "N/A"}
                       </td>
                       <td className="py-3 px-4 text-gray-700 font-medium">
                         {data.totalChainReferrals + data?.totalDirectReferrals ||

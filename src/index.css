@@ -140,3 +140,7 @@ html {
     @apply bg-background text-foreground;
   }
 }
+::selection {
+  background: #14b8a6 !important;
+  color: white !important;
+}
