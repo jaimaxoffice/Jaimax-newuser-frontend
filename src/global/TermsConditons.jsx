@@ -86,6 +86,7 @@ const TermsAndConditions = () => {
               <li>Securing their private keys and wallet credentials</li>
               <li>Managing passwords and recovery options (once implemented)</li>
               <li>Understanding the risks of blockchain transactions and token transfers</li>
+              <li>If a user’s private key or seed phrase is lost, exposed, shared, or stolen, the company shall not be held responsible for any resulting loss of funds, assets, or access</li>
             </ul>
             <p className="text-teal-900 mt-2">
               We are not liable for any loss due to unauthorized access, forgotten credentials, or technical failure.

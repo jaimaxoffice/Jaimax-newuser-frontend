@@ -290,8 +290,8 @@ const TopCards = React.memo(() => {
       {
         label: "Bonus Received",
         
-        image: assets.bonus,
-        hoverImage: assets.bonus1,
+        image: assets.welcomeDraw,
+        hoverImage: assets.totalCoins,
         iconBg: "#e8f5e9",
         isClickable: true, // Make this card clickable
         onClick: handleOpenBonusLogs, // Add click handler

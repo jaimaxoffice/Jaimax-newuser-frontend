@@ -28,6 +28,7 @@ import {
   ArrowLeft,
   Globe,
   Camera,
+  
 } from "lucide-react";
 import icon from "../assets/Images/greencoin.webp";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
@@ -2791,20 +2792,7 @@ export default function AuthContainer() {
         rounded-full transition-all duration-300 ${className}`}
       aria-label="Go back"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="2.5"
-        stroke="currentColor"
-        className="w-full h-full"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15 19l-7-7 7-7"
-        />
-      </svg>
+<ArrowLeft className="w-5 h-5 lg:w-6 lg:h-6 group-hover:translate-x-[-2px] transition-transform duration-300" />
     </button>
   );
 

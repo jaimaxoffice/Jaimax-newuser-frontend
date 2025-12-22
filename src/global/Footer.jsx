@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import Logo from "../assets/Images/jaimaxlogo1.svg";
+import Logo from "/jaimaxlogo.svg";
 
 const Footer = () => {
   const navigate = useNavigate();

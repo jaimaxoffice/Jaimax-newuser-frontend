@@ -1,27 +1,23 @@
 // BonusLogsModal.jsx
 import React, { useState, useEffect } from 'react';
 import { X, Gift, Calendar, Coins, FileText, UserPlus, Award, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useGetBonusLogsQuery } from '../DashboardApliSlice'; // Adjust path
+import { useGetBonusLogsQuery } from '../DashboardApliSlice';
 
 const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
 
-  // Reset page when tab changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [activeTab]);
-
   // Fetch data with query params
   const { data: bonusLogsData, isLoading, isFetching } = useGetBonusLogsQuery(
     {
       page: currentPage,
       limit: limit,
-      type: activeTab === 'all' ? '' : activeTab,
+      type: activeTab, // Pass activeTab directly (API slice handles 'all' case)
     },
     {
       skip: !isOpen,
+      refetchOnMountOrArgChange: true,
     }
   );
 
@@ -110,10 +106,12 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
     return pages;
   };
 
-  // Handle tab change
+  // Handle tab change - Reset to page 1
   const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-    setCurrentPage(1); // Reset to page 1
+    if (tabId !== activeTab) {
+      setActiveTab(tabId);
+      setCurrentPage(1);
+    }
   };
 
   if (!isOpen) return null;
@@ -188,6 +186,11 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-teal-500"></div>
                 <span className="text-xs sm:text-sm text-teal-700">
                   Showing <span className="font-bold">{logs.length}</span> of <span className="font-bold">{total}</span> records
+                  {activeTab !== 'all' && (
+                    <span className="ml-1 text-teal-500">
+                      ({activeTab})
+                    </span>
+                  )}
                 </span>
               </div>
               {isFetching && (
@@ -211,7 +214,7 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
                 <p className="text-gray-600 text-sm sm:text-lg font-medium">No bonus logs found</p>
                 <p className="text-gray-400 text-xs sm:text-sm mt-1">
                   {activeTab !== 'all' 
-                    ? 'Try selecting a different tab' 
+                    ? `No ${activeTab} records found. Try selecting a different tab.` 
                     : 'Check back later for bonus updates'}
                 </p>
               </div>
@@ -246,7 +249,12 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
                           className="hover:bg-teal-50/50 transition-colors"
                         >
                           <td className="px-4 py-4">
-                            <span className="inline-flex px-3 py-1 text-xs font-semibold rounded-full capitalize bg-teal-100 text-teal-700">
+                            <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full capitalize
+                              ${log.type === 'registration bonus' 
+                                ? 'bg-teal-100 text-teal-700' 
+                                : 'bg-blue-100 text-blue-700'
+                              }`}
+                            >
                               {log.type}
                             </span>
                           </td>
@@ -287,7 +295,12 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
                     >
                       {/* Card Header */}
                       <div className="flex justify-between items-start mb-2 sm:mb-3">
-                        <span className="inline-flex px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold rounded-full capitalize bg-teal-100 text-teal-700">
+                        <span className={`inline-flex px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold rounded-full capitalize
+                          ${log.type === 'registration bonus' 
+                            ? 'bg-teal-100 text-teal-700' 
+                            : 'bg-blue-100 text-blue-700'
+                          }`}
+                        >
                           {log.type}
                         </span>
                         <div className="flex items-center gap-1 bg-teal-50 px-2 py-1 rounded-lg border border-teal-200">

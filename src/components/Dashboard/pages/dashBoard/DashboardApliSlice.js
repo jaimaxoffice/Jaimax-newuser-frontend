@@ -62,12 +62,24 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
         body: { jmc },
       }),
     }),
-    getBonusLogs: builder.query({
-      query: (queryParams) => ({
-        url: `/user/user-registration-bonuslogs?${queryParams}`,
-        method: "GET",
-      }),
-    }),
+    // DashboardApiSlice.js
+getBonusLogs: builder.query({
+  query: ({ page = 1, limit = 10, type = '' } = {}) => {
+    const params = new URLSearchParams();
+    params.append('page', page);
+    params.append('limit', limit);
+    
+    // Only add type if it's not empty or 'all'
+    if (type && type !== 'all') {
+      params.append('type', type);
+    }
+    
+    return {
+      url: `/user/user-registration-bonuslogs?${params.toString()}`,
+      method: "GET",
+    };
+  },
+}),
     
     // ✅ Handle nested result.result and convert hex to decimal
     getHolderCount: builder.query({
