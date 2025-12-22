@@ -297,7 +297,7 @@ const LoginComponent = ({ onToggleMode, isVisible,toggleLoader }) => {
       });
       return;
     }
-    toggleLoader(true);
+    // toggleLoader(true);
     if (rememberMe) {
       Cookies.set("email", formData.email?.trim(), { expires: 30 });
       Cookies.set("rememberMe", "true", { expires: 30 });

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import assets from "../../../../../assets/assets";
-import { useUserDataQuery, useGetRoundQuery } from "../DashboardApliSlice";
+import { useUserDataQuery, useGetRoundQuery, useGetBonusLogsQuery} from "../DashboardApliSlice";
 import Cookies from "js-cookie";
 
 import { useGetAnnounceQuery } from "../../Announements/AnnouncementsApiSlice";
@@ -138,6 +138,7 @@ const TopCards = React.memo(() => {
   const { data: userData, refetch } = useUserDataQuery(undefined, {
     skip: !isTokenVerified,
   });
+  const { data: bonusLogsData } = useGetBonusLogsQuery();
   const {
     data: announceData,
     Loading,
@@ -249,6 +250,26 @@ const TopCards = React.memo(() => {
         iconBg: "#fce4ec",
         isCompleted: false,
       },
+       {
+        label: "Super Bonus",
+        value: `${currencySymbol}${Number(
+          userData?.data?.super_bonus || 0
+        ).toFixed(2)}`,
+        image: assets.superBonus,
+        hoverImage: assets.superBonus1,
+        iconBg: "#f1f8e9",
+        isCompleted: false,
+      },
+      {
+        label: "Bonus Received",
+        value: `${currencySymbol}${Number(
+          userData?.data?.registrationBonusAmount || 0
+        ).toFixed(2)}`,
+        image: assets.bonus,
+        hoverImage: assets.bonus1,
+        iconBg: "#e8f5e9",
+
+      }
 
 
     ],

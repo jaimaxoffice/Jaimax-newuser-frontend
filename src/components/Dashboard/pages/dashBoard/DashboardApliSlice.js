@@ -1,4 +1,5 @@
-import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";  
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
+
 export const dashboardApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getRound: builder.query({
@@ -20,7 +21,6 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["updateDetails"],
     }),
-
     addOrder: builder.mutation({
       query: (data) => ({
         url: "/order/addOrder",
@@ -55,15 +55,61 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-getRegisterBonus: builder.mutation({
+    getRegisterBonus: builder.mutation({
       query: (jmc) => ({
-        url: "/user/get-welcome-bonus",
+        url: `/user/get-welcome-bonus`,
         method: "POST",
         body: { jmc },
       }),
     }),
+    getBonusLogs: builder.query({
+      query: () => ({
+        url: `/user/user-registration-bonuslogs?${queryParams}`,
+        method: "GET",
+      }),
+    }),
+    
+    // ✅ Handle nested result.result and convert hex to decimal
+    getHolderCount: builder.query({
+      queryFn: async (tokenAddress) => {
+        try {
+          const response = await fetch(
+            "https://bsc-mainnet.nodereal.io/v1/708d964aa8f046bf9994305d4190ac46",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                jsonrpc: "2.0",
+                method: "nr_getTokenHolderCount",
+                params: [tokenAddress],
+                id: 1,
+              }),
+            }
+          );
 
-   
+          const data = await response.json();
+
+          if (data.error) {
+            return { error: { status: 'CUSTOM_ERROR', data: data.error } };
+          }
+
+          // Handle nested result.result structure and convert hex to decimal
+          const hexValue = data.result?.result || data.result;
+          const decimalValue = hexValue ? parseInt(hexValue, 16) : null;
+
+          return { data: decimalValue };
+        } catch (error) {
+          return { 
+            error: { 
+              status: 'FETCH_ERROR', 
+              error: error.message 
+            } 
+          };
+        }
+      },
+    }),
   }),
 });
 
@@ -77,4 +123,6 @@ export const {
   useCreatePaypalOrderMutation,
   useGetAnnounceQuery,
   useGetRegisterBonusMutation,
+  useGetBonusLogsQuery,
+  useGetHolderCountQuery,
 } = dashboardApiSlice;
