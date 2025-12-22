@@ -1,12 +1,5 @@
-
-
 const SYSTEM_SALT = import.meta.env.VITE_SYSTEM_SALT;
 
-/**
- * Derives a 32-byte AES key from password using PBKDF2
- * @param {string} password - User password
- * @returns {Promise<Uint8Array>} 32-byte key
- */
 export const deriveUserKeyBytes = async (password) => {
   const encoder = new TextEncoder();
   const passwordBytes = encoder.encode(password.trim());
@@ -20,7 +13,7 @@ export const deriveUserKeyBytes = async (password) => {
           name: "PBKDF2",
           salt: saltBytes,
           iterations: 100000,
-          hash: "SHA-256"
+          hash: "SHA-256",
         },
         importedKey,
         256 // 256 bits = 32 bytes
@@ -30,12 +23,6 @@ export const deriveUserKeyBytes = async (password) => {
   return new Uint8Array(keyBuffer);
 };
 
-/**
- * Encrypts payload for sending to backend
- * @param {Object} payload - JSON object to encrypt
- * @param {string} password - User password
- * @returns {Promise<{encrypted: string, iv: string}>}
- */
 export const encryptPayload = async (payload, password) => {
   const keyBytes = await deriveUserKeyBytes(password);
   const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -60,18 +47,11 @@ export const encryptPayload = async (payload, password) => {
   const bytes = new Uint8Array(encryptedBuffer);
 
   return {
-    encrypted: btoa(String.fromCharCode(...bytes)),
-    iv: btoa(String.fromCharCode(...iv))
+    consent: btoa(String.fromCharCode(...bytes)),
+    terms: btoa(String.fromCharCode(...iv)),
   };
 };
 
-/**
- * Decrypts data received from backend
- * @param {string} encryptedData - Base64 encoded ciphertext+authTag
- * @param {string} iv - Base64 encoded IV
- * @param {string} password - User password
- * @returns {Promise<Object>} Decrypted JSON object
- */
 export const decryptPayload = async (encryptedData, iv, password) => {
   const keyBytes = await deriveUserKeyBytes(password);
 
@@ -83,8 +63,10 @@ export const decryptPayload = async (encryptedData, iv, password) => {
     ["decrypt"]
   );
 
-  const encryptedBytes = Uint8Array.from(atob(encryptedData), c => c.charCodeAt(0));
-  const ivBytes = Uint8Array.from(atob(iv), c => c.charCodeAt(0));
+  const encryptedBytes = Uint8Array.from(atob(encryptedData), (c) =>
+    c.charCodeAt(0)
+  );
+  const ivBytes = Uint8Array.from(atob(iv), (c) => c.charCodeAt(0));
 
   // crypto.subtle.decrypt expects ciphertext+authTag together
   const decryptedBuffer = await crypto.subtle.decrypt(
