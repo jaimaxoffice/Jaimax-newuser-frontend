@@ -2199,17 +2199,17 @@ const importAesKey = async (hexKey) => {
 };
 
 const decryptAesGcm = async (encryptedData, type) => {
-  console.log(`[Decrypt ${type}] Starting decryption...`);
+  // console.log(`[Decrypt ${type}] Starting decryption...`);
 
   if (!encryptedData) {
-    console.log(`[Decrypt ${type}] No data to decrypt`);
+    // console.log(`[Decrypt ${type}] No data to decrypt`);
     return "";
   }
 
   // Check if already decrypted/masked
   const dataStr = String(encryptedData).trim();
   if (dataStr.includes("X") || dataStr.includes("x")) {
-    console.log(`[Decrypt ${type}] Already masked:`, dataStr);
+    // console.log(`[Decrypt ${type}] Already masked:`, dataStr);
     return dataStr;
   }
 
@@ -2225,14 +2225,14 @@ const decryptAesGcm = async (encryptedData, type) => {
   }
 
   const [ivHex, tagHex, cipherHex] = parts;
-  console.log(
-    `[Decrypt ${type}] IV length: ${ivHex.length}, Tag length: ${tagHex.length}, Cipher length: ${cipherHex.length}`
-  );
+  // console.log(
+    // `[Decrypt ${type}] IV length: ${ivHex.length}, Tag length: ${tagHex.length}, Cipher length: ${cipherHex.length}`
+  // );
 
   try {
     const keyHex = import.meta.env.VITE_KYC_AES_KEY;
     if (!keyHex) {
-      console.error("[Decrypt] Missing VITE_KYC_AES_KEY environment variable");
+      // console.error("[Decrypt] Missing VITE_KYC_AES_KEY environment variable");
       return "";
     }
 
@@ -2241,20 +2241,20 @@ const decryptAesGcm = async (encryptedData, type) => {
     const tag = hexToUint8Array(tagHex);
     const ciphertext = hexToUint8Array(cipherHex);
 
-    console.log(
-      `[Decrypt ${type}] Byte lengths - IV: ${iv.length}, Tag: ${tag.length}, Cipher: ${ciphertext.length}`
-    );
+    // console.log(
+      // `[Decrypt ${type}] Byte lengths - IV: ${iv.length}, Tag: ${tag.length}, Cipher: ${ciphertext.length}`
+    // );
 
     // Validate lengths
     if (iv.length !== 12) {
       console.error(
-        `[Decrypt ${type}] Invalid IV length: ${iv.length} (expected 12)`
+        // `[Decrypt ${type}] Invalid IV length: ${iv.length} (expected 12)`
       );
       return "";
     }
     if (tag.length !== 16) {
       console.error(
-        `[Decrypt ${type}] Invalid tag length: ${tag.length} (expected 16)`
+        // `[Decrypt ${type}] Invalid tag length: ${tag.length} (expected 16)`
       );
       return "";
     }
@@ -2280,16 +2280,16 @@ const decryptAesGcm = async (encryptedData, type) => {
 
     // Convert decrypted bytes to string
     const decryptedText = new TextDecoder().decode(decryptedBuffer);
-    console.log(`[Decrypt ${type}] Decrypted successfully`);
+    // console.log(`[Decrypt ${type}] Decrypted successfully`);
 
     // Process based on type
     if (type === "aadhaar") {
       // Extract only digits
       const digits = decryptedText.replace(/\D/g, "");
-      console.log(
-        `[Decrypt ${type}] Extracted digits:`,
-        digits.substring(0, 4) + "****"
-      );
+      // console.log(
+      //   `[Decrypt ${type}] Extracted digits:`,
+      //   digits.substring(0, 4) + "****"
+      // );
       if (digits.length === 12) {
         return digits;
       }
@@ -2304,20 +2304,20 @@ const decryptAesGcm = async (encryptedData, type) => {
         .match(/[A-Z]{5}[0-9]{4}[A-Z]/i);
       if (panMatch) {
         const pan = panMatch[0].toUpperCase();
-        console.log(
-          `[Decrypt ${type}] Extracted PAN:`,
-          pan.substring(0, 2) + "****"
-        );
+        // console.log(
+        //   `[Decrypt ${type}] Extracted PAN:`,
+        //   pan.substring(0, 2) + "****"
+        // );
         return pan;
       }
 
       // If no pattern match, clean and check
       const cleaned = decryptedText.replace(/[^A-Z0-9]/gi, "").toUpperCase();
       if (cleaned.length === 10 && /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(cleaned)) {
-        console.log(
-          `[Decrypt ${type}] Cleaned PAN:`,
-          cleaned.substring(0, 2) + "****"
-        );
+        // console.log(
+        //   `[Decrypt ${type}] Cleaned PAN:`,
+        //   cleaned.substring(0, 2) + "****"
+        // );
         return cleaned;
       }
 
@@ -2449,14 +2449,14 @@ export default function Profile3DForm() {
         return;
       }
 
-      console.log("[Aadhaar] Encrypted value:", user.aadhaarNumber);
+      // console.log("[Aadhaar] Encrypted value:", user.aadhaarNumber);
       setIsDecryptingAadhaar(true);
 
       try {
         const decrypted = await decryptAesGcm(user.aadhaarNumber, "aadhaar");
         setAadhaarPlain(decrypted);
       } catch (error) {
-        console.error("[Aadhaar] Decryption error:", error);
+        // console.error("[Aazdhaar] Decryption error:", error);
         setAadhaarPlain("");
       } finally {
         setIsDecryptingAadhaar(false);
@@ -2474,14 +2474,14 @@ export default function Profile3DForm() {
         return;
       }
 
-      console.log("[PAN] Encrypted value:", user.panNumber);
+      // console.log("[PAN] Encrypted value:", user.panNumber);
       setIsDecryptingPan(true);
 
       try {
         const decrypted = await decryptAesGcm(user.panNumber, "pan");
         setPanPlain(decrypted);
       } catch (error) {
-        console.error("[PAN] Decryption error:", error);
+        // console.error("[PAN] Decryption error:", error);
         setPanPlain("");
       } finally {
         setIsDecryptingPan(false);

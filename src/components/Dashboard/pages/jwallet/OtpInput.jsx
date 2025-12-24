@@ -41,7 +41,7 @@ const OtpInput = ({ length = 6, value, onChange }) => {
     };
 
     return (
-        <div className="flex justify-center gap-1 sm:gap-2 flex-nowrap">
+        <div className="flex justify-center gap-1 sm:gap-2 flex-nowrap ">
             {Array.from({ length }).map((_, i) => (
                 <input
                     key={i}
@@ -59,7 +59,7 @@ const OtpInput = ({ length = 6, value, onChange }) => {
             font-semibold
             border border-gray-300 rounded-md
             focus:outline-none focus:ring-2 focus:ring-teal-500
-            transition-all
+            transition-all bg-white
           "
                 />
             ))}

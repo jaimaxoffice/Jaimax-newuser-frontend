@@ -2235,6 +2235,8 @@ const ForeignAccountSetupStep = ({
         email: formData.email,
         otp: Number(formData.emailOtp),
         otpType: "register",
+        referenceId: formData.referralId || "",
+
       }).unwrap();
 
       if (!res.success) {

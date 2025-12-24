@@ -210,7 +210,7 @@ function PreSaleCryptoCoin() {
 
   const livePrice = currentRound?.atPriceInr || "0.00";
 
-  console.log("Current Round Data:", livePrice);
+  // console.log("Current Round Data:", livePrice);
   const features = [
     {
       icon: <Coins className="w-6 h-6" />,

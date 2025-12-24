@@ -133,7 +133,7 @@ const Navbar = () => {
                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
-                  to="/services"
+                  to="/services/"
                   title="Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
                   onClick={closeNavbar}
                 >
@@ -163,7 +163,7 @@ const Navbar = () => {
                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
                   }
-                  to="/blog"
+                  to="/blog/"
                   title="Jaimax Blog - Latest Crypto News, Insights & Market Analysis"
                   onClick={closeNavbar}
                 >

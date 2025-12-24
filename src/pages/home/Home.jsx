@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Seo from "../../SeoContent/Seo";
-import '../../index.css'
+import "../../index.css";
 
 import homeBgDesktop from "../../assets/Images/HomeDesktop.webp";
 import homeBgMobile from "../../assets/Images/HomeMobile.webp";
@@ -32,287 +32,303 @@ const Home = () => {
   }, []);
 
   // ✅ JSON-LD schema data
-const jsonLdData = {
-  "@context": "https://schema.org",
-  "@graph": [
-
-    /* ---------------------- ORGANIZATION ---------------------- */
-    {
-      "@type": "Organization",
-      "@id": "https://www.jaimax.com/#organization",
-      "name": "Jaimax",
-      "url": "https://www.jaimax.com",
-      "logo": "https://www.jaimax.com/logo.webp",
-      "description":
-        "Jaimax is an innovative cryptocurrency project building a strong financial ecosystem with blockchain, DeFi, NFT marketplace, and global crypto education.",
-      "sameAs": [
-        "https://www.instagram.com/jaimax_coin/",
-        "https://www.facebook.com/jaimaxcoin/",
-        "https://x.com/jaimax_coin",
-        "https://www.threads.net/@jaimax_coin",
-        "https://in.pinterest.com/jaimax_coin/",
-        "https://g.page/r/CdDTqJnUq_5LEBM/review",
-        "https://www.youtube.com/@jaimax_coin",
-        "https://www.linkedin.com/company/jaimax-software-solutions-private-limited/",
-        "https://t.me/Jaimaxcoinn"
-      ],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+91-9381872947",
-        "contactType": "Customer Support",
-        "areaServed": "Worldwide",
-        "availableLanguage": ["English"]
-      },
-      "founder": "Jaimax Team",
-      "keywords": [
-        "Jaimax",
-        "Jaimax coin",
-        "Jaimax crypto",
-        "Jaimax crypto coin",
-        "Jaimax token",
-        "cryptocurrency in India",
-        "cryptocurrency worldwide",
-        "crypto coin",
-        "digital currency",
-        "crypto wallet",
-        "blockchain technology",
-        "crypto trading",
-        "crypto investment",
-        "decentralized finance",
-        "DeFi",
-        "NFT marketplace",
-        "blockchain education",
-        "future of cryptocurrency",
-        "crypto exchange",
-        "Jaimax blockchain"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress":
-          "4th Floor, Vaishnavi's Cynosure, Survey No:18, India Building, Gachibowli",
-        "addressLocality": "Hyderabad",
-        "addressRegion": "Telangana",
-        "postalCode": "500032",
-        "addressCountry": "IN"
-      },
-      "service": [
-        { "@type": "Service", "name": "Cryptocurrency Exchange", "areaServed": "Worldwide" },
-        { "@type": "Service", "name": "Crypto Wallet", "areaServed": "Worldwide" },
-        { "@type": "Service", "name": "Blockchain Education", "areaServed": "Worldwide" },
-        { "@type": "Service", "name": "DeFi Solutions", "areaServed": "Worldwide" },
-        { "@type": "Service", "name": "NFT Marketplace", "areaServed": "Worldwide" }
-      ]
-    },
-
-    /* ---------------------- PRODUCT (JAIMAX COIN) ---------------------- */
-    {
-      "@type": "Product",
-      "@id": "https://www.jaimax.com/#product",
-      "name": "Jaimax Coin",
-      "alternateName": "Jaimax Crypto Coin",
-      "url": "https://www.jaimax.com/best-presale-crypto-coin-in-india",
-      "logo": "https://www.jaimax.com/logo.webp",
-      "image": "https://www.jaimax.com/logo.webp",
-      "description":
-        "Jaimax Coin is an innovative cryptocurrency designed for secure trading, blockchain adoption, DeFi, NFTs, and global digital payments.",
-      "brand": {
+  const jsonLdData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      /* ---------------------- ORGANIZATION ---------------------- */
+      {
         "@type": "Organization",
-        "name": "Jaimax",
-        "url": "https://www.jaimax.com"
+        "@id": "https://www.jaimax.com/#organization",
+        name: "Jaimax",
+        url: "https://www.jaimax.com",
+        logo: "https://www.jaimax.com/logo.webp",
+        description:
+          "Jaimax is an innovative cryptocurrency project building a strong financial ecosystem with blockchain, DeFi, NFT marketplace, and global crypto education.",
+        sameAs: [
+          "https://www.instagram.com/jaimax_coin/",
+          "https://www.facebook.com/jaimaxcoin/",
+          "https://x.com/jaimax_coin",
+          "https://www.threads.net/@jaimax_coin",
+          "https://in.pinterest.com/jaimax_coin/",
+          "https://g.page/r/CdDTqJnUq_5LEBM/review",
+          "https://www.youtube.com/@jaimax_coin",
+          "https://www.linkedin.com/company/jaimax-software-solutions-private-limited/",
+          "https://t.me/Jaimaxcoinn",
+        ],
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+91-9381872947",
+          contactType: "Customer Support",
+          areaServed: "Worldwide",
+          availableLanguage: ["English"],
+        },
+        founder: "Jaimax Team",
+        keywords: [
+          "Jaimax",
+          "Jaimax coin",
+          "Jaimax crypto",
+          "Jaimax crypto coin",
+          "Jaimax token",
+          "cryptocurrency in India",
+          "cryptocurrency worldwide",
+          "crypto coin",
+          "digital currency",
+          "crypto wallet",
+          "blockchain technology",
+          "crypto trading",
+          "crypto investment",
+          "decentralized finance",
+          "DeFi",
+          "NFT marketplace",
+          "blockchain education",
+          "future of cryptocurrency",
+          "crypto exchange",
+          "Jaimax blockchain",
+        ],
+        address: {
+          "@type": "PostalAddress",
+          streetAddress:
+            "4th Floor, Vaishnavi's Cynosure, Survey No:18, India Building, Gachibowli",
+          addressLocality: "Hyderabad",
+          addressRegion: "Telangana",
+          postalCode: "500032",
+          addressCountry: "IN",
+        },
+        service: [
+          {
+            "@type": "Service",
+            name: "Cryptocurrency Exchange",
+            areaServed: "Worldwide",
+          },
+          {
+            "@type": "Service",
+            name: "Crypto Wallet",
+            areaServed: "Worldwide",
+          },
+          {
+            "@type": "Service",
+            name: "Blockchain Education",
+            areaServed: "Worldwide",
+          },
+          {
+            "@type": "Service",
+            name: "DeFi Solutions",
+            areaServed: "Worldwide",
+          },
+          {
+            "@type": "Service",
+            name: "NFT Marketplace",
+            areaServed: "Worldwide",
+          },
+        ],
       },
-      "category": "Cryptocurrency",
-      "keywords": [
-        "Jaimax Coin",
-        "Jaimax crypto coin",
-        "Jaimax token",
-        "crypto coin",
-        "cryptocurrency",
-        "blockchain coin",
-        "digital currency",
-        "crypto investment",
-        "decentralized finance",
-        "NFT marketplace coin",
-        "future of crypto",
-        "crypto in India",
-        "worldwide cryptocurrency"
-      ],
-      "offers": {
-        "@type": "Offer",
-        "url": "https://www.jaimax.com/best-presale-crypto-coin-in-india",
-        "priceCurrency": "INR",
-        "price": "0.035",
-        "availability": "https://schema.org/InStock"
-      }
-    },
 
-    /* ---------------------- MOBILE APP ---------------------- */
-    {
-      "@type": "MobileApplication",
-      "@id": "https://www.jaimax.com/#mobileapp",
-      "name": "Jaimax App",
-      "operatingSystem": "Android",
-      "applicationCategory": "FinanceApplication",
-      "downloadUrl":
-        "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax",
-      "installUrl":
-        "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "INR"
+      /* ---------------------- PRODUCT (JAIMAX COIN) ---------------------- */
+      {
+        "@type": "Product",
+        "@id": "https://www.jaimax.com/#product",
+        name: "Jaimax Coin",
+        alternateName: "Jaimax Crypto Coin",
+        url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+        logo: "https://www.jaimax.com/logo.webp",
+        image: "https://www.jaimax.com/logo.webp",
+        description:
+          "Jaimax Coin is an innovative cryptocurrency designed for secure trading, blockchain adoption, DeFi, NFTs, and global digital payments.",
+        brand: {
+          "@type": "Organization",
+          name: "Jaimax",
+          url: "https://www.jaimax.com",
+        },
+        category: "Cryptocurrency",
+        keywords: [
+          "Jaimax Coin",
+          "Jaimax crypto coin",
+          "Jaimax token",
+          "crypto coin",
+          "cryptocurrency",
+          "blockchain coin",
+          "digital currency",
+          "crypto investment",
+          "decentralized finance",
+          "NFT marketplace coin",
+          "future of crypto",
+          "crypto in India",
+          "worldwide cryptocurrency",
+        ],
+        offers: {
+          "@type": "Offer",
+          url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+          priceCurrency: "INR",
+          price: "0.035",
+          availability: "https://schema.org/InStock",
+        },
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5",
-        "reviewCount": "50"
+
+      /* ---------------------- MOBILE APP ---------------------- */
+      {
+        "@type": "MobileApplication",
+        "@id": "https://www.jaimax.com/#mobileapp",
+        name: "Jaimax App",
+        operatingSystem: "Android",
+        applicationCategory: "FinanceApplication",
+        downloadUrl:
+          "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax",
+        installUrl:
+          "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "INR",
+        },
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "5",
+          reviewCount: "50",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Jaimax",
+          url: "https://www.jaimax.com",
+        },
       },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Jaimax",
-        "url": "https://www.jaimax.com"
-      }
-    },
 
-    /* ---------------------- FAQ ---------------------- */
-    {
-      "@type": "FAQPage",
-      "@id": "https://www.jaimax.com/#homepagefaq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is Jaimax Coin?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Jaimax Coin is a next-generation cryptocurrency designed to create a strong financial ecosystem with blockchain, DeFi, NFT marketplace, and secure digital payments worldwide."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How can I buy Jaimax Coin?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You can buy Jaimax Coin through the official Jaimax platform and supported exchanges. Visit https://www.jaimax.com for the latest details."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Jaimax Coin available worldwide?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Jaimax Coin is designed to be a global cryptocurrency, accessible and tradable worldwide."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What services does Jaimax provide?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Jaimax offers cryptocurrency exchange, crypto wallet, blockchain education, DeFi solutions, and an NFT marketplace to empower the digital economy."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Jaimax safe to use?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Jaimax prioritizes security with advanced blockchain technology, transparent transactions, and a reliable support system."
-          }
-        }
-      ]
-    },
+      /* ---------------------- FAQ ---------------------- */
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.jaimax.com/#homepagefaq",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What is Jaimax Coin?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Jaimax Coin is a next-generation cryptocurrency designed to create a strong financial ecosystem with blockchain, DeFi, NFT marketplace, and secure digital payments worldwide.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How can I buy Jaimax Coin?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "You can buy Jaimax Coin through the official Jaimax platform and supported exchanges. Visit https://www.jaimax.com for the latest details.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Is Jaimax Coin available worldwide?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. Jaimax Coin is designed to be a global cryptocurrency, accessible and tradable worldwide.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What services does Jaimax provide?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Jaimax offers cryptocurrency exchange, crypto wallet, blockchain education, DeFi solutions, and an NFT marketplace to empower the digital economy.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Is Jaimax safe to use?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. Jaimax prioritizes security with advanced blockchain technology, transparent transactions, and a reliable support system.",
+            },
+          },
+        ],
+      },
 
-    /* ---------------------- WEBSITE ---------------------- */
-    {
-      "@type": "WebSite",
-      "@id": "https://www.jaimax.com/#website",
-      "url": "https://www.jaimax.com/",
-      "name": "Jaimax Website",
-      "publisher": { "@id": "https://www.jaimax.com/#organization" },
-      "inLanguage": "en"
-    },
+      /* ---------------------- WEBSITE ---------------------- */
+      {
+        "@type": "WebSite",
+        "@id": "https://www.jaimax.com/#website",
+        url: "https://www.jaimax.com/",
+        name: "Jaimax Website",
+        publisher: { "@id": "https://www.jaimax.com/#organization" },
+        inLanguage: "en",
+      },
 
-    /* ---------------------- HOMEPAGE WEBPAGE ---------------------- */
-    {
-      "@type": "WebPage",
-      "@id": "https://www.jaimax.com/#webpage",
-      "url": "https://www.jaimax.com/",
-      "name": "Jaimax Coin – India’s Trusted Pre-Sale Crypto Coin",
-      "description":
-        "Invest early in Jaimax, India’s trusted pre-sale crypto coin powered by the JMC-24 blockchain.",
-      "isPartOf": { "@id": "https://www.jaimax.com/#website" },
-      "inLanguage": "en"
-    },
+      /* ---------------------- HOMEPAGE WEBPAGE ---------------------- */
+      {
+        "@type": "WebPage",
+        "@id": "https://www.jaimax.com/#webpage",
+        url: "https://www.jaimax.com/",
+        name: "Jaimax Coin – India’s Trusted Pre-Sale Crypto Coin",
+        description:
+          "Invest early in Jaimax, India’s trusted pre-sale crypto coin powered by the JMC-24 blockchain.",
+        isPartOf: { "@id": "https://www.jaimax.com/#website" },
+        inLanguage: "en",
+      },
 
-    /* ---------------------- SITE NAVIGATION ---------------------- */
-    {
-      "@type": "SiteNavigationElement",
-      "@id": "https://www.jaimax.com/#navigation",
-      "name": [
-        "Home",
-        "About",
-        "Services",
-        "Features",
-        "Blog",
-        "Contact",
-        "Pre-Sale Crypto Coin",
-        "Refund Policy",
-        "Terms and Conditions",
-        "Privacy Policy",
-        "AML-CTF",
-        "KYC-PMLA"
-      ],
-      "url": [
-        "https://www.jaimax.com/",
-        "https://www.jaimax.com/about",
-        "https://www.jaimax.com/services",
-        "https://www.jaimax.com/features",
-        "https://www.jaimax.com/blog",
-        "https://www.jaimax.com/contact",
-        "https://www.jaimax.com/best-presale-crypto-coin-in-india",
-        "https://www.jaimax.com/refund-policy",
-        "https://www.jaimax.com/terms-and-conditions",
-        "https://www.jaimax.com/privacy-policy",
-        "https://www.jaimax.com/aml-ctf",
-        "https://www.jaimax.com/kyc-pmla"
-      ]
-    },
+      /* ---------------------- SITE NAVIGATION ---------------------- */
+      {
+        "@type": "SiteNavigationElement",
+        "@id": "https://www.jaimax.com/#navigation",
+        name: [
+          "Home",
+          "About",
+          "Services",
+          "Features",
+          "Blog",
+          "Contact",
+          "Pre-Sale Crypto Coin",
+          "Refund Policy",
+          "Terms and Conditions",
+          "Privacy Policy",
+          "AML-CTF",
+          "KYC-PMLA",
+        ],
+        url: [
+          "https://www.jaimax.com/",
+          "https://www.jaimax.com/about",
+          "https://www.jaimax.com/services",
+          "https://www.jaimax.com/features",
+          "https://www.jaimax.com/blog",
+          "https://www.jaimax.com/contact",
+          "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+          "https://www.jaimax.com/refund-policy",
+          "https://www.jaimax.com/terms-and-conditions",
+          "https://www.jaimax.com/privacy-policy",
+          "https://www.jaimax.com/aml-ctf",
+          "https://www.jaimax.com/kyc-pmla",
+        ],
+      },
 
-    /* ---------------------- HOMEPAGE BREADCRUMBS ---------------------- */
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://www.jaimax.com/#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://www.jaimax.com/"
-        }
-      ]
-    }
-
-  ]
-};
+      /* ---------------------- HOMEPAGE BREADCRUMBS ---------------------- */
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.jaimax.com/#breadcrumb",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://www.jaimax.com/",
+          },
+        ],
+      },
+    ],
+  };
 
   return (
     <>
-
       <Seo page="homePage" />
-<CountdownTimer className="" />
+      <CountdownTimer className="" />
       <div className="outer-container overflow-y-auto scrollbar-hide">
         <header className="relative min-h-[100dvh] flex flex-col justify-center">
           <div className="absolute inset-0 w-full h-full">
             <picture>
               <img
                 src={homeBgDesktop}
-                srcSet={ `${homeBgMobile} 767w, ${homeBgDesktop} 1920w`}
+                srcSet={`${homeBgMobile} 767w, ${homeBgDesktop} 1920w`}
                 sizes="100vw"
                 alt="Secure, innovative, and trustworthy crypto investing with Jaimax"
-                title="Jaimax - Your Trusted Partner in Cryptocurrency Investment"
-                className="w-full h-full object-cover object-center"
+                className="absolute inset-0 w-full h-full object-cover"
                 loading="eager"
                 fetchpriority="high"
-                decoding="async"
+                decoding="sync"
                 width="1920"
                 height="1080"
               />
@@ -328,7 +344,11 @@ const jsonLdData = {
                               text-3xl sm:text-4xl md:text-5xl lg:text-6xl space-y-1
                               opacity-0 translate-y-3 animate-fadeUp"
               >
-                <span className="block text-[#b8cc26]"><a href="https://www.jaimax.com/best-presale-crypto-coin-in-india">Best Pre-Sale</a></span>
+                <span className="block text-[#b8cc26]">
+                  <a href="https://www.jaimax.com/best-presale-crypto-coin-in-india">
+                    Best Pre-Sale
+                  </a>
+                </span>
                 <span className="block">Crypto Coin in India</span>
                 <span className="block">Invest Early in </span>
                 <span className="block"> Jaimax</span>
@@ -344,7 +364,10 @@ const jsonLdData = {
                 journey, offering a secure and transparent experience to help
                 you grow with India’s most trusted
                 <b className="text-[#aadc32]">
-                  <a href="https://www.jaimax.com/best-presale-crypto-coin-in-india"> pre-sale crypto coin</a>
+                  <a href="https://www.jaimax.com/best-presale-crypto-coin-in-india">
+                    {" "}
+                    pre-sale crypto coin
+                  </a>
                 </b>{" "}
                 - jaimax.
                 <button
@@ -377,7 +400,7 @@ const jsonLdData = {
             { Component: JaimaxRoadmap, id: "roadmap" },
             { Component: JaimaxFAQ, id: "faq" },
             { Component: HomeContact, id: "contact" },
-          ].map(({ Component, id,props }) => (
+          ].map(({ Component, id, props }) => (
             <section
               key={id}
               id={id}

@@ -62,20 +62,20 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
         body: { jmc },
       }),
     }),
-    // DashboardApiSlice.js
 getBonusLogs: builder.query({
   query: ({ page = 1, limit = 10, type = '' } = {}) => {
-    const params = new URLSearchParams();
-    params.append('page', page);
-    params.append('limit', limit);
+    // Start with the base parameters
+    let queryString = `page=${page}&limit=${limit}`;
     
     // Only add type if it's not empty or 'all'
     if (type && type !== 'all') {
-      params.append('type', type);
+      // Manually encode the type parameter using encodeURIComponent
+      // This will encode spaces as %20 instead of +
+      queryString += `&type=${encodeURIComponent(type)}`;
     }
     
     return {
-      url: `/user/user-registration-bonuslogs?${params.toString()}`,
+      url: `/user/user-registration-bonuslogs?${queryString}`,
       method: "GET",
     };
   },

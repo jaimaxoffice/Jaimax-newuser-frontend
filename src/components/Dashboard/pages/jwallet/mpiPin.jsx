@@ -358,8 +358,6 @@ const [showConfirmPin, setShowConfirmPin] = useState(false);
   );
 }
 
-
-
 export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
   const [pin, setPin] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
@@ -419,34 +417,35 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
   };
 
   return (
-    <div className="fixed inset-0   flex items-center justify-center z-50 mr-2 ">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black bg-opacity-50">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 flex flex-col items-center relative"
+        className="bg-white rounded-xl shadow-2xl w-full max-w-sm sm:max-w-md p-6 sm:p-8 flex flex-col items-center relative"
       >
         <button
           type="button"
           onClick={handleClose}
-          className="absolute top-4 right-4 text-teal-700 hover:text-teal-900 transition "
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-teal-700 hover:text-teal-900 transition p-1"
           aria-label="Close"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
         
-        <h2 className="text-2xl font-bold mb-4 text-teal-700">
+        <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-teal-700 text-center">
           Enter Wallet PIN
         </h2>
-        <div className="flex gap-3 mb-4">
+        
+        <div className="flex gap-2 sm:gap-3 mb-6">
           {[0, 1, 2, 3, 4, 5].map((idx) => (
             <input
               key={idx}
               ref={(el) => (inputs.current[idx] = el)}
               type="password"
               maxLength={1}
-              className="w-12 h-14 text-center text-2xl border-2 border-teal-400 rounded-lg bg-teal-50 text-teal-900 focus:border-teal-600 focus:bg-white focus:outline-none transition"
+              className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl border-2 border-teal-400 rounded-lg bg-teal-50 text-teal-900 focus:border-teal-600 focus:bg-white focus:outline-none transition"
               value={pin[idx]}
               onChange={(e) => handleChange(e, idx)}
               onKeyDown={(e) => handleKeyDown(e, idx)}
@@ -456,25 +455,32 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
             />
           ))}
         </div>
-        {error && <div className="text-red-600 mb-2">{error}</div>}
+        
+        {error && (
+          <div className="text-red-600 mb-4 text-sm sm:text-base text-center">
+            {error}
+          </div>
+        )}
+        
         <button
           type="submit"
-          className="bg-teal-600 text-white px-8 py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
+          className="bg-teal-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-teal-700 transition text-sm sm:text-base w-full sm:w-auto"
           disabled={isLoading}
         >
           {isLoading ? "Verifying..." : "Unlock Wallet"}
         </button>
-        <div className="flex justify-between w-full mt-4">
+        
+        <div className="flex justify-between w-full mt-6">
           <button
             type="button"
-            className="text-teal-600 hover:underline text-sm"
+            className="text-teal-600 hover:underline text-xs sm:text-sm"
             onClick={onForgotPin}
           >
             Forgot PIN?
           </button>
           <button
             type="button"
-            className="text-teal-700 hover:underline text-sm"
+            className="text-teal-700 hover:underline text-xs sm:text-sm"
             onClick={onChangePin}
           >
             Change PIN
@@ -484,6 +490,131 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
     </div>
   );
 }
+
+// export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
+//   const [pin, setPin] = useState(["", "", "", "", "", ""]);
+//   const [error, setError] = useState("");
+//   const [verifyPin, { isLoading }] = useVerifyPinMutation();
+//   const inputs = useRef([]);
+//   const navigate = useNavigate();
+
+//   const handleChange = (e, idx) => {
+//     const val = e.target.value.replace(/\D/g, "");
+//     if (!val) return;
+//     const newPin = [...pin];
+//     newPin[idx] = val;
+//     setPin(newPin);
+//     if (idx < 5) {
+//       inputs.current[idx + 1].focus();
+//     }
+//   };
+
+//   const handleKeyDown = (e, idx) => {
+//     if (e.key === "Backspace") {
+//       if (pin[idx]) {
+//         const newPin = [...pin];
+//         newPin[idx] = "";
+//         setPin(newPin);
+//       } else if (idx > 0) {
+//         inputs.current[idx - 1].focus();
+//       }
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError("");
+//     const enteredPin = pin.join("");
+//     if (enteredPin.length < 6) {
+//       setError("PIN must be 6 digits.");
+//       return;
+//     }
+//     try {
+//       const res = await verifyPin({ pin: enteredPin }).unwrap();
+//       if (res.success) {
+//         onSuccess();
+//       } else {
+//         setError(res.message || "Invalid PIN");
+//         setPin(["", "", "", "", "", ""]);
+//         inputs.current[0].focus();
+//       }
+//     } catch (err) {
+//       setError(err?.data?.message || "Invalid PIN");
+//       setPin(["", "", "", "", "", ""]);
+//       inputs.current[0].focus();
+//     }
+//   };
+
+//   const handleClose = () => {
+//     navigate("/dashboard");
+//   };
+
+//   return (
+//     <div className="fixed inset-0   flex items-center justify-center z-50 mr-2 ">
+//       <form
+//         onSubmit={handleSubmit}
+//         className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 flex flex-col items-center relative"
+//       >
+//         <button
+//           type="button"
+//           onClick={handleClose}
+//           className="absolute top-4 right-4 text-teal-700 hover:text-teal-900 transition "
+//           aria-label="Close"
+//         >
+//           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+//             <line x1="18" y1="6" x2="6" y2="18"></line>
+//             <line x1="6" y1="6" x2="18" y2="18"></line>
+//           </svg>
+//         </button>
+        
+//         <h2 className="text-2xl font-bold mb-4 text-teal-700">
+//           Enter Wallet PIN
+//         </h2>
+//         <div className="flex gap-3 mb-4">
+//           {[0, 1, 2, 3, 4, 5].map((idx) => (
+//             <input
+//               key={idx}
+//               ref={(el) => (inputs.current[idx] = el)}
+//               type="password"
+//               maxLength={1}
+//               className="w-12 h-14 text-center text-2xl border-2 border-teal-400 rounded-lg bg-teal-50 text-teal-900 focus:border-teal-600 focus:bg-white focus:outline-none transition"
+//               value={pin[idx]}
+//               onChange={(e) => handleChange(e, idx)}
+//               onKeyDown={(e) => handleKeyDown(e, idx)}
+//               autoFocus={idx === 0}
+//               inputMode="numeric"
+//               pattern="[0-9]*"
+//             />
+//           ))}
+//         </div>
+//         {error && <div className="text-red-600 mb-2">{error}</div>}
+//         <button
+//           type="submit"
+//           className="bg-teal-600 text-white px-8 py-2 rounded-lg font-semibold hover:bg-teal-700 transition"
+//           disabled={isLoading}
+//         >
+//           {isLoading ? "Verifying..." : "Unlock Wallet"}
+//         </button>
+//         <div className="flex justify-between w-full mt-4">
+//           <button
+//             type="button"
+//             className="text-teal-600 hover:underline text-sm"
+//             onClick={onForgotPin}
+//           >
+//             Forgot PIN?
+//           </button>
+//           <button
+//             type="button"
+//             className="text-teal-700 hover:underline text-sm"
+//             onClick={onChangePin}
+//           >
+//             Change PIN
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// }
 export function ForgotPinModal({ onClose }) {
   const [step, setStep] = useState(1);
   const [otp, setOtp] = useState("");

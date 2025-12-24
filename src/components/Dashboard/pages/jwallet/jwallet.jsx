@@ -183,7 +183,6 @@ const UserDetailsComponent = () => {
     dispatchModal({ type: value ? "OPEN" : "CLOSE", modal: "binanceExchange" });
   };
 
-
   // Sample wallet address - replace with actual wallet address from your state/props
   const walletAddress = userData?.data?.walletadress;
 
@@ -195,8 +194,8 @@ const UserDetailsComponent = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Add copy handler
@@ -207,11 +206,9 @@ const UserDetailsComponent = () => {
   };
   // openModal
   const openModal = (modalType) => {
-    dispatchModal({ type: 'OPEN', modal: modalType });
+    dispatchModal({ type: "OPEN", modal: modalType });
     setIsDropdownOpen(false);
   };
-
-
 
   useEffect(() => {
     const handleCompletion = () => {
@@ -529,8 +526,8 @@ const UserDetailsComponent = () => {
       setPurchaseCoinsBreakup({});
       setErrorMessage(
         err?.data?.message ||
-        err?.message ||
-        "Transaction failed. Please try again."
+          err?.message ||
+          "Transaction failed. Please try again."
       );
       // console.error(err);
     } finally {
@@ -730,7 +727,6 @@ const UserDetailsComponent = () => {
         .replace(",", "");
     };
 
-
     // Get status classes
     const getStatusClasses = (status) => {
       switch (status) {
@@ -744,8 +740,6 @@ const UserDetailsComponent = () => {
           return "bg-gray-100 text-gray-700";
       }
     };
-
-
 
     if (isLoading) {
       return (
@@ -1054,10 +1048,11 @@ const UserDetailsComponent = () => {
           <div className="p-4 md:p-5 overflow-y-auto flex-grow">
             {swapState.swapMessage && (
               <div
-                className={`rounded-lg p-3 mb-3 text-center text-sm font-medium ${swapState.swapMessage.includes("successful")
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-                  }`}
+                className={`rounded-lg p-3 mb-3 text-center text-sm font-medium ${
+                  swapState.swapMessage.includes("successful")
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
               >
                 {swapState.swapMessage}
               </div>
@@ -1372,7 +1367,6 @@ const UserDetailsComponent = () => {
             <div className="mb-8">
               {/* Header Row */}
               <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-
                 {/* Title */}
                 <div className="animate-fadeIn">
                   <div className="inline-block bg-teal-500/10 px-4 py-1.5 rounded-full mb-2">
@@ -1383,93 +1377,97 @@ const UserDetailsComponent = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap gap-2 animate-slideIn">
-
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 animate-slideIn">
                   {/* Buy Tokens */}
                   <button
-                    onClick={() => dispatchModal({ type: "OPEN", modal: "buyModal" })}
-                    className="group flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-full 
-                   hover:bg-teal-600 transform hover:-translate-y-1 transition-all duration-300 
-                   shadow-md hover:shadow-lg"
+                    onClick={() =>
+                      dispatchModal({ type: "OPEN", modal: "buyModal" })
+                    }
+                    className="group flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-teal-500 text-white rounded-full 
+             hover:bg-teal-600 transform hover:-translate-y-1 transition-all duration-300 
+             shadow-md hover:shadow-lg text-xs sm:text-sm"
                   >
                     <svg
-                      className="w-4 h-4 group-hover:rotate-90 transition-transform duration-200"
+                      className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-90 transition-transform duration-200"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
                     </svg>
-                    <span className="font-medium text-sm">Buy Tokens</span>
+                    <span className="font-medium whitespace-nowrap">
+                      Buy Tokens
+                    </span>
                   </button>
 
                   {/* Swap */}
                   <button
-                    onClick={() => dispatchModal({ type: "OPEN", modal: "swapModal" })}
-                    className="group flex items-center gap-2 px-4 py-2 bg-white text-teal-500 rounded-full 
-                   hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
-                   shadow-md hover:shadow-lg border border-teal-200"
+                    onClick={() =>
+                      dispatchModal({ type: "OPEN", modal: "swapModal" })
+                    }
+                    className="group flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white text-teal-500 rounded-full 
+             hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
+             shadow-md hover:shadow-lg border border-teal-200 text-xs sm:text-sm"
                   >
                     <svg
-                      className="w-4 h-4 group-hover:rotate-180 transition-transform duration-300"
+                      className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-180 transition-transform duration-300"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                      />
                     </svg>
-                    <span className="font-medium text-sm">Swap</span>
+                    <span className="font-medium whitespace-nowrap">Swap</span>
                   </button>
 
-                  {/* Binance */}
+                  {/* Binance - Always visible */}
                   <button
-                    onClick={() => dispatchModal({ type: "OPEN", modal: "binanceExchange" })}
-                    className="group flex items-center gap-2 px-4 py-2 bg-white text-teal-500 rounded-full 
-                   hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
-                   shadow-md hover:shadow-lg border border-teal-200"
+                    onClick={() =>
+                      dispatchModal({ type: "OPEN", modal: "binanceExchange" })
+                    }
+                    className="group flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white text-teal-500 rounded-full 
+             hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
+             shadow-md hover:shadow-lg border border-teal-200 text-xs sm:text-sm"
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-3 h-3 sm:w-4 sm:h-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                      />
                     </svg>
-                    <span className="font-medium text-sm">Binance</span>
+                    <span className="font-medium whitespace-nowrap">
+                      Binance
+                    </span>
                   </button>
 
-                  {/* <button
-                    onClick={() => dispatchModal({ type: "OPEN", modal: "revealsection" })}
-                    className="group flex items-center gap-2 px-2 py-2 bg-white text-teal-500 rounded-full 
-                   hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
-                   shadow-md hover:shadow-lg border border-teal-200"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle cx="12" cy="5" r="2" />
-                      <circle cx="12" cy="12" r="2" />
-                      <circle cx="12" cy="19" r="2" />
-                    </svg>
-
-                  </button> */}
-
-
-
-                  <div className="relative" ref={dropdownRef}>
+                  <div className="relative z-10" ref={dropdownRef}>
                     {/* Three Dots Button */}
                     <button
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="group flex items-center gap-2 px-2 py-2 bg-white text-teal-500 rounded-full 
-               hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
-               shadow-md hover:shadow-lg border border-teal-200"
+                      className="group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 bg-white text-teal-500 rounded-full 
+             hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
+             shadow-md hover:shadow-lg border border-teal-200"
+                      aria-label="More options"
                     >
                       <svg
-                        className="w-4 h-4"
+                        className="w-3 h-3 sm:w-4 sm:h-4"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
@@ -1482,29 +1480,67 @@ const UserDetailsComponent = () => {
 
                     {/* Dropdown Menu */}
                     {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
-                        <div className="py-1">
-                          {/* Account Details Option */}
-                          <button
-                            onClick={() => openModal('revealsection')}
-                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-teal-50 transition-colors text-left"
-                          >
-                            <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span className="font-medium text-gray-700">Account details</span>
-                          </button>
+                      <div
+                        className="absolute mt-1.5 sm:mt-2 animate-fade-in
+                    right-0 
+                    min-w-[160px] sm:min-w-[180px] 
+                    max-w-[calc(100vw-1rem)]
+                    z-50"
+                      >
+                        <div className="bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden">
+                          <div className="py-1">
+                            {/* Account Details Option */}
+                            <button
+                              onClick={() => {
+                                openModal("revealsection");
+                                setIsDropdownOpen(false);
+                              }}
+                              className="w-full flex items-center gap-2 px-3 py-2.5 hover:bg-teal-50 transition-colors text-left"
+                            >
+                              <svg
+                                className="w-4 h-4 text-teal-600 flex-shrink-0"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                />
+                              </svg>
+                              <span className="font-medium text-gray-700 text-sm">
+                                Account details
+                              </span>
+                            </button>
 
-                          {/* Addresses Option */}
-                          <button
-                            onClick={() => openModal('addresses')}
-                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-teal-50 transition-colors text-left"
-                          >
-                            <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            <span className="font-medium text-gray-700">Addresses</span>
-                          </button>
+                            {/* Addresses Option */}
+                            <button
+                              onClick={() => {
+                                openModal("addresses");
+                                setIsDropdownOpen(false);
+                              }}
+                              className="w-full flex items-center gap-2 px-3 py-2.5 hover:bg-teal-50 transition-colors text-left"
+                            >
+                              <svg
+                                className="w-4 h-4 text-teal-600 flex-shrink-0"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                                />
+                              </svg>
+                              <span className="font-medium text-gray-700 text-sm">
+                                Addresses
+                              </span>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -1512,7 +1548,6 @@ const UserDetailsComponent = () => {
                 </div>
               </div>
             </div>
-
 
             {userData?.success && !isUserDataLoading && (
               <div className="animate-fadeIn space-y-6">
@@ -2126,13 +2161,27 @@ const UserDetailsComponent = () => {
             {/* Header */}
             <div className="bg-gradient-to-r from-teal-500 to-teal-600 px-4 sm:px-6 py-3 sm:py-4 rounded-t-xl sm:rounded-t-2xl">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Wallet Address</h2>
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+                  Wallet Address
+                </h2>
                 <button
-                  onClick={() => dispatchModal({ type: 'CLOSE', modal: 'addresses' })}
+                  onClick={() =>
+                    dispatchModal({ type: "CLOSE", modal: "addresses" })
+                  }
                   className="text-white/80 hover:text-white transition-colors p-1"
                 >
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="w-5 h-5 sm:w-6 sm:h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
@@ -2164,19 +2213,29 @@ const UserDetailsComponent = () => {
                   </div>
                   {copied && (
                     <div className="flex items-center gap-1 mt-2">
-                      <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      <svg
+                        className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-teal-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
                       </svg>
-                      <p className="text-xs sm:text-sm text-teal-600 font-medium">Copied to clipboard!</p>
+                      <p className="text-xs sm:text-sm text-teal-600 font-medium">
+                        Copied to clipboard!
+                      </p>
                     </div>
                   )}
                 </div>
 
-
-
                 {/* Optional: Close Button for Mobile */}
                 <button
-                  onClick={() => dispatchModal({ type: 'CLOSE', modal: 'addresses' })}
+                  onClick={() =>
+                    dispatchModal({ type: "CLOSE", modal: "addresses" })
+                  }
                   className="w-full sm:hidden mt-4 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-medium py-2.5 rounded-lg transition-colors"
                 >
                   Close
@@ -2186,8 +2245,6 @@ const UserDetailsComponent = () => {
           </div>
         </div>
       )}
-
-
     </>
   );
 };

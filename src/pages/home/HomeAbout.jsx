@@ -302,17 +302,23 @@ const HomeAbout = () => {
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   // Fetch data using RTK Query
-  const { data: roundData, error, isLoading, refetch } = useGetRoundQuery();
+// Round data (refresh every 30s)
+const { data: roundData, error, isLoading } = useGetRoundQuery(undefined, {
+  pollingInterval: 30000,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
+});
 
-  // Fetch holder count using RTK Query
-  const { 
-    data: holderCount, 
-    error: holderError, 
-    isLoading: holderLoading,
-    refetch: refetchHolder 
-  } = useGetHolderCountQuery(contractAddress, {
-    pollingInterval: 60000, // Auto-refresh every 60 seconds
-  });
+// Holder count (refresh every 60s)
+const {
+  data: holderCount,
+  error: holderError,
+  isLoading: holderLoading,
+} = useGetHolderCountQuery(contractAddress, {
+  pollingInterval: 60000,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
+});
 
   // Get live rounds (status = 1)
   const liveRounds =
@@ -356,14 +362,7 @@ const HomeAbout = () => {
     window.open(`https://bscscan.com/address/${contractAddress}`, "_blank");
   };
 
-  // Auto-refresh data every 30 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refetch();
-      refetchHolder(); // Also refetch holder count
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [refetch, refetchHolder]);
+
 
   const formatNumber = (num) => {
     if (!num && num !== 0) return null;
