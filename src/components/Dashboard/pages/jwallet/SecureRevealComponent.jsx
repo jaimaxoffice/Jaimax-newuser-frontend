@@ -721,6 +721,18 @@ const SecureRevealComponent = () => {
             <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4">
               Access Sensitive Data
             </h1>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 mb-2 sm:mb-2">
+              <div className="flex gap-2 sm:gap-3">
+                {/* <AlertTriangle className="text-red-500 flex-shrink-0 mt-0.5" size={20} /> */}
+                <div className="text-xs sm:text-sm text-red-800">
+                  <p className="font-semibold mb-2">Security Warning</p>
+                  <ul className="space-y-1 list-disc list-inside">
+                    <li>Never share your seed phrase or private key</li>
+                    <li>Ensure you're in a private location</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
             {is2FAEnabled ? (
               <div className="mb-2 sm:mb-6 bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
