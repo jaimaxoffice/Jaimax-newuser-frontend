@@ -83,6 +83,7 @@
 //   const handleOpen2FA = async (selectedMode) => {
 //     setMode(selectedMode);
 //     setShow2FAModal(true);
+//     setError("");
 
 //     // Prevent regenerating secret if already fetched
 //     if (qrCode || manualKey) return;
@@ -108,6 +109,7 @@
 //       setQrCode("");
 //       setManualKey("");
 //       setIs2FAEnabled(true);
+//       setError("");
 //     } catch (err) {
 //       setError(getApiErrorMessage(err));
 //     }
@@ -124,7 +126,9 @@
 //       sessionStorage.removeItem("2faVerifiedTime");
 //       setDisableOtp("");
 //       setIs2FAEnabled(false);
-//       alert("2FA disabled successfully");
+//       setShow2FAModal(false);
+//       setError("");
+//       // alert("2FA disabled successfully");
 //     } catch (err) {
 //       setError(getApiErrorMessage(err));
 //     }
@@ -206,7 +210,7 @@
 
 //   if (checking2FA) {
 //     return (
-//       <div className="h-xl bg-green-50 flex items-center justify-center">
+//       <div className="min-h-screen bg-green-50 flex items-center justify-center">
 //         <div className="text-white text-xl">Loading...</div>
 //       </div>
 //     );
@@ -221,6 +225,18 @@
 //             <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4">
 //               Access Sensitive Data
 //             </h1>
+//             <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 mb-2 sm:mb-2">
+//               <div className="flex gap-2 sm:gap-3">
+//                 {/* <AlertTriangle className="text-red-500 flex-shrink-0 mt-0.5" size={20} /> */}
+//                 <div className="text-xs sm:text-sm text-red-800">
+//                   <p className="font-semibold mb-2">Security Warning</p>
+//                   <ul className="space-y-1 list-disc list-inside">
+//                     <li>Never share your seed phrase or private key</li>
+//                     <li>Ensure you're in a private location</li>
+//                   </ul>
+//                 </div>
+//               </div>
+//             </div>
 
 //             {is2FAEnabled ? (
 //               <div className="mb-2 sm:mb-6 bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
@@ -234,18 +250,13 @@
 //                     : "You will be asked for your authenticator code when revealing sensitive data"}
 //                 </p>
 
-//                 {/* Disable 2FA */}
-//                 <div className="mt-3 bg-red-50 border border-red-200 rounded-lg p-3">
-//                   <p className="text-xs sm:text-sm text-red-700 mb-2">
-//                     Disable 2FA (requires authenticator code)
-//                   </p>
-//                   <OtpInput value={disableOtp} onChange={setDisableOtp} />
+//                 {/* Disable 2FA Button */}
+//                 <div className="mt-3">
 //                   <button
-//                     onClick={handleDisable2FA}
-//                     disabled={disabling2FA || disableOtp.length !== 6}
-//                     className="mt-3 w-full bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg"
+//                     onClick={() => setShow2FAModal(true)}
+//                     className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 rounded-full text-sm sm:text-base transition-colors"
 //                   >
-//                     {disabling2FA ? "Disabling..." : "Disable"}
+//                     Disable 2FA
 //                   </button>
 //                 </div>
 //               </div>
@@ -274,51 +285,101 @@
 //               </div>
 //             )}
 
-//             {/* 2FA Modal */}
+//             {/* 2FA Modal - Enable or Disable */}
 //             {show2FAModal && (
 //               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
 //                 <div className="bg-white w-full max-w-sm rounded-2xl p-5 shadow-xl">
-//                   <h2 className="text-lg font-bold text-center mb-3">Enable Google Authenticator</h2>
+//                   {is2FAEnabled ? (
+//                     // Disable 2FA Modal
+//                     <>
+//                       <h2 className="text-lg font-bold text-center mb-3 text-red-600">Disable 2FA</h2>
+//                       <p className="text-sm text-gray-600 text-center mb-4">
+//                         Enter your authenticator code to disable two-factor authentication
+//                       </p>
 
-//                   {mode === "qr" && qrCode && (
-//                     <div className="flex justify-center mb-4">
-//                       <img src={qrCode} alt="QR Code" className="w-40 h-40 border rounded-lg" />
-//                     </div>
+//                       <OtpInput value={disableOtp} onChange={setDisableOtp} />
+//                       <p className="text-xs text-gray-500 text-center mt-2">Enter 6-digit code from your authenticator app</p>
+
+//                       {error && (
+//                         <div className="mt-3 bg-red-50 border border-red-200 rounded-lg p-2">
+//                           <p className="text-red-700 text-xs text-center">{error}</p>
+//                         </div>
+//                       )}
+
+//                       <div className="flex gap-2 mt-4">
+//                         <button
+//                           onClick={() => {
+//                             setShow2FAModal(false);
+//                             setDisableOtp("");
+//                             setError("");
+//                           }}
+//                           className="flex-1 bg-gray-200 hover:bg-gray-300 py-2.5 rounded-lg font-semibold transition-colors"
+//                         >
+//                           Cancel
+//                         </button>
+//                         <button
+//                           onClick={handleDisable2FA}
+//                           disabled={disabling2FA || disableOtp.length !== 6}
+//                           className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white py-2.5 rounded-lg font-semibold transition-colors"
+//                         >
+//                           {disabling2FA ? "Disabling..." : "Disable"}
+//                         </button>
+//                       </div>
+//                     </>
+//                   ) : (
+//                     // Enable 2FA Modal
+//                     <>
+//                       <h2 className="text-lg font-bold text-center mb-3">Enable Google Authenticator</h2>
+
+//                       {mode === "qr" && qrCode && (
+//                         <div className="flex justify-center mb-4">
+//                           <img src={qrCode} alt="QR Code" className="w-40 h-40 border rounded-lg" />
+//                         </div>
+//                       )}
+
+//                       {mode === "manual" && manualKey && (
+//                         <div className="bg-gray-50 border rounded-lg p-3 mb-4 flex justify-between items-center">
+//                           <code className="text-xs break-all">{manualKey}</code>
+//                           <button
+//                             onClick={() => navigator.clipboard.writeText(manualKey)}
+//                             className="text-xs bg-teal-500 text-white px-2 py-1 rounded hover:bg-teal-600 transition-colors"
+//                           >
+//                             Copy
+//                           </button>
+//                         </div>
+//                       )}
+
+//                       <OtpInput value={enableOtp} onChange={setEnableOtp} />
+//                       <p className="text-xs text-teal-400 text-center mt-2">Enter 6-digit OTP</p>
+
+//                       {error && (
+//                         <div className="mt-3 bg-red-50 border border-red-200 rounded-lg p-2">
+//                           <p className="text-red-700 text-xs text-center">{error}</p>
+//                         </div>
+//                       )}
+
+//                       <div className="flex gap-2 mt-4">
+//                         <button
+//                           onClick={() => {
+//                             setShow2FAModal(false);
+//                             setEnableOtp("");
+//                             setError("");
+//                             setMode(null);
+//                           }}
+//                           className="flex-1 bg-gray-200 hover:bg-gray-300 py-2.5 rounded-lg font-semibold transition-colors"
+//                         >
+//                           Cancel
+//                         </button>
+//                         <button
+//                           onClick={handleVerify2FA}
+//                           disabled={loadingVerify || enableOtp.length !== 6}
+//                           className="flex-1 bg-teal-500 hover:bg-teal-600 disabled:bg-teal-400 text-white py-2.5 rounded-lg font-semibold transition-colors"
+//                         >
+//                           {loadingVerify ? "Verifying..." : "Verify"}
+//                         </button>
+//                       </div>
+//                     </>
 //                   )}
-
-//                   {mode === "manual" && manualKey && (
-//                     <div className="bg-gray-50 border rounded-lg p-3 mb-4 flex justify-between items-center">
-//                       <code className="text-xs break-all">{manualKey}</code>
-//                       <button
-//                         onClick={() => navigator.clipboard.writeText(manualKey)}
-//                         className="text-xs bg-teal-500 text-white px-2 py-1 rounded"
-//                       >
-//                         Copy
-//                       </button>
-//                     </div>
-//                   )}
-
-//                   <OtpInput value={enableOtp} onChange={setEnableOtp} />
-//                   <p className="text-xs text-teal-400 text-center mt-2">Enter 6-digit OTP</p>
-
-//                   <div className="flex gap-2 mt-4">
-//                     <button
-//                       onClick={() => {
-//                         setShow2FAModal(false);
-//                         setEnableOtp("");
-//                       }}
-//                       className="flex-1 bg-gray-200 py-2 rounded-lg"
-//                     >
-//                       Cancel
-//                     </button>
-//                     <button
-//                       onClick={handleVerify2FA}
-//                       disabled={enableOtp.length !== 6}
-//                       className="flex-1 bg-teal-500 disabled:bg-teal-400 text-white py-2 rounded-lg"
-//                     >
-//                       Verify
-//                     </button>
-//                   </div>
 //                 </div>
 //               </div>
 //             )}
@@ -374,10 +435,10 @@
 //                   />
 //                   <button
 //                     type="button"
-//                     onClick={() => setPasswordRevealed(!revealed)}
+//                     onClick={() => setPasswordRevealed(!passwordRevealed)}
 //                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-teal-600 focus:outline-none transition-colors"
 //                   >
-//                     {revealed ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+//                     {passwordRevealed ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
 //                   </button>
 //                 </div>
 //               </div>
@@ -438,11 +499,25 @@
 //                   {revealed ? <EyeOff size={18} /> : <Eye size={18} />}
 //                 </button>
 //               </div>
-//               <div className={`font-mono text-sm sm:text-base md:text-lg text-gray-800 leading-relaxed break-all ${!revealed ? "blur-lg select-none" : ""}`}>
-//                 {revealType === "seed" ? revealedData.seedPhrase : revealedData.privateKey}
-//               </div>
-//             </div>
 
+//               {revealType === "seed" ? (
+//                 // Seed Phrase in 4x3 Grid (MetaMask style)
+//                 <div className={`grid grid-cols-3 gap-2 sm:gap-3 ${!revealed ? "blur-lg select-none" : ""}`}>
+//                   {revealedData.seedPhrase.split(" ").map((word, index) => (
+//                     <div key={index} className="bg-white rounded-lg p-2 sm:p-3 border border-gray-200">
+//                       <span className="text-xs text-gray-500 mr-1">{index + 1}.</span>
+//                       <span className="font-mono text-sm sm:text-base text-gray-800">{word}</span>
+//                     </div>
+//                   ))}
+//                 </div>
+//               ) : (
+//                 // Private Key as single text
+//                 <div className={`font-mono text-sm sm:text-base md:text-lg text-gray-800 leading-relaxed break-all ${!revealed ? "blur-lg select-none" : ""}`}>
+//                   {revealedData.privateKey}
+//                 </div>
+//               )}
+//             </div>
+//             {/* 
 //             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
 //               <div className="bg-gray-50 rounded-lg p-3">
 //                 <div className="text-gray-600 mb-1">Public Address</div>
@@ -452,9 +527,15 @@
 //                 <div className="text-gray-600 mb-1">Retrieved At</div>
 //                 <div className="text-gray-800 font-mono text-xs">{new Date(revealedData.retrievedAt).toLocaleString()}</div>
 //               </div>
-//             </div>
+//             </div> */}
 
 //             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+//               <button
+//                 onClick={handleClose}
+//                 className="w-full sm:w-auto px-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2.5 sm:py-3 rounded-full transition-colors text-sm sm:text-base"
+//               >
+//                 Close
+//               </button>
 //               <button
 //                 onClick={handleCopy}
 //                 disabled={!revealed}
@@ -472,12 +553,6 @@
 //                   </>
 //                 )}
 //               </button>
-//               <button
-//                 onClick={handleClose}
-//                 className="w-full sm:w-auto px-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2.5 sm:py-3 rounded-full transition-colors text-sm sm:text-base"
-//               >
-//                 Close
-//               </button>
 //             </div>
 
 //             <div className="mt-4 text-xs text-gray-600 text-center">
@@ -491,6 +566,8 @@
 // };
 
 // export default SecureRevealComponent;
+
+
 
 
 
@@ -624,7 +701,7 @@ const SecureRevealComponent = () => {
       setIs2FAEnabled(false);
       setShow2FAModal(false);
       setError("");
-      // alert("2FA disabled successfully");
+      alert("2FA disabled successfully");
     } catch (err) {
       setError(getApiErrorMessage(err));
     }
@@ -733,7 +810,6 @@ const SecureRevealComponent = () => {
                 </div>
               </div>
             </div>
-
             {is2FAEnabled ? (
               <div className="mb-2 sm:mb-6 bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
                 <div className="flex items-center gap-2 text-green-700">
@@ -998,11 +1074,11 @@ const SecureRevealComponent = () => {
 
               {revealType === "seed" ? (
                 // Seed Phrase in 4x3 Grid (MetaMask style)
-                <div className={`grid grid-cols-3 gap-2 sm:gap-3 ${!revealed ? "blur-lg select-none" : ""}`}>
+                <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 ${!revealed ? "blur-lg select-none" : ""}`}>
                   {revealedData.seedPhrase.split(" ").map((word, index) => (
-                    <div key={index} className="bg-white rounded-lg p-2 sm:p-3 border border-gray-200">
-                      <span className="text-xs text-gray-500 mr-1">{index + 1}.</span>
-                      <span className="font-mono text-sm sm:text-base text-gray-800">{word}</span>
+                    <div key={index} className="bg-white rounded-lg p-2 border border-gray-200">
+                      <span className="text-[10px] text-gray-500 mr-1">{index + 1}.</span>
+                      <span className="font-mono text-xs text-gray-800">{word}</span>
                     </div>
                   ))}
                 </div>
@@ -1013,7 +1089,7 @@ const SecureRevealComponent = () => {
                 </div>
               )}
             </div>
-            {/* 
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
               <div className="bg-gray-50 rounded-lg p-3">
                 <div className="text-gray-600 mb-1">Public Address</div>
@@ -1023,15 +1099,9 @@ const SecureRevealComponent = () => {
                 <div className="text-gray-600 mb-1">Retrieved At</div>
                 <div className="text-gray-800 font-mono text-xs">{new Date(revealedData.retrievedAt).toLocaleString()}</div>
               </div>
-            </div> */}
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-              <button
-                onClick={handleClose}
-                className="w-full sm:w-auto px-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2.5 sm:py-3 rounded-full transition-colors text-sm sm:text-base"
-              >
-                Close
-              </button>
               <button
                 onClick={handleCopy}
                 disabled={!revealed}
@@ -1048,6 +1118,12 @@ const SecureRevealComponent = () => {
                     Copy to Clipboard
                   </>
                 )}
+              </button>
+              <button
+                onClick={handleClose}
+                className="w-full sm:w-auto px-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2.5 sm:py-3 rounded-full transition-colors text-sm sm:text-base"
+              >
+                Close
               </button>
             </div>
 
