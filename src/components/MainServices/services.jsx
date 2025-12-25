@@ -199,16 +199,16 @@ const CryptoServicesFlipCards = () => {
         </h1>
         <p className="text-base sm:text-base md:text-lg lg:text-xl text-lime-400 max-w-3xl mx-auto mb-4 sm:mb-5 md:mb-5 lg:mb-6 font-semibold px-4">
           Explore the Future of Digital Finance with{" "}
-          <Link to="/about" title="About Jaimax crypto coin" className="hover:underline">
+          <Link to="/about" title="About Jaimax crypto token" className="hover:underline">
             Jaimax
           </Link>{" "}
           –{" "}
           <Link 
-            to="/best-presale-crypto-coin-in-india" 
-            title="Best crypto coin in India - Jaimax presale"
+            to="/best-presale-crypto-token-in-india" 
+            title="Best crypto token in India - Jaimax presale"
             className="hover:underline"
           >
-            The Best Crypto Coin in India
+            The Best Crypto token in India
           </Link>
         </p>
         <p className="text-gray-300 max-w-4xl mx-auto leading-relaxed text-sm sm:text-sm md:text-base lg:text-lg px-4">
@@ -225,8 +225,8 @@ const CryptoServicesFlipCards = () => {
             features
           </Link>{" "}
           you need to succeed in the world of cryptocurrency. Discover why{" "}
-          <Link to="/best-presale-crypto-coin-in-india" title="Why Jaimax is the best crypto coin" className="text-lime-400 hover:underline">
-            Jaimax is fast becoming the best crypto coin in India
+          <Link to="/best-presale-crypto-token-in-india" title="Why Jaimax is the best crypto token" className="text-lime-400 hover:underline">
+            Jaimax is fast becoming the best crypto token in India
           </Link>.
         </p>
         <div className="w-16 sm:w-16 md:w-20 lg:w-24 h-1 bg-gradient-to-r from-teal-700 to-green-600 mx-auto mt-6 sm:mt-6 md:mt-7 lg:mt-8 rounded-full"></div>
@@ -238,7 +238,7 @@ const CryptoServicesFlipCards = () => {
           // Map services to different pages for internal linking
           const serviceLinks = [
             "/features",
-            "/best-presale-crypto-coin-in-india",
+            "/best-presale-crypto-token-in-india",
             "/about",
             "/contact",
             "/blog",
@@ -323,7 +323,7 @@ const CryptoServicesFlipCards = () => {
       <div className="rounded-2xl p-6 sm:p-6 md:p-7 lg:p-8 hover:scale-105 transition-transform duration-300">
         <h2 className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-white mb-3 sm:mb-3 md:mb-3 lg:mb-4 px-4">
           Ready to Start Your{" "}
-          <Link to="/best-presale-crypto-coin-in-india" title="Start your crypto journey with Jaimax" className="text-lime-400 hover:underline">
+          <Link to="/best-presale-crypto-token-in-india" title="Start your crypto journey with Jaimax" className="text-lime-400 hover:underline">
             Crypto Journey
           </Link>?
         </h2>

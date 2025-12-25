@@ -7,9 +7,9 @@ import Header from "../ReusableComponents/header/header";
 import Footer from "../global/Footer";
 
 const hideHeaderFooterRoutes = [
-  "/login",
-  "/register",
-  "/forgot-password"
+  "/login/",
+  "/register/",
+  "/forgot-password/"
 ];
 
 const PublicRoute = React.memo(() => {

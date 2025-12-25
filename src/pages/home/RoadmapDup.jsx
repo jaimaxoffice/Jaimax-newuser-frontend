@@ -24,7 +24,7 @@ const roadmapData = {
     phases: [
       "• Launch of the Jaimax Wallet (J-Wallet) for secure token management.",
       "• Integration of DigiLocker KYC for secure user verification.",
-      "• Launch of coin swapping within the Jaimax ecosystem.",
+      "• Launch of token swapping within the Jaimax ecosystem.",
       "• Enable users to buy JMC through Binance exchange wallet connectivity."
     ]
   },

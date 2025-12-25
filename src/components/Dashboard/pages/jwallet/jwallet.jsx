@@ -1459,7 +1459,7 @@ const UserDetailsComponent = () => {
 
                   <div className="relative z-10" ref={dropdownRef}>
                     {/* Three Dots Button */}
-                    <button
+                    {/* <button
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                       className="group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 bg-white text-teal-500 rounded-full 
              hover:bg-teal-50 transform hover:-translate-y-1 transition-all duration-300 
@@ -1476,7 +1476,7 @@ const UserDetailsComponent = () => {
                         <circle cx="12" cy="12" r="2" />
                         <circle cx="12" cy="19" r="2" />
                       </svg>
-                    </button>
+                    </button> */}
 
                     {/* Dropdown Menu */}
                     {isDropdownOpen && (

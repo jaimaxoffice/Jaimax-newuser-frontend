@@ -67,11 +67,11 @@ const Home = () => {
           "Jaimax",
           "Jaimax coin",
           "Jaimax crypto",
-          "Jaimax crypto coin",
+          "Jaimax crypto token",
           "Jaimax token",
           "cryptocurrency in India",
           "cryptocurrency worldwide",
-          "crypto coin",
+          "crypto token",
           "digital currency",
           "crypto wallet",
           "blockchain technology",
@@ -128,8 +128,8 @@ const Home = () => {
         "@type": "Product",
         "@id": "https://www.jaimax.com/#product",
         name: "Jaimax Coin",
-        alternateName: "Jaimax Crypto Coin",
-        url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+        alternateName: "Jaimax Crypto token",
+        url: "https://www.jaimax.com/best-presale-crypto-token-in-india/",
         logo: "https://www.jaimax.com/logo.webp",
         image: "https://www.jaimax.com/logo.webp",
         description:
@@ -142,9 +142,9 @@ const Home = () => {
         category: "Cryptocurrency",
         keywords: [
           "Jaimax Coin",
-          "Jaimax crypto coin",
+          "Jaimax crypto token",
           "Jaimax token",
-          "crypto coin",
+          "crypto token",
           "cryptocurrency",
           "blockchain coin",
           "digital currency",
@@ -157,7 +157,7 @@ const Home = () => {
         ],
         offers: {
           "@type": "Offer",
-          url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+          url: "https://www.jaimax.com/best-presale-crypto-token-in-india/",
           priceCurrency: "INR",
           price: "0.035",
           availability: "https://schema.org/InStock",
@@ -255,9 +255,9 @@ const Home = () => {
         "@type": "WebPage",
         "@id": "https://www.jaimax.com/#webpage",
         url: "https://www.jaimax.com/",
-        name: "Jaimax Coin – India’s Trusted Pre-Sale Crypto Coin",
+        name: "Jaimax Coin – India’s Trusted Pre-Sale Crypto token",
         description:
-          "Invest early in Jaimax, India’s trusted pre-sale crypto coin powered by the JMC-24 blockchain.",
+          "Invest early in Jaimax, India’s trusted pre-sale crypto token powered by the JMC-24 blockchain.",
         isPartOf: { "@id": "https://www.jaimax.com/#website" },
         inLanguage: "en",
       },
@@ -273,7 +273,7 @@ const Home = () => {
           "Features",
           "Blog",
           "Contact",
-          "Pre-Sale Crypto Coin",
+          "Pre-Sale Crypto token",
           "Refund Policy",
           "Terms and Conditions",
           "Privacy Policy",
@@ -287,7 +287,7 @@ const Home = () => {
           "https://www.jaimax.com/features",
           "https://www.jaimax.com/blog",
           "https://www.jaimax.com/contact",
-          "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+          "https://www.jaimax.com/best-presale-crypto-token-in-india/",
           "https://www.jaimax.com/refund-policy",
           "https://www.jaimax.com/terms-and-conditions",
           "https://www.jaimax.com/privacy-policy",
@@ -345,11 +345,11 @@ const Home = () => {
                               opacity-0 translate-y-3 animate-fadeUp"
               >
                 <span className="block text-[#b8cc26]">
-                  <a href="https://www.jaimax.com/best-presale-crypto-coin-in-india">
+                  <a href="https://www.jaimax.com/best-presale-crypto-token-in-india/">
                     Best Pre-Sale
                   </a>
                 </span>
-                <span className="block">Crypto Coin in India</span>
+                <span className="block">Crypto Token in India</span>
                 <span className="block">Invest Early in </span>
                 <span className="block"> Jaimax</span>
               </h1>
@@ -364,9 +364,9 @@ const Home = () => {
                 journey, offering a secure and transparent experience to help
                 you grow with India’s most trusted
                 <b className="text-[#aadc32]">
-                  <a href="https://www.jaimax.com/best-presale-crypto-coin-in-india">
+                  <a href="https://www.jaimax.com/best-presale-crypto-token-in-india/">
                     {" "}
-                    pre-sale crypto coin
+                    pre-sale crypto token
                   </a>
                 </b>{" "}
                 - jaimax.

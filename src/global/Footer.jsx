@@ -38,7 +38,7 @@ const Footer = () => {
                   src={Logo}
                   className="h-8 sm:h-10 lg:h-12 w-auto filter drop-shadow-lg mx-auto sm:mx-0"
                   alt="Jaimax Logo"
-                  title="Jaimax Coin – Best Pre-Sale Crypto Coin in India | Smart Investments"
+                  title="Jaimax Coin – Best Pre-Sale Crypto token in India | Smart Investments"
                 />
               </NavLink>
               <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-3 sm:mb-4">
@@ -277,11 +277,11 @@ const Footer = () => {
               </h3>
               <ul className="space-y-2 sm:space-y-3">
                 {[
-                  { name: "About", path: "/about", title: "Learn more about Jaimax Coin and our mission" },
-                  { name: "Disclaimer", path: "/disclaimer", title: "Read our disclaimer and legal notices" },
-                  { name: "Features", path: "/features", title: "Explore Jaimax Coin features and benefits" },
-                  { name: "Blogs", path: "/blog", title: "Read our latest crypto insights and articles" },
-                  { name: "Contact", path: "/contact", title: "Get in touch with Jaimax support team" },
+                  { name: "About", path: "/about/", title: "Learn more about Jaimax Coin and our mission" },
+                  { name: "Disclaimer", path: "/disclaimer/", title: "Read our disclaimer and legal notices" },
+                  { name: "Features", path: "/features/", title: "Explore Jaimax Coin features and benefits" },
+                  { name: "Blogs", path: "/blog/", title: "Read our latest crypto insights and articles" },
+                  { name: "Contact", path: "/contact/", title: "Get in touch with Jaimax support team" },
                   {
                     name: "White Paper",
                     path: "/jaimax-whitepaper.pdf",
@@ -335,11 +335,11 @@ const Footer = () => {
               </h3>
               <ul className="space-y-2 sm:space-y-3">
                 {[
-                  { name: "ICO Timeline", path: "/PreSale", title: "View Jaimax ICO timeline and pre-sale details" },
-                  { name: "Margin Trading", path: "/Margintrading", title: "Learn about margin trading on Jaimax" },
-                  { name: "API Trading", path: "/ApiTrading", title: "Explore Jaimax API trading solutions" },
-                  { name: "Spot Trading", path: "/SpotTrading", title: "Start spot trading on Jaimax platform" },
-                  { name: "Futures Trading", path: "/FuturesTrading", title: "Discover futures trading opportunities" },
+                  { name: "ICO Timeline", path: "/PreSale/", title: "View Jaimax ICO timeline and pre-sale details" },
+                  { name: "Margin Trading", path: "/Margintrading/", title: "Learn about margin trading on Jaimax" },
+                  { name: "API Trading", path: "/ApiTrading/", title: "Explore Jaimax API trading solutions" },
+                  { name: "Spot Trading", path: "/SpotTrading/", title: "Start spot trading on Jaimax platform" },
+                  { name: "Futures Trading", path: "/FuturesTrading/", title: "Discover futures trading opportunities" },
                   // { name: "Pre Sale Crypto Coin", path: "/best-pre-sale-crypto-coin-in-india", title: "Discover futures trading opportunities" },
                 ].map((link) => (
                   <li key={link.name}>
@@ -363,16 +363,16 @@ const Footer = () => {
               </h3>
               <ul className="space-y-2 sm:space-y-3">
                 {[
-                  { name: "24/7 Support", path: "/supportpage", title: "Get 24/7 customer support and assistance" },
-                  { name: "Refund Policy", path: "/refund-policy", title: "Read our refund and cancellation policy" },
+                  { name: "24/7 Support", path: "/supportpage/", title: "Get 24/7 customer support and assistance" },
+                  { name: "Refund Policy", path: "/refund-policy/", title: "Read our refund and cancellation policy" },
                   {
                     name: "Terms and Conditions",
                     path: "/terms-and-conditions",
                     title: "Read Jaimax terms and conditions",
                   },
-                  { name: "Privacy Policy", path: "/privacy-policy", title: "View our privacy policy and data protection" },
-                  { name: "KYC_PMLA", path: "/kyc-pmla", title: "Learn about KYC and PMLA compliance" },
-                  { name: "AML_CTF", path: "/aml-ctf", title: "View anti-money laundering and counter-terrorism financing policy" },
+                  { name: "Privacy Policy", path: "/privacy-policy/", title: "View our privacy policy and data protection" },
+                  { name: "KYC_PMLA", path: "/kyc-pmla/", title: "Learn about KYC and PMLA compliance" },
+                  { name: "AML_CTF", path: "/aml-ctf/", title: "View anti-money laundering and counter-terrorism financing policy" },
                 ].map((link) => (
                   <li key={link.name}>
                     <NavLink

@@ -58,7 +58,7 @@ const OurMissionSectionContent = () => {
       <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
         Unlock Your Financial Future with{" "}
         <Link 
-          to="/best-presale-crypto-coin-in-india" 
+          to="/best-presale-crypto-token-in-india/" 
           title="Jaimax Coin - Best crypto presale in India"
           className="text-lime-400 hover:underline"
         >
@@ -124,7 +124,7 @@ const OurMissionSectionContent = () => {
             investment plans
           </Link>{" "}
           designed to maximize your returns, from small-scale investments to major growth opportunities, progressing through{" "}
-          <Link to="/best-presale-crypto-coin-in-india" title="Jaimax ICO slabs" className="text-lime-400 hover:underline">
+          <Link to="/best-presale-crypto-token-in-india/" title="Jaimax ICO slabs" className="text-lime-400 hover:underline">
             ICO slabs
           </Link>.
         </p>
@@ -214,7 +214,7 @@ const OurMissionSectionContent = () => {
         </h3>
         <p className="text-white mb-6 text-sm sm:text-base">
           Benefit from seamless purchases of{" "}
-          <Link to="/best-presale-crypto-coin-in-india" title="Buy Jaimax Coins" className="text-lime-400 hover:underline">
+          <Link to="/best-presale-crypto-token-in-india/" title="Buy Jaimax Coins" className="text-lime-400 hover:underline">
             Jaimax Coins
           </Link>{" "}
           via an integrated{" "}

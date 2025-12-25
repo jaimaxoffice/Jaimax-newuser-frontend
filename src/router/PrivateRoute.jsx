@@ -5,7 +5,7 @@ const ProtectedRoute = () => {
   const location = useLocation();
   const token = Cookies.get("token");
   if (!token) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login/" state={{ from: location }} replace />;
   }
   return <Outlet />;
 };

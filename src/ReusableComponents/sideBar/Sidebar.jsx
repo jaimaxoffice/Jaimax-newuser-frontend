@@ -30,8 +30,8 @@ const navItems = [
   { name: "Guaranteed Wealth", path: "/guaranteedwealthplan", icon: <Landmark   size={18} /> },
   { name: "Guaranteed Wealth 2.0", path: "/guaranteedwealthplan-2-0", icon: <HousePlug   size={18} /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },
-  // { name: "Foundation Bonus", path: "/foundation", icon: <SwatchBook size={18} /> },
-  // { name: "Locked Superbonus", path: "/locked-superbonus", icon: <HandCoins   size={16}/> },
+  { name: "Foundation Bonus", path: "/foundation", icon: <SwatchBook size={18} /> },
+  { name: "Locked Superbonus", path: "/locked-superbonus", icon: <HandCoins   size={16}/> },
   // { name: "Goa-Gateway", path: "/goa-vacation", icon: <TreePalm size={16}/> },
   { name: "Profile", path: "/profile", icon: <UserRound size={18}  /> },
   { name: "KYC", path: "/kyc-information", icon: <HiOutlineIdentification /> },
@@ -114,7 +114,7 @@ function Sidebar({ onLogoutClick }) {
           >
             {isOpen ? (
               <img src={logo} alt="Logo" 
-              title=" Jaimax Coin – Best Pre-Sale Crypto Coin in India | Smart Investments"
+              title=" Jaimax Coin – Best Pre-Sale Crypto token in India | Smart Investments"
                className="" />
             ) : (
               !isMobile && (

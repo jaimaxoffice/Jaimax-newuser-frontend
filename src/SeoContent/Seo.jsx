@@ -3,9 +3,9 @@ import MetaTags from "./MetaTags";
 const seoContent = {
   homePage: {
     title:
-      "Jaimax Coin – The Best PreSale Crypto Coin in India for Smart Investments",
+      "Jaimax Coin – The Best PreSale Crypto token in India for Smart Investments",
     description:
-      "Jaimax Coin is India’s most trusted pre-sale crypto coin, designed for secure and profitable investments. Join early, grow faster, and be part of the next big blockchain innovation.",
+      "Jaimax token is India’s most trusted pre-sale crypto token, designed for secure and profitable investments. Join early, grow faster, and be part of the next big blockchain innovation.",
     canonical: "https://www.jaimax.com/",
     schema: {
       "@context": "https://schema.org",
@@ -39,13 +39,13 @@ const seoContent = {
           founder: "Jaimax Team",
           keywords: [
             "Jaimax",
-            "Jaimax coin",
+            "Jaimax token",
             "Jaimax crypto",
-            "Jaimax crypto coin",
+            "Jaimax crypto token",
             "Jaimax token",
             "cryptocurrency in India",
             "cryptocurrency worldwide",
-            "crypto coin",
+            "crypto token",
             "digital currency",
             "crypto wallet",
             "blockchain technology",
@@ -100,12 +100,12 @@ const seoContent = {
           "@type": "Product",
           "@id": "https://www.jaimax.com/#product",
           name: "Jaimax Coin",
-          alternateName: "Jaimax Crypto Coin",
-          url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+          alternateName: "Jaimax Crypto token",
+          url: "https://www.jaimax.com/best-presale-crypto-token-in-india",
           logo: "https://www.jaimax.com/logo.webp",
           image: "https://www.jaimax.com/logo.webp",
           description:
-            "Jaimax Coin is an innovative cryptocurrency designed for secure trading, blockchain adoption, DeFi, NFTs, and global digital payments.",
+            "Jaimax token is an innovative cryptocurrency designed for secure trading, blockchain adoption, DeFi, NFTs, and global digital payments.",
           brand: {
             "@type": "Organization",
             name: "Jaimax",
@@ -113,10 +113,10 @@ const seoContent = {
           },
           category: "Cryptocurrency",
           keywords: [
-            "Jaimax Coin",
-            "Jaimax crypto coin",
             "Jaimax token",
-            "crypto coin",
+            "Jaimax crypto token",
+            "Jaimax token",
+            "crypto token",
             "cryptocurrency",
             "blockchain coin",
             "digital currency",
@@ -129,7 +129,7 @@ const seoContent = {
           ],
           offers: {
             "@type": "Offer",
-            url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+            url: "https://www.jaimax.com/best-presale-crypto-token-in-india",
             priceCurrency: "INR",
             price: "0.035",
             availability: "https://schema.org/InStock",
@@ -219,9 +219,9 @@ const seoContent = {
           "@type": "WebPage",
           "@id": "https://www.jaimax.com/#webpage",
           url: "https://www.jaimax.com/",
-          name: "Jaimax Coin – India’s Trusted Pre-Sale Crypto Coin",
+          name: "Jaimax Coin – India’s Trusted Pre-Sale Crypto Token",
           description:
-            "Invest early in Jaimax, India’s trusted pre-sale crypto coin powered by the JMC-24 blockchain.",
+            "Invest early in Jaimax, India’s trusted pre-sale crypto token powered by the JMC-24 blockchain.",
           isPartOf: { "@id": "https://www.jaimax.com/#website" },
           inLanguage: "en",
         },
@@ -235,7 +235,7 @@ const seoContent = {
             "Features",
             "Blog",
             "Contact",
-            "Pre-Sale Crypto Coin",
+            "Pre-Sale Crypto token",
             "Refund Policy",
             "Terms and Conditions",
             "Privacy Policy",
@@ -249,7 +249,7 @@ const seoContent = {
             "https://www.jaimax.com/features/",
             "https://www.jaimax.com/blog/",
             "https://www.jaimax.com/contact/",
-            "https://www.jaimax.com/best-presale-crypto-coin-in-india/",
+            "https://www.jaimax.com/best-presale-crypto-token-in-india/",
             "https://www.jaimax.com/refund-policy/",
             "https://www.jaimax.com/terms-and-conditions/",
             "https://www.jaimax.com/privacy-policy/",
@@ -910,10 +910,10 @@ const seoContent = {
     },
   },
   presalecryptocoin: {
-    title: "Presale Crypto Coin in India | Best Pre-Sale Crypto Coin - Jaimax",
+    title: "Presale Crypto token in India | Best Pre-Sale Crypto token - Jaimax",
     description:
-      "Discover Jaimax, India’s most trusted presale crypto coin. Get early access at a low entry price, backed by the JMC-24 blockchain for speed, security and long-term growth.",
-    canonical: "https://www.jaimax.com/best-presale-crypto-coin-in-india/",
+      "Discover Jaimax, India’s most trusted presale crypto token. Get early access at a low entry price, backed by the JMC-24 blockchain for speed, security and long-term growth.",
+    canonical: "https://www.jaimax.com/best-presale-crypto-token-in-india/",
     schema: {
       "@context": "https://schema.org",
       "@graph": [
@@ -951,33 +951,33 @@ const seoContent = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://www.jaimax.com/best-presale-crypto-coin-in-india",
-          url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
-          name: "Best Pre-Sale Crypto Coin in India – Invest Early in Jaimax",
+          "@id": "https://www.jaimax.com/best-presale-crypto-token-in-india",
+          url: "https://www.jaimax.com/best-presale-crypto-token-in-india",
+          name: "Best Pre-Sale Crypto token in India – Invest Early in Jaimax",
           description:
             "Dedicated presale page for Jaimax Coin, explaining current presale price, allocation, JMC-24 blockchain roadmap and how investors in India can securely participate.",
           isPartOf: { "@id": "https://www.jaimax.com/#website" },
           about: { "@id": "https://www.jaimax.com/#organization" },
           inLanguage: "en",
           keywords: [
-            "best pre sale crypto coin in India",
-            "pre sale crypto coin",
-            "crypto pre sale coin",
-            "Jaimax Coin",
-            "crypto coin in India",
+            "best pre sale crypto token in India",
+            "pre sale crypto token",
+            "crypto pre sale token",
+            "Jaimax token",
+            "crypto token in India",
             "pre sale crypto India",
-            "new crypto coin India",
+            "new crypto token India",
           ],
           mainEntity: { "@id": "https://www.jaimax.com/#product" },
           breadcrumb: {
             "@id":
-              "https://www.jaimax.com/best-presale-crypto-coin-in-india#breadcrumb",
+              "https://www.jaimax.com/best-presale-crypto-token-in-india#breadcrumb",
           },
         },
         {
           "@type": "BreadcrumbList",
           "@id":
-            "https://www.jaimax.com/best-presale-crypto-coin-in-india#breadcrumb",
+            "https://www.jaimax.com/best-presale-crypto-token-in-india#breadcrumb",
           itemListElement: [
             {
               "@type": "ListItem",
@@ -988,17 +988,17 @@ const seoContent = {
             {
               "@type": "ListItem",
               position: 2,
-              name: "Best Pre-Sale Crypto Coin in India",
-              item: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+              name: "Best Pre-Sale Crypto token in India",
+              item: "https://www.jaimax.com/best-presale-crypto-token-in-india",
             },
           ],
         },
         {
           "@type": "Product",
           "@id": "https://www.jaimax.com/#product",
-          name: "Jaimax Coin",
-          alternateName: "Jaimax Crypto Coin",
-          url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+          name: "Jaimax token",
+          alternateName: "Jaimax Crypto token",
+          url: "https://www.jaimax.com/best-presale-crypto-token-in-india",
           image: "https://www.jaimax.com/logo.webp",
           brand: {
             "@type": "Brand",
@@ -1009,7 +1009,7 @@ const seoContent = {
             "Jaimax Coin is an innovative cryptocurrency with a dedicated presale for Indian investors, built on the JMC-24 blockchain for secure trading, DeFi and global digital payments.",
           offers: {
             "@type": "Offer",
-            url: "https://www.jaimax.com/best-presale-crypto-coin-in-india",
+            url: "https://www.jaimax.com/best-presale-crypto-token-in-india",
             priceCurrency: "INR",
             price: "0.035",
             priceValidUntil: "2027-08-31",
@@ -1032,14 +1032,14 @@ const seoContent = {
         },
         {
           "@type": "FAQPage",
-          "@id": "https://www.jaimax.com/best-presale-crypto-coin-in-india#faq",
+          "@id": "https://www.jaimax.com/best-presale-crypto-token-in-india#faq",
           mainEntity: [
             {
               "@type": "Question",
-              name: "Why is Jaimax considered the best presale crypto coin in India?",
+              name: "Why is Jaimax considered the best presale crypto token in India?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Jaimax is considered one of the best pre-sale crypto coins in India because it combines a low early entry price, a strong JMC-24 blockchain roadmap, real Web3 utility and a transparent Indian company behind the project.",
+                text: "Jaimax is considered one of the best pre-sale crypto token in India because it combines a low early entry price, a strong JMC-24 blockchain roadmap, real Web3 utility and a transparent Indian company behind the project.",
               },
             },
             {
@@ -1055,7 +1055,7 @@ const seoContent = {
               name: "When does the Jaimax presale end?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "The Jaimax presale is scheduled to run until August 2027, allowing investors time to accumulate this pre-sale crypto coin at its early-stage price.",
+                text: "The Jaimax presale is scheduled to run until August 2027, allowing investors time to accumulate this pre-sale crypto token at its early-stage price.",
               },
             },
             {

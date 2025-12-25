@@ -143,7 +143,7 @@ const JaimaxContent = () => {
               <div className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#b8cc26] to-transparent rounded-full" />
             </span>
             <br />
-            Crypto Coin – <span className="text-[#1a9850]">Jaimax</span>
+            Crypto Token – <span className="text-[#1a9850]">Jaimax</span>
           </motion.h2>
         </motion.div>
 
@@ -177,7 +177,7 @@ const JaimaxContent = () => {
                     {" "}
                     <a href="https://www.jaimax.com" className="text-[#b8cc26]">
                       {" "}
-                      best pre-sale crypto coin
+                      best pre-sale crypto token
                     </a>
                   </b>
                   , built for investors who value innovation, transparency, and
@@ -188,7 +188,7 @@ const JaimaxContent = () => {
 
                 </p>
                 <p className="text-gray-100 leading-relaxed text-sm font-medium">
-                  More than just a crypto coin, Jaimax represents a new era of
+                  More than just a crypto token, Jaimax represents a new era of
                   secure, accessible, and rewarding investments for everyone.
                 </p>
               </div>
@@ -223,7 +223,7 @@ const JaimaxContent = () => {
                 </h2>
                 <p className="text-gray-100 leading-relaxed text-sm font-medium">
                   What makes Jaimax truly unique among India's growing number of
-                  crypto pre-sale coins is its powerful combination of{" "}
+                  crypto pre-sale token is its powerful combination of{" "}
                   <span className="text-[#1a9850] font-extrabold">
                     trust, technology, and opportunity
                   </span>
@@ -311,7 +311,7 @@ const JaimaxContent = () => {
                   Exclusive Pre-Sale Opportunity
                 </h2>
                 <p className="text-gray-100 leading-relaxed text-sm font-medium">
-                  The Jaimax pre-sale offers early investors an exclusive opportunity to purchase coins at a low initial price before public trading begins. This pre-sale advantage allows holders to maximize their growth potential while supporting a rapidly expanding blockchain ecosystem. Whether you are an experienced trader or a first-time investor, Jaimax provides a trusted platform to access one of India’s most promising pre-sale crypto coin.
+                  The Jaimax pre-sale offers early investors an exclusive opportunity to purchase tokens at a low initial price before public trading begins. This pre-sale advantage allows holders to maximize their growth potential while supporting a rapidly expanding blockchain ecosystem. Whether you are an experienced trader or a first-time investor, Jaimax provides a trusted platform to access one of India’s most promising pre-sale crypto token.
                 </p>
               </div>
             </div>
@@ -335,26 +335,29 @@ const JaimaxContent = () => {
                   </div>
                 </motion.div>
 
-                <motion.div
-                  className="relative  p-4 rounded-xl border-2 border-[#b8cc26]/60 overflow-hidden group"
-                  whileHover={{
-                    scale: 1.03,
-                    boxShadow: "0 15px 30px rgba(184, 204, 38, 0.3)",
-                    borderColor: "#b8cc26",
-                  }}
-                >
-                  <span className="text-xs text-gray-400 block mb-2 font-bold tracking-widest uppercase">
-                    Launch Price
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-3xl font-black text-[#b8cc26]">
-                      ₹4.10
-                    </span>
-                    <div className="px-2 py-1 bg-[#b8cc26]/30 rounded-full text-[#b8cc26] text-xs font-black border border-[#b8cc26]/50">
-                      +250%
-                    </div>
-                  </div>
-                </motion.div>
+               <motion.div
+  className="relative p-4 rounded-xl border-2 border-[#b8cc26]/60 overflow-hidden group"
+  whileHover={{
+    scale: 1.03,
+    boxShadow: "0 15px 30px rgba(184, 204, 38, 0.3)",
+    borderColor: "#b8cc26",
+  }}
+>
+  <span className="text-xs text-gray-400 block mb-2 font-bold tracking-widest uppercase">
+    Expected Launching Price
+  </span>
+
+  <div className="flex items-center gap-2">
+    <span className="text-3xl font-black text-[#b8cc26]">
+      ₹4.10
+    </span>
+  </div>
+
+  <p className="mt-3 text-[11px] leading-relaxed text-gray-400">
+    As per mathematical calculations.
+  </p>
+</motion.div>
+
               </div>
 
 
@@ -391,7 +394,7 @@ const JaimaxContent = () => {
                   Security remains at the heart of the Jaimax ecosystem. Every transaction is protected by advanced blockchain encryption, ensuring full transparency and zero manipulation. Investors can buy, hold, and trade Jaimax confidently, knowing that the platform follows industry-leading standards for safety and compliance. The Jaimax Coin is built to handle real-world utility — from DeFi and NFTs to decentralized applications — ensuring that each coin holds long-term value beyond speculation.
                 </p>
                 <p className="text-gray-100 leading-relaxed text-sm font-medium mt-2">
-                  Unlike most projects that focus only on trading, Jaimax is creating a complete blockchain ecosystem where investors, developers, and learners come together. Its vision extends beyond profit — aiming to educate, innovate, and connect users worldwide through blockchain education and financial empowerment. This human-centered approach sets Jaimax apart as a best-in-class crypto coin designed to sustain long-term growth.
+                  Unlike most projects that focus only on trading, Jaimax is creating a complete blockchain ecosystem where investors, developers, and learners come together. Its vision extends beyond profit — aiming to educate, innovate, and connect users worldwide through blockchain education and financial empowerment. This human-centered approach sets Jaimax apart as a best-in-class crypto token designed to sustain long-term growth.
                 </p>
               </div>
             </div>
@@ -433,7 +436,7 @@ const JaimaxContent = () => {
                   Jaimax Coin continues to lead as the best{" "}  
                   <a href="https://www.jaimax.com" className="text-[#b8cc26]">
                     {" "}
-                    pre-sale crypto coin{" "}
+                    pre-sale crypto token{" "}
                   </a>
                   in India, offering a bridge between today's investors and
                   tomorrow's decentralized economy.By investing early, users not only secure potential profits but also contribute to the development of a transparent and accessible financial future.
@@ -447,7 +450,7 @@ const JaimaxContent = () => {
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                Join Jaimax today — the crypto pre-sale coin redefining how
+                Join Jaimax today — the crypto pre-sale token redefining how
                 India invests in blockchain.
               </motion.h3>
 

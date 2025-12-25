@@ -65,6 +65,7 @@ import GuaranteedWealthDashboard from "./components/Dashboard/pages/GuaranteedWe
 import GuaranteedWealthDashboard2_O from "./components/Dashboard/pages/GuaranteedWealth2.O/GuaranteedWealth2.O";
 import { ToastContainer } from "./ReusableComponents/Toasts/Toasts";
 import PreSaleCryptoCoin from "./services/PreSaleCryptoCoin";
+import NotFound from "./pages/home/NotFound";
 import Snowfall from "react-snowfall";
 const getAuthToken = () => {
   try {
@@ -145,7 +146,7 @@ const DashboardLayout = () => {
       // console.error("Error during logout:", error);
     }
     setShowLogoutModal(false);
-    window.location.href = "/login"; // Or use navigate("/login") if using react-router
+    window.location.href = "/login/"; // Or use navigate("/login") if using react-router
   };
   const handleNavigation = (path) => {
     setShowNavMenu(false);
@@ -209,18 +210,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="relative flex h-screen bg-[#1d8d84] overflow-hidden ">
-      {/* <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      /> */}
+
       <div className="overflow-auto" style={{ scrollbarWidth: "none" }}>
         <Sidebar
           isOpen={sidebarOpen}
@@ -265,7 +255,7 @@ const DashboardLayout = () => {
 const PublicLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
+  const hideNavbarRoutes = ["/login/", "/register/", "/forgot-password/"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
   return (
     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
@@ -530,13 +520,13 @@ const images = useMemo(() => {
           />
 
           <Route element={<PublicRoute />}>
-            <Route path="login" element={<AuthContainer />} />
-            <Route path="register" element={<AuthContainer />} />
-            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="login/" element={<AuthContainer />} />
+            <Route path="register/" element={<AuthContainer />} />
+            <Route path="forgot-password/" element={<ForgotPassword />} />
           </Route>
-          <Route path="about" element={<JaimaxComponent />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="features" element={<FeaturesSection />} />
+          <Route path="about/" element={<JaimaxComponent />} />
+          <Route path="contact/" element={<Contact />} />
+          <Route path="features/" element={<FeaturesSection />} />
           <Route path="landingpage" element={<Landingpage />} />
           <Route path="blog/">
             <Route index element={<BlogLayout />} />
@@ -544,26 +534,37 @@ const images = useMemo(() => {
           </Route>
 
           <Route path="services/" element={<CryptoServicesFlipCards />} />
-          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="privacy-policy/" element={<PrivacyPolicy />} />
           <Route path="/supportpage" element={<SupportPage />} />
-          <Route path="terms-and-conditions" element={<TermsConditions />} />
-          <Route path="refund-policy" element={<RefundPolicy />} />
-          <Route path="disclaimer" element={<Disclaimer />} />
-          <Route path="Margintrading" element={<Margintrading />} />
-          <Route path="ApiTrading" element={<ApiTrading />} />
-          <Route path="SpotTrading" element={<SpotTrading />} />
-          <Route
-            path="best-presale-crypto-coin-in-india"
+          <Route path="terms-and-conditions/" element={<TermsConditions />} />
+          <Route path="refund-policy/" element={<RefundPolicy />} />
+          <Route path="disclaimer/" element={<Disclaimer />} />
+          <Route path="Margintrading/" element={<Margintrading />} />
+          <Route path="ApiTrading/" element={<ApiTrading />} />
+          <Route path="SpotTrading/" element={<SpotTrading />} />
+          {/* <Route
+            path="best-presale-crypto-token-in-india/"
             element={<PreSaleCryptoCoin />}
-          />
-          <Route path="FuturesTrading" element={<FuturesTrading />} />
-          <Route path="PreSale" element={<PreSale />} />
-          <Route path="Kyc-Pmla" element={<KycPmlaPolicy />} />
+          /> */}
+          <Route
+    path="/best-presale-crypto-coin-in-india"
+    element={<Navigate to="/best-presale-crypto-token-in-india" replace />}
+  />
+
+  {/* Correct page */}
+  <Route
+    path="/best-presale-crypto-token-in-india"
+    element={<PreSaleCryptoCoin />}
+  />
+          <Route path="FuturesTrading/" element={<FuturesTrading />} />
+          <Route path="PreSale/" element={<PreSale />} />
+          <Route path="Kyc-Pmla/" element={<KycPmlaPolicy />} />
           <Route path="AML-CTF" element={<AmlCtfPolicy />} />
           <Route path="ReferEarn" element={<ReferEarn />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

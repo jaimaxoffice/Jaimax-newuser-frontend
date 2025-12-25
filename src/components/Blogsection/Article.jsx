@@ -36,14 +36,14 @@ export const staticBlogsData = [
     id: 5,
     image: Blog5,
     headline: "Why Jaimax Is the Smart Move Right Now",
-    description: `In today’s rapidly evolving cryptocurrency market, making the right investment decisions requires insight, timing, and trust. Among the many <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coins</a> emerging globally,<a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">jaimax</a> stands out as a promising digital asset with unique potential for growth, especially within the Indian crypto ecosystem. This article explores why choosing Jaimax now is a smart move for anyone looking to be part of the future of blockchain and digital finance.`,
+    description: `In today’s rapidly evolving cryptocurrency market, making the right investment decisions requires insight, timing, and trust. Among the many <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto token</a> emerging globally,<a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">jaimax</a> stands out as a promising digital asset with unique potential for growth, especially within the Indian crypto ecosystem. This article explores why choosing Jaimax now is a smart move for anyone looking to be part of the future of blockchain and digital finance.`,
     date: "09 june 25",
     content: {
-      title: "Jaimax: The Best Crypto Coin Emerging from India",
+      title: "Jaimax: The Best Crypto token Emerging from India",
       sections: [
         {
           type: "paragraph",
-          content: `India is rapidly becoming a hotspot for cryptocurrency adoption, supported by a growing population of tech-savvy users and increasing blockchain awareness. As the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, Jaimax offers a rare opportunity to join a community focused on decentralized finance (DeFi), crypto innovation, and financial empowerment. With a low market price, it provides an attractive entry point for early adopters.`,
+          content: `India is rapidly becoming a hotspot for cryptocurrency adoption, supported by a growing population of tech-savvy users and increasing blockchain awareness. As the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto token in India</a>, Jaimax offers a rare opportunity to join a community focused on decentralized finance (DeFi), crypto innovation, and financial empowerment. With a low market price, it provides an attractive entry point for early adopters.`,
         },
 
         {
@@ -1571,6 +1571,41 @@ const BlogPostDetail = () => {
       </div>
     );
   }
+const postId = post.id ?? post._id ?? "default";
+
+function getDailyGrowingViews(postId, base = 1000) {
+  // ✅ Always convert to string
+  const id = String(postId);
+
+  const startDate = new Date("2025-01-01");
+  const today = new Date();
+
+  const daysPassed = Math.floor(
+    (today - startDate) / (1000 * 60 * 60 * 24)
+  );
+
+  // deterministic seed from id
+  let seed = id
+    .split("")
+    .reduce((a, c) => a + c.charCodeAt(0), 0);
+
+  let views = base;
+
+  for (let i = 0; i < daysPassed; i++) {
+    seed = (seed * 9301 + 49297) % 233280;
+    const dailyIncrease = 20 + (seed % 80); // 20–100/day
+    views += dailyIncrease;
+  }
+
+  return views;
+}
+
+function formatViewsK(views) {
+  if (views >= 1000) {
+    return (views / 1000).toFixed(1) + "K";
+  }
+  return views.toString();
+}
 
   // Get post data (works for both static and dynamic posts)
   const postTitle = post.title || post.headline || "";
@@ -1578,7 +1613,11 @@ const BlogPostDetail = () => {
     post.publishedAt || post.createdAt?.$date || post.date
   );
   const postImage = post.coverImage || post.image;
-  const postViews = post.views || post.analytics?.views || 0;
+const postViews =
+  post.views ||
+  post.analytics?.views ||
+  getDailyGrowingViews(post.id);
+const displayViews = formatViewsK(postViews);
   const postCategory = post.categories?.[0] || post.category || "";
   const postTags = post.tags || [];
 
@@ -1942,7 +1981,7 @@ const BlogPostDetail = () => {
             <article className="relative rounded-2xl p-4 sm:p-6 shadow-lg bg-gradient-to-br from-slate-900/95 to-gray-900/90 backdrop-blur-xl border border-cyan-400/20">
               {/* Back button */}
               <button
-                onClick={() => navigate("/blog")}
+                onClick={() => navigate("/blog/")}
                 className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:text-cyan-300 mb-4 transition-colors"
               >
                 <ArrowRight className="w-4 h-4 transform rotate-180" />
@@ -1982,7 +2021,7 @@ const BlogPostDetail = () => {
                 {postViews && (
                   <div className="flex items-center gap-1">
                     <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span>{postViews} views</span>
+                    <span>{displayViews} views</span>
                   </div>
                 )}
 

@@ -5325,7 +5325,7 @@ if (uniqueFeaturesRef.current) {
             journey, offering a secure and transparent experience to help you
             grow with India's most trusted
             <b className="text-[#aadc32]">
-              <a href="https://www.jaimax.com"> pre-sale crypto coin</a>
+              <a href="https://www.jaimax.com"> pre-sale crypto token</a>
             </b>{" "}
             - jaimax.
             <button

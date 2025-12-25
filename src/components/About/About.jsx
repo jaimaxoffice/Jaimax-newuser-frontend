@@ -368,7 +368,7 @@ const aboutschema={
           <img
             src={about}
             alt="Jaimax Hero Banner"
-            title="Jaimax Coin – The Best Pre-Sale Crypto Coin in India for Smart Investments"
+            title="Jaimax Coin – The Best Pre-Sale Crypto token in India for Smart Investments"
             className="absolute inset-0 w-full h-full object-cover" // This is where we control the image's size
           />
 
@@ -409,7 +409,7 @@ const aboutschema={
             </h2>
             <div className="text-white max-w-lg leading-relaxed text-center lg:text-left">
               <p className="mb-4">
-                Jaimax is an innovative <a href="http://www.jaimax.com" className="text-teal-300">cryptocurrency in India</a> designed to transform the way people invest, transact, and grow in the blockchain era. As a secure and utility-driven crypto coin, Jaimax brings together technology, transparency, and trust to create a strong foundation for the future of decentralized finance (DeFi).
+                Jaimax is an innovative <a href="http://www.jaimax.com" className="text-teal-300">cryptocurrency in India</a> designed to transform the way people invest, transact, and grow in the blockchain era. As a secure and utility-driven crypto token, Jaimax brings together technology, transparency, and trust to create a strong foundation for the future of decentralized finance (DeFi).
               </p>
               <p>
                 We believe that digital currency should not just be a trend — it should be a tool for empowerment. That's why Jaimax is built to make crypto investing simple, safe, and rewarding for everyone, from new investors to blockchain experts.
@@ -571,7 +571,7 @@ const aboutschema={
               <img
                 src="https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg"
                 alt="Blockchain Technology"
-                title="Blockchain Technology - Jaimax Secure Crypto Coin"
+                title="Blockchain Technology - Jaimax Secure Crypto token"
                 className="rounded-xl shadow-lg w-full max-w-lg object-cover h-64 sm:h-80 lg:h-[400px]"
                 loading="lazy"
               />

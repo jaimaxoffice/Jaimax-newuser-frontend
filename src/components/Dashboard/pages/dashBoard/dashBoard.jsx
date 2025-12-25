@@ -1272,13 +1272,13 @@ if (!localStorage.getItem("reg_bonus_shown")) {
           <CountdownTimer />
         </Suspense>
       </div>
-<div className="bg-gray-900 flex flex-col items-center justify-center gap-6">
+{/* <div className="bg-gray-900 flex flex-col items-center justify-center gap-6">
       <CoinRewardModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onComplete={handleComplete}
       />
-    </div>
+    </div> */}
       {/* Action Buttons */}
       <div className="mb-3">
         <Suspense fallback={<ComponentLoader />}>

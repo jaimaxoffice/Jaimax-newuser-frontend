@@ -9,14 +9,14 @@ export const blogsData = [
     id: 5,
     image: Blog5,
     headline: "Why Jaimax Is the Smart Move Right Now",
-    description: `In today’s rapidly evolving cryptocurrency market, making the right investment decisions requires insight, timing, and trust. Among the many <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto coins</a> emerging globally,<a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">jaimax</a> stands out as a promising digital asset with unique potential for growth, especially within the Indian crypto ecosystem. This article explores why choosing Jaimax now is a smart move for anyone looking to be part of the future of blockchain and digital finance.`,
+    description: `In today’s rapidly evolving cryptocurrency market, making the right investment decisions requires insight, timing, and trust. Among the many <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">crypto token</a> emerging globally,<a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">jaimax</a> stands out as a promising digital asset with unique potential for growth, especially within the Indian crypto ecosystem. This article explores why choosing Jaimax now is a smart move for anyone looking to be part of the future of blockchain and digital finance.`,
     date: "09 june 25",
     content: {
-      title: "Jaimax: The Best Crypto Coin Emerging from India",
+      title: "Jaimax: The Best Crypto token Emerging from India",
       sections: [
         {
           type: "paragraph",
-          content: `India is rapidly becoming a hotspot for cryptocurrency adoption, supported by a growing population of tech-savvy users and increasing blockchain awareness. As the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto coin in India</a>, Jaimax offers a rare opportunity to join a community focused on decentralized finance (DeFi), crypto innovation, and financial empowerment. With a low market price, it provides an attractive entry point for early adopters.`,
+          content: `India is rapidly becoming a hotspot for cryptocurrency adoption, supported by a growing population of tech-savvy users and increasing blockchain awareness. As the <a href="https://www.jaimax.com/" target="_blank" rel="noopener noreferrer" style="color: #4dabf7;">best crypto token in India</a>, Jaimax offers a rare opportunity to join a community focused on decentralized finance (DeFi), crypto innovation, and financial empowerment. With a low market price, it provides an attractive entry point for early adopters.`,
         },
 
         {
@@ -51,7 +51,7 @@ export const blogsData = [
         {
           type: "paragraph",
           content:
-            "This focus on blockchain technology integration ensures Jaimax is positioned for sustainable growth, not just speculative hype. Its utility in real-world scenarios strengthens its value proposition as a functional crypto coin.",
+            "This focus on blockchain technology integration ensures Jaimax is positioned for sustainable growth, not just speculative hype. Its utility in real-world scenarios strengthens its value proposition as a functional crypto token.",
         },
         {
           type: "heading",
@@ -1175,6 +1175,36 @@ const convertSectionsToHTML = (sections) => {
 
   return html;
 };
+function getManualDailyViews({
+  baseViews = 2000,   // 👈 manual value (set here)
+  startDate,
+  id,
+}) {
+  const base = Number(baseViews) || 2000;
+
+  const start = new Date(startDate || "2025-01-01");
+  const today = new Date();
+
+  const daysPassed = Math.max(
+    0,
+    Math.floor((today - start) / (1000 * 60 * 60 * 24))
+  );
+
+  // deterministic seed (same post = same growth)
+  const seedStr = String(id ?? "default");
+  let seed = seedStr
+    .split("")
+    .reduce((a, c) => a + c.charCodeAt(0), 0);
+
+  let views = base;
+
+  for (let i = 0; i < daysPassed; i++) {
+    seed = (seed * 9301 + 49297) % 233280;
+    views += 20 + (seed % 80); // 👈 daily +20 to +100
+  }
+
+  return views;
+}
 
 const BlogLayout = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -1201,35 +1231,35 @@ const BlogLayout = () => {
   const { data: recentData } = useGetRecentPostsQuery(5);
   const { data: categoriesData } = useGetCategoriesQuery();
 
-  // Combine static and dynamic posts
-  // const allPosts = [
-  //   ...blogsData,
-  //   ...(dynamicPosts?.data?.posts?.map(post => ({
-  //     id: post.id,
-  //     headline: post.title,
-  //     description: post.excerpt,
-  //     image: post.coverImage || "https://via.placeholder.com/600x400?text=Post",
-  //     date: post.publishedAt,
-  //     category: post.category?.name || "Uncategorized",
-  //     views: Math.floor(Math.random() * 5000) + "k",
-  //     content: post.content,
-  //     author: post.author
-  //   })) || [])
-  // ];
-  const allPosts = [
-    ...(dynamicPosts?.data?.posts?.map((post) => ({
-      id: post.id,
+
+  const manualBaseViews = selectedPost?.views >= 1000 ? selectedPost.views : 2000;
+const allPosts = [
+  ...(dynamicPosts?.data?.posts?.map((post) => {
+    const id = post._id; // ✅ correct
+    const manualBaseViews = Number(post.views) >= 1000 ? Number(post.views) : 2000; // ✅ per post
+
+    return {
+      id,
       headline: post.title,
       description: post.excerpt,
       image: post.coverImage || "https://via.placeholder.com/600x400?text=Post",
       date: post.publishedAt,
       category: post.category?.name || "Uncategorized",
-      views: Math.floor(Math.random() * 5000) + "k",
+
+      // ✅ manual + daily growing views (NUMBER)
+      views: getManualDailyViews({
+        baseViews: manualBaseViews,
+        startDate: post.publishedAt || "2025-01-01",
+        id,
+      }),
+
       content: post.content,
       author: post.author,
-    })) || []),
-    ...blogsData,
-  ];
+    };
+  }) || []),
+  ...blogsData,
+];
+
   const slugify = (str) =>
     str
       .toLowerCase()
@@ -1243,8 +1273,19 @@ const BlogLayout = () => {
 
   const handleBackClick = () => {
     setSelectedPost(null);
-    navigate("/blog");
+    navigate("/blog/");
   };
+    function formatViewsK(v) {
+      console.log("Formatting views:", v);
+  if (v >= 1000) return (v / 1000).toFixed(1) + "K";
+  return String(v);
+}
+
+function formatViewsK(v) {
+  const n = Number(v) || 0;
+  if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+  return String(n);
+}
 
   const sharePost = (platform) => {
     const url = window.location.href;
@@ -1362,7 +1403,8 @@ const BlogLayout = () => {
                       </span>
                       <span className="inline-flex items-center gap-1 text-cyan-200 text-sm">
                         <Eye className="w-3 h-3" />
-                        {selectedPost.views}
+                        {formatViewsK(selectedPost?.views ?? 0)}
+
                       </span>
                     </div>
                     <h1 className="text-3xl lg:text-4xl font-bold text-white mb-4">

@@ -87,7 +87,7 @@ const JaimaxLanding = () => {
       {
         "@type": "ItemList",
         "@id": "https://www.jaimax.com/features#featurelist",
-        "name": "Jaimax Coin Core Features",
+        "name": "Jaimax token Core Features",
         "description": "Comprehensive list of features that make Jaimax the perfect choice for your crypto journey",
         "numberOfItems": 8,
         "itemListElement": [
@@ -487,7 +487,7 @@ const JaimaxLanding = () => {
           <img
             src={featureImage}
             alt="Jaimax Features"
-            title="Jaimax Features - Explore the Powerful Features of Jaimax Crypto Coin"
+            title="Jaimax Features - Explore the Powerful Features of Jaimax Crypto token"
             className="w-full h-auto max-w-md sm:max-w-lg lg:max-w-full mx-auto hover:scale-105 transition-transform duration-300"
           />
         </Link>
@@ -501,8 +501,8 @@ const JaimaxLanding = () => {
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-white">
           Powering the <br />
           <Link 
-            to="/best-presale-crypto-coin-in-india" 
-            title="Best presale crypto coin in India"
+            to="/best-presale-crypto-token-in-india/" 
+            title="Best presale crypto token in India"
             className="hover:opacity-80 transition-opacity"
           >
             <span className="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-[#b9cd27]">
@@ -518,16 +518,16 @@ const JaimaxLanding = () => {
           className="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto lg:mx-0 leading-relaxed px-2 sm:px-4 lg:px-0"
         >
           Welcome to{" "}
-          <Link to="/about" title="About Jaimax crypto coin">
+          <Link to="/about" title="About Jaimax crypto token">
             <strong className="text-lime-400 hover:underline">Jaimax</strong>
           </Link>
           , one of the{" "}
           <Link 
-            to="/best-presale-crypto-coin-in-india" 
-            title="Best crypto coins in India"
+            to="/best-presale-crypto-token-in-india/" 
+            title="Best crypto token in India"
             className="text-lime-400 hover:underline"
           >
-            best crypto coins
+            best crypto token
           </Link>{" "}
           designed for growth, transparency, and financial freedom. Built on powerful{" "}
           <Link to="/services" title="Jaimax blockchain services" className="text-lime-400 hover:underline">
@@ -572,7 +572,7 @@ const JaimaxLanding = () => {
     <img
       src={icon}
       alt="Geometric Pattern"
-      title="Jaimax Crypto Coin - Geometric Background Pattern"
+      title="Jaimax Crypto token - Geometric Background Pattern"
       className="absolute top-120 -right-40 sm:-right-60 lg:-right-80 opacity-10 w-40 sm:w-60 lg:w-auto"
     />
     <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -611,7 +611,7 @@ const JaimaxLanding = () => {
               Jaimax
             </Link>{" "}
             the perfect choice for your{" "}
-            <Link to="/best-presale-crypto-coin-in-india" title="Crypto journey with Jaimax" className="text-lime-400 hover:underline">
+            <Link to="/best-presale-crypto-coin-in-/" title="Crypto journey with Jaimax" className="text-lime-400 hover:underline">
               crypto journey
             </Link>
           </motion.p>
@@ -628,13 +628,13 @@ const JaimaxLanding = () => {
             // Map features to different pages
             const featureLinks = [
               "/services",
-              "/best-presale-crypto-coin-in-india",
-              "/about",
-              "/contact",
-              "/blog",
-              "/login",
-              "/register",
-              "/services"
+              "/best-presale-crypto-token-in-india/",
+              "/about/",
+              "/contact/",
+              "/blog/",
+              "/login/",
+              "/register/",
+              "/services/"
             ];
             const featureLink = featureLinks[index % featureLinks.length];
             

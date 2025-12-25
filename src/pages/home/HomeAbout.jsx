@@ -327,7 +327,7 @@ const {
 
   const quickLinks = [
     { to: '/', label: 'Home' },
-    { to: '/best-presale-crypto-coin-in-india', label: 'Presale' },
+    { to: '/best-presale-crypto-token-in-india', label: 'Presale' },
     { to: '/about', label: 'About' },
     { to: '/features', label: 'Features' },
     { to: '/services', label: 'Services' },
@@ -512,10 +512,10 @@ const {
             animate={isInView ? 'visible' : 'hidden'}
           >
             {/* Stats Cards - Now 4 columns on lg screens */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               
               {/* Price Card - Link to Presale */}
-              <Link to="/best-presale-crypto-coin-in-india">
+              <Link to="/best-presale-crypto-token-in-india/">
                 <motion.div
                   variants={itemVariants}
                   whileHover={{ scale: 1.03, y: -3 }}
@@ -598,7 +598,7 @@ const {
               </Link>
 
               {/* Token Holders Card - LIVE VALUES ONLY */}
-              <motion.div
+              {/* <motion.div
                 variants={itemVariants}
                 whileHover={{ scale: 1.03, y: -3 }}
                 onClick={handleBSCScan}
@@ -610,7 +610,6 @@ const {
                     <span className="text-[10px] font-bold text-[#b8cc26] uppercase tracking-wider">
                       Token Holders
                     </span>
-                    {/* Live indicator */}
                     {tokenHolders && (
                       <span className="flex items-center gap-1">
                         <span className="relative flex h-2 w-2">
@@ -634,7 +633,7 @@ const {
                   </div>
                   <div className="mt-2 h-[1px] bg-gradient-to-r from-[#177338]/50 to-transparent"></div>
                 </div>
-              </motion.div>
+              </motion.div> */}
             </div>
           </motion.div>
         </div>
