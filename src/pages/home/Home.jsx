@@ -65,7 +65,7 @@ const Home = () => {
         founder: "Jaimax Team",
         keywords: [
           "Jaimax",
-          "Jaimax coin",
+          "Jaimax Token",
           "Jaimax crypto",
           "Jaimax crypto token",
           "Jaimax token",
@@ -127,13 +127,13 @@ const Home = () => {
       {
         "@type": "Product",
         "@id": "https://www.jaimax.com/#product",
-        name: "Jaimax Coin",
+        name: "Jaimax Token",
         alternateName: "Jaimax Crypto token",
         url: "https://www.jaimax.com/best-presale-crypto-token-in-india/",
         logo: "https://www.jaimax.com/logo.webp",
         image: "https://www.jaimax.com/logo.webp",
         description:
-          "Jaimax Coin is an innovative cryptocurrency designed for secure trading, blockchain adoption, DeFi, NFTs, and global digital payments.",
+          "Jaimax Token is an innovative cryptocurrency designed for secure trading, blockchain adoption, DeFi, NFTs, and global digital payments.",
         brand: {
           "@type": "Organization",
           name: "Jaimax",
@@ -141,7 +141,7 @@ const Home = () => {
         },
         category: "Cryptocurrency",
         keywords: [
-          "Jaimax Coin",
+          "Jaimax Token",
           "Jaimax crypto token",
           "Jaimax token",
           "crypto token",
@@ -199,26 +199,26 @@ const Home = () => {
         mainEntity: [
           {
             "@type": "Question",
-            name: "What is Jaimax Coin?",
+            name: "What is Jaimax Token?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Jaimax Coin is a next-generation cryptocurrency designed to create a strong financial ecosystem with blockchain, DeFi, NFT marketplace, and secure digital payments worldwide.",
+              text: "Jaimax Token is a next-generation cryptocurrency designed to create a strong financial ecosystem with blockchain, DeFi, NFT marketplace, and secure digital payments worldwide.",
             },
           },
           {
             "@type": "Question",
-            name: "How can I buy Jaimax Coin?",
+            name: "How can I buy Jaimax Token?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "You can buy Jaimax Coin through the official Jaimax platform and supported exchanges. Visit https://www.jaimax.com for the latest details.",
+              text: "You can buy Jaimax Token through the official Jaimax platform and supported exchanges. Visit https://www.jaimax.com for the latest details.",
             },
           },
           {
             "@type": "Question",
-            name: "Is Jaimax Coin available worldwide?",
+            name: "Is Jaimax Token available worldwide?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Yes. Jaimax Coin is designed to be a global cryptocurrency, accessible and tradable worldwide.",
+              text: "Yes. Jaimax Token is designed to be a global cryptocurrency, accessible and tradable worldwide.",
             },
           },
           {
@@ -255,7 +255,7 @@ const Home = () => {
         "@type": "WebPage",
         "@id": "https://www.jaimax.com/#webpage",
         url: "https://www.jaimax.com/",
-        name: "Jaimax Coin – India’s Trusted Pre-Sale Crypto token",
+        name: "Jaimax Token – India’s Trusted Pre-Sale Crypto token",
         description:
           "Invest early in Jaimax, India’s trusted pre-sale crypto token powered by the JMC-24 blockchain.",
         isPartOf: { "@id": "https://www.jaimax.com/#website" },

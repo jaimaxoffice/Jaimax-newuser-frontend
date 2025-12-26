@@ -378,7 +378,7 @@ const {
   // LIVE VALUES ONLY - NO FALLBACKS
   const livePrice = currentRound?.atPriceInr;
   const soldTokens = currentRound?.soldQty ? formatNumber(currentRound.soldQty) : null;
-  const liveMembers = currentRound?.totalMembers ? formatNumber(currentRound.totalMembers) : 2345;
+  const liveMembers = currentRound?.totalMembers ? formatNumber(currentRound.totalMembers) : 25.68;
   const tokenHolders = holderCount ? formatNumber(holderCount) : null;
 
   // Animation Variants
@@ -588,7 +588,7 @@ const {
                     {isLoading ? (
                       <div className="animate-pulse h-8 w-20 bg-gray-700 rounded"></div>
                     ) : liveMembers ? (
-                      <div className="text-3xl font-black text-white">{liveMembers}</div>
+                      <div className="text-3xl font-black text-white">{liveMembers}k</div>
                     ) : (
                       <span className="text-gray-500 text-3xl">--</span>
                     )}

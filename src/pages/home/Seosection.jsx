@@ -170,7 +170,7 @@ const JaimaxContent = () => {
                 <p className="text-gray-100 leading-relaxed text-sm mb-3 font-medium">
                   In the evolving world of digital finance,{" "}
                   <span className="text-[#b8cc26] font-extrabold">
-                    <a href="https://www.jaimax.com"> Jaimax Coin</a>
+                    <a href="https://www.jaimax.com"> Jaimax Token</a>
                   </span>{" "}
                   has emerged as India's{" "}
                   <b>
@@ -391,7 +391,7 @@ const JaimaxContent = () => {
                   Security at the Heart
                 </h2>
                 <p className="text-gray-100 leading-relaxed text-sm font-medium">
-                  Security remains at the heart of the Jaimax ecosystem. Every transaction is protected by advanced blockchain encryption, ensuring full transparency and zero manipulation. Investors can buy, hold, and trade Jaimax confidently, knowing that the platform follows industry-leading standards for safety and compliance. The Jaimax Coin is built to handle real-world utility — from DeFi and NFTs to decentralized applications — ensuring that each coin holds long-term value beyond speculation.
+                  Security remains at the heart of the Jaimax ecosystem. Every transaction is protected by advanced blockchain encryption, ensuring full transparency and zero manipulation. Investors can buy, hold, and trade Jaimax confidently, knowing that the platform follows industry-leading standards for safety and compliance. The Jaimax Token is built to handle real-world utility — from DeFi and NFTs to decentralized applications — ensuring that each coin holds long-term value beyond speculation.
                 </p>
                 <p className="text-gray-100 leading-relaxed text-sm font-medium mt-2">
                   Unlike most projects that focus only on trading, Jaimax is creating a complete blockchain ecosystem where investors, developers, and learners come together. Its vision extends beyond profit — aiming to educate, innovate, and connect users worldwide through blockchain education and financial empowerment. This human-centered approach sets Jaimax apart as a best-in-class crypto token designed to sustain long-term growth.
@@ -433,7 +433,7 @@ const JaimaxContent = () => {
                 </h2>
                 <p className="text-gray-100 leading-relaxed text-sm font-medium">
                   As India steps into the next generation of digital finance,
-                  Jaimax Coin continues to lead as the best{" "}  
+                  Jaimax Token continues to lead as the best{" "}  
                   <a href="https://www.jaimax.com" className="text-[#b8cc26]">
                     {" "}
                     pre-sale crypto token{" "}
