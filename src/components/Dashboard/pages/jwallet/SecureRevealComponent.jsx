@@ -517,7 +517,7 @@
 //                 </div>
 //               )}
 //             </div>
-//             {/* 
+//             {/*
 //             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
 //               <div className="bg-gray-50 rounded-lg p-3">
 //                 <div className="text-gray-600 mb-1">Public Address</div>
@@ -567,18 +567,8 @@
 
 // export default SecureRevealComponent;
 
-
-
-
-
 import React, { useState, useEffect } from "react";
-import {
-  Eye,
-  EyeOff,
-  Copy,
-  CheckCircle,
-  Lock,
-} from "lucide-react";
+import { Eye, EyeOff, Copy, CheckCircle, Lock } from "lucide-react";
 import { encryptPayload, decryptPayload } from "../../../../utils/crypto";
 import {
   useCheck2FAStatusQuery,
@@ -588,7 +578,7 @@ import {
   useDisable2FAMutation,
 } from "./secureRevealApiSlice";
 import OtpInput from "./OtpInput";
-import Loader from '../../../../ReusableComponents/Loader/loader'
+import Loader from "../../../../ReusableComponents/Loader/loader";
 const SecureRevealComponent = () => {
   const [step, setStep] = useState("initial");
   const [password, setPassword] = useState("");
@@ -608,7 +598,6 @@ const SecureRevealComponent = () => {
   const [manualKey, setManualKey] = useState("");
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 
-
   const handleCopy2 = async () => {
     await navigator.clipboard.writeText(manualKey);
     setCopied(true);
@@ -619,9 +608,13 @@ const SecureRevealComponent = () => {
   const is2FAVerified = sessionStorage.getItem("2faVerified") === "true";
 
   // RTK Query hooks
-  const { data: statusData, isLoading: checking2FA, refetch: refetch2FA } =
-    useCheck2FAStatusQuery();
-  const [start2FASetup, { isLoading: loadingSetup }] = useStart2FASetupMutation();
+  const {
+    data: statusData,
+    isLoading: checking2FA,
+    refetch: refetch2FA,
+  } = useCheck2FAStatusQuery();
+  const [start2FASetup, { isLoading: loadingSetup }] =
+    useStart2FASetupMutation();
   const [verify2FA, { isLoading: loadingVerify }] = useVerify2FAMutation();
   const [revealSensitiveData, { isLoading: loadingReveal }] =
     useRevealSensitiveDataMutation();
@@ -697,7 +690,8 @@ const SecureRevealComponent = () => {
   };
 
   const handleDisable2FA = async () => {
-    if (disableOtp.length !== 6) return setError("Enter valid 2FA code to disable");
+    if (disableOtp.length !== 6)
+      return setError("Enter valid 2FA code to disable");
     setError("");
     try {
       const res = await disable2FA(disableOtp).unwrap();
@@ -723,7 +717,8 @@ const SecureRevealComponent = () => {
     setError("");
     try {
       const payload = {
-        action: revealType === "seed" ? "reveal_seed_phrase" : "reveal_private_key",
+        action:
+          revealType === "seed" ? "reveal_seed_phrase" : "reveal_private_key",
         otp: otp || null,
         timestamp: Date.now(),
       };
@@ -733,7 +728,11 @@ const SecureRevealComponent = () => {
       const result = await revealSensitiveData(revealPayload).unwrap();
       if (result.success === 0) throw new Error(result.message);
 
-      const decryptedData = await decryptPayload(result.data.consent, result.data.terms, password);
+      const decryptedData = await decryptPayload(
+        result.data.consent,
+        result.data.terms,
+        password
+      );
 
       setRevealedData(decryptedData);
       setStep("display");
@@ -758,7 +757,10 @@ const SecureRevealComponent = () => {
   };
 
   const handleCopy = () => {
-    const textToCopy = revealType === "seed" ? revealedData?.seedPhrase : revealedData?.privateKey;
+    const textToCopy =
+      revealType === "seed"
+        ? revealedData?.seedPhrase
+        : revealedData?.privateKey;
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy);
       setCopied(true);
@@ -790,9 +792,7 @@ const SecureRevealComponent = () => {
   }, [qrCode, manualKey]);
 
   if (checking2FA) {
-    return (
-     <Loader/>
-    );
+    return <Loader />;
   }
 
   return (
@@ -820,7 +820,9 @@ const SecureRevealComponent = () => {
               <div className="mb-2 sm:mb-6 bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
                 <div className="flex items-center gap-2 text-green-700">
                   <CheckCircle size={18} />
-                  <span className="font-semibold text-sm sm:text-base">2FA is enabled for your account</span>
+                  <span className="font-semibold text-sm sm:text-base">
+                    2FA is enabled for your account
+                  </span>
                 </div>
                 <p className="text-xs sm:text-sm text-gray-700 mt-2">
                   {is2FAVerified
@@ -829,10 +831,10 @@ const SecureRevealComponent = () => {
                 </p>
 
                 {/* Disable 2FA Button */}
-                <div className="mt-3">
+                <div className="w-[100%] mt-3 flex justify-end items-end">
                   <button
                     onClick={() => setShow2FAModal(true)}
-                    className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 rounded-full text-sm sm:text-base transition-colors"
+                    className="w-fit-content bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-full text-sm sm:text-base transition-colors"
                   >
                     Disable 2FA
                   </button>
@@ -842,7 +844,8 @@ const SecureRevealComponent = () => {
               <div className="mb-4 sm:mb-6">
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-3">
                   <p className="text-yellow-800 text-xs sm:text-sm">
-                    <strong>Recommended:</strong> Enable 2FA for additional security Google Authenticator when accessing sensitive data.
+                    <strong>Recommended:</strong> Enable 2FA for additional
+                    security Google Authenticator when accessing sensitive data.
                   </p>
                 </div>
 
@@ -870,17 +873,24 @@ const SecureRevealComponent = () => {
                   {is2FAEnabled ? (
                     // Disable 2FA Modal
                     <>
-                      <h2 className="text-lg font-bold text-center mb-3 text-red-600">Disable 2FA</h2>
+                      <h2 className="text-lg font-bold text-center mb-3 text-red-600">
+                        Disable 2FA
+                      </h2>
                       <p className="text-sm text-gray-600 text-center mb-4">
-                        Enter your authenticator code to disable two-factor authentication
+                        Enter your authenticator code to disable two-factor
+                        authentication
                       </p>
 
                       <OtpInput value={disableOtp} onChange={setDisableOtp} />
-                      <p className="text-xs text-gray-500 text-center mt-2">Enter 6-digit code from your authenticator app</p>
+                      <p className="text-xs text-gray-500 text-center mt-2">
+                        Enter 6-digit code from your authenticator app
+                      </p>
 
                       {error && (
                         <div className="mt-3 bg-red-50 border border-red-200 rounded-lg p-2">
-                          <p className="text-red-700 text-xs text-center">{error}</p>
+                          <p className="text-red-700 text-xs text-center">
+                            {error}
+                          </p>
                         </div>
                       )}
 
@@ -907,34 +917,44 @@ const SecureRevealComponent = () => {
                   ) : (
                     // Enable 2FA Modal
                     <>
-                      <h2 className="text-lg font-bold text-center mb-3">Enable Google Authenticator</h2>
+                      <h2 className="text-lg font-bold text-center mb-3">
+                        Enable Google Authenticator
+                      </h2>
 
                       {mode === "qr" && qrCode && (
                         <div className="flex justify-center mb-4">
-                          <img src={qrCode} alt="QR Code" className="w-40 h-40 border rounded-lg" />
+                          <img
+                            src={qrCode}
+                            alt="QR Code"
+                            className="w-40 h-40 border rounded-lg"
+                          />
                         </div>
                       )}
 
                       {mode === "manual" && manualKey && (
                         <div className="bg-gray-50 border rounded-lg p-3 mb-4 flex justify-between items-center">
                           <code className="text-xs break-all">{manualKey}</code>
-                           <button
-      onClick={handleCopy}
-      className={`text-xs text-white px-2 py-1 rounded transition-colors
+                          <button
+                            onClick={handleCopy}
+                            className={`text-xs text-white px-2 py-1 rounded transition-colors
         ${copied ? "bg-green-500" : "bg-teal-500 hover:bg-teal-600"}
       `}
-    >
-      {copied ? "✓ Copied" : "Copy"}
-    </button>
+                          >
+                            {copied ? "✓ Copied" : "Copy"}
+                          </button>
                         </div>
                       )}
 
                       <OtpInput value={enableOtp} onChange={setEnableOtp} />
-                      <p className="text-xs text-teal-400 text-center mt-2">Enter 6-digit OTP</p>
+                      <p className="text-xs text-teal-400 text-center mt-2">
+                        Enter 6-digit OTP
+                      </p>
 
                       {error && (
                         <div className="mt-3 bg-red-50 border border-red-200 rounded-lg p-2">
-                          <p className="text-red-700 text-xs text-center">{error}</p>
+                          <p className="text-red-700 text-xs text-center">
+                            {error}
+                          </p>
                         </div>
                       )}
 
@@ -972,16 +992,30 @@ const SecureRevealComponent = () => {
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <button
                   onClick={() => setRevealType("seed")}
-                  className={`p-3 sm:p-4 rounded-lg border-2 transition-all ${revealType === "seed" ? "border-teal-500 bg-teal-50" : "border-gray-300 bg-gray-50"}`}
+                  className={`p-3 sm:p-4 rounded-lg border-2 transition-all ${
+                    revealType === "seed"
+                      ? "border-teal-500 bg-teal-50"
+                      : "border-gray-300 bg-gray-50"
+                  }`}
                 >
-                  <div className="text-gray-800 font-semibold mb-1 text-sm sm:text-base">Seed Phrase</div>
-                  <div className="text-xs text-gray-600">12-word recovery phrase</div>
+                  <div className="text-gray-800 font-semibold mb-1 text-sm sm:text-base">
+                    Seed Phrase
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    12-word recovery phrase
+                  </div>
                 </button>
                 <button
                   onClick={() => setRevealType("private")}
-                  className={`p-3 sm:p-4 rounded-lg border-2 transition-all ${revealType === "private" ? "border-teal-500 bg-teal-50" : "border-gray-300 bg-gray-50"}`}
+                  className={`p-3 sm:p-4 rounded-lg border-2 transition-all ${
+                    revealType === "private"
+                      ? "border-teal-500 bg-teal-50"
+                      : "border-gray-300 bg-gray-50"
+                  }`}
                 >
-                  <div className="text-gray-800 font-semibold mb-1 text-sm sm:text-base">Private Key</div>
+                  <div className="text-gray-800 font-semibold mb-1 text-sm sm:text-base">
+                    Private Key
+                  </div>
                   <div className="text-xs text-gray-600">Hexadecimal key</div>
                 </button>
               </div>
@@ -999,12 +1033,20 @@ const SecureRevealComponent = () => {
         {/* Verify Step */}
         {step === "verify" && (
           <div className="p-4 sm:p-6 md:p-8">
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4">Verify Your Identity</h1>
-            {error && <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4"><p className="text-red-700 text-xs sm:text-sm">{error}</p></div>}
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-4">
+              Verify Your Identity
+            </h1>
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                <p className="text-red-700 text-xs sm:text-sm">{error}</p>
+              </div>
+            )}
 
             <div className="space-y-3 sm:space-y-4 mt-4">
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Enter Jaimax Password</label>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                  Enter Jaimax Password
+                </label>
                 <div className="relative">
                   <input
                     type={passwordRevealed ? "text" : "password"}
@@ -1018,17 +1060,25 @@ const SecureRevealComponent = () => {
                     onClick={() => setPasswordRevealed(!passwordRevealed)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-teal-600 focus:outline-none transition-colors"
                   >
-                    {passwordRevealed ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
+                    {passwordRevealed ? (
+                      <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" />
+                    ) : (
+                      <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
+                    )}
                   </button>
                 </div>
               </div>
 
               {is2FAEnabled && (
                 <div className="mb-4">
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">2FA Code from Google Authenticator</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                    2FA Code from Google Authenticator
+                  </label>
                   <div className="bg-white border border-gray-300 rounded-lg p-3 sm:p-4">
                     <OtpInput length={6} value={otp} onChange={setOtp} />
-                    <p className="text-xs sm:text-sm text-gray-600 mt-2">Enter the 6-digit code from your authenticator app</p>
+                    <p className="text-xs sm:text-sm text-gray-600 mt-2">
+                      Enter the 6-digit code from your authenticator app
+                    </p>
                   </div>
                 </div>
               )}
@@ -1042,7 +1092,11 @@ const SecureRevealComponent = () => {
                 </button>
                 <button
                   onClick={handleReveal}
-                  disabled={loadingReveal || !password || (is2FAEnabled && otp.length !== 6)}
+                  disabled={
+                    loadingReveal ||
+                    !password ||
+                    (is2FAEnabled && otp.length !== 6)
+                  }
                   className="w-full sm:flex-1 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 disabled:from-teal-400 disabled:to-teal-400 disabled:cursor-not-allowed text-white font-semibold py-2.5 sm:py-3 rounded-full transition-all text-sm sm:text-base"
                 >
                   {loadingReveal ? "Verifying..." : "Verify & Decrypt"}
@@ -1064,7 +1118,11 @@ const SecureRevealComponent = () => {
               </div>
               <div className="text-left sm:text-right">
                 <div className="text-xs text-gray-600">Auto-hide in</div>
-                <div className={`text-xl sm:text-2xl font-bold ${timeLeft <= 10 ? "text-red-500" : "text-teal-600"}`}>
+                <div
+                  className={`text-xl sm:text-2xl font-bold ${
+                    timeLeft <= 10 ? "text-red-500" : "text-teal-600"
+                  }`}
+                >
                   {timeLeft}s
                 </div>
               </div>
@@ -1075,24 +1133,42 @@ const SecureRevealComponent = () => {
                 <span className="text-xs sm:text-sm font-medium text-gray-700">
                   {revealType === "seed" ? "Seed Phrase" : "Private Key"}
                 </span>
-                <button onClick={() => setRevealed(!revealed)} className="text-teal-600 hover:text-teal-700 transition-colors">
+                <button
+                  onClick={() => setRevealed(!revealed)}
+                  className="text-teal-600 hover:text-teal-700 transition-colors"
+                >
                   {revealed ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
 
               {revealType === "seed" ? (
                 // Seed Phrase in 4x3 Grid (MetaMask style)
-                <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 ${!revealed ? "blur-lg select-none" : ""}`}>
+                <div
+                  className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 ${
+                    !revealed ? "blur-lg select-none" : ""
+                  }`}
+                >
                   {revealedData.seedPhrase.split(" ").map((word, index) => (
-                    <div key={index} className="bg-white rounded-lg p-2 border border-gray-200">
-                      <span className="text-[10px] text-gray-500 mr-1">{index + 1}.</span>
-                      <span className="font-mono text-xs text-gray-800">{word}</span>
+                    <div
+                      key={index}
+                      className="bg-white rounded-lg p-2 border border-gray-200"
+                    >
+                      <span className="text-[10px] text-gray-500 mr-1">
+                        {index + 1}.
+                      </span>
+                      <span className="font-mono text-xs text-gray-800">
+                        {word}
+                      </span>
                     </div>
                   ))}
                 </div>
               ) : (
                 // Private Key as single text
-                <div className={`font-mono text-sm sm:text-base md:text-lg text-gray-800 leading-relaxed break-all ${!revealed ? "blur-lg select-none" : ""}`}>
+                <div
+                  className={`font-mono text-sm sm:text-base md:text-lg text-gray-800 leading-relaxed break-all ${
+                    !revealed ? "blur-lg select-none" : ""
+                  }`}
+                >
                   {revealedData.privateKey}
                 </div>
               )}
@@ -1101,11 +1177,15 @@ const SecureRevealComponent = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
               <div className="bg-gray-50 rounded-lg p-3">
                 <div className="text-gray-600 mb-1">Public Address</div>
-                <div className="text-gray-800 font-mono text-xs break-all">{revealedData.publicAddress}</div>
+                <div className="text-gray-800 font-mono text-xs break-all">
+                  {revealedData.publicAddress}
+                </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-3">
                 <div className="text-gray-600 mb-1">Retrieved At</div>
-                <div className="text-gray-800 font-mono text-xs">{new Date(revealedData.retrievedAt).toLocaleString()}</div>
+                <div className="text-gray-800 font-mono text-xs">
+                  {new Date(revealedData.retrievedAt).toLocaleString()}
+                </div>
               </div>
             </div>
 
@@ -1136,7 +1216,8 @@ const SecureRevealComponent = () => {
             </div>
 
             <div className="mt-4 text-xs text-gray-600 text-center">
-              This action has been logged. A notification may be sent to your email.
+              This action has been logged. A notification may be sent to your
+              email.
             </div>
           </div>
         )}
