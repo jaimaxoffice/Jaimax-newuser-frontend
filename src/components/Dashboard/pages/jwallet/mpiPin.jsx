@@ -464,7 +464,7 @@ export function PinEntryModal({ onSuccess, onForgotPin, onChangePin }) {
         
         <button
           type="submit"
-          className="bg-teal-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-teal-700 transition text-sm sm:text-base w-full sm:w-auto"
+          className="bg-teal-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold hover:bg-teal-700 transition text-sm sm:text-base w-full sm:w-auto"
           disabled={isLoading}
         >
           {isLoading ? "Verifying..." : "Unlock Wallet"}

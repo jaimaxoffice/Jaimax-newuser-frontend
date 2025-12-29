@@ -588,7 +588,7 @@ import {
   useDisable2FAMutation,
 } from "./secureRevealApiSlice";
 import OtpInput from "./OtpInput";
-
+import Loader from '../../../../ReusableComponents/Loader/loader'
 const SecureRevealComponent = () => {
   const [step, setStep] = useState("initial");
   const [password, setPassword] = useState("");
@@ -783,14 +783,12 @@ const SecureRevealComponent = () => {
 
   if (checking2FA) {
     return (
-      <div className="min-h-screen bg-green-50 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
+     <Loader/>
     );
   }
 
   return (
-    <div className="w-full">
+    <div className="">
       <div className="max-w-2xl mx-auto">
         {/* Initial Step */}
         {step === "initial" && (

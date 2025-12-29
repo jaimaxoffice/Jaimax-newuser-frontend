@@ -1513,7 +1513,7 @@ toggleLoader?.(true);
       {/* Compact Header with Verification Badges */}
       <div className="flex items-center justify-between pb-2 border-b border-gray-100">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg flex items-center justify-center shadow-sm">
+          <div className="h-8 w-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center shadow-sm">
             <Sparkles className="h-4 w-4 text-white" />
           </div>
           <div>
@@ -1889,7 +1889,7 @@ toggleLoader?.(true);
         <button
           onClick={handleFinalSubmit}
           disabled={isVerifying || !canSubmit}
-          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-xl text-sm font-medium 
+          className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 text-white py-2.5 rounded-full text-sm font-medium 
             hover:from-teal-600 hover:to-teal-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed 
             transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md touch-manipulation"
         >

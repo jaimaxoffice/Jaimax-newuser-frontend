@@ -254,7 +254,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
                 <button
                   onClick={handleRetry}
                   disabled={isClaiming}
-                  className="w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg shadow-teal-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-full font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg shadow-teal-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isClaiming ? (
                     <>
@@ -268,7 +268,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
 
                 <button
                   onClick={onClose}
-                  className="w-full py-3 rounded-xl font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-all"
+                  className="w-full py-3 rounded-full font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-all"
                 >
                   Close
                 </button>
@@ -281,7 +281,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
                 <button
                   onClick={handleClaim}
                   disabled={isClaiming}
-                  className="w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg shadow-teal-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-full font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg shadow-teal-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isClaiming ? (
                     <>
