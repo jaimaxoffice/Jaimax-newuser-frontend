@@ -606,6 +606,9 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
                       <tr className="bg-teal-50 border-b border-teal-100">
                        
                         <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
+                          S.No
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
                           Tokens
                         </th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-teal-700 uppercase tracking-wider">
@@ -620,16 +623,23 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      {logs.map((log) => (
+                      {logs.map((log,index) => (
                         <tr
-                          key={log._id}
+                          key={log._id }
                           className="hover:bg-teal-50/50 transition-colors"
                         >
                          
                           <td className="px-4 py-4">
                             <div className="flex items-center gap-2">
-                              <Coins className="w-4 h-4 text-teal-500" />
-                              <span className="font-bold text-gray-800">
+                              <span className="font- text-black text-xs">
+                              {(currentPage - 1) * limit + index + 1}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4">
+                            <div className="flex items-center gap-2">
+                              {/* <Coins className="w-4 h-4 text-teal-500" /> */}
+                              <span className="font-bold text-gray-600 text-sm">
                                 {log.tokens}
                               </span>
                             </div>
@@ -642,13 +652,13 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
                             </span>
                           </td>
                           <td className="px-4 py-4">
-                            <span className="text-gray-600 text-sm line-clamp-2">
+                            <span className="text-gray-600 text-xs line-clamp-2">
                               {log.description}
                             </span>
                           </td>
                           <td className="px-4 py-4">
                             <div className="flex items-center gap-2 text-gray-500 text-sm whitespace-nowrap">
-                              <Calendar className="w-4 h-4 text-teal-400" />
+                              {/* <Calendar className="w-4 h-4 text-teal-400" /> */}
                               {formatDate(log.createdAt)}
                             </div>
                           </td>

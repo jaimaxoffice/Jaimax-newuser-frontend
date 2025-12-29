@@ -171,6 +171,9 @@ const TermsConditionsModal = ({ show, onHide, onAgree }) => {
                             <p className="text-gray-700 mb-4">
                                 We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new Privacy Policy on our website and updating the "Last Updated" date.
                             </p>
+                            <p className="text-gray-700 mb-4">
+                                All actions, participation, and investments made on Jaimax are carried out voluntarily and at the user’s own discretion and responsibility.
+                            </p>
 
                             <h5 className="text-lg font-semibold text-gray-900 mt-6 mb-3">10. Contact Information</h5>
                             <p className="text-gray-700 mb-8">

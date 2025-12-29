@@ -581,14 +581,14 @@ export default Navbar;
 //                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
 //                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full  transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
-//                   to="/about"
+//                   to="/about/"
 //                   onClick={closeNavbar}
 //                   title="About Jaimax - Building the Future of Cryptocurrency in India"
 //                 >
 //                   About
 //                 </NavLink>
 //               </li>
-//               <li>
+//               {/* <li>
 //                 <NavLink
 //                   className={({ isActive }) =>
 //                     isActive
@@ -601,7 +601,7 @@ export default Navbar;
 //                 >
 //                   Landingpage
 //                 </NavLink>
-//               </li>
+//               </li> */}
 
 //               <li>
 //                 <NavLink
@@ -610,7 +610,7 @@ export default Navbar;
 //                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
 //                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
-//                   to="/services"
+//                   to="/services/"
 //                   title="Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
 //                   onClick={closeNavbar}
 //                 >
@@ -625,7 +625,7 @@ export default Navbar;
 //                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-1.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
 //                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
-//                   to="/features"
+//                   to="/features/"
 //                   title="Jaimax Coin Features - Security, Speed & User-Friendly Interface"
 //                   onClick={closeNavbar}
 //                 >
@@ -640,7 +640,7 @@ export default Navbar;
 //                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
 //                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
-//                   to="/blog"
+//                   to="/blog/"
 //                   title="Jaimax Blog - Latest Crypto News, Insights & Market Analysis"
 //                   onClick={closeNavbar}
 //                 >
@@ -655,7 +655,7 @@ export default Navbar;
 //                       ? "inline-flex items-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-3 py-2 xl:px-4 xl:py-2.5 rounded-full mx-0.5 xl:mx-1 transition-all duration-300 ease-in-out text-xs xl:text-sm shadow-lg transform hover:scale-105"
 //                       : "inline-flex items-center text-white/90 px-3 py-0 xl:px-4 xl:py-1.5 rounded-full transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg hover:scale-105 text-xs xl:text-sm"
 //                   }
-//                   to="/contact"
+//                   to="/contact/"
 //                   title="Contact Jaimax - Get Support & Connect with Our Team"
 //                   onClick={closeNavbar}
 //                 >
@@ -679,7 +679,7 @@ export default Navbar;
 //             {/* Action buttons */}
 //             <div className="flex items-center space-x-2 xl:space-x-3 ml-4 xl:ml-6">
 //               <NavLink 
-//                 to="/login" 
+//                 to="/login/" 
 //                 onClick={closeNavbar}
 //                 title="Login to Jaimax - Access Your Crypto Account Now"
 //               >
@@ -774,14 +774,14 @@ export default Navbar;
 //                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
-//                     to="/about"
+//                     to="/about/"
 //                     title="About Jaimax - Building the Future of Cryptocurrency in India"
 //                     onClick={closeNavbar}
 //                   >
 //                     About
 //                   </NavLink>
 //                 </li>
-//                 <li>
+//                 {/* <li>
 //                   <NavLink
 //                     className={({ isActive }) =>
 //                       isActive
@@ -794,7 +794,7 @@ export default Navbar;
 //                   >
 //                     Landingpage
 //                   </NavLink>
-//                 </li>
+//                 </li> */}
 
 //                 <li>
 //                   <NavLink
@@ -818,7 +818,7 @@ export default Navbar;
 //                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
-//                     to="/features"
+//                     to="/features/"
 //                     title="Jaimax Coin Features - Security, Speed & User-Friendly Interface"
 //                     onClick={closeNavbar}
 //                   >
@@ -848,7 +848,7 @@ export default Navbar;
 //                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
 //                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
 //                     }
-//                     to="/contact"
+//                     to="/contact/"
 //                     title="Contact Jaimax - Get Support & Connect with Our Team"
 //                     onClick={closeNavbar}
 //                   >
@@ -872,7 +872,7 @@ export default Navbar;
 //                 <li className="pt-4 border-t border-white/10 mt-4">
 //                   <div className="flex flex-col space-y-3">
 //                     <NavLink 
-//                       to="/login" 
+//                       to="/login/" 
 //                       onClick={closeNavbar}
 //                       title="Login to Jaimax - Access Your Crypto Account Now"
 //                     >
@@ -888,7 +888,7 @@ export default Navbar;
 //                     </NavLink>
 
 //                     <NavLink 
-//                       to="/register" 
+//                       to="/register/" 
 //                       onClick={closeNavbar}
 //                       title="Register on Jaimax - Start Your Crypto Investment Journey Today"
 //                     >

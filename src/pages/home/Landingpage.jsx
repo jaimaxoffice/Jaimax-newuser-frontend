@@ -3495,74 +3495,9 @@ const AppSection = () => {
                 </motion.div>
 
                 {/* Floating Badges */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  animate={{ y: [-5, 5, -5] }}
-                  transition={{ 
-                    y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                    opacity: { duration: 0.5 },
-                    scale: { duration: 0.5 }
-                  }}
-                  className="absolute -left-16 top-1/4 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-xl"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
-                      <FaChartArea className="text-green-400 text-sm" />
-                    </div>
-                    <div>
-                      <p className="text-white text-xs font-semibold">Live Charts</p>
-                      <p className="text-teal-200/60 text-[10px]">Real-time</p>
-                    </div>
-                  </div>
-                </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  animate={{ y: [5, -5, 5] }}
-                  transition={{ 
-                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                    opacity: { duration: 0.5, delay: 0.2 },
-                    scale: { duration: 0.5, delay: 0.2 }
-                  }}
-                  className="absolute -right-16 top-1/2 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-xl"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                      <FaStar className="text-yellow-400 text-sm" />
-                    </div>
-                    <div>
-                      <p className="text-white text-xs font-semibold">4.9 Rating</p>
-                      <p className="text-teal-200/60 text-[10px]">50K+ Reviews</p>
-                    </div>
-                  </div>
-                </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  animate={{ y: [-3, 3, -3] }}
-                  transition={{ 
-                    y: { duration: 3.5, repeat: Infinity, ease: "easeInOut" },
-                    opacity: { duration: 0.5, delay: 0.4 },
-                    scale: { duration: 0.5, delay: 0.4 }
-                  }}
-                  className="absolute -right-12 bottom-1/4 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20 shadow-xl"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                      <FaDownload className="text-blue-400 text-sm" />
-                    </div>
-                    <div>
-                      <p className="text-white text-xs font-semibold">100K+</p>
-                      <p className="text-teal-200/60 text-[10px]">Downloads</p>
-                    </div>
-                  </div>
-                </motion.div>
+
               </div>
             </motion.div>
           </div>
