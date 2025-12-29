@@ -137,7 +137,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
               {phase === "counting" && (
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold text-gray-800">
-                    Counting Your Coins...
+                    Counting Your Tokens...
                   </h2>
                 </div>
               )}
@@ -147,7 +147,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
                   <h2 className="text-2xl font-bold text-gray-800">
                     Claiming Your Bonus...
                   </h2>
-                  <p className="text-gray-500 text-sm">Please wait while we add coins to your wallet</p>
+                  <p className="text-gray-500 text-sm">Please wait while we add tokens to your wallet</p>
                 </div>
               )}
               {phase === "error" && (
@@ -182,7 +182,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
                         <Star className="w-5 h-5 text-teal-600 fill-teal-600" />
                       </div>
                       <h2 className="text-2xl font-bold text-gray-800">
-                        You got JMC Coins!
+                        You got JMC Tokens!
                       </h2>
                     </>
                   )}
@@ -289,12 +289,12 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
                       <span>Claiming...</span>
                     </>
                   ) : (
-                    <span>Claim {finalCoins.toLocaleString()} JMC Coins</span>
+                    <span>Claim {finalCoins.toLocaleString()} JMC Tokens</span>
                   )}
                 </button>
 
                 <p className="text-center text-gray-400 text-sm">
-                  Tap to add JMC coins to your wallet
+                  Tap to add JMC tokens to your wallet
                 </p>
               </div>
             )}

@@ -289,7 +289,6 @@ const TopCards = React.memo(() => {
       },
       {
         label: "Bonus Received",
-        
         image: assets.welcomeDraw,
         hoverImage: assets.totalCoins,
         iconBg: "#e8f5e9",

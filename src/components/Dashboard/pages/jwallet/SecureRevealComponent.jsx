@@ -935,7 +935,7 @@ const SecureRevealComponent = () => {
                         <div className="bg-gray-50 border rounded-lg p-3 mb-4 flex justify-between items-center">
                           <code className="text-xs break-all">{manualKey}</code>
                           <button
-                            onClick={handleCopy}
+                            onClick={handleCopy2}
                             className={`text-xs text-white px-2 py-1 rounded transition-colors
         ${copied ? "bg-green-500" : "bg-teal-500 hover:bg-teal-600"}
       `}

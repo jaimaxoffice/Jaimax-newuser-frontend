@@ -3195,20 +3195,7 @@ export default function Profile3DForm() {
                         {user?.referenceId}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span>Wallet:</span>
-                      <span
-                        className="font-medium text-gray-700 truncate max-w-[150px]"
-                        title={user?.walletadress}
-                      >
-                        {user?.walletadress
-                          ? `${user.walletadress.slice(
-                              0,
-                              6
-                            )}...${user.walletadress.slice(-4)}`
-                          : "N/A"}
-                      </span>
-                    </div>
+
                   </div>
                 </div>
               </div>
