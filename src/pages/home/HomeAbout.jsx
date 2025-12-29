@@ -378,7 +378,7 @@ const {
   // LIVE VALUES ONLY - NO FALLBACKS
   const livePrice = currentRound?.atPriceInr;
   const soldTokens = currentRound?.soldQty ? formatNumber(currentRound.soldQty) : null;
-  const liveMembers = currentRound?.totalMembers ? formatNumber(currentRound.totalMembers) : 25.68;
+  const liveMembers = currentRound?.totalMembers ? formatNumber(currentRound.totalMembers) : 25.86;
   const tokenHolders = holderCount ? formatNumber(holderCount) : null;
 
   // Animation Variants
