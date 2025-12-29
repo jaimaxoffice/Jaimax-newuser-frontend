@@ -390,48 +390,7 @@ const images = useMemo(() => {
           )}
         </>
       )}
-      <>
-  {/* <Snowfall
-    color="white"
-    radius={[1, 3]}
-    speed={[0.5, 2]}
-    wind={[-0.5, 1]}
-    style={{
-      position: "fixed",
-      inset: 0,
-      pointerEvents: "none",
-      zIndex: 9999,
-    }}
-  />
-<Snowfall
-      images={images}
-      radius={[6, 10]}
-      speed={[0.1, 0.4]}
-      rotationSpeed={[-1, 1]}      // optional (nice)
-      enable3DRotation={true}      // optional (premium look)
-      style={{
-        position: "fixed",
-        inset: 0,
-        pointerEvents: "none",
-        zIndex: 9998,
-      }}
-    />
 
-  <Snowfall
-    color="red"
-    // snowflakeCount={40}
-    radius={[1, 2]}
-    speed={[0.6, 2.2]}
-    wind={[-0.3, 0.8]}
-    style={{
-      position: "fixed",
-      inset: 0,
-      pointerEvents: "none",
-      zIndex: 9999,
-    }}
-  /> */}
-
-</>
 
       <FloatingWhatsapp />
       <Routes>
@@ -439,15 +398,15 @@ const images = useMemo(() => {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="wallet" element={<Wallet />} />
-            <Route path="shareholders" element={<Shareholders />} />
-            <Route path="locked-superbonu" element={<SuperBonusInfo />} />
+            {/* <Route path="shareholders" element={<Shareholders />} /> */}
+            {/* <Route path="locked-superbonu" element={<SuperBonusInfo />} /> */}
             <Route path="buy-history" element={<BuyHistory />} />
             <Route path="security" element={<Security />} />
             <Route path="profile" element={<Profile />} />
             <Route path="kyc" element={<Kyc />} />
             <Route path="withdrawal" element={<WithDrawal />} />
             <Route path="support" element={<Support />} />
-            <Route path="foundation" element={<Support />} />
+            {/* <Route path="foundation" element={<Support />} /> */}
             <Route path="promoters" element={<Support />} />
           </Route>
 
@@ -457,13 +416,13 @@ const images = useMemo(() => {
           <Route path="/add-funds" element={<DashboardLayout />}>
             <Route index element={<AddMoneyToWallet />} />
           </Route>
-          <Route path="/my-team" element={<DashboardLayout />}>
+          {/* <Route path="/my-team" element={<DashboardLayout />}>
             <Route index element={<MyTotalTeam />} />
-          </Route>
+          </Route> */}
 
-          <Route path="/locked-superbonus" element={<DashboardLayout />}>
+          {/* <Route path="/locked-superbonus" element={<DashboardLayout />}>
             <Route index element={<SuperBonusInfo />} />
-          </Route>
+          </Route> */}
           <Route path="/buy-history" element={<DashboardLayout />}>
             <Route index element={<BuyHistory />} />
           </Route>
@@ -479,18 +438,18 @@ const images = useMemo(() => {
           <Route path="/jwallet" element={<DashboardLayout />}>
             <Route index element={<UserDetailsComponent />} />
           </Route>
-          <Route path="/foundation" element={<DashboardLayout />}>
+          {/* <Route path="/foundation" element={<DashboardLayout />}>
             <Route index element={<FoundationBonusUI />} />
-          </Route>
+          </Route> */}
           <Route path="/promoters" element={<DashboardLayout />}>
             <Route index element={<PromotersPage />} />
           </Route>
-          <Route path="/guaranteedwealthplan" element={<DashboardLayout />}>
+          {/* <Route path="/guaranteedwealthplan" element={<DashboardLayout />}>
             <Route index element={<GuaranteedWealthDashboard />} />
           </Route>
           <Route path="/guaranteedwealthplan-2-0" element={<DashboardLayout />}>
             <Route index element={<GuaranteedWealthDashboard2_O />} />
-          </Route>
+          </Route> */}
           <Route path="/kyc-information" element={<DashboardLayout />}>
             <Route index element={<Kyc />} />
           </Route>

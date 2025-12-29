@@ -257,16 +257,16 @@ const TopCards = React.memo(() => {
         iconBg: "#f3e5f5",
         isCompleted: false,
       },
-      {
-        label: "Guaranteed Wealth Plan",
-        value: userData?.data?.totalWealthPlanCollectedAmount
-          ? userData.data.totalWealthPlanCollectedAmount.toString()
-          : "0",
-        image: assets.activememo,
-        hoverImage: assets.activememo1,
-        iconBg: "#e3f2fd",
-        isCompleted: false,
-      },
+      // {
+      //   label: "Guaranteed Wealth Plan",
+      //   value: userData?.data?.totalWealthPlanCollectedAmount
+      //     ? userData.data.totalWealthPlanCollectedAmount.toString()
+      //     : "0",
+      //   image: assets.activememo,
+      //   hoverImage: assets.activememo1,
+      //   iconBg: "#e3f2fd",
+      //   isCompleted: false,
+      // },
       {
         label: "Withdrawal Amount",
         value: `${currencySymbol}${Number(

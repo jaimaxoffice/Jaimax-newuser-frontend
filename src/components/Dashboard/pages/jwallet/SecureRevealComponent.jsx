@@ -608,6 +608,14 @@ const SecureRevealComponent = () => {
   const [manualKey, setManualKey] = useState("");
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 
+
+  const handleCopy2 = async () => {
+    await navigator.clipboard.writeText(manualKey);
+    setCopied(true);
+
+    // Reset back to "Copy" after 2 seconds
+    setTimeout(() => setCopied(false), 2000);
+  };
   const is2FAVerified = sessionStorage.getItem("2faVerified") === "true";
 
   // RTK Query hooks
@@ -834,7 +842,7 @@ const SecureRevealComponent = () => {
               <div className="mb-4 sm:mb-6">
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-3">
                   <p className="text-yellow-800 text-xs sm:text-sm">
-                    <strong>Recommended:</strong> Enable 2FA for additional security when accessing sensitive data.
+                    <strong>Recommended:</strong> Enable 2FA for additional security Google Authenticator when accessing sensitive data.
                   </p>
                 </div>
 
@@ -910,12 +918,14 @@ const SecureRevealComponent = () => {
                       {mode === "manual" && manualKey && (
                         <div className="bg-gray-50 border rounded-lg p-3 mb-4 flex justify-between items-center">
                           <code className="text-xs break-all">{manualKey}</code>
-                          <button
-                            onClick={() => navigator.clipboard.writeText(manualKey)}
-                            className="text-xs bg-teal-500 text-white px-2 py-1 rounded hover:bg-teal-600 transition-colors"
-                          >
-                            Copy
-                          </button>
+                           <button
+      onClick={handleCopy}
+      className={`text-xs text-white px-2 py-1 rounded transition-colors
+        ${copied ? "bg-green-500" : "bg-teal-500 hover:bg-teal-600"}
+      `}
+    >
+      {copied ? "✓ Copied" : "Copy"}
+    </button>
                         </div>
                       )}
 
@@ -936,14 +946,14 @@ const SecureRevealComponent = () => {
                             setError("");
                             setMode(null);
                           }}
-                          className="flex-1 bg-gray-200 hover:bg-gray-300 py-2.5 rounded-lg font-semibold transition-colors"
+                          className="flex-1 bg-teal-100 hover:bg-gray-300 py-2.5 rounded-full font-semibold transition-colors"
                         >
                           Cancel
                         </button>
                         <button
                           onClick={handleVerify2FA}
                           disabled={loadingVerify || enableOtp.length !== 6}
-                          className="flex-1 bg-teal-500 hover:bg-teal-600 disabled:bg-teal-400 text-white py-2.5 rounded-lg font-semibold transition-colors"
+                          className="flex-1 bg-teal-500 hover:bg-teal-600 disabled:bg-teal-400 text-white py-2.5 rounded-full font-semibold transition-colors"
                         >
                           {loadingVerify ? "Verifying..." : "Verify"}
                         </button>
