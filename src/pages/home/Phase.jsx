@@ -315,7 +315,7 @@ export default function GrowthPlanTimeline() {
   // Navigate when Live
   const handleBuyNow = (item) => {
     if (item.status === "Live") {
-      navigate("/register");
+      navigate("/register/");
     }
   };
 

@@ -693,8 +693,8 @@ const HomeAbout = () => {
   ];
 
   const authLinks = [
-    { to: '/login', label: 'Login' },
-    { to: '/register', label: 'Register' },
+    { to: '/login/', label: 'Login' },
+    { to: '/register/', label: 'Register' },
   ];
 
   const legalLinks = [

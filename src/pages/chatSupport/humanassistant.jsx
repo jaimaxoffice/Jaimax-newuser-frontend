@@ -1443,12 +1443,12 @@ export default function HumanAssistant({ onclose }) {
 
     // Handle special authentication options
     if (option === "Sign In" || option === "Go to Login") {
-      window.location.href = "/login";
+      window.location.href = "/login/";
       return;
     }
 
     if (option === "Register" || option === "Create Account") {
-      window.location.href = "/register";
+      window.location.href = "/register/";
       return;
     }
 

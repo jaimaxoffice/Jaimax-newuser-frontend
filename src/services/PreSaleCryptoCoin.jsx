@@ -414,7 +414,7 @@ function PreSaleCryptoCoin() {
               style={{ animationDelay: "0.8s" }}
             >
               <a
-                href="https://www.jaimax.com/register"
+                href="https://www.jaimax.com/register/"
                 title="jaimax best presale crypto token in india"
                 className="group relative px-[25px] py-2 bg-[#c4d72d] text-[#085056] font-semibold text-[0.8rem] rounded-full hover:bg-[#d4e73d] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#c4d72d]/50 flex items-center space-x-2 animate-bounce-subtle w-fit"
               >
@@ -753,7 +753,7 @@ function PreSaleCryptoCoin() {
             </div>
             <div className="text-center mt-12 animate-fade-in">
               <a
-                href="https://www.jaimax.com/register"
+                href="https://www.jaimax.com/register/"
                 title="jaimax Application"
                 className="inline-flex items-center space-x-2 px-[25px] py-2 bg-[#c4d72d] text-[#085056] rounded-full font-semibold text-[0.8rem] hover:scale-105 transition-all duration-300 animate-bounce-subtle w-fit"
                 style={{ boxShadow: "0 0 30px rgba(196,215,45,0.3)" }}
@@ -886,7 +886,7 @@ function PreSaleCryptoCoin() {
 
             <div className="flex flex-col sm:flex-row gap-2 justify-center animate-fade-in">
               <a
-                href="https://www.jaimax.com/register"
+                href="https://www.jaimax.com/register/"
                 title="jaimax Register"
                 className="px-[25px] py-2 bg-[#c4d72d] text-[#085056] rounded-full font-semibold text-[0.8rem] hover:scale-105 transition-all duration-300 animate-bounce-subtle w-fit"
                 style={{ boxShadow: "0 0 30px rgba(196,215,45,0.3)" }}
@@ -1067,7 +1067,7 @@ function PreSaleCryptoCoin() {
                 style={{ animationDelay: "0.8s" }}
               >
                 <a
-                  href="https://www.jaimax.com/register"
+                  href="https://www.jaimax.com/register/"
                   title="jaimax best presale crypto token in india"
                   className="inline-block px-[25px] py-2 bg-[#c4d72d] text-[#085056] rounded-full font-semibold text-[0.8rem] hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl animate-bounce-subtle w-fit"
                 >

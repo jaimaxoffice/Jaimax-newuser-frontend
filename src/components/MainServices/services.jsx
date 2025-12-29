@@ -239,10 +239,10 @@ const CryptoServicesFlipCards = () => {
           const serviceLinks = [
             "/features",
             "/best-presale-crypto-token-in-india",
-            "/about",
-            "/contact",
-            "/blog",
-            "/login"
+            "/about/",
+            "/contact/",
+            "/blog/",
+            "/login/"
           ];
           const serviceLink = serviceLinks[index % serviceLinks.length];
           
@@ -280,7 +280,7 @@ const CryptoServicesFlipCards = () => {
           that set us apart and ensure your best financial experience at your every journey.
         </p>
         <Link
-          to="/register"
+          to="/register/"
           title="Join Jaimax - Register now"
           className="inline-block bg-lime-400 hover:bg-white text-teal-700 font-semibold px-6 sm:px-6 md:px-7 lg:px-8 py-2 sm:py-2 md:py-2.5 lg:py-3 rounded-full transition-all duration-300 text-sm sm:text-sm md:text-base lg:text-base hover:scale-105 active:scale-95"
         >

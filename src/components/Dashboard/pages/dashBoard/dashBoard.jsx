@@ -1053,7 +1053,7 @@ const handleComplete = (coins) => {
       Cookies.remove("userData");
       Cookies.remove("email");
       Cookies.remove("rememberMe");
-      navigate("/login");
+      navigate("/login/");
     }
   }, [error, navigate]);
 

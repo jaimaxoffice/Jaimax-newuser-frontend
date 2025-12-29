@@ -2629,7 +2629,7 @@ export default function Profile3DForm() {
         setFormData({ password: "", newPassword: "", confirmPwd: "", otp: "" });
         setOtpSent(false);
         setOtpVerified(false);
-        window.location.href = "/login";
+        window.location.href = "/login/";
       } catch (error) {
         toast.error(error?.data?.message || "Failed to change password", {
           position: "top-center",

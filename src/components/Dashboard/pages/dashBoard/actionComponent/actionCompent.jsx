@@ -58,7 +58,7 @@ const ActionButtons = React.memo(() => {
   // Token verification effect
   useEffect(() => {
     if (!token) {
-      navigate("/login");
+      navigate("/login/");
       return;
     }
     setIsTokenVerified(true);

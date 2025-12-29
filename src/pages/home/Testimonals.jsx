@@ -98,7 +98,7 @@ const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const handlePresaleClick = () => {
-    navigate("/register");
+    navigate("/register/");
   };
   return (
     <section className="py-0 bg-[#085056] relative overflow-hidden">

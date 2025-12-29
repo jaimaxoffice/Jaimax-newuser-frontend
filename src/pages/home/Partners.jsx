@@ -795,7 +795,7 @@ const CreativePartnersComponent = () => {
           <p className="text-[#f0fdfa] text-sm mb-5">Join our expanding network of industry-leading partners</p>
           
           <motion.button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/login/")}
             className="group bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white font-semibold px-7 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-[#085056]"
             whileHover={{ scale: 1.03, boxShadow: "0 10px 25px -5px rgba(34, 197, 94, 0.4)" }}
             whileTap={{ scale: 0.98 }}

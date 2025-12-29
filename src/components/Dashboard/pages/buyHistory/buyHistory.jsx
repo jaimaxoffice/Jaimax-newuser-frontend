@@ -62,7 +62,7 @@ const BuyHistory = () => {
     const token = Cookies.get("token");
     const verifyToken = async () => {
       if (!token) {
-        navigate("/login");
+        navigate("/login/");
         return;
       }
       setIsTokenVerified(true);
@@ -76,7 +76,7 @@ const BuyHistory = () => {
       const debounce = setTimeout(() => {
         if (error?.data?.status_code === 400) {
           // localStorage.clear();
-          navigate("/login");
+          navigate("/login/");
           toast.error(error?.data?.message, {
             position: "top-center",
           });
