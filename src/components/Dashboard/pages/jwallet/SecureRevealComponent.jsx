@@ -11,6 +11,7 @@ import {
 } from "./secureRevealApiSlice";
 import OtpInput from "./OtpInput";
 import Loader from "../../../../ReusableComponents/Loader/loader";
+import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 const SecureRevealComponent = () => {
   const [step, setStep] = useState("initial");
   const [password, setPassword] = useState("");
@@ -135,7 +136,7 @@ const SecureRevealComponent = () => {
       setIs2FAEnabled(false);
       setShow2FAModal(false);
       setError("");
-      alert("2FA disabled successfully");
+      toast("2FA disabled successfully");
     } catch (err) {
       setError(getApiErrorMessage(err));
     }
