@@ -314,16 +314,23 @@ const Dashboard = () => {
     perPage: 10,
     search: "",
   });
+
   const [isTokenVerified, setIsTokenVerified] = useState(false);
   const token = Cookies.get("token");
-const handleComplete = (coins) => {
+  const { data: userData, refetch: userRefetch } = useUserDataQuery(undefined, {
+  skip: !isTokenVerified,
+});
+const handleComplete = useCallback(async (coins) => {
   setShowModal(false);
   setTotalCoins((prev) => prev + coins);
   console.log(`User earned ${coins} coins!`);
 
-  // Reload the page
-  window.location.reload();
-};
+  // ✅ refetch user data instead of reload
+  await userRefetch();
+
+  // optional: reset the "shown once" so it can open again only if needed later
+  // setModalShownOnce(false);
+}, [userRefetch]);
 
   useEffect(() => {
     if (token) {
@@ -331,13 +338,6 @@ const handleComplete = (coins) => {
     }
   }, [token]);
 
-const {
-  data: userData,
-  isLoading: userLoading,
-  isSuccess: userSuccess
-} = useUserDataQuery(undefined, {
-  skip: !isTokenVerified,
-});
   // Memoized query parameters
   const queryParams = useMemo(
     () => `limit=${queryState.perPage}&page=${queryState.currentPage}`,
@@ -361,7 +361,7 @@ const {
   useEffect(() => {
     const token = Cookies.get("token");
     if (!token) {
-      navigate("/login");
+      navigate("/login/");
     }
   }, [navigate]);
 
@@ -417,19 +417,23 @@ const {
     return () => clearInterval(timer);
   }, []);
 useEffect(() => {
-  if (
-    userSuccess &&
-    !userLoading &&
-    userData?.data &&
-    userData.data.isRegistrationBonusAwarded === false &&
-    !localStorage.getItem("reg_bonus_shown")
-  ) {
-    setShowModal(true);
-    localStorage.setItem("reg_bonus_shown", "true");
-  }
-}, [userSuccess, userLoading, userData]);
-
-
+    // Get unique user identifier (use _id, username, or email)
+    const userId = userData?.data?._id || userData?.data?.username || userData?.data?.email;
+ 
+    if (
+      userData?.data &&
+      userId &&
+      userData?.data?.isRegistrationBonusAwarded === false &&
+      userData?.data?.fullKyc === 'approve' &&
+      !modalShownOnce
+      //  &&
+      // !localStorage.getItem(getRegBonusKey(userId))
+    ) {
+      // console.log("✅ Opening modal!");
+      setShowModal(true);
+      setModalShownOnce(true);
+    }
+  }, [userData, modalShownOnce]);
   // Debounced search handler
   const handleSearch = useCallback((e) => {
     const value = e.target.value;
@@ -592,14 +596,11 @@ useEffect(() => {
         </Suspense>
       </div>
 <div className="bg-gray-900 flex flex-col items-center justify-center gap-6">
-     {!userLoading && (
-  <CoinRewardModal
-    isOpen={showModal}
-    onClose={() => setShowModal(false)}
-    onComplete={handleComplete}
-  />
-)}
-
+      <CoinRewardModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onComplete={handleComplete}
+      />
     </div>
       {/* Action Buttons */}
       <div className="mb-3">

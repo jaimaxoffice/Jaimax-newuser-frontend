@@ -471,13 +471,13 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
   const tabs = [
     {
       id: "registrationbonus",
-      label: "Registration Bonus",
+      label: "KYC Bonus",
       shortLabel: "Registration",
       icon: Award,
     },
     {
       id: "referralbonus",
-      label: "Referral Bonus",
+      label: "KYC Referral Bonus",
       shortLabel: "Referral",
       icon: UserPlus,
     },
@@ -532,10 +532,10 @@ const BonusLogsModal = ({ isOpen, onClose, currencySymbol }) => {
               </div>
               <div>
                 <h2 className="text-base sm:text-xl font-bold text-white">
-                  Bonus Logs
+                 KYC Bonus Logs
                 </h2>
                 <p className="text-[10px] sm:text-xs text-teal-100">
-                  View your bonus history
+                  View your KYC bonus history
                 </p>
               </div>
             </div>

@@ -118,7 +118,7 @@ import shekar from "../../assets/Shekar.jpg";
 import anjanelu from "../../assets/B.veeranjaneyulu.jpg";
 import Ratnam from "../../assets/Ratnam.jpg";
 import pramod from "../../assets/pramod.jpg";
-import app from '../../assets/app.jpg'
+import app from '../../assets/app.jpeg'
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer, SplitText, Flip);
 
 const services = [
@@ -246,19 +246,19 @@ const roadmapData = {
   },
   2025: {
     title: "Integration & Growth",
-    status: "active",
-    progress: 35,
+    status: "completed",
+    progress: 100,
     phases: [
       "• Launch of the Jaimax Wallet (J-Wallet) for secure token management.",
       "• Integration of DigiLocker KYC for secure user verification.",
-      "• Launch of coin swapping within the Jaimax ecosystem.",
+      "• Launch of token swapping within the Jaimax ecosystem.",
       "• Enable users to buy JMC through Binance exchange wallet connectivity.",
     ],
   },
   2026: {
     title: "Blockchain & Platform Expansion",
-    status: "future",
-    progress: 0,
+    status: "active",
+    progress: 25,
     phases: [
       "• Development of Jaimax's own blockchain infrastructure.",
       "• Launch of DeFi features to enhance financial accessibility.",
@@ -371,31 +371,31 @@ const JaimaxFAQ = () => {
 
   const faqs = [
     {
-      question: "What is Jaimax Coin?",
-      answer: "Jaimax Coin is a secure and innovative cryptocurrency that delivers fast, transparent, and low-cost blockchain-based transactions. Designed for both daily use and long-term crypto investment, Jaimax empowers users to take control of their financial future.",
+      question: "What is Jaimax Token?",
+      answer: "Jaimax Token is a secure and innovative cryptocurrency that delivers fast, transparent, and low-cost blockchain-based transactions. Designed for both daily use and long-term crypto investment, Jaimax empowers users to take control of their financial future.",
       icon: <Coins className="w-5 h-5" />,
       gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "How is Jaimax Coin different from other cryptocurrencies?",
-      answer: "Jaimax Coin is more than just a digital asset. It offers users access to our exclusive Jaimax App, a built-in crypto wallet, and a powerful referral-based ecosystem. We focus on real-world usability, scalability, and building a strong crypto community in India and worldwide.",
+      question: "How is Jaimax Token different from other cryptocurrencies?",
+      answer: "Jaimax Token is more than just a digital asset. It offers users access to our exclusive Jaimax App, a built-in crypto wallet, and a powerful referral-based ecosystem. We focus on real-world usability, scalability, and building a strong crypto community in India and worldwide.",
       icon: <Sparkles className="w-5 h-5" />,
       gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "Is Jaimax Coin safe to use?",
-      answer: "Yes. Jaimax Coin is built on a decentralized blockchain using strong cryptographic security protocols to ensure each transaction is transparent and tamper-proof. Our Jaimax Wallet inside the app adds another layer of protection for storing and managing your crypto assets.",
+      question: "Is Jaimax Token safe to use?",
+      answer: "Yes. Jaimax Token is built on a decentralized blockchain using strong cryptographic security protocols to ensure each transaction is transparent and tamper-proof. Our Jaimax Wallet inside the app adds another layer of protection for storing and managing your crypto assets.",
       icon: <Shield className="w-5 h-5" />,
       gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "Where can I store my Jaimax Coins?",
-      answer: "You can store your Jaimax Coins securely in the official Jaimax Wallet, available in the Jaimax App. Our wallet is easy to use, supports fast transfers, and gives you full control over your digital assets with complete privacy and security.",
+      question: "Where can I store my Jaimax Tokens?",
+      answer: "You can store your Jaimax Tokens securely in the official Jaimax Wallet, available in the Jaimax App. Our wallet is easy to use, supports fast transfers, and gives you full control over your digital assets with complete privacy and security.",
       icon: <Wallet className="w-5 h-5" />,
       gradient: "from-green-500 to-teal-600"
     },
     {
-      question: "How can I access Jaimax Coin?",
+      question: "How can I access Jaimax Token?",
       answer: "You can access Jaimax Coin directly through the Jaimax App, available for download on Android and iOS. From here, you can create a wallet, invest in Jaimax, track your balance, and manage referrals—all in one place.",
       icon: <TrendingUp className="w-5 h-5" />,
       gradient: "from-green-500 to-teal-600"
@@ -446,7 +446,7 @@ const JaimaxFAQ = () => {
         }}></div>
       </div>
 
-      <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-4 sm:py-12 lg:py-16">
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-4 sm:py-12 lg:py-10">
         <div className="max-w-7xl mx-auto">
           {/* Hero Header */}
           <div className="text-center mb-12 sm:mb-16">
@@ -533,7 +533,305 @@ const JaimaxFAQ = () => {
   );
 };
 
+const TokenStats = () => {
+  const [copied, setCopied] = useState(false);
 
+  // Contract address
+  const CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890";
+  const BSCSCAN_URL = `https://bscscan.com/token/${CONTRACT_ADDRESS}`;
+
+  // Copy to clipboard
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTRACT_ADDRESS);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
+  // Fetch data
+  const { data: roundData, isLoading, refetch } = useGetRoundQuery();
+  const currentRound = roundData?.data?.rounds?.find((r) => r.status === 1) || {};
+
+  useEffect(() => {
+    const interval = setInterval(refetch, 30000);
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  const formatNumber = (num) => {
+    if (!num) return "0";
+    if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+    return num.toLocaleString();
+  };
+
+  // Stats
+  const livePrice = currentRound?.atPriceInr || "0.0000";
+  const soldTokens = formatNumber(currentRound?.soldQty || 0);
+  const liveMembers = formatNumber(currentRound?.totalMembers || 0);
+  const progressPercent = Math.min(((currentRound?.soldQty || 0) / 10000000000) * 100, 100);
+
+  // Truncate address for mobile
+  const truncateAddress = (address) => {
+    return `${address.slice(0, 8)}...${address.slice(-6)}`;
+  };
+
+  return (
+    <div className="w-full bg-[#085056] py-6 sm:py-8 md:py-5 lg:py-5 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
+      {/* Decorative elements - responsive sizes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[150px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[150px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-teal-200/5 rounded-full filter blur-[80px] sm:blur-[100px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[200px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-[200px] sm:h-[400px] md:h-[500px] lg:h-[600px] bg-teal-400/5 rounded-full filter blur-[100px] sm:blur-[120px]"></div>
+      </div>
+      
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(2); opacity: 0.7; }
+        }
+      `}</style>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header section */}
+        <div className="flex flex-col items-center mb-6 sm:mb-8 md:mb-10 lg:mb-14 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 bg-[#064046] rounded-full mb-3 sm:mb-4 border border-teal-800/70 shadow-lg shadow-teal-900/20"
+          >
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 rounded-full bg-teal-300 animate-pulse"></span>
+            <span className="text-white/90 text-[10px] sm:text-xs md:text-sm font-medium">Round {currentRound?.round || 1} Active</span>
+          </motion.div>
+          
+          <motion.h2
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-teal-100 mb-2 sm:mb-3 md:mb-4 px-4"
+          >
+            Jaimax Token Metrics
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-teal-100/60 max-w-lg sm:max-w-xl md:max-w-2xl text-xs sm:text-sm md:text-base lg:text-lg px-4"
+          >
+            Real-time analytics of our token performance and distribution
+          </motion.p>
+        </div>
+        
+        {/* Contract Address Card - Improved mobile layout */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 bg-[#064046] rounded-xl sm:rounded-2xl overflow-hidden border border-teal-800/70 shadow-xl relative"
+        >
+          <div className="absolute -right-10 sm:-right-20 -top-10 sm:-top-20 w-20 sm:w-40 md:w-60 h-20 sm:h-40 md:h-60 bg-teal-300/5 rounded-full filter blur-[30px] sm:blur-[50px]"></div>
+          
+          <div className="px-4 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6 lg:py-7 relative">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 md:gap-6">
+              <div className="flex-grow w-full lg:w-auto">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                  <div className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-[#053439]">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-white text-base sm:text-lg md:text-xl font-medium">Contract Address</h3>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+                  {/* Mobile: Show truncated address, Desktop: Show full */}
+                  <div className="bg-[#053439] rounded-full py-1.5 sm:py-2 px-3 sm:px-4 font-mono text-xs sm:text-sm md:text-base text-teal-50 tracking-wider w-full sm:w-auto">
+                    <span className="sm:hidden">{truncateAddress(CONTRACT_ADDRESS)}</span>
+                    <span className="hidden sm:inline">{CONTRACT_ADDRESS}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <motion.button 
+                      onClick={copyToClipboard}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center justify-center gap-1.5 sm:gap-2 py-1.5 sm:py-2 px-3 sm:px-4 bg-[#053439] hover:bg-[#042d32] border border-teal-800/50 rounded-full text-white text-xs sm:text-sm md:text-base transition-all duration-300 flex-1 sm:flex-initial"
+                    >
+                      {copied ? (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                          <span>Copy</span>
+                        </>
+                      )}
+                    </motion.button>
+                    
+                    <motion.a 
+                      href={BSCSCAN_URL} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      className="flex items-center justify-center gap-1.5 sm:gap-2 py-1.5 sm:py-2 px-3 sm:px-4 bg-teal-400/20 hover:bg-teal-400/30 border border-teal-800/60 rounded-full text-white text-xs sm:text-sm md:text-base transition-all duration-300 flex-1 sm:flex-initial"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      <span>BscScan</span>
+                    </motion.a>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Round Status - Better mobile layout */}
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 bg-[#053439] p-1.5 sm:p-2 rounded-full border border-teal-800/60 shadow-lg w-full sm:w-auto justify-center">
+                <div className="flex flex-col items-center px-4 sm:px-5 md:px-6 py-1 sm:py-1.5 md:py-2 border-r border-teal-800/40">
+                  <span className="text-[10px] sm:text-xs text-white/50 uppercase tracking-widest">Round</span>
+                  <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white">{currentRound?.round || 1}</span>
+                </div>
+                <div className="flex flex-col items-center px-4 sm:px-5 md:px-6 py-1 sm:py-1.5 md:py-2">
+                  <span className="text-[10px] sm:text-xs text-white/50 uppercase tracking-widest">Status</span>
+                  <span className="text-[10px] sm:text-xs md:text-sm font-bold text-teal-300 flex items-center gap-1 sm:gap-1.5">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-300 rounded-full animate-pulse"></span>
+                    Active
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+        
+        {/* Stats Grid - Enhanced mobile responsiveness */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-6 sm:mb-8 md:mb-10 lg:mb-14">
+          {/* Live Price Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="group relative"
+          >
+            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
+              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
+                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <div className="w-full">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Current Price</h3>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
+                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">₹{livePrice}</div>
+                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">INR</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Tokens Sold Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="group relative"
+          >
+            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
+              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
+                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <div className="w-full">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Tokens Sold</h3>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
+                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">{soldTokens}</div>
+                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">JMC</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-auto">
+                  {/* Progress visualization */}
+                  <div className="mb-2">
+                    <div className="flex justify-between text-[10px] sm:text-xs text-white/70 mb-1">
+                      <span className="font-medium">{progressPercent.toFixed(1)}% Complete</span>
+                      <span>Goal: 10B</span>
+                    </div>
+                    <div className="h-2 sm:h-2.5 md:h-3 w-full bg-[#053439] rounded-full overflow-hidden relative">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progressPercent}%` }}
+                        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+                        className="h-full bg-gradient-to-r from-teal-300 to-teal-400 rounded-full absolute"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Community Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="group relative sm:col-span-2 xl:col-span-1"
+          >
+            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+            
+            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
+              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
+                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+                  <div className="w-full">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Community</h3>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
+                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">{liveMembers}</div>
+                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">Members</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
 // 3D Wheel Component (without floating particles)
 const Wheel3D = ({ 
   wheelRef, 
@@ -2221,7 +2519,25 @@ const OverlayCopy = ({ subheading, heading }) => {
 const IntroductionSection = () => {
   const words = ["Innovation", "Transparency", "Stability", "Growth"];
   const [currentWord, setCurrentWord] = useState(0);
+ const { data: roundData, isLoading, refetch } = useGetRoundQuery();
+  const currentRound = roundData?.data?.rounds?.find((r) => r.status === 1) || {};
 
+  useEffect(() => {
+    const interval = setInterval(refetch, 30000);
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  const formatNumber = (num) => {
+    if (!num) return "0";
+    if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+    return num.toLocaleString();
+  };
+    const livePrice = currentRound?.atPriceInr || "0.0000";
+  const soldTokens = formatNumber(currentRound?.soldQty || 0);
+  const liveMembers = formatNumber(currentRound?.totalMembers || 0);
+  const progressPercent = Math.min(((currentRound?.soldQty || 0) / 10000000000) * 100, 100);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWord((prev) => (prev + 1) % words.length);
@@ -2230,7 +2546,7 @@ const IntroductionSection = () => {
   }, []);
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 bg-teal-50 overflow-hidden min-h-screen flex items-center">
+    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-0 sm:px-6 md:px-0 bg-teal-50 overflow-hidden min-h-screen flex items-center">
       {/* Background Wave Element */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
         <svg
@@ -2491,33 +2807,38 @@ const IntroductionSection = () => {
               </motion.div>
 
               {/* Third Paragraph */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-                className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 
-                           p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl bg-white 
-                           border-2 border-teal-200 shadow-lg shadow-teal-100/50"
-              >
-                <motion.div
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                  className="flex-shrink-0 w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 
-                             rounded-lg sm:rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 
-                             flex items-center justify-center"
-                >
-                  <FaGem className="text-lg sm:text-xl md:text-2xl text-white" />
-                </motion.div>
-                <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
-                  More than just a crypto coin, Jaimax represents{" "}
-                  <span className="font-bold bg-gradient-to-r from-teal-600 to-cyan-600 
-                                   bg-clip-text text-transparent">
-                    a new era of secure, accessible, and rewarding investments
-                  </span>{" "}
-                  for everyone.
-                </p>
-              </motion.div>
+
+  {/* Price Section */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+    
+    {/* Current Price */}
+    <div className="rounded-xl border border-teal-200 bg-teal-50 p-3 sm:p-4">
+      <p className="text-xs sm:text-sm text-teal-700 font-medium">
+        Current Price
+      </p>
+      <p className="text-lg sm:text-xl md:text-2xl font-bold text-teal-900">
+      ₹ {livePrice}
+      </p>
+    </div>
+
+    {/* Expected Launch Price */}
+    <div className="rounded-xl border border-cyan-200 bg-cyan-50 p-3 sm:p-4">
+      <p className="text-xs sm:text-sm text-cyan-700 font-medium">
+        Expected Launch Price
+      </p>
+      <p className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-900">
+        ₹4.10
+      </p>
+
+      {/* Note */}
+      <p className="mt-1 text-[10px] sm:text-xs text-cyan-700 leading-snug">
+        As per mathematical calculations
+      </p>
+    </div>
+
+  </div>
+
+
             </div>
           </motion.div>
         </div>
@@ -2673,15 +2994,26 @@ const JaimaxUniqueFeature = ({ uniqueFeaturesRef }) => {
                   </p>
 
                   {/* CTA Buttons */}
-                  <div className="flex flex-col xs:flex-row items-center justify-center lg:justify-start gap-2 xs:gap-3 sm:gap-4 pt-3 sm:pt-4">
-                    <button 
-                      onClick={() => window.location.href = "/login"}
-                      className="w-full xs:w-auto px-4 xs:px-5 sm:px-6 md:px-8 py-2.5 xs:py-3 md:py-4 bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] text-[#0f1c14] rounded-full font-bold hover:scale-105 transform transition-all duration-300 shadow-xl text-xs sm:text-sm md:text-base"
-                    >
-                      Get Started
-                    </button>
-                   
-                  </div>
+                  <div className="flex items-center justify-start pt-3">
+  <button 
+    onClick={() => window.location.href = "/login/"}
+    className="
+      px-5 sm:px-6 md:px-7
+      py-2 sm:py-2.5
+      bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f]
+      text-[#0f1c14]
+      rounded-full
+      font-semibold
+      text-xs sm:text-sm
+      hover:scale-105
+      transition-transform duration-300
+      shadow-lg
+    "
+  >
+    Get Started
+  </button>
+</div>
+
                 </div>
 
                 {/* Image Side */}
@@ -2769,7 +3101,7 @@ const JaimaxUniqueFeature = ({ uniqueFeaturesRef }) => {
                   key={i}
                   className={`rounded-full transition-all duration-500 ${
                     i === feature.id - 1 
-                      ? 'w-5 xs:w-6 sm:w-8 md:w-10 lg:w-12 h-1 xs:h-1.5 md:h-2 bg-[#b8cc26] shadow-lg shadow-[#b8cc26]/50' 
+                      ? 'w-5 xs:w-6 sm:w-8 md:w-5 lg:w-6 h-1 xs:h-1.5 md:h-2 bg-[#b8cc26] shadow-lg shadow-[#b8cc26]/50' 
                       : 'w-1 xs:w-1.5 sm:w-2 h-1 xs:h-1.5 sm:h-2 bg-white/30 hover:bg-white/50'
                   }`}
                 />
@@ -2802,7 +3134,7 @@ const SecuritySection = () => {
   ];
 
   return (
-    <section className="relative py-20 px-4 md:px-8 bg-teal-50 overflow-hidden">
+    <section className="relative py-20 px-0 md:px-8 bg-teal-50 overflow-hidden">
       {/* Top Wave */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
         <svg
@@ -3330,7 +3662,8 @@ const AppSection = () => {
         {/* DESKTOP LAYOUT (lg and above - Side by Side) */}
         {/* ============================================ */}
         <div className="hidden lg:block">
-          <div className="flex items-center gap-12 xl:gap-20">
+         <div className="flex items-center gap-16 xl:gap-24 2xl:gap-28">
+
             
             {/* Left - Content */}
             <div className="flex-1 max-w-xl">
@@ -3396,9 +3729,7 @@ const AppSection = () => {
                     <div className="text-base font-bold leading-tight">App Store</div>
                   </div>
                   {/* Diagonal ribbon */}
-                  <div className="absolute -right-8 -top-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-[#085056] text-[8px] font-bold px-8 py-1 rotate-45">
-                    SOON
-                  </div>
+                
                 </div>
               </motion.div>
 
@@ -3507,8 +3838,6 @@ const AppSection = () => {
     </section>
   );
 };
-
-
 
 const JaimaxRoadmap = () => {
   const containerRef = useRef(null);
@@ -3682,7 +4011,7 @@ const JaimaxRoadmap = () => {
     <div className="bg-[#085056">
     
       {/* Hero Section - Reduced height */}
-      <div className="min-h-[35vh] flex flex-col items-center justify-center text-center px-4 py-8">
+      <div className="min-h-[35vh] flex flex-col items-center justify-center text-center px-4 py-4">
       
         <div className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-teal-100 to-cyan-100 text-teal-700 rounded-full text-sm font-semibold mb-6 border border-teal-200/50 shadow-sm">
           <span className="relative flex h-2 w-2">
@@ -3693,7 +4022,7 @@ const JaimaxRoadmap = () => {
         </div>
         
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-lime-700 via-teal-600 to-lime-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-lime-500 via-teal-900 to-lime-500 bg-clip-text text-transparent">
             Jaimax Roadmap
           </span>
         </h1>
@@ -3703,21 +4032,6 @@ const JaimaxRoadmap = () => {
           Scroll down to explore our milestones.
         </p>
 
-        {/* Overall Progress - Compact */}
-        <div className="w-full max-w-sm mx-auto mb-4">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-white font-medium">Overall Progress</span>
-            <span className="text-teal-600 font-bold">{overallProgress}%</span>
-          </div>
-          <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
-            <div 
-              className="h-full bg-gradient-to-r from-teal-500 via-teal-400 to-cyan-500 rounded-full transition-all duration-1000 relative"
-              style={{ width: `${overallProgress}%` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 animate-shimmer"></div>
-            </div>
-          </div>
-        </div>
 
       </div>
 
@@ -3756,7 +4070,7 @@ const JaimaxRoadmap = () => {
 
 
         {/* Track Container - Adjusted for better vertical centering */}
-        <div className="h-full flex items-start pt-16">
+        <div className="h-full flex items-start pt-10">
           <div 
             ref={trackRef} 
             className="relative flex items-start pl-[12vw] pr-[25vw]" 
@@ -3881,17 +4195,7 @@ const JaimaxRoadmap = () => {
                       </ul>
 
                       {/* Active Footer */}
-                      {data.status === 'active' && (
-                        <div className="mt-4 pt-3 border-t border-white/20">
-                          <div className="flex items-center gap-1.5 text-teal-100 text-xs">
-                            <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            <span>In development</span>
-                          </div>
-                        </div>
-                      )}
+                      
                     </div>
                   </div>
                 </div>
@@ -4173,7 +4477,7 @@ const ContactForm = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="relative py-24 px-4 overflow-hidden bg-gradient-to-br from-slate-50 via-teal-50 to-cyan-50"
+      className="relative py-5 px-4 overflow-hidden bg-gradient-to-br from-slate-50 via-teal-50 to-cyan-50"
     >
       {/* Animated Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -4196,10 +4500,10 @@ const ContactForm = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <div ref={headingRef} className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-teal-100 text-teal-700 rounded-full text-sm font-semibold mb-4 tracking-wide">
+          <span className="inline-block px-4 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-semibold mb-4 tracking-wide">
             GET IN TOUCH
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl md:text-3xl lg:text-6xl font-bold bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-6">
             Contact Us
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -4216,6 +4520,50 @@ const ContactForm = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+           <div className="lg:col-span-2 space-y-6">
+            <div 
+              ref={infoRef} 
+              className="bg-gradient-to-br from-teal-600 via-teal-700 to-cyan-700 rounded-3xl shadow-2xl shadow-teal-500/20 p-8 text-white relative overflow-hidden"
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+              
+              <div className="relative z-10">
+                <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+                  <span className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                  </span>
+                  Contact Information
+                </h3>
+                
+                <div className="space-y-6">
+                  {contactInfo.map((item, index) => (
+                    <div 
+                      key={index}
+                      ref={addToInfoElements}
+                      className="flex items-start gap-4 p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/15 transition-colors duration-300 group cursor-pointer"
+                    >
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <p className="text-teal-200 text-sm font-medium">{item.title}</p>
+                        {item.lines.map((line, i) => (
+                          <p key={i} className="font-medium text-white/90">{line}</p>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
           {/* Contact Form - Takes 3 columns */}
           <div 
             ref={formRef} 
@@ -4428,50 +4776,7 @@ const ContactForm = () => {
           </div>
           
           {/* Contact Information - Takes 2 columns */}
-          <div className="lg:col-span-2 space-y-6">
-            <div 
-              ref={infoRef} 
-              className="bg-gradient-to-br from-teal-600 via-teal-700 to-cyan-700 rounded-3xl shadow-2xl shadow-teal-500/20 p-8 text-white relative overflow-hidden"
-            >
-              {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-              
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                  <span className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                  </span>
-                  Contact Information
-                </h3>
-                
-                <div className="space-y-6">
-                  {contactInfo.map((item, index) => (
-                    <div 
-                      key={index}
-                      ref={addToInfoElements}
-                      className="flex items-start gap-4 p-4 rounded-2xl bg-white/10 backdrop-blur-sm hover:bg-white/15 transition-colors duration-300 group cursor-pointer"
-                    >
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        {item.icon}
-                      </div>
-                      <div>
-                        <p className="text-teal-200 text-sm font-medium">{item.title}</p>
-                        {item.lines.map((line, i) => (
-                          <p key={i} className="font-medium text-white/90">{line}</p>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-            </div>
-
-          </div>
+         
         </div>
       </div>
 
@@ -4489,305 +4794,7 @@ const ContactForm = () => {
   );
 };
 
-const TokenStats = () => {
-  const [copied, setCopied] = useState(false);
 
-  // Contract address
-  const CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890";
-  const BSCSCAN_URL = `https://bscscan.com/token/${CONTRACT_ADDRESS}`;
-
-  // Copy to clipboard
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(CONTRACT_ADDRESS);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-    }
-  };
-
-  // Fetch data
-  const { data: roundData, isLoading, refetch } = useGetRoundQuery();
-  const currentRound = roundData?.data?.rounds?.find((r) => r.status === 1) || {};
-
-  useEffect(() => {
-    const interval = setInterval(refetch, 30000);
-    return () => clearInterval(interval);
-  }, [refetch]);
-
-  const formatNumber = (num) => {
-    if (!num) return "0";
-    if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-    return num.toLocaleString();
-  };
-
-  // Stats
-  const livePrice = currentRound?.atPriceInr || "0.0000";
-  const soldTokens = formatNumber(currentRound?.soldQty || 0);
-  const liveMembers = formatNumber(currentRound?.totalMembers || 0);
-  const progressPercent = Math.min(((currentRound?.soldQty || 0) / 10000000000) * 100, 100);
-
-  // Truncate address for mobile
-  const truncateAddress = (address) => {
-    return `${address.slice(0, 8)}...${address.slice(-6)}`;
-  };
-
-  return (
-    <div className="w-full bg-[#085056] py-6 sm:py-8 md:py-14 lg:py-10 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
-      {/* Decorative elements - responsive sizes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[150px] sm:w-[300px] md:w-[400px] lg:w-[500px] h-[150px] sm:h-[300px] md:h-[400px] lg:h-[500px] bg-teal-200/5 rounded-full filter blur-[80px] sm:blur-[100px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-[200px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-[200px] sm:h-[400px] md:h-[500px] lg:h-[600px] bg-teal-400/5 rounded-full filter blur-[100px] sm:blur-[120px]"></div>
-      </div>
-      
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 0.3; }
-          50% { transform: scale(2); opacity: 0.7; }
-        }
-      `}</style>
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header section */}
-        <div className="flex flex-col items-center mb-6 sm:mb-8 md:mb-10 lg:mb-14 text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 bg-[#064046] rounded-full mb-3 sm:mb-4 border border-teal-800/70 shadow-lg shadow-teal-900/20"
-          >
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5 rounded-full bg-teal-300 animate-pulse"></span>
-            <span className="text-white/90 text-[10px] sm:text-xs md:text-sm font-medium">Round {currentRound?.round || 1} Active</span>
-          </motion.div>
-          
-          <motion.h2
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-teal-100 mb-2 sm:mb-3 md:mb-4 px-4"
-          >
-            Jaimax Token Metrics
-          </motion.h2>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-teal-100/60 max-w-lg sm:max-w-xl md:max-w-2xl text-xs sm:text-sm md:text-base lg:text-lg px-4"
-          >
-            Real-time analytics of our token performance and distribution
-          </motion.p>
-        </div>
-        
-        {/* Contract Address Card - Improved mobile layout */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 bg-[#064046] rounded-xl sm:rounded-2xl overflow-hidden border border-teal-800/70 shadow-xl relative"
-        >
-          <div className="absolute -right-10 sm:-right-20 -top-10 sm:-top-20 w-20 sm:w-40 md:w-60 h-20 sm:h-40 md:h-60 bg-teal-300/5 rounded-full filter blur-[30px] sm:blur-[50px]"></div>
-          
-          <div className="px-4 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6 lg:py-7 relative">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 md:gap-6">
-              <div className="flex-grow w-full lg:w-auto">
-                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                  <div className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-[#053439]">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-white text-base sm:text-lg md:text-xl font-medium">Contract Address</h3>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-                  {/* Mobile: Show truncated address, Desktop: Show full */}
-                  <div className="bg-[#053439] rounded-full py-1.5 sm:py-2 px-3 sm:px-4 font-mono text-xs sm:text-sm md:text-base text-teal-50 tracking-wider w-full sm:w-auto">
-                    <span className="sm:hidden">{truncateAddress(CONTRACT_ADDRESS)}</span>
-                    <span className="hidden sm:inline">{CONTRACT_ADDRESS}</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 w-full sm:w-auto">
-                    <motion.button 
-                      onClick={copyToClipboard}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center justify-center gap-1.5 sm:gap-2 py-1.5 sm:py-2 px-3 sm:px-4 bg-[#053439] hover:bg-[#042d32] border border-teal-800/50 rounded-full text-white text-xs sm:text-sm md:text-base transition-all duration-300 flex-1 sm:flex-initial"
-                    >
-                      {copied ? (
-                        <>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span>Copied</span>
-                        </>
-                      ) : (
-                        <>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                          </svg>
-                          <span>Copy</span>
-                        </>
-                      )}
-                    </motion.button>
-                    
-                    <motion.a 
-                      href={BSCSCAN_URL} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      className="flex items-center justify-center gap-1.5 sm:gap-2 py-1.5 sm:py-2 px-3 sm:px-4 bg-teal-400/20 hover:bg-teal-400/30 border border-teal-800/60 rounded-full text-white text-xs sm:text-sm md:text-base transition-all duration-300 flex-1 sm:flex-initial"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                      <span>BscScan</span>
-                    </motion.a>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Round Status - Better mobile layout */}
-              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 bg-[#053439] p-1.5 sm:p-2 rounded-full border border-teal-800/60 shadow-lg w-full sm:w-auto justify-center">
-                <div className="flex flex-col items-center px-4 sm:px-5 md:px-6 py-1 sm:py-1.5 md:py-2 border-r border-teal-800/40">
-                  <span className="text-[10px] sm:text-xs text-white/50 uppercase tracking-widest">Round</span>
-                  <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white">{currentRound?.round || 1}</span>
-                </div>
-                <div className="flex flex-col items-center px-4 sm:px-5 md:px-6 py-1 sm:py-1.5 md:py-2">
-                  <span className="text-[10px] sm:text-xs text-white/50 uppercase tracking-widest">Status</span>
-                  <span className="text-[10px] sm:text-xs md:text-sm font-bold text-teal-300 flex items-center gap-1 sm:gap-1.5">
-                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-teal-300 rounded-full animate-pulse"></span>
-                    Active
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-        
-        {/* Stats Grid - Enhanced mobile responsiveness */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-6 sm:mb-8 md:mb-10 lg:mb-14">
-          {/* Live Price Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="group relative"
-          >
-            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-            
-            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
-              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
-                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
-                  <div className="w-full">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Current Price</h3>
-                    </div>
-                    
-                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
-                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">₹{livePrice}</div>
-                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">INR</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-          
-          {/* Tokens Sold Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="group relative"
-          >
-            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-            
-            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
-              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
-                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
-                  <div className="w-full">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                        </svg>
-                      </div>
-                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Tokens Sold</h3>
-                    </div>
-                    
-                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
-                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">{soldTokens}</div>
-                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">JMC</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-auto">
-                  {/* Progress visualization */}
-                  <div className="mb-2">
-                    <div className="flex justify-between text-[10px] sm:text-xs text-white/70 mb-1">
-                      <span className="font-medium">{progressPercent.toFixed(1)}% Complete</span>
-                      <span>Goal: 10B</span>
-                    </div>
-                    <div className="h-2 sm:h-2.5 md:h-3 w-full bg-[#053439] rounded-full overflow-hidden relative">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progressPercent}%` }}
-                        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-                        className="h-full bg-gradient-to-r from-teal-300 to-teal-400 rounded-full absolute"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-          
-          {/* Community Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="group relative sm:col-span-2 xl:col-span-1"
-          >
-            <div className="absolute inset-0 bg-teal-400/5 rounded-xl sm:rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-            
-            <div className="relative bg-[#064046] rounded-xl sm:rounded-2xl border border-teal-800/70 shadow-xl overflow-hidden h-full">
-              <div className="p-4 sm:p-5 md:p-6 relative h-full flex flex-col">
-                <div className="flex items-start justify-between mb-3 sm:mb-4 md:mb-5 lg:mb-6">
-                  <div className="w-full">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-[#053439] rounded-full flex items-center justify-center flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                      </div>
-                      <h3 className="text-white/60 text-[10px] sm:text-xs uppercase tracking-widest font-medium">Community</h3>
-                    </div>
-                    
-                    <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2 mt-1.5 sm:mt-2">
-                      <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight">{liveMembers}</div>
-                      <div className="text-teal-300 text-[10px] sm:text-xs md:text-sm">Members</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </div>
-  );
-};
 const JaimaxLanding = () => {
   const [openFaq, setOpenFaq] = useState(null);
   const navigate = useNavigate();
@@ -5265,12 +5272,12 @@ if (uniqueFeaturesRef.current) {
             - jaimax.
             <button
               type="button"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/login/")}
               className="hero-button block ml-auto mt-4 font-bold text-center
               bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f] 
               text-[#0f1c14] shadow-xl text-sm sm:text-base md:text-lg
               rounded-full hover:scale-105 active:scale-95
-              transition-transform duration-300 px-4 py-2"
+              transition-transform duration-300 px-4 py-1"
             >
               Join Jaimax Pre-Sale
             </button>
@@ -5468,7 +5475,7 @@ if (uniqueFeaturesRef.current) {
     </div>
       </TextParallaxContent>
       <section className="py-2  relative overflow-hidden">
-        <div className="relative z-10 py-1 md:py-8">
+        <div className="relative z-10 py-1 md:py-4">
           <div className="container max-w-7xl mx-auto px-4">
             <section className="py-0 bg-[#085056] relative overflow-hidden">
               {/* Animated Background Elements */}

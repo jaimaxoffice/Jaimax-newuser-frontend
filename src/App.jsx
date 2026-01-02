@@ -276,7 +276,7 @@ const App = () => {
   const toggleChat = () => setChatOpen((prev) => !prev);
   const [userDetails, setUserDetails] = useState(null);
 
-  const hideChatOnPaths = ["/login", "/register", "/forgot-password"];
+  const hideChatOnPaths = ["/login/", "/register/", "/forgot-password/"];
   const isSupportChatRoute = location.pathname.startsWith(
     "/dashboard/support/support-chat"
   );

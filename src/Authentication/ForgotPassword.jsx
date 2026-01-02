@@ -74,7 +74,7 @@ export default function ForgotPassword() {
       const res = await verifyOtp({ email, password }).unwrap();
       if (res?.success) {
         showNotification("success", res.message || "Password updated!");
-        setTimeout(() => navigate("/login"), 2000);
+        setTimeout(() => navigate("/login/"), 2000);
       } else {
         showNotification("error", res.message || "Failed to update password.");
       }
@@ -110,7 +110,7 @@ return (
         {/* Back Button */}
         <div
           className="flex items-center gap-2 mb-4 text-teal-700 cursor-pointer"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/login/")}
         >
           <ArrowLeft size={18} />
           <span className="text-sm font-medium">Back to Login</span>

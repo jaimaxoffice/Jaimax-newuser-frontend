@@ -79,11 +79,11 @@ const OurMissionSectionContent = () => {
           investment plans
         </Link>
         , team-building opportunities, and innovative referral systems. Whether you're an{" "}
-        <Link to="/login" title="Login for experienced investors" className="text-lime-400 hover:underline">
+        <Link to="/login/" title="Login for experienced investors" className="text-lime-400 hover:underline">
           experienced investor
         </Link>{" "}
         or{" "}
-        <Link to="/register" title="Register - New to digital assets" className="text-lime-400 hover:underline">
+        <Link to="/register/" title="Register - New to digital assets" className="text-lime-400 hover:underline">
           new to digital assets
         </Link>
         , Jaimax Coin blends investment tools, strategies, and network growth potential to empower your financial future.
@@ -222,7 +222,7 @@ const OurMissionSectionContent = () => {
             payment gateway
           </Link>
           , with detailed transaction history and{" "}
-          <Link to="/login" title="Secure withdrawal options" className="text-lime-400 hover:underline">
+          <Link to="/login/" title="Secure withdrawal options" className="text-lime-400 hover:underline">
             secure withdrawal options
           </Link>.
         </p>

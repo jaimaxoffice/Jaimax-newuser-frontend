@@ -217,7 +217,7 @@ const CryptoServicesFlipCards = () => {
             Jaimax
           </Link>
           , we provide a powerful range of crypto services designed to help users grow, secure, and manage their digital assets with ease. Whether you're a{" "}
-          <Link to="/register" title="Register on Jaimax - New investor" className="text-lime-400 hover:underline">
+          <Link to="/register/" title="Register on Jaimax - New investor" className="text-lime-400 hover:underline">
             new investor
           </Link>{" "}
           or a crypto-savvy expert, our platform delivers the tools and{" "}

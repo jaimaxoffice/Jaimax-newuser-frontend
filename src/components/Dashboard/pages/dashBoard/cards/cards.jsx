@@ -659,7 +659,7 @@ const TopCards = React.memo(() => {
         isCompleted: false,
       },
       {
-        label: "Referral Bonus Logs",
+        label: "KYC Bonus Logs",
         // value: `${currencySymbol}${Number(bonusStats.total || 0).toFixed(2)}`,
         image: assets.welcomeDraw,
         hoverImage: assets.totalCoins,
