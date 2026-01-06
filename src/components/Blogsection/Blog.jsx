@@ -1349,7 +1349,7 @@ function formatViewsK(v) {
     const slug = location.pathname.split("/blog/")[1];
     if (slug) {
       const post = allPosts.find((p) => slugify(p.headline) === slug);
-      if (post) {
+      if (post) { 
         setSelectedPost(post);
       }
     }
@@ -1522,7 +1522,7 @@ function formatViewsK(v) {
   // Blog list view (your original UI)
   return (
     <div
-      className="min-h-screen px-6 py-8"
+      className="min-h-screen px-6 py-12 mt-8 sm:mt-12"
       style={{
         background:
           "linear-gradient(135deg, rgba(8,83,89,0.95) 0%, rgba(8,83,89,0.9) 100%)",

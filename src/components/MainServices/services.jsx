@@ -186,7 +186,7 @@ const CryptoServicesFlipCards = () => {
   );
 
   return (
-<div className="min-h-screen py-8 sm:py-10 md:py-12 lg:py-16 px-4 sm:px-5 md:px-6 lg:px-4 bg-[#085056]">
+<div className="min-h-screen py-8 sm:py-20 md:py-12 lg:py-16 px-4 sm:px-5 md:px-6 lg:px-4 bg-[#085056] mt-8 sm:mt-20">
   <div className="max-w-7xl mx-auto">
     <Seo page="services" />
 

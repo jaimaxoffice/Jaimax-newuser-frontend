@@ -625,9 +625,9 @@ useEffect(() => {
       </div>
 
       {/* Team Details Section */}
-      <div className="w-full bg-gradient-to-br from-teal-50 to-teal-100 min-h-screen px-4 py-6">
+      {/* <div className="w-full bg-gradient-to-br from-teal-50 to-teal-100 min-h-screen px-4 py-6">
         <div className="max-w-9xl mx-auto">
-          {/* Header with Search */}
+         
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-teal-800 mb-4 sm:mb-0">
               Total Team Details
@@ -659,12 +659,12 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* Mobile View - Cards */}
+          
           <div className="flex flex-wrap gap-4 lg:hidden">
             <MobileTeamCards data={tableData} isLoading={isLoading} />
           </div>
 
-          {/* Desktop View - Table */}
+         
           <div className="hidden lg:block overflow-x-auto mt-4 rounded-lg">
             <table className="w-full border-collapse rounded-lg">
               <thead>
@@ -701,7 +701,7 @@ useEffect(() => {
             </table>
           </div>
 
-          {/* Pagination */}
+          
           {!isLoading &&
             tableData.length > 0 &&
             data?.data?.pagination?.totalPages > 1 && (
@@ -714,7 +714,7 @@ useEffect(() => {
               </div>
             )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
