@@ -67,27 +67,27 @@ export const authApiSlice = apiSlice.injectEndpoints({
             })
         }),
         // New Aadhaar and PAN verification endpoints
-        sendAadhaarOtp: builder.mutation({
-            query: (data) => ({
-                url: '/Auth/get-aadhar-otp',
-                method: 'POST',
-                body: data,
-            })
-        }),
-        verifyAadhaarOtp: builder.mutation({
-            query: (data) => ({
-                url: '/Auth/verify-aadhar-otp',
-                method: 'POST',
-                body: data,
-            })
-        }),
-        verifyPan: builder.mutation({
-            query: (data) => ({
-                url: '/Auth/verify-pan',
-                method: 'POST',
-                body: data,
-            })
-        }),
+        // sendAadhaarOtp: builder.mutation({
+        //     query: (data) => ({
+        //         url: '/Auth/get-aadhar-otp',
+        //         method: 'POST',
+        //         body: data,
+        //     })
+        // }),
+        // verifyAadhaarOtp: builder.mutation({
+        //     query: (data) => ({
+        //         url: '/Auth/verify-aadhar-otp',
+        //         method: 'POST',
+        //         body: data,
+        //     })
+        // }),
+        // verifyPan: builder.mutation({
+        //     query: (data) => ({
+        //         url: '/Auth/verify-pan',
+        //         method: 'POST',
+        //         body: data,
+        //     })
+        // }),
     }),
 });
 
@@ -101,7 +101,7 @@ export const {
     useVerifyRecaptchaMutation,
     useChangePwdReqMutation,
     useOTPresentMutation,
-    useSendAadhaarOtpMutation,
-    useVerifyAadhaarOtpMutation,
-    useVerifyPanMutation,
+    // useSendAadhaarOtpMutation,
+    // useVerifyAadhaarOtpMutation,
+    // useVerifyPanMutation,
 } = authApiSlice;

@@ -1,4 +1,4 @@
-import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi"; 
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
 
 export const kycApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -41,6 +41,20 @@ export const kycApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    sendAadhaarOtp: builder.mutation({
+      query: (data) => ({
+        url: "/kyc/get-aadhar-otp",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    verifyAadhaarOtp: builder.mutation({
+      query: (data) => ({
+        url: "/kyc/verify-aadhar-otp",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -50,5 +64,7 @@ export const {
   useLazyKycrewardQuery,
   useGetkycDetailsQuery,
   useGetKycDataMutation,
-   useUpdateBankDetailsMutation, 
+  useUpdateBankDetailsMutation,
+  useSendAadhaarOtpMutation,
+  useVerifyAadhaarOtpMutation,
 } = kycApiSlice;

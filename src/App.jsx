@@ -67,6 +67,7 @@ import { ToastContainer } from "./ReusableComponents/Toasts/Toasts";
 import PreSaleCryptoCoin from "./services/PreSaleCryptoCoin";
 import NotFound from "./pages/home/NotFound";
 import Snowfall from "react-snowfall";
+import KYCForm from "./components/Dashboard/pages/kyc/KYCForm";
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -451,7 +452,7 @@ const images = useMemo(() => {
             <Route index element={<GuaranteedWealthDashboard2_O />} />
           </Route> */}
           <Route path="/kyc-information" element={<DashboardLayout />}>
-            <Route index element={<Kyc />} />
+            <Route index element={<KYCForm />} />
           </Route>
           <Route path="/withdrawal" element={<DashboardLayout />}>
             <Route index element={<WithDrawal />} />
