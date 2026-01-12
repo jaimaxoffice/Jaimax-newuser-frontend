@@ -10,7 +10,7 @@ import { useUserDataQuery } from "../dashBoard/DashboardApliSlice";
 import CryptoJS from "crypto-js";
 import DigiLockerModal from "./DigiLockerModal";
 import BankDetailsModal from "./BankDetailsModal";
-import AadhaarVerificationModal from "./AadhaarVerificationModal"; // NEW IMPORT
+import AadhaarVerificationModal from "./AadhaarVerificationModal";
 
 import {
   useGetKycDataMutation,
@@ -41,6 +41,7 @@ const KycInformation = () => {
   const [aadhaarVerified, setAadhaarVerified] = useState(false);
   const [aadhaarVerificationData, setAadhaarVerificationData] = useState(null);
   const [digilockerName, setDigilockerName] = useState("");
+  const [digilockerDob, setDigilockerDob] = useState('');
   const [kycStep, setKycStep] = useState("digilocker"); // digilocker, aadhaar, documents
 
 
@@ -305,8 +306,11 @@ const KycInformation = () => {
       data.append("aadhaarVerified", "true");
       data.append("aadhaarTempId", aadhaarVerificationData.tempId || "");
       data.append("aadhaarNameMatched", aadhaarVerificationData.nameMatched ? "true" : "false");
+      data.append("aadharNumber", aadhaarVerificationData.aadhaarNumber || "");
     }
-
+if (!aadhaarVerificationData && aadhaarNumber) {
+    data.append("aadharNumber", aadhaarNumber.replace(/\s/g, ""));
+  }
     data.append("name", formData.applicantName);
     data.append("bank_name", formData.bank_name);
     data.append("ifsc_code", formData.ifsc_code);
@@ -397,6 +401,7 @@ const KycInformation = () => {
           if (response.data) {
             // Store DigiLocker name for Aadhaar verification
             setDigilockerName(response.data.name);
+            setDigilockerDob(response.data.dob)
             
             setFormData((prev) => ({
               ...prev,
@@ -1516,6 +1521,7 @@ const KycInformation = () => {
           show={showAadhaarModal}
           onClose={() => setShowAadhaarModal(false)}
           digilockerName={digilockerName}
+          digilockerDob={digilockerDob}
           onVerificationSuccess={handleAadhaarVerificationSuccess}
           onSkip={handleSkipAadhaarVerification}
         />
@@ -1523,6 +1529,8 @@ const KycInformation = () => {
         {(isLoading || loading) && <Loader />}
       </section>
     </div>
+
+
   );
 };
 
