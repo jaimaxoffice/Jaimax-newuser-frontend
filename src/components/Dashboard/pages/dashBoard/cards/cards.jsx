@@ -533,7 +533,7 @@ const TopCards = React.memo(() => {
     skip: !isTokenVerified,
   });
   const { data: bonusLogsData } = useGetBonusLogsQuery();
-  console.log("bonusLogsData:", bonusLogsData);
+  // console.log("bonusLogsData:", bonusLogsData);
   const {
     data: announceData,
     Loading,

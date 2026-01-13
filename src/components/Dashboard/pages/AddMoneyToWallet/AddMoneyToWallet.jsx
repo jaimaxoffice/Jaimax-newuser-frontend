@@ -346,11 +346,7 @@ const AddMoneyToWallet = () => {
             setIsTransactionIdRead(false);
             setErrors((prev) => ({ ...prev, screenshot: "" }));
 
-            toast.success(
-              ` ${transactionID ? "Transaction ID found." : ""
-              } ${utrRef ? "UTR found." : ""}`
-            );
-            // console.log("=== OCR EXTRACTION END ===");
+            
           })
           .catch((error) => {
             console.error("Error during OCR:", error);
@@ -429,8 +425,8 @@ const handleSubmit = async (e) => {
 
     // Prepare data
     const formDataToSend = new FormData();
-    formDataToSend.append("transactionId", formData.transactionId); // 🧾 extracted or user-entered transaction id
-    formDataToSend.append("transactionUtrRef", formData.utrRef || ""); // 🧾 UTR reference number (separate field)
+    formDataToSend.append("transactionId", formData.transactionId); 
+    formDataToSend.append("transactionUtrRef", formData.utrRef || ""); 
     formDataToSend.append("transactionAmount", formData.amount);
     formDataToSend.append("screenshot", formData.screenshot);
 
@@ -441,7 +437,7 @@ const handleSubmit = async (e) => {
     try {
       const res = await addTransaction(formDataToSend).unwrap();
       if (res?.status_code === 200) {
-        toast.success(res?.message || "Form submitted successfully!");
+        toast.success(res?.message || "Form submitted success!");
         setFormData(defaultFormData);
         if (fileInputRef.current) fileInputRef.current.value = "";
         navigate("/wallet");
