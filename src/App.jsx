@@ -253,11 +253,30 @@ const DashboardLayout = () => {
     </div>
   );
 };
+// const PublicLayout = () => {
+//   const location = useLocation();
+//   const navigate = useNavigate();
+//   const hideNavbarRoutes = ["/login/", "/register/", "/forgot-password/"];
+//   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+//   return (
+//     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
+//       {!shouldHideNavbar && <Navbar />}
+//       <main className="flex-1">
+//         <Outlet />
+//       </main>
+//       {!shouldHideNavbar && <Footer />}
+//       {/* {!shouldHideNavbar && <FloatingWhatsapp />} */}
+//     </div>
+//   );
+// };
 const PublicLayout = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const hideNavbarRoutes = ["/login/", "/register/", "/forgot-password/"];
-  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
+  const path = location.pathname.replace(/\/+$/, ""); // remove trailing slash
+  const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
+
+  const shouldHideNavbar = hideNavbarRoutes.includes(path);
+
   return (
     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
       {!shouldHideNavbar && <Navbar />}
@@ -265,7 +284,6 @@ const PublicLayout = () => {
         <Outlet />
       </main>
       {!shouldHideNavbar && <Footer />}
-      {/* {!shouldHideNavbar && <FloatingWhatsapp />} */}
     </div>
   );
 };

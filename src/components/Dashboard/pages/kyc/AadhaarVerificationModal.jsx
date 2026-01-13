@@ -327,7 +327,7 @@ const matchDob = (aadhaarDob, digilockerDob) => {
   // Verify OTP
 // Verify OTP
 const handleVerifyOtp = async () => {
-  console.log("[AadhaarModal] handleVerifyOtp called");
+  // console.log("[AadhaarModal] handleVerifyOtp called");
 
   const otpString = otp.join("");
 
@@ -369,10 +369,10 @@ const handleVerifyOtp = async () => {
       const aadhaarName = aadhaarData?.name || "";
       const aadhaarDob = aadhaarData?.date_of_birth || aadhaarData?.year_of_birth || "";
 
-      console.log("[AadhaarModal] Aadhaar Name:", aadhaarName);
-      console.log("[AadhaarModal] Aadhaar DOB:", aadhaarDob);
-      console.log("[AadhaarModal] DigiLocker Name:", digilockerName);
-      console.log("[AadhaarModal] DigiLocker DOB:", digilockerDob);
+      // console.log("[AadhaarModal] Aadhaar Name:", aadhaarName);
+      // console.log("[AadhaarModal] Aadhaar DOB:", aadhaarDob);
+      // console.log("[AadhaarModal] DigiLocker Name:", digilockerName);
+      // console.log("[AadhaarModal] DigiLocker DOB:", digilockerDob);
 
       let dobMatched = false;
       
@@ -872,7 +872,7 @@ const handleVerifyOtp = async () => {
                             clipRule="evenodd"
                           />
                         </svg>
-                        Matched ({nameMatchStatus?.details?.similarityScore})
+                        Matched 
                       </span>
                     </div>
                   )}

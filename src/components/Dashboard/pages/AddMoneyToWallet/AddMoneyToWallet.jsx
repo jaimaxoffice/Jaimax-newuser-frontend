@@ -209,310 +209,252 @@ const AddMoneyToWallet = () => {
   };
 
   // OCR Processing
-const extractDetailsFromImage = (file) => {
-  if (!file) return;
+  const extractDetailsFromImage = (file) => {
+    if (!file) return;
 
-  setIsLoading(true);
-  const reader = new FileReader();
+    setIsLoading(true);
+    const reader = new FileReader();
 
-  reader.onload = () => {
-    if (reader.result) {
-      Tesseract.recognize(reader.result, "eng")
-        .then(({ data: { text } }) => {
-          // Clean up the extracted text
-          let cleanedText = text.replace(/¥/g, "₹");
+    reader.onload = () => {
+      if (reader.result) {
+        Tesseract.recognize(reader.result, "eng")
+          .then(({ data: { text } }) => {
+            // console.log("=== OCR EXTRACTION START ===");
+            // console.log("Raw OCR text:", text);
 
-          // Check recipient validation
-          const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
-          const paidToJaimax = /jaimaxcoin2024@upi/i.test(cleanedText);
-          const paidToJaimaxPartial = /jaimax/i.test(cleanedText);
-          const paidToJaisvikUpi = /vyapar.174327728615@hdfcbank/i.test(
-            cleanedText
-          );
-          const paidToCorrectRecipient =
-            paidToJaisvik ||
-            paidToJaimax ||
-            paidToJaimaxPartial ||
-            paidToJaisvikUpi;
+            // Clean up text
+            let cleanedText = text.replace(/¥/g, "₹");
+            // console.log("Cleaned text:", cleanedText);
 
-          // Extract transaction ID
-          let transactionID = null;
-          let extractionMethod = "";
+            // ===== Recipient Validation =====
+            const paidToJaisvik = /JAISVIK.*SOFTWARE/i.test(cleanedText);
+            const paidToJaimax = /jaimaxcoin2024@upi/i.test(cleanedText);
+            const paidToJaimaxPartial = /jaimax/i.test(cleanedText);
+            const paidToJaisvikUpi = /vyapar\.174327728615@hdfcbank/i.test(cleanedText);
 
-          const transactionPatterns = [
-            /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i,
-            /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
-            /Transaction ID[:\s]*(\w+)/i,
-          ];
+            const paidToCorrectRecipient =
+              paidToJaisvik || paidToJaimax || paidToJaimaxPartial || paidToJaisvikUpi;
 
-          for (const pattern of transactionPatterns) {
-            const match = cleanedText.match(pattern);
-            if (match && !/date|time|am|pm/i.test(match[1])) {
-              transactionID = match[1];
-              extractionMethod = "Standard Transaction ID";
-              break;
-            }
-          }
+            // console.log("Correct Recipient:", paidToCorrectRecipient);
 
-          // Method 1b: Line-by-line search for Transaction ID format
-          if (!transactionID) {
-            const lines = cleanedText.split(/\r?\n/);
+            // ===== Transaction ID Extraction =====
+            let transactionID = null;
+            let utrRef = null;
+            let extractionMethod = "";
 
-            for (let i = 0; i < lines.length; i++) {
-              const line = lines[i].trim();
+            // console.log("=== TRANSACTION ID EXTRACTION ===");
 
-              if (
-                line.toLowerCase().includes("transaction id") &&
-                i + 1 < lines.length
-              ) {
-                const nextLine = lines[i + 1].trim();
-                const numberMatch = nextLine.match(/^([0-9]{8,})/);
-                if (numberMatch) {
-                  transactionID = numberMatch[1];
-                  extractionMethod = "Transaction ID next line";
-                  break;
-                }
+            const transactionPatterns = [
+              /Transaction\s*ID[:\s]+([0-9A-Za-z]{8,})/i,
+              /Transaction\s*ID\s*\r?\n\s*([0-9A-Za-z]{8,})/i,
+              /Transaction ID[:\s]*(\w+)/i,
+              /\bTxn\s*ID[:\s-]*([A-Z0-9]{8,30})\b/i,
+            ];
+            for (const pattern of transactionPatterns) {
+              const match = cleanedText.match(pattern);
+              if (match) {
+                transactionID = match[1];
+                extractionMethod = "Transaction ID pattern";
+                // console.log("✅ Found Transaction ID:", transactionID);
+                break;
               }
             }
-          }
 
-          // Method 2: Tr. ID (ICICI format)
-          if (!transactionID) {
-            const trIdMatch = cleanedText.match(
-              /Tr\.?\s*ID\s*:?\s*([A-Za-z0-9]+)/i
-            );
-            if (trIdMatch) {
-              transactionID = trIdMatch[1];
-              extractionMethod = "Tr. ID (ICICI)";
-            }
-          }
-
-          // Method 3: UTR/RRN/Reference patterns
-          if (!transactionID) {
+            // ===== UTR / Reference Number Extraction =====
+            // console.log("=== UTR / REFERENCE EXTRACTION ===");
             const utrPatterns = [
-              /UTR\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i,
-              /UTR\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{15,})/i,
-              /UTR\s*:?\s*([A-Za-z0-9|:\-_\.]{20,})/i,
-              /RRN\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
-              /Reference\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
-              /Reference\s*Number\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
-              /Ref\s*No\.?\s*:?\s*([A-Za-z0-9|:\-_\.]{10,})/i,
-              /Payment\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
-              /Payment\s*Reference\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
-              /Order\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
-              /TXN\s*ID\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
-              /TXN\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
-              /Acknowledgment\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
-              /ACK\s*:?\s*([A-Za-z0-9|:\-_\.]{8,})/i,
+              /\bUTR\s*No\.?\s*:?\s*([A-Z0-9]{10,25})\b/i,
+              /\bUTR\s*Number\s*:?\s*([A-Z0-9]{10,25})\b/i,
+              /\bReference\s*No\.?\s*:?\s*([A-Z0-9]{10,25})\b/i,
+              /\bRef\s*No\.?\s*:?\s*([A-Z0-9]{10,25})\b/i,
+              /\bRRN\s*:?\s*([A-Z0-9]{10,25})\b/i,
             ];
 
             for (const pattern of utrPatterns) {
               const match = cleanedText.match(pattern);
               if (match) {
-                transactionID = match[1];
-                extractionMethod = "UTR/RRN/Reference pattern";
+                utrRef = match[1];
+                // console.log("✅ Found UTR Reference:", utrRef);
                 break;
               }
             }
-          }
 
-          // Method 4: Line-by-line search for Kotak format
-          if (!transactionID) {
-            const lines = cleanedText.split(/\r?\n/);
+            // ===== Fallbacks =====
+            if (!transactionID && utrRef) {
+              transactionID = utrRef;
+              extractionMethod = "Used UTR as Transaction ID";
+            }
 
-            for (let i = 0; i < lines.length; i++) {
-              const line = lines[i].trim();
-
-              if (
-                line.toLowerCase().includes("reference") &&
-                line.toLowerCase().includes("utr") &&
-                i + 1 < lines.length
-              ) {
-                const nextLine = lines[i + 1].trim();
-                const numberMatch = nextLine.match(/^([0-9]{10,})$/);
-                if (numberMatch) {
-                  transactionID = numberMatch[1];
-                  extractionMethod = "Kotak Reference No. next line";
-                  break;
-                }
-              }
-
-              if (
-                line.toLowerCase().includes("utr no") &&
-                i + 1 < lines.length
-              ) {
-                const nextLine = lines[i + 1].trim();
-                const numberMatch = nextLine.match(
-                  /^([A-Za-z0-9|:\-_\.]{10,})$/
-                );
-                if (numberMatch) {
-                  transactionID = numberMatch[1];
-                  extractionMethod = "UTR No. next line";
-                  break;
-                }
-              }
-
-              if (
-                (line.toLowerCase().includes("transaction") ||
-                  line.toLowerCase().includes("reference") ||
-                  line.toLowerCase().includes("utr") ||
-                  line.toLowerCase().includes("rrn")) &&
-                i + 1 < lines.length
-              ) {
-                const nextLine = lines[i + 1].trim();
-                const idMatch = nextLine.match(/^([A-Za-z0-9|:\-_\.]{8,})$/);
-                if (idMatch) {
-                  transactionID = idMatch[1];
-                  extractionMethod = "Generic label next line";
-                  break;
-                }
+            if (!utrRef) {
+              const longNumber = cleanedText.match(/\b[0-9]{12,}\b/);
+              if (longNumber) {
+                utrRef = longNumber[0];
+                // console.log("✅ Fallback UTR:", utrRef);
               }
             }
-          }
 
-          // Method 5: Any long number fallback
-          if (!transactionID) {
-            const numberMatch = cleanedText.match(/\b([0-9]{12,})\b/);
-            if (numberMatch) {
-              transactionID = numberMatch[1];
-              extractionMethod = "Fallback long number";
+            // ===== Validation =====
+            if (!paidToCorrectRecipient) {
+              // console.log("❌ Invalid recipient");
+              setIsLoading(false);
+              setFormData((prev) => ({
+                ...prev,
+                transactionId: "",
+                utrRef: "",
+                screenshot: null,
+              }));
+              setIsTransactionIdRead(false);
+              if (fileInputRef.current) fileInputRef.current.value = "";
+              setErrors((prev) => ({
+                ...prev,
+                screenshot:
+                  "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE",
+              }));
+              toast.error("Invalid recipient in payment screenshot.");
+              return;
             }
-          }
 
-          // Validation
-          if (!paidToCorrectRecipient) {
+            if (!transactionID && !utrRef) {
+              // console.log("❌ No IDs found");
+              setIsLoading(false);
+              setFormData((prev) => ({
+                ...prev,
+                transactionId: "",
+                utrRef: "",
+                screenshot: null,
+              }));
+              setIsTransactionIdRead(false);
+              if (fileInputRef.current) fileInputRef.current.value = "";
+              setErrors((prev) => ({
+                ...prev,
+                screenshot:
+                  "No valid Transaction ID or UTR found. Please upload a clearer image.",
+              }));
+              toast.error("No valid Transaction ID or UTR found.");
+              return;
+            }
+
+       
+
+            setFormData((prev) => ({
+              ...prev,
+              transactionId: transactionID || "",
+              utrRef: utrRef || "",
+            }));
+
+            setIsLoading(false);
+            setIsTransactionIdRead(false);
+            setErrors((prev) => ({ ...prev, screenshot: "" }));
+
+            toast.success(
+              ` ${transactionID ? "Transaction ID found." : ""
+              } ${utrRef ? "UTR found." : ""}`
+            );
+            // console.log("=== OCR EXTRACTION END ===");
+          })
+          .catch((error) => {
+            console.error("Error during OCR:", error);
             setIsLoading(false);
             setFormData((prev) => ({
               ...prev,
               transactionId: "",
+              utrRef: "",
               screenshot: null,
             }));
             setIsTransactionIdRead(false);
-            if (fileInputRef.current) {
-              fileInputRef.current.value = "";
-            }
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              screenshot:
-                "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE",
-            }));
-            
-            // Using the new toast system
-            toast.error(
-              "Invalid Recipient", 
-              "Please upload a screenshot of payment made to jaimaxcoin2024@upi, vyapar.174327728615@hdfcbank, or JAISVIK SOFTWARE"
-            );
-            return;
-          }
-
-          if (!transactionID) {
-            setIsLoading(false);
-            setFormData((prev) => ({
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            setErrors((prev) => ({
               ...prev,
-              transactionId: "",
-              screenshot: null,
+              screenshot: "Failed to read screenshot. Please upload a clear image.",
             }));
-            setIsTransactionIdRead(false);
-            if (fileInputRef.current) {
-              fileInputRef.current.value = "";
-            }
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              screenshot:
-                "Transaction ID not found in the screenshot. Please upload a clear payment screenshot.",
-            }));
-            
-            // Using the new toast system
-            toast.error(
-              "Transaction ID Not Found",
-              "Transaction ID not found in the screenshot. Please upload a clear payment screenshot."
-            );
-            return;
-          }
+            toast.error("Failed to read screenshot. Please upload a clear image.");
+          });
+      }
+    };
 
-          // Success!
-          setFormData((prev) => ({
-            ...prev,
-            transactionId: transactionID,
-          }));
-          setIsLoading(false);
-          setIsTransactionIdRead(false);
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            screenshot: "",
-          }));
-          
-          // Using the new toast system
-          toast.success(
-            "Extraction Successful",
-            `Transaction ID extracted successfully using ${extractionMethod}!`
-          );
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          setFormData((prev) => ({
-            ...prev,
-            transactionId: "",
-            screenshot: null,
-          }));
-          setIsTransactionIdRead(false);
-          if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-          }
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            screenshot:
-              "Failed to read screenshot. Please upload a clear image.",
-          }));
-          
-          // Using the new toast system
-          toast.error(
-            "OCR Failed",
-            "Failed to read screenshot. Please upload a clear image."
-          );
-        });
-    }
+    reader.readAsDataURL(file);
   };
 
-  reader.readAsDataURL(file);
-};
   
 
   // Submit handlers
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const isValid =
+  //     validateField("transactionId", formData.transactionId) &&
+  //     validateField("screenshot", formData.screenshot) &&
+  //     validateField("amount", formData.amount);
+
+  //   if (!isValid) {
+  //     toast.error("Please fill all required fields");
+  //     return;
+  //   }
+
+  //   const formDataToSend = new FormData();
+  //   formDataToSend.append("transactionId", formData.transactionId);
+  //   formDataToSend.append("transactionAmount", formData.amount);
+  //   formDataToSend.append("screenshot", formData.screenshot);
+
+  //   setLoading(true);
+  //   try {
+  //     const res = await addTransaction(formDataToSend).unwrap();
+  //     if (res?.status_code === 200) {
+  //       toast.success(res?.message || "Payment submitted!");
+  //       setFormData(defaultFormData);
+  //       if (fileInputRef.current) fileInputRef.current.value = "";
+  //       navigate("/wallet");
+  //     }
+  //   } catch (error) {
+  //     toast.error(error?.data?.message || "Submission failed");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isValid =
-      validateField("transactionId", formData.transactionId) &&
-      validateField("screenshot", formData.screenshot) &&
-      validateField("amount", formData.amount);
+    // Validate all fields before submission
+    const isTransactionIdValid = validateField("transactionId", formData.transactionId);
+    const isScreenshotValid = validateField("screenshot", formData.screenshot);
+    const isAmountValid = validateField("amount", formData.amount);
 
-    if (!isValid) {
-      toast.error("Please fill all required fields");
+    if (!(isTransactionIdValid && isScreenshotValid && isAmountValid)) {
+      setIsToastShown(true);
+      toast.dismiss();
+      toast.error("Please fill in all required fields.");
       return;
     }
 
+    // Prepare data
     const formDataToSend = new FormData();
-    formDataToSend.append("transactionId", formData.transactionId);
+    formDataToSend.append("transactionId", formData.transactionId); // 🧾 extracted or user-entered transaction id
+    formDataToSend.append("transactionUtrRef", formData.utrRef || ""); // 🧾 UTR reference number (separate field)
     formDataToSend.append("transactionAmount", formData.amount);
     formDataToSend.append("screenshot", formData.screenshot);
 
+
+
     setLoading(true);
+
     try {
       const res = await addTransaction(formDataToSend).unwrap();
       if (res?.status_code === 200) {
-        toast.success(res?.message || "Payment submitted!");
+        toast.success(res?.message || "Form submitted successfully!");
         setFormData(defaultFormData);
         if (fileInputRef.current) fileInputRef.current.value = "";
         navigate("/wallet");
+      } else {
+        toast.error(res?.message || "Submission failed.");
       }
     } catch (error) {
-      toast.error(error?.data?.message || "Submission failed");
+      toast.dismiss();
+      toast.error(error?.data?.message || "Form submission failed.");
     } finally {
       setLoading(false);
     }
   };
-
   // PayPal handlers
   const proceedPaypalAddMoney = () => {
     if (validate("paypal")) return;
@@ -550,68 +492,150 @@ const extractDetailsFromImage = (file) => {
   };
 
   // Card payment handler
+  // const onClickAddMoney = () => {
+  //   try {
+  //     const numericAmount = Number(amount);
+  //     if (
+  //       !amount ||
+  //       isNaN(numericAmount) ||
+  //       numericAmount < 15000 ||
+  //       numericAmount > 100000
+  //     ) {
+  //       setErrors((prev) => ({
+  //         ...prev,
+  //         amount: "Amount: ₹15,000 - ₹1,00,000",
+  //       }));
+  //       toast.error("Amount must be between ₹15,000 and ₹1,00,000");
+  //       return;
+  //     }
+
+  //     setErrors((prev) => ({ ...prev, amount: "" }));
+
+  //     const userDataRaw = Cookies.get("userData");
+  //     if (!userDataRaw) {
+  //       toast.error("Please login and try again");
+  //       return;
+  //     }
+
+  //     const userData = JSON.parse(userDataRaw);
+  //     const userId = userData?.data?._id || userData?._id;
+  //     const name = userData?.data?.name || userData?.name;
+
+  //     if (!userId || !name) {
+  //       toast.error("User details missing");
+  //       return;
+  //     }
+
+  //     const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
+  //     const encryptedUserId = CryptoJS.AES.encrypt(userId, secretKey).toString();
+  //     const encryptedUserName = CryptoJS.AES.encrypt(name, secretKey).toString();
+  //     const encryptedFrom = CryptoJS.AES.encrypt("website", secretKey).toString();
+  //     const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
+
+  //     const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
+  //     const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
+
+  //     const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
+  //       encryptedUserId
+  //     )}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(
+  //       encryptedFrom
+  //     )}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
+
+  //     const paymentWindow = window.open(redirectUrl, "_blank");
+
+  //     if (!paymentWindow) {
+  //       toast.error("Please allow popups for this site");
+  //     } else {
+  //       paymentWindow.focus();
+  //       toast.success("Redirecting to payment...");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Something went wrong");
+  //   }
+  // };
   const onClickAddMoney = () => {
     try {
-      const numericAmount = Number(amount);
-      if (
-        !amount ||
-        isNaN(numericAmount) ||
-        numericAmount < 15000 ||
-        numericAmount > 100000
-      ) {
-        setErrors((prev) => ({
-          ...prev,
-          amount: "Amount: ₹15,000 - ₹1,00,000",
-        }));
-        toast.error("Amount must be between ₹15,000 and ₹1,00,000");
-        return;
-      }
-
-      setErrors((prev) => ({ ...prev, amount: "" }));
-
       const userDataRaw = Cookies.get("userData");
       if (!userDataRaw) {
-        toast.error("Please login and try again");
+        // console.error("User not found in localStorage");
+        toast.error("User not logged in. Please login and try again.");
         return;
       }
 
       const userData = JSON.parse(userDataRaw);
-      const userId = userData?.data?._id || userData?._id;
-      const name = userData?.data?.name || userData?.name;
+      // console.log(userData, "userData");
+      const userId = userData?._id;
+      const name = userData?.name;
 
       if (!userId || !name) {
-        toast.error("User details missing");
+        // console.error("User data is incomplete");
+        toast.error("User details are missing. Please contact support.");
+        return;
+      }
+      const numericAmount = Number(amount);
+
+      if (!amount || isNaN(numericAmount) || numericAmount < 15000 || numericAmount > 100000) {
+        setErrors((prev) => ({
+          ...prev,
+          amount: "Amount must be between 15,000 and 1,00,000",
+        }));
         return;
       }
 
-      const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
-      const encryptedUserId = CryptoJS.AES.encrypt(userId, secretKey).toString();
-      const encryptedUserName = CryptoJS.AES.encrypt(name, secretKey).toString();
-      const encryptedFrom = CryptoJS.AES.encrypt("website", secretKey).toString();
+      // Clear error if valid
+      setErrors((prev) => ({ ...prev, amount: "" }));
+
+      // Step 2: Encrypt user data
+      // const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
+      const secretKey=VITE_PAYMENT_GATEWAY;
+      const encryptedUserId = CryptoJS.AES.encrypt(
+        userId,
+        secretKey
+      ).toString();
+      const encryptedUserName = CryptoJS.AES.encrypt(
+        name,
+        secretKey
+      ).toString();
+
+      const encryptedFrom = CryptoJS.AES.encrypt(
+        "website",
+        secretKey
+      ).toString();
+
       const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
 
+      // Step 3: Sign the payload
       const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
       const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
 
-      const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
+      // Step 4: Construct the redirect URL
+      // const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
+      const redirectUrl = `http://localhost:5174/paynow?userId=${encodeURIComponent(
         encryptedUserId
-      )}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(
-        encryptedFrom
-      )}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
+      )}&name=${encodeURIComponent(
+        encryptedUserName
+      )}&from=${encodeURIComponent(encryptedFrom)}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
 
+      // Step 5: Open the payment page in a new tab
       const paymentWindow = window.open(redirectUrl, "_blank");
 
-      if (!paymentWindow) {
-        toast.error("Please allow popups for this site");
+      // Step 6: Check if popup was blocked
+      if (
+        !paymentWindow ||
+        paymentWindow.closed ||
+        typeof paymentWindow.closed === "undefined"
+      ) {
+        alert(
+          "Popup blocked! Please allow popups for this site to proceed with payment."
+        );
       } else {
-        paymentWindow.focus();
-        toast.success("Redirecting to payment...");
+        paymentWindow.focus(); // optional: bring the tab into focus
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      // console.error("Error in onClickAddMoney:", error);
+      alert("Something went wrong. Please try again or contact support.");
     }
   };
-
   // Payment method options - Dynamic based on country
   const getPaymentMethods = () => {
     if (isIndian) {
@@ -1320,3 +1344,5 @@ const extractDetailsFromImage = (file) => {
 };  
 
 export default AddMoneyToWallet;
+
+
