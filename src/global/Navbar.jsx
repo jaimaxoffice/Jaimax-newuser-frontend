@@ -205,7 +205,7 @@ const Navbar = () => {
               </NavLink>
 
               <NavLink 
-                to="/register/" 
+                to="/register" 
                 onClick={closeNavbar}
                 title="Register on Jaimax - Start Your Crypto Investment Journey Today"
               >
@@ -385,7 +385,7 @@ const Navbar = () => {
                     </NavLink>
 
                     <NavLink 
-                      to="/register/" 
+                      to="/register" 
                       onClick={closeNavbar}
                       title="Register on Jaimax - Start Your Crypto Investment Journey Today"
                     >
