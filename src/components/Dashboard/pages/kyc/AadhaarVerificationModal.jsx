@@ -1078,7 +1078,7 @@ import {
   useSendAadhaarOtpMutation,
   useVerifyAadhaarOtpMutation,
 } from "./kycApiSlice";
-
+import Loader from '../../../../ReusableComponents/Loader/loader'
 const AadhaarVerificationModal = ({
   show,
   onClose,
@@ -1621,7 +1621,7 @@ const AadhaarVerificationModal = ({
                     onClick={() => { setStep("aadhaar"); setOtp(["", "", "", "", "", ""]); setError(""); }}
                     className="text-gray-500 hover:text-teal-600 transition-colors"
                   >
-                    ← Change Number
+                    ← Back
                   </button>
                   <button
                     onClick={handleResendOtp}
@@ -1637,9 +1637,7 @@ const AadhaarVerificationModal = ({
             {/* Step: Verifying */}
             {step === "verifying" && (
               <div className="text-center py-8 sm:py-10">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Spinner className="h-8 w-8 sm:h-10 sm:w-10 text-teal-600" />
-                </div>
+                <Loader/>
                 <h2 className="text-lg sm:text-xl font-bold text-gray-800">Verifying Aadhaar</h2>
                 <p className="text-gray-500 text-xs sm:text-sm mt-1">Please wait...</p>
               </div>

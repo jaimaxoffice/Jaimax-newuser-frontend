@@ -26,7 +26,7 @@ const navItems = [
   { name: "Buy History", path: "/buy-history", icon: <HiOutlineChartBar /> },
   // { name: "My Total Team", path: "/my-team", icon: <HiOutlineCalendar /> },
   { name: "J-Wallet", path: "/jwallet", icon: <HiOutlineCreditCard /> },
-  { name: "Promoters", path: "/promoters", icon: <Handshake  size={18} /> },
+  // { name: "Promoters", path: "/promoters", icon: <Handshake  size={18} /> },
   // { name: "Guaranteed Wealth", path: "/guaranteedwealthplan", icon: <Landmark   size={18} /> },
   // { name: "Guaranteed Wealth 2.0", path: "/guaranteedwealthplan-2-0", icon: <HousePlug   size={18} /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <HiOutlineCash /> },

@@ -189,7 +189,7 @@ const Navbar = () => {
             {/* Action buttons */}
             <div className="flex items-center space-x-2 xl:space-x-3 ml-4 xl:ml-6">
               <NavLink 
-                to="/login/" 
+                to="/login" 
                 onClick={closeNavbar}
                 title="Login to Jaimax - Access Your Crypto Account Now"
               >
@@ -369,7 +369,7 @@ const Navbar = () => {
                 <li className="pt-4 border-t border-white/10 mt-4">
                   <div className="flex flex-col space-y-3">
                     <NavLink 
-                      to="/login/" 
+                      to="/login" 
                       onClick={closeNavbar}
                       title="Login to Jaimax - Access Your Crypto Account Now"
                     >

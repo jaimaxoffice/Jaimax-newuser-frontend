@@ -68,6 +68,7 @@ import PreSaleCryptoCoin from "./services/PreSaleCryptoCoin";
 import NotFound from "./pages/home/NotFound";
 import Snowfall from "react-snowfall";
 import KYCForm from "./components/Dashboard/pages/kyc/KYCForm";
+import CoinPricePopup from "./ReusableComponents/popups/Countdown"
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -147,7 +148,7 @@ const DashboardLayout = () => {
       // console.error("Error during logout:", error);
     }
     setShowLogoutModal(false);
-    window.location.href = "/login/"; // Or use navigate("/login") if using react-router
+    window.location.href = "/login"; // Or use navigate("/login") if using react-router
   };
   const handleNavigation = (path) => {
     setShowNavMenu(false);
@@ -253,30 +254,11 @@ const DashboardLayout = () => {
     </div>
   );
 };
-// const PublicLayout = () => {
-//   const location = useLocation();
-//   const navigate = useNavigate();
-//   const hideNavbarRoutes = ["/login/", "/register/", "/forgot-password/"];
-//   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
-//   return (
-//     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
-//       {!shouldHideNavbar && <Navbar />}
-//       <main className="flex-1">
-//         <Outlet />
-//       </main>
-//       {!shouldHideNavbar && <Footer />}
-//       {/* {!shouldHideNavbar && <FloatingWhatsapp />} */}
-//     </div>
-//   );
-// };
 const PublicLayout = () => {
   const location = useLocation();
-
-  const path = location.pathname.replace(/\/+$/, ""); // remove trailing slash
+  const navigate = useNavigate();
   const hideNavbarRoutes = ["/login", "/register", "/forgot-password"];
-
-  const shouldHideNavbar = hideNavbarRoutes.includes(path);
-
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
   return (
     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
       {!shouldHideNavbar && <Navbar />}
@@ -284,9 +266,11 @@ const PublicLayout = () => {
         <Outlet />
       </main>
       {!shouldHideNavbar && <Footer />}
+      {/* {!shouldHideNavbar && <FloatingWhatsapp />} */}
     </div>
   );
 };
+
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -295,7 +279,7 @@ const App = () => {
   const toggleChat = () => setChatOpen((prev) => !prev);
   const [userDetails, setUserDetails] = useState(null);
 
-  const hideChatOnPaths = ["/login/", "/register/", "/forgot-password/"];
+  const hideChatOnPaths = ["/login", "/register", "/forgot-password"];
   const isSupportChatRoute = location.pathname.startsWith(
     "/dashboard/support/support-chat"
   );
@@ -401,7 +385,7 @@ const images = useMemo(() => {
               )}
             </button>
           </div>
-
+ <CoinPricePopup />
           {chatOpen && (
             <ErrorBoundary>
               <ChatAssistant onClose={() => setChatOpen(false)} />
@@ -423,10 +407,9 @@ const images = useMemo(() => {
             <Route path="security" element={<Security />} />
             <Route path="profile" element={<Profile />} />
             <Route path="kyc" element={<Kyc />} />
-            <Route path="withdrawal" element={<WithDrawal />} />
             <Route path="support" element={<Support />} />
             {/* <Route path="foundation" element={<Support />} /> */}
-            <Route path="promoters" element={<Support />} />
+            {/* <Route path="promoters" element={<Support />} /> */}
           </Route>
 
           <Route path="/wallet" element={<DashboardLayout />}>
@@ -460,9 +443,9 @@ const images = useMemo(() => {
           {/* <Route path="/foundation" element={<DashboardLayout />}>
             <Route index element={<FoundationBonusUI />} />
           </Route> */}
-          <Route path="/promoters" element={<DashboardLayout />}>
+          {/* <Route path="/promoters" element={<DashboardLayout />}>
             <Route index element={<PromotersPage />} />
-          </Route>
+          </Route> */}
           {/* <Route path="/guaranteedwealthplan" element={<DashboardLayout />}>
             <Route index element={<GuaranteedWealthDashboard />} />
           </Route>
@@ -470,7 +453,7 @@ const images = useMemo(() => {
             <Route index element={<GuaranteedWealthDashboard2_O />} />
           </Route> */}
           <Route path="/kyc-information" element={<DashboardLayout />}>
-            <Route index element={<KYCForm />} />
+            <Route index element={<Kyc />} />
           </Route>
           <Route path="/withdrawal" element={<DashboardLayout />}>
             <Route index element={<WithDrawal />} />
@@ -498,8 +481,8 @@ const images = useMemo(() => {
           />
 
           <Route element={<PublicRoute />}>
-            <Route path="login/" element={<AuthContainer />} />
-            <Route path="register/" element={<AuthContainer />} />
+            <Route path="login" element={<AuthContainer />} />
+            <Route path="register" element={<AuthContainer />} />
             <Route path="forgot-password/" element={<ForgotPassword />} />
           </Route>
           <Route path="about/" element={<JaimaxComponent />} />

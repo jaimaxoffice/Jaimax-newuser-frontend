@@ -605,9 +605,7 @@ const LivePhotoModal = ({
           <div className="bg-gradient-to-r from-teal-600 to-teal-500 px-4 py-3 sm:py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <CameraIcon />
-                </div>
+               
                 <div>
                   <h3 className="text-base sm:text-lg font-bold text-white">Live Photo</h3>
                   <p className="text-teal-100 text-xs hidden sm:block">Capture a clear photo of your face</p>
@@ -681,20 +679,10 @@ const LivePhotoModal = ({
                   )}
 
                   {/* Camera switch button */}
-                  <button
-                    onClick={handleSwitchCamera}
-                    className="absolute top-2.5 right-2.5 bg-black/30 hover:bg-black/50 p-2 rounded-full transition-all backdrop-blur-sm"
-                  >
-                    <SwitchIcon />
-                  </button>
+                  
 
                   {/* Camera active indicator */}
-                  {cameraActive && (
-                    <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
-                      <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                      <span className="text-white text-[10px] sm:text-xs font-medium">LIVE</span>
-                    </div>
-                  )}
+                  
                 </>
               )}
 

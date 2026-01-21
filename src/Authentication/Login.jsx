@@ -7977,10 +7977,10 @@ export default function AuthContainer() {
   const { cluster } = useParams();
   const [isLogin, setIsLogin] = useState(() => {
     // Add fallback for when cluster is undefined initially
-    if (cluster === "login/") return true;
-    if (cluster === "register/") return false;
+    if (cluster === "login") return true;
+    if (cluster === "register") return false;
     // Default based on current location
-    return window.location.pathname.includes("register/") ? false : true;
+    return window.location.pathname.includes("register") ? false : true;
   });
 
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -7990,9 +7990,9 @@ export default function AuthContainer() {
   const [isConfirmAgree, setIsConfirmAgree] = useState(false);
   const handleBack = () => navigate("/");
   useEffect(() => {
-    if (cluster === "login/") {
+    if (cluster === "login") {
       setIsLogin(true);
-    } else if (cluster === "register/") {
+    } else if (cluster === "register") {
       setIsLogin(false);
     }
   }, [cluster]); // This is already correct, but make sure cluster is being extracted properly
@@ -8025,7 +8025,7 @@ export default function AuthContainer() {
 
   const toggleMode = () => {
     setIsTransitioning(true);
-    const newCluster = isLogin ? "register/" : "login/";
+    const newCluster = isLogin ? "register" : "login";
     navigate(`/${newCluster}`, { replace: true });
 
     setTimeout(() => {
@@ -8038,12 +8038,12 @@ export default function AuthContainer() {
 
   const handleTabClick = (mode) => {
     if (isTransitioning) return;
-    const cluster = mode === "login/" ? "login/" : "register/";
+    const cluster = mode === "login" ? "login" : "register";
     navigate(`/${cluster}`, { replace: true });
 
     setIsTransitioning(true);
     setTimeout(() => {
-      setIsLogin(mode === "login/");
+      setIsLogin(mode === "login");
       setTimeout(() => {
         setIsTransitioning(false);
       }, 50);
@@ -8084,7 +8084,7 @@ export default function AuthContainer() {
           <div className="absolute top-8 left-8 right-8 z-20">
             <div className="flex rounded-full p-2 shadow-xl border border-white/10">
               <button
-                onClick={() => handleTabClick("login/")}
+                onClick={() => handleTabClick("login")}
                 disabled={isTransitioning}
                 className={`flex-1 py-4 px-6 rounded-full text-black font-bold transition-all duration-500 ${
                   isLogin

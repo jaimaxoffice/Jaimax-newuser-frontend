@@ -110,7 +110,7 @@ return (
         {/* Back Button */}
         <div
           className="flex items-center gap-2 mb-4 text-teal-700 cursor-pointer"
-          onClick={() => navigate("/login/")}
+          onClick={() => navigate("/login")}
         >
           <ArrowLeft size={18} />
           <span className="text-sm font-medium">Back to Login</span>
