@@ -453,7 +453,7 @@ const images = useMemo(() => {
             <Route index element={<GuaranteedWealthDashboard2_O />} />
           </Route> */}
           <Route path="/kyc-information" element={<DashboardLayout />}>
-            <Route index element={<Kyc />} />
+            <Route index element={<KYCForm />} />
           </Route>
           <Route path="/withdrawal" element={<DashboardLayout />}>
             <Route index element={<WithDrawal />} />

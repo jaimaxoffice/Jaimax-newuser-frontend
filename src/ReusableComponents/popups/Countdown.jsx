@@ -636,7 +636,7 @@ const CoinPricePopup = () => {
   // Price data
   const oldPriceINR = 0.035;
   const newPriceINR = 0.04;
-  const oldPriceUSD = 0.00038;
+  const oldPriceUSD = 0.00039;
   const newPriceUSD = 0.00044;
 
   // Date range for popup visibility
