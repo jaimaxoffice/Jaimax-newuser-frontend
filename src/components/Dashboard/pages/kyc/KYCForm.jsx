@@ -91,6 +91,7 @@ const KycInformation = () => {
   const [focusedInput, setFocusedInput] = useState(null);
     const [showDraftModal, setShowDraftModal] = useState(false);
   const [draftExpiryTime, setDraftExpiryTime] = useState(null);
+  const [digiLockerApiData, setDigiLockerApiData] = useState(null);
 const [aadhaarVerificationData, setAadhaarVerificationData] = useState({
   tempId: null,
   isVerified: false,
@@ -159,12 +160,19 @@ const [saveKycDraft] = useSaveKycDraftMutation();
   const doc1FrontRef = useRef(null);
   const docBackRef = useRef(null);
   const doc1BackRef = useRef(null);
-  const handleSaveDraft = async () => {
-    setDraftLoading(true);
-    try {
-      const draftData = {
+// Auto-save draft function (silent save)
+const autoSaveDraft = async () => {
+  // Don't save if KYC is already submitted or on first step
+  if (kycdata?.success || currentStep === 1) return;
+
+  try {
+    const draftData = {
+      currentStep: currentStep,
+      completedSteps: completedSteps,
+      stepData: stepData,
+      formData: {
         applicantName: formData.applicantName,
-        mobile_number: formData.mobile_number.replace(`+${userData?.data?.countryCode} `, ""),
+        mobile_number: formData.mobile_number?.replace(`+${userData?.data?.countryCode} `, "") || "",
         address: formData.address,
         dob: formData.dob,
         panNumber: formData.panNumber,
@@ -172,122 +180,152 @@ const [saveKycDraft] = useSaveKycDraftMutation();
         ifsc_code: formData.ifsc_code,
         bank_account: formData.bank_account,
         upi_id: formData.upi_id,
-        currentStep: currentStep,
-        completedSteps: completedSteps,
-        aadhaarVerificationData: aadhaarVerificationData,
-        stepData: stepData,
-      };
+        // Track uploaded docs as boolean flags
+        aadhar_doc_front: !!formData.aadhar_doc_front,
+        aadhar_doc_back: !!formData.aadhar_doc_back,
+        pan_doc_front: !!formData.pan_doc_front,
+        dl_doc_front: !!formData.dl_doc_front,
+        dl_doc_back: !!formData.dl_doc_back,
+        passport_doc_front: !!formData.passport_doc_front,
+        passport_doc_back: !!formData.passport_doc_back,
+      },
+      aadhaarVerificationData: {
+        tempId: aadhaarVerificationData.tempId,
+        isVerified: aadhaarVerificationData.isVerified,
+        aadhaarNumber: aadhaarVerificationData.aadhaarNumber,
+      },
+    };
 
-      const response = await saveKycDraft(draftData).unwrap();
+    await saveKycDraft(draftData).unwrap();
+    setLastSavedTime(new Date());
+    refetchDraft();
+  } catch (error) {
+    console.error("Auto-save draft failed:", error);
+  }
+};
 
-      if (response?.status_code === 200 || response?.success) {
-        toast.success(response?.message || "Draft saved successfully", {
-          position: "top-center",
-        });
-        refetchDraft();
-      } else {
-        toast.error(response?.message || "Failed to save draft", {
-          position: "top-center",
-        });
-      }
-    } catch (error) {
-      toast.error(error?.data?.message || error?.message || "Failed to save draft", {
-        position: "top-center",
-      });
-    } finally {
-      setDraftLoading(false);
+  // Load draft data into form
+// Update the handleLoadDraft function to properly restore Aadhaar verification state
+const handleLoadDraft = () => {
+  if (kycDraftData?.data) {
+    const draft = kycDraftData.data;
+    
+    // Restore form data
+    setFormData(prev => ({
+      ...prev,
+      applicantName: draft.formData?.applicantName || prev.applicantName,
+      mobile_number: draft.formData?.mobile_number 
+        ? `+${userData?.data?.countryCode} ${draft.formData.mobile_number}` 
+        : prev.mobile_number,
+      address: draft.formData?.address || prev.address,
+      dob: draft.formData?.dob || prev.dob,
+      panNumber: draft.formData?.panNumber || prev.panNumber,
+      bank_name: draft.formData?.bank_name || prev.bank_name,
+      ifsc_code: draft.formData?.ifsc_code || prev.ifsc_code,
+      bank_account: draft.formData?.bank_account || prev.bank_account,
+      upi_id: draft.formData?.upi_id || prev.upi_id,
+    }));
+
+    // Restore current step
+    if (draft.currentStep) {
+      setCurrentStep(draft.currentStep);
     }
-  };
-
-  const handleLoadDraft = () => {
-    if (kycDraftData?.data) {
-      const draft = kycDraftData.data;
-      
-      setFormData(prev => ({
-        ...prev,
-        applicantName: draft.applicantName || prev.applicantName,
-        mobile_number: draft.mobile_number 
-          ? `+${userData?.data?.countryCode} ${draft.mobile_number}` 
-          : prev.mobile_number,
-        address: draft.address || prev.address,
-        dob: draft.dob || prev.dob,
-        panNumber: draft.panNumber || prev.panNumber,
-        bank_name: draft.bank_name || prev.bank_name,
-        ifsc_code: draft.ifsc_code || prev.ifsc_code,
-        bank_account: draft.bank_account || prev.bank_account,
-        upi_id: draft.upi_id || prev.upi_id,
-      }));
-
-      if (draft.currentStep) {
-        setCurrentStep(draft.currentStep);
-      }
-      if (draft.completedSteps) {
-        setCompletedSteps(draft.completedSteps);
-      }
-      if (draft.aadhaarVerificationData) {
-        setAadhaarVerificationData(draft.aadhaarVerificationData);
-      }
-      if (draft.stepData) {
-        setStepData(draft.stepData);
-      }
-      
-      setEnableFields(true);
-      setShowDraftModal(false);
-      
-      toast.success("Draft loaded successfully", {
-        position: "top-center",
-      });
+    
+    // Restore completed steps
+    if (draft.completedSteps && Array.isArray(draft.completedSteps)) {
+      setCompletedSteps(draft.completedSteps);
     }
-  };
+    
+    // Restore Aadhaar verification data - THIS IS THE KEY FIX
+    if (draft.aadhaarVerificationData) {
+      setAadhaarVerificationData({
+        tempId: draft.aadhaarVerificationData.tempId || null,
+        isVerified: draft.aadhaarVerificationData.isVerified || false,
+        aadhaarNumber: draft.aadhaarVerificationData.aadhaarNumber || null,
+      });
+      
+      // If Aadhaar was verified, enable fields
+      if (draft.aadhaarVerificationData.isVerified) {
+        setEnableFields(true);
+      }
+    }
+    
+    // Restore step data
+    if (draft.stepData) {
+      setStepData(draft.stepData);
+    }
+    
+    setShowDraftModal(false);
+    
+    toast.success("Draft loaded successfully", {
+      position: "top-center",
+    });
+  }
+};
 
+  // Delete draft
   const handleDeleteDraft = async () => {
-    setDraftLoading(true);
     try {
-      const response = await deleteKycDraft().unwrap();
-
-      if (response?.status_code === 200 || response?.success) {
-        toast.success(response?.message || "Draft deleted successfully", {
-          position: "top-center",
-        });
-        refetchDraft();
-        setShowDraftModal(false);
-      } else {
-        toast.error(response?.message || "Failed to delete draft", {
-          position: "top-center",
-        });
-      }
-    } catch (error) {
-      toast.error(error?.data?.message || error?.message || "Failed to delete draft", {
+      await deleteKycDraft().unwrap();
+      toast.success("Draft deleted successfully", {
         position: "top-center",
       });
-    } finally {
-      setDraftLoading(false);
+      refetchDraft();
+      setShowDraftModal(false);
+    } catch (error) {
+      toast.error(error?.data?.message || "Failed to delete draft", {
+        position: "top-center",
+      });
     }
   };
 
-  const handleExtendDraftExpiry = async () => {
-    setDraftLoading(true);
-    try {
-      const response = await extendKycDraftExpiry().unwrap();
 
-      if (response?.status_code === 200 || response?.success) {
-        toast.success(response?.message || "Draft expiry extended successfully", {
-          position: "top-center",
-        });
-        refetchDraft();
-      } else {
-        toast.error(response?.message || "Failed to extend draft expiry", {
-          position: "top-center",
-        });
-      }
+
+  // Delete draft after successful KYC submission
+  const deleteDraftAfterSubmit = async () => {
+    try {
+      await deleteKycDraft().unwrap();
+      refetchDraft();
     } catch (error) {
-      toast.error(error?.data?.message || error?.message || "Failed to extend draft expiry", {
-        position: "top-center",
-      });
-    } finally {
-      setDraftLoading(false);
+      console.error("Failed to delete draft after submit:", error);
     }
   };
+
+  // Check for existing draft on component mount
+  useEffect(() => {
+    if (kycDraftData?.data && kycDraftData?.success && !kycdata?.success) {
+      const hasVerifiedAadhaar = kycDraftData.data?.aadhaarVerificationData?.isVerified;
+      setShowDraftModal(true);
+      if (kycDraftData?.data?.expiresAt) {
+        setDraftExpiryTime(new Date(kycDraftData.data.expiresAt));
+      }
+      if (hasVerifiedAadhaar) {
+      console.log("Draft has verified Aadhaar, will restore verification state");
+    }
+    }
+  }, [kycDraftData, kycdata]);
+
+  // Auto-save draft when form data changes (debounced)
+  useEffect(() => {
+    if (kycdata?.success || currentStep === 1 || shouldShowCardUI()) return;
+
+    const debounceTimer = setTimeout(() => {
+      autoSaveDraft();
+    }, 3000); // Save 3 seconds after last change
+
+    return () => clearTimeout(debounceTimer);
+  }, [formData, currentStep, completedSteps, stepData, aadhaarVerificationData]);
+
+  // Auto-save draft periodically (every 60 seconds as backup)
+  useEffect(() => {
+    if (kycdata?.success || currentStep === 1 || shouldShowCardUI()) return;
+
+    const autoSaveInterval = setInterval(() => {
+      autoSaveDraft();
+    }, 60000); // 60 seconds
+
+    return () => clearInterval(autoSaveInterval);
+  }, [currentStep, formData, kycdata]);
 const DraftModal = () => {
     if (!showDraftModal) return null;
 
@@ -312,9 +350,7 @@ const DraftModal = () => {
               </div>
               <div>
                 <p className="text-gray-800 font-medium">You have a saved draft</p>
-                <p className="text-sm text-gray-500">
-                  Expires: {formatExpiryTime()}
-                </p>
+               
               </div>
             </div>
 
@@ -328,31 +364,17 @@ const DraftModal = () => {
                 disabled={draftLoading}
                 className="w-full py-3 px-4 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50"
               >
-                {draftLoading ? "Loading..." : "Continue with Draft"}
+                {draftLoading ? "Loading..." : "Continue with this session"}
               </button>
               
-              <button
-                onClick={handleExtendDraftExpiry}
-                disabled={draftLoading}
-                className="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-              >
-                {draftLoading ? "Processing..." : "Extend Draft Expiry"}
-              </button>
+              
               
               <button
                 onClick={() => setShowDraftModal(false)}
                 disabled={draftLoading}
                 className="w-full py-3 px-4 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50"
               >
-                Start Fresh
-              </button>
-              
-              <button
-                onClick={handleDeleteDraft}
-                disabled={draftLoading}
-                className="w-full py-2 px-4 text-red-600 font-medium hover:text-red-700 transition-colors text-sm disabled:opacity-50"
-              >
-                {draftLoading ? "Deleting..." : "Delete Draft"}
+                Start from beginning
               </button>
             </div>
           </div>
@@ -360,80 +382,8 @@ const DraftModal = () => {
       </div>
     );
   };
- const renderNavigationButtons = () => {
-    if (kycdata?.data?.status === "approve") return null;
 
-    return (
-      <div className="flex justify-between items-center mt-8">
-        <div className="flex items-center space-x-3">
-          <button
-            type="button"
-            className={`px-6 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-              currentStep === 1 
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-            onClick={handlePreviousStep}
-            disabled={currentStep === 1}
-          >
-            Previous
-          </button>
-          
-          <SaveDraftButton />
-        </div>
 
-        {currentStep === steps.length ? (
-          <button
-            type="button"
-            className="px-8 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Submit KYC Information"}
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="px-6 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200"
-            onClick={handleNextStep}
-          >
-            Next
-          </button>
-        )}
-      </div>
-    );
-  };
-  // Save Draft Button Component
-  const SaveDraftButton = () => {
-    if (kycdata?.success || currentStep === 1) return null;
-
-    return (
-      <button
-        type="button"
-        onClick={handleSaveDraft}
-        disabled={draftLoading}
-        className="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg border border-gray-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 flex items-center"
-      >
-        {draftLoading ? (
-          <>
-            <svg className="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Saving...
-          </>
-        ) : (
-          <>
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
-            </svg>
-            Save Draft
-          </>
-        )}
-      </button>
-    );
-  };
-  // Check for existing draft on component mount
   useEffect(() => {
     if (kycDraftData?.data && kycDraftData?.success && !kycdata?.success) {
       setShowDraftModal(true);
@@ -611,6 +561,8 @@ const DraftModal = () => {
   };
 
   const handleDigiLockerComplete = (data) => {
+    console.log("DigiLocker data received:", data);
+    setDigiLockerApiData(data);
     setStepData({
       ...stepData,
       step1: { completed: true, data: data }
@@ -639,6 +591,10 @@ const handleAadhaarVerificationComplete = (data) => {
     tempId: data?.tempId || null,
     isVerified: true,
     aadhaarNumber: data?.aadhaarNumber || null,
+    name: data?.name || null,  // Fixed: use data, not response.data
+    dob: data?.dob || data?.dateOfBirth || null,  // Fixed: use data, not response.data
+    address: data?.address || data?.fullAddress || null,  // Fixed: use data, not response.data
+    gender: data?.gender || null,  // Fixed: use data, not response.data
   });
   
   setStepData({
@@ -651,12 +607,17 @@ const handleAadhaarVerificationComplete = (data) => {
     setFormData(prev => ({
       ...prev,
       applicantName: data.name || prev.applicantName,
-      dob: data.dob || prev.dob,
-      address: data.address || prev.address,
+      dob: data.dob || data.dateOfBirth || prev.dob,
+      address: data.address || data.fullAddress || prev.address,
     }));
   }
   
-  handleNextStep();
+  setEnableFields(true);
+  
+  // Move to next step
+  setCompletedSteps(prev => [...prev, currentStep]);
+  setCurrentStep(prev => prev + 1);
+  setErrors({});
 };
 
   const handleChange = (e) => {
@@ -717,23 +678,130 @@ const handleAadhaarVerificationComplete = (data) => {
     return isCountryCodeIndia ? 14 : 19;
   };
 
-  const handleSubmit = async () => {
+  // const handleSubmit = async () => {
+  //   const finalStep = isCountryCodeIndia ? 5 : 4;
+  //   if (!validateStep(finalStep)) {
+  //     return;
+  //   }
+
+  //   const data = new FormData();
+  //    if (isCountryCodeIndia && aadhaarVerificationData.isVerified) {
+  //   data.append("aadhaarVerified", "true");
+  //   if (aadhaarVerificationData.tempId) {
+  //     data.append("aadhaarTempId", aadhaarVerificationData.tempId);
+  //   }
+  //   // Optionally send the Aadhaar number if you have it
+  //   if (aadhaarVerificationData.aadhaarNumber) {
+  //     data.append("aadharNumber", aadhaarVerificationData.aadhaarNumber);
+  //   }
+  // }
+  //   if (kycdata?.success !== 1) {
+  //     if (isCountryCodeIndia) {
+  //       data.append("aadhar_doc_front", formData.aadhar_doc_front);
+  //       data.append("aadhar_doc_back", formData.aadhar_doc_back);
+  //       data.append("pan_doc_front", formData.pan_doc_front);
+  //       data.append("upi_id", formData.upi_id);
+  //       data.append("panNumber", formData.panNumber);
+  //       data.append("dob", formData.dob);
+  //     } else {
+  //       data.append("dl_doc_front", formData.dl_doc_front);
+  //       data.append("dl_doc_back", formData.dl_doc_back);
+  //       data.append("passport_doc_front", formData.passport_doc_front);
+  //       data.append("passport_doc_back", formData.passport_doc_back);
+  //     }
+  //   } else {
+  //     if (docFrontRef.current?.value) {
+  //       if (isCountryCodeIndia) {
+  //         data.append("aadhar_doc_front", formData.aadhar_doc_front);
+  //       } else {
+  //         data.append("dl_doc_front", formData.dl_doc_front);
+  //       }
+  //     }
+  //     if (docBackRef.current?.value) {
+  //       if (isCountryCodeIndia) {
+  //         data.append("aadhar_doc_back", formData.aadhar_doc_back);
+  //       } else {
+  //         data.append("dl_doc_back", formData.dl_doc_back);
+  //       }
+  //     }
+  //     if (doc1FrontRef.current?.value) {
+  //       if (isCountryCodeIndia) {
+  //         data.append("pan_doc_front", formData.pan_doc_front);
+  //       } else {
+  //         data.append("passport_doc_front", formData.passport_doc_front);
+  //       }
+  //     }
+  //     if (!isCountryCodeIndia && doc1BackRef?.current?.value) {
+  //       data.append("passport_doc_back", formData.passport_doc_back);
+  //     }
+  //     if (isCountryCodeIndia) {
+  //       data.append("upi_id", formData.upi_id);
+  //       data.append("panNumber", formData.panNumber);
+  //       data.append("dob", formData.dob);
+  //     }
+  //   }
+
+  //   data.append("name", formData.applicantName);
+  //   data.append("bank_name", formData.bank_name);
+  //   data.append("ifsc_code", formData.ifsc_code);
+  //   if (formData.mobile_number.startsWith(`+${userData?.data?.countryCode} `)) {
+  //     data.append(
+  //       "mobile_number",
+  //       formData.mobile_number.replace(`+${userData?.data?.countryCode} `, "")
+  //     );
+  //   }
+  //   data.append("bank_account", formData.bank_account);
+  //   data.append("address", formData.address);
+
+  //   setLoading(true);
+  //   try {
+  //     const response = await submitKyc(data);
+
+  //     if (response?.data?.status_code === 200) {
+  //       toast.success(response?.data.message, {
+  //         position: "top-center",
+  //       });
+  //       refetch();
+  //       setErrors({});
+  //       setCompletedSteps(isCountryCodeIndia ? [1, 2, 3, 4, 5] : [1, 2, 3, 4]);
+  //       setAadhaarVerificationData({
+  //       tempId: null,
+  //       isVerified: false,
+  //       aadhaarNumber: null,
+  //     });
+  //     } else {
+  //       toast?.error(response?.error?.data?.message, {
+  //         position: "top-center",
+  //       });
+  //       setErrors({});
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.message, {
+  //       position: "top-center",
+  //     });
+  //     setErrors({});
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+const handleSubmit = async () => {
     const finalStep = isCountryCodeIndia ? 5 : 4;
     if (!validateStep(finalStep)) {
       return;
     }
 
     const data = new FormData();
-     if (isCountryCodeIndia && aadhaarVerificationData.isVerified) {
-    data.append("aadhaarVerified", "true");
-    if (aadhaarVerificationData.tempId) {
-      data.append("aadhaarTempId", aadhaarVerificationData.tempId);
+    
+    if (isCountryCodeIndia && aadhaarVerificationData.isVerified) {
+      data.append("aadhaarVerified", "true");
+      if (aadhaarVerificationData.tempId) {
+        data.append("aadhaarTempId", aadhaarVerificationData.tempId);
+      }
+      if (aadhaarVerificationData.aadhaarNumber) {
+        data.append("aadharNumber", aadhaarVerificationData.aadhaarNumber);
+      }
     }
-    // Optionally send the Aadhaar number if you have it
-    if (aadhaarVerificationData.aadhaarNumber) {
-      data.append("aadharNumber", aadhaarVerificationData.aadhaarNumber);
-    }
-  }
+    
     if (kycdata?.success !== 1) {
       if (isCountryCodeIndia) {
         data.append("aadhar_doc_front", formData.aadhar_doc_front);
@@ -800,14 +868,18 @@ const handleAadhaarVerificationComplete = (data) => {
         toast.success(response?.data.message, {
           position: "top-center",
         });
+        
+        // Delete draft after successful submission
+        await deleteDraftAfterSubmit();
+        
         refetch();
         setErrors({});
         setCompletedSteps(isCountryCodeIndia ? [1, 2, 3, 4, 5] : [1, 2, 3, 4]);
         setAadhaarVerificationData({
-        tempId: null,
-        isVerified: false,
-        aadhaarNumber: null,
-      });
+          tempId: null,
+          isVerified: false,
+          aadhaarNumber: null,
+        });
       } else {
         toast?.error(response?.error?.data?.message, {
           position: "top-center",
@@ -823,7 +895,6 @@ const handleAadhaarVerificationComplete = (data) => {
       setLoading(false);
     }
   };
-
   const handleEditBankDetails = () => {
     setIsEditClicked(true);
     setShowBankModal(true);
@@ -996,7 +1067,9 @@ const handleAadhaarVerificationComplete = (data) => {
         try {
           const response = await getKycData(payload).unwrap();
           if (response.data) {
+            setDigiLockerApiData(response.data);
             handleDigiLockerComplete(response.data);
+            console.log(response.data,"hello digi")
           }
         } catch (error) {
           console.log(error);
@@ -1617,15 +1690,41 @@ const handleAadhaarVerificationComplete = (data) => {
         );
 
       case 2:
+         if (aadhaarVerificationData.isVerified) {
         return (
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <AadhaarVerification 
-              onVerificationComplete={handleAadhaarVerificationComplete}
-              formData={formData}
-              isLoading={loading}
-            />
+            <div className="text-center py-12">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                Aadhaar Verified Successfully
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Your Aadhaar has been verified. You can proceed to the next step.
+              </p>
+              {aadhaarVerificationData.aadhaarNumber && (
+                <p className="text-sm text-gray-500">
+                  Aadhaar: XXXX XXXX {aadhaarVerificationData.aadhaarNumber.slice(-4)}
+                </p>
+              )}
+            </div>
           </div>
         );
+      }
+      
+      return (
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <AadhaarVerification 
+            onVerificationComplete={handleAadhaarVerificationComplete}
+            
+            digiLockerData={digiLockerApiData} 
+            isLoading={loading}
+          />
+        </div>
+      );
 
       case 3:
         return renderPersonalInformation();
@@ -2245,7 +2344,42 @@ const handleAadhaarVerificationComplete = (data) => {
                     {renderStepContent()}
                   </div>
 
-                  {renderNavigationButtons()}
+                
+                  {kycdata?.data?.status !== "approve" && (
+                    <div className="flex justify-between mt-8">
+                      <button
+                        type="button"
+                        className={`px-6 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                          currentStep === 1 
+                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                        onClick={handlePreviousStep}
+                        disabled={currentStep === 1}
+                      >
+                        Previous
+                      </button>
+
+                      {currentStep === steps.length ? (
+                        <button
+                          type="button"
+                          className="px-8 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5"
+                          onClick={handleSubmit}
+                          disabled={loading}
+                        >
+                          {loading ? "Submitting..." : "Submit KYC Information"}
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="px-6 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200"
+                          onClick={handleNextStep}
+                        >
+                          Next
+                        </button>
+                      )}
+                    </div>
+                  )}
 
                   {/* Update button for rejected/approved edit mode */}
                   {(kycdata?.data?.status == "reject" ||
