@@ -114,9 +114,9 @@ const [saveKycDraft] = useSaveKycDraftMutation();
 
   const steps = isCountryCodeIndia ? [
     { id: 1, title: "DigiLocker" },
-    { id: 2, title: "Aadhaar Verification" },
-    { id: 3, title: "Personal Information" },
-    { id: 4, title: "Document Upload" },
+    { id: 2, title: "Aadhaar " },
+    { id: 3, title: "Personal Info" },
+    { id: 4, title: "Document " },
     { id: 5, title: "Bank Details" }
   ] : [
     { id: 1, title: "Identity Verification" },
@@ -170,6 +170,7 @@ const autoSaveDraft = async () => {
       currentStep: currentStep,
       completedSteps: completedSteps,
       stepData: stepData,
+      digiLockerApiData: digiLockerApiData, // Add DigiLocker data
       formData: {
         applicantName: formData.applicantName,
         mobile_number: formData.mobile_number?.replace(`+${userData?.data?.countryCode} `, "") || "",
@@ -193,12 +194,15 @@ const autoSaveDraft = async () => {
         tempId: aadhaarVerificationData.tempId,
         isVerified: aadhaarVerificationData.isVerified,
         aadhaarNumber: aadhaarVerificationData.aadhaarNumber,
+        name: aadhaarVerificationData.name,
+        dob: aadhaarVerificationData.dob,
+        address: aadhaarVerificationData.address,
+        gender: aadhaarVerificationData.gender,
       },
     };
 
     await saveKycDraft(draftData).unwrap();
-    setLastSavedTime(new Date());
-    refetchDraft();
+    // refetchDraft();
   } catch (error) {
     console.error("Auto-save draft failed:", error);
   }
@@ -209,6 +213,11 @@ const autoSaveDraft = async () => {
 const handleLoadDraft = () => {
   if (kycDraftData?.data) {
     const draft = kycDraftData.data;
+    
+    // Restore DigiLocker API data
+    if (draft.digiLockerApiData) {
+      setDigiLockerApiData(draft.digiLockerApiData);
+    }
     
     // Restore form data
     setFormData(prev => ({
@@ -236,12 +245,16 @@ const handleLoadDraft = () => {
       setCompletedSteps(draft.completedSteps);
     }
     
-    // Restore Aadhaar verification data - THIS IS THE KEY FIX
+    // Restore Aadhaar verification data with ALL fields
     if (draft.aadhaarVerificationData) {
       setAadhaarVerificationData({
         tempId: draft.aadhaarVerificationData.tempId || null,
         isVerified: draft.aadhaarVerificationData.isVerified || false,
         aadhaarNumber: draft.aadhaarVerificationData.aadhaarNumber || null,
+        name: draft.aadhaarVerificationData.name || null,
+        dob: draft.aadhaarVerificationData.dob || null,
+        address: draft.aadhaarVerificationData.address || null,
+        gender: draft.aadhaarVerificationData.gender || null,
       });
       
       // If Aadhaar was verified, enable fields

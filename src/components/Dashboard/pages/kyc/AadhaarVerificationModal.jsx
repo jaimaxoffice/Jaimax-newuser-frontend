@@ -1028,7 +1028,6 @@ const AadhaarVerification = ({
       
       if (response?.success || response?.status_code === 200) {
         const aadhaarData = extractAadhaarData(response);
-        console.log("Extracted Aadhaar Data:", aadhaarData);
         
         setVerifiedData(aadhaarData);
 
@@ -1036,12 +1035,6 @@ const AadhaarVerification = ({
         const aadhaarName = aadhaarData?.name || aadhaarData?.fullName || "";
         const aadhaarDob = aadhaarData?.date_of_birth || aadhaarData?.dob || aadhaarData?.dateOfBirth || aadhaarData?.year_of_birth || "";
 
-        console.log("=== Comparison Summary ===");
-        console.log("Aadhaar Name:", aadhaarName);
-        console.log("DigiLocker Name (from API):", digilockerName);
-        console.log("Aadhaar DOB:", aadhaarDob);
-        console.log("DigiLocker DOB (from API):", digilockerDob);
-        console.log("==========================");
 
         let dobMatched = false;
         let nameMatched = false;
