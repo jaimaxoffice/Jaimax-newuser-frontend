@@ -55,6 +55,34 @@ export const kycApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    saveKycDraft: builder.mutation({
+      query: (data) => ({
+        url: "/kyc/draft",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getKycDraft: builder.query({
+      query: () => ({
+        url: "/kyc/draft",
+        method: "GET",
+      }),
+    }),
+
+    deleteKycDraft: builder.mutation({
+      query: () => ({
+        url: "/kyc/draft",
+        method: "DELETE",
+      }),
+    }),
+
+    extendKycDraftExpiry: builder.mutation({
+      query: () => ({
+        url: "/kyc/draft/extend",
+        method: "PUT",
+      }),
+    }),
+
   }),
 });
 
@@ -67,4 +95,8 @@ export const {
   useUpdateBankDetailsMutation,
   useSendAadhaarOtpMutation,
   useVerifyAadhaarOtpMutation,
+  useSaveKycDraftMutation,
+  useGetKycDraftQuery,
+  useDeleteKycDraftMutation,
+  useExtendKycDraftExpiryMutation,
 } = kycApiSlice;

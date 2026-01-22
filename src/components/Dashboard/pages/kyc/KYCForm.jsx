@@ -14,10 +14,13 @@ import {
   useGetkycDetailsQuery,
   useKycaddMutation,
   useUpdateBankDetailsMutation,
+  useSaveKycDraftMutation,
+  useGetKycDraftQuery,
+  useDeleteKycDraftMutation,
+  useExtendKycDraftExpiryMutation,
 } from "./kycApiSlice";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 
-// Stepper Component
 const StepIndicator = ({ steps, currentStep, completedSteps }) => {
   return (
     <div className="w-full px-4 py-6">
@@ -76,7 +79,7 @@ const StepIndicator = ({ steps, currentStep, completedSteps }) => {
 const KycInformation = () => {
   const { data: userData } = useUserDataQuery();
   const isCountryCodeIndia = userData && userData?.data?.countryCode === 91;
-  
+  const [draftLoading, setDraftLoading] = useState(false);
   const [submitKyc] = useKycaddMutation();
   const [getKycData] = useGetKycDataMutation();
   const [updateBankDetails] = useUpdateBankDetailsMutation();
@@ -86,7 +89,17 @@ const KycInformation = () => {
   const [showBankModal, setShowBankModal] = useState(false);
   const [disableFieldsAfterKYC, setDisableFieldsAfterKYC] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
-  
+    const [showDraftModal, setShowDraftModal] = useState(false);
+  const [draftExpiryTime, setDraftExpiryTime] = useState(null);
+const [aadhaarVerificationData, setAadhaarVerificationData] = useState({
+  tempId: null,
+  isVerified: false,
+  aadhaarNumber: null, // Store if needed for display
+});
+const [saveKycDraft] = useSaveKycDraftMutation();
+  const { data: kycDraftData, refetch: refetchDraft } = useGetKycDraftQuery();
+  const [deleteKycDraft] = useDeleteKycDraftMutation();
+  const [extendKycDraftExpiry] = useExtendKycDraftExpiryMutation();
   // Step management states
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState([]);
@@ -146,7 +159,306 @@ const KycInformation = () => {
   const doc1FrontRef = useRef(null);
   const docBackRef = useRef(null);
   const doc1BackRef = useRef(null);
+  const handleSaveDraft = async () => {
+    setDraftLoading(true);
+    try {
+      const draftData = {
+        applicantName: formData.applicantName,
+        mobile_number: formData.mobile_number.replace(`+${userData?.data?.countryCode} `, ""),
+        address: formData.address,
+        dob: formData.dob,
+        panNumber: formData.panNumber,
+        bank_name: formData.bank_name,
+        ifsc_code: formData.ifsc_code,
+        bank_account: formData.bank_account,
+        upi_id: formData.upi_id,
+        currentStep: currentStep,
+        completedSteps: completedSteps,
+        aadhaarVerificationData: aadhaarVerificationData,
+        stepData: stepData,
+      };
 
+      const response = await saveKycDraft(draftData).unwrap();
+
+      if (response?.status_code === 200 || response?.success) {
+        toast.success(response?.message || "Draft saved successfully", {
+          position: "top-center",
+        });
+        refetchDraft();
+      } else {
+        toast.error(response?.message || "Failed to save draft", {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || error?.message || "Failed to save draft", {
+        position: "top-center",
+      });
+    } finally {
+      setDraftLoading(false);
+    }
+  };
+
+  const handleLoadDraft = () => {
+    if (kycDraftData?.data) {
+      const draft = kycDraftData.data;
+      
+      setFormData(prev => ({
+        ...prev,
+        applicantName: draft.applicantName || prev.applicantName,
+        mobile_number: draft.mobile_number 
+          ? `+${userData?.data?.countryCode} ${draft.mobile_number}` 
+          : prev.mobile_number,
+        address: draft.address || prev.address,
+        dob: draft.dob || prev.dob,
+        panNumber: draft.panNumber || prev.panNumber,
+        bank_name: draft.bank_name || prev.bank_name,
+        ifsc_code: draft.ifsc_code || prev.ifsc_code,
+        bank_account: draft.bank_account || prev.bank_account,
+        upi_id: draft.upi_id || prev.upi_id,
+      }));
+
+      if (draft.currentStep) {
+        setCurrentStep(draft.currentStep);
+      }
+      if (draft.completedSteps) {
+        setCompletedSteps(draft.completedSteps);
+      }
+      if (draft.aadhaarVerificationData) {
+        setAadhaarVerificationData(draft.aadhaarVerificationData);
+      }
+      if (draft.stepData) {
+        setStepData(draft.stepData);
+      }
+      
+      setEnableFields(true);
+      setShowDraftModal(false);
+      
+      toast.success("Draft loaded successfully", {
+        position: "top-center",
+      });
+    }
+  };
+
+  const handleDeleteDraft = async () => {
+    setDraftLoading(true);
+    try {
+      const response = await deleteKycDraft().unwrap();
+
+      if (response?.status_code === 200 || response?.success) {
+        toast.success(response?.message || "Draft deleted successfully", {
+          position: "top-center",
+        });
+        refetchDraft();
+        setShowDraftModal(false);
+      } else {
+        toast.error(response?.message || "Failed to delete draft", {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || error?.message || "Failed to delete draft", {
+        position: "top-center",
+      });
+    } finally {
+      setDraftLoading(false);
+    }
+  };
+
+  const handleExtendDraftExpiry = async () => {
+    setDraftLoading(true);
+    try {
+      const response = await extendKycDraftExpiry().unwrap();
+
+      if (response?.status_code === 200 || response?.success) {
+        toast.success(response?.message || "Draft expiry extended successfully", {
+          position: "top-center",
+        });
+        refetchDraft();
+      } else {
+        toast.error(response?.message || "Failed to extend draft expiry", {
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || error?.message || "Failed to extend draft expiry", {
+        position: "top-center",
+      });
+    } finally {
+      setDraftLoading(false);
+    }
+  };
+const DraftModal = () => {
+    if (!showDraftModal) return null;
+
+    const formatExpiryTime = () => {
+      if (!draftExpiryTime) return "N/A";
+      return new Date(draftExpiryTime).toLocaleString();
+    };
+
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+          <div className="bg-teal-600 px-6 py-4">
+            <h3 className="text-lg font-semibold text-white">Resume Your KYC Application</h3>
+          </div>
+          
+          <div className="p-6">
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-4">
+                <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <div>
+                <p className="text-gray-800 font-medium">You have a saved draft</p>
+                <p className="text-sm text-gray-500">
+                  Expires: {formatExpiryTime()}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-gray-600 text-sm mb-6">
+              Would you like to continue from where you left off or start fresh?
+            </p>
+
+            <div className="space-y-3">
+              <button
+                onClick={handleLoadDraft}
+                disabled={draftLoading}
+                className="w-full py-3 px-4 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50"
+              >
+                {draftLoading ? "Loading..." : "Continue with Draft"}
+              </button>
+              
+              <button
+                onClick={handleExtendDraftExpiry}
+                disabled={draftLoading}
+                className="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              >
+                {draftLoading ? "Processing..." : "Extend Draft Expiry"}
+              </button>
+              
+              <button
+                onClick={() => setShowDraftModal(false)}
+                disabled={draftLoading}
+                className="w-full py-3 px-4 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50"
+              >
+                Start Fresh
+              </button>
+              
+              <button
+                onClick={handleDeleteDraft}
+                disabled={draftLoading}
+                className="w-full py-2 px-4 text-red-600 font-medium hover:text-red-700 transition-colors text-sm disabled:opacity-50"
+              >
+                {draftLoading ? "Deleting..." : "Delete Draft"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+ const renderNavigationButtons = () => {
+    if (kycdata?.data?.status === "approve") return null;
+
+    return (
+      <div className="flex justify-between items-center mt-8">
+        <div className="flex items-center space-x-3">
+          <button
+            type="button"
+            className={`px-6 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+              currentStep === 1 
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+            onClick={handlePreviousStep}
+            disabled={currentStep === 1}
+          >
+            Previous
+          </button>
+          
+          <SaveDraftButton />
+        </div>
+
+        {currentStep === steps.length ? (
+          <button
+            type="button"
+            className="px-8 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit KYC Information"}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="px-6 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200"
+            onClick={handleNextStep}
+          >
+            Next
+          </button>
+        )}
+      </div>
+    );
+  };
+  // Save Draft Button Component
+  const SaveDraftButton = () => {
+    if (kycdata?.success || currentStep === 1) return null;
+
+    return (
+      <button
+        type="button"
+        onClick={handleSaveDraft}
+        disabled={draftLoading}
+        className="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg border border-gray-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 flex items-center"
+      >
+        {draftLoading ? (
+          <>
+            <svg className="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Saving...
+          </>
+        ) : (
+          <>
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+            </svg>
+            Save Draft
+          </>
+        )}
+      </button>
+    );
+  };
+  // Check for existing draft on component mount
+  useEffect(() => {
+    if (kycDraftData?.data && kycDraftData?.success && !kycdata?.success) {
+      setShowDraftModal(true);
+      if (kycDraftData?.data?.expiresAt) {
+        setDraftExpiryTime(new Date(kycDraftData.data.expiresAt));
+      }
+    }
+  }, [kycDraftData, kycdata]);
+
+  // Auto-save draft periodically (every 30 seconds)
+  useEffect(() => {
+    let autoSaveInterval;
+    
+    if (!kycdata?.success && currentStep > 1 && !shouldShowCardUI()) {
+      autoSaveInterval = setInterval(() => {
+        handleSaveDraft();
+      }, 30000); // 30 seconds
+    }
+
+    return () => {
+      if (autoSaveInterval) {
+        clearInterval(autoSaveInterval);
+      }
+    };
+  }, [currentStep, formData, kycdata]);
   // Helper functions
   const maskData = (
     data = "",
@@ -319,14 +631,33 @@ const KycInformation = () => {
     handleNextStep();
   };
 
-  const handleAadhaarVerificationComplete = (data) => {
-    setStepData({
-      ...stepData,
-      step2: { completed: true, data: data }
-    });
-    
-    handleNextStep();
-  };
+const handleAadhaarVerificationComplete = (data) => {
+  console.log("Aadhaar verification complete:", data);
+  
+  // Store the verification data including tempId
+  setAadhaarVerificationData({
+    tempId: data?.tempId || null,
+    isVerified: true,
+    aadhaarNumber: data?.aadhaarNumber || null,
+  });
+  
+  setStepData({
+    ...stepData,
+    step2: { completed: true, data: data }
+  });
+  
+  // If Aadhaar data contains user info, update form
+  if (data?.name) {
+    setFormData(prev => ({
+      ...prev,
+      applicantName: data.name || prev.applicantName,
+      dob: data.dob || prev.dob,
+      address: data.address || prev.address,
+    }));
+  }
+  
+  handleNextStep();
+};
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -393,6 +724,16 @@ const KycInformation = () => {
     }
 
     const data = new FormData();
+     if (isCountryCodeIndia && aadhaarVerificationData.isVerified) {
+    data.append("aadhaarVerified", "true");
+    if (aadhaarVerificationData.tempId) {
+      data.append("aadhaarTempId", aadhaarVerificationData.tempId);
+    }
+    // Optionally send the Aadhaar number if you have it
+    if (aadhaarVerificationData.aadhaarNumber) {
+      data.append("aadharNumber", aadhaarVerificationData.aadhaarNumber);
+    }
+  }
     if (kycdata?.success !== 1) {
       if (isCountryCodeIndia) {
         data.append("aadhar_doc_front", formData.aadhar_doc_front);
@@ -462,6 +803,11 @@ const KycInformation = () => {
         refetch();
         setErrors({});
         setCompletedSteps(isCountryCodeIndia ? [1, 2, 3, 4, 5] : [1, 2, 3, 4]);
+        setAadhaarVerificationData({
+        tempId: null,
+        isVerified: false,
+        aadhaarNumber: null,
+      });
       } else {
         toast?.error(response?.error?.data?.message, {
           position: "top-center",
@@ -728,9 +1074,7 @@ const KycInformation = () => {
     link.click();
   };
 
-  // ============ CARD-BASED UI RENDERING FUNCTIONS ============
-  // ADD THIS SECTION - Card UI for "open" or "approve" status
-  
+
   const shouldShowCardUI = () => {
     return kycdata?.success === 1 && (
       kycdata?.data?.status === "open" || 
@@ -1901,41 +2245,7 @@ const KycInformation = () => {
                     {renderStepContent()}
                   </div>
 
-                  {/* Navigation Buttons */}
-                  {kycdata?.data?.status !== "approve" && (
-                    <div className="flex justify-between mt-8">
-                      <button
-                        type="button"
-                        className={`px-6 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          currentStep === 1 
-                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                        }`}
-                        onClick={handlePreviousStep}
-                        disabled={currentStep === 1}
-                      >
-                        Previous
-                      </button>
-
-                      {currentStep === steps.length ? (
-                        <button
-                          type="button"
-                          className="px-8 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5"
-                          onClick={handleSubmit}
-                        >
-                          Submit KYC Information
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="px-6 py-3 bg-teal-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-200"
-                          onClick={handleNextStep}
-                        >
-                          Next
-                        </button>
-                      )}
-                    </div>
-                  )}
+                  {renderNavigationButtons()}
 
                   {/* Update button for rejected/approved edit mode */}
                   {(kycdata?.data?.status == "reject" ||
@@ -1954,7 +2264,7 @@ const KycInformation = () => {
               </div>
             </div>
           </div>
-          
+           <DraftModal />
           {/* Bank Details Modal */}
           <BankDetailsModal
             show={showBankModal}

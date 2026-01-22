@@ -640,7 +640,7 @@ const CoinPricePopup = () => {
   const newPriceUSD = 0.00044;
 
   // Date range for popup visibility
-  const startDate = new Date("2026-01-14T00:00:00");
+  const startDate = new Date("2026-01-24T00:00:00");
   const endDate = new Date("2026-01-26T23:59:59");
 
   // Check if current date is within the valid date range
