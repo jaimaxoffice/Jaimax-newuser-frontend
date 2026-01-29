@@ -69,6 +69,9 @@ import NotFound from "./pages/home/NotFound";
 import Snowfall from "react-snowfall";
 import KYCForm from "./components/Dashboard/pages/kyc/KYCForm";
 import CoinPricePopup from "./ReusableComponents/popups/Countdown"
+import ConsentsPage from "./components/Dashboard/pages/consents/Consents"
+import Dashboardapi from "./components/Dashboard/pages/dashboardapis/DashboardApi";
+// import DashboardLayout from "./DashboardLayout";
 const getAuthToken = () => {
   try {
     return Cookies.get("token") || null;
@@ -440,9 +443,9 @@ const images = useMemo(() => {
           <Route path="/jwallet" element={<DashboardLayout />}>
             <Route index element={<UserDetailsComponent />} />
           </Route>
-          {/* <Route path="/foundation" element={<DashboardLayout />}>
-            <Route index element={<FoundationBonusUI />} />
-          </Route> */}
+          <Route path="/dashboardapis" element={<DashboardLayout />}>
+            <Route index element={<Dashboardapi />} />
+          </Route>
           {/* <Route path="/promoters" element={<DashboardLayout />}>
             <Route index element={<PromotersPage />} />
           </Route> */}
@@ -453,7 +456,10 @@ const images = useMemo(() => {
             <Route index element={<GuaranteedWealthDashboard2_O />} />
           </Route> */}
           <Route path="/kyc-information" element={<DashboardLayout />}>
-            <Route index element={<KYCForm />} />
+            <Route index element={<Kyc />} />
+          </Route>
+          <Route path="/consents" element={<DashboardLayout />}>
+            <Route index element={<ConsentsPage />} />
           </Route>
           <Route path="/withdrawal" element={<DashboardLayout />}>
             <Route index element={<WithDrawal />} />

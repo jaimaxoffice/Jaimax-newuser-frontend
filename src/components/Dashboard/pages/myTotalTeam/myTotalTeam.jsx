@@ -209,7 +209,7 @@ const MyTotalTeam = () => {
     useEffect(() => {
       const token = Cookies.get("token");
       if (!token) {
-        navigate("/login/");
+        navigate("/logi/");
         return;
       }
       dispatch({ type: "SET_TOKEN_VERIFIED", payload: true });
@@ -220,7 +220,7 @@ const MyTotalTeam = () => {
       if (state.isTokenVerified && error?.data?.status_code === 400) {
         const debounce = setTimeout(() => {
           localStorage.clear();
-          navigate("/login/");
+          navigate("/login");
           toast.error(error?.data?.message, {
             position: "top-center",
           });

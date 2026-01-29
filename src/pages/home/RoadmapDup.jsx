@@ -19,8 +19,8 @@ const roadmapData = {
 
   2025: {
     title: "Integration & Growth",
-    status: "active",
-    progress: 0,
+    status: "completed",
+    progress: 100,
     phases: [
       "• Launch of the Jaimax Wallet (J-Wallet) for secure token management.",
       "• Integration of DigiLocker KYC for secure user verification.",
@@ -31,8 +31,8 @@ const roadmapData = {
 
   2026: {
     title: "Blockchain & Platform Expansion",
-    status: "future",
-    progress: 0,
+    status: "active",
+    progress: 25,
     phases: [
       "• Development of Jaimax’s own blockchain infrastructure.",
       "• Launch of DeFi features to enhance financial accessibility.",

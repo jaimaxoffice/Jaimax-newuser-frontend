@@ -242,7 +242,7 @@ const CryptoServicesFlipCards = () => {
             "/about/",
             "/contact/",
             "/blog/",
-            "/login/"
+            "/login"
           ];
           const serviceLink = serviceLinks[index % serviceLinks.length];
           

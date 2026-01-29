@@ -372,7 +372,7 @@ const Home = () => {
                 - jaimax.
                 <button
                   type="button"
-                  onClick={() => navigate("/login/")}
+                  onClick={() => navigate("/login")}
                   aria-label="Start building your crypto investment"
                   className="block ml-auto mt-4 font-bold text-center
                              bg-gradient-to-r from-[#8ee000] via-[#aadc32] to-[#c3f23f]

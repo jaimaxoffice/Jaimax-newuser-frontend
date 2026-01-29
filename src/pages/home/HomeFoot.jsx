@@ -292,7 +292,7 @@ export default function HomeFooter() {
   const navigate = useNavigate();
 
   const onClickNavigateToLogin = () => {
-    navigate("/login/");
+    navigate("/login");
   };
 
   const checkWebGL2Support = () => {

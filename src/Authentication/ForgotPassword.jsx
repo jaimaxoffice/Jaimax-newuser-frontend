@@ -74,7 +74,7 @@ export default function ForgotPassword() {
       const res = await verifyOtp({ email, password }).unwrap();
       if (res?.success) {
         showNotification("success", res.message || "Password updated!");
-        setTimeout(() => navigate("/login/"), 2000);
+        setTimeout(() => navigate("/logi/"), 2000);
       } else {
         showNotification("error", res.message || "Failed to update password.");
       }

@@ -281,7 +281,7 @@ const JaimaxOverview = () => {
   const closeVideo = () => setIsVideoOpen(false);
 
   const navigateToLogin = () => {
-    navigate('/login/');
+    navigate('/login');
   };
 const aboutschema={
 

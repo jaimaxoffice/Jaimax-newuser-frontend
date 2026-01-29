@@ -1241,7 +1241,7 @@ export default function Profile3DForm() {
               position: "top-center",
             });
           } else {
-            toast.dismiss();
+          
             toast.success(res?.data?.message, {
               position: "top-center",
             });
@@ -1256,7 +1256,7 @@ export default function Profile3DForm() {
             position: "top-center",
           });
         } else {
-          toast.dismiss();
+        
           toast.error(error?.message, {
             position: "top-center",
           });
@@ -1324,7 +1324,7 @@ export default function Profile3DForm() {
             position: "top-center",
           });
         } else {
-          toast.dismiss();
+        
           toast.success(`OTP sent to your email`, {
             position: "top-center",
           });
@@ -1342,7 +1342,7 @@ export default function Profile3DForm() {
             position: "top-center",
           });
         } else {
-          toast.dismiss();
+        
           toast.error(`${error?.data?.message}`, {
             position: "top-center",
           });
@@ -1367,7 +1367,7 @@ export default function Profile3DForm() {
             position: "top-center",
           });
         } else {
-          toast.dismiss();
+      
           toast.success(`OTP verified successfully`, {
             position: "top-center",
           });
@@ -1381,7 +1381,7 @@ export default function Profile3DForm() {
             position: "top-center",
           });
         } else {
-          toast.dismiss();
+         
           toast.error(`${error?.data?.message}`, {
             position: "top-center",
           });
@@ -1412,7 +1412,7 @@ export default function Profile3DForm() {
         });
         setOtpSent(false);
         setOtpVerified(false);
-        window.location.href = "/login/";
+        window.location.href = "/login";
       } catch (error) {
         setIsToastShown(true);
         if (!isToastShown) {
@@ -1420,7 +1420,7 @@ export default function Profile3DForm() {
             position: "top-center",
           });
         } else {
-          toast.dismiss();
+         
           toast.error(`${error?.data?.message}`, {
             position: "top-center",
           });

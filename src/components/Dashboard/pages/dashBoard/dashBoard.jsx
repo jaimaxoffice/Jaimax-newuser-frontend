@@ -361,7 +361,7 @@ const handleComplete = useCallback(async (coins) => {
   useEffect(() => {
     const token = Cookies.get("token");
     if (!token) {
-      navigate("/login/");
+      navigate("/login");
     }
   }, [navigate]);
 
@@ -372,7 +372,7 @@ const handleComplete = useCallback(async (coins) => {
       Cookies.remove("userData");
       Cookies.remove("email");
       Cookies.remove("rememberMe");
-      navigate("/login/");
+      navigate("/login");
     }
   }, [error, navigate]);
 

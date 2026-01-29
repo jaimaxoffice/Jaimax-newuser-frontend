@@ -259,7 +259,7 @@ const phaseData = [
     status: "Live",
     phaseNo: "Phase 1",
     tokens: "10 Billion Tokens",
-    price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00046 USD)",
+    price: "Price INR 0.01 - 0.04 Paisa (0.00012-0.00044 USD)",
     button: "Buy Now",
   },
   {

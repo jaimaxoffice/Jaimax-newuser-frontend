@@ -473,7 +473,7 @@ const JaimaxLanding = () => {
 
   // Handler for navigation (e.g., to a login page)
   const handleGetStartedClick = () => {
-    navigate("/login/");
+    navigate("/login");
   };
 
   return (
@@ -632,8 +632,8 @@ const JaimaxLanding = () => {
               "/about/",
               "/contact/",
               "/blog/",
-              "/login/",
-              "/register/",
+              "/login",
+              "/register",
               "/services/"
             ];
             const featureLink = featureLinks[index % featureLinks.length];

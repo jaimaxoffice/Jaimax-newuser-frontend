@@ -418,7 +418,7 @@ const handleSubmit = async (e) => {
 
     if (!(isTransactionIdValid && isScreenshotValid && isAmountValid)) {
       setIsToastShown(true);
-      toast.dismiss();
+    
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -445,7 +445,7 @@ const handleSubmit = async (e) => {
         toast.error(res?.message || "Submission failed.");
       }
     } catch (error) {
-      toast.dismiss();
+   
       toast.error(error?.data?.message || "Form submission failed.");
     } finally {
       setLoading(false);
@@ -488,150 +488,150 @@ const handleSubmit = async (e) => {
   };
 
   // Card payment handler
-  // const onClickAddMoney = () => {
-  //   try {
-  //     const numericAmount = Number(amount);
-  //     if (
-  //       !amount ||
-  //       isNaN(numericAmount) ||
-  //       numericAmount < 15000 ||
-  //       numericAmount > 100000
-  //     ) {
-  //       setErrors((prev) => ({
-  //         ...prev,
-  //         amount: "Amount: ₹15,000 - ₹1,00,000",
-  //       }));
-  //       toast.error("Amount must be between ₹15,000 and ₹1,00,000");
-  //       return;
-  //     }
-
-  //     setErrors((prev) => ({ ...prev, amount: "" }));
-
-  //     const userDataRaw = Cookies.get("userData");
-  //     if (!userDataRaw) {
-  //       toast.error("Please login and try again");
-  //       return;
-  //     }
-
-  //     const userData = JSON.parse(userDataRaw);
-  //     const userId = userData?.data?._id || userData?._id;
-  //     const name = userData?.data?.name || userData?.name;
-
-  //     if (!userId || !name) {
-  //       toast.error("User details missing");
-  //       return;
-  //     }
-
-  //     const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
-  //     const encryptedUserId = CryptoJS.AES.encrypt(userId, secretKey).toString();
-  //     const encryptedUserName = CryptoJS.AES.encrypt(name, secretKey).toString();
-  //     const encryptedFrom = CryptoJS.AES.encrypt("website", secretKey).toString();
-  //     const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
-
-  //     const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
-  //     const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
-
-  //     const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
-  //       encryptedUserId
-  //     )}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(
-  //       encryptedFrom
-  //     )}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
-
-  //     const paymentWindow = window.open(redirectUrl, "_blank");
-
-  //     if (!paymentWindow) {
-  //       toast.error("Please allow popups for this site");
-  //     } else {
-  //       paymentWindow.focus();
-  //       toast.success("Redirecting to payment...");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Something went wrong");
-  //   }
-  // };
   const onClickAddMoney = () => {
     try {
+      const numericAmount = Number(amount);
+      if (
+        !amount ||
+        isNaN(numericAmount) ||
+        numericAmount < 15000 ||
+        numericAmount > 100000
+      ) {
+        setErrors((prev) => ({
+          ...prev,
+          amount: "Amount: ₹15,000 - ₹1,00,000",
+        }));
+        toast.error("Amount must be between ₹15,000 and ₹1,00,000");
+        return;
+      }
+
+      setErrors((prev) => ({ ...prev, amount: "" }));
+
       const userDataRaw = Cookies.get("userData");
       if (!userDataRaw) {
-        // console.error("User not found in localStorage");
-        toast.error("User not logged in. Please login and try again.");
+        toast.error("Please login and try again");
         return;
       }
 
       const userData = JSON.parse(userDataRaw);
-      // console.log(userData, "userData");
-      const userId = userData?._id;
-      const name = userData?.name;
+      const userId = userData?.data?._id || userData?._id;
+      const name = userData?.data?.name || userData?.name;
 
       if (!userId || !name) {
-        // console.error("User data is incomplete");
-        toast.error("User details are missing. Please contact support.");
-        return;
-      }
-      const numericAmount = Number(amount);
-
-      if (!amount || isNaN(numericAmount) || numericAmount < 15000 || numericAmount > 100000) {
-        setErrors((prev) => ({
-          ...prev,
-          amount: "Amount must be between 15,000 and 1,00,000",
-        }));
+        toast.error("User details missing");
         return;
       }
 
-      // Clear error if valid
-      setErrors((prev) => ({ ...prev, amount: "" }));
-
-      // Step 2: Encrypt user data
-      // const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
-      const secretKey=VITE_PAYMENT_GATEWAY;
-      const encryptedUserId = CryptoJS.AES.encrypt(
-        userId,
-        secretKey
-      ).toString();
-      const encryptedUserName = CryptoJS.AES.encrypt(
-        name,
-        secretKey
-      ).toString();
-
-      const encryptedFrom = CryptoJS.AES.encrypt(
-        "website",
-        secretKey
-      ).toString();
-
+      const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
+      const encryptedUserId = CryptoJS.AES.encrypt(userId, secretKey).toString();
+      const encryptedUserName = CryptoJS.AES.encrypt(name, secretKey).toString();
+      const encryptedFrom = CryptoJS.AES.encrypt("website", secretKey).toString();
       const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
 
-      // Step 3: Sign the payload
       const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
       const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
 
-      // Step 4: Construct the redirect URL
-      // const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
-      const redirectUrl = `http://localhost:5174/paynow?userId=${encodeURIComponent(
+      const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
         encryptedUserId
-      )}&name=${encodeURIComponent(
-        encryptedUserName
-      )}&from=${encodeURIComponent(encryptedFrom)}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
+      )}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(
+        encryptedFrom
+      )}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
 
-      // Step 5: Open the payment page in a new tab
       const paymentWindow = window.open(redirectUrl, "_blank");
 
-      // Step 6: Check if popup was blocked
-      if (
-        !paymentWindow ||
-        paymentWindow.closed ||
-        typeof paymentWindow.closed === "undefined"
-      ) {
-        alert(
-          "Popup blocked! Please allow popups for this site to proceed with payment."
-        );
+      if (!paymentWindow) {
+        toast.error("Please allow popups for this site");
       } else {
-        paymentWindow.focus(); // optional: bring the tab into focus
+        paymentWindow.focus();
+        toast.success("Redirecting to payment...");
       }
     } catch (error) {
-      // console.error("Error in onClickAddMoney:", error);
-      alert("Something went wrong. Please try again or contact support.");
+      toast.error("Something went wrong");
     }
   };
+  // const onClickAddMoney = () => {
+  //   try {
+  //     const userDataRaw = Cookies.get("userData");
+  //     if (!userDataRaw) {
+  //       // console.error("User not found in localStorage");
+  //       toast.error("User not logged in. Please login and try again.");
+  //       return;
+  //     }
+
+  //     const userData = JSON.parse(userDataRaw);
+  //     // console.log(userData, "userData");
+  //     const userId = userData?._id;
+  //     const name = userData?.name;
+
+  //     if (!userId || !name) {
+  //       // console.error("User data is incomplete");
+  //       toast.error("User details are missing. Please contact support.");
+  //       return;
+  //     }
+  //     const numericAmount = Number(amount);
+
+  //     if (!amount || isNaN(numericAmount) || numericAmount < 15000 || numericAmount > 100000) {
+  //       setErrors((prev) => ({
+  //         ...prev,
+  //         amount: "Amount must be between 15,000 and 1,00,000",
+  //       }));
+  //       return;
+  //     }
+
+  //     // Clear error if valid
+  //     setErrors((prev) => ({ ...prev, amount: "" }));
+
+  //     // Step 2: Encrypt user data
+  //     // const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
+  //     const secretKey=VITE_PAYMENT_GATEWAY;
+  //     const encryptedUserId = CryptoJS.AES.encrypt(
+  //       userId,
+  //       secretKey
+  //     ).toString();
+  //     const encryptedUserName = CryptoJS.AES.encrypt(
+  //       name,
+  //       secretKey
+  //     ).toString();
+
+  //     const encryptedFrom = CryptoJS.AES.encrypt(
+  //       "website",
+  //       secretKey
+  //     ).toString();
+
+  //     const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
+
+  //     // Step 3: Sign the payload
+  //     const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
+  //     const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
+
+  //     // Step 4: Construct the redirect URL
+  //     const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
+  //     // const redirectUrl = `http://localhost:5174/paynow?userId=${encodeURIComponent(
+  //       encryptedUserId
+  //     )}&name=${encodeURIComponent(
+  //       encryptedUserName
+  //     )}&from=${encodeURIComponent(encryptedFrom)}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
+
+  //     // Step 5: Open the payment page in a new tab
+  //     const paymentWindow = window.open(redirectUrl, "_blank");
+
+  //     // Step 6: Check if popup was blocked
+  //     if (
+  //       !paymentWindow ||
+  //       paymentWindow.closed ||
+  //       typeof paymentWindow.closed === "undefined"
+  //     ) {
+  //       alert(
+  //         "Popup blocked! Please allow popups for this site to proceed with payment."
+  //       );
+  //     } else {
+  //       paymentWindow.focus(); // optional: bring the tab into focus
+  //     }
+  //   } catch (error) {
+  //     // console.error("Error in onClickAddMoney:", error);
+  //     alert("Something went wrong. Please try again or contact support.");
+  //   }
+  // };
   // Payment method options - Dynamic based on country
   const getPaymentMethods = () => {
     if (isIndian) {
