@@ -544,7 +544,7 @@ const JaimaxLanding = () => {
           className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-center"
         >
           <Link
-            to="/register/"
+            to="/register"
             title="Register on Jaimax - Start your crypto journey"
             className="group relative px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-lime-500 to-green-600 text-white font-semibold text-sm sm:text-base rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 w-full sm:w-auto max-w-xs sm:max-w-none text-center"
           >

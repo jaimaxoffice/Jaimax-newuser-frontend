@@ -14,7 +14,7 @@ const JaimaxContent = () => {
   const currentRound = liveRounds[0];
 
   const handlePresaleClick = () => {
-    navigate("/register/");
+    navigate("/register");
   };
 
   const livePrice = currentRound?.atPriceInr || "0.0000";

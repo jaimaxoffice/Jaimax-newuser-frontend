@@ -1448,7 +1448,7 @@ export default function HumanAssistant({ onclose }) {
     }
 
     if (option === "Register" || option === "Create Account") {
-      window.location.href = "/register/";
+      window.location.href = "/register";
       return;
     }
 
