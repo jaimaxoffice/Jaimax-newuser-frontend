@@ -135,7 +135,7 @@ const maskData = (
       const response = await updateBankDetails(data).unwrap();
 
       if (response.status_code === 200) {
-        toast.success(response.message || "Bank details updated successfully", {
+        toast.success(response.data.message || "Bank details updated successfully", {
           position: "top-center",
         });
         refetch();
@@ -151,12 +151,12 @@ const maskData = (
         
         setShowBankModal(false);
       } else {
-        toast.error(response.message || "Failed to update bank details", {
+        toast.error(response.data.message || "Failed to update bank details", {
           position: "top-center",
         });
       }
     } catch (error) {
-      toast.error(error.message || "An error occurred", {
+      toast.error(error.data.message, {
         position: "top-center",
       });
     } finally {
@@ -614,15 +614,13 @@ const resetForm = () => {
     }
 
       localStorage.setItem("verifier", verifier);
-      // Step 3: Construct the URL with query parameters
       const apiUrl =
         new URL(`https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize?response_type=code
 &client_id=${clientId}&state=oidc_flow&
 redirect_uri=${redirectURI}&
 code_challenge=${challenge}&
 code_challenge_method=S256&dl_flow=signin&acr=pan+aadhaar+mobile 
-&amr=pan+all+aadhaar&scope=files.issueddocs+files.uploadeddocs&pla=Y`); // Replace with your API URL
-      // Step 4: Open the API URL in a new tab
+&amr=pan+all+aadhaar&scope=files.issueddocs+files.uploadeddocs&pla=Y`); 
       window.open(apiUrl.toString(), "_self");
     } catch (err) {
       setErrors(err.message);

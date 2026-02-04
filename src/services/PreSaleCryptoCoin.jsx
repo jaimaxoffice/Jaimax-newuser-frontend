@@ -112,7 +112,7 @@ function PreSaleCryptoCoin() {
           "@type": "Offer",
           "url": "https://www.jaimax.com/best-presale-crypto-token-in-india",
           "priceCurrency": "INR",
-          "price": "0.035",
+          "price": "0.04",
           "priceValidUntil": "2027-08-31",
           "availability": "https://schema.org/InStock",
           "itemCondition": "https://schema.org/NewCondition",

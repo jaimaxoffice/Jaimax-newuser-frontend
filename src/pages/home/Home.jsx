@@ -159,7 +159,7 @@ const Home = () => {
           "@type": "Offer",
           url: "https://www.jaimax.com/best-presale-crypto-token-in-india/",
           priceCurrency: "INR",
-          price: "0.035",
+          price: "0.04",
           availability: "https://schema.org/InStock",
         },
       },

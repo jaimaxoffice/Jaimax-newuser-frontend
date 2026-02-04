@@ -21,6 +21,7 @@ import Cookies from "js-cookie";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import ReferralModal from "../../../../ReusableComponents/modals/referalModal";
+import ReusableTable from "../../../../ReusableComponents/tables/reusableTable";
 const ITEMS_PER_PAGE_OPTIONS = [10, 30, 50];
 
 const CopyToClipboardButton = ({ textToCopy, isMobile = false }) => {
@@ -234,6 +235,124 @@ export default function WalletDashboard() {
       </span>
     );
   };
+
+
+  const columns = [
+    {
+      header: "S.No",
+      render: (row, rowIndex) => (state.currentPage - 1) * state.perPage + rowIndex + 1
+    },
+    {
+      header: "Transaction ID",
+      render: (transaction) => (
+        transaction.screenshotUrl ? (
+          <a
+            href={transaction.screenshotUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-teal-600 hover:text-teal-800 flex items-center space-x-1"
+          >
+            <span className="truncate max-w-24 xl:max-w-32">
+              {transaction.transactionId || "N/A"}
+            </span>
+            <ExternalLink className="w-3 h-3 flex-shrink-0" />
+          </a>
+        ) : (
+          <span className="truncate max-w-24 xl:max-w-32 block">
+            {transaction.transactionId || "N/A"}
+          </span>
+        )
+      )
+    },
+    {
+      header: "Amount",
+      render: (transaction) => (
+        <span className="font-semibold text-teal-700">
+          {transaction.transactionAmount}
+        </span>
+      )
+    },
+    // Conditionally add the Fee column
+    ...(countryCode !== 91 ? [{
+      header: "Fee",
+      render: (transaction) => (
+        <span>{(transaction.transactionFee || 0).toFixed(2)}</span>
+      )
+    }] : []),
+    {
+      header: "Type",
+      render: (transaction) => (
+        <span className="truncate max-w-16 xl:max-w-24 block">
+          {transaction.transactionType || "N/A"}
+        </span>
+      )
+    },
+    {
+      header: "Payment",
+      render: (transaction) => (
+        <span className="truncate max-w-16 xl:max-w-24 block">
+          {transaction.paymentMode || "N/A"}
+        </span>
+      )
+    },
+    {
+      header: "Currency",
+      render: (transaction) => transaction.currency || "N/A"
+    },
+    {
+      header: "Date",
+      render: (transaction) => (
+        <span className="truncate max-w-20 xl:max-w-32 block">
+          {formatDateWithAmPm(transaction.transactionDate)}
+        </span>
+      )
+    },
+    {
+      header: "Status",
+      render: (transaction) => (
+        <span
+          className="text-capitalize font-bold"
+          style={{
+            color:
+              transaction?.transactionStatus?.toLowerCase() === "pending"
+                ? "#daa520"
+                : transaction?.transactionStatus === "Completed"
+                ? "green"
+                : "red",
+          }}
+        >
+          {transaction?.transactionStatus}
+        </span>
+      )
+    },
+    {
+      header: "Reason",
+      render: (transaction) => (
+        <span
+          className="max-w-20 xl:max-w-32 truncate block"
+          title={transaction?.reason}
+        >
+          {transaction?.reason || "N/A"}
+        </span>
+      )
+    },
+    {
+      header: "Updated By",
+      render: (transaction) => (
+        <span className="truncate max-w-16 xl:max-w-24 block">
+          {transaction?.updatedBy?.name || "N/A"}
+        </span>
+      )
+    },
+    {
+      header: "Updated On",
+      render: (transaction) => (
+        <span className="truncate max-w-20 xl:max-w-32 block">
+          {formatDateWithAmPm(transaction?.updatedOn)}
+        </span>
+      )
+    }
+  ];
 
   // Mobile transaction card component
   const TransactionCard = ({ transaction, index }) => (
@@ -484,244 +603,33 @@ export default function WalletDashboard() {
               </div>
             )}
           </div>
-
-          {/* Desktop Table View */}
+          {/* desktop view */}
           <div className="hidden lg:block overflow-x-auto">
-            {transactionData.length > 0 || transactionsLoading ? (
-              <table className="min-w-full divide-y divide-teal-100">
-                <thead className="bg-teal-600 text-xs font-semibold text-white">
-                  <tr>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      S.No
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Transaction ID
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Amount
-                    </th>
-                    {countryCode !== 91 && (
-                      <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                        Fee
-                      </th>
-                    )}
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Type
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Payment
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Currency
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Date
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Status
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Reason
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Updated By
-                    </th>
-                    <th className="px-2 xl:px-3 py-3 text-left uppercase">
-                      Updated On
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-teal-100">
-                  {transactionsLoading
-                    ? Array.from({ length: 10 }).map((_, i) => (
-                        <SkeletonRow key={i} />
-                      ))
-                    : transactionData.map((transaction, index) => (
-                        <tr
-                          key={transaction.id || index}
-                          className="hover:bg-teal-50 transition-colors duration-150 text-xs"
-                        >
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            {(state.currentPage - 1) * state.perPage +
-                              index +
-                              1}
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap  text-gray-900">
-                            {transaction.screenshotUrl ? (
-                              <a
-                                href={transaction.screenshotUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-teal-600 hover:text-teal-800 flex items-center space-x-1"
-                              >
-                                <span className="truncate max-w-24 xl:max-w-32">
-                                  {transaction.transactionId || "N/A"}
-                                </span>
-                                <ExternalLink className="w-3 h-3 flex-shrink-0" />
-                              </a>
-                            ) : (
-                              <span className="truncate max-w-24 xl:max-w-32 block">
-                                {transaction.transactionId || "N/A"}
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap font-semibold text-teal-700">
-                            {transaction.transactionAmount}
-                          </td>
-                          {countryCode !== 91 && (
-                            <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                              {(transaction.transactionFee || 0).toFixed(2)}
-                            </td>
-                          )}
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            <span className="truncate max-w-16 xl:max-w-24 block">
-                              {transaction.transactionType || "N/A"}
-                            </span>
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            <span className="truncate max-w-16 xl:max-w-24 block">
-                              {transaction.paymentMode || "N/A"}
-                            </span>
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            {transaction.currency || "N/A"}
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            <span className="truncate max-w-20 xl:max-w-32 block">
-                              {formatDateWithAmPm(transaction.transactionDate)}
-                            </span>
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap">
-                            <span
-                              className="text-capitalize font-bold"
-                              style={{
-                                color:
-                                  transaction?.transactionStatus?.toLowerCase() ===
-                                  "pending"
-                                    ? "#daa520"
-                                    : transaction?.transactionStatus ===
-                                      "Completed"
-                                    ? "green"
-                                    : "red",
-                              }}
-                            >
-                              {transaction?.transactionStatus}
-                            </span>
-                          </td>
-                          <td
-                            className="px-2 xl:px-3 py-3 text-gray-900 max-w-20 xl:max-w-32 truncate"
-                            title={transaction?.reason}
-                          >
-                            {transaction?.reason || "N/A"}
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            <span className="truncate max-w-16 xl:max-w-24 block">
-                              {transaction?.updatedBy?.name || "N/A"}
-                            </span>
-                          </td>
-                          <td className="px-2 xl:px-3 py-3 whitespace-nowrap text-gray-900">
-                            <span className="truncate max-w-20 xl:max-w-32 block">
-                              {formatDateWithAmPm(transaction?.updatedOn)}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                </tbody>
-              </table>
-            ) : (
-              <div className="px-6 py-12 text-center text-teal-500">
-                <div className="flex flex-col items-center space-y-2">
-                  <ShoppingBag className="w-12 h-12 text-teal-400" />
-                  <p className="text-lg font-medium text-teal-700">
-                    No transactions found
-                  </p>
-                </div>
-              </div>
-            )}
+      {transactionData.length > 0 || transactionsLoading ? (
+        <ReusableTable
+          columns={columns}
+          data={transactionsLoading ? [] : transactionData}
+          isLoading={transactionsLoading}
+        />
+      ) : (
+        <div className="px-6 py-12 text-center text-teal-500">
+          <div className="flex flex-col items-center space-y-2">
+            <ShoppingBag className="w-12 h-12 text-teal-400" />
+            <p className="text-lg font-medium text-teal-700">
+              No transactions found
+            </p>
+          </div>
+        </div>
+      )}
           </div>
 
           {/* Pagination and Per Page Selector */}
-          <div className="px-3 sm:px-6 py-4 bg-gray-50 border-t border-teal-100">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-              <div className="flex flex-col xs:flex-row xs:items-center space-y-2 xs:space-y-0 xs:space-x-4">
-                {/* Per Page Selector */}
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-700 whitespace-nowrap">
-                    Show:
-                  </span>
-                  <select
-                    className="bg-white text-teal-800 border-2 border-teal-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
-                    value={state.perPage}
-                    onChange={(e) =>
-                      handlePerPageChange(parseInt(e.target.value))
-                    }
-                  >
-                    {ITEMS_PER_PAGE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {totalTransactions > 0 && (
-                  <div className="text-sm text-gray-700">
-                    <span className="hidden sm:inline">
-                      Showing {(state.currentPage - 1) * state.perPage + 1} to{" "}
-                      {Math.min(
-                        state.currentPage * state.perPage,
-                        totalTransactions
-                      )}{" "}
-                      of {totalTransactions} transactions
-                    </span>
-                    <span className="sm:hidden">
-                      {(state.currentPage - 1) * state.perPage + 1}-
-                      {Math.min(
-                        state.currentPage * state.perPage,
-                        totalTransactions
-                      )}{" "}
-                      of {totalTransactions}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center sm:justify-end space-x-2">
-                  <button
-                    onClick={handlePrevPage}
-                    disabled={state.currentPage === 1}
-                    className={`flex items-center px-2 sm:px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      state.currentPage === 1
-                        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        : "bg-teal-600 text-white hover:bg-teal-700"
-                    }`}
-                  >
-                    <ChevronLeft className="w-4 h-4 sm:mr-1" />
-                    <span className="hidden sm:inline">Previous</span>
-                  </button>
-
-                  <span className="text-sm text-gray-700 px-2 whitespace-nowrap">
-                    <span className="hidden sm:inline">Page </span>
-                    {state.currentPage} of {totalPages}
-                  </span>
-
-                  <button
-                    onClick={handleNextPage}
-                    disabled={state.currentPage === totalPages}
-                    className={`flex items-center px-2 sm:px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      state.currentPage === totalPages
-                        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        : "bg-teal-600 text-white hover:bg-teal-700"
-                    }`}
-                  >
-                    <span className="hidden sm:inline">Next</span>
-                    <ChevronRight className="w-4 h-4 sm:ml-1" />
-                  </button>
-                </div>
-              )}
-            </div>
+         <div className="flex justify-center">
+            <Pagination 
+              currentPage={state.currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       </div>
