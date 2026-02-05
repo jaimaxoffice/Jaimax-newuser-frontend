@@ -1627,12 +1627,12 @@ const UserDetailsComponent = () => {
               />
             </svg>
           </div>
-          Token Balance
+          JMC Tokens
         </h6>
         <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
           {(userData?.data?.tokens || 0).toFixed(3)}
         </h3>
-        <p className="text-white/60 text-xs mt-1">JMC Tokens</p>
+        {/* <p className="text-white/60 text-xs mt-1">JMC Tokens</p> */}
       </div>
       <div className="relative">
         <img
@@ -1701,7 +1701,7 @@ const UserDetailsComponent = () => {
               />
             </svg>
           </div>
-          USDT Balance
+          USDT Tokens
         </h6>
         <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 truncate">
           ${(userData?.data?.availableUsdt || 0)}

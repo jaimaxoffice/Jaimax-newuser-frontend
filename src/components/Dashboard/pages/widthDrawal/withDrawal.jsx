@@ -1057,7 +1057,6 @@ import {
 import Pagination from "../../../../ReusableComponents/pagination/pagination";
 import { toast } from "../../../../ReusableComponents/Toasts/Toasts";
 import Loader from "../../../../ReusableComponents/Loader/loader";
-// import { useGetSettingQuery } from "./withDrawApiSlice";
 
 const copyToClipboard = (text) => {
   navigator.clipboard.writeText(text);
@@ -1089,7 +1088,7 @@ const TransactionTable = ({
         return "border-green-500 text-green-600 bg-green-50";
       case 0:
         return "border-yellow-500 text-yellow-600 bg-yellow-50";
-      case 2:
+        case 2:
         return "border-red-500 text-red-600 bg-red-50";
       default:
         return "border-gray-400 text-gray-500 bg-gray-50";
@@ -1100,10 +1099,10 @@ const TransactionTable = ({
     switch (status) {
       case 1:
         return "Completed";
-      case 0:
-        return "Pending";
       case 2:
         return "Failed";
+      case 0:
+        return "Pending";
       default:
         return "Unknown";
     }
@@ -1145,7 +1144,7 @@ const TransactionTable = ({
               Transaction ID
             </span>
             <span className="text-xs font-bold text-gray-800 block">
-              {transaction._id ? `...${transaction._id.slice(-8)}` : "-"}
+              {transaction._id ? `${transaction._id}` : "-"}
             </span>
           </div>
         </div>
@@ -1155,7 +1154,6 @@ const TransactionTable = ({
             transaction.status,
           )}`}
         >
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-current mr-1 animate-pulse"></span>
           {getStatusText(transaction.status)}
         </span>
       </div>
@@ -1176,11 +1174,19 @@ const TransactionTable = ({
             </span>
           </div>
           <div className="text-right">
-            <span className="text-xs text-red-500 uppercase block font-medium">
-              Fees
+            <span className="text-[10px] text-teal-500 uppercase block font-semibold">
+            Platform  Fee (INR)
             </span>
-            <span className="text-sm font-bold text-red-600">
+            <span className="text-sm font-bold text-teal-600">
               ₹{transaction.admin_inr_charges?.toFixed(2) || "-"}
+            </span>
+          </div>
+          <div className="text-right">
+            <span className="text-[10px] text-teal-500 uppercase block font-semibold">
+              Platform Fee (USDT)
+            </span>
+            <span className="text-sm font-bold text-teal-600">
+              ${transaction.total_fee_token?.toFixed(2) || "-"}
             </span>
           </div>
         </div>
@@ -1261,8 +1267,8 @@ const TransactionTable = ({
             >
               <option value="">All Status</option>
               <option value="1">Completed</option>
-              <option value="0">Pending</option>
               <option value="2">Failed</option>
+              <option value="0">Pending</option>
             </select>
 
             <div className="relative flex-1">
@@ -1318,12 +1324,16 @@ const TransactionTable = ({
                 <th className="px-3 py-2 text-left text-xs font-medium">
                   Transaction ID
                 </th>
+                 <th className="px-3 py-2 text-right text-xs font-medium">
+                  Token Type
+                </th>
                 <th className="px-3 py-2 text-right text-xs font-medium">
                   Tokens
                 </th>
                 <th className="px-3 py-2 text-right text-xs font-medium">
-                  Token Type
+                  Platform fee (USDT)
                 </th>
+               
                 <th className="px-3 py-2 text-right text-xs font-medium">
                   Amount (INR)
                 </th>
@@ -1331,7 +1341,7 @@ const TransactionTable = ({
                   Rate
                 </th>
                 <th className="px-3 py-2 text-right text-xs font-medium">
-                  Fees
+                   Platform Fee (INR)
                 </th>
                 <th className="px-3 py-2 text-center text-xs font-medium">
                   Date
@@ -1373,34 +1383,33 @@ const TransactionTable = ({
                     <td className="px-3 py-3 text-xs">
                       <div className="flex items-center gap-1">
                         <span
-                          className="truncate max-w-[120px]"
+                          className=" max-w-[140px]"
                           title={transaction._id}
                         >
                           {transaction._id
-                            ? `...${transaction._id.slice(-8)}`
+                            ? `${transaction._id}`
                             : "-"}
                         </span>
-                        {transaction._id && (
-                          <button
-                            onClick={() =>
-                              copyToClipboard(transaction._id, "Transaction ID")
-                            }
-                            className="text-[#1d8d84] hover:text-[#1e8064]"
-                          >
-                            <Copy className="w-3 h-3" />
-                          </button>
-                        )}
+                       
                       </div>
                     </td>
-                    <td className="px-3 py-3 text-right text-xs font-medium">
+                    <td className="px-3 py-3 text-center text-xs font-medium">
+                      {transaction.currency || "-"}
+                    </td>
+                    <td className="px-3 py-3 text-center text-xs font-medium">
                       {transaction.amount_in_token
                         ? `${parseFloat(transaction.amount_in_token).toFixed(2)}`
                         : "-"}
                     </td>
-                    <td className="px-3 py-3 text-right text-xs font-medium">
-                      {transaction.currency || "-"}
+                   
+                  
+                    
+                     <td className="px-3 py-3 text-center text-xs font-medium">
+                      {transaction.total_fee_token
+                        ? `${parseFloat(transaction.total_fee_token).toFixed(2)}`
+                        : "-"}
                     </td>
-                    <td className="px-3 py-3 text-right text-xs font-medium text-gray-600">
+                    <td className="px-3 py-3 text-center text-xs font-medium text-gray-600">
                       ₹{transaction.amount_in_inr?.toFixed(2) || "-"}
                     </td>
                     <td className="px-3 py-3 text-center text-xs">
@@ -1408,7 +1417,7 @@ const TransactionTable = ({
                         ₹{transaction.inr_price || "-"}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-right text-xs text-red-600 font-medium">
+                    <td className="px-3 py-3 text-center text-xs text-teal-600 font-medium">
                       ₹{transaction.admin_inr_charges?.toFixed(2) || "-"}
                     </td>
                     <td className="px-3 py-3 text-center text-xs whitespace-nowrap">
@@ -1466,7 +1475,6 @@ const TransactionTable = ({
   );
 };
 const CryptoWithdrawal = () => {
-  // const [selectedToken, setSelectedToken] = useState("USDT");
   const selectedToken = "USDT";
 
   const [formData, setFormData] = useState({
@@ -1486,8 +1494,6 @@ const CryptoWithdrawal = () => {
   const [debouncedAmount, setDebouncedAmount] = useState("");
 
   const queryString = `page=${state.page}&limit=${state.limit}&status=${selectedStatus}&search=${state.search}`;
-
-  // console.log(selectedStatus)
   const {
     data: historyData,
     isLoading: historyLoading,
@@ -1516,15 +1522,11 @@ const CryptoWithdrawal = () => {
 
   const validate = () => {
     const errs = {};
-
-    // if (!formData.walletAddress)
-    //     errs.walletAddress = "Wallet address is required";
-
     if (!formData.amount || Number(formData.amount) <= 0)
       errs.amount = "Enter valid amount";
 
     if (Number(formData.amount) > Number(walletData?.estimatedTokenAmount || 0))
-      errs.amount = "Insufficient balance";
+      errs.amount = "Insufficient INR balance";
 
     return errs;
   };
@@ -1803,18 +1805,12 @@ const CryptoWithdrawal = () => {
                       Important Notes
                     </h3>
                     <ul className="text-xs text-yellow-700 space-y-1">
-                      <li>
-                        • Verify wallet address before withdrawal - transactions
-                        cannot be reversed
-                      </li>
+                     
                       <li>• Ensure wallet supports BSC (BEP20) network</li>
                       <li>
                         • Platform fee {settings?.withdrawal_commission_usd || 0}%
                         and network fee {settings?.network_fee_token || 0}% will be deducted from your withdrawal
                       </li>
-
-
-                     
                       <li>• Complete KYC verification for withdrawals</li>
                       <li>
                         • Withdrawal amount will be deducted from your INR
