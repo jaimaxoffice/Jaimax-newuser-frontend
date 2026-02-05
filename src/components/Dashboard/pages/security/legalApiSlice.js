@@ -5,7 +5,6 @@ export const legalApiSlice = apiSlice.injectEndpoints({
    
     getLegal: builder.query({
       query: (queryParams) => {
-        // console.log(" queryParams", queryParams);
         return {
           url: `/legal/get_legal`,
           method: "GET",

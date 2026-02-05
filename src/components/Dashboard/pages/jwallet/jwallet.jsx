@@ -36,7 +36,7 @@ import icon2 from "../../../../assets/whitejaimaxlogo.webp";
 import "./jwallet.css";
 import SecureRevealComponent from "./SecureRevealComponent.jsx";
 import { Check, CheckCheck, Copy } from "lucide-react";
-
+import usdt from "../../../../assets/usdt.png"
 // Swap state reducer for better state management
 const initialSwapState = {
   sellAmount: "",
@@ -1551,113 +1551,180 @@ const UserDetailsComponent = () => {
 
             {userData?.success && !isUserDataLoading && (
               <div className="animate-fadeIn space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {/* Wallet Address Card */}
-                  <div className="bg-white rounded-2xl shadow-md p-5 hover:shadow-lg transition-all duration-300 border border-teal-100">
-                    <div>
-                      <label className="text-teal-600 text-sm font-semibold mb-2 block flex items-center gap-2">
-                        <svg
-                          className="w-4 h-4"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                        </svg>
-                        Wallet Address
-                      </label>
-                      <div className="flex group">
-                        <input
-                          type="text"
-                          className="flex-1 px-3 py-2 bg-white text-gray-700 rounded-l-lg text-sm border border-gray-200 focus:border-teal-500 focus:outline-none transition-colors"
-                          value={userData.data.walletadress}
-                          readOnly
-                        />
-                        <button
-                          onClick={() =>
-                            handleCopyToClipboard(
-                              userData.data.walletadress,
-                              "Wallet Address"
-                            )
-                          }
-                          className="px-3 py-2 bg-teal-500 text-white rounded-r-lg hover:bg-teal-600 transition-all duration-200 group-hover:shadow-lg"
-                          title="Copy to clipboard"
-                        >
-                          <svg
-                            className="w-5 h-5 transform group-hover:scale-110 transition-transform"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+  
+  {/* Wallet Address Card */}
+  <div className="bg-white rounded-2xl shadow-md p-4 md:p-5 hover:shadow-lg transition-all duration-300 border border-teal-100">
+    <div>
+      <label className="text-teal-600 text-xs md:text-sm font-semibold mb-2 flex items-center gap-2">
+        <div className="p-1.5 bg-teal-100 rounded-lg">
+          <svg
+            className="w-4 h-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+          </svg>
+        </div>
+        Wallet Address
+      </label>
+      <div className="flex group">
+        <input
+          type="text"
+          className="flex-1 min-w-0 px-3 py-2 bg-gray-50 text-gray-700 rounded-l-lg text-xs md:text-sm border border-gray-200 focus:border-teal-500 focus:outline-none transition-colors truncate"
+          value={userData?.data?.walletadress || "Not Available"}
+          readOnly
+        />
+        <button
+          onClick={() =>
+            handleCopyToClipboard(
+              userData?.data?.walletadress,
+              "Wallet Address"
+            )
+          }
+          className="px-3 py-2 bg-teal-500 text-white rounded-r-lg hover:bg-teal-600 transition-all duration-200 group-hover:shadow-lg flex-shrink-0"
+          title="Copy to clipboard"
+        >
+          <svg
+            className="w-4 h-4 md:w-5 md:h-5 transform group-hover:scale-110 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
 
-                  {/* Token Balance Card */}
-                  <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-md p-5 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                    <div className="flex items-center justify-between relative z-10">
-                      <div>
-                        <h6 className="text-white text-sm font-semibold mb-1 flex items-center gap-2">
-                          Token Balance
-                        </h6>
-                        <h3 className="text-2xl md:text-3xl font-bold text-white">
-                          {userData?.data?.tokens.toFixed(3)}
-                        </h3>
-                      </div>
-                      <div className="relative">
-                        <img
-                          src={icon2}
-                          alt="JMC"
-                          className="w-12 h-12 md:w-14 md:h-14 animate-float"
-                        />
-                        <div className="absolute inset-0 bg-white opacity-20 rounded-full blur-xl"></div>
-                      </div>
-                    </div>
-                  </div>
+  {/* Token Balance Card */}
+  <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl shadow-md p-4 md:p-5 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+    {/* Background decoration */}
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute -right-4 -top-4 w-20 h-20 bg-white rounded-full"></div>
+      <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-white rounded-full"></div>
+    </div>
+    
+    <div className="flex items-center justify-between relative z-10">
+      <div>
+        <h6 className="text-white/80 text-xs md:text-sm font-semibold mb-1 flex items-center gap-2">
+          <div className="p-1.5 bg-white/20 rounded-lg">
+            <svg
+              className="w-4 h-4 text-white"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.736 6.979C9.208 6.193 9.696 6 10 6c.304 0 .792.193 1.264.979a1 1 0 001.715-1.029C12.279 4.784 11.232 4 10 4s-2.279.784-2.979 1.95c-.285.475-.507 1-.67 1.55H6a1 1 0 000 2h.013a9.358 9.358 0 000 1H6a1 1 0 100 2h.351c.163.55.385 1.075.67 1.55C7.721 15.216 8.768 16 10 16s2.279-.784 2.979-1.95a1 1 0 10-1.715-1.029c-.472.786-.96.979-1.264.979-.304 0-.792-.193-1.264-.979a4.265 4.265 0 01-.264-.521H10a1 1 0 100-2H8.017a7.36 7.36 0 010-1H10a1 1 0 100-2H8.472c.08-.185.167-.36.264-.521z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          Token Balance
+        </h6>
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
+          {(userData?.data?.tokens || 0).toFixed(3)}
+        </h3>
+        <p className="text-white/60 text-xs mt-1">JMC Tokens</p>
+      </div>
+      <div className="relative">
+        <img
+          src={icon2}
+          alt="JMC"
+          className="w-10 h-10 md:w-14 md:h-14 animate-float"
+        />
+        <div className="absolute inset-0 bg-white opacity-20 rounded-full blur-xl"></div>
+      </div>
+    </div>
+  </div>
 
-                  {/* INR Balance Card */}
-                  <div className="bg-white rounded-2xl shadow-md p-5 hover:shadow-lg transition-all duration-300 border border-teal-100 relative overflow-hidden md:col-span-2 xl:col-span-1">
-                    <div className="absolute inset-0 bg-teal-500 opacity-5"></div>
-                    <div className="relative z-10">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h6 className="text-teal-600 text-sm font-semibold mb-1 flex items-center gap-2">
-                            <svg
-                              className="w-4 h-4"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                              <path
-                                fillRule="evenodd"
-                                d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            Live Price
-                          </h6>
-                          <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
-                            ₹
-                            {(
-                              userData?.data.walletBalance +
-                              liveRounds[0]?.atPriceInr * userData?.data.tokens
-                            ).toFixed(4)}
-                          </h3>
-                        </div>
-                        <span className="px-3 py-1 bg-teal-100 text-teal-600 rounded-full text-sm font-semibold">
-                          INR
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  {/* Live Price Card */}
+  <div className="bg-white rounded-2xl shadow-md p-4 md:p-5 hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
+    <div className="flex items-center justify-between">
+      <div className="flex-1 min-w-0">
+        <h6 className="text-teal-600 text-xs md:text-sm font-semibold mb-1 flex items-center gap-2">
+          <div className="p-1.5 bg-teal-100 rounded-lg">
+            <svg
+              className="w-4 h-4"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+              <path
+                fillRule="evenodd"
+                d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          Live Price
+        </h6>
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 truncate">
+          ₹{(
+            (userData?.data?.walletBalance || 0) +
+            (liveRounds?.[0]?.atPriceInr || 0) * (userData?.data?.tokens || 0)
+          ).toFixed(4)}
+        </h3>
+       
+      </div>
+      <span className="px-2 py-1 md:px-3 md:py-1.5 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-full text-xs md:text-sm font-semibold shadow-sm flex-shrink-0">
+        INR
+      </span>
+    </div>
+    {/* Bottom accent */}
+    {/* <div className="h-1 bg-gradient-to-r from-teal-400 to-teal-600 -mx-5 mt-4 -mb-5"></div> */}
+  </div>
+
+  {/* USDT Balance Card */}
+  <div className="bg-white rounded-2xl shadow-md p-4 md:p-5 hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
+    <div className="flex items-center justify-between">
+      <div className="flex-1 min-w-0">
+        <h6 className="text-teal-600 text-xs md:text-sm font-semibold mb-1 flex items-center gap-2">
+          <div className="p-1.5 bg-blue-100 rounded-lg">
+            <svg
+              className="w-4 h-4"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+              <path
+                fillRule="evenodd"
+                d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          USDT Balance
+        </h6>
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 truncate">
+          ${(userData?.data?.availableUsdt || 0)}
+        </h3>
+      
+      </div>
+     <div className="relative">
+        <img
+          src={usdt}
+          alt="JMC"
+          className="w-10 h-10 md:w-14 md:h-14 animate-float"
+        />
+        <div className="absolute inset-0 bg-white opacity-20 rounded-full blur-xl"></div>
+      </div>
+    </div>
+    {/* Bottom accent */}
+    {/* <div className="h-1 bg-gradient-to-r from-teal-400 to-teal-600 -mx-5 mt-4 -mb-5"></div> */}
+  </div>
+
+
+
+
+</div>
                 {/* Transaction History */}
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-teal-100">
                   <div className="px-6 py-4 border-b border-teal-100">
