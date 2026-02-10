@@ -1678,8 +1678,7 @@ const UserDetailsComponent = () => {
         INR
       </span>
     </div>
-    {/* Bottom accent */}
-    {/* <div className="h-1 bg-gradient-to-r from-teal-400 to-teal-600 -mx-5 mt-4 -mb-5"></div> */}
+   
   </div>
 
   {/* USDT Balance Card */}
@@ -1703,9 +1702,10 @@ const UserDetailsComponent = () => {
           </div>
           USDT Tokens
         </h6>
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 truncate">
-          ${(userData?.data?.availableUsdt || 0)}
-        </h3>
+       <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 truncate">
+  ${Number(userData?.data?.availableUsdt || 0).toFixed(4)}
+</h3>
+
       
       </div>
      <div className="relative">

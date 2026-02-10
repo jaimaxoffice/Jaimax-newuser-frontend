@@ -184,13 +184,7 @@ const CoinPricePopup = () => {
       const inRange = isWithinDateRange();
       const dismissed = isDismissed();
 
-      console.log("===== Popup Check =====");
-      console.log("Current Time:", new Date().toString());
-      console.log("Start Date:", START_DATE.toString());
-      console.log("End Date:", END_DATE.toString());
-      console.log("Is In Range:", inRange);
-      console.log("Is Dismissed:", dismissed);
-      console.log("=======================");
+    
 
       if (inRange && !dismissed) {
         setShowPopup(true);

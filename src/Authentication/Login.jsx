@@ -6566,7 +6566,7 @@ import {
   CreditCard,
   ChevronRight,
 } from "lucide-react";
-import icon from "../assets/Images/greencoin.webp";
+import icon from "../assets/loginlogo.png";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import {

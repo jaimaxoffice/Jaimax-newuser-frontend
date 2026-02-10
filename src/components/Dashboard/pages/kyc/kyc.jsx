@@ -10,12 +10,7 @@ import CryptoJS from "crypto-js";
 import DigiLockerModal from "./DigiLockerModal";
 import BankDetailsModal from "./BankDetailsModal";
 
-import {
-  useGetKycDataMutation,
-  useGetkycDetailsQuery,
-  useKycaddMutation,
-  useUpdateBankDetailsMutation,
-} from "./kycApiSlice";
+import {useGetKycDataMutation,useGetkycDetailsQuery,useKycaddMutation,useUpdateBankDetailsMutation,} from "./kycApiSlice";
 import Loader from "../../../../ReusableComponents/Loader/loader";
 
 const KycInformation = () => {

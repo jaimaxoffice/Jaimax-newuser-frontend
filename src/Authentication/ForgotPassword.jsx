@@ -7,7 +7,7 @@ import {
 } from "./authApiSlice";
 import { MailIcon, ArrowLeft, CheckCircle, AlertCircle, LockKeyhole, ShieldCheck } from "lucide-react";
 // import logo from "../assets/Images/jaimaxcoin.png";
-import logo from '../assets/Images/greencoin.webp'
+import logo from '../assets/loginlogo.png'
 
 export default function ForgotPassword() {
   const navigate = useNavigate();

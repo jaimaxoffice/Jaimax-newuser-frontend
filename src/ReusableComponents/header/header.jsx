@@ -438,12 +438,7 @@ const Header = React.memo(({ onMenuClick, isSidebarOpen, isMobile }) => {
   }, [isDropdownOpen]);
 
   // Debug: Log the data sources (remove in production)
-  useEffect(() => {
-    console.log("Cookie Data:", cookieData);
-    console.log("API User Data:", userData);
-    console.log("Username:", username);
-    console.log("Email:", email);
-  }, [cookieData, userData, username, email]);
+ 
 
   return (
     <header
