@@ -969,7 +969,7 @@ const HomeAbout = () => {
                       <span className="text-red-400 text-sm">Failed</span>
                     ) : tokenHolders ? (
                       // <h2 className="text-3xl font-black text-white">{tokenHolders}</h2>
-                      <h2 className="text-3xl font-black text-white">26.3k</h2>
+                      <h2 className="text-3xl font-black text-white">27.51k</h2>
                     ) : (
                       <span className="text-gray-500 text-3xl">--</span>
                     )}

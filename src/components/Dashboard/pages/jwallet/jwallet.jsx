@@ -504,11 +504,7 @@ const UserDetailsComponent = () => {
       if (res.status_code !== 200)
         throw new Error(res?.message || "Unexpected response");
 
-      if (!res?.data?.shortageResolved) {
-        setErrorMessage("Insufficient coins available in ICO rounds");
-        return;
-      }
-
+    
       setPurchaseCoinsBreakup({
         quoteId: res.data.quoteId,
         pricePerJmcInInr: res.data.pricePerJmcInInr,

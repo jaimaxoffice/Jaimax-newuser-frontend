@@ -584,7 +584,7 @@ import BuyHistory from "./components/Dashboard/pages/buyHistory/buyHistory";
 import Security from "./components/Dashboard/pages/security/security";
 import Profile from "./components/Dashboard/pages/profile/profile";
 import Kyc from "./components/Dashboard/pages/kyc/kyc";
-import WithDrawal from "./components/Dashboard/pages/widthDrawal/UsdtWithdrawal";
+import WithDrawal from "./components/Dashboard/pages/widthDrawal/WithdrawalRoute";
 import Support, {SupportChart,} from "./components/Dashboard/pages/support/support";
 import AddMoneyToWallet from "./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet";
 import UserMeetingsShowcase from "./components/Dashboard/pages/Meetings/Zoommeetings";
