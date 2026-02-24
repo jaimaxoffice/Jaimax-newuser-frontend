@@ -513,12 +513,12 @@ const Header = React.memo(({ onMenuClick, isSidebarOpen, isMobile }) => {
   </button>
 
   {/* Online indicator (outside button, but click-through) */}
-  <span
+  {/* <span
     className="absolute bottom-1.5 right-1 translate-x-1/4 translate-y-1/4
                w-2.5 h-2.5 sm:w-3 sm:h-3
                bg-green-500 border-2 border-[#085358] rounded-full
                z-50 pointer-events-none"
-  />
+  /> */}
 
   {isDropdownOpen && (
     <div className="absolute right-0 mt-2 z-50">

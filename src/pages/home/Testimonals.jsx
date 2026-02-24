@@ -1,6 +1,6 @@
 import rajkumar from "../../assets/Rajkumar.webp";
 import mahendar from "../../assets/mahender.webp";
-import krishnamraju from "../../assets/krishnamraju.webp";
+import krishnamraju from "../../assets/krishnamraju.jpeg";
 import shekar from "../../assets/Shekar.jpg"
 import anjanelu from "../../assets/B.veeranjaneyulu.jpg"
 import Ratnam from "../../assets/Ratnam.jpg";

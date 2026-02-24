@@ -11,9 +11,7 @@ const baseQuery = fetchBaseQuery({
       "GET, POST, PUT,PATCH, DELETE, OPTIONS"
     );
 
-    // const token = localStorage.getItem("token");
     const token = Cookies.get("token");
-    // If we have a token set in state, let's assume that we should be passing it.
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
@@ -55,9 +53,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
     Object.keys(Cookies.get()).forEach(function(cookieName) {
   Cookies.remove(cookieName);
 });
-    // Handle logout or other custom logic
-    // console.error("Unauthorized: Logging out");
-    // Optionally dispatch an action or navigate the user
   }
 
   return result;
@@ -67,7 +62,7 @@ export const apiSlice = createApi({
   reducerPath: "apiSlice",
   baseQuery: baseQueryWithReAuth,
   tagTypes: ["getComment", "updateDetails", "getTicket", "shareholder","WealthPlan","WITHDRAW_HISTORY", "WITHDRAW_LIST","withdrawal"],
-  refetchOnFocus: false, // Avoid reload when switching tabs
+  refetchOnFocus: false, 
   refetchOnReconnect: true,
   endpoints: (builder) => ({}),
 });
