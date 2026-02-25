@@ -144,3 +144,10 @@ html {
   background: #14b8a6 !important;
   color: white !important;
 }
+/* Add this at the END of your index.css */
+html,
+body,
+#root {
+  background-color: #085056 !important;
+  min-height: 100vh;
+}

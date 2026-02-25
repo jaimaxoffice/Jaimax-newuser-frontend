@@ -37,9 +37,7 @@ const Loader = () => {
         />
       </div>
 
-      <p className="mt-8 text-lg tracking-wide opacity-80">
-        Loading...
-      </p>
+      
     </div>
   );
 };
