@@ -489,23 +489,71 @@ const handleSubmit = async (e) => {
 
   // Card payment handler
   const onClickAddMoney = () => {
+    // try {
+    //   const numericAmount = Number(amount);
+    //   if (
+    //     !amount ||
+    //     isNaN(numericAmount) ||
+    //     numericAmount < 15000 ||
+    //     numericAmount > 100000
+    //   ) {
+    //     setErrors((prev) => ({
+    //       ...prev,
+    //       amount: "Amount: ₹15,000 - ₹1,00,000",
+    //     }));
+    //     toast.error("Amount must be between ₹15,000 and ₹1,00,000");
+    //     return;
+    //   }
+
+    //   setErrors((prev) => ({ ...prev, amount: "" }));
+
+    //   const userDataRaw = Cookies.get("userData");
+    //   if (!userDataRaw) {
+    //     toast.error("Please login and try again");
+    //     return;
+    //   }
+
+    //   const userData = JSON.parse(userDataRaw);
+    //   const userId = userData?.data?._id || userData?._id;
+    //   const name = userData?.data?.name || userData?.name;
+
+    //   if (!userId || !name) {
+    //     toast.error("User details missing");
+    //     return;
+    //   }
+
+    //   const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
+    //   const encryptedUserId = CryptoJS.AES.encrypt(userId, secretKey).toString();
+    //   const encryptedUserName = CryptoJS.AES.encrypt(name, secretKey).toString();
+    //   const encryptedFrom = CryptoJS.AES.encrypt("website", secretKey).toString();
+    //   const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
+
+    //   const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
+    //   const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
+
+    //   const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
+    //     encryptedUserId
+    //   )}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(
+    //     encryptedFrom
+    //   )}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
+
+    //   const paymentWindow = window.open(redirectUrl, "_blank");
+
+    //   if (!paymentWindow) {
+    //     toast.error("Please allow popups for this site");
+    //   } else {
+    //     paymentWindow.focus();
+    //     toast.success("Redirecting to payment...");
+    //   }
+    // } 
     try {
       const numericAmount = Number(amount);
-      if (
-        !amount ||
-        isNaN(numericAmount) ||
-        numericAmount < 15000 ||
-        numericAmount > 100000
-      ) {
-        setErrors((prev) => ({
-          ...prev,
-          amount: "Amount: ₹15,000 - ₹1,00,000",
-        }));
+
+      if (!amount || isNaN(numericAmount) || numericAmount < 15000 || numericAmount > 100000) {
+        setErrors(prev => ({ ...prev, amount: "Amount: ₹15,000 - ₹1,00,000" }));
         toast.error("Amount must be between ₹15,000 and ₹1,00,000");
         return;
       }
-
-      setErrors((prev) => ({ ...prev, amount: "" }));
 
       const userDataRaw = Cookies.get("userData");
       if (!userDataRaw) {
@@ -516,6 +564,8 @@ const handleSubmit = async (e) => {
       const userData = JSON.parse(userDataRaw);
       const userId = userData?.data?._id || userData?._id;
       const name = userData?.data?.name || userData?.name;
+      const email = userData?.data?.email || userData?.email;
+      const phone = userData?.data?.phone || userData?.phone;
 
       if (!userId || !name) {
         toast.error("User details missing");
@@ -523,19 +573,22 @@ const handleSubmit = async (e) => {
       }
 
       const secretKey = "6LfJPggqAAAAAKjkkCmWhGcHgvudxBl4519iceGa";
-      const encryptedUserId = CryptoJS.AES.encrypt(userId, secretKey).toString();
-      const encryptedUserName = CryptoJS.AES.encrypt(name, secretKey).toString();
-      const encryptedFrom = CryptoJS.AES.encrypt("website", secretKey).toString();
-      const encryptedAmount = CryptoJS.AES.encrypt(amount, secretKey).toString();
 
-      const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}`;
+      const safeEncrypt = (value) =>
+        CryptoJS.AES.encrypt(String(value ?? ""), secretKey).toString();
+
+      const encryptedUserId = safeEncrypt(userId);
+      const encryptedUserName = safeEncrypt(name);
+      const encryptedFrom = safeEncrypt("website");
+      const encryptedAmount = safeEncrypt(numericAmount);
+      const encryptedEmail = safeEncrypt(email);
+      const encryptedPhone = safeEncrypt(phone);
+
+      const payload = `${encryptedUserId}|${encryptedUserName}|${encryptedAmount}|${encryptedEmail}|${encryptedPhone}`;
       const signature = CryptoJS.HmacSHA256(payload, secretKey).toString();
 
-      const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(
-        encryptedUserId
-      )}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(
-        encryptedFrom
-      )}&amount=${encodeURIComponent(encryptedAmount)}&signature=${signature}`;
+      const redirectUrl = `https://www.jaisviksolutions.com/paynow?userId=${encodeURIComponent(encryptedUserId)}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(encryptedFrom)}&amount=${encodeURIComponent(encryptedAmount)}&email=${encodeURIComponent(encryptedEmail)}&phone=${encodeURIComponent(encryptedPhone)}&signature=${signature}`;
+      // const redirectUrl = `https://g19vf25k-5174.inc1.devtunnels.ms/paynow?userId=${encodeURIComponent(encryptedUserId)}&name=${encodeURIComponent(encryptedUserName)}&from=${encodeURIComponent(encryptedFrom)}&amount=${encodeURIComponent(encryptedAmount)}&email=${encodeURIComponent(encryptedEmail)}&phone=${encodeURIComponent(encryptedPhone)}&signature=${signature}`;
 
       const paymentWindow = window.open(redirectUrl, "_blank");
 
@@ -545,7 +598,9 @@ const handleSubmit = async (e) => {
         paymentWindow.focus();
         toast.success("Redirecting to payment...");
       }
-    } catch (error) {
+
+    }
+    catch (error) {
       toast.error("Something went wrong");
     }
   };

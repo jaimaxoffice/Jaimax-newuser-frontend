@@ -1111,6 +1111,8 @@ const InrTransactionTable = ({
         return "border-yellow-500 text-yellow-600 bg-yellow-50";
       case 2:
         return "border-red-500 text-red-600 bg-red-50";
+      case 4: 
+        return "border-yellow-500 text-yellow-600 bg-yellow-50";
       default:
         return "border-gray-400 text-gray-500 bg-gray-50";
     }
@@ -1124,6 +1126,8 @@ const InrTransactionTable = ({
         return "Pending";
       case 2:
         return "Rejected";
+      case 4:
+        return "Under Processing";
       default:
         return "Unknown";
     }
@@ -1389,6 +1393,7 @@ const InrTransactionTable = ({
           <option value="1">Approved</option>
           <option value="0">Pending</option>
           <option value="2">Rejected</option>
+          <option value="4">Under Processing</option>
         </select>
         <div className="relative flex-1">
           <input
