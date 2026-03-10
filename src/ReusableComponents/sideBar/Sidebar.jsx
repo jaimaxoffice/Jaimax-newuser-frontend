@@ -388,7 +388,7 @@
 // //             {navItems.map((item) => {
 // //               const IconComponent = item.icon;
 // //               const active = isActive(item.path);
-              
+
 // //               return (
 // //                 <button
 // //                   key={item.name}
@@ -458,7 +458,7 @@
 // //           </button>
 // //         </div>
 
-        
+
 // //       </aside>
 // //     </>
 // //   );
@@ -726,7 +726,7 @@
 //             `}
 //           >
 //             <HiOutlineLogout className={`flex-shrink-0 ${(screenSize !== "desktop" || !isCollapsed) ? "text-xl" : "text-2xl"}`} />
-            
+
 //             {(screenSize !== "desktop" || !isCollapsed) && (
 //               <span className="ml-3 text-sm font-medium">Logout</span>
 //             )}
@@ -762,6 +762,7 @@ import {
   HiOutlineShieldCheck,
   HiOutlineIdentification,
   HiOutlineCash,
+  HiUserGroup ,
   HiOutlineChatAlt2,
   HiOutlineLogout,
   HiOutlineVideoCamera,
@@ -770,6 +771,7 @@ import {
 } from "react-icons/hi";
 import { useCallback } from "react";
 import { Wallet, UserRound, ChevronLeft, ChevronRight } from "lucide-react";
+
 import logo from "../../assets/Images/jaimaxlogo1.svg";
 import logo2 from "../../assets/welcomeProfile.svg";
 
@@ -777,6 +779,8 @@ const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: HiOutlineViewGrid },
   { name: "Wallet", path: "/wallet", icon: Wallet, size: 18 },
   { name: "Buy History", path: "/buy-history", icon: HiOutlineChartBar },
+  { name: "Jaimax Community", path: "/community", icon:HiUserGroup  },
+
   { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
   { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
   { name: "Profile", path: "/profile", icon: UserRound, size: 18 },
@@ -852,9 +856,8 @@ function Sidebar({
       <div className="flex items-center justify-between h-16 px-4 border-b border-white/10 flex-shrink-0">
         {/* Logo */}
         <div
-          className={`flex items-center ${
-            !isMobile && isCollapsed ? "justify-center w-full" : ""
-          }`}
+          className={`flex items-center ${!isMobile && isCollapsed ? "justify-center w-full" : ""
+            }`}
         >
           {showLabels ? (
             <img src={logo} alt="Jaimax Logo" className="h-12 object-contain" />
@@ -916,21 +919,19 @@ function Sidebar({
                   w-full relative flex items-center font-medium 
                   transition-all duration-200 rounded-xl group
                   ${showLabels ? "px-4 py-3 justify-start" : "p-3 justify-center"}
-                  ${
-                    active
-                      ? "text-white bg-white/20"
-                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  ${active
+                    ? "text-white bg-white/20"
+                    : "text-white/70 hover:text-white hover:bg-white/10"
                   }
                 `}
               >
                 {/* Active indicator */}
                 {active && (
                   <span
-                    className={`absolute bg-white rounded-full ${
-                      showLabels
+                    className={`absolute bg-white rounded-full ${showLabels
                         ? "left-0 top-1/2 -translate-y-1/2 h-8 w-1"
                         : "bottom-1 left-1/2 -translate-x-1/2 h-1 w-6"
-                    }`}
+                      }`}
                   />
                 )}
 

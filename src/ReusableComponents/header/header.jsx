@@ -95,9 +95,9 @@
 // const Header = React.memo(() => {
 //   const location = useLocation();
 //   const title = useMemo(() => routeTitles[location.pathname] || "Dashboard", [location.pathname]);
-  
+
 //   const { data: userData, isLoading, error } = useUserDataQuery();
-  
+
 //   // Parse cookies once and memoize the result
 //   const cookieUserData = useMemo(() => {
 //     try {
@@ -108,10 +108,10 @@
 //       return null;
 //     }
 //   }, []);
-  
+
 //   const id = useMemo(() => cookieUserData?.username, [cookieUserData]);
 //   const mail = useMemo(() => cookieUserData?.email, [cookieUserData]);
-  
+
 //   // Memoize profile image
 //   const profileImage = useMemo(() => userData?.data?.profile, [userData?.data?.profile]);
 
@@ -257,6 +257,7 @@ const routeTitles = {
   "/my-team": "My Total Team",
   "/shareholders": "Share Holders",
   "/buy-history": "Buy History",
+  "/community": "Community",
   "/security": "Security",
   "/profile": "Profile",
   "/kyc-information": "KYC",
@@ -362,10 +363,10 @@ const Header = React.memo(({ onMenuClick, isSidebarOpen, isMobile }) => {
       // Get userData cookie (might contain username, email, etc.)
       const userDataCookie = Cookies.get("userData");
       const parsedUserData = userDataCookie ? JSON.parse(userDataCookie) : {};
-      
+
       // Get separate email cookie (fallback)
       const emailCookie = Cookies.get("email");
-      
+
       return {
         userData: parsedUserData,
         emailCookie: emailCookie
@@ -438,7 +439,7 @@ const Header = React.memo(({ onMenuClick, isSidebarOpen, isMobile }) => {
   }, [isDropdownOpen]);
 
   // Debug: Log the data sources (remove in production)
- 
+
 
   return (
     <header
@@ -476,7 +477,7 @@ const Header = React.memo(({ onMenuClick, isSidebarOpen, isMobile }) => {
           <p className="text-xs sm:text-sm font-semibold truncate max-w-[100px] sm:max-w-[150px] md:max-w-[180px]">
             {username}
           </p>
-          
+
           {/* Email - Hidden on very small screens */}
           {email && (
             <p className="text-[10px] sm:text-xs text-white/60 truncate max-w-[100px] sm:max-w-[150px] md:max-w-[180px]">
@@ -486,46 +487,46 @@ const Header = React.memo(({ onMenuClick, isSidebarOpen, isMobile }) => {
         </div>
 
         {/* Avatar and Dropdown */}
-<div className="relative" ref={dropdownRef}>
-  <button
-    onClick={handleAvatarClick}
-    className="relative w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={handleAvatarClick}
+            className="relative w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11
                rounded-full overflow-hidden
                border-2 border-white/30 hover:border-white/60 transition-colors
                focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2
                focus:ring-offset-[#085358] flex-shrink-0"
-    aria-label="User menu"
-  >
-    {isLoading ? (
-      <div className="w-full h-full bg-teal-300/30 animate-pulse" />
-    ) : profileImage ? (
-      <img
-        src={profileImage}
-        alt="Profile"
-        className="w-full h-full object-cover"
-        loading="lazy"
-      />
-    ) : (
-      <div className="w-full h-full bg-teal-600 flex items-center justify-center">
-        <FaUser className="text-white text-sm sm:text-base md:text-lg" />
-      </div>
-    )}
-  </button>
+            aria-label="User menu"
+          >
+            {isLoading ? (
+              <div className="w-full h-full bg-teal-300/30 animate-pulse" />
+            ) : profileImage ? (
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div className="w-full h-full bg-teal-600 flex items-center justify-center">
+                <FaUser className="text-white text-sm sm:text-base md:text-lg" />
+              </div>
+            )}
+          </button>
 
-  {/* Online indicator (outside button, but click-through) */}
-  {/* <span
+          {/* Online indicator (outside button, but click-through) */}
+          {/* <span
     className="absolute bottom-1.5 right-1 translate-x-1/4 translate-y-1/4
                w-2.5 h-2.5 sm:w-3 sm:h-3
                bg-green-500 border-2 border-[#085358] rounded-full
                z-50 pointer-events-none"
   /> */}
 
-  {isDropdownOpen && (
-    <div className="absolute right-0 mt-2 z-50">
-      <DropdownMenu onClose={handleCloseDropdown} onLogout={handleLogout} />
-    </div>
-  )}
-</div>
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 z-50">
+              <DropdownMenu onClose={handleCloseDropdown} onLogout={handleLogout} />
+            </div>
+          )}
+        </div>
 
       </div>
     </header>

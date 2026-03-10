@@ -264,6 +264,7 @@ import FloatingWhatsapp from "./global/FloatingWhatsapp";
 import { ToastContainer } from "./ReusableComponents/Toasts/Toasts";
 import ErrorBoundary from "./pages/chatSupport/ErrorBoundary";
 import PageLoader from "./ReusableComponents/Loader/loader";
+import GroupChatApp from "./components/Dashboard/pages/jaimaxcommunity/mainchatGroup";
 
 // Lazy loaded components
 const CoinPricePopup = lazy(() => import("./ReusableComponents/popups/Countdown"));
@@ -325,14 +326,14 @@ const ChatButton = ({ isOpen, onClick }) => (
   >
     {isOpen ? (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-           viewBox="0 0 24 24" stroke="#085056" strokeWidth={3}>
+        viewBox="0 0 24 24" stroke="#085056" strokeWidth={3}>
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
       </svg>
     ) : (
       <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"
-           viewBox="0 0 24 24" fill="none" stroke="#085056" strokeWidth={2}
-           strokeLinecap="round" strokeLinejoin="round">
+        viewBox="0 0 24 24" fill="none" stroke="#085056" strokeWidth={2}
+        strokeLinecap="round" strokeLinejoin="round">
         <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
         <path d="M8 12h.01" />
         <path d="M12 12h.01" />
@@ -348,7 +349,7 @@ const App = () => {
   const [chatOpen, setChatOpen] = useState(false);
   const splashShownRef = useRef(false);
   const staticElementsRemovedRef = useRef(false);
-const loaderRemovedRef = useRef(false); 
+  const loaderRemovedRef = useRef(false);
   const showChat = useMemo(() => {
     const isSupportChatRoute = location.pathname.startsWith("/dashboard/support/support-chat");
     return !HIDE_CHAT_PATHS.includes(location.pathname) && !isSupportChatRoute;
@@ -399,7 +400,7 @@ const loaderRemovedRef = useRef(false);
       return () => clearTimeout(timer);
     }
   }, []);
-   useEffect(() => {
+  useEffect(() => {
     if (loaderRemovedRef.current) return;
     loaderRemovedRef.current = true;
 
@@ -407,7 +408,7 @@ const loaderRemovedRef = useRef(false);
     if (loader) {
       // Add fade-out class
       loader.classList.add("fade-out");
-      
+
       // Remove from DOM after animation
       setTimeout(() => {
         loader.remove();
@@ -436,7 +437,7 @@ const loaderRemovedRef = useRef(false);
       {/* {showSplash && <JaimaxSplash />} */}
 
       {/* Global components */}
-      {showChat && (
+      {/* {showChat && (
         <>
           <ToastContainer position="top-right" maxToasts={2} />
           <div className="fixed bottom-20 right-6 z-50 flex flex-col items-center">
@@ -460,7 +461,7 @@ const loaderRemovedRef = useRef(false);
           )}
         </>
       )}
-      <FloatingWhatsapp />
+      <FloatingWhatsapp /> */}
 
       {/* Routes with Suspense fallback */}
       <Suspense fallback={<PageLoader />}>
@@ -477,6 +478,8 @@ const loaderRemovedRef = useRef(false);
               <Route path="/kyc-information" element={<Kyc />} />
               <Route path="/withdrawal" element={<WithDrawal />} />
               <Route path="/meetings" element={<UserMeetingsShowcase />} />
+              <Route path="/community" element={<GroupChatApp />} />
+
             </Route>
             <Route path="/support" element={<DashboardLayout />}>
               <Route index element={<Support />} />
