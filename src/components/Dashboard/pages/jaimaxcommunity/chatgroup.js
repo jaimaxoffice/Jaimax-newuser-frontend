@@ -99,15 +99,19 @@ export const chatApiSlice = apiSlice.injectEndpoints({
         //     keepUnusedDataFor: 0,
         // }),
 
-        getChatFiles: builder.query({
-            query: (chatId) => ({
-                url: `/chat/files?chatId=${chatId}`,
-                method: "GET",
-            }),
+       getChatFiles: builder.query({
+            query: ({ chatId, userId }) => {
+                console.log(chatId, userId, "chatId, userId");
+                return {
+                    url: `/chat/files?chatId=${chatId}`,
+                    method: "POST",
+                    body: { userId },
+                };
+            },
             transformResponse: (response) => {
                 return response?.data || [];
             },
-            providesTags: (result, error, chatId) => [
+            providesTags: (result, error, { chatId }) => [
                 { type: "ChatFiles", id: chatId }
             ],
         }),
