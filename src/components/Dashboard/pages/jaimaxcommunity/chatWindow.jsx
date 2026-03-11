@@ -162,7 +162,7 @@ const ChatWindow = ({
 
   const allMessages = messages;
 
-//   console.log(allMessages, "allMessages");
+  //   console.log(allMessages, "allMessages");
 
   const hasMoreOldMessagesRef = useRef(hasMoreOldMessages);
   const isLoadingOlderRef = useRef(isLoadingOlder);
@@ -1150,7 +1150,7 @@ const ChatWindow = ({
           {selectedGroup && (
             <div
               ref={headerRef}
-            //   title="group info"
+              //   title="group info"
               className="bg-[#fff] text-[#085056] p-2 sm:p-4 flex items-center justify-between border-b border-gray-200"
             >
               <div
@@ -1399,11 +1399,10 @@ const ChatWindow = ({
                                   id={`msg-${id}`}
                                   data-msg-id={id}
                                   data-from-user-id={msg.fromUserId}
-                                  className={`mb-4 flex items-start gap-2 ${
-                                    isCurrentUser
-                                      ? "justify-end"
-                                      : "justify-start"
-                                  }`}
+                                  className={`mb-4 flex items-start gap-2 ${isCurrentUser
+                                    ? "justify-end"
+                                    : "justify-start"
+                                    }`}
                                 >
                                   {!isCurrentUser && (
                                     <div className="w-8 h-8 rounded-full bg-[#00a884] flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
@@ -1418,7 +1417,7 @@ const ChatWindow = ({
                                     {!isCurrentUser && (
                                       <div className="text-xs text-[#00a884] mb-1 font-semibold">
                                         {msg.fromUserId ===
-                                        "JAIMAX667d4a9eb3e5d157e11b6abfXX1208"
+                                          "JAIMAX667d4a9eb3e5d157e11b6abfXX1208"
                                           ? "Jaimax Coin"
                                           : msg.fromUserId}
                                       </div>
@@ -1472,11 +1471,10 @@ const ChatWindow = ({
                                             <img
                                               src={getFileUrl(msg)}
                                               alt={getFileName(msg)}
-                                              className={`rounded-lg max-w-full transition-all ${
-                                                msg.msgBody.media.is_uploading
-                                                  ? "opacity-60 cursor-wait"
-                                                  : "cursor-pointer hover:opacity-90"
-                                              }`}
+                                              className={`rounded-lg max-w-full transition-all ${msg.msgBody.media.is_uploading
+                                                ? "opacity-60 cursor-wait"
+                                                : "cursor-pointer hover:opacity-90"
+                                                }`}
                                               onClick={() => {
                                                 if (
                                                   !msg.msgBody?.media
@@ -1507,11 +1505,10 @@ const ChatWindow = ({
                                       ) && (
                                         <div className="max-w-xs">
                                           <div
-                                            className={`group relative flex items-center gap-3 p-3 rounded-xl bg-gradient-to-br from-[#1a2332] to-[#0f1419] border  transition-all ${
-                                              msg.msgBody.media.is_uploading
-                                                ? "opacity-60"
-                                                : "hover:scale-[1.02] cursor-pointer"
-                                            }`}
+                                            className={`group relative flex items-center gap-3 p-3 rounded-xl bg-[#397378] border  transition-all ${msg.msgBody.media.is_uploading
+                                              ? "opacity-60"
+                                              : "hover:scale-[1.02] cursor-pointer"
+                                              }`}
                                             onClick={() => {
                                               if (
                                                 !msg.msgBody?.media
@@ -1542,26 +1539,26 @@ const ChatWindow = ({
                                                 <p className="text-xs text-gray-400">
                                                   {getFileSize(msg)
                                                     ? formatFileSize(
-                                                        getFileSize(msg),
-                                                      )
+                                                      getFileSize(msg),
+                                                    )
                                                     : "Unknown size"}
                                                 </p>
 
                                                 {!msg.msgBody.media
                                                   .is_uploading && (
-                                                  <span className="text-xs text-white-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    • Click to open
-                                                  </span>
-                                                )}
+                                                    <span className="text-xs text-white-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                                      • Click to open
+                                                    </span>
+                                                  )}
                                               </div>
                                             </div>
 
                                             {!msg.msgBody.media
                                               .is_uploading && (
-                                              <div className="relative z-10 p-2 rounded-lg bg-black opacity-0 group-hover:opacity-100 transition-all group-hover:scale-110 ">
-                                                <Download className="w-4 h-4 text-white" />
-                                              </div>
-                                            )}
+                                                <div className="relative z-10 p-2 rounded-lg bg-black opacity-0 group-hover:opacity-100 transition-all group-hover:scale-110 ">
+                                                  <Download className="w-4 h-4 text-white" />
+                                                </div>
+                                              )}
                                           </div>
                                         </div>
                                       )}
@@ -1643,7 +1640,7 @@ const ChatWindow = ({
                                               toggleMenu(id, e, isCurrentUser)
                                             }
                                           >
-                                            <Info size={12}/>
+                                            <Info size={12} />
                                           </button>
                                         )}
                                     </div>
@@ -1738,11 +1735,10 @@ const ChatWindow = ({
                     <button
                       onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                       disabled={!isUserAllowed}
-                      className={`p-2 transition-colors flex-shrink-0 ${
-                        !isUserAllowed
-                          ? "text-gray-600 cursor-not-allowed opacity-50"
-                          : "text-gray-400 hover:text-white"
-                      }`}
+                      className={`p-2 transition-colors flex-shrink-0 ${!isUserAllowed
+                        ? "text-gray-600 cursor-not-allowed opacity-50"
+                        : "text-gray-400 hover:text-white"
+                        }`}
                     >
                       <Smile className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
                     </button>
@@ -1862,11 +1858,10 @@ const ChatWindow = ({
                     <button
                       onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                       disabled={isInputDisabled}
-                      className={`p-2 transition-colors flex-shrink-0 ${
-                        isInputDisabled
-                          ? "text-gray-600 cursor-not-allowed opacity-50"
-                          : "text-gray-400 hover:text-white"
-                      }`}
+                      className={`p-2 transition-colors flex-shrink-0 ${isInputDisabled
+                        ? "text-gray-600 cursor-not-allowed opacity-50"
+                        : "text-gray-400 hover:text-white"
+                        }`}
                     >
                       <Smile className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
                     </button>
@@ -2105,44 +2100,44 @@ const ChatWindow = ({
 
               {messages?.find((m) => (m.msgId || m.id) === effectiveOpenMenuId)
                 ?.msgBody?.message && (
-                <button
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 w-full text-left text-sm text-blue-400 transition-colors "
-                  onClick={() =>
-                    handleCopyMessage(
-                      messages.find(
-                        (m) => (m.msgId || m.id) === effectiveOpenMenuId,
-                      ).msgBody.message,
-                      effectiveOpenMenuId,
-                    )
-                  }
-                >
-                  <Clipboard className="w-4 h-4 text-blue-400" />
-                  <span>
-                    {copiedMessageId === effectiveOpenMenuId
-                      ? "Copied ✓"
-                      : "Copy"}
-                  </span>
-                </button>
-              )}
+                  <button
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 w-full text-left text-sm text-blue-400 transition-colors "
+                    onClick={() =>
+                      handleCopyMessage(
+                        messages.find(
+                          (m) => (m.msgId || m.id) === effectiveOpenMenuId,
+                        ).msgBody.message,
+                        effectiveOpenMenuId,
+                      )
+                    }
+                  >
+                    <Clipboard className="w-4 h-4 text-blue-400" />
+                    <span>
+                      {copiedMessageId === effectiveOpenMenuId
+                        ? "Copied ✓"
+                        : "Copy"}
+                    </span>
+                  </button>
+                )}
 
               {messages?.find((m) => (m.msgId || m.id) === effectiveOpenMenuId)
                 ?.status === "failed" && (
-                <button
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#3b4a54] w-full text-left text-sm text-orange-400 transition-colors"
-                  onClick={() => {
-                    const msg = messages.find(
-                      (m) => (m.msgId || m.id) === effectiveOpenMenuId,
-                    );
-                    if (msg) {
-                      retryMessage(msg);
-                      setEffectiveOpenMenuId(null);
-                    }
-                  }}
-                >
-                  <CornerUpRight className="w-4 h-4" />
-                  <span>Retry</span>
-                </button>
-              )}
+                  <button
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-[#3b4a54] w-full text-left text-sm text-orange-400 transition-colors"
+                    onClick={() => {
+                      const msg = messages.find(
+                        (m) => (m.msgId || m.id) === effectiveOpenMenuId,
+                      );
+                      if (msg) {
+                        retryMessage(msg);
+                        setEffectiveOpenMenuId(null);
+                      }
+                    }}
+                  >
+                    <CornerUpRight className="w-4 h-4" />
+                    <span>Retry</span>
+                  </button>
+                )}
 
               <button
                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 w-full text-left text-sm text-red-400 transition-colors"
@@ -2253,11 +2248,10 @@ const ChatWindow = ({
                               prev === r.toLowerCase() ? "" : r.toLowerCase(),
                             )
                           }
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                            reportReason === r.toLowerCase()
-                              ? "bg-red-500 text-white border-red-500"
-                              : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
-                          }`}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${reportReason === r.toLowerCase()
+                            ? "bg-red-500 text-white border-red-500"
+                            : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+                            }`}
                         >
                           {r}
                         </button>
@@ -2553,11 +2547,10 @@ const ChatWindow = ({
                     <button
                       onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                       disabled={isInputDisabled}
-                      className={`p-2 transition-colors flex-shrink-0 ${
-                        isInputDisabled
-                          ? "text-gray-600 cursor-not-allowed opacity-50"
-                          : "text-gray-400 hover:text-white"
-                      }`}
+                      className={`p-2 transition-colors flex-shrink-0 ${isInputDisabled
+                        ? "text-gray-600 cursor-not-allowed opacity-50"
+                        : "text-gray-400 hover:text-white"
+                        }`}
                     >
                       <Smile className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
                     </button>
@@ -2655,11 +2648,26 @@ const ChatWindow = ({
             selectedGroup &&
             !showMembers &&
             !showFilesPanel && (
-              <div className="bg-[#2a3942] p-3 border-t border-[#3b4a54] flex items-center gap-3">
-                <div className="flex-1 min-w-0 border-l-4 border-[#00a884] pl-3"></div>
+              <div className="bg-[#ffffff] p-3 border-t border-[#3b4a54] flex items-center gap-3">
+                <div className="flex-1 min-w-0 border-l-4 border-[#00a884] pl-3">
+                  <p className="text-xs font-semibold text-[#00a884] truncate">
+                    {replyToMessage.publisherName || replyToMessage.senderName || "User"}
+                  </p>
+                  <p className="text-xs text-gray-300 truncate">
+                    {(() => {
+                      const msg = replyToMessage.msgBody?.message;
+                      if (!msg) return "📎 Media";
+                      if (typeof msg === "object" && msg?.cipherText && groupKey) {
+                        try { return decryptMessage(msg, groupKey); }
+                        catch { return "[Encrypted]"; }
+                      }
+                      return String(msg);
+                    })()}
+                  </p>
+                </div>
                 <button
                   onClick={cancelReply}
-                  className="p-1 hover:bg-white/20 rounded-full transition-colors flex-shrink-0"
+                  className="p-1 bg-[#085358] rounded-full transition-colors flex-shrink-0"
                   aria-label="Cancel reply"
                 >
                   <X className="w-5 h-5 text-gray-400" />
@@ -2711,11 +2719,10 @@ const ChatWindow = ({
                   <button
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                     // disabled={isInputDisabled}
-                    className={` transition-colors flex-shrink-0 ${
-                      isInputDisabled
-                        ? "text-gray-600 cursor-not-allowed opacity-50"
-                        : "text-gray-400 hover:text-[#00a884]"
-                    }`}
+                    className={` transition-colors flex-shrink-0 ${isInputDisabled
+                      ? "text-gray-600 cursor-not-allowed opacity-50"
+                      : "text-gray-400 hover:text-[#00a884]"
+                      }`}
                   >
                     <Smile size={20} className=" text-gray-400 ml-2 flex-shrink-0" />
                   </button>
@@ -2740,11 +2747,10 @@ const ChatWindow = ({
                         setShowFileTypeModal(!showFileTypeModal);
                       }}
                       disabled={!isUserAllowed}
-                      className={`p-2 transition-colors flex-shrink-0 ${
-                        !isUserAllowed
-                          ? "text-gray-600 cursor-not-allowed opacity-50"
-                          : "text-gray-400 hover:text-[#00a884]"
-                      }`}
+                      className={`p-2 transition-colors flex-shrink-0 ${!isUserAllowed
+                        ? "text-gray-600 cursor-not-allowed opacity-50"
+                        : "text-gray-400 hover:text-[#00a884]"
+                        }`}
                     >
                       <Paperclip className="w-5 h-5" />
                     </button>
@@ -2836,9 +2842,8 @@ const ChatWindow = ({
                         ? "You don't have permission to send messages"
                         : "Type a message"
                     }
-                    className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 text-black rounded-lg focus:outline-none focus:ring-1 focus:ring-[#00a884] placeholder-gray-400 text-sm sm:text-base ${
-                      !isUserAllowed ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
+                    className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 text-black rounded-lg focus:outline-none focus:ring-1 focus:ring-[#00a884] placeholder-gray-400 text-sm sm:text-base ${!isUserAllowed ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
                   />
                   {/* <input
                                         ref={inputRef}
@@ -2871,11 +2876,10 @@ const ChatWindow = ({
                         }
                       }}
                       disabled={!isUserAllowed}
-                      className={`p-2 sm:p-3 rounded-full transition-colors flex-shrink-0 ${
-                        !isUserAllowed
-                          ? "bg-gray-600 opacity-50 cursor-not-allowed"
-                          : "bg-[#00a884] hover:bg-[#008069]"
-                      }`}
+                      className={`p-2 sm:p-3 rounded-full transition-colors flex-shrink-0 ${!isUserAllowed
+                        ? "bg-gray-600 opacity-50 cursor-not-allowed"
+                        : "bg-[#00a884] hover:bg-[#008069]"
+                        }`}
                     >
                       <Send className="w-5 h-5" />
                     </button>
@@ -2916,11 +2920,10 @@ const ChatWindow = ({
                     onClick={() => {
                       setActiveGroupTab("overview");
                     }}
-                    className={`flex-1 px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
-                      activeGroupTab === "overview"
-                        ? "border-[#00a884] text-[#00a884]"
-                        : "border-transparent text-gray-400 hover:text-black"
-                    }`}
+                    className={`flex-1 px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${activeGroupTab === "overview"
+                      ? "border-[#00a884] text-[#00a884]"
+                      : "border-transparent text-gray-400 hover:text-black"
+                      }`}
                   >
                     <div className="flex items-center justify-center gap-1.5 sm:gap-2">
                       <Info className="w-6 h-6 sm:w-4 sm:h-4" />
@@ -2933,11 +2936,10 @@ const ChatWindow = ({
                       setActiveGroupTab("media");
                       refetchFiles?.();
                     }}
-                    className={`flex-1 px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
-                      activeGroupTab === "media"
-                        ? "border-[#00a884] text-[#00a884]"
-                        : "border-transparent text-gray-400 hover:text-black"
-                    }`}
+                    className={`flex-1 px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${activeGroupTab === "media"
+                      ? "border-[#00a884] text-[#00a884]"
+                      : "border-transparent text-gray-400 hover:text-black"
+                      }`}
                   >
                     <div className="flex items-center justify-center gap-1.5 sm:gap-2">
                       <ImageIcon className="w-6 h-6 sm:w-4 sm:h-4" />
@@ -2950,11 +2952,10 @@ const ChatWindow = ({
                       setActiveGroupTab("files");
                       refetchFiles?.();
                     }}
-                    className={`flex-1 px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
-                      activeGroupTab === "files"
-                        ? "border-[#00a884] text-[#00a884]"
-                        : "border-transparent text-gray-400 hover:text-black"
-                    }`}
+                    className={`flex-1 px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${activeGroupTab === "files"
+                      ? "border-[#00a884] text-[#00a884]"
+                      : "border-transparent text-gray-400 hover:text-black"
+                      }`}
                   >
                     <div className="flex items-center justify-center gap-1.5 sm:gap-2">
                       <File className="w-6 h-6 sm:w-4 sm:h-4" />
@@ -2967,23 +2968,23 @@ const ChatWindow = ({
               <div className="flex-1 overflow-y-auto bg-white">
                 {activeGroupTab === "overview" && (
                   <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
-                    <div className="bg-[#00a884] rounded-lg p-3 sm:p-4">
+                    <div className="bg-[#397378] rounded-lg p-3 sm:p-4">
                       <h4 className="text-xs sm:text-sm font-semibold text-white mb-2 sm:mb-3">
                         Group Description
                       </h4>
-                      <p className="text-xs text-gray-300 leading-relaxed italic">
+                      <p className="text-xs text-white leading-relaxed italic">
                         {selectedGroup?.groupDescription ||
                           "No description available"}
                       </p>
                     </div>
 
-                    <div className="bg-[#00a884] rounded-lg p-3 sm:p-4">
+                    <div className="bg-[#397378] rounded-lg p-3 sm:p-4">
                       <h4 className="text-xs sm:text-sm font-semibold text-white mb-2 sm:mb-3">
                         Group Details
                       </h4>
                       <div className="space-y-2 text-xs sm:text-sm">
                         <div className="flex justify-between gap-2">
-                          <span className="text-gray-300 text-right">
+                          <span className="text-white text-right">
                             {formatTime(selectedGroup?.createdAt)}
                           </span>
                         </div>
@@ -3040,7 +3041,7 @@ const ChatWindow = ({
                         );
 
                         return imageFiles.length > 0 ? (
-                          <>
+                          <div className="p-4">
                             <h3 className="text-xs sm:text-sm text-gray-400 mb-2 sm:mb-3 font-semibold">
                               {imageFiles.length} Images
                             </h3>
@@ -3049,11 +3050,9 @@ const ChatWindow = ({
                                 <div
                                   key={`${file._id}-${index}`}
                                   className="relative group cursor-pointer"
-                                  onClick={() =>
-                                    window.open(file.fileUrl, "_blank")
-                                  }
+                                  onClick={() => window.open(file.fileUrl, "_blank")}
                                 >
-                                  <div className="w-full aspect-square rounded-lg overflow-hidden bg-[#1f2f2a]">
+                                  <div className="w-full rounded-lg overflow-hidden bg-[#1f2f2a]" style={{ height: "150px" }}>
                                     <img
                                       src={file.fileUrl}
                                       alt={file.fileName}
@@ -3061,12 +3060,12 @@ const ChatWindow = ({
                                     />
                                   </div>
                                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                                    <Eye className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                                    <Eye className="w-4 h-4 text-white" />
                                   </div>
                                 </div>
                               ))}
                             </div>
-                          </>
+                          </div>
                         ) : (
                           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
                             <ImageIcon className="w-12 h-12 sm:w-16 sm:h-16 mb-2 sm:mb-3 opacity-30" />
@@ -3123,7 +3122,7 @@ const ChatWindow = ({
                               {documentFiles.map((file, index) => (
                                 <div
                                   key={`${file._id}-${index}`}
-                                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-[#202c33] rounded-lg hover:bg-[#2a3942] transition-colors cursor-pointer"
+                                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-[#397378] rounded-lg transition-colors cursor-pointer"
                                   onClick={() =>
                                     window.open(file.fileUrl, "_blank")
                                   }
@@ -3135,12 +3134,12 @@ const ChatWindow = ({
                                     <p className="text-xs sm:text-sm font-semibold truncate text-white">
                                       {file.fileName}
                                     </p>
-                                    <p className="text-xs text-gray-400 truncate">
+                                    <p className="text-xs text-white-400 truncate">
                                       {file.senderName || "Unknown"} •{" "}
                                       {formatTime(file.timestamp)}
                                     </p>
                                     {file.fileSize && (
-                                      <p className="text-xs text-gray-500">
+                                      <p className="text-xs text-white-500">
                                         {formatFileSize(file.fileSize)}
                                       </p>
                                     )}

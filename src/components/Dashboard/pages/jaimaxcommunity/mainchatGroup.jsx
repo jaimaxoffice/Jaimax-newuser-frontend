@@ -737,24 +737,24 @@
 //             });
 
 //             // 4. NEW FILE MESSAGE FROM OTHERS
-//             socketRef.current.on('new_file_message', async (data) => {
+// socketRef.current.on('new_file_message', async (data) => {
 
-//                 // Add the file message to UI
-//                 const messageObject = {
-//                     ...data,
-//                     _id: data._id,
-//                     msgId: data.msgId || data._id?.toString(),
-//                     msgBody: {
-//                         ...data.msgBody,
-//                         media: {
-//                             ...data.msgBody.media,
-//                             is_uploading: false,
-//                         }
-//                     }
-//                 };
+//     // Add the file message to UI
+//     const messageObject = {
+//         ...data,
+//         _id: data._id,
+//         msgId: data.msgId || data._id?.toString(),
+//         msgBody: {
+//             ...data.msgBody,
+//             media: {
+//                 ...data.msgBody.media,
+//                 is_uploading: false,
+//             }
+//         }
+//     };
 
-//                 setMessages(prev => [...prev, messageObject]);
-//             });
+//     setMessages(prev => [...prev, messageObject]);
+// });
 
 
 //             socketRef.current.on("clear_chat_error", ({ error }) => {
@@ -2745,11 +2745,11 @@ const isRateLimitError = (error = "") =>
 const buildReplyTo = (msg) =>
   msg
     ? {
-        msgId: msg.msgId || msg.id,
-        message: msg.msgBody?.message,
-        senderName: msg.publisherName || msg.senderName,
-        senderId: msg.fromUserId,
-      }
+      msgId: msg.msgId || msg.id,
+      message: msg.msgBody?.message,
+      senderName: msg.publisherName || msg.senderName,
+      senderId: msg.fromUserId,
+    }
     : null;
 
 /** Decrypt a message field in-place; returns plaintext string */
@@ -3090,7 +3090,7 @@ const GroupChatApp = () => {
   // ─── User pagination ──────────────────────────────────────────────────────
   // User pagination — fetchUsers disabled in this version (no useLazyGetUsersQuery)
   // eslint-disable-next-line no-unused-vars
-  const fetchUsersPage = useCallback(async (page) => {}, []);
+  const fetchUsersPage = useCallback(async (page) => { }, []);
 
   // ─── updateGroupLastMessage ───────────────────────────────────────────────
   const updateGroupLastMessage = useCallback(
@@ -3142,7 +3142,7 @@ const GroupChatApp = () => {
       "data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGS57OihUBELTKXh8bllHAU+ktbx0H8tBSh+zPLaizsKFGO56+mhUBAMTKXh8bllHAU+ktbx0H8tBSh+zPLaizsKFGO56+mhUBAMTKXh8bllHAU+ktbx0H8tBSh+"
     );
     audio.volume = 0.3;
-    audio.play().catch(() => {});
+    audio.play().catch(() => { });
   }, []);
 
   // ─── Socket: incoming message processor ──────────────────────────────────
@@ -3334,6 +3334,53 @@ const GroupChatApp = () => {
       );
     });
 
+    // socket.on("file_upload_success", async (savedMessage) => {
+    //   const messageId = savedMessage._id?.toString() || savedMessage.msgId;
+    //   const decrypted = await safeDecrypt(savedMessage.msgBody?.message, SECRET_KEY);
+    //   const messageObject = {
+    //     ...savedMessage,
+    //     msgId: messageId,
+    //     msgStatus: "sent",
+    //     status: "sent",
+    //     msgBody: {
+    //       ...savedMessage.msgBody,
+    //       message: decrypted,
+    //       media: { ...savedMessage.msgBody.media, is_uploading: false, tempPreview: undefined },
+    //     },
+    //   };
+
+    //   if (savedMessage.fromUserId === currentUser.id) {
+    //     setMessages((prev) =>
+    //       prev.map((msg) =>
+    //         msg.msgId === savedMessage.tempId || msg.correlationId === savedMessage.correlationId
+    //           ? messageObject
+    //           : msg
+    //       )
+    //     );
+    //   } else {
+    //     setMessages((prev) => {
+    //       if (prev.some((m) => (m._id?.toString() || m.msgId) === messageId)) return prev;
+    //       return [...prev, messageObject];
+    //     });
+    //     const activeGroup = selectedGroupRef.current;
+    //     if (activeGroup && savedMessage.chatId === activeGroup.chatId) {
+    //       setTimeout(() => {
+    //         if (socket.connected) {
+    //           socket.emit("message_read", { chatId: savedMessage.chatId, messageId: savedMessage._id, userId: currentUser.id });
+    //         }
+    //       }, 500);
+    //     } else {
+    //       showNotification(savedMessage);
+    //     }
+    //   }
+
+    //   processedMessagesRef.current.add(messageId);
+    //   updateGroupLastMessage(messageObject);
+    //   setUploadProgress(0);
+    // });
+
+
+
     socket.on("file_upload_success", async (savedMessage) => {
       const messageId = savedMessage._id?.toString() || savedMessage.msgId;
       const decrypted = await safeDecrypt(savedMessage.msgBody?.message, SECRET_KEY);
@@ -3359,14 +3406,26 @@ const GroupChatApp = () => {
         );
       } else {
         setMessages((prev) => {
-          if (prev.some((m) => (m._id?.toString() || m.msgId) === messageId)) return prev;
+          const alreadyExists = prev.some(
+            (m) => (m._id?.toString() || m.msgId) === messageId
+          );
+          if (alreadyExists) {
+            return prev.map((m) =>
+              (m._id?.toString() || m.msgId) === messageId ? messageObject : m
+            );
+          }
           return [...prev, messageObject];
         });
+
         const activeGroup = selectedGroupRef.current;
         if (activeGroup && savedMessage.chatId === activeGroup.chatId) {
           setTimeout(() => {
             if (socket.connected) {
-              socket.emit("message_read", { chatId: savedMessage.chatId, messageId: savedMessage._id, userId: currentUser.id });
+              socket.emit("message_read", {
+                chatId: savedMessage.chatId,
+                messageId: savedMessage._id,
+                userId: currentUser.id,
+              });
             }
           }, 500);
         } else {
@@ -3378,6 +3437,9 @@ const GroupChatApp = () => {
       updateGroupLastMessage(messageObject);
       setUploadProgress(0);
     });
+
+
+
 
     socket.on("file_upload_error", ({ tempId, correlationId, error }) => {
       setMessages((prev) =>
@@ -3515,10 +3577,11 @@ const GroupChatApp = () => {
       setIsLoadingNewer(false);
     });
 
+
     // ── Clear chat ──
     socket.on("clear_chat_success", ({ chatId, userId }) => {
       if (selectedGroupRef.current?.chatId === chatId && userId === currentUser.id) {
-        setMessages([]);
+        // setMessages([]);
         setHasMoreOldMessages(false);
         setHasMoreNewMessages(false);
         setOldestMessageTimestamp(null);
@@ -4034,7 +4097,7 @@ const GroupChatApp = () => {
   // ─── Clear chat ────────────────────────────────────────────────────────
   const handleClearChat = useCallback(() => {
     if (!selectedGroupRef.current?.chatId) return;
-    setMessages([]);
+    // setMessages([]);
     if (socketRef.current?.connected) {
       socketRef.current.emit("clear_chat", { chatId: selectedGroupRef.current.chatId, userId: currentUser.id });
     }
@@ -4147,9 +4210,9 @@ const GroupChatApp = () => {
   // ─── Render ────────────────────────────────────────────────────────────
   const showLoader = !socketInitialized || !currentUser.id || isLoadingGroups;
 
-    // WhatsApp-style: mobile = single panel swap, desktop = 60/40 split
+  // WhatsApp-style: mobile = single panel swap, desktop = 60/40 split
   const showGroupList = !isMobile || !selectedGroup;
-  const showChatPane  = !isMobile || !!selectedGroup;
+  const showChatPane = !isMobile || !!selectedGroup;
 
   return (
     // w-full + h-full inherits from whatever the parent gives us.
