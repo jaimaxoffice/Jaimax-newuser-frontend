@@ -591,14 +591,15 @@ const ChatWindow = ({
   };
 
   const handleEmojiClick = (emojiObject) => {
+    // Prevent the click from bubbling up and triggering outside-click handlers
     setMessage((prev) => prev + emojiObject.emoji);
-    setShowEmojiPicker(false);
 
+    // Keep picker open so user can pick multiple emojis (WhatsApp style)
+    // Only close on explicit outside click
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
   };
-
   useEffect(() => {
     const messagesArea = messagesAreaRef.current;
     if (!messagesArea) return;
