@@ -437,7 +437,7 @@ const App = () => {
       {/* {showSplash && <JaimaxSplash />} */}
 
       {/* Global components */}
-      {/* {showChat && (
+      {showChat && (
         <>
           <ToastContainer position="top-right" maxToasts={2} />
           <div className="fixed bottom-20 right-6 z-50 flex flex-col items-center">
@@ -461,7 +461,7 @@ const App = () => {
           )}
         </>
       )}
-      <FloatingWhatsapp /> */}
+      <FloatingWhatsapp />
 
       {/* Routes with Suspense fallback */}
       <Suspense fallback={<PageLoader />}>

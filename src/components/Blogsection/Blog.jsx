@@ -1276,7 +1276,7 @@ const allPosts = [
     navigate("/blog/");
   };
     function formatViewsK(v) {
-      console.log("Formatting views:", v);
+      // console.log("Formatting views:", v);
   if (v >= 1000) return (v / 1000).toFixed(1) + "K";
   return String(v);
 }

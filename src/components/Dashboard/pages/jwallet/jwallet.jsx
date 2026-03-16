@@ -509,7 +509,7 @@ const UserDetailsComponent = () => {
         quoteId: res.data.quoteId,
         pricePerJmcInInr: res.data.pricePerJmcInInr,
         totalCoins: res?.data?.totalCoins,
-        totalAmount: res.data.totalAmount || amountInInr, // Fallback to original amount
+        totalAmount: res.data.totalAmount || amountInInr, 
         shortageResolution: res.data.shortageData,
         expiresAt: res.data.expiresAt,
         requsetedAmount: res.data.requsetedAmount,

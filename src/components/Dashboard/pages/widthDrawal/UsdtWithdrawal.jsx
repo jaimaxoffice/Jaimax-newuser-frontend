@@ -1338,10 +1338,10 @@ const InrTransactionTableTab = ({
 
   // Debug: Log to check data flow
   useEffect(() => {
-    console.log("INR Tab - Query String:", queryString);
-    console.log("INR Tab - API Response:", data);
-    console.log("INR Tab - Transactions:", transactions);
-    console.log("INR Tab - isLoading:", isLoading, "isFetching:", isFetching);
+    // console.log("INR Tab - Query String:", queryString);
+    // console.log("INR Tab - API Response:", data);
+    // console.log("INR Tab - Transactions:", transactions);
+    // console.log("INR Tab - isLoading:", isLoading, "isFetching:", isFetching);
   }, [queryString, data, transactions, isLoading, isFetching]);
 
   useEffect(() => {

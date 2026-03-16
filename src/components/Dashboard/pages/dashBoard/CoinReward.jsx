@@ -78,7 +78,7 @@ const CoinRewardModal = ({ isOpen, onClose, onComplete }) => {
       // POST the jmc coins to the API
       const response = await getRegisterBonus(finalCoins).unwrap();
       
-      console.log("Bonus claimed successfully:", response);
+      // console.log("Bonus claimed successfully:", response);
 
       // Call onComplete callback with coins
       if (onComplete) {
