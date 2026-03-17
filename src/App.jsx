@@ -264,7 +264,7 @@ import FloatingWhatsapp from "./global/FloatingWhatsapp";
 import { ToastContainer } from "./ReusableComponents/Toasts/Toasts";
 import ErrorBoundary from "./pages/chatSupport/ErrorBoundary";
 import PageLoader from "./ReusableComponents/Loader/loader";
-import GroupChatApp from "./components/Dashboard/pages/jaimaxcommunity/mainchatGroup";
+import GroupChatApp from "../src/components/Dashboard/pages/Community/MainChat";
 
 // Lazy loaded components
 const CoinPricePopup = lazy(() => import("./ReusableComponents/popups/Countdown"));

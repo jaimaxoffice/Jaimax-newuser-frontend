@@ -779,7 +779,7 @@ const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: HiOutlineViewGrid },
   { name: "Wallet", path: "/wallet", icon: Wallet, size: 18 },
   { name: "Buy History", path: "/buy-history", icon: HiOutlineChartBar },
-  // { name: "Jaimax Community", path: "/community", icon:HiUserGroup  },
+  { name: "Jaimax Community", path: "/community", icon:HiUserGroup  },
 
   { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
   { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
