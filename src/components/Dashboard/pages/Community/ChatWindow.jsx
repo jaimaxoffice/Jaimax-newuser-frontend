@@ -1807,8 +1807,8 @@ import {
   GripHorizontal,
 } from "lucide-react";
 import { decryptMessage } from "./socket/encryptmsg";
-import Loader from "../../../../ReusableComponents/Loader/loader";
-import loaderImage from "../../../../assets/logo.webp";
+import Loader from "../../ReusableComponents/Loader/loader";
+import loaderImage from "/logo.png";
 
 // ── Sub-components ──
 import ChatHeader from "./chatWindow/Chatheader";
@@ -1977,6 +1977,11 @@ const ChatWindow = ({
   setFilesPage,
   filesTabType,
   rateLimitError,
+  isAdmin = false,         // ← NEW: from socket join_chat_success
+  isBlocked = false,       // ← NEW: from socket
+  onAdminDelete,           // ← NEW: callback
+  onBlockUser,             // ← NEW: callback
+  onUnblockUser,
 }) => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -1995,14 +2000,27 @@ const ChatWindow = ({
   const [isComponentLoading, setIsComponentLoading] = useState(true);
   const [activeGroupTab, setActiveGroupTab] = useState("overview");
 
+  // const hasMoreOldMessagesRef = useRef(hasMoreOldMessages);
+  // const isLoadingOlderRef = useRef(isLoadingOlder);
   const hasMoreOldMessagesRef = useRef(hasMoreOldMessages);
-  const isLoadingOlderRef = useRef(isLoadingOlder);
-  useEffect(() => {
-    hasMoreOldMessagesRef.current = hasMoreOldMessages;
-  }, [hasMoreOldMessages]);
-  useEffect(() => {
-    isLoadingOlderRef.current = isLoadingOlder;
-  }, [isLoadingOlder]);
+const isLoadingOlderRef = useRef(isLoadingOlder);
+const hasMoreNewMessagesRef = useRef(hasMoreNewMessages);
+const isLoadingNewerRef = useRef(isLoadingNewer);
+useEffect(() => {
+  hasMoreOldMessagesRef.current = hasMoreOldMessages;
+}, [hasMoreOldMessages]);
+
+useEffect(() => {
+  isLoadingOlderRef.current = isLoadingOlder;
+}, [isLoadingOlder]);
+
+useEffect(() => {
+  hasMoreNewMessagesRef.current = hasMoreNewMessages;
+}, [hasMoreNewMessages]);
+
+useEffect(() => {
+  isLoadingNewerRef.current = isLoadingNewer;
+}, [isLoadingNewer]);
 
   const scrollPositionRef = useRef(null);
   const isAtBottomRef = useRef(true);
@@ -2011,7 +2029,6 @@ const ChatWindow = ({
   const [newMessagesCount, setNewMessagesCount] = useState(0);
   const [copiedMessageId, setCopiedMessageId] = useState(null);
   const membersContainerRef = useRef(null);
-
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportingMessage, setReportingMessage] = useState(null);
   const [reportReason, setReportReason] = useState("");
@@ -2060,9 +2077,11 @@ const ChatWindow = ({
 
   const storedData = Cookies.get("adminUserData");
   let userRole = "";
+  let platformRole = "";
   if (storedData) {
     const parsed = JSON.parse(storedData);
     userRole = parsed.data.role;
+    platformRole = parsed.data.role;
   }
 
   const isOverlayOpen =
@@ -2383,48 +2402,92 @@ const ChatWindow = ({
     };
   }, [activeGroupTab, isLoadingUsers, userPage, totalPages]);
 
-  useEffect(() => {
-    const messagesArea = messagesAreaRef.current;
-    if (!messagesArea) return;
-    let scrollTimeout;
-    const handleScroll = () => {
-      clearTimeout(scrollTimeout);
-      const { scrollTop, scrollHeight, clientHeight } = messagesArea;
-      const distTop = scrollTop;
-      const distBottom = scrollHeight - scrollTop - clientHeight;
-      isAtBottomRef.current = distBottom < 100;
-      setUserScrolledUp(!isAtBottomRef.current);
-      if (isAtBottomRef.current) setNewMessagesCount(0);
-      scrollTimeout = setTimeout(() => {
-        if (
-          distTop < 200 &&
-          hasMoreOldMessagesRef.current &&
-          !isLoadingOlderRef.current
-        )
-          loadOlderMessages();
-        if (
-          distBottom < 200 &&
-          hasMoreNewMessages &&
-          !isLoadingNewer &&
-          !isAtBottomRef.current
-        )
-          loadNewerMessages();
-      }, 200);
-    };
-    messagesArea.addEventListener("scroll", handleScroll);
-    return () => {
-      clearTimeout(scrollTimeout);
-      messagesArea.removeEventListener("scroll", handleScroll);
-    };
-  }, [
-    isComponentLoading,
-    isInitialMessagesLoad,
-    loadOlderMessages,
-    loadNewerMessages,
-    hasMoreNewMessages,
-    isLoadingNewer,
-  ]);
+  // useEffect(() => {
+  //   const messagesArea = messagesAreaRef.current;
+  //   if (!messagesArea) return;
+  //   let scrollTimeout;
+  //   const handleScroll = () => {
+  //     clearTimeout(scrollTimeout);
+  //     const { scrollTop, scrollHeight, clientHeight } = messagesArea;
+  //     const distTop = scrollTop;
+  //     const distBottom = scrollHeight - scrollTop - clientHeight;
+  //     isAtBottomRef.current = distBottom < 100;
+  //     setUserScrolledUp(!isAtBottomRef.current);
+  //     if (isAtBottomRef.current) setNewMessagesCount(0);
+  //     scrollTimeout = setTimeout(() => {
+  //       if (
+  //         distTop < 200 &&
+  //         hasMoreOldMessagesRef.current &&
+  //         !isLoadingOlderRef.current
+  //       )
+  //         loadOlderMessages();
+  //       if (
+  //         distBottom < 200 &&
+  //         hasMoreNewMessages &&
+  //         !isLoadingNewer &&
+  //         !isAtBottomRef.current
+  //       )
+  //         loadNewerMessages();
+  //     }, 200);
+  //   };
+  //   messagesArea.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     clearTimeout(scrollTimeout);
+  //     messagesArea.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [
+  //   isComponentLoading,
+  //   isInitialMessagesLoad,
+  //   loadOlderMessages,
+  //   loadNewerMessages,
+  //   hasMoreNewMessages,
+  //   isLoadingNewer,
+  // ]);
+useEffect(() => {
+  const messagesArea = messagesAreaRef.current;
+  if (!messagesArea) return;
 
+  let scrollTimeout;
+
+  const handleScroll = () => {
+    clearTimeout(scrollTimeout);
+
+    const { scrollTop, scrollHeight, clientHeight } = messagesArea;
+    const distBottom = scrollHeight - scrollTop - clientHeight;
+
+    isAtBottomRef.current = distBottom < 100;
+    setUserScrolledUp(!isAtBottomRef.current);
+    if (isAtBottomRef.current) setNewMessagesCount(0);
+
+    scrollTimeout = setTimeout(() => {
+      // ✅ Load older: user near TOP
+      if (
+        scrollTop < 200 &&
+        hasMoreOldMessagesRef.current &&
+        !isLoadingOlderRef.current
+      ) {
+        console.log("[SCROLL] Near top — loading older messages");
+        loadOlderMessages();
+      }
+
+      // ✅ Load newer: user near BOTTOM but not at bottom
+      if (
+        distBottom < 200 &&
+        hasMoreNewMessagesRef.current &&
+        !isLoadingNewerRef.current &&
+        !isAtBottomRef.current
+      ) {
+        loadNewerMessages();
+      }
+    }, 200);
+  };
+
+  messagesArea.addEventListener("scroll", handleScroll);
+  return () => {
+    clearTimeout(scrollTimeout);
+    messagesArea.removeEventListener("scroll", handleScroll);
+  };
+}, [loadOlderMessages, loadNewerMessages]);
   useEffect(() => {
     const messagesArea = messagesAreaRef.current;
     if (!messagesArea) return;
@@ -2911,7 +2974,12 @@ const ChatWindow = ({
   }, [messages]);
 
   const groupedMessages = groupMessagesByDate(deduplicatedMessages);
-
+  const isEffectiveAdmin = [
+    "admin",
+    "superAdmin",
+    "subAdmin",      // ← THE FIX
+    "sub_admin",     // ← handle alternate format
+  ].includes(userRole);
   // ═══════════════════════════════════════════════════════════
   //  RENDER
   // ═══════════════════════════════════════════════════════════
@@ -3158,17 +3226,51 @@ const ChatWindow = ({
                 </div>
               ) : (
                 <>
-                  {isLoadingOlder && (
-                    <div className="flex justify-center py-2 sm:py-3 mb-1 sm:mb-2">
-                      <div className="bg-[#202c33] px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg flex items-center gap-2 shadow-lg">
-                        <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-[#2a3942] border-t-[#00a884]" />
-                        <span className="text-[10px] sm:text-xs text-gray-400">
-                          Loading older messages…
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                   {isLoadingOlder && (
+          <div className="sticky top-0 z-20 flex justify-center py-3 mb-2">
+            <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
+              <div className="relative">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
+              </div>
+              <span className="text-xs text-gray-300 font-medium">
+                Loading older messages…
+              </span>
+            </div>
+          </div>
+        )}
 
+{!isLoadingOlder && hasMoreOldMessages && messages?.length > 0 && (
+  <div className="flex justify-center py-2 mb-1">
+    <button
+      onClick={() => loadOlderMessages()}
+      className="group bg-[#182229] hover:bg-[#202c33] active:bg-[#2a3942] 
+                 px-4 py-2 rounded-xl border border-[#2a3942]/50 
+                 hover:border-[#00a884]/40 transition-all duration-200 
+                 cursor-pointer active:scale-95 flex items-center gap-2
+                 shadow-sm hover:shadow-md"
+    >
+      <svg
+        className="w-3.5 h-3.5 text-[#00a884] group-hover:-translate-y-0.5 
+                   transition-transform duration-200"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2.5}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M5 15l7-7 7 7"
+        />
+      </svg>
+      <span className="text-xs sm:text-sm text-gray-400 
+                        group-hover:text-gray-200 font-medium 
+                        transition-colors duration-200">
+        Load older messages
+      </span>
+    </button>
+  </div>
+)}
                   {!messages || messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-gray-500 px-4">
                       <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[#202c33] flex items-center justify-center mb-3 sm:mb-4">
@@ -3232,6 +3334,16 @@ const ChatWindow = ({
                     </>
                   )}
                   <div ref={messagesEndRef} />
+                  {isLoadingNewer && (
+          <div className="flex justify-center py-3 mt-2">
+            <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
+              <span className="text-xs text-gray-300 font-medium">
+                Loading newer messages…
+              </span>
+            </div>
+          </div>
+        )}
                 </>
               )}
 
@@ -3240,8 +3352,8 @@ const ChatWindow = ({
                 <button
                   onClick={scrollToBottom}
                   className={`fixed z-40 rounded-full bg-[#202c33] hover:bg-[#2a3942] shadow-lg flex items-center justify-center transition-all border border-[#2a3942] active:scale-95 ${isMobile
-                      ? "bottom-20 right-4 w-9 h-9"
-                      : "bottom-24 right-8 w-10 h-10"
+                    ? "bottom-20 right-4 w-9 h-9"
+                    : "bottom-24 right-8 w-10 h-10"
                     }`}
                 >
                   <ArrowDown
@@ -3251,8 +3363,8 @@ const ChatWindow = ({
                   {newMessagesCount > 0 && (
                     <span
                       className={`absolute bg-[#00a884] text-white font-bold rounded-full flex items-center justify-center ${isMobile
-                          ? "-top-1.5 -right-1.5 text-[8px] w-4 h-4"
-                          : "-top-2 -right-2 text-[10px] w-5 h-5"
+                        ? "-top-1.5 -right-1.5 text-[8px] w-4 h-4"
+                        : "-top-2 -right-2 text-[10px] w-5 h-5"
                         }`}
                     >
                       {newMessagesCount > 99 ? "99+" : newMessagesCount}
@@ -3274,8 +3386,8 @@ const ChatWindow = ({
               )}
               <div
                 className={`fixed z-50 bg-[#233138] shadow-xl border border-[#2a3942] flex items-center ${isMobile
-                    ? "rounded-2xl px-3 py-2 gap-2 left-1/2 -translate-x-1/2 bottom-16"
-                    : "rounded-full px-2 py-1 gap-1"
+                  ? "rounded-2xl px-3 py-2 gap-2 left-1/2 -translate-x-1/2 bottom-16"
+                  : "rounded-full px-2 py-1 gap-1"
                   }`}
                 style={
                   isMobile
@@ -3372,6 +3484,10 @@ const ChatWindow = ({
           {/* Context Menu */}
           {selectedGroup && effectiveOpenMenuId && (
             <EnhancedContextMenu
+              isAdmin={isEffectiveAdmin}  // ← Use combined check
+              isBlocked={isBlocked}
+              onAdminDelete={onAdminDelete}
+              onBlockUser={onBlockUser}
               effectiveOpenMenuId={effectiveOpenMenuId}
               menuPosition={menuPosition}
               messages={messages}
@@ -3426,8 +3542,8 @@ const ChatWindow = ({
             <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60">
               <div
                 className={`bg-[#233138] shadow-2xl w-full ${isMobile
-                    ? "rounded-t-2xl max-h-[80vh]"
-                    : "rounded-xl max-w-md mx-4"
+                  ? "rounded-t-2xl max-h-[80vh]"
+                  : "rounded-xl max-w-md mx-4"
                   }`}
               >
                 <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-[#2a3942]">
@@ -3710,19 +3826,7 @@ const EnhancedContextMenu = ({
         />
       )}
 
-      {starred ? (
-        <MenuItem
-          icon={StarOff}
-          label="Unstar"
-          onClick={() => handleUnstarMessage(msgId)}
-        />
-      ) : (
-        <MenuItem
-          icon={Star}
-          label="Star"
-          onClick={() => handleStarMessage(msgId)}
-        />
-      )}
+
 
       {isCurrentUser && (
         <MenuItem

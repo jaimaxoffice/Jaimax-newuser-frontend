@@ -1653,31 +1653,40 @@ export const registerSocketHandlers = (socket, handlers) => {
   //  ✅ FIX: CLEAR CHAT — server emits "chat_cleared"
   //          NOT "clear_chat_success"
   // ═══════════════════════════════════════════════════════════
-  const handleChatCleared = ({ chatId, userId: clearedByUserId }) => {
-    const clearedBy = clearedByUserId || currentUser.id;
+const handleChatCleared = ({ chatId, userId: clearedByUserId }) => {
+  const clearedBy = clearedByUserId || currentUser.id;
 
-    // Only clear UI for the user who requested it
-    if (clearedBy !== currentUser.id) return;
+  // Only clear UI for the user who requested it
+  if (clearedBy !== currentUser.id) return;
 
-    if (selectedGroupRef.current?.chatId === chatId) {
-      setMessages([]);
-      setHasMoreOldMessages(false);
-      setHasMoreNewMessages(false);
-      setOldestMessageTimestamp(null);
-      setNewestMessageTimestamp(null);
-    }
+  if (selectedGroupRef.current?.chatId === chatId) {
+    setMessages([]);
+    setHasMoreOldMessages(false);
+    setHasMoreNewMessages(false);
+    setOldestMessageTimestamp(null);
+    setNewestMessageTimestamp(null);
 
-    setGroups((prev) =>
-      prev.map((g) =>
-        g.chatId === chatId
-          ? { ...g, lastMessage: "", time: "", unread: 0 }
-          : g
-      )
-    );
-  };
+    // ── Clear pinned messages immediately ──
+    safeSetter(setPinnedMessages)([]);
 
+    // ── Re-fetch: server will exclude messages in deletedFor ──
+    socket.emit("get_pinned_messages", {
+      chatId,
+      userId: currentUser.id,
+    });
+  }
+
+  setGroups((prev) =>
+    prev.map((g) =>
+      g.chatId === chatId
+        ? { ...g, lastMessage: "", time: "", unread: 0 }
+        : g
+    )
+  );
+};
   // ✅ Listen to BOTH event names
   socket.on("chat_cleared", handleChatCleared);
+
   socket.on("clear_chat_success", handleChatCleared);
 
   socket.on("clear_chat_error", ({ error }) =>
@@ -1737,76 +1746,156 @@ export const registerSocketHandlers = (socket, handlers) => {
   // ═══════════════════════════════════════════════════════════
   //  ✅ NEW: PINNED MESSAGES
   // ═══════════════════════════════════════════════════════════
-  socket.on("pinned_messages", ({ chatId, messages: pinnedMsgs }) => {
-    // Update pinned state if handler provided
-    safeSetter(setPinnedMessages)(pinnedMsgs || []);
+  // socket.on("pinned_messages", ({ chatId, messages: pinnedMsgs }) => {
+  //   // Update pinned state if handler provided
+  //   safeSetter(setPinnedMessages)(pinnedMsgs || []);
 
-    // Also mark messages in the main list as pinned
-    if (pinnedMsgs && pinnedMsgs.length > 0) {
-      const pinnedIds = new Set(
-        pinnedMsgs.map((m) => m._id?.toString())
-      );
-      setMessages((prev) =>
-        prev.map((msg) => ({
-          ...msg,
-          isPinned: pinnedIds.has(msg._id?.toString()),
-        }))
-      );
-    }
+  //   // Also mark messages in the main list as pinned
+  //   if (pinnedMsgs && pinnedMsgs.length > 0) {
+  //     const pinnedIds = new Set(
+  //       pinnedMsgs.map((m) => m._id?.toString())
+  //     );
+  //     setMessages((prev) =>
+  //       prev.map((msg) => ({
+  //         ...msg,
+  //         isPinned: pinnedIds.has(msg._id?.toString()),
+  //       }))
+  //     );
+  //   }
+  // });
+
+  // socket.on(
+  //   "message_pinned",
+  //   ({ msgId, chatId, pinnedBy, pinnedByName, message }) => {
+  //     // Update the message in the list
+  //     setMessages((prev) =>
+  //       prev.map((msg) => {
+  //         const id = msg._id?.toString();
+  //         if (id !== msgId) return msg;
+  //         return {
+  //           ...msg,
+  //           isPinned: true,
+  //           pinnedBy,
+  //           pinnedByName,
+  //           pinnedAt: new Date(),
+  //         };
+  //       })
+  //     );
+
+  //     // Update pinned messages list
+  //     safeSetter(setPinnedMessages)((prev) => {
+  //       if (!Array.isArray(prev)) return [message];
+  //       if (prev.some((m) => m._id?.toString() === msgId)) return prev;
+  //       return [message, ...prev].slice(0, 3);
+  //     });
+  //   }
+  // );
+
+  // socket.on("message_unpinned", ({ msgId, chatId }) => {
+  //   setMessages((prev) =>
+  //     prev.map((msg) => {
+  //       const id = msg._id?.toString();
+  //       if (id !== msgId) return msg;
+  //       return {
+  //         ...msg,
+  //         isPinned: false,
+  //         pinnedBy: null,
+  //         pinnedByName: null,
+  //         pinnedAt: null,
+  //       };
+  //     })
+  //   );
+
+  //   safeSetter(setPinnedMessages)((prev) => {
+  //     if (!Array.isArray(prev)) return [];
+  //     return prev.filter((m) => m._id?.toString() !== msgId);
+  //   });
+  // });
+
+  // socket.on("pin_message_error", ({ error }) => {
+  //   console.error("Pin message error:", error);
+  // });
+// ─── Pinned messages list (initial load / re-fetch after clear) ───
+socket.on("pinned_messages", ({ chatId, messages: pinnedMsgs }) => {
+  // Filter out messages that are deleted for the current user
+  const filteredPinned = (pinnedMsgs || []).filter((m) => {
+    const deletedFor = m.deletedFor || [];
+    return !deletedFor.includes(currentUser.id);
   });
 
-  socket.on(
-    "message_pinned",
-    ({ msgId, chatId, pinnedBy, pinnedByName, message }) => {
-      // Update the message in the list
-      setMessages((prev) =>
-        prev.map((msg) => {
-          const id = msg._id?.toString();
-          if (id !== msgId) return msg;
-          return {
-            ...msg,
-            isPinned: true,
-            pinnedBy,
-            pinnedByName,
-            pinnedAt: new Date(),
-          };
-        })
-      );
+  safeSetter(setPinnedMessages)(filteredPinned);
 
-      // Update pinned messages list
-      safeSetter(setPinnedMessages)((prev) => {
-        if (!Array.isArray(prev)) return [message];
-        if (prev.some((m) => m._id?.toString() === msgId)) return prev;
-        return [message, ...prev].slice(0, 3);
-      });
-    }
-  );
+  // Also mark messages in the main list as pinned
+  if (filteredPinned.length > 0) {
+    const pinnedIds = new Set(
+      filteredPinned.map((m) => m._id?.toString())
+    );
+    setMessages((prev) =>
+      prev.map((msg) => ({
+        ...msg,
+        isPinned: pinnedIds.has(msg._id?.toString()),
+      }))
+    );
+  }
+});
 
-  socket.on("message_unpinned", ({ msgId, chatId }) => {
+// ─── New message pinned ───
+socket.on(
+  "message_pinned",
+  ({ msgId, chatId, pinnedBy, pinnedByName, message }) => {
+    // Skip if this message was cleared by the current user
+    const deletedFor = message?.deletedFor || [];
+    if (deletedFor.includes(currentUser.id)) return;
+
+    // Update the message in the list
     setMessages((prev) =>
       prev.map((msg) => {
         const id = msg._id?.toString();
         if (id !== msgId) return msg;
         return {
           ...msg,
-          isPinned: false,
-          pinnedBy: null,
-          pinnedByName: null,
-          pinnedAt: null,
+          isPinned: true,
+          pinnedBy,
+          pinnedByName,
+          pinnedAt: new Date(),
         };
       })
     );
 
+    // Update pinned messages list
     safeSetter(setPinnedMessages)((prev) => {
-      if (!Array.isArray(prev)) return [];
-      return prev.filter((m) => m._id?.toString() !== msgId);
+      if (!Array.isArray(prev)) return [message];
+      if (prev.some((m) => m._id?.toString() === msgId)) return prev;
+      return [message, ...prev].slice(0, 3);
     });
-  });
+  }
+);
 
-  socket.on("pin_message_error", ({ error }) => {
-    console.error("Pin message error:", error);
-  });
+// ─── Message unpinned (no change needed) ───
+socket.on("message_unpinned", ({ msgId, chatId }) => {
+  setMessages((prev) =>
+    prev.map((msg) => {
+      const id = msg._id?.toString();
+      if (id !== msgId) return msg;
+      return {
+        ...msg,
+        isPinned: false,
+        pinnedBy: null,
+        pinnedByName: null,
+        pinnedAt: null,
+      };
+    })
+  );
 
+  safeSetter(setPinnedMessages)((prev) => {
+    if (!Array.isArray(prev)) return [];
+    return prev.filter((m) => m._id?.toString() !== msgId);
+  });
+});
+
+socket.on("pin_message_error", ({ error }) => {
+  console.error("Pin message error:", error);
+});
   // ═══════════════════════════════════════════════════════════
   //  ✅ NEW: STAR MESSAGES
   // ═══════════════════════════════════════════════════════════
@@ -1881,7 +1970,7 @@ export const registerSocketHandlers = (socket, handlers) => {
 
   // ✅ Listen to BOTH event name variations
   socket.on("message:read_update", handleReadUpdate);
-  socket.on("message:read:update", handleReadUpdate);
+  // socket.on("message:read:update", handleReadUpdate);
 
   // ═══════════════════════════════════════════════════════════
   //  ✅ NEW: DELIVERED RECEIPTS

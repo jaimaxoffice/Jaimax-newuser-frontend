@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import ChatWindow from "./ChatWindow.jsx";
 import { useGetGroupsQuery } from "./communityApiSlice";
 import { encryptMessage, decryptMessage } from "./socket/encryptmsg.js";
-import Loader from "../../../../ReusableComponents/Loader/loader.jsx";
+import Loader from "../../ReusableComponents/Loader/loader.jsx";
 import { useSocket } from "./socket/useSocket.js";
 import {
   safeDecrypt,
@@ -48,15 +48,6 @@ const ALLOWED_DOC_TYPES = new Set([
   "application/x-rar-compressed",
 ]);
 
-// const buildReplyTo = (msg) =>
-//   msg
-//     ? {
-//         _id: msg._id,
-//         message: msg.msgBody?.message,
-//         senderName: msg.publisherName || msg.senderName,
-//         senderId: msg.fromUserId,
-//       }
-//     : null;
 
 const buildReplyTo = (msg) =>
   msg
@@ -143,12 +134,15 @@ const parseCurrentUser = () => {
       data.registered_date ||
       data.createdAt ||
       data.created_at ||
+      data.role ||
       undefined;
+      
     return {
       _id: data?._id || "",
       id: data.username || data.userId || data.user_id || data.id || "",
       name: data.name || data.userId || data.user_name || "",
       userregisteredDate: registeredDate,
+      role: data.role || "",
     };
   } catch {
     return { id: "", name: "", userregisteredDate: undefined };
@@ -250,6 +244,7 @@ const GroupChatApp = () => {
   const selectedGroupRef = useRef(null);
   const emojiClickInsideRef = useRef(false);
 const isTypingRef = useRef(false);
+const messagesRef = useRef(messages);
   // Keep selectedGroupRef in sync with state
   useEffect(() => {
     selectedGroupRef.current = selectedGroup;
@@ -439,6 +434,9 @@ const isTypingRef = useRef(false);
 
     prevMessageCountRef.current = currentCount;
   }, [messages]);
+  useEffect(() => {
+  messagesRef.current = messages;
+}, [messages]);
 
 // ✅ AFTER — batched, debounced, tracks what's already been sent
 const sentReadReceiptsRef = useRef(new Set());
@@ -454,20 +452,22 @@ useEffect(() => {
 
   // Debounce: wait 500ms after last messages change
   readBatchTimeoutRef.current = setTimeout(() => {
+    console.log("Checking for unread messages to mark as read...");
+    console.log("Current messages:", messages);
     const unreadMsgIds = messages
-      .filter((msg) => {
-        const msgId = msg._id?.toString();
-        if (!msgId) return false;
-        if (msg.fromUserId?.toString() === currentUser.id?.toString())
-          return false;
-        if (msg.senderId === currentUser.id) return false;
-        if (msg.msgStatus === "read") return false;
-        if (sentReadReceiptsRef.current.has(msgId)) return false;
-        // Skip temp/pending messages
-        if (msgId.startsWith("temp_")) return false;
-        return true;
-      })
-      .map((msg) => msg._id.toString());
+      // .filter((msg) => {
+      //   const msgId = msg._id?.toString();
+      //   if (!msgId) return false;
+      //   if (msg.fromUserId?.toString() === currentUser.id?.toString())
+      //     return false;
+      //   if (msg.senderId === currentUser.id) return false;
+      //   if (msg.msgStatus === "read") return false;
+      //   if (sentReadReceiptsRef.current.has(msgId)) return false;
+      //   // Skip temp/pending messages
+      //   if (msgId.startsWith("temp_")) return false;
+      //   return true;
+      // })
+      // .map((msg) => msg._id.toString());
 
     if (unreadMsgIds.length === 0) return;
 
@@ -483,7 +483,8 @@ useEffect(() => {
         readAt: Date.now(),
       });
     }
-  }, 500);
+  }, 0);
+  console.log(messages,"hello")
 
   return () => {
     if (readBatchTimeoutRef.current) {
@@ -684,7 +685,7 @@ useEffect(() => {
     }
     if (!message.trim() || !selectedGroupRef.current || !currentUser.id) return;
 
-    const sanitized = decodeHtmlEntities(sanitizeMessage(message.trim()));
+    const sanitized = decodeHtmlEntities((message.trim()));
     if (!sanitized) return;
 
     const pendingId = makeId("temp");
@@ -1403,6 +1404,7 @@ useEffect(() => {
           formatTime={formatTime}
           formatDuration={formatDuration}
           formatFileSize={formatFileSize}
+          userRole={currentUser.role}
         />
       )}
     </div>
