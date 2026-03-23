@@ -447,31 +447,56 @@ const Home = () => {
           </footer>
         </main> */}
 
-        <main className="w-full scrollbar-none" role="main">
+ <main className="w-full scrollbar-none" role="main">
 
-  {/* TOP AD */}
-  <AdSlot slot="first-ad" />
+  {/* SLOT 1 - TOP */}
+  <Suspense fallback={null}>
+    <AdSlot slot="1234567890" />
+  </Suspense>
 
   {sections.map(({ Component, id }) => (
     <React.Fragment key={id}>
 
-      <section
-        id={id}
-        style={{
-          contentVisibility: "auto",
-          containIntrinsicSize: "1px 800px",
-        }}
-      >
-        <Suspense fallback={Loader}>
+      <section id={id}>
+        <Suspense fallback={<Loader />}>
           <Component />
         </Suspense>
       </section>
 
-      {id === "growth-plan" && <AdSlot slot="second-ad" />}
-      {id === "seo-section" && <AdSlot slot="third-ad" />}
-      {id === "testimonials" && <AdSlot slot="fourth-ad" />}
-      {id === "roadmap" && <AdSlot slot="fifth-ad" />}
-      {id === "contact" && <AdSlot slot="sixth-ad" />}
+      {/* SLOT 2 */}
+      {id === "crypto-staking" && (
+        <Suspense fallback={null}>
+          <AdSlot slot="2345678901" />
+        </Suspense>
+      )}
+
+      {/* SLOT 3 */}
+      {id === "growth-plan" && (
+        <Suspense fallback={null}>
+          <AdSlot slot="3456789012" />
+        </Suspense>
+      )}
+
+      {/* SLOT 4 */}
+      {id === "seo-section" && (
+        <Suspense fallback={null}>
+          <AdSlot slot="4567890123" />
+        </Suspense>
+      )}
+
+      {/* SLOT 5 */}
+      {id === "testimonials" && (
+        <Suspense fallback={null}>
+          <AdSlot slot="5678901234" />
+        </Suspense>
+      )}
+
+      {/* SLOT 6 */}
+      {id === "contact" && (
+        <Suspense fallback={null}>
+          <AdSlot slot="6789012345" />
+        </Suspense>
+      )}
 
     </React.Fragment>
   ))}
