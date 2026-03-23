@@ -7,6 +7,7 @@ import eye       from "../../assets/Images/eye.svg";
 import image     from "../../assets/dummy/whatWeOfferSectionImage.png";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+import BadgePill from "./BadgePill"
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const services = [
@@ -331,8 +332,10 @@ export default function WhatWeOffer() {
         {/* ── Section heading ── */}
         <div className="text-center mb-12 max-w-2xl mx-auto">
 
-          {/* Badge — same pattern as HeroSection and SecondSection */}
-          <div className="flex justify-center mb-3">
+
+          < BadgePill label="Our Services" />
+         
+          {/* <div className="flex justify-center mb-3">
             <span
               className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-1.5 rounded-full tracking-widest uppercase border"
               style={{
@@ -347,14 +350,11 @@ export default function WhatWeOffer() {
               />
               Our Services
             </span>
-          </div>
+          </div> */}
 
           <h2
-            className="text-4xl lg:text-5xl font-bold leading-tight mb-4 tracking-[-0.02em]"
-            style={{
-              color: "var(--color-text-primary)",
-              fontFamily: "var(--font-display)",
-            }}
+            className="text-4xl sideHeading mt-4 lg:text-5xl font-bold leading-tight mb-4 tracking-[-0.02em]"
+            
           >
             What We{" "}
             <span style={{ color: "var(--color-brand-primary)" }}>Offer</span>

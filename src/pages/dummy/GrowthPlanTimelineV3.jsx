@@ -607,7 +607,7 @@ function CompletedCard({ p, hovered, visible, delay, onHover, onLeave }) {
     <div
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      className="relative w-full lg:w-4/5 overflow-hidden rounded-3xl transition-all duration-500"
+      className="relative w-full lg:w-4/5 overflow-hidden rounded-[8px] transition-all duration-500"
       style={{
         height:      CARD_H,
         background:  "var(--color-brand-primary)",
@@ -691,7 +691,7 @@ function LiveCard({ p, hovered, visible, delay, onHover, onLeave, onBuy }) {
     <div
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      className="relative w-full lg:w-4/5 overflow-hidden rounded-3xl transition-all duration-500"
+      className="relative w-full lg:w-4/5 overflow-hidden rounded-[8px] transition-all duration-500"
       style={{
         height:      CARD_H,
         background:  "var(--color-bg-surface)",
@@ -799,7 +799,7 @@ function ComingSoonCard({ p, hovered, visible, delay, onHover, onLeave }) {
     <div
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      className="relative w-full lg:w-4/5 overflow-hidden rounded-3xl transition-all duration-500"
+      className="relative w-full lg:w-4/5 overflow-hidden rounded-[8px] transition-all duration-500"
       style={{
         height:     CARD_H,
         background: "var(--color-bg-surface)",
@@ -1015,13 +1015,13 @@ export default function GrowthPlanTimelineV3() {
     <section className="py-6" style={{ background: "var(--color-bg-page)", fontFamily: "sans-serif" }}>
       <div className="text-center px-6 mb-12 mt-6">
         <h2
-          className="m-0 font-semibold tracking-tight transition-all duration-500"
+          className="m-0 font-semibold tracking-tight transition-all duration-500 sideHeading"
           style={{
-            color:     "var(--color-text-primary)",
+            // color:     "var(--color-text-primary)",
             fontSize:  "clamp(1.8rem,4vw,2.5rem)",
             opacity:   visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            fontFamily: "var(--font-display)"
+            // transform: visible ? "translateY(0)" : "translateY(14px)",
+            // fontFamily: "var(--font-display)"
           }}
         >
           Company's Growth Plan Outlook

@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
 .gold-filter {
   filter: invert(60%) sepia(80%) saturate(1500%) hue-rotate(30deg) brightness(120%) contrast(100%);
 }

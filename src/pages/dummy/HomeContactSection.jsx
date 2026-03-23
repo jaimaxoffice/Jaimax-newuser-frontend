@@ -571,10 +571,10 @@ const HomeContactSection = () => {
           {/* ── Left column ── */}
           <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12 pr-20 lg:pr-16">
             <p
-              className="mt-6 sm:mt-8 lg:mt-10 text-lg sm:text-xl lg:text-2xl font-semibold"
+              className="mt-6 sm:mt-8 lg:mt-10 text-3xl font-semibold sideHeading text-[#00000]"
               style={{
-                color: "var(--color-brand-primary)",
-                fontFamily: "var(--font-body)",
+                // color: "var(--color-brand-primary)",
+                // fontFamily: "var(--font-body)",
               }}
             >
               We are glad to hear from you!
@@ -608,14 +608,14 @@ const HomeContactSection = () => {
                 </div>
                 <div>
                   <p
-                    className="font-semibold text-base"
+                    className="text-base"
                     style={{ color: "var(--color-text-primary)" }}
                   >
                     Office
                   </p>
                   <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: "var(--color-text-secondary)" }}
+                    className="text-sm leading-relaxed text-[#000]"
+                    // style={{ color: "var(--color-text-secondary)" }}
                   >
                     4th Floor, Vaishnavi's Cynosure, Survey No: 18,
                     <br />
@@ -638,8 +638,8 @@ const HomeContactSection = () => {
                       />
                     </svg>
                     <p
-                      className="text-sm"
-                      style={{ color: "var(--color-text-muted)" }}
+                      className="text-sm text-[#000000]"
+                      // style={{ color: "var(--color-text-muted)" }}
                     >
                       Mon - Fri: 9:00 AM - 6:00 PM | Sat &amp; Sun: Closed
                     </p>
@@ -660,15 +660,15 @@ const HomeContactSection = () => {
                 </div>
                 <div className="flex flex-col space-y-1">
                   <p
-                    className="font-semibold text-base"
-                    style={{ color: "var(--color-text-primary)" }}
+                  className="text-sm text-[#000000]"
+                      // style={{ color: "var(--color-text-muted)" }}
                   >
                     Phone
                   </p>
                   <a
                     href="tel:+919121799947"
-                    className="text-sm transition-colors duration-200"
-                    style={{ color: "var(--color-text-secondary)" }}
+                    className="text-sm transition-colors duration-200 text-[#000]"
+                    // style={{ color: "var(--color-text-secondary)" }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.color =
                         "var(--color-brand-primary)")
@@ -678,12 +678,12 @@ const HomeContactSection = () => {
                         "var(--color-text-secondary)")
                     }
                   >
-                    (+91) 9121799947
+                    +91 9121799947
                   </a>
                   <a
                     href="tel:+919121758880"
-                    className="text-sm transition-colors duration-200"
-                    style={{ color: "var(--color-text-secondary)" }}
+                      className="text-sm transition-colors duration-200 text-[#000]"
+                    // style={{ color: "var(--color-text-secondary)" }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.color =
                         "var(--color-brand-primary)")
@@ -693,7 +693,7 @@ const HomeContactSection = () => {
                         "var(--color-text-secondary)")
                     }
                   >
-                    (+91) 9121758880
+                    +91 9121758880
                   </a>
                 </div>
               </div>
@@ -711,15 +711,15 @@ const HomeContactSection = () => {
                 </div>
                 <div>
                   <p
-                    className="font-semibold text-base"
+                    className="text-base"
                     style={{ color: "var(--color-text-primary)" }}
                   >
                     Email
                   </p>
                   <a
                     href="mailto:office@jaimax.com"
-                    className="text-sm transition-colors duration-200"
-                    style={{ color: "var(--color-text-secondary)" }}
+                     className="text-sm transition-colors duration-200 text-[#000]"
+                    // style={{ color: "var(--color-text-secondary)" }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.color =
                         "var(--color-brand-primary)")

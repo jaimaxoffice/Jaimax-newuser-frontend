@@ -72,7 +72,7 @@ export default function GrowthPlanTimeline() {
     <section className="text-white px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16 font-sans">
       {/* Heading */}
       <div className="text-center max-w-4xl mx-auto mb-8">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white drop-shadow-lg">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white drop-shadow-lg sideHeading">
           Company's Growth Plan Outlook
         </h2>
       </div>

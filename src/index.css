@@ -8,12 +8,9 @@ body {
   background: linear-gradient(135deg, #085056);
 }
 
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @layer utilities {
   .animate-spin-slow {
@@ -38,21 +35,20 @@ p {
   padding: 0 0%;
 }
 
-
 .scrollbar-none {
-  scrollbar-width: none;        
+  scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
 .scrollbar-none::-webkit-scrollbar {
-  display: none;            
+  display: none;
 }
 
-.regfrom-feild{
+.regfrom-feild {
   margin-top: 12px !important;
 }
 
-#termsTop{
+#termsTop {
   margin-top: 15px !important;
 }
 
@@ -60,7 +56,6 @@ p {
   background-color: #121212;
   border-radius: 10px;
 }
-
 
 ::-webkit-scrollbar-corner {
   background: rgba(8, 83, 89, 0.1);
@@ -74,6 +69,7 @@ html {
   background-color: black;
   height: 100%;
   overflow-y: auto;
+  font-size: 100%;
 }
 
 @layer base {
@@ -130,7 +126,7 @@ html {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-} 
+}
 
 @layer base {
   * {
@@ -150,4 +146,98 @@ body,
 #root {
   background-color: #085056 !important;
   min-height: 100vh;
+}
+
+@font-face {
+  font-family: Valerius;
+  src: url(/public/fonts/valerius/Valerius.ttf);
+}
+
+@font-face {
+  font-family: ValeriusBold;
+  src: url(/public/fonts/valerius/Valerius.otf);
+}
+
+@font-face {
+  font-family: Slalom;
+  src: url(/public/global/aoi/fonts/slalom/CASlalomExtended-Medium.otf);
+}
+
+@font-face {
+  font-family: SlalomLight;
+  src: url(/public/global/aoi/fonts/slalom/CASlalomExtended-Light.otf);
+}
+
+.dmSansFont {
+  /* font-family: Valerius, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+
+  /* Responsive font size */
+  /* font-size: clamp(2rem, 6vw, 70px);
+
+  text-align: center;
+  color: #050505;
+
+  letter-spacing: 0.05em;
+  text-transform: uppercase; */
+
+  font-family: Valerius, Arial, Helvetica, sans-serif;
+
+  /* Make it bold & impactful */
+  font-weight: 700;
+
+  /* Perfect responsive scaling */
+  font-size: clamp(2rem, 5vw, 4.5rem);
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.oneWordHero {
+  font-family: Valerius, Arial, Helvetica, sans-serif;
+
+  font-weight: 900;
+  text-transform: uppercase;
+  /* font-size: clamp(2rem, 5vw, 10rem); */
+  font-size: 90px;
+  text-align: center;
+  color: #050404;
+
+  /* background: linear-gradient(90deg,#14b6d7, #050404); */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+}
+.oneWordHero {
+  font-family: Valerius, Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 40px;
+  text-align: center;
+  color: #050404;
+
+  background-color: #ffffff9a;   /* highlight color */
+  padding: 10px 25px;          /* space inside capsule */
+  border-radius: 999px;        /* capsule shape */
+  display: inline-block;       /* important for capsule */
+}
+
+.oneWordHero2 {
+  font-family: Valerius, Arial, Helvetica, sans-serif;
+
+  font-weight: 900;
+  font-size: 120px;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #14b6d7, #050404);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sideHeading{
+   font-family: Valerius, Arial, Helvetica, sans-serif;
+   font-weight: 400;
+
 }

@@ -3,7 +3,9 @@ import GrowthPlanTimelineV3 from "./GrowthPlanTimelineV3"
 import HomeContactSection from "./HomeContactSection"
 import HeroSection from "./HomeHeroSection"
 import HomeRoadmapSection from "./HomeRoadmapSection"
+import OurStory from "./OurStory"
 import SecondSection from "./SecondSection"
+import SupportedWallets from "./SupportedWallets"
 import Testimonials from "./Testimonals"
 import WhatWeOffer from "./WhatweOffer"
 import "./theme.css";
@@ -12,6 +14,8 @@ const MainPage = () => {
     return (
         <>
         <HeroSection />
+        <SupportedWallets/>
+        <OurStory/>
         <SecondSection />
         <WhatWeOffer />
         <GrowthPlanTimelineV3 />
