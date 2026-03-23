@@ -20,6 +20,7 @@ const ReviewsSection = lazy(() => import("./Rating"));
 const WorldMap = lazy(() => import("./WorldMap"));
 import CountdownTimer from "../popups/CoinPricePopup1";
 import AdSlot from "./AdSlot";
+import Loader from "../../ReusableComponents/Loader/loader";
 const Home = () => {
   const navigate = useNavigate();
 
@@ -461,7 +462,7 @@ const Home = () => {
           containIntrinsicSize: "1px 800px",
         }}
       >
-        <Suspense fallback={loader}>
+        <Suspense fallback={Loader}>
           <Component />
         </Suspense>
       </section>

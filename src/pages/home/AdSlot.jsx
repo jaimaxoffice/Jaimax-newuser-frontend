@@ -20,7 +20,7 @@ const AdSlot = ({ slot, className = "" }) => {
   if (IS_DEV) {
     return (
       <div className={`w-full max-w-6xl mx-auto px-4 my-10 ${className}`}>
-        <div className="w-full min-h-[90px] flex items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-100 text-gray-400 text-sm">
+        <div className="w-full min-h-[90px] flex items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-300 text-gray-400 text-sm">
           Ad Slot · {slot}
         </div>
       </div>
