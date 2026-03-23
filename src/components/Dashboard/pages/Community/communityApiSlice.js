@@ -1,4 +1,4 @@
-import { apiSlice } from "../../api/jaimaxApiSlice";
+import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
 export const chatApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
   

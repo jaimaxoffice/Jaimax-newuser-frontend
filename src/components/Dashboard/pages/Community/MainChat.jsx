@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import ChatWindow from "./ChatWindow.jsx";
 import { useGetGroupsQuery } from "./communityApiSlice";
 import { encryptMessage, decryptMessage } from "./socket/encryptmsg.js";
-import Loader from "../../ReusableComponents/Loader/loader.jsx";
+import Loader from "../../../../ReusableComponents/Loader/loader.jsx";
 import { useSocket } from "./socket/useSocket.js";
 import {
   safeDecrypt,

@@ -19,6 +19,7 @@ const HomeFooter = lazy(() => import("./HomeFoot"));
 const ReviewsSection = lazy(() => import("./Rating"));
 const WorldMap = lazy(() => import("./WorldMap"));
 import CountdownTimer from "../popups/CoinPricePopup1";
+import AdSlot from "./AdSlot";
 const Home = () => {
   const navigate = useNavigate();
 
@@ -312,6 +313,18 @@ const Home = () => {
     ],
   };
 
+  const sections = [
+  { Component: CryptoStakingSection, id: "crypto-staking" },
+  { Component: ServicesComponent, id: "services" },
+  { Component: GrowthPlanTimeline, id: "growth-plan" },
+  { Component: JaimaxContent, id: "seo-section" },
+  { Component: ReviewsSection, id: "rating-section" },
+  { Component: AnimatedTestimonials, id: "testimonials" },
+  { Component: JaimaxRoadmap, id: "roadmap" },
+  { Component: JaimaxFAQ, id: "faq" },
+  { Component: HomeContact, id: "contact" },
+];
+
   return (
     <>
       <Seo page="homePage" />
@@ -387,7 +400,7 @@ const Home = () => {
           </div>
         </header>
 
-        <main className="w-full scrollbar-none" role="main">
+        {/* <main className="w-full scrollbar-none" role="main">
           {[
             { Component: CryptoStakingSection, id: "crypto-staking" },
             { Component: ServicesComponent, id: "services" },
@@ -431,7 +444,38 @@ const Home = () => {
               <HomeFooter />
             </Suspense>
           </footer>
-        </main>
+        </main> */}
+
+        <main className="w-full scrollbar-none" role="main">
+
+  {/* TOP AD */}
+  <AdSlot slot="first-ad" />
+
+  {sections.map(({ Component, id }) => (
+    <React.Fragment key={id}>
+
+      <section
+        id={id}
+        style={{
+          contentVisibility: "auto",
+          containIntrinsicSize: "1px 800px",
+        }}
+      >
+        <Suspense fallback={loader}>
+          <Component />
+        </Suspense>
+      </section>
+
+      {id === "growth-plan" && <AdSlot slot="second-ad" />}
+      {id === "seo-section" && <AdSlot slot="third-ad" />}
+      {id === "testimonials" && <AdSlot slot="fourth-ad" />}
+      {id === "roadmap" && <AdSlot slot="fifth-ad" />}
+      {id === "contact" && <AdSlot slot="sixth-ad" />}
+
+    </React.Fragment>
+  ))}
+
+</main>
       </div>
 
       {/* Animations */}

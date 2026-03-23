@@ -1807,8 +1807,8 @@ import {
   GripHorizontal,
 } from "lucide-react";
 import { decryptMessage } from "./socket/encryptmsg";
-import Loader from "../../ReusableComponents/Loader/loader";
-import loaderImage from "/logo.png";
+import Loader from "../../../../ReusableComponents/Loader/loader";
+import loaderImage from "../../../../assets/logo.webp";
 
 // ── Sub-components ──
 import ChatHeader from "./chatWindow/Chatheader";
