@@ -3041,11 +3041,11 @@ const ChatWindow = ({
                         );
 
                         return imageFiles.length > 0 ? (
-                          <div className="p-4">
+                          <div className="px-4 h-full overflow-y-auto pb-20 sm:pb-32">
                             <h3 className="text-xs sm:text-sm text-gray-400 mb-2 sm:mb-3 font-semibold">
                               {imageFiles.length} Images
                             </h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-1.5 sm:gap-2 ">
                               {imageFiles.map((file, index) => (
                                 <div
                                   key={`${file._id}-${index}`}

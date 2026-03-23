@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --jaimax-primary: #48CFFF;
+  --jaimax-primary-strong: #22B8F0;
+  --jaimax-primary-soft: #7EDBFF;
+  --jaimax-bg: #060c11;
+  --jaimax-text: #edf8fc;
+  --jaimax-muted: rgba(188, 222, 232, 0.68);
+  --jaimax-line: rgba(72, 207, 255, 0.38);
+}

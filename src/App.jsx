@@ -265,6 +265,22 @@ import { ToastContainer } from "./ReusableComponents/Toasts/Toasts";
 import ErrorBoundary from "./pages/chatSupport/ErrorBoundary";
 import PageLoader from "./ReusableComponents/Loader/loader";
 import GroupChatApp from "./components/Dashboard/pages/jaimaxcommunity/mainchatGroup";
+import GrowthPlanTimeline from "./pages/dummy/DummyPage";
+import GrowthPlanTimeline2 from "./pages/dummy/PhasesDummy";
+import GrowthPlanTimelineV3 from "./pages/dummy/GrowthPlanTimelineV3";
+import "../src/pages/dummy/theme.css";
+import WhatWeOffer from "./pages/dummy/WhatweOffer";
+import SecondSection from "./pages/dummy/SecondSection";
+import Testimonials from "./pages/dummy/Testimonals";
+import ContactComponent from "./pages/dummy/Contact";
+import HomeContactSection from "./pages/dummy/HomeContactSection";
+import HomeRoadmapSection from "./pages/dummy/HomeRoadmapSection";
+import HeroSection from "./pages/dummy/HomeHeroSection";
+import NewAbout from "./pages/dummy/about/NewAboutPage";
+import FeaturesPage from "./pages/dummy/features/FeaturesPage";
+import BlogGridPage from "./pages/dummy/blog/BlogGridPage";
+import BlogPostDetail from "./pages/dummy/blog/BlogpostDetail";
+import MainPage from "./pages/dummy/MainPage";
 
 // Lazy loaded components
 const CoinPricePopup = lazy(() => import("./ReusableComponents/popups/Countdown"));
@@ -530,6 +546,25 @@ const App = () => {
             <Route path="Kyc-Pmla" element={<KycPmlaPolicy />} />
             <Route path="AML-CTF" element={<AmlCtfPolicy />} />
             <Route path="supportpage" element={<SupportPage />} />
+
+
+            {/* <Route path="dummy" element={<GrowthPlanTimeline />} /> */}
+            {/* <Route path="phases-dummy" element={<GrowthPlanTimeline2 />} /> */}
+            <Route path="phases" element={<GrowthPlanTimelineV3 />} />
+            <Route path="offer" element={<WhatWeOffer />} />
+            <Route path="second" element={<SecondSection />} />
+            <Route path="testimonals" element={<Testimonials />} />
+            <Route path="contactpage" element={<ContactComponent />} />
+            <Route path="homeContact" element={<HomeContactSection />} />
+            <Route path="roadmap" element={<HomeRoadmapSection />} />
+            <Route path="hero" element={<HeroSection />} />
+            <Route path="newAbout" element={<NewAbout />} />
+            <Route path="newFeatures" element={<FeaturesPage />} />
+            <Route path="blogGrid" element={<BlogGridPage />} />
+             <Route path="blogGrid">
+             <Route path=":slug" element={<BlogPostDetail />} />
+            </Route>
+             <Route path="main" element={<MainPage />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
