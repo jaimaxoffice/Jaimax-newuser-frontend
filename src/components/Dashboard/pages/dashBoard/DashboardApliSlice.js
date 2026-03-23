@@ -62,6 +62,13 @@ export const dashboardApiSlice = apiSlice.injectEndpoints({
         body: { jmc },
       }),
     }),
+     getDashboardDetails: builder.query({
+      query: () => ({
+        url: `/dashboard/userdashboard`,
+        method: "GET",
+      }),
+      providesTags: ["updateDetails"],
+    }),
 getBonusLogs: builder.query({
   query: ({ page = 1, limit = 10, type = '' } = {}) => {
     // Start with the base parameters
@@ -135,6 +142,7 @@ export const {
   useCreatePaypalOrderMutation,
   useGetAnnounceQuery,
   useGetRegisterBonusMutation,
+  useGetDashboardDetailsQuery,
   useGetBonusLogsQuery,
   useGetHolderCountQuery,
 } = dashboardApiSlice;

@@ -305,7 +305,7 @@ const Support = lazy(() => import("./components/Dashboard/pages/support/support"
 const AddMoneyToWallet = lazy(() => import("./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet"));
 const UserMeetingsShowcase = lazy(() => import("./components/Dashboard/pages/Meetings/Zoommeetings"));
 const UserDetailsComponent = lazy(() => import("./components/Dashboard/pages/jwallet/jwallet"));
-
+import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent"
 const SupportChart = lazy(() =>
   import("./components/Dashboard/pages/support/support").then((module) => ({
     default: module.SupportChart,
@@ -478,8 +478,8 @@ const App = () => {
               <Route path="/kyc-information" element={<Kyc />} />
               <Route path="/withdrawal" element={<WithDrawal />} />
               <Route path="/meetings" element={<UserMeetingsShowcase />} />
-              <Route path="/community" element={<GroupChatApp />} />
-
+              {/* <Route path="/community" element={<GroupChatApp />} /> */}
+            <Route path="/mining" element={<MiningPage/>}/>
             </Route>
             <Route path="/support" element={<DashboardLayout />}>
               <Route index element={<Support />} />
