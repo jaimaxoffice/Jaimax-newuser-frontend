@@ -79,7 +79,7 @@ const CONVEYOR_IMGS = [
   { src: "https://images.stockcake.com/public/a/8/5/a852b6e8-6b91-4957-b31a-c7082a74b56e_large/business-discussion-meeting-stockcake.jpg", rot: -2 },
   { src: img1 || "https://bsmedia.business-standard.com/_media/bs/img/article/2022-03/30/full/1648657657-322.jpg?im=FeatureCrop,size=(826,465)", rot: 3 },
   { src: "https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg", rot: -4 },
-  { src: img4 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
+  { src: img3 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
 ];
 
 
