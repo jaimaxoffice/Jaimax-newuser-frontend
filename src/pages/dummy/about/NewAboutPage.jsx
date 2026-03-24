@@ -1,9 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import {
   Shield, TrendingUp, Globe, Users, Coins,
-  ArrowRight, Play, X, Check, ChevronRight,
-  Zap, BarChart2, Clock, Star, MessageSquare
+  ArrowRight, Play, X, Check,
+  BarChart2, Clock, MessageSquare
 } from "lucide-react";
+import img1 from "../../../assets/aboutPage/image1.jpeg"
+import img2 from "../../../assets/aboutPage/image2.jpeg"
+import img3 from "../../../assets/aboutPage/image3.jpeg"
+import img4 from "../../../assets/aboutPage/image4.jpeg"
+// import img5 from "../../../assets/aboutPage/image5.jpeg"
+
 
 // ─── Scroll reveal hook ───────────────────────────────────────────────────────
 function useReveal(threshold = 0.12) {
@@ -20,6 +26,7 @@ function useReveal(threshold = 0.12) {
   return [ref, visible];
 }
 
+
 function Reveal({ children, delay = 0, className = "" }) {
   const [ref, visible] = useReveal();
   return (
@@ -33,23 +40,28 @@ function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-const NAV = ["Services", "Features", "Blog", "Solution"];
 
-// r=rotate(deg), y=translateY(px drop from top), w/h=card size, z=zIndex, bg=card bg color
-const HERO_PHOTOS = [
-  { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80", bg: "#c2c8d4", r: -15, y: 52, w: 110, h: 145, z: 1 },
-  { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&auto=format&fit=crop&q=80", bg: "#c8bcb8", r: -7,  y: 22, w: 128, h: 168, z: 2 },
-  { src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&auto=format&fit=crop&q=80", bg: "#c4a09a", r:  0,  y:  0, w: 148, h: 192, z: 3 },
-  { src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80", bg: "#b0b8c8", r:  7,  y: 22, w: 128, h: 168, z: 2 },
-  { src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80", bg: "#9098b8", r: 15,  y: 52, w: 110, h: 145, z: 1 },
-];
+// ─── Data (all content from JaimaxOverview) ───────────────────────────────────
+
 
 const HERO_FEATURES = [
-  { icon: <Zap size={14} />, title: "Real-Time Collaboration", desc: "Stay connected and build winning strategies with your community in real time." },
-  { icon: <BarChart2 size={14} />, title: "Task & Project Tracking", desc: "Track your investments, milestones, and key goals with intuitive dashboards." },
-  { icon: <Star size={14} />, title: "Performance Insights", desc: "Powerful analytics that help you understand your portfolio performance and next steps." },
+  {
+    icon: <Shield size={14} />,
+    title: "Secure & Transparent",
+    desc: "Built on advanced blockchain infrastructure ensuring full data integrity and security.",
+  },
+  {
+    icon: <TrendingUp size={14} />,
+    title: "User-Focused Platform",
+    desc: "Easy to use, fast, and reliable for everyday crypto transactions.",
+  },
+  {
+    icon: <Globe size={14} />,
+    title: "Growing Ecosystem",
+    desc: "Jaimax continues to expand its utility use cases in trading, payments, and smart applications.",
+  },
 ];
+
 
 const STATS = [
   { value: "500K+", label: "Active Users" },
@@ -58,34 +70,86 @@ const STATS = [
   { value: "99.9%", label: "Uptime" },
 ];
 
-const TEAM_PHOTOS = [
-  "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&auto=format&fit=crop&q=80",
+
+// Real Jaimax/crypto images from JaimaxOverview
+const CONVEYOR_IMGS = [
+  { src: img2 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
+  { src: "https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg", rot: -3 },
+  { src: img3 || "https://researchworld.com/uploads/attachments/cl5gw4sah25fd86tdzezrzu0f-gettyimages-1334086618.max.jpg", rot: 4 },
+  { src: "https://images.stockcake.com/public/a/8/5/a852b6e8-6b91-4957-b31a-c7082a74b56e_large/business-discussion-meeting-stockcake.jpg", rot: -2 },
+  { src: img1 || "https://bsmedia.business-standard.com/_media/bs/img/article/2022-03/30/full/1648657657-322.jpg?im=FeatureCrop,size=(826,465)", rot: 3 },
+  { src: "https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg", rot: -4 },
+  { src: img4 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
 ];
 
+
+// Vision photo grid — same 3 images from JaimaxOverview vision section
+const VISION_PHOTOS = [
+  "https://researchworld.com/uploads/attachments/cl5gw4sah25fd86tdzezrzu0f-gettyimages-1334086618.max.jpg",
+  "https://images.stockcake.com/public/a/8/5/a852b6e8-6b91-4957-b31a-c7082a74b56e_large/business-discussion-meeting-stockcake.jpg",
+  "https://bsmedia.business-standard.com/_media/bs/img/article/2022-03/30/full/1648657657-322.jpg?im=FeatureCrop,size=(826,465)",
+];
+
+
+// WHY cards — exact text from JaimaxOverview features array + community item
 const WHY_CARDS = [
-  { icon: <Shield size={20} />, title: "Secure & Transparent", desc: "Built on advanced blockchain infrastructure ensuring full data integrity and security." },
-  { icon: <TrendingUp size={20} />, title: "User-Focused Platform", desc: "Easy to use, fast, and reliable for everyday crypto transactions." },
-  { icon: <Globe size={20} />, title: "Growing Ecosystem", desc: "Expanding utility in trading, payments, and smart applications globally." },
-  { icon: <Coins size={20} />, title: "Global Vision", desc: "Aiming to become one of the top cryptocurrencies with an international footprint." },
-  { icon: <Users size={20} />, title: "Community Powered", desc: "A united Jaimax community that believes in long-term value and shared growth." },
-  { icon: <MessageSquare size={20} />, title: "24/7 Support", desc: "Round-the-clock support to help every investor navigate their journey." },
+  {
+    icon: <Shield size={20} />,
+    title: "Secure & Transparent",
+    desc: "Built on advanced blockchain infrastructure ensuring full data integrity and security.",
+  },
+  {
+    icon: <TrendingUp size={20} />,
+    title: "User-Focused Platform",
+    desc: "Easy to use, fast, and reliable for everyday crypto transactions.",
+  },
+  {
+    icon: <Globe size={20} />,
+    title: "Growing Ecosystem",
+    desc: "Jaimax continues to expand its utility use cases in trading, payments, and smart applications.",
+  },
+  {
+    icon: <Coins size={20} />,
+    title: "Global Vision",
+    desc: "Aiming to become one of the top cryptocurrencies in India with an international footprint.",
+  },
+  {
+    icon: <Users size={20} />,
+    title: "Community Powered",
+    desc: "Our strength lies in our users — a united Jaimax community that believes in long-term value and shared growth.",
+  },
+  {
+    icon: <MessageSquare size={20} />,
+    title: "24/7 Support",
+    desc: "Round-the-clock support to help every investor navigate their crypto journey with confidence.",
+  },
 ];
 
-// ─── Video Modal ───────────────────────────────────────────────────────────────
+
+// ─── Video Modal ──────────────────────────────────────────────────────────────
 function VideoModal({ open, onClose }) {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.80)", backdropFilter: "blur(4px)" }}
+      onClick={onClose}
+    >
       <div className="relative w-full max-w-4xl" onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute -top-10 right-0 text-white/70 hover:text-white">
+        <button
+          onClick={onClose}
+          className="absolute -top-10 right-0 transition-colors"
+          style={{ color: "rgba(255,255,255,0.7)" }}
+        >
           <X size={24} />
         </button>
         <div className="relative w-full rounded-2xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-          <iframe className="absolute inset-0 w-full h-full"
+          <iframe
+            className="absolute inset-0 w-full h-full"
             src="https://www.youtube.com/embed/SsoOifQVL5s?autoplay=1"
-            title="Jaimax" frameBorder="0" allowFullScreen
+            title="Jaimax"
+            frameBorder="0"
+            allowFullScreen
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           />
         </div>
@@ -94,11 +158,13 @@ function VideoModal({ open, onClose }) {
   );
 }
 
+
 // ═════════════════════════════════════════════════════════════════════════════
 export default function NewAbout() {
-  const [videoOpen, setVideoOpen] = useState(false);
+  const [videoOpen,  setVideoOpen]  = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled,   setScrolled]   = useState(false);
+
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -106,132 +172,119 @@ export default function NewAbout() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+
   return (
-    <div className="w-full min-h-screen overflow-x-hidden" style={{ background: "#f5f0e8", fontFamily: "'DM Sans', sans-serif" }}>
+    <div
+      className="w-full min-h-screen overflow-x-hidden"
+      style={{ background: "var(--color-bg-page)", fontFamily: "var(--font-body)" }}
+    >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap');
-        .font-serif-display { font-family: 'Instrument Serif', Georgia, serif; }
-        @keyframes carouselSpin {
-          0%   { transform: rotate(var(--r-from)) translateY(var(--y-from)); opacity: var(--o-from); }
-          100% { transform: rotate(var(--r-to))   translateY(var(--y-to));   opacity: var(--o-to); }
-        }
-        @keyframes subtleBob {
-          0%,100% { margin-bottom: var(--mb); }
-          50%      { margin-bottom: calc(var(--mb) + 8px); }
-        }
-        .photo-card { animation: subtleBob 4s ease-in-out infinite; }
-        @keyframes fadeSlideIn {
-          from { opacity:0; transform: translateY(30px); }
-          to   { opacity:1; transform: translateY(0); }
-        }
-        .hero-anim-0 { animation: fadeSlideIn .8s .1s ease both; }
-        .hero-anim-1 { animation: fadeSlideIn .8s .25s ease both; }
-        .hero-anim-2 { animation: fadeSlideIn .8s .4s ease both; }
-        .hero-anim-3 { animation: fadeSlideIn .8s .55s ease both; }
-        .hero-anim-4 { animation: fadeSlideIn .8s .7s ease both; }
-        .card-hover { transition: transform .3s ease, box-shadow .3s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.10); }
+        .font-display { font-family: var(--font-display); }
+
+
         @keyframes marquee {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+
+
+        .hero-anim-0 { animation: fadeUp .8s .10s ease both; }
+        .hero-anim-1 { animation: fadeUp .8s .25s ease both; }
+        .hero-anim-2 { animation: fadeUp .8s .40s ease both; }
+        .hero-anim-3 { animation: fadeUp .8s .55s ease both; }
+
+
+        .card-hover { transition: transform .3s ease, box-shadow .3s ease; }
+        .card-hover:hover {
+          transform: translateY(-4px);
+          box-shadow: var(--shadow-card);
+        }
+
+
         .bento-img { transition: transform .5s ease; }
         .bento-img:hover { transform: scale(1.03); }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f5f0e8; }
-        ::-webkit-scrollbar-thumb { background: #c8c0b0; border-radius: 3px; }
+
+
+        .cta-btn-primary {
+          background: var(--color-brand-primary);
+          color: var(--color-text-on-dark);
+          transition: var(--transition-base);
+        }
+        .cta-btn-primary:hover { background: var(--color-brand-dark); }
+
+
+        .cta-btn-outline {
+          border: 1px solid var(--color-border-accent);
+          color: var(--color-text-secondary);
+          transition: var(--transition-base);
+        }
+        .cta-btn-outline:hover { color: var(--color-text-primary); }
       `}</style>
 
-      {/* ── NAV ── */}
-      <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-[#f5f0e8]/90 backdrop-blur-md shadow-sm" : ""}`}>
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-7 text-xs font-medium text-[#444]">
-            {NAV.map(l => <a key={l} href="#" className="hover:text-black transition-colors">{l}</a>)}
-          </div>
-          <span className="font-serif-display text-lg tracking-tight text-black absolute left-1/2 -translate-x-1/2">Jaimax</span>
-          <div className="hidden md:flex items-center gap-6 text-xs font-medium text-[#444]">
-            <a href="#" className="hover:text-black transition-colors">About</a>
-            <a href="#" className="hover:text-black transition-colors">Pricing</a>
-            <a href="#" className="hover:text-black transition-colors">Contact</a>
-            <button className="bg-[#1a1a1a] text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-black transition-colors">
-              Get started
-            </button>
-          </div>
-          <button className="md:hidden text-black p-1" onClick={() => setMobileOpen(o => !o)}>
-            <div className="space-y-1.5">
-              <span className="block w-5 h-0.5 bg-current" />
-              <span className="block w-5 h-0.5 bg-current" />
-              <span className="block w-5 h-0.5 bg-current" />
-            </div>
-          </button>
-        </div>
-        {mobileOpen && (
-          <div className="md:hidden bg-[#f5f0e8] border-t border-black/5 px-5 py-4 flex flex-col gap-3">
-            {[...NAV, "About", "Pricing", "Contact"].map(l => (
-              <a key={l} href="#" className="text-sm text-[#444] hover:text-black py-1">{l}</a>
-            ))}
-            <button className="self-start bg-[#1a1a1a] text-white text-xs font-semibold px-5 py-2.5 rounded-full mt-1">Get started</button>
-          </div>
-        )}
-      </nav>
+
+
 
       {/* ════ HERO ════ */}
-      <section className="relative pt-24 pb-0 overflow-hidden" style={{ background: "#f0ece4" }}>
-        {/* Text block */}
-        <div className="text-center px-4 relative z-10 mb-10">
-          <div className="hero-anim-0 max-w-2xl mx-auto mb-3">
-            <h1 className="font-serif-display text-4xl sm:text-5xl md:text-[3.6rem] text-[#1a1a1a] leading-tight">
-              Streamline Your Team,<br />
-              <span className="italic">Supercharge Your Workflow</span>
+      <section
+        className="relative pt-24 pb-0 overflow-hidden"
+        style={{ background: "var(--color-bg-page)" }}
+      >
+        <div className="text-center px-4 relative z-10 lg:mb-10 ">
+          <div className="hero-anim-0 max-w-5xl mx-auto mb-8">
+            {/* From JaimaxOverview hero h1 + subtitle */}
+            <h1
+              className="font-display text-4xl sm:text-5xl md:text-[3.6rem] leading-tight"
+              style={{ color: "var(--color-text-primary)" }}
+            >
+              About Jaimax,<br />
+              <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
+                Building the Future of Digital Finance
+              </span>
             </h1>
           </div>
-          <div className="hero-anim-1">
-            <p className="text-[#777] text-sm sm:text-base max-w-xs mx-auto mb-6 leading-relaxed">
-              All-in-one platform to plan, collaborate,<br />and deliver — faster and smarter.
+          <div className="hero-anim-1 ">
+            <p
+              className="text-sm sm:text-base max-w-xl mx-auto mb-6 leading-relaxed "
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              A secure, utility-driven crypto token — making blockchain investing simple, safe, and rewarding.
             </p>
-            <button className="inline-flex items-center gap-2 bg-[#1a1a1a] text-white text-sm font-semibold px-6 py-3 rounded-full hover:bg-black transition-colors">
-              Get started for Free <ArrowRight size={14} />
+            <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full">
+              Start Investing <ArrowRight size={14} />
             </button>
           </div>
         </div>
 
-        {/* ── Infinite sliding photo conveyor — continuous left scroll ── */}
-        <div className="hero-anim-2 relative w-full overflow-hidden" style={{ height: "clamp(220px, 34vw, 280px)" }}>
-          {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 z-10 pointer-events-none"
-            style={{ background: "linear-gradient(to right, #f0ece4, transparent)" }} />
-          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 z-10 pointer-events-none"
-            style={{ background: "linear-gradient(to left, #f0ece4, transparent)" }} />
 
-          {/* Scrolling track */}
-          <div className="flex items-end h-full gap-3 sm:gap-4" style={{ animation: "marquee 18s linear infinite" }}>
-            {[
-              { src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&auto=format&fit=crop&q=80", bg: "#b8a898", rot:  2 },
-              { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80", bg: "#c8b89a", rot: -3 },
-              { src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80", bg: "#b0c0b8", rot:  4 },
-              { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80", bg: "#c8aca0", rot: -2 },
-              { src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80", bg: "#9898b8", rot:  3 },
-              { src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80", bg: "#b8b0a0", rot: -4 },
-              { src: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80", bg: "#a8b8c8", rot:  2 },
-              /* duplicate for seamless loop */
-              { src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&auto=format&fit=crop&q=80", bg: "#b8a898", rot:  2 },
-              { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80", bg: "#c8b89a", rot: -3 },
-              { src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80", bg: "#b0c0b8", rot:  4 },
-              { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80", bg: "#c8aca0", rot: -2 },
-              { src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80", bg: "#9898b8", rot:  3 },
-              { src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80", bg: "#b8b0a0", rot: -4 },
-              { src: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80", bg: "#a8b8c8", rot:  2 },
-            ].map((p, i) => (
+        {/* Infinite conveyor — real Jaimax images */}
+        <div
+          className="hero-anim-2 relative w-full overflow-hidden"
+          style={{ height: "clamp(220px,34vw,280px)" }}
+        >
+          <div
+            className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to right, var(--color-bg-page), transparent)" }}
+          />
+          <div
+            className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 z-10 pointer-events-none"
+            style={{ background: "linear-gradient(to left, var(--color-bg-page), transparent)" }}
+          />
+          <div
+            className="flex items-end h-full gap-3 sm:gap-4"
+            style={{ animation: "marquee 18s linear infinite" }}
+          >
+            {[...CONVEYOR_IMGS, ...CONVEYOR_IMGS].map((p, i) => (
               <div
                 key={i}
-                className="shrink-0 rounded-2xl overflow-hidden border-[3px] border-white shadow-xl"
+                className="shrink-0 rounded-2xl overflow-hidden border-[3px] shadow-xl"
                 style={{
-                  width:  "clamp(110px, 16vw, 180px)",
-                  height: "clamp(145px, 22vw, 240px)",
-                  background: p.bg,
-                  transform: `rotate(${p.rot}deg)`,
+                  width:           "clamp(110px,16vw,180px)",
+                  height:          "clamp(145px,22vw,240px)",
+                  background:      "var(--color-brand-light)",
+                  borderColor:     "var(--color-bg-surface)",
+                  transform:       `rotate(${p.rot}deg)`,
                   transformOrigin: "bottom center",
-                  marginBottom: `${Math.abs(p.rot) * 3}px`,
+                  marginBottom:    `${Math.abs(p.rot) * 3}px`,
                 }}
               >
                 <img src={p.src} alt="" className="w-full h-full object-cover object-top" />
@@ -240,67 +293,118 @@ export default function NewAbout() {
           </div>
         </div>
 
-        {/* ── 3 feature blurbs ── */}
-        <div className="hero-anim-3 relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-px bg-black/5 border-t border-black/8 mt-0">
+
+        {/* 3 feature blurbs — exact text from JaimaxOverview features */}
+        <div
+          className="hero-anim-3 relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-px mt-0"
+          style={{
+            background:  "var(--color-border-accent)",
+            borderTop:   "1px solid var(--color-border-accent)",
+          }}
+        >
           {HERO_FEATURES.map((f, i) => (
-            <div key={i} className="bg-[#f0ece4] px-8 py-7 text-left">
-              <div className="w-8 h-8 rounded-lg bg-[#e4ddd0] flex items-center justify-center text-[#555] mb-3">
+            <div
+              key={i}
+              className="px-8 py-7 text-left"
+              style={{ background: "var(--color-bg-page)" }}
+            >
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
+                style={{ background: "var(--color-bg-overlay)", color: "var(--color-brand-primary)" }}
+              >
                 {f.icon}
               </div>
-              <p className="text-sm font-semibold text-[#1a1a1a] mb-1.5">{f.title}</p>
-              <p className="text-xs text-[#888] leading-relaxed">{f.desc}</p>
+              <p className="text-sm font-semibold mb-1.5" style={{ color: "var(--color-text-primary)" }}>
+                {f.title}
+              </p>
+              <p className="text-xs leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
+                {f.desc}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ════ EVERYTHING YOUR TEAM NEEDS ════ */}
-      <section className="py-20 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto">
-          <Reveal className="text-center mb-12">
-            <h2 className="font-serif-display text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] mb-4">
-              Everything Your Team Needs to<br />
-              <span className="italic">Work Smarter</span>
+
+      {/* ════ OUR MISSION ════ */}
+      {/* Heading + both paragraphs taken verbatim from JaimaxOverview mission section */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-12 max-w-5xl mx-auto">
+            <h2
+              className="font-display text-3xl sm:text-4xl md:text-5xl mb-4"
+              style={{ color: "var(--color-text-primary)" }}
+            >
+              Empowering financial freedom{" "}
+              <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
+                through blockchain
+              </span>
             </h2>
-            <p className="text-[#888] text-sm sm:text-base max-w-md mx-auto leading-relaxed">
-              From day one, we built Jaimax to help your team stay connected, organized and moving forward — together.
+            <p className="text-sm sm:text-base max-w-4xl mx-auto leading-relaxed mb-3" style={{ color: "var(--color-text-secondary)" }}>
+              Jaimax is an innovative cryptocurrency in India designed to transform the way people invest, transact, and grow in the blockchain era. As a secure and utility-driven crypto token, Jaimax brings together technology, transparency, and trust to create a strong foundation for the future of decentralized finance (DeFi).
+            </p>
+            <p className="text-sm sm:text-base max-w-2xl mx-auto leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+              We believe that digital currency should not just be a trend — it should be a tool for empowerment. That's why Jaimax is built to make crypto investing simple, safe, and rewarding for everyone, from new investors to blockchain experts.
             </p>
           </Reveal>
 
-          {/* ── Bento grid ── */}
+
+          {/* Bento grid — card titles/descs from JaimaxOverview missionCards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-            {/* Card 1 — large image left */}
+
+            {/* Card 1 — Transparency */}
             <Reveal delay={0}>
-              <div className="card-hover rounded-3xl overflow-hidden relative h-64 sm:h-80 bg-[#c8a882]">
+              <div
+                className="card-hover rounded-2xl overflow-hidden relative h-64 sm:h-80"
+                style={{ background: "var(--color-brand-mid)" }}
+              >
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop&q=80"
-                  alt="Team chat"
+                  src="https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg"
+                  alt="Blockchain Technology"
                   className="bento-img w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(26,61,34,0.75), transparent)" }} />
                 <div className="absolute bottom-5 left-5 right-5">
-                  <p className="text-white font-semibold text-base mb-1">Built-in Team Chat</p>
-                  <p className="text-white/70 text-xs leading-relaxed">Message teammates instantly, share updates and keep every conversation in context.</p>
+                  <p className="font-semibold text-base mb-1" style={{ color: "var(--color-text-on-dark)" }}>
+                    Transparency
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.70)" }}>
+                    Built on advanced blockchain infrastructure ensuring full data integrity and security for all transactions.
+                  </p>
                 </div>
               </div>
             </Reveal>
 
-            {/* Card 2 — plain right */}
+
+            {/* Card 2 — Experienced Team */}
             <Reveal delay={80}>
-              <div className="card-hover rounded-3xl bg-[#f0ebe0] border border-black/5 p-7 h-64 sm:h-80 flex flex-col justify-between">
+              <div
+                className="card-hover rounded-2xl border p-4 sm:p-7 h-64 sm:h-80 flex flex-col justify-start gap-3 sm:gap-6"
+                style={{ background: "var(--color-bg-surface)", borderColor: "var(--color-border-accent)" }}
+              >
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm">
-                    <BarChart2 size={20} className="text-[#1a1a1a]" />
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 shadow-sm"
+                    style={{ background: "var(--color-bg-page)" }}
+                  >
+                    <Users size={20} style={{ color: "var(--color-brand-primary)" }} />
                   </div>
-                  <p className="font-semibold text-[#1a1a1a] text-lg mb-2">Task Assignment</p>
-                  <p className="text-[#888] text-sm leading-relaxed">Easily create, assign, and track tasks to keep everyone aligned and accountable.</p>
+                  <p className="font-semibold text-lg mb-2" style={{ color: "var(--color-text-primary)" }}>
+                    Experienced Team
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+                    Our strength lies in our users — a united Jaimax community that believes in long-term value and shared growth.
+                  </p>
                 </div>
                 <div className="flex flex-col gap-2">
-                  {["Drag & drop board", "Due date reminders", "Priority labeling"].map(t => (
-                    <div key={t} className="flex items-center gap-2 text-xs text-[#666]">
-                      <span className="w-4 h-4 rounded-full bg-[#1a1a1a] flex items-center justify-center shrink-0">
-                        <Check size={9} className="text-white" />
+                  {["Long-term value focus", "United investor community", "Shared growth for all"].map(t => (
+                    <div key={t} className="flex items-center gap-2 text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                      <span
+                        className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
+                        style={{ background: "var(--color-brand-primary)" }}
+                      >
+                        <Check size={9} style={{ color: "var(--color-text-on-dark)" }} />
                       </span>
                       {t}
                     </div>
@@ -309,31 +413,53 @@ export default function NewAbout() {
               </div>
             </Reveal>
 
-            {/* Card 3 — muted beige */}
+
+            {/* Card 3 — Security Guarantee */}
             <Reveal delay={120}>
-              <div className="card-hover rounded-3xl bg-[#d9d0c0] p-7 h-56 sm:h-64 flex flex-col justify-between">
+              <div
+                className="card-hover rounded-2xl p-4 sm:p-7 h-56 sm:h-64 flex flex-col justify-between"
+                style={{ background: "var(--color-bg-overlay)", border: "1px solid var(--color-border-accent)" }}
+              >
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-white/50 flex items-center justify-center mb-4">
-                    <Clock size={20} className="text-[#1a1a1a]" />
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                    style={{ background: "var(--color-bg-surface)" }}
+                  >
+                    <Shield size={20} style={{ color: "var(--color-brand-primary)" }} />
                   </div>
-                  <p className="font-semibold text-[#1a1a1a] text-lg mb-2">Real-Time Scheduling</p>
-                  <p className="text-[#555] text-sm leading-relaxed">Plan sprints, set deadlines and keep your team in sync with a shared live calendar.</p>
+                  <p className="font-semibold text-lg mb-2" style={{ color: "var(--color-text-primary)" }}>
+                    Security Guarantee
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+                    We create a complete financial ecosystem that connects opportunity, security, and scalability for every investor.
+                  </p>
                 </div>
               </div>
             </Reveal>
 
-            {/* Card 4 — dark green with image */}
+
+            {/* Card 4 — Global Vision */}
             <Reveal delay={160}>
-              <div className="card-hover rounded-3xl overflow-hidden relative h-56 sm:h-64 bg-[#2d4a35]">
+              <div
+                className="card-hover rounded-2xl overflow-hidden relative h-56 sm:h-64"
+                style={{ background: "var(--color-brand-dark)" }}
+              >
                 <img
-                  src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&auto=format&fit=crop&q=80"
-                  alt="Progress"
+                  src="https://researchworld.com/uploads/attachments/cl5gw4sah25fd86tdzezrzu0f-gettyimages-1334086618.max.jpg"
+                  alt="Jaimax Global Reach"
                   className="bento-img absolute right-0 bottom-0 w-1/2 h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#2d4a35] via-[#2d4a35]/80 to-transparent" />
+                <div
+                  className="absolute inset-0"
+                  style={{ background: "linear-gradient(to right, var(--color-brand-dark) 40%, transparent)" }}
+                />
                 <div className="absolute top-6 left-6 right-1/2">
-                  <p className="text-white font-semibold text-lg mb-2">Progress Tracking</p>
-                  <p className="text-white/60 text-xs leading-relaxed">Visualize team performance with dashboards that highlight what's done and what's next.</p>
+                  <p className="font-semibold text-lg mb-2" style={{ color: "var(--color-text-on-dark)" }}>
+                    Global Vision
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.60)" }}>
+                    Aiming to become one of the top cryptocurrencies in India with an international footprint.
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -341,37 +467,59 @@ export default function NewAbout() {
         </div>
       </section>
 
+
       {/* ════ STATS ════ */}
-      <section className="py-14 px-4 sm:px-6 border-y border-black/5">
+      <section
+        className="py-14 px-4 sm:px-6"
+        style={{ borderTop: "1px solid var(--color-border-accent)", borderBottom: "1px solid var(--color-border-accent)" }}
+      >
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {STATS.map((s, i) => (
             <Reveal key={s.label} delay={i * 80}>
-              <p className="font-serif-display text-4xl sm:text-5xl text-[#1a1a1a] mb-1">{s.value}</p>
-              <p className="text-[#999] text-xs font-medium uppercase tracking-widest">{s.label}</p>
+              <p className="font-display text-4xl sm:text-5xl mb-1" style={{ color: "var(--color-brand-primary)" }}>
+                {s.value}
+              </p>
+              <p className="text-xs font-medium uppercase tracking-widest" style={{ color: "var(--color-text-muted)" }}>
+                {s.label}
+              </p>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* ════ PROVEN RESULTS ════ */}
-      <section className="py-20 px-4 sm:px-6">
+
+      {/* ════ FOR BEGINNERS ════ */}
+      {/* Heading + paragraph verbatim from JaimaxOverview "For Beginners" section */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <Reveal className="text-center mb-12">
-            <h2 className="font-serif-display text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] mb-4">
-              Proven Results, <span className="italic">Real Impact</span>
+            <h2
+              className="font-display text-3xl sm:text-4xl md:text-5xl mb-4"
+              style={{ color: "var(--color-text-primary)" }}
+            >
+              Understanding{" "}
+              <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
+                Cryptocurrency
+              </span>
             </h2>
-            <p className="text-[#888] text-sm max-w-md mx-auto leading-relaxed">
-              Teams around the world are already transforming how they work and grow together.
+            <p className="text-sm max-w-lg mx-auto leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+              Whether you're new to crypto or looking to diversify your portfolio, Jaimax provides a powerful foundation to grow with a trustworthy and forward-looking project. We offer comprehensive guides and educational resources to help you understand the cryptocurrency market and make informed decisions.
             </p>
           </Reveal>
 
-          {/* Bento row 2 */}
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {TEAM_PHOTOS.map((src, i) => (
+            {VISION_PHOTOS.map((src, i) => (
               <Reveal key={i} delay={i * 100}>
-                <div className="card-hover rounded-3xl overflow-hidden relative h-64 sm:h-72 bg-[#ddd]">
+                <div
+                  className="card-hover rounded-xl overflow-hidden relative h-64 sm:h-72"
+                  style={{ background: "var(--color-brand-light)" }}
+                >
                   <img src={src} alt="" className="bento-img w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: "linear-gradient(to top, rgba(26,61,34,0.50), transparent)" }}
+                  />
                 </div>
               </Reveal>
             ))}
@@ -379,25 +527,49 @@ export default function NewAbout() {
         </div>
       </section>
 
-      {/* ════ WHY JAIMAX ════ */}
-      <section className="py-20 px-4 sm:px-6 bg-[#ede8dc]">
+
+      {/* ════ WHY CHOOSE JAIMAX ════ */}
+      {/* Card titles + descriptions verbatim from JaimaxOverview features array */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6" style={{ background: "var(--color-bg-overlay)" }}>
         <div className="max-w-5xl mx-auto">
           <Reveal className="text-center mb-12">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#888] mb-3 block">Why Choose Jaimax</span>
-            <h2 className="font-serif-display text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a]">
-              Built for Every <span className="italic">Investor</span>
+            <span
+              className="text-xs font-semibold uppercase tracking-widest mb-3 block"
+              style={{ color: "var(--color-text-muted)" }}
+            >
+              Why Choose Jaimax
+            </span>
+            <h2
+              className="font-display text-3xl sm:text-4xl md:text-5xl"
+              style={{ color: "var(--color-text-primary)" }}
+            >
+              Built for Every{" "}
+              <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
+                Investor
+              </span>
             </h2>
           </Reveal>
+
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {WHY_CARDS.map((c, i) => (
               <Reveal key={c.title} delay={i * 70}>
-                <div className="card-hover bg-white rounded-2xl p-6 border border-black/5 h-full">
-                  <div className="w-10 h-10 rounded-xl bg-[#f0ebe0] flex items-center justify-center text-[#1a1a1a] mb-4">
+                <div
+                  className="card-hover rounded-2xl p-6 border h-full"
+                  style={{ background: "var(--color-bg-surface)", borderColor: "var(--color-border-accent)" }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                    style={{ background: "var(--color-bg-page)", color: "var(--color-brand-primary)" }}
+                  >
                     {c.icon}
                   </div>
-                  <p className="font-semibold text-[#1a1a1a] text-sm mb-2">{c.title}</p>
-                  <p className="text-[#888] text-xs leading-relaxed">{c.desc}</p>
+                  <p className="font-semibold text-sm mb-2" style={{ color: "var(--color-text-primary)" }}>
+                    {c.title}
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+                    {c.desc}
+                  </p>
                 </div>
               </Reveal>
             ))}
@@ -405,13 +577,18 @@ export default function NewAbout() {
         </div>
       </section>
 
-      {/* ════ VIDEO / VISION ════ */}
-      <section className="py-20 px-4 sm:px-6">
+
+      {/* ════ VIDEO / OUR VISION ════ */}
+      {/* Both paragraphs + checklist verbatim from JaimaxOverview vision section */}
+      <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
-          {/* Video card */}
+
+
+          {/* Video card — same YouTube ID as JaimaxOverview */}
           <Reveal>
             <div
-              className="card-hover relative rounded-3xl overflow-hidden cursor-pointer group h-72 sm:h-80 bg-[#c8a882]"
+              className="card-hover relative rounded-xl overflow-hidden cursor-pointer group h-72 sm:h-80"
+              style={{ background: "var(--color-brand-mid)" }}
               onClick={() => setVideoOpen(true)}
             >
               <img
@@ -419,47 +596,73 @@ export default function NewAbout() {
                 alt="Vision"
                 className="bento-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-black/30" />
+              <div className="absolute inset-0" style={{ background: "rgba(26,61,34,0.35)" }} />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
-                  <Play size={20} className="text-[#1a1a1a] ml-1" fill="#1a1a1a" />
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300"
+                  style={{ background: "var(--color-bg-surface)" }}
+                >
+                  <Play size={20} style={{ color: "var(--color-brand-dark)", marginLeft: 3 }} fill="currentColor" />
                 </div>
               </div>
               <div className="absolute bottom-5 left-5">
-                <p className="text-white/70 text-xs mb-0.5">Watch Overview</p>
-                <p className="text-white font-semibold text-sm">Jaimax — Future of DeFi in India</p>
+                <p className="text-xs mb-0.5" style={{ color: "rgba(255,255,255,0.70)" }}>Watch Overview</p>
+                <p className="font-semibold text-sm" style={{ color: "var(--color-text-on-dark)" }}>
+                  Jaimax — Future of DeFi in India
+                </p>
               </div>
             </div>
           </Reveal>
 
-          {/* Text */}
+
+          {/* Vision text — exact from JaimaxOverview */}
           <div>
             <Reveal>
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#888] mb-4 block">Our Vision</span>
-              <h2 className="font-serif-display text-3xl sm:text-4xl text-[#1a1a1a] mb-5 leading-tight">
-                A Global Crypto Brand <br /><span className="italic">from India</span>
+              <span
+                className="text-xs font-semibold uppercase tracking-widest mb-4 block"
+                style={{ color: "var(--color-text-muted)" }}
+              >
+                Our Vision
+              </span>
+              <h2
+                className="font-display text-3xl sm:text-4xl mb-5 leading-tight"
+                style={{ color: "var(--color-text-primary)" }}
+              >
+                A Global Crypto Brand{" "}
+                <br />
+                <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
+                  from India
+                </span>
               </h2>
             </Reveal>
             <Reveal delay={100}>
-              <p className="text-[#666] text-sm leading-relaxed mb-5">
-                To position Jaimax Coin as a leading global crypto brand originating from India — where blockchain enables financial equality and every investor can be part of a borderless digital economy.
+              <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--color-text-secondary)" }}>
+                To position Jaimax Coin as a leading global crypto brand originating from India. We envision a world where blockchain technology enables financial equality, where every transaction is secure, and where every investor can be part of a borderless digital economy.
               </p>
-              <p className="text-[#666] text-sm leading-relaxed mb-7">
-                We believe digital currency should be a tool for empowerment — making crypto investing simple, safe, and rewarding for everyone.
+              <p className="text-sm leading-relaxed mb-7" style={{ color: "var(--color-text-secondary)" }}>
+                Our goal is to make Jaimax the most trusted cryptocurrency brand in India and across international markets.
               </p>
             </Reveal>
             <Reveal delay={200}>
               <div className="flex flex-col gap-3 mb-7">
-                {["Decentralized & borderless", "No hidden fees or middlemen", "Smart contract enabled", "Built for emerging markets"].map(t => (
-                  <div key={t} className="flex items-center gap-3 text-sm text-[#555]">
-                    <span className="w-5 h-5 rounded-full bg-[#1a1a1a] flex items-center justify-center shrink-0">
-                      <Check size={10} className="text-white" />
+                {[
+                  "Decentralized & borderless",
+                  "No hidden fees or middlemen",
+                  "Smart contract enabled",
+                  "Built for emerging markets",
+                ].map(t => (
+                  <div key={t} className="flex items-center gap-3 text-sm" style={{ color: "var(--color-text-secondary)" }}>
+                    <span
+                      className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                      style={{ background: "var(--color-brand-primary)" }}
+                    >
+                      <Check size={10} style={{ color: "var(--color-text-on-dark)" }} />
                     </span>
                     {t}
                   </div>
                 ))}
               </div>
-              <button className="inline-flex items-center gap-2 bg-[#1a1a1a] text-white text-sm font-semibold px-6 py-3 rounded-full hover:bg-black transition-colors">
+              <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full">
                 Join Our Vision <ArrowRight size={15} />
               </button>
             </Reveal>
@@ -467,23 +670,46 @@ export default function NewAbout() {
         </div>
       </section>
 
+
       {/* ════ CTA ════ */}
-      <section className="py-16 px-4 sm:px-6">
+      {/* Heading + paragraph exact from JaimaxOverview CTA section */}
+      <section className="py-8 sm:py-16 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <Reveal>
-            <div className="bg-[#1a1a1a] rounded-3xl p-10 sm:p-16 text-center">
-              <p className="text-[#888] text-xs font-semibold uppercase tracking-widest mb-5">Get Started</p>
-              <h2 className="font-serif-display text-3xl sm:text-4xl md:text-5xl text-white mb-5 leading-tight">
-                Your Gateway to the<br /><span className="italic">Future of Finance</span>
+            <div
+              className="rounded-3xl p-10 sm:p-16 text-center"
+              style={{ background: "var(--color-brand-dark)" }}
+            >
+              <p
+                className="text-xs font-semibold uppercase tracking-widest mb-5"
+                style={{ color: "var(--color-text-accent-lit)" }}
+              >
+                Our Commitment to Digital Finance
+              </p>
+              <h2
+                className="font-display text-3xl sm:text-4xl md:text-5xl mb-5 leading-tight"
+                style={{ color: "var(--color-text-on-dark)" }}
+              >
+                Jaimax — Your Gateway to the
+                <br />
+                <span className="italic" style={{ color: "var(--color-brand-accent)" }}>
+                  Future of Digital Finance
+                </span>
               </h2>
-              <p className="text-[#666] text-sm max-w-md mx-auto mb-8 leading-relaxed">
-                At Jaimax, we are dedicated to building trust in digital currency through innovation and integrity. Join thousands of investors already on the journey.
+              <p
+                className="text-sm max-w-md mx-auto mb-8 leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+              >
+                At Jaimax, we are dedicated to building trust in digital currency through innovation and integrity. We are creating not just a token, but a complete financial ecosystem that connects opportunity, security, and scalability.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <button className="inline-flex items-center gap-2 bg-white text-[#1a1a1a] font-semibold text-sm px-7 py-3 rounded-full hover:bg-[#f0ebe0] transition-colors">
+                <button
+                  className="inline-flex items-center gap-2 font-semibold text-sm px-7 py-3 rounded-full transition-colors"
+                  style={{ background: "var(--color-brand-accent)", color: "var(--color-brand-deepest)" }}
+                >
                   Start Investing <ArrowRight size={15} />
                 </button>
-                <button className="inline-flex items-center gap-2 border border-white/20 text-white/70 hover:text-white font-semibold text-sm px-7 py-3 rounded-full transition-colors">
+                <button className="cta-btn-outline inline-flex items-center gap-2 font-semibold text-sm px-7 py-3 rounded-full">
                   Learn More
                 </button>
               </div>
@@ -492,10 +718,6 @@ export default function NewAbout() {
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-black/8 py-8 px-4 sm:px-6 text-center">
-        <p className="text-[#aaa] text-xs">© 2024 Jaimax · Built by Jaisvik Software Solutions Pvt. Ltd.</p>
-      </footer>
 
       <VideoModal open={videoOpen} onClose={() => setVideoOpen(false)} />
     </div>
