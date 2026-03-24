@@ -403,8 +403,8 @@ const Home = () => {
 
  <main className="w-full scrollbar-none" role="main">
 
-  {/* SLOT 1 - TOP */}
-  <AdSlot slot="9597126985" />
+  {/* jaimax_top_banner — TOP */}
+<AdSlot slot="9597126985" />
 
   {sections.map(({ Component, id }) => (
     <React.Fragment key={id}>
