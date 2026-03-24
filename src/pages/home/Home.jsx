@@ -403,8 +403,8 @@ const Home = () => {
 
  <main className="w-full scrollbar-none" role="main">
 
-  {/* jaimax_top_banner — TOP */}
-<AdSlot slot="9597126985" />
+  {/* Demo_ads — TOP */}
+  <AdSlot slot="9597126985" />
 
   {sections.map(({ Component, id }) => (
     <React.Fragment key={id}>
@@ -415,25 +415,20 @@ const Home = () => {
         </Suspense>
       </section>
 
-      {id === "crypto-staking" && (
-        <AdSlot slot="9597126985" />
-      )}
+      {/* jaimax_mid_1 */}
+      {id === "crypto-staking" && <AdSlot slot="3854147033" />}
 
-      {id === "growth-plan" && (
-        <AdSlot slot="9597126985" />
-      )}
+      {/* jaimax_mid_2 */}
+      {id === "growth-plan" && <AdSlot slot="9753207523" />}
 
-      {id === "seo-section" && (
-        <AdSlot slot="9597126985" />
-      )}
+      {/* jaimax_ico_banner */}
+      {id === "seo-section" && <AdSlot slot="3831063901" />}
 
-      {id === "testimonials" && (
-        <AdSlot slot="9597126985" />
-      )}
+      {/* jaimax_blog_banner */}
+      {id === "testimonials" && <AdSlot slot="4975657017" />}
 
-      {id === "contact" && (
-        <AdSlot slot="9597126985" />
-      )}
+      {/* jaimax_footer */}
+      {id === "contact" && <AdSlot slot="7805701035" />}
 
     </React.Fragment>
   ))}
