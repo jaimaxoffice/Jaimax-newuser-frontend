@@ -8,7 +8,7 @@ import SecondSection from "./SecondSection"
 import SupportedWallets from "./SupportedWallets"
 import Testimonials from "./Testimonals"
 import WhatWeOffer from "./WhatweOffer"
-import "./theme.css";
+// import "./theme.css";
 
 const MainPage = () => {
     return (

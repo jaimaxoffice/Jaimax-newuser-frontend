@@ -325,7 +325,7 @@ export default function WhatWeOffer() {
    
     <section
       className="py-16 lg:py-20 overflow-hidden"
-      style={{ background: "var(--color-bg-surface)", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}
+      style={{ background: "var(--color-bg-surface)", boxShadow: "0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 2px 0 rgba(0, 0, 0, 0.19)" }}
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
 
