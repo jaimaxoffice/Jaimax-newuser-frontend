@@ -428,7 +428,7 @@ const Home = () => {
       {id === "testimonials" && <AdSlot slot="4975657017" />}
 
       {/* jaimax_footer */}
-      {id === "contact" && <AdSlot slot="7805701035" />}
+      {id === "roadmap" && <AdSlot slot="7805701035" />}
 
     </React.Fragment>
   ))}
