@@ -385,7 +385,7 @@ export default function WhatWeOffer() {
 
           {/* Centre image */}
           <div
-            className="flex items-center justify-center rounded-[4px] overflow-hidden w-60 lg:w-72 xl:w-96 min-h-80 xl:min-h-96"
+            className="flex items-center justify-center rounded-[4px] overflow-hidden w-full max-w-[300px] min-h-80 xl:min-h-96"
             style={{
               background: "var(--color-bg-page)",
               border: `1px solid var(--color-border-accent)`,

@@ -54,7 +54,7 @@
 
   /* ── Typography ── */
   --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-body:   "'Sora', sans-serif"
 
   /* ── Transitions ── */
   --transition-base:  all 0.2s ease;

@@ -8,7 +8,9 @@ import img1 from "../../../assets/aboutPage/image1.jpeg"
 import img2 from "../../../assets/aboutPage/image2.jpeg"
 import img3 from "../../../assets/aboutPage/image3.jpeg"
 import img4 from "../../../assets/aboutPage/image4.jpeg"
-// import img5 from "../../../assets/aboutPage/image5.jpeg"
+import img5 from "../../../assets/aboutPage/image5.jpeg"
+import img6 from "../../../assets/aboutPage/image6.jpeg"
+import BadgePill from "../BadgePill";
 
 
 // ─── Scroll reveal hook ───────────────────────────────────────────────────────
@@ -73,13 +75,13 @@ const STATS = [
 
 // Real Jaimax/crypto images from JaimaxOverview
 const CONVEYOR_IMGS = [
-  { src: img2 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
-  { src: "https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg", rot: -3 },
-  { src: img3 || "https://researchworld.com/uploads/attachments/cl5gw4sah25fd86tdzezrzu0f-gettyimages-1334086618.max.jpg", rot: 4 },
-  { src: "https://images.stockcake.com/public/a/8/5/a852b6e8-6b91-4957-b31a-c7082a74b56e_large/business-discussion-meeting-stockcake.jpg", rot: -2 },
-  { src: img1 || "https://bsmedia.business-standard.com/_media/bs/img/article/2022-03/30/full/1648657657-322.jpg?im=FeatureCrop,size=(826,465)", rot: 3 },
-  { src: "https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg", rot: -4 },
-  { src: img3 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
+  { src: img4 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
+  { src: img2 || "https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg", rot: -3 },
+  { src: img6 || "https://researchworld.com/uploads/attachments/cl5gw4sah25fd86tdzezrzu0f-gettyimages-1334086618.max.jpg", rot: 4 },
+  { src: img3 || "https://images.stockcake.com/public/a/8/5/a852b6e8-6b91-4957-b31a-c7082a74b56e_large/business-discussion-meeting-stockcake.jpg", rot: -2 },
+  { src: img5 || "https://bsmedia.business-standard.com/_media/bs/img/article/2022-03/30/full/1648657657-322.jpg?im=FeatureCrop,size=(826,465)", rot: 3 },
+  { src: img2 || "https://www.techfunnel.com/wp-content/uploads/2024/10/Blockchain-in-Corporate-Finance.jpg", rot: -4 },
+  { src: img1 || "https://m.foolcdn.com/media/dubs/images/Businessman_using_tablet_online_banking_exchan.width-600.jpg", rot: 2 },
 ];
 
 
@@ -222,8 +224,6 @@ export default function NewAbout() {
       `}</style>
 
 
-
-
       {/* ════ HERO ════ */}
       <section
         className="relative pt-24 pb-0 overflow-hidden"
@@ -232,15 +232,13 @@ export default function NewAbout() {
         <div className="text-center px-4 relative z-10 lg:mb-10 ">
           <div className="hero-anim-0 max-w-5xl mx-auto mb-8">
             {/* From JaimaxOverview hero h1 + subtitle */}
-            <h1
-              className="font-display text-4xl sm:text-5xl md:text-[3.6rem] leading-tight"
-              style={{ color: "var(--color-text-primary)" }}
-            >
-              About Jaimax,<br />
-              <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
-                Building the Future of Digital Finance
-              </span>
-            </h1>
+             <h2
+            className="text-4xl sideHeading mt-4 lg:text-5xl font-bold leading-tight mb-4 tracking-[-0.02em]"
+            
+          >
+           Building the Future of {" "}
+            <span style={{ color: "var(--color-brand-primary)" }}>Digital Finance</span>
+          </h2>
           </div>
           <div className="hero-anim-1 ">
             <p
@@ -328,10 +326,10 @@ export default function NewAbout() {
 
       {/* ════ OUR MISSION ════ */}
       {/* Heading + both paragraphs taken verbatim from JaimaxOverview mission section */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6">
+      <section className="py-8 sm:py-20 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-12 max-w-5xl mx-auto">
-            <h2
+            {/* <h2
               className="font-display text-3xl sm:text-4xl md:text-5xl mb-4"
               style={{ color: "var(--color-text-primary)" }}
             >
@@ -339,7 +337,16 @@ export default function NewAbout() {
               <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
                 through blockchain
               </span>
-            </h2>
+            </h2> */}
+            <h2
+            className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading"
+          
+          >
+            Empowering financial freedom{" "}
+            <span style={{ color: "var(--color-brand-primary)" }}>
+              All in One Place.
+            </span>
+          </h2>
             <p className="text-sm sm:text-base max-w-4xl mx-auto leading-relaxed mb-3" style={{ color: "var(--color-text-secondary)" }}>
               Jaimax is an innovative cryptocurrency in India designed to transform the way people invest, transact, and grow in the blockchain era. As a secure and utility-driven crypto token, Jaimax brings together technology, transparency, and trust to create a strong foundation for the future of decentralized finance (DeFi).
             </p>
@@ -385,12 +392,12 @@ export default function NewAbout() {
               >
                 <div>
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 shadow-sm"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center sm:mb-4 mb-2 shadow-sm"
                     style={{ background: "var(--color-bg-page)" }}
                   >
                     <Users size={20} style={{ color: "var(--color-brand-primary)" }} />
                   </div>
-                  <p className="font-semibold text-lg mb-2" style={{ color: "var(--color-text-primary)" }}>
+                  <p className="font-semibold text-lg sm:mb-2" style={{ color: "var(--color-text-primary)" }}>
                     Experienced Team
                   </p>
                   <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
@@ -467,41 +474,20 @@ export default function NewAbout() {
         </div>
       </section>
 
-
-      {/* ════ STATS ════ */}
-      <section
-        className="py-14 px-4 sm:px-6"
-        style={{ borderTop: "1px solid var(--color-border-accent)", borderBottom: "1px solid var(--color-border-accent)" }}
-      >
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((s, i) => (
-            <Reveal key={s.label} delay={i * 80}>
-              <p className="font-display text-4xl sm:text-5xl mb-1" style={{ color: "var(--color-brand-primary)" }}>
-                {s.value}
-              </p>
-              <p className="text-xs font-medium uppercase tracking-widest" style={{ color: "var(--color-text-muted)" }}>
-                {s.label}
-              </p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-
       {/* ════ FOR BEGINNERS ════ */}
       {/* Heading + paragraph verbatim from JaimaxOverview "For Beginners" section */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <Reveal className="text-center mb-12">
             <h2
-              className="font-display text-3xl sm:text-4xl md:text-5xl mb-4"
-              style={{ color: "var(--color-text-primary)" }}
-            >
-              Understanding{" "}
-              <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
-                Cryptocurrency
-              </span>
-            </h2>
+            className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading"
+          
+          >
+            Understanding{" "}
+            <span style={{ color: "var(--color-brand-primary)" }}>
+             Crypto
+            </span>
+          </h2>
             <p className="text-sm max-w-lg mx-auto leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
               Whether you're new to crypto or looking to diversify your portfolio, Jaimax provides a powerful foundation to grow with a trustworthy and forward-looking project. We offer comprehensive guides and educational resources to help you understand the cryptocurrency market and make informed decisions.
             </p>
@@ -533,21 +519,22 @@ export default function NewAbout() {
       <section className="py-12 sm:py-20 px-4 sm:px-6" style={{ background: "var(--color-bg-overlay)" }}>
         <div className="max-w-5xl mx-auto">
           <Reveal className="text-center mb-12">
-            <span
+            {/* <span
               className="text-xs font-semibold uppercase tracking-widest mb-3 block"
               style={{ color: "var(--color-text-muted)" }}
             >
-              Why Choose Jaimax
-            </span>
+              
+            </span> */}
+            <BadgePill label="Why Choose Jaimax"/>
             <h2
-              className="font-display text-3xl sm:text-4xl md:text-5xl"
-              style={{ color: "var(--color-text-primary)" }}
-            >
-              Built for Every{" "}
-              <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
-                Investor
-              </span>
-            </h2>
+            className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading"
+          
+          >
+            Built for every{" "}
+            <span style={{ color: "var(--color-brand-primary)" }}>
+              Investor
+            </span>
+          </h2>
           </Reveal>
 
 
@@ -581,13 +568,29 @@ export default function NewAbout() {
       {/* ════ VIDEO / OUR VISION ════ */}
       {/* Both paragraphs + checklist verbatim from JaimaxOverview vision section */}
       <section className="py-12 sm:py-20 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
+        
+         <Reveal>
+          <div className="text-center mb-8">
+             
+              <BadgePill label="Our Vision"/>
+              <h2
+            className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading"
+          
+          >
+            A Global Crypto Brand{" "}
+            <span style={{ color: "var(--color-brand-primary)" }}>
+              from India
+            </span>
+          </h2>
+          </div>
+            </Reveal>
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
 
 
           {/* Video card — same YouTube ID as JaimaxOverview */}
           <Reveal>
             <div
-              className="card-hover relative rounded-xl overflow-hidden cursor-pointer group h-72 sm:h-80"
+              className="card-hover relative rounded-xl overflow-hidden cursor-pointer group h-full sm:h-80"
               style={{ background: "var(--color-brand-mid)" }}
               onClick={() => setVideoOpen(true)}
             >
@@ -616,25 +619,9 @@ export default function NewAbout() {
 
 
           {/* Vision text — exact from JaimaxOverview */}
+          
           <div>
-            <Reveal>
-              <span
-                className="text-xs font-semibold uppercase tracking-widest mb-4 block"
-                style={{ color: "var(--color-text-muted)" }}
-              >
-                Our Vision
-              </span>
-              <h2
-                className="font-display text-3xl sm:text-4xl mb-5 leading-tight"
-                style={{ color: "var(--color-text-primary)" }}
-              >
-                A Global Crypto Brand{" "}
-                <br />
-                <span className="italic" style={{ color: "var(--color-brand-primary)" }}>
-                  from India
-                </span>
-              </h2>
-            </Reveal>
+           
             <Reveal delay={100}>
               <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--color-text-secondary)" }}>
                 To position Jaimax Coin as a leading global crypto brand originating from India. We envision a world where blockchain technology enables financial equality, where every transaction is secure, and where every investor can be part of a borderless digital economy.
@@ -662,12 +649,16 @@ export default function NewAbout() {
                   </div>
                 ))}
               </div>
-              <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full">
-                Join Our Vision <ArrowRight size={15} />
-              </button>
+              
             </Reveal>
           </div>
+          
         </div>
+        <div className="mt-4 sm:mt-8 w-full flex justify-center">
+        <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full">
+                Join Our Vision <ArrowRight size={15} />
+              </button>
+              </div>
       </section>
 
 

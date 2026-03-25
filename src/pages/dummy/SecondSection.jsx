@@ -1,15 +1,4 @@
-/**
- * SecondSection.jsx
- *
- * Converted to LightReach theme.css design tokens.
- * - All colors via CSS variables — zero raw hex
- * - Centered section heading added above the panel
- * - bg: --color-bg-page (pale mint) — harmonises with HeroSection below it
- *   Left hero panel: --color-brand-dark gradient (deep forest)
- *   Right grid: --color-bg-surface (white cards on very light page tint)
- * - Mobile carousel: hero strip uses --color-brand-dark gradient
- * - Lucide icons, carousel logic, and layout logic untouched
- */
+
 
 import {
   ArrowLeft,
@@ -496,11 +485,7 @@ function MobileCarousel() {
 
 export default function SecondSection() {
   return (
-    /*
-     * Outer wrapper — bg-page so it flows seamlessly from HeroSection above.
-     * The panel itself sits on the page bg with lateral padding + shadow
-     * so it feels like a floating card lifted off the page.
-     */
+
     <div style={{ background: "var(--color-bg-page)" }}>
       {/* MOBILE */}
       <MobileCarousel />
@@ -514,10 +499,7 @@ export default function SecondSection() {
 
           <h2
             className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading"
-            // style={{
-            //   fontFamily: "var(--font-display)",
-            //   color: "var(--color-text-primary)",
-            // }}
+          
           >
             Everything You Need,{" "}
             <span style={{ color: "var(--color-brand-primary)" }}>
@@ -536,12 +518,12 @@ export default function SecondSection() {
 
         {/* ── Panel ── */}
         <div
-          className="rounded-[4px] overflow-hidden flex w-full"
+          className="rounded-[4px] overflow-hidden flex w-full flex-wrap"
           style={{ boxShadow: "var(--shadow-card)" }}
         >
           {/* Left hero pillar — brand-dark gradient, same visual DNA as OurStory */}
           <div
-            className="text-white flex flex-col justify-between p-8 w-64 flex-shrink-0 relative overflow-hidden"
+            className="text-white flex flex-col justify-between p-8 w-full max-w-[260px] shrink relative overflow-hidden"
             style={{
               background:
                 "linear-gradient(160deg, var(--color-brand-dark) 0%, var(--color-brand-primary) 100%)",

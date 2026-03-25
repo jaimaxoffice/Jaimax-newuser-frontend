@@ -500,7 +500,7 @@ export default function GrowthPlanTimelineV3() {
     return { x1, y1, turnX, y2 };
   });
 
-  const LG_LEFT = ["0%", "54%", "5%", "64%"];
+  const LG_LEFT = ["0%", "54%", "5%", "60%"];
   function getLeft(i)  { const isLeft = i % 2 === 0; if (isMd) return isLeft ? "0%" : "52%"; return LG_LEFT[i % 4]; }
   function getWidth()  { return isMd ? "48%" : "46%"; }
 
@@ -529,7 +529,7 @@ export default function GrowthPlanTimelineV3() {
       </div>
 
       <div className="max-w-screen lg:max-w-6xl mx-auto px-8">
-        <div className="relative w-full" style={{ height: TOTAL_H }}>
+        <div className=" relative w-full overflow-hidden" style={{ height: TOTAL_H }}>
 
           {/* SVG connector lines
               stopColor literals = --color-bg-page (#e8f5e0) → --color-brand-dark (#1a3d22)
