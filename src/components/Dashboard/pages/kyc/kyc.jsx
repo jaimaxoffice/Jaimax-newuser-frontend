@@ -211,7 +211,46 @@ const maskData = (
       [name]: files ? files[0] : value,
     });
   };
+const validateBankDetails = () => {
+  const newErrors = {};
 
+  // ✅ Bank Name (only letters & spaces, min 3 chars)
+  if (!formData.bank_name) {
+    newErrors.bank_name = "Bank name is required";
+  } else if (!/^[A-Za-z\s]{3,}$/.test(formData.bank_name)) {
+    newErrors.bank_name = "Enter valid bank name";
+  }
+
+  // ✅ Account Number (9–18 digits usually in India)
+if (!formData.bank_account) {
+  newErrors.bank_account = "Account number is required";
+} else if (!/^[0-9]{9,18}$/.test(formData.bank_account)) {
+  newErrors.bank_account = "Enter valid account number (9-18 digits)";
+} else if (/^0+$/.test(formData.bank_account)) {
+  newErrors.bank_account = "Account number cannot be all zeros";
+}
+
+  // ✅ IFSC Code (Indian format: 4 letters + 0 + 6 digits)
+  if (!formData.ifsc_code) {
+    newErrors.ifsc_code = "IFSC code is required";
+  } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.ifsc_code.toUpperCase())) {
+    newErrors.ifsc_code = "Invalid IFSC code (Example: SBIN0001234)";
+  }
+
+  // ✅ UPI ID (only if India)
+  if (isCountryCodeIndia) {
+    if (!formData.upi_id) {
+      newErrors.upi_id = "UPI ID is required";
+    } else if (!/^[\w.-]+@[\w.-]+$/.test(formData.upi_id)) {
+      newErrors.upi_id = "Invalid UPI ID (Example: name@upi)";
+    }
+  }
+
+  setErrors(newErrors);
+
+  // return true if no errors
+  return Object.keys(newErrors).length === 0;
+};
   const handleChangeMobileNumber = (e) => {
     const { name, value } = e.target;
 
@@ -245,6 +284,9 @@ const maskData = (
   };
 
   const handleSubmit = async () => {
+    if (!validateBankDetails()) {
+    return; // stop submission
+  }
     const newErrors = {};
     if (kycdata?.success !== 1) {
       if (isCountryCodeIndia && !formData.aadhar_doc_front)

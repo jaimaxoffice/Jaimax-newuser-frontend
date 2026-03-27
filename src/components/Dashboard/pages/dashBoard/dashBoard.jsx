@@ -15,7 +15,7 @@ import CoinRewardModal from './CoinReward'
 const ActionButtons = lazy(() => import("./actionComponent/actionCompent"));
 const TopCards = lazy(() => import("./cards/cards"));
 const SlabTabs = lazy(() => import("./timeTracker/timeTracker"));
-
+const CoinPricePopup=lazy(()=>import("../../../../pages/popups/Coinprice"))
 const Dashboard = () => {
   const navigate = useNavigate();
    const [showModal, setShowModal] = useState(false);
@@ -92,7 +92,7 @@ useEffect(() => {
   return (
     <div className="min-h-screen p-0 bg-[#1d8e85] rounded-xl text-sm sm:text-base md:text-lg overflow-auto">
 
-      {showAnnouncementSlider && (
+      {/* {showAnnouncementSlider && (
         <>
           <style>{`
             .announcement-slider {
@@ -187,10 +187,9 @@ useEffect(() => {
             </div>
           </div>
         </>
-      )}
+      )} */}
 
-
-
+<CoinPricePopup/>
       <div className="bg-gray-900 flex flex-col items-center justify-center gap-6">
       <CoinRewardModal
         isOpen={showModal}

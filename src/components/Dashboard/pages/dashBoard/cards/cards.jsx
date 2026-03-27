@@ -634,7 +634,7 @@ const TopCards = React.memo(() => {
           userData?.data?.referenceInr || 0
         ).toFixed(2)}`,
         image: assets.referal,
-        hoverImage: assets.referal1,
+        hoverImage: assets.referal1, 
         iconBg: "#f3e5f5",
         isCompleted: false,
       },

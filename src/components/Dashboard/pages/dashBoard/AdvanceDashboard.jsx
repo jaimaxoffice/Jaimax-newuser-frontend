@@ -1,575 +1,900 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+import {
+  Coins, Wallet, Package, ArrowUpCircle, ArrowDownCircle,
+  TrendingUp, ArrowUp, ArrowDown, User, Mail, Phone,
+  Shield, CheckCircle, Globe, Copy, Check, Activity,
+  CreditCard, Hash, Loader2, AlertCircle, Lock, Calendar,
+  ChevronLeft, ChevronRight, Download, Sparkles, Star,
+  Link, Users, Share2, RefreshCcw, Hexagon, Layers, Gem
+} from "lucide-react";
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
-  RadialBarChart, RadialBar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line
 } from "recharts";
-// ✅ Swap this for your real RTK Query hook:
-import { useGetUserDashboardQuery } from "./DashboardApliSlice";
+import { useGetDashboardDetailsQuery } from "./DashboardApliSlice";
 
-// ─── Google Font injection ────────────────────────────────────────────────────
-if (!document.getElementById("jaimax-fonts")) {
-  const l = document.createElement("link");
-  l.id = "jaimax-fonts";
-  l.rel = "stylesheet";
-  l.href = "https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap";
-  document.head.appendChild(l);
-}
-
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-const fmt    = (n) => new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 }).format(n);
+// ─── Helpers ─────────────────────────────────────────────
+const fmt = (n) => new Intl.NumberFormat("en-IN").format(n ?? 0);
 const fmtCur = (n) => `₹${fmt(n)}`;
-const fmtDate  = (d) => new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+const fmtDec = (d) => parseFloat(d?.$numberDecimal ?? d ?? 0);
+const fmtDate = (d) => new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 const fmtShort = (d) => new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+const fmtTime = (d) => new Date(d).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+const isoDate = (d) => new Date(d).toISOString().slice(0, 10);
 
-// ─── Theme tokens ─────────────────────────────────────────────────────────────
-const THEMES = {
-  light: {
-    bg: "#f0fdfa", card: "#ffffff", cardBorder: "#d1faf4",
-    sidebar: "#0c4a4a", sidebarActive: "rgba(45,212,191,0.18)",
-    text: "#0f172a", muted: "#5a7a80", subtle: "#f8fffe",
-    accent: "#0d9488", accentLight: "#ccfbf1",
-    danger: "#f43f5e", dangerLight: "#ffe4e6",
-    amber: "#d97706",  amberLight:  "#fef3c7",
-    indigo: "#4f46e5", indigoLight: "#e0e7ff",
-    gridLine: "#e0f7f2", tooltipBg: "#fff",
-    green: "#0d9488", red: "#f43f5e", yellow: "#f59e0b", purple: "#8b5cf6",
-  },
-  dark: {
-    bg: "#080f1a", card: "#0d1b2e", cardBorder: "#162840",
-    sidebar: "#060d18", sidebarActive: "rgba(45,212,191,0.12)",
-    text: "#dff6f3", muted: "#6b9aaa", subtle: "#0a1525",
-    accent: "#2dd4bf", accentLight: "#0a2e2a",
-    danger: "#fb7185", dangerLight: "#2b0a12",
-    amber: "#fbbf24",  amberLight:  "#2a1a00",
-    indigo: "#818cf8", indigoLight: "#1a1840",
-    gridLine: "#162840", tooltipBg: "#0d1b2e",
-    green: "#2dd4bf", red: "#fb7185", yellow: "#fbbf24", purple: "#a78bfa",
-  },
-};
-
-// ─── NAV ─────────────────────────────────────────────────────────────────────
-const NAV = [
-  { key: "overview",      label: "Overview",      icon: "◈" },
-  { key: "analytics",     label: "Analytics",     icon: "∿" },
-  { key: "transactions",  label: "Transactions",  icon: "⇄" },
-  { key: "withdrawals",   label: "Withdrawals",   icon: "↑" },
-  { key: "invoices",      label: "Invoices",      icon: "⊞" },
-  { key: "account",       label: "Account",       icon: "◎" },
-];
-
-// ─── Sidebar ──────────────────────────────────────────────────────────────────
-function Sidebar({ active, onNav, t, collapsed, setCollapsed, isDark, toggleTheme }) {
-  const S = {
-    root: { width: collapsed ? 62 : 216, background: t.sidebar, display: "flex", flexDirection: "column", flexShrink: 0, transition: "width .22s ease", borderRight: "1px solid rgba(255,255,255,0.06)" },
-    logo: { padding: collapsed ? "18px 0" : "18px 16px", display: "flex", alignItems: "center", gap: 10, borderBottom: "1px solid rgba(255,255,255,0.07)", justifyContent: collapsed ? "center" : "flex-start" },
-    logoMark: { width: 30, height: 30, borderRadius: 9, background: "linear-gradient(135deg,#2dd4bf,#0d9488)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontFamily: "Syne", fontWeight: 800, fontSize: 15, flexShrink: 0 },
-    logoText: { fontFamily: "Syne", fontWeight: 800, color: "#fff", fontSize: 16, letterSpacing: 1.5 },
-    nav: { flex: 1, padding: "10px 0", overflowY: "auto" },
-    bottom: { padding: "8px 0", borderTop: "1px solid rgba(255,255,255,0.07)" },
-  };
-  const navBtn = (isActive) => ({
-    width: "100%", display: "flex", alignItems: "center", gap: 11,
-    padding: collapsed ? "11px 0" : "10px 16px",
-    justifyContent: collapsed ? "center" : "flex-start",
-    background: isActive ? t.sidebarActive : "transparent",
-    borderLeft: isActive ? "3px solid #2dd4bf" : "3px solid transparent",
-    color: isActive ? "#2dd4bf" : "rgba(255,255,255,0.45)",
-    cursor: "pointer", border: "none",
-    fontFamily: "DM Sans", fontWeight: isActive ? 600 : 400, fontSize: 13.5,
-    transition: "all .13s",
-  });
-  const bottomBtn = { ...navBtn(false), borderLeft: "none", fontSize: 12.5 };
-
+// ─── Dashboard Header ─────────────────────────────────────────────
+function DashboardHeader({ user, inrBalance, totalTokens, tokenPrice }) {
+  const firstName = user?.name || "User";
+  
   return (
-    <aside style={S.root}>
-      <div style={S.logo}>
-        <div style={S.logoMark}>J</div>
-        {!collapsed && <span style={S.logoText}>JAIMAX</span>}
+    <div className="bg-slate-900 rounded-3xl p-6 shadow-xl relative overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-purple-700/20 z-0"></div>
+      <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-gradient-to-br from-indigo-500/10 to-purple-600/10 rounded-full blur-3xl"></div>
+      
+      <div className="relative z-10 flex flex-col md:flex-row justify-between gap-6">
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <User size={24} className="text-white" />
+            </div>
+            <div>
+              <p className="text-indigo-300 text-sm font-medium">Welcome back</p>
+              <h1 className="text-2xl font-bold text-white">{firstName}</h1>
+              {user.username && (
+                <p className="text-indigo-200 text-sm mt-0.5">ID: {user.username}</p>
+              )}
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2 text-indigo-200 text-sm">
+            <Calendar size={14} />
+            <span>{new Date().toLocaleDateString("en-IN", { 
+              weekday: 'long', 
+              day: "numeric", 
+              month: "long", 
+              year: "numeric" 
+            })}</span>
+          </div>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex-1 min-w-[170px] backdrop-saturate-150">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+                <Wallet size={20} className="text-indigo-300" />
+              </div>
+              <div>
+                <p className="text-indigo-200 text-xs">INR Balance</p>
+                <p className="text-white text-xl font-bold">{fmtCur(user.Inr || 0)}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 flex-1 min-w-[170px] backdrop-saturate-150">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                <Coins size={20} className="text-purple-300" />
+              </div>
+              <div>
+                <p className="text-purple-200 text-xs">Total Tokens</p>
+                <p className="text-white text-xl font-bold">{fmt(user.tokens || 0)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <nav style={S.nav}>
-        {NAV.map(n => (
-          <button key={n.key} style={navBtn(active === n.key)} onClick={() => onNav(n.key)}>
-            <span style={{ fontSize: 17, lineHeight: 1, flexShrink: 0 }}>{n.icon}</span>
-            {!collapsed && n.label}
-          </button>
-        ))}
-      </nav>
-      <div style={S.bottom}>
-        <button style={bottomBtn} onClick={toggleTheme}>
-          <span style={{ fontSize: 16 }}>{isDark ? "☀" : "◑"}</span>
-          {!collapsed && (isDark ? "Light Mode" : "Dark Mode")}
-        </button>
-        <button style={bottomBtn} onClick={() => setCollapsed(c => !c)}>
-          <span style={{ fontSize: 15 }}>{collapsed ? "▷" : "◁"}</span>
-          {!collapsed && "Collapse"}
-        </button>
-      </div>
-    </aside>
-  );
-}
-
-// ─── KPI Card ─────────────────────────────────────────────────────────────────
-function KpiCard({ label, value, sub, icon, iconBg, iconColor, delta, t }) {
-  return (
-    <div style={{
-      background: t.card, border: `1px solid ${t.cardBorder}`, borderRadius: 16,
-      padding: "18px 20px", display: "flex", flexDirection: "column", gap: 14,
-      position: "relative", overflow: "hidden", cursor: "default",
-      transition: "box-shadow .2s",
-    }}
-      onMouseEnter={e => e.currentTarget.style.boxShadow = `0 6px 24px ${t.accent}22`}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-        <div style={{ width: 40, height: 40, borderRadius: 11, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 19 }}>{icon}</div>
-        {delta !== undefined && (
-          <span style={{ fontSize: 11, fontWeight: 700, color: delta >= 0 ? t.accent : t.danger, background: delta >= 0 ? t.accentLight : t.dangerLight, padding: "3px 8px", borderRadius: 20, fontFamily: "DM Sans" }}>
-            {delta >= 0 ? "▲" : "▼"} {Math.abs(delta)}%
-          </span>
-        )}
-      </div>
-      <div>
-        <p style={{ color: t.muted, fontSize: 10.5, fontFamily: "DM Sans", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 5 }}>{label}</p>
-        <p style={{ color: t.text, fontSize: 21, fontFamily: "Syne", fontWeight: 700, lineHeight: 1.1 }}>{value}</p>
-        {sub && <p style={{ color: t.muted, fontSize: 11.5, fontFamily: "DM Sans", marginTop: 5 }}>{sub}</p>}
-      </div>
-      <div style={{ position: "absolute", right: -14, bottom: -14, width: 58, height: 58, borderRadius: "50%", background: iconBg, opacity: 0.5 }} />
     </div>
   );
 }
 
-// ─── Chart Card ───────────────────────────────────────────────────────────────
-function ChartCard({ title, sub, children, t, style: sx = {} }) {
+// ─── Stats Card ───────────────────────────────────────────────────
+function StatCard({ title, value, subValue, icon: Icon, color, bgColor, animation }) {
   return (
-    <div style={{ background: t.card, border: `1px solid ${t.cardBorder}`, borderRadius: 16, padding: "18px 20px", ...sx }}>
-      <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 14.5, color: t.text, marginBottom: sub ? 2 : 14 }}>{title}</p>
-      {sub && <p style={{ fontFamily: "DM Sans", fontSize: 11.5, color: t.muted, marginBottom: 14 }}>{sub}</p>}
-      {children}
+    <div className={`bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100 dark:border-slate-700 ${animation}`}>
+      <div className="flex items-center gap-4">
+        <div className={`w-12 h-12 rounded-2xl ${bgColor} flex items-center justify-center`}>
+          <Icon size={22} className={color} />
+        </div>
+        <div className="flex-1">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">{title}</p>
+          <p className="text-slate-900 dark:text-white text-2xl font-bold">{value}</p>
+          {subValue && <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">{subValue}</p>}
+        </div>
+      </div>
     </div>
   );
 }
 
-// ─── Custom Tooltip ────────────────────────────────────────────────────────────
-function CTip({ active, payload, label, t }) {
+// ─── Wallet Card ───────────────────────────────────────────────────
+function WalletCard({ address, onCopy, copied }) {
+  return (
+    <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-5 shadow-md border border-slate-200 dark:border-slate-700">
+      <div className="flex flex-col md:flex-row md:items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-md">
+          <CreditCard size={22} className="text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mb-1">Wallet Address</p>
+          <p className="font-mono text-sm font-semibold text-slate-700 dark:text-slate-200 break-all">{address}</p>
+        </div>
+        <button onClick={onCopy}
+          className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl px-4 py-3 text-sm font-semibold transition-all shadow-md hover:shadow-lg whitespace-nowrap">
+          {copied ? <Check size={16} /> : <Copy size={16} />}
+          {copied ? "Copied!" : "Copy"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Round Status Card ────────────────────────────────────────────
+function RoundStatusCard({ rounds }) {
+  const activeRound = rounds.find(r => r.status === 1) || {};
+  
+  return (
+    <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-md">
+          <Gem size={22} className="text-white" />
+        </div>
+        <div>
+          <h3 className="text-lg font-bold text-slate-800 dark:text-white">Current Token Round</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">Price: {fmtCur(activeRound.atPriceInr || 0)} per token</p>
+        </div>
+      </div>
+      
+      <div className="space-y-5">
+        {rounds.map((round) => {
+          const status = round.status;
+          const soldPercentage = (round.soldQty / round.totalQty) * 100;
+          
+          return (
+            <div key={round._id} className="relative">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center gap-2">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shadow-sm ${
+                    status === 2 ? "bg-emerald-500 text-white" : 
+                    status === 1 ? "bg-blue-500 text-white" : 
+                    "bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+                  }`}>
+                    {round.round}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-800 dark:text-white">Round {round.round}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{fmtCur(round.atPriceInr)}</p>
+                  </div>
+                </div>
+                
+                <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  status === 2 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" : 
+                  status === 1 ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" : 
+                  "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                }`}>
+                  {status === 1 && <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-1 animate-pulse"></span>}
+                  {status === 2 ? "Completed" : status === 1 ? "Active" : "Upcoming"}
+                </div>
+              </div>
+              
+              {status !== 0 && (
+                <>
+                  <div className="h-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full ${
+                        status === 2 ? "bg-emerald-500" : "bg-blue-500"
+                      }`}
+                      style={{ width: `${Math.min(soldPercentage, 100)}%` }}
+                    ></div>
+                  </div>
+                  
+                  <div className="flex justify-between mt-1 text-xs">
+                    <span className="text-slate-500 dark:text-slate-400">{fmt(round.soldQty)} sold</span>
+                    <span className={`font-medium ${
+                      status === 2 ? "text-emerald-600 dark:text-emerald-400" : 
+                      "text-blue-600 dark:text-blue-400"
+                    }`}>
+                      {soldPercentage.toFixed(1)}%
+                    </span>
+                    <span className="text-slate-500 dark:text-slate-400">{fmt(round.totalQty)} total</span>
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── Transaction Item ─────────────────────────────────────────────
+function TransactionItem({ tx }) {
+  const isCredit = tx.transactionType === "Credit";
+  
+  return (
+    <div className="flex items-center gap-4 p-4 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-2xl transition-colors">
+      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+        isCredit 
+          ? "bg-gradient-to-br from-emerald-400 to-teal-500" 
+          : "bg-gradient-to-br from-rose-400 to-pink-500"
+      }`}>
+        {isCredit ? <ArrowDownCircle size={22} className="text-white" /> : <ArrowUpCircle size={22} className="text-white" />}
+      </div>
+      
+      <div className="flex-1 min-w-0">
+        <p className="text-slate-800 dark:text-white font-semibold mb-1 truncate">{tx.transactionId}</p>
+        <div className="flex flex-wrap gap-x-2 gap-y-1 text-xs">
+          <span className="text-slate-500 dark:text-slate-400">{fmtDate(tx.transactionDate)}</span>
+          <span className="text-slate-500 dark:text-slate-400">{fmtTime(tx.transactionDate)}</span>
+          <span className="text-slate-600 dark:text-slate-300 font-medium">{tx.paymentMode}</span>
+          
+          {tx.transactionFee > 0 && (
+            <span className="text-amber-600 dark:text-amber-400">Fee: {fmtCur(tx.transactionFee)}</span>
+          )}
+          
+          {tx.utrRef && (
+            <span className="text-blue-600 dark:text-blue-400">UTR: {tx.utrRef}</span>
+          )}
+        </div>
+      </div>
+      
+      <div className="flex flex-col items-end">
+        <p className={`text-lg font-bold ${
+          isCredit ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+        }`}>
+          {isCredit ? "+" : "−"}{fmtCur(tx.transactionAmount)}
+        </p>
+        
+        <span className={`mt-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+          tx.transactionStatus === "Completed" ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" :
+          tx.transactionStatus === "Pending" ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" :
+          "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400"
+        }`}>
+          {tx.transactionStatus}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Chart Tooltip ─────────────────────────────────────────────────
+function ChartTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
+  
   return (
-    <div style={{ background: t.tooltipBg, border: `1px solid ${t.cardBorder}`, borderRadius: 10, padding: "9px 13px" }}>
-      <p style={{ color: t.muted, fontSize: 11, fontFamily: "DM Sans", marginBottom: 5 }}>{label}</p>
-      {payload.map((p, i) => (
-        <p key={i} style={{ color: p.color, fontSize: 12.5, fontFamily: "DM Sans", fontWeight: 600 }}>{p.name}: ₹{fmt(p.value)}</p>
+    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-3 text-xs">
+      <p className="text-slate-600 dark:text-slate-300 font-medium mb-2">{label}</p>
+      {payload.map((entry, index) => (
+        <div key={index} className="flex items-center gap-2 mb-1">
+          <span className="w-3 h-3 rounded" style={{ backgroundColor: entry.color || entry.stroke }}></span>
+          <span className="text-slate-700 dark:text-slate-200 font-semibold">
+            {entry.name}: {entry.name.includes("Amount") || entry.name.includes("Fee") || entry.name.includes("Balance") ? fmtCur(entry.value) : fmt(entry.value)}
+          </span>
+        </div>
       ))}
     </div>
   );
 }
 
-// ─── Tx Row ───────────────────────────────────────────────────────────────────
-function TxRow({ tx, t }) {
-  const cr = tx.transactionType === "Credit";
+// ─── Charts ───────────────────────────────────────────────────────
+function BalanceChart({ data }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 0", borderBottom: `1px solid ${t.cardBorder}` }}>
-      <div style={{ width: 34, height: 34, borderRadius: "50%", background: cr ? t.accentLight : t.dangerLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0, color: cr ? t.accent : t.danger }}>
-        {cr ? "↙" : "↗"}
+    <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-md border border-slate-100 dark:border-slate-700">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+          <TrendingUp size={20} className="text-white" />
+        </div>
+        <div>
+          <h3 className="text-slate-800 dark:text-white font-bold text-lg">Balance Trend</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-xs">Last 15 transactions impact</p>
+        </div>
       </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontFamily: "DM Sans", fontWeight: 600, fontSize: 12.5, color: t.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{tx.transactionId}</p>
-        <p style={{ fontFamily: "DM Sans", fontSize: 11, color: t.muted }}>{fmtDate(tx.transactionDate)} · {tx.paymentMode}</p>
+      
+      <div className="h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data} margin={{ top: 10, right: 10, bottom: 10, left: 0 }}>
+            <defs>
+              <linearGradient id="balanceGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis 
+              dataKey="date" 
+              tick={{ fontSize: 12, fill: '#64748b' }}
+              axisLine={{ stroke: '#e2e8f0' }}
+              tickLine={{ stroke: '#e2e8f0' }}
+            />
+            <YAxis 
+              tick={{ fontSize: 12, fill: '#64748b' }}
+              axisLine={{ stroke: '#e2e8f0' }}
+              tickLine={{ stroke: '#e2e8f0' }}
+              tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`}
+            />
+            <Tooltip content={<ChartTooltip />} />
+            <Area 
+              type="monotone" 
+              dataKey="balance" 
+              name="Balance" 
+              stroke="#3b82f6" 
+              strokeWidth={3} 
+              fill="url(#balanceGradient)" 
+              dot={{ r: 5, fill: "#3b82f6", strokeWidth: 2, stroke: "#fff" }}
+              activeDot={{ r: 7, stroke: "#3b82f6", strokeWidth: 2 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
-      <div style={{ textAlign: "right", flexShrink: 0 }}>
-        <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: cr ? t.accent : t.danger }}>{cr ? "+" : "−"}{fmtCur(tx.transactionAmount)}</p>
-        {tx.transactionFee > 0 && <p style={{ fontFamily: "DM Sans", fontSize: 10.5, color: t.muted }}>Fee ₹{tx.transactionFee}</p>}
-      </div>
-      <span style={{ fontSize: 10, fontWeight: 700, fontFamily: "DM Sans", padding: "3px 9px", borderRadius: 20, background: t.accentLight, color: t.accent, flexShrink: 0 }}>{tx.transactionStatus}</span>
     </div>
   );
 }
 
-function WdRow({ w, t }) {
-  const amt = parseFloat(w.amount.$numberDecimal);
-  const fee = parseFloat(w.admin_inr_charges.$numberDecimal);
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 0", borderBottom: `1px solid ${t.cardBorder}` }}>
-      <div style={{ width: 34, height: 34, borderRadius: "50%", background: t.amberLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: t.amber, flexShrink: 0 }}>↑</div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontFamily: "DM Sans", fontWeight: 600, fontSize: 12.5, color: t.text }}>UTR: {w.utr_number}</p>
-        <p style={{ fontFamily: "DM Sans", fontSize: 11, color: t.muted }}>{fmtDate(w.created_at)} · Fee ₹{fee}</p>
-      </div>
-      <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: t.amber }}>−{fmtCur(amt)}</p>
-      <span style={{ fontSize: 10, fontWeight: 700, fontFamily: "DM Sans", padding: "3px 9px", borderRadius: 20, background: t.accentLight, color: t.accent }}>Paid</span>
-    </div>
-  );
-}
-
-// ─── OVERVIEW PAGE ────────────────────────────────────────────────────────────
-function Overview({ d, t }) {
-  const { userDetails: u, recentTransactions: txs, withdrawals: wds, credit } = d;
-  const totalWithdrawn = wds.reduce((s, w) => s + parseFloat(w.amount.$numberDecimal), 0);
-  const totalFees      = wds.reduce((s, w) => s + parseFloat(w.admin_inr_charges.$numberDecimal), 0);
-
-  const wdTrend = [...wds]
-    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-    .map(w => ({ date: fmtShort(w.created_at), amount: parseFloat(w.amount.$numberDecimal), fee: parseFloat(w.admin_inr_charges.$numberDecimal) }));
-
-  const pieData = [
-    { name: "Available", value: u.tokens - u.totalOrderedCoins, fill: t.green },
-    { name: "Ordered",   value: u.totalOrderedCoins,            fill: t.purple },
+function TokenDistributionChart({ available, ordered }) {
+  const data = [
+    { name: "Available", value: available },
+    { name: "Ordered", value: ordered }
   ];
-
-  const RADIAN = Math.PI / 180;
-  const pctLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-    const r = innerRadius + (outerRadius - innerRadius) * 0.5;
-    return <text x={cx + r * Math.cos(-midAngle * RADIAN)} y={cy + r * Math.sin(-midAngle * RADIAN)} fill="#fff" textAnchor="middle" dominantBaseline="central" fontSize={11} fontFamily="DM Sans" fontWeight={700}>{`${(percent * 100).toFixed(0)}%`}</text>;
-  };
-
+  
+  const COLORS = ['#0ea5e9', '#8b5cf6'];
+  
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-      {/* KPIs */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(170px,1fr))", gap: 13 }}>
-        <KpiCard label="Token Balance"   value={fmt(u.tokens)}            sub="Available tokens"       icon="🪙" iconBg={t.accentLight}  delta={2.4} t={t} />
-        <KpiCard label="INR Balance"     value={fmtCur(u.Inr)}            sub="Wallet balance"         icon="💰" iconBg={t.accentLight}  delta={0.8} t={t} />
-        <KpiCard label="Frozen INR"      value={fmtCur(u.freezed_inr)}    sub="Locked amount"          icon="🔒" iconBg={t.amberLight}               t={t} />
-        <KpiCard label="Ordered Coins"   value={fmt(u.totalOrderedCoins)} sub="Total purchased"        icon="📦" iconBg={t.indigoLight} delta={5.1} t={t} />
-        <KpiCard label="Total Withdrawn" value={fmtCur(totalWithdrawn)}   sub={`${wds.length} payouts`} icon="📤" iconBg={t.dangerLight}             t={t} />
-        <KpiCard label="Fees Paid"       value={fmtCur(totalFees)}        sub="Admin charges"          icon="🏷" iconBg={t.amberLight}               t={t} />
+    <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-md border border-slate-100 dark:border-slate-700">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+          <Hexagon size={20} className="text-white" />
+        </div>
+        <div>
+          <h3 className="text-slate-800 dark:text-white font-bold text-lg">Token Distribution</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-xs">Available vs Ordered</p>
+        </div>
       </div>
-
-      {/* Charts row */}
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 14 }}>
-        <ChartCard title="Withdrawal Trend" sub="Daily amounts — last 10 days" t={t}>
-          <ResponsiveContainer width="100%" height={200}>
-            <AreaChart data={wdTrend} margin={{ top: 4, right: 4, bottom: 0, left: -22 }}>
-              <defs>
-                <linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%"   stopColor={t.green} stopOpacity={0.3} />
-                  <stop offset="100%" stopColor={t.green} stopOpacity={0}   />
-                </linearGradient>
-              </defs>
-              <CartesianGrid stroke={t.gridLine} strokeDasharray="4 4" vertical={false} />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: t.muted, fontFamily: "DM Sans" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: t.muted, fontFamily: "DM Sans" }} axisLine={false} tickLine={false} />
-              <Tooltip content={<CTip t={t} />} />
-              <Area type="monotone" dataKey="amount" name="Amount" stroke={t.green} strokeWidth={2.5} fill="url(#ag1)" dot={{ r: 3, fill: t.green, strokeWidth: 0 }} activeDot={{ r: 5 }} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        <ChartCard title="Token Split" sub="Available vs Ordered" t={t}>
-          <ResponsiveContainer width="100%" height={200}>
+      
+      <div className="flex flex-col md:flex-row items-center">
+        <div className="w-full md:w-3/5 h-[200px]">
+          <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <Pie data={pieData} cx="50%" cy="50%" outerRadius={78} labelLine={false} label={pctLabel} dataKey="value">
-                {pieData.map((e, i) => <Cell key={i} fill={e.fill} />)}
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={90}
+                fill="#8884d8"
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
               </Pie>
-              <Tooltip formatter={v => [fmt(v)]} contentStyle={{ background: t.tooltipBg, border: `1px solid ${t.cardBorder}`, borderRadius: 10, fontFamily: "DM Sans", fontSize: 12 }} />
-              <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11, fontFamily: "DM Sans", color: t.muted }} />
+              <Tooltip content={<ChartTooltip />} />
             </PieChart>
           </ResponsiveContainer>
-        </ChartCard>
-      </div>
-
-      {/* Recent Transactions */}
-      <ChartCard title="Recent Transactions" sub="Latest wallet activity" t={t}>
-        {d.recentTransactions.map(tx => <TxRow key={tx._id} tx={tx} t={t} />)}
-      </ChartCard>
-    </div>
-  );
-}
-
-// ─── ANALYTICS PAGE ───────────────────────────────────────────────────────────
-function Analytics({ d, t }) {
-  const { recentTransactions: txs, withdrawals: wds } = d;
-
-  const wdSorted = [...wds].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-
-  const barData = wdSorted.map(w => ({
-    date: fmtShort(w.created_at),
-    amount: parseFloat(w.amount.$numberDecimal),
-    fee: parseFloat(w.admin_inr_charges.$numberDecimal),
-  }));
-
-  const cumData = wdSorted.reduce((acc, w, i) => {
-    const prev = i === 0 ? 0 : acc[i - 1].cumulative;
-    acc.push({ date: fmtShort(w.created_at), cumulative: prev + parseFloat(w.amount.$numberDecimal) });
-    return acc;
-  }, []);
-
-  // Payment mode donut
-  const modeMap = {};
-  txs.forEach(tx => { modeMap[tx.paymentMode] = (modeMap[tx.paymentMode] || 0) + tx.transactionAmount; });
-  const modeData = Object.entries(modeMap).map(([name, value]) => ({ name, value }));
-  const PIE_COLORS = [t.green, t.purple, t.yellow, t.red];
-
-  // Credit ratio radial
-  const totalAmt  = txs.reduce((s, tx) => s + tx.transactionAmount, 0);
-  const creditAmt = txs.filter(tx => tx.transactionType === "Credit").reduce((s, tx) => s + tx.transactionAmount, 0);
-  const creditPct = Math.round((creditAmt / (totalAmt || 1)) * 100);
-  const radial = [{ name: "Credit", value: creditPct, fill: t.green }];
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-        {/* Amount vs Fee Bar */}
-        <ChartCard title="Amount vs Fee" sub="Withdrawal breakdown per day" t={t}>
-          <ResponsiveContainer width="100%" height={215}>
-            <BarChart data={barData} margin={{ top: 4, right: 4, bottom: 0, left: -22 }}>
-              <CartesianGrid stroke={t.gridLine} strokeDasharray="4 4" vertical={false} />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: t.muted, fontFamily: "DM Sans" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: t.muted, fontFamily: "DM Sans" }} axisLine={false} tickLine={false} />
-              <Tooltip content={<CTip t={t} />} />
-              <Bar dataKey="amount" name="Amount" fill={t.green}  radius={[5, 5, 0, 0]} maxBarSize={22} />
-              <Bar dataKey="fee"    name="Fee"    fill={t.yellow} radius={[5, 5, 0, 0]} maxBarSize={22} />
-              <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: 11, fontFamily: "DM Sans", color: t.muted }} />
-            </BarChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Payment Mode Donut */}
-        <ChartCard title="Payment Mode Split" sub="Volume by payment method" t={t}>
-          <ResponsiveContainer width="100%" height={215}>
-            <PieChart>
-              <Pie data={modeData} cx="50%" cy="50%" innerRadius={52} outerRadius={82} paddingAngle={4} dataKey="value">
-                {modeData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-              </Pie>
-              <Tooltip formatter={v => [fmtCur(v)]} contentStyle={{ background: t.tooltipBg, border: `1px solid ${t.cardBorder}`, borderRadius: 10, fontFamily: "DM Sans", fontSize: 12 }} />
-              <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: 11, fontFamily: "DM Sans", color: t.muted }} />
-            </PieChart>
-          </ResponsiveContainer>
-        </ChartCard>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 14 }}>
-        {/* Cumulative Area */}
-        <ChartCard title="Cumulative Withdrawals" sub="Running total of all payouts" t={t}>
-          <ResponsiveContainer width="100%" height={195}>
-            <AreaChart data={cumData} margin={{ top: 4, right: 4, bottom: 0, left: -22 }}>
-              <defs>
-                <linearGradient id="ag2" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%"   stopColor={t.purple} stopOpacity={0.35} />
-                  <stop offset="100%" stopColor={t.purple} stopOpacity={0}    />
-                </linearGradient>
-              </defs>
-              <CartesianGrid stroke={t.gridLine} strokeDasharray="4 4" vertical={false} />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: t.muted, fontFamily: "DM Sans" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: t.muted, fontFamily: "DM Sans" }} axisLine={false} tickLine={false} />
-              <Tooltip content={<CTip t={t} />} />
-              <Area type="monotone" dataKey="cumulative" name="Cumulative" stroke={t.purple} strokeWidth={2.5} fill="url(#ag2)" dot={false} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartCard>
-
-        {/* Radial Credit Ratio */}
-        <ChartCard title="Credit Ratio" sub="Credits vs all transactions" t={t}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 195 }}>
-            <ResponsiveContainer width="100%" height={150}>
-              <RadialBarChart cx="50%" cy="50%" innerRadius="65%" outerRadius="95%" data={radial} startAngle={90} endAngle={-270}>
-                <RadialBar dataKey="value" cornerRadius={8} background={{ fill: t.gridLine }} />
-              </RadialBarChart>
-            </ResponsiveContainer>
-            <p style={{ fontFamily: "Syne", fontWeight: 800, fontSize: 28, color: t.green, marginTop: -54 }}>{creditPct}%</p>
-            <p style={{ fontFamily: "DM Sans", fontSize: 11.5, color: t.muted, marginTop: 6 }}>Credits of total volume</p>
+        </div>
+        
+        <div className="w-full md:w-2/5 flex flex-row md:flex-col gap-8 justify-center mt-6 md:mt-0">
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="w-4 h-4 rounded bg-sky-500"></div>
+              <span className="text-slate-600 dark:text-slate-300 font-medium">Available</span>
+            </div>
+            <p className="text-2xl font-bold text-sky-600 dark:text-sky-400">{fmt(available)}</p>
           </div>
-        </ChartCard>
+          
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <div className="w-4 h-4 rounded bg-indigo-500"></div>
+              <span className="text-slate-600 dark:text-slate-300 font-medium">Ordered</span>
+            </div>
+            <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{fmt(ordered)}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// ─── ACCOUNT PAGE ─────────────────────────────────────────────────────────────
-function AccountPage({ u, t }) {
+function WithdrawalChart({ data }) {
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-md border border-slate-100 dark:border-slate-700">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
+          <ArrowUpCircle size={20} className="text-white" />
+        </div>
+        <div>
+          <h3 className="text-slate-800 dark:text-white font-bold text-lg">Withdrawal History</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-xs">Amount, Fee & Net (Last 10)</p>
+        </div>
+      </div>
+      
+      <div className="h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 10, right: 10, bottom: 10, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis 
+              dataKey="date" 
+              tick={{ fontSize: 12, fill: '#64748b' }}
+              axisLine={{ stroke: '#e2e8f0' }}
+              tickLine={{ stroke: '#e2e8f0' }}
+            />
+            <YAxis 
+              tick={{ fontSize: 12, fill: '#64748b' }}
+              axisLine={{ stroke: '#e2e8f0' }}
+              tickLine={{ stroke: '#e2e8f0' }}
+              tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`}
+            />
+            <Tooltip content={<ChartTooltip />} />
+            <Legend wrapperStyle={{ fontSize: 12, color: '#64748b' }} />
+            <Bar dataKey="amount" name="Amount" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={30} />
+            <Bar dataKey="fee" name="Fee" fill="#f59e0b" radius={[4, 4, 0, 0]} maxBarSize={30} />
+            <Bar dataKey="net" name="Net" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={30} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+// ─── Referral Card ───────────────────────────────────────────────
+function ReferralCard({ referralId, referenceId }) {
+  const [copiedRef, setCopiedRef] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  
+  const copyToClipboard = (text, setCopiedState) => {
+    navigator.clipboard?.writeText(text);
+    setCopiedState(true);
+    setTimeout(() => setCopiedState(false), 2000);
+  };
+  
+  const referralLink = `https://jaimax.io/ref/${referralId}`;
+  
+  return (
+    <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-50 dark:from-indigo-900/30 dark:via-blue-900/20 dark:to-indigo-900/30 rounded-3xl p-6 shadow-md border border-indigo-100 dark:border-indigo-800/30">
+      <div className="flex items-center gap-4 mb-5">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-md">
+          <Users size={22} className="text-white" />
+        </div>
+        <div>
+          <h3 className="text-slate-800 dark:text-white text-lg font-bold">Referral Program</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">Invite & earn rewards</p>
+        </div>
+        <div className="ml-auto bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-sm font-bold px-3 py-1 rounded-lg border border-indigo-200 dark:border-indigo-800/30">
+          5% Bonus
+        </div>
+      </div>
+      
+      <div className="space-y-4">
+        <div className="bg-white/80 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-4 border border-indigo-100 dark:border-indigo-800/30">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mb-2">Your Referral ID</p>
+          <div className="flex items-center justify-between">
+            <p className="font-mono text-base font-bold text-indigo-700 dark:text-indigo-300">{referralId || "N/A"}</p>
+            {referralId && (
+              <button 
+                onClick={() => copyToClipboard(referralId, setCopiedRef)}
+                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 p-1.5 rounded-lg transition-colors"
+              >
+                {copiedRef ? <Check size={18} /> : <Copy size={18} />}
+              </button>
+            )}
+          </div>
+        </div>
+        
+        <div className="bg-white/80 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-4 border border-indigo-100 dark:border-indigo-800/30">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mb-2">Reference ID</p>
+          <p className="font-mono text-base font-bold text-indigo-700 dark:text-indigo-300">
+            {referenceId || "Not available"}
+          </p>
+        </div>
+        
+        <div className="bg-white/80 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-4 border border-indigo-100 dark:border-indigo-800/30">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mb-2">Your Referral Link</p>
+          <div className="flex items-center gap-2">
+            <input 
+              type="text" 
+              value={referralId ? referralLink : "Activate your referral program"}
+              readOnly
+              className="text-sm bg-indigo-50 dark:bg-indigo-900/30 rounded-lg py-2 px-3 w-full font-medium text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/50 focus:outline-none"
+            />
+            <button 
+              onClick={() => copyToClipboard(referralLink, setCopiedLink)}
+              disabled={!referralId}
+              className={`p-2 rounded-lg ${
+                referralId 
+                  ? 'bg-indigo-600 text-white hover:bg-indigo-700' 
+                  : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+              }`}
+            >
+              {copiedLink ? <Check size={18} /> : <Share2 size={18} />}
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div className="mt-4 bg-indigo-100/70 dark:bg-indigo-900/20 rounded-2xl p-4 border border-indigo-200 dark:border-indigo-800/30">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-indigo-200 dark:bg-indigo-800/50 flex items-center justify-center text-indigo-700 dark:text-indigo-300">
+            <Star size={18} />
+          </div>
+          <p className="text-sm text-indigo-700 dark:text-indigo-300">
+            <span className="font-semibold">Invite friends to earn!</span> Get 5% of their investments as bonus.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Dashboard ───────────────────────────────────────────────
+export default function UserDashboard() {
+  const { data: apiData, isLoading, isError, refetch } = useGetDashboardDetailsQuery();
   const [copied, setCopied] = useState(false);
-  const copy = () => {
+
+  // Set up refresh interval
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 300000); // Refresh every 5 minutes
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  // Extract data safely with defaults
+  const d = apiData?.data || {};
+  const u = d.userDetails || {};
+  const transactions = d.recentTransactions || [];
+  const withdrawals = d.withdrawals || [];
+  const creditTotal = d.credit?.[0]?.total || 0;
+  const rounds = d.getRounds || [];
+
+  // ─── ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS ─────────────────
+  const totalWithdrawn = useMemo(() => 
+    withdrawals.reduce((s, w) => s + fmtDec(w.amount), 0), 
+    [withdrawals]
+  );
+
+  const totalFees = useMemo(() => 
+    withdrawals.reduce((s, w) => s + fmtDec(w.admin_inr_charges), 0), 
+    [withdrawals]
+  );
+
+  const availableTokens = useMemo(() => 
+    Math.max(0, (u.tokens || 0) ), 
+    [u.tokens]
+  );
+
+  const creditTransactions = useMemo(() => 
+    transactions.filter(t => t.transactionType === "Credit"), 
+    [transactions]
+  );
+
+  const debitTransactions = useMemo(() => 
+    transactions.filter(t => t.transactionType === "Debit"), 
+    [transactions]
+  );
+
+  const totalCredit = useMemo(() => 
+    creditTransactions.reduce((s, t) => s + t.transactionAmount, 0), 
+    [creditTransactions]
+  );
+
+  const totalDebit = useMemo(() => 
+    debitTransactions.reduce((s, t) => s + t.transactionAmount, 0), 
+    [debitTransactions]
+  );
+
+  const financialTrend = useMemo(() => {
+    const allDates = [...transactions, ...withdrawals.map(w => ({ transactionDate: w.created_at }))];
+    const sorted = [...allDates].sort((a, b) => 
+      new Date(a.transactionDate || a.created_at) - new Date(b.transactionDate || b.created_at)
+    );
+    
+    let balance = 0;
+    return sorted.slice(-15).map((item) => {
+      const tx = transactions.find(t => t.transactionDate === item.transactionDate);
+      if (tx) {
+        balance += tx.transactionType === "Credit" ? tx.transactionAmount : -tx.transactionAmount;
+      }
+      const wd = withdrawals.find(w => w.created_at === item.created_at);
+      if (wd) balance -= fmtDec(wd.amount);
+      
+      return {
+        date: fmtShort(item.transactionDate || item.created_at),
+        balance: Math.max(0, balance),
+      };
+    });
+  }, [transactions, withdrawals]);
+
+  const withdrawalTrend = useMemo(() => {
+    const sortedWithdrawals = [...withdrawals].sort((a, b) => 
+      new Date(a.created_at) - new Date(b.created_at)
+    );
+    
+    return sortedWithdrawals
+      .slice(-10)
+      .map(w => ({
+        date: fmtShort(w.created_at),
+        amount: fmtDec(w.amount),
+        fee: fmtDec(w.admin_inr_charges),
+        net: fmtDec(w.amount) - fmtDec(w.admin_inr_charges),
+      }));
+  }, [withdrawals]);
+
+  const paymentModeData = useMemo(() => {
+    const map = {};
+    transactions.forEach(tx => {
+      map[tx.paymentMode] = (map[tx.paymentMode] || 0) + tx.transactionAmount;
+    });
+    const COLORS = ["#10b981", "#8b5cf6", "#f59e0b", "#ef4444", "#3b82f6", "#ec4899"];
+    return Object.entries(map).map(([name, value], i) => ({ name, value, color: COLORS[i % COLORS.length] }));
+  }, [transactions]);
+
+  // ─── NOW WE CAN SAFELY RETURN EARLY ───────────────────────────────────────────
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 size={45} className="text-indigo-600 dark:text-indigo-400 animate-spin" />
+          <p className="text-base font-medium text-slate-600 dark:text-slate-300">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !apiData?.data) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-6 max-w-md mx-auto text-center">
+          <AlertCircle size={50} className="text-rose-500 dark:text-rose-400" />
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Connection Error</h3>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">We couldn't load your dashboard information. Please try again.</p>
+            <button 
+              onClick={() => refetch()} 
+              className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6 py-3 text-base font-semibold transition-all shadow-md hover:shadow-lg"
+            >
+              <RefreshCcw size={18} />
+              Refresh Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const copyWallet = () => {
     navigator.clipboard?.writeText(u.walletadress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-  const fields = [
-    ["Full Name", u.name.trim()], ["Username", u.username], ["Email", u.email],
-    ["Phone", `+${u.countryCode ?? 91} ${u.phone}`], ["Reference ID", u.referenceId],
-    ["Country", u.country], ["Member Since", fmtDate(u.createdAt)],
-    ["2FA", u.twoFactorEnabled ? "✓ Enabled" : "✗ Disabled"],
-    ["Status", u.isActive ? "✓ Active" : "✗ Inactive"],
-    ["KYC", u.isVerified ? "✓ Verified" : "Pending"],
-  ];
+
+  // Find current active round
+  const activeRound = rounds.find(r => r.status === 1) || {};
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      {/* Hero */}
-      <div style={{ borderRadius: 18, background: "linear-gradient(135deg, #0c5a5a 0%, #0d9488 55%, #14b8a6 100%)", padding: "26px 26px", display: "flex", alignItems: "center", gap: 20, position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", right: -18, top: -18, width: 110, height: 110, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
-        <div style={{ position: "absolute", right: 50, bottom: -28, width: 70, height: 70, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
-        <img src={u.profile} alt={u.name} style={{ width: 70, height: 70, borderRadius: "50%", objectFit: "cover", border: "3px solid rgba(255,255,255,0.35)", flexShrink: 0 }} onError={e => { e.target.style.display = "none"; }} />
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <p style={{ fontFamily: "Syne", fontWeight: 800, fontSize: 21, color: "#fff" }}>{u.name.trim()}</p>
-            {u.isVerified && <span style={{ background: "rgba(255,255,255,0.2)", color: "#fff", fontSize: 10, fontWeight: 700, padding: "2px 9px", borderRadius: 20, fontFamily: "DM Sans" }}>✓ Verified</span>}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+        {/* Header section */}
+        <DashboardHeader 
+          user={u} 
+          inrBalance={u.Inr || 0}
+          totalTokens={u.tokens || 0}
+          tokenPrice={activeRound.atPriceInr || 0}
+        />
+        
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          <StatCard 
+            title="Available Tokens" 
+            value={fmt(availableTokens)}
+            icon={Gem} 
+            color="text-white" 
+            bgColor="bg-gradient-to-br from-sky-500 to-blue-600"
+            animation="hover:-translate-y-1"
+          />
+          <StatCard 
+            title="Available Balance" 
+            value={fmt(u.Inr || 0)}
+            icon={Package} 
+             
+            color="text-white" 
+            bgColor="bg-gradient-to-br from-violet-500 to-purple-600"
+            animation="hover:-translate-y-1"
+          />
+          <StatCard 
+            title="Referral Earnings" 
+            value={fmt(u.referenceInr || 0)}
+            icon={Package} 
+             
+            color="text-white" 
+            bgColor="bg-gradient-to-br from-violet-500 to-purple-600"
+            animation="hover:-translate-y-1"
+          />
+          <StatCard 
+            title="Total Credits" 
+            value={fmtCur(totalCredit)}
+            subValue={`${creditTransactions.length} credits`}
+            icon={ArrowDownCircle} 
+            color="text-white" 
+            bgColor="bg-gradient-to-br from-emerald-500 to-green-600"
+            animation="hover:-translate-y-1"
+          />
+          <StatCard 
+            title="Total Withdrawn" 
+            value={fmtCur(totalWithdrawn)}
+            subValue={`${withdrawals.length} payouts`}
+            icon={ArrowUpCircle} 
+            color="text-white" 
+            bgColor="bg-gradient-to-br from-rose-500 to-pink-600"
+            animation="hover:-translate-y-1"
+          />
+         
+          <StatCard 
+            title="Super Bonus" 
+            value={fmtCur(u.super_bonus || 0)}
+            icon={Star} 
+            color="text-white" 
+            bgColor="bg-gradient-to-br from-amber-400 to-yellow-600"
+            animation="hover:-translate-y-1"
+          />
+        </div>
+        
+       
+        
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Balance Trend Chart */}
+          <BalanceChart data={financialTrend} />
+          
+          {/* Token Distribution */}
+          <TokenDistributionChart 
+            available={availableTokens}
+            ordered={u.totalOrderedCoins || 0}
+          />
+        </div>
+        
+        {/* Withdrawal History & Referral */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Withdrawal Chart */}
+          <WithdrawalChart data={withdrawalTrend} />
+          
+          {/* Referral Card */}
+          <ReferralCard 
+            referralId={u.username || ""}
+            referenceId={u.referenceId || ""}
+          />
+        </div>
+        
+        {/* Transactions */}
+        <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-md border border-slate-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md">
+              <Activity size={24} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-800 dark:text-white">Recent Transactions</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">{transactions.length} total transactions</p>
+            </div>
+            <div className="ml-auto flex items-center gap-2">
+              <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-medium px-3 py-1 rounded-full">
+                +{fmtCur(totalCredit)}
+              </span>
+              <span className="bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-sm font-medium px-3 py-1 rounded-full">
+                −{fmtCur(totalDebit)}
+              </span>
+            </div>
           </div>
-          <p style={{ color: "rgba(255,255,255,0.65)", fontFamily: "DM Sans", fontSize: 13.5, marginTop: 2 }}>{u.email}</p>
-          <div style={{ display: "flex", gap: 7, marginTop: 10, flexWrap: "wrap" }}>
-            {[u.username, `Ref: ${u.referenceId}`, `🇮🇳 +91 ${u.phone}`].map(s => (
-              <span key={s} style={{ background: "rgba(255,255,255,0.15)", color: "#fff", fontSize: 11, padding: "3px 10px", borderRadius: 20, fontFamily: "DM Sans" }}>{s}</span>
+          
+          <div className="max-h-[500px] overflow-auto custom-scrollbar">
+            {transactions.length === 0 ? (
+              <div className="text-center py-12">
+                <Activity size={40} className="mx-auto mb-3 text-slate-300 dark:text-slate-600" />
+                <p className="text-slate-500 dark:text-slate-400">No transactions yet</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {transactions.map(tx => (
+                  <TransactionItem key={tx._id} tx={tx} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Account Info */}
+        <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-md border border-slate-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center shadow-md">
+              <User size={24} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-800 dark:text-white">Account Information</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Member since {u.createdAt ? fmtDate(u.createdAt) : "N/A"}</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { 
+                label: "KYC Status", 
+                value: u.isVerified ? "Verified" : "Pending", 
+                icon: CheckCircle,
+                color: u.isVerified ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400",
+                bg: u.isVerified ? "bg-emerald-50 dark:bg-emerald-900/30" : "bg-amber-50 dark:bg-amber-900/30"
+              },
+              { 
+                label: "2FA Status", 
+                value: u.twoFactorEnabled ? "Enabled" : "Disabled", 
+                icon: Shield,
+                color: u.twoFactorEnabled ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400",
+                bg: u.twoFactorEnabled ? "bg-emerald-50 dark:bg-emerald-900/30" : "bg-rose-50 dark:bg-rose-900/30"
+              },
+              { 
+                label: "Account Status", 
+                value: u.isActive ? "Active" : "Inactive", 
+                icon: Activity,
+                color: u.isActive ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400",
+                bg: u.isActive ? "bg-emerald-50 dark:bg-emerald-900/30" : "bg-rose-50 dark:bg-rose-900/30"
+              },
+              { 
+                label: "Account Lock", 
+                value: u.accountLocked ? "Locked" : "Unlocked", 
+                icon: Lock,
+                color: !u.accountLocked ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400",
+                bg: !u.accountLocked ? "bg-emerald-50 dark:bg-emerald-900/30" : "bg-rose-50 dark:bg-rose-900/30"
+              },
+              { 
+                label: "Failed Logins", 
+                value: u.failedLoginAttempts || 0, 
+                icon: AlertCircle,
+                color: (u.failedLoginAttempts || 0) === 0 ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400",
+                bg: (u.failedLoginAttempts || 0) === 0 ? "bg-emerald-50 dark:bg-emerald-900/30" : "bg-amber-50 dark:bg-amber-900/30"
+              },
+              { 
+                label: "Last Updated", 
+                value: u.updatedAt ? fmtShort(u.updatedAt) : "N/A", 
+                icon: Calendar,
+                color: "text-blue-600 dark:text-blue-400",
+                bg: "bg-blue-50 dark:bg-blue-900/30"
+              },
+            ].map(item => (
+              <div key={item.label} className="bg-slate-50 dark:bg-slate-700/30 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{item.label}</p>
+                  <item.icon size={16} className={item.color} />
+                </div>
+                <div className={`inline-block px-3 py-1 rounded-lg ${item.bg} ${item.color} font-medium`}>
+                  {item.value}
+                </div>
+              </div>
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Wallet address */}
-      <div style={{ background: t.card, border: `1px solid ${t.cardBorder}`, borderRadius: 14, padding: "14px 18px", display: "flex", alignItems: "center", gap: 12 }}>
-        <span style={{ fontSize: 20, flexShrink: 0 }}>🔗</span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontFamily: "DM Sans", fontSize: 11, color: t.muted }}>Wallet Address</p>
-          <p style={{ fontFamily: "monospace", fontSize: 12, fontWeight: 600, color: t.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{u.walletadress}</p>
+        
+        {/* Footer */}
+        <div className="text-center py-4">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            JAIMAX Dashboard · Last updated {u.updatedAt ? `${fmtDate(u.updatedAt)} at ${fmtTime(u.updatedAt)}` : "N/A"}
+          </p>
         </div>
-        <button onClick={copy} style={{ flexShrink: 0, background: copied ? t.accentLight : t.accentLight, color: t.accent, border: `1px solid ${t.cardBorder}`, borderRadius: 8, padding: "6px 14px", fontFamily: "DM Sans", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
-          {copied ? "✓ Copied" : "Copy"}
-        </button>
       </div>
 
-      {/* Fields */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(195px,1fr))", gap: 10 }}>
-        {fields.map(([label, value]) => (
-          <div key={label} style={{ background: t.subtle, border: `1px solid ${t.cardBorder}`, borderRadius: 12, padding: "11px 14px" }}>
-            <p style={{ fontFamily: "DM Sans", fontSize: 10.5, color: t.muted, marginBottom: 3 }}>{label}</p>
-            <p style={{ fontFamily: "DM Sans", fontWeight: 600, fontSize: 13, color: t.text, wordBreak: "break-all" }}>{value}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── MAIN ─────────────────────────────────────────────────────────────────────
-export default function UserDashboard() {
-  // ✅ Replace these 3 lines with your RTK Query hook when wiring up:
-  const { data: apiData, isLoading, isError } = useGetUserDashboardQuery();
-//   const apiData  = MOCK;
-//   const isLoading = false;
-//   const isError   = false;
-
-  const [page, setPage]       = useState("overview");
-  const [isDark, setIsDark]   = useState(false);
-  const [collapsed, setCol]   = useState(false);
-  const [mobileOpen, setMob]  = useState(false);
-  const t = THEMES[isDark ? "dark" : "light"];
-
-  if (isLoading) return (
-    <div style={{ minHeight: "100vh", background: t.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-        <div style={{ width: 36, height: 36, borderRadius: "50%", border: `4px solid ${t.accent}`, borderTopColor: "transparent", animation: "spin .75s linear infinite" }} />
-        <p style={{ fontFamily: "DM Sans", color: t.muted, fontSize: 14 }}>Loading dashboard…</p>
-      </div>
-    </div>
-  );
-
-  if (isError || !apiData?.data) return (
-    <div style={{ minHeight: "100vh", background: t.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <p style={{ fontFamily: "DM Sans", color: t.danger, fontWeight: 600 }}>Failed to load. Please try again.</p>
-    </div>
-  );
-
-  const d = apiData.data;
-  const u = d.userDetails;
-
-  const PAGES = {
-    overview:     <Overview d={d} t={t} />,
-    analytics:    <Analytics d={d} t={t} />,
-    transactions: (
-      <ChartCard title="All Transactions" sub="Complete transaction history" t={t}>
-        {d.recentTransactions.map(tx => <TxRow key={tx._id} tx={tx} t={t} />)}
-      </ChartCard>
-    ),
-    withdrawals: (
-      <ChartCard title="Withdrawal History" sub="All processed payouts" t={t}>
-        {d.withdrawals.map(w => <WdRow key={w._id} w={w} t={t} />)}
-      </ChartCard>
-    ),
-    invoices: (
-      <ChartCard title="Invoices" sub="Purchase invoices" t={t}>
-        {u.invoices.map(inv => (
-          <div key={inv.invoiceNo} style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 0", borderBottom: `1px solid ${t.cardBorder}` }}>
-            <div style={{ width: 34, height: 34, borderRadius: "50%", background: t.indigoLight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>📄</div>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontFamily: "DM Sans", fontWeight: 600, fontSize: 13, color: t.text }}>{inv.invoiceNo}</p>
-              <p style={{ fontFamily: "DM Sans", fontSize: 11, color: t.muted }}>{fmtDate(inv.orderDate)} · {fmt(inv.coins)} coins</p>
-            </div>
-            <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: t.text }}>{fmtCur(inv.amount)}</p>
-            <a href={inv.invoiceUrl} target="_blank" rel="noreferrer" style={{ color: t.accent, fontFamily: "DM Sans", fontSize: 12, fontWeight: 600 }}>View</a>
-          </div>
-        ))}
-      </ChartCard>
-    ),
-    account: <AccountPage u={u} t={t} />,
-  };
-
-  return (
-    <div style={{ minHeight: "100vh", background: t.bg, display: "flex", fontFamily: "DM Sans, sans-serif" }}>
-      <style>{`
-        *{box-sizing:border-box;margin:0;padding:0}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        ::-webkit-scrollbar{width:5px;height:5px}
-        ::-webkit-scrollbar-thumb{background:${t.cardBorder};border-radius:10px}
-        @media(max-width:768px){
-          .desk-sidebar{display:none!important}
-          .mob-btn{display:flex!important}
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
         }
-        @media(min-width:769px){
-          .mob-btn{display:none!important}
-          .mob-overlay{display:none!important}
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(241, 245, 249, 0.5);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(203, 213, 225, 0.8);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(148, 163, 184, 0.8);
         }
       `}</style>
-
-      {/* Desktop sidebar */}
-      <div className="desk-sidebar">
-        <Sidebar active={page} onNav={setPage} t={t} collapsed={collapsed} setCollapsed={setCol} isDark={isDark} toggleTheme={() => setIsDark(d => !d)} />
-      </div>
-
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div className="mob-overlay" style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }} onClick={() => setMob(false)}>
-          <div style={{ width: 216 }} onClick={e => e.stopPropagation()}>
-            <Sidebar active={page} onNav={k => { setPage(k); setMob(false); }} t={t} collapsed={false} setCollapsed={() => {}} isDark={isDark} toggleTheme={() => setIsDark(d => !d)} />
-          </div>
-          <div style={{ flex: 1, background: "rgba(0,0,0,0.45)" }} />
-        </div>
-      )}
-
-      {/* Content */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, overflowX: "hidden" }}>
-        {/* Header */}
-        <header style={{
-          position: "sticky", top: 0, zIndex: 10,
-          background: isDark ? "rgba(8,15,26,0.88)" : "rgba(240,253,250,0.88)",
-          backdropFilter: "blur(14px)",
-          borderBottom: `1px solid ${t.cardBorder}`,
-          padding: "12px 22px", display: "flex", alignItems: "center", justifyContent: "space-between",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
-            <button className="mob-btn" onClick={() => setMob(o => !o)}
-              style={{ display: "none", background: t.accentLight, border: "none", borderRadius: 8, padding: "6px 11px", cursor: "pointer", color: t.accent, fontSize: 17 }}>
-              ☰
-            </button>
-            <div>
-              <p style={{ fontFamily: "Syne", fontWeight: 800, fontSize: 17, color: t.text }}>{NAV.find(n => n.key === page)?.label}</p>
-              <p style={{ fontFamily: "DM Sans", fontSize: 11, color: t.muted }}>{fmtDate(new Date())}</p>
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ textAlign: "right" }}>
-              <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: t.text }}>{u.name.trim().split(" ")[0]}</p>
-              <p style={{ fontFamily: "DM Sans", fontSize: 10.5, color: t.muted }}>{u.username}</p>
-            </div>
-            <img src={u.profile} alt={u.name} style={{ width: 34, height: 34, borderRadius: "50%", objectFit: "cover", border: `2px solid ${t.accent}` }} onError={e => { e.target.style.display = "none"; }} />
-          </div>
-        </header>
-
-        {/* Page */}
-        <main style={{ flex: 1, padding: "20px 22px", maxWidth: 1080, width: "100%" }}>
-          {PAGES[page]}
-        </main>
-
-        <footer style={{ padding: "14px 22px", textAlign: "center" }}>
-          <p style={{ fontFamily: "DM Sans", fontSize: 10.5, color: t.muted }}>JAIMAX · Last updated {fmtDate(u.updatedAt)}</p>
-        </footer>
-      </div>
     </div>
   );
 }

@@ -18,7 +18,7 @@ const HomeContact = lazy(() => import("./HomeContact"));
 const HomeFooter = lazy(() => import("./HomeFoot"));
 const ReviewsSection = lazy(() => import("./Rating"));
 const WorldMap = lazy(() => import("./WorldMap"));
-import CountdownTimer from "../popups/CoinPricePopup1";
+// import CountdownTimer from "../popups/CoinPricePopup1";
 import AdSlot from "./AdSlot";
 import Loader from "../../ReusableComponents/Loader/loader";
 const Home = () => {
@@ -321,15 +321,16 @@ const Home = () => {
   { Component: JaimaxContent, id: "seo-section" },
   { Component: ReviewsSection, id: "rating-section" },
   { Component: AnimatedTestimonials, id: "testimonials" },
-  { Component: JaimaxRoadmap, id: "roadmap" },
+  { Component: JaimaxRoadmap, id: "roadmap" },  
   { Component: JaimaxFAQ, id: "faq" },
   { Component: HomeContact, id: "contact" },
+  { Component: HomeFooter, id: "fooetr" },
 ];
 
   return (
     <>
       <Seo page="homePage" />
-      <CountdownTimer className="" />
+      {/* <CountdownTimer className="" /> */}
       <div className="outer-container overflow-y-auto scrollbar-hide">
         <header className="relative min-h-[100dvh] flex flex-col justify-center">
           <div className="absolute inset-0 w-full h-full">
