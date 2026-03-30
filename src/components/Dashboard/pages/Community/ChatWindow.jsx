@@ -227,7 +227,16 @@ const ChatWindow = ({
   useEffect(() => {
     hasMoreOldMessagesRef.current = hasMoreOldMessages;
   }, [hasMoreOldMessages]);
+  const isLoadingOlderRef = useRef(isLoadingOlder);
+  const hasMoreNewMessagesRef = useRef(hasMoreNewMessages);
+  const isLoadingNewerRef = useRef(isLoadingNewer);
+  useEffect(() => {
+    hasMoreOldMessagesRef.current = hasMoreOldMessages;
+  }, [hasMoreOldMessages]);
 
+  useEffect(() => {
+    isLoadingOlderRef.current = isLoadingOlder;
+  }, [isLoadingOlder]);
   useEffect(() => {
     isLoadingOlderRef.current = isLoadingOlder;
   }, [isLoadingOlder]);
@@ -235,7 +244,13 @@ const ChatWindow = ({
   useEffect(() => {
     hasMoreNewMessagesRef.current = hasMoreNewMessages;
   }, [hasMoreNewMessages]);
+  useEffect(() => {
+    hasMoreNewMessagesRef.current = hasMoreNewMessages;
+  }, [hasMoreNewMessages]);
 
+  useEffect(() => {
+    isLoadingNewerRef.current = isLoadingNewer;
+  }, [isLoadingNewer]);
   useEffect(() => {
     isLoadingNewerRef.current = isLoadingNewer;
   }, [isLoadingNewer]);
@@ -664,19 +679,40 @@ const ChatWindow = ({
   useEffect(() => {
     const messagesArea = messagesAreaRef.current;
     if (!messagesArea) return;
+  useEffect(() => {
+    const messagesArea = messagesAreaRef.current;
+    if (!messagesArea) return;
 
+    let scrollTimeout;
     let scrollTimeout;
 
     const handleScroll = () => {
       clearTimeout(scrollTimeout);
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
 
+      const { scrollTop, scrollHeight, clientHeight } = messagesArea;
+      const distBottom = scrollHeight - scrollTop - clientHeight;
       const { scrollTop, scrollHeight, clientHeight } = messagesArea;
       const distBottom = scrollHeight - scrollTop - clientHeight;
 
       isAtBottomRef.current = distBottom < 100;
       setUserScrolledUp(!isAtBottomRef.current);
       if (isAtBottomRef.current) setNewMessagesCount(0);
+      isAtBottomRef.current = distBottom < 100;
+      setUserScrolledUp(!isAtBottomRef.current);
+      if (isAtBottomRef.current) setNewMessagesCount(0);
 
+      scrollTimeout = setTimeout(() => {
+        // ✅ Load older: user near TOP
+        if (
+          scrollTop < 200 &&
+          hasMoreOldMessagesRef.current &&
+          !isLoadingOlderRef.current
+        ) {
+          console.log("[SCROLL] Near top — loading older messages");
+          loadOlderMessages();
+        }
       scrollTimeout = setTimeout(() => {
         // ✅ Load older: user near TOP
         if (
@@ -699,7 +735,24 @@ const ChatWindow = ({
         }
       }, 200);
     };
+        // ✅ Load newer: user near BOTTOM but not at bottom
+        if (
+          distBottom < 200 &&
+          hasMoreNewMessagesRef.current &&
+          !isLoadingNewerRef.current &&
+          !isAtBottomRef.current
+        ) {
+          loadNewerMessages();
+        }
+      }, 200);
+    };
 
+    messagesArea.addEventListener("scroll", handleScroll);
+    return () => {
+      clearTimeout(scrollTimeout);
+      messagesArea.removeEventListener("scroll", handleScroll);
+    };
+  }, [loadOlderMessages, loadNewerMessages]);
     messagesArea.addEventListener("scroll", handleScroll);
     return () => {
       clearTimeout(scrollTimeout);
@@ -1456,7 +1509,24 @@ const ChatWindow = ({
                       </div>
                     </div>
                   )}
+                  {isLoadingOlder && (
+                    <div className="sticky top-0 z-20 flex justify-center py-3 mb-2">
+                      <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
+                        <div className="relative">
+                          <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
+                        </div>
+                        <span className="text-xs text-gray-300 font-medium">
+                          Loading older messages…
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
+                  {!isLoadingOlder && hasMoreOldMessages && messages?.length > 0 && (
+                    <div className="flex justify-center py-2 mb-1">
+                      <button
+                        onClick={() => loadOlderMessages()}
+                        className="group bg-[#182229] hover:bg-[#202c33] active:bg-[#2a3942] 
                   {!isLoadingOlder && hasMoreOldMessages && messages?.length > 0 && (
                     <div className="flex justify-center py-2 mb-1">
                       <button
@@ -1466,6 +1536,9 @@ const ChatWindow = ({
                  hover:border-[#00a884]/40 transition-all duration-200 
                  cursor-pointer active:scale-95 flex items-center gap-2
                  shadow-sm hover:shadow-md"
+                      >
+                        <svg
+                          className="w-3.5 h-3.5 text-[#00a884] group-hover:-translate-y-0.5 
                       >
                         <svg
                           className="w-3.5 h-3.5 text-[#00a884] group-hover:-translate-y-0.5 
@@ -1482,8 +1555,25 @@ const ChatWindow = ({
                           />
                         </svg>
                         <span className="text-xs sm:text-sm text-gray-400 
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 15l7-7 7 7"
+                          />
+                        </svg>
+                        <span className="text-xs sm:text-sm text-gray-400 
                         group-hover:text-gray-200 font-medium 
                         transition-colors duration-200">
+                          Load older messages
+                        </span>
+                      </button>
+                    </div>
+                  )}
                           Load older messages
                         </span>
                       </button>
@@ -1553,6 +1643,15 @@ const ChatWindow = ({
                   )}
                   <div ref={messagesEndRef} />
                   {isLoadingNewer && (
+                    <div className="flex justify-center py-3 mt-2">
+                      <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
+                        <span className="text-xs text-gray-300 font-medium">
+                          Loading newer messages…
+                        </span>
+                      </div>
+                    </div>
+                  )}
                     <div className="flex justify-center py-3 mt-2">
                       <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
                         <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
