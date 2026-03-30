@@ -37,7 +37,7 @@ const features = [
     Icon: Users,
     title: "User Account Management",
     desc: "Easily create and manage your personal Jaimax wallet. Track token balances, purchases, and transaction history all in one place.",
-    link: "/services",
+    link: "/register",
     linkTitle: "Learn more about User Account Management",
   },
   {
@@ -45,7 +45,8 @@ const features = [
     Icon: Shield,
     title: "Privacy & Data Protection",
     desc: "Jaimax uses advanced encryption to protect your data and allows you to control how your personal information is stored and shared.",
-    link: "/best-presale-crypto-token-in-india/",
+    // link: "/best-presale-crypto-token-in-india/",
+    link: "/newpresale",
     linkTitle: "Learn more about Privacy & Data Protection",
   },
   {
@@ -53,7 +54,7 @@ const features = [
     Icon: CreditCard,
     title: "Secure Payment Processing",
     desc: "All transactions are powered by blockchain — fast, secure, and tamper-proof. Invest and transfer with full confidence.",
-    link: "/about/",
+    link: "/newabout/",
     linkTitle: "Learn more about Secure Payment Processing",
   },
   {
@@ -61,7 +62,7 @@ const features = [
     Icon: Headphones,
     title: "24/7 Expert Support",
     desc: "Round-the-clock assistance from our expert support team for any questions about your wallet, transactions, or features.",
-    link: "/contact/",
+    link: "/contactPage/",
     linkTitle: "Learn more about 24/7 Expert Support",
   },
   {
@@ -69,7 +70,7 @@ const features = [
     Icon: TrendingUp,
     title: "Smart Analytics",
     desc: "Real-time performance insights with full cookie and tracking control for a transparent and secure user experience.",
-    link: "/blog/",
+    link: "/blogGrid/",
     linkTitle: "Learn more about Smart Analytics",
   },
   {
@@ -93,7 +94,7 @@ const features = [
     Icon: FileText,
     title: "Policy Updates & Rights",
     desc: "Stay updated with regular policy notifications. Full user control over personal data, privacy settings, and account activity.",
-    link: "/services/",
+    link: "/privacy-policy/",
     linkTitle: "Learn more about Policy Updates & Rights",
   },
 ];
@@ -345,7 +346,7 @@ export default function FeaturesPage() {
 
               {/* Learn More → /blog */}
               <Link
-                to="/blog"
+                to="/blogGrid"
                 title="Read Jaimax blog - Crypto insights and updates"
                 className="flex items-center gap-2 text-[13px] font-semibold bg-transparent cursor-pointer no-underline"
                 style={{ color: "var(--color-brand-primary)" }}

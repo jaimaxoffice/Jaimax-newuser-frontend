@@ -281,6 +281,7 @@ import FeaturesPage from "./pages/dummy/features/FeaturesPage";
 import BlogGridPage from "./pages/dummy/blog/BlogGridPage";
 import BlogPostDetail from "./pages/dummy/blog/BlogpostDetail";
 import MainPage from "./pages/dummy/MainPage";
+import NewPreSaleCryptoCoin from "./pages/dummy/services/PreSaleCryptoCoin";
 
 // Lazy loaded components
 const CoinPricePopup = lazy(() => import("./ReusableComponents/popups/Countdown"));
@@ -510,7 +511,8 @@ const App = () => {
                 isAuthenticated() ? (
                   <Navigate to="/dashboard" replace />
                 ) : (
-                  <Home />
+                  // <Home />
+                  <MainPage />
                 )
               }
             />
@@ -548,23 +550,15 @@ const App = () => {
             <Route path="supportpage" element={<SupportPage />} />
 
 
-            {/* <Route path="dummy" element={<GrowthPlanTimeline />} /> */}
-            {/* <Route path="phases-dummy" element={<GrowthPlanTimeline2 />} /> */}
-            <Route path="phases" element={<GrowthPlanTimelineV3 />} />
-            <Route path="offer" element={<WhatWeOffer />} />
-            <Route path="second" element={<SecondSection />} />
-            <Route path="testimonals" element={<Testimonials />} />
-            <Route path="contactpage" element={<ContactComponent />} />
-            <Route path="homeContact" element={<HomeContactSection />} />
-            <Route path="roadmap" element={<HomeRoadmapSection />} />
-            <Route path="hero" element={<HeroSection />} />
+           
             <Route path="newAbout" element={<NewAbout />} />
             <Route path="newFeatures" element={<FeaturesPage />} />
             <Route path="blogGrid" element={<BlogGridPage />} />
              <Route path="blogGrid">
              <Route path=":slug" element={<BlogPostDetail />} />
             </Route>
-             <Route path="main" element={<MainPage />} />
+             {/* <Route path="main" element={<MainPage />} /> */}
+             <Route path="newPresale" element={<NewPreSaleCryptoCoin />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

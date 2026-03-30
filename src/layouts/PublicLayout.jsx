@@ -6,6 +6,28 @@ import Footer from "../global/Footer";
 // Routes where navbar/footer should be hidden
 const HIDDEN_NAV_ROUTES = ["/login", "/register", "/forgot-password"];
 
+// const PublicLayout = () => {
+//   const location = useLocation();
+
+//   const shouldHideNavbar = useMemo(() => {
+//     return HIDDEN_NAV_ROUTES.includes(location.pathname);
+//   }, [location.pathname]);
+
+//   return (
+//     <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
+//       {/* Navbar - hidden on auth pages */}
+//       {!shouldHideNavbar && <Navbar />}
+
+//       {/* Main Content */}
+//       <main className="flex-1">
+//         <Outlet />
+//       </main>
+
+//       {/* Footer - hidden on auth pages */}
+//       {!shouldHideNavbar && <Footer />}
+//     </div>
+//   );
+// };
 const PublicLayout = () => {
   const location = useLocation();
 
@@ -14,16 +36,11 @@ const PublicLayout = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col overflow-y-auto scrollbar-hide">
-      {/* Navbar - hidden on auth pages */}
+    <div className="min-h-screen flex flex-col">
       {!shouldHideNavbar && <Navbar />}
-
-      {/* Main Content */}
       <main className="flex-1">
         <Outlet />
       </main>
-
-      {/* Footer - hidden on auth pages */}
       {!shouldHideNavbar && <Footer />}
     </div>
   );

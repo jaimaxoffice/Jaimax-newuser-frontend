@@ -1973,33 +1973,9 @@ export default function BlogGridPage() {
         .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .card-hover:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
       `}</style>
-
-      {/* ── NAV ── */}
-      <header className="sticky top-0 z-30 backdrop-blur-sm" style={{ background: "rgba(232,245,224,0.96)", borderBottom: "1px solid var(--color-border-accent)" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between py-3" style={{ borderBottom: "1px solid var(--color-border-accent)" }}>
-
-            {/* Left links */}
-            <div className="hidden md:flex items-center gap-6 text-[10px] uppercase tracking-widest font-semibold" style={{ color: "var(--color-text-secondary)" }}>
-              {["Home", "News", "Post Format", "Featured", "Purchase"].map(l => (
-                <a key={l} href="#"
-                  className="transition-colors"
-                  style={{ color: "var(--color-text-secondary)" }}
-                  onMouseEnter={e => e.currentTarget.style.color = "var(--color-brand-primary)"}
-                  onMouseLeave={e => e.currentTarget.style.color = "var(--color-text-secondary)"}
-                >{l}</a>
-              ))}
-            </div>
-            <button
-              className="md:hidden text-xs font-semibold"
-              style={{ color: "var(--color-brand-primary)" }}
-              onClick={() => setMobileMenu(o => !o)}
-            >
-              ☰ Menu
-            </button>
-
-            {/* Logo center */}
-            <div className="text-center absolute left-1/2 -translate-x-1/2">
+         <div className="max-w-7xl mx-auto" style={{ borderBottom: "1px solid var(--color-border-accent)" }}>
+         {/* Logo center */}
+            <div className="text-center pt-6">
               <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-none" style={{ color: "var(--color-brand-dark)" }}>
                 JAI<span style={{ color: "var(--color-brand-accent)" }}>MAX</span>
                 <span className="font-normal text-base ml-1" style={{ color: "var(--color-text-secondary)" }}>blog</span>
@@ -2009,34 +1985,8 @@ export default function BlogGridPage() {
               </p>
             </div>
 
-            {/* Right: social + search */}
-            <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold" style={{ color: "var(--color-brand-mid)" }}>
-                <a href="#" className="transition-colors hover:text-[var(--color-brand-primary)]">f</a>
-                <a href="#" className="transition-colors hover:text-[var(--color-brand-primary)]">𝕏</a>
-                <a href="#" className="transition-colors hover:text-[var(--color-brand-primary)]">in</a>
-              </div>
-              <div className="relative">
-                <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "var(--color-brand-mid)" }} />
-                <input
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  placeholder="Search..."
-                  className="text-xs pl-8 pr-3 py-2 rounded-full focus:outline-none transition-all w-28 sm:w-40 font-medium"
-                  style={{
-                    border: "1.5px solid var(--color-border-accent)",
-                    background: "var(--color-bg-surface)",
-                    color: "var(--color-text-primary)",
-                  }}
-                  onFocus={e => e.target.style.borderColor = "var(--color-brand-primary)"}
-                  onBlur={e => e.target.style.borderColor = "var(--color-border-accent)"}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Category tabs */}
-          <div className="cat-scroll flex items-center overflow-x-auto">
+       {/* Category tabs */}
+          <div className="cat-scroll flex items-center overflow-x-auto mt-5 ">
             {categories.map(c => (
               <button key={c} onClick={() => setActiveCategory(c)}
                 className="text-[10px] uppercase tracking-widest font-bold px-4 py-3 border-b-2 whitespace-nowrap transition-all shrink-0"
@@ -2051,8 +2001,7 @@ export default function BlogGridPage() {
               </button>
             ))}
           </div>
-        </div>
-      </header>
+      </div>
 
       {/* Mobile menu */}
       {mobileMenu && (
@@ -2073,7 +2022,7 @@ export default function BlogGridPage() {
           <Reveal>
             <div
               onClick={() => handleCardClick(hero)}
-              className="grid grid-cols-1 md:grid-cols-2 mb-14 overflow-hidden rounded-2xl cursor-pointer card-hover"
+              className="grid grid-cols-1 md:grid-cols-2 mb-14 overflow-hidden rounded-[6px] cursor-pointer card-hover"
               style={{ border: "1.5px solid var(--color-border-accent)", boxShadow: "0 4px 24px rgba(45,122,58,0.08)" }}
             >
               {/* Image */}
@@ -2087,29 +2036,29 @@ export default function BlogGridPage() {
 
                 {/* Meta badges */}
                 <div className="flex flex-wrap items-center gap-2 mb-5">
-                  <span className="text-[9px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                  <span className="text-[9px] uppercase  font-bold px-2.5 py-1 rounded-full"
                     style={{ background: "var(--color-bg-overlay)", color: "var(--color-brand-primary)", border: "1px solid var(--color-border-accent)" }}>
                     {hero.date}
                   </span>
-                  <span className="text-[9px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-full"
+                  <span className="text-[9px] uppercase font-bold px-2.5 py-1 rounded-full"
                     style={{ background: "var(--color-brand-accent)", color: "#fff" }}>
                     {hero.category}
                   </span>
                   {hero.trending && (
-                    <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-full"
+                    <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-2 py-1 rounded-full"
                       style={{ background: "var(--color-brand-primary)", color: "#fff" }}>
                       <TrendingUp size={8} /> Trending
                     </span>
                   )}
                   {hero.featured && (
-                    <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-full"
+                    <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-2 py-1 rounded-full"
                       style={{ border: "1.5px solid var(--color-brand-accent)", color: "var(--color-brand-primary)" }}>
                       <Star size={8} /> Featured
                     </span>
                   )}
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl md:text-[1.9rem] font-black leading-tight mb-4 link-underline"
+                <h2 className="text-2xl sm:text-3xl md:text-[1.9rem] font-semibold leading-tight mb-4 link-underline"
                   style={{ color: "var(--color-brand-dark)" }}>
                   {hero.headline}
                 </h2>
@@ -2136,12 +2085,12 @@ export default function BlogGridPage() {
         <Reveal>
           <div className="flex items-center gap-4 mb-3">
             <div className="w-1 h-5 rounded-full" style={{ background: "var(--color-brand-accent)" }} />
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: "var(--color-text-secondary)" }}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.1em]" style={{ color: "var(--color-text-secondary)" }}>
               Browse and Read the Latest Staff
             </p>
             <div className="flex-1 h-px" style={{ background: "var(--color-border-accent)" }} />
           </div>
-          <h3 className="text-2xl sm:text-3xl font-black mb-9" style={{ color: "var(--color-brand-dark)" }}>
+          <h3 className="text-2xl sm:text-3xl  mb-9" style={{ color: "var(--color-brand-dark)" }}>
             Latest Stories
           </h3>
         </Reveal>
@@ -2160,7 +2109,7 @@ export default function BlogGridPage() {
             {stories.map((post, i) => (
               <Reveal key={post.id} delay={i * 60}>
                 <article
-                  className="cursor-pointer group rounded-xl overflow-hidden card-hover"
+                  className="cursor-pointer group rounded-[6px] overflow-hidden card-hover"
                   onClick={() => handleCardClick(post)}
                   style={{ background: "var(--color-bg-surface)", border: "1.5px solid var(--color-border-accent)" }}
                 >
@@ -2173,24 +2122,24 @@ export default function BlogGridPage() {
                     {/* Badges */}
                     <div className="flex items-center gap-1.5 mb-3 flex-wrap">
                       {post.trending && (
-                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full inline-flex items-center gap-0.5"
+                        <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full inline-flex items-center gap-0.5"
                           style={{ background: "var(--color-brand-primary)", color: "#fff" }}>
                           <TrendingUp size={8} />Trending
                         </span>
                       )}
                       {post.hot && (
-                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full inline-flex items-center gap-0.5"
+                        <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full inline-flex items-center gap-0.5"
                           style={{ background: "var(--color-brand-mid)", color: "#fff" }}>
                           <Flame size={8} />Hot
                         </span>
                       )}
                       {post.featured && (
-                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full inline-flex items-center gap-0.5"
+                        <span className="text-[9px] font-bold uppercase  px-2 py-0.5 rounded-full inline-flex items-center gap-0.5"
                           style={{ border: "1.5px solid var(--color-brand-accent)", color: "var(--color-brand-primary)" }}>
                           <Star size={8} />Pick
                         </span>
                       )}
-                      <span className="text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full"
+                      <span className="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full"
                         style={{ background: "var(--color-bg-overlay)", color: "var(--color-brand-accent)" }}>
                         {post.category}
                       </span>
@@ -2245,12 +2194,12 @@ export default function BlogGridPage() {
             <Reveal>
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-1 h-5 rounded-full" style={{ background: "var(--color-brand-accent)" }} />
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: "var(--color-text-secondary)" }}>
+                <p className="text-[10px] font-bold uppercase tracking-[0.1em]" style={{ color: "var(--color-text-secondary)" }}>
                   Editor's Choice
                 </p>
                 <div className="flex-1 h-px" style={{ background: "var(--color-border-accent)" }} />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black mb-9" style={{ color: "var(--color-brand-dark)" }}>
+              <h3 className="text-2xl sm:text-3xl mb-9" style={{ color: "var(--color-brand-dark)" }}>
                 Staff's Picks
               </h3>
             </Reveal>
@@ -2259,7 +2208,7 @@ export default function BlogGridPage() {
               {picks.map((post, i) => (
                 <Reveal key={post.id} delay={i * 70}>
                   <article
-                    className="cursor-pointer group rounded-xl overflow-hidden card-hover"
+                    className="cursor-pointer group rounded-[6px] overflow-hidden card-hover"
                     onClick={() => handleCardClick(post)}
                     style={{ background: "var(--color-bg-surface)", border: "1.5px solid var(--color-border-accent)" }}
                   >
@@ -2269,14 +2218,14 @@ export default function BlogGridPage() {
                     <div className="p-4">
                       <div className="flex items-center gap-1.5 mb-2">
                         {post.hot && (
-                          <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                          <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full"
                             style={{ background: "var(--color-brand-mid)", color: "#fff" }}>Hot</span>
                         )}
                         {post.trending && (
-                          <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                          <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full"
                             style={{ background: "var(--color-brand-primary)", color: "#fff" }}>Trending</span>
                         )}
-                        <span className="text-[9px] uppercase tracking-wider font-bold"
+                        <span className="text-[9px] uppercase font-bold"
                           style={{ color: "var(--color-brand-accent)" }}>{post.category}</span>
                       </div>
                       <h4 className="text-sm font-bold leading-snug line-clamp-2 mb-2 link-underline transition-colors"
@@ -2322,24 +2271,7 @@ export default function BlogGridPage() {
         </Reveal>
       </main>
 
-      {/* Footer */}
-      <footer className="py-8 px-4 mt-4" style={{ borderTop: "1px solid var(--color-border-accent)", background: "var(--color-brand-dark)" }}>
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "rgba(255,255,255,0.4)" }}>
-            © 2025 Jaimax · All rights reserved
-          </p>
-          <div className="flex gap-6 text-[10px] uppercase tracking-widest font-bold">
-            {["Privacy", "Terms", "Contact"].map(l => (
-              <a key={l} href="#"
-                className="transition-colors"
-                style={{ color: "rgba(255,255,255,0.4)" }}
-                onMouseEnter={e => e.currentTarget.style.color = "var(--color-brand-accent)"}
-                onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.4)"}
-              >{l}</a>
-            ))}
-          </div>
-        </div>
-      </footer>
+     
     </div>
   );
 }

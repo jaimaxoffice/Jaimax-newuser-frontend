@@ -396,7 +396,8 @@ import {
   useGetHolderCountQuery,
 } from "../../components/Dashboard/pages/dashBoard/DashboardApliSlice";
 import bscscan from "../../assets/image.png";
-import logo from "../../../public/Images/site_logo.svg";
+import logo from "/green_logo.svg";
+import { CreditCard, DollarSign, Heart, PlusCircle } from "lucide-react";
 
 /* ─── Animation variants ───────────────────── */
 const containerVariants = {
@@ -423,20 +424,20 @@ backdrop-blur-md p-3 sm:p-5 flex flex-col justify-between shadow-[var(--shadow-c
       <div className="flex items-start justify-between mb-2 sm:mb-4">
         <div className="flex flex-col gap-1">
           <span
-            className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em]"
+            className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em]"
             style={{ color: `var(${colorVar})` }}
           >
             {label}
           </span>
           <div
-            className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-[6px] bg-[var(--color-bg-overlay)] border border-[var(--color-border-accent)]"
+            className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-[6px] bg-[var(--color-bg-overlay)] border border-[var(--color-brand-primary)]"
             style={{ color: `var(${colorVar})` }}
           >
             {icon}
           </div>
         </div>
         <span
-          className="text-[7px] sm:text-[8px] font-black uppercase tracking-[0.2em] px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-[rgba(45,122,58,0.25)] bg-[var(--color-bg-overlay)]"
+          className="text-[9px] uppercase  px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-[var(--color-brand-mid)] bg-[var(--color-bg-overlay)]"
           style={{ color: `var(${colorVar})` }}
         >
           {tag}
@@ -586,18 +587,15 @@ const NewHomeAbout = () => {
 backdrop-blur-md p-4 sm:p-6 flex flex-col gap-3 sm:gap-5">
 
                 {/* Heading */}
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[6px] flex items-center justify-center shrink-0 bg-[var(--color-bg-overlay)] border border-[var(--color-border-accent)]">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-accent)" strokeWidth="2" className="w-4 h-4">
-                      <rect x="2" y="5" width="20" height="14" rx="2" />
-                      <path d="M2 10h20" />
-                    </svg>
+                <div className="flex items-center gap-2 sm:gap-3 font-[var(--font-body)]">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-[6px] flex items-center justify-center shrink-0 bg-[var(--color-bg-overlay)] border border-[var(--color-brand-primary)]">
+                    <CreditCard size={18} className="text-[var(--color-brand-mid)]"/>
                   </div>
                   <div>
-                    <p className="m-0 text-[9px] sm:text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-brand-mid)]">
+                    <p className="m-0 text-[9px] sm:text-[10px] uppercase tracking-[0.1em] font-bold text-[var(--color-brand-mid)]">
                       Smart Contract
                     </p>
-                    <h3 className="m-0 text-xs sm:text-sm font-black uppercase tracking-[0.1em] text-[var(--color-text-on-dark)]">
+                    <h3 className="m-0 text-xs sm:text-sm font-semibold uppercase tracking-[0.1em] text-[var(--color-text-on-dark)]">
                       Contract <span className="text-[var(--color-brand-accent)]">Address</span>
                     </h3>
                   </div>
@@ -615,14 +613,14 @@ backdrop-blur-md p-4 sm:p-6 flex flex-col gap-3 sm:gap-5">
 
                 {/* Network badges */}
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-[var(--color-bg-overlay)] border border-[var(--color-border-accent)] text-[var(--color-brand-accent)]">
+                  <span className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-[var(--color-bg-overlay)] border border-[var(--color-border-light)] text-[var(--color-brand-accent)]">
                     <span className="relative flex h-1.5 w-1.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-brand-accent)] opacity-75" />
                       <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-brand-accent)]" />
                     </span>
                     BNB Smart Chain
                   </span>
-                  <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-[var(--color-bg-overlay)] border border-[var(--color-border-accent)] text-[var(--color-text-muted)]">
+                  <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-[var(--color-bg-overlay)] border border-[var(--color-border-light)] text-[var(--color-text-muted)]">
                     BEP-20
                   </span>
                 </div>
@@ -633,7 +631,7 @@ backdrop-blur-md p-4 sm:p-6 flex flex-col gap-3 sm:gap-5">
                     onClick={handleCopy}
                     whileHover={{ scale: 1.04, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex-1 min-w-[100px] py-2 sm:py-2.5 rounded-[6px] text-[10px] sm:text-xs font-black uppercase tracking-widest text-white bg-[var(--color-brand-primary)] hover:bg-[var(--color-brand-mid)] transition-colors duration-200 shadow-[var(--shadow-btn)]"
+                    className="flex-1 min-w-[100px] py-2 sm:py-2.5 rounded-[6px] text-[10px] sm:text-xs font-semibold uppercase text-white bg-[var(--color-brand-primary)] hover:bg-[var(--color-brand-mid)] transition-colors duration-200 shadow-[var(--shadow-btn)]"
                   >
                     {copied ? "✓ Copied!" : "Copy Address"}
                   </motion.button>
@@ -666,10 +664,9 @@ backdrop-blur-md px-4 sm:px-6 py-4 sm:py-5 cursor-pointer shadow-[var(--shadow-c
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-brand-accent)] mb-2 sm:mb-3">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5 sm:w-4 sm:h-4">
-                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                      </svg>
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-brand-accent)] mb-2 sm:mb-3">
+                    
+                      <DollarSign size={14}/>
                       Live Price
                     </div>
                     <div className="flex items-baseline gap-1">
@@ -682,7 +679,7 @@ backdrop-blur-md px-4 sm:px-6 py-4 sm:py-5 cursor-pointer shadow-[var(--shadow-c
                       }
                     </div>
                   </div>
-                  <span className="text-[7px] sm:text-[8px] font-black uppercase tracking-[0.2em] px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-[var(--color-brand-accent)]/30 bg-[var(--color-bg-overlay)] text-[var(--color-brand-accent)]">
+                  <span className="text-[9px] uppercase px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border border-[var(--color-brand-accent)] bg-[var(--color-bg-overlay)] text-[var(--color-brand-accent)]">
                     INR
                   </span>
                 </div>
@@ -702,12 +699,9 @@ backdrop-blur-md px-4 sm:px-6 py-4 sm:py-5 cursor-pointer shadow-[var(--shadow-c
                 value={soldTokens}
                 loading={isLoading}
                 error={!!error}
-                link="/features"
+                link="/newfeatures"
                 icon={
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3 sm:w-3.5 sm:h-3.5">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M8 12h8M12 8v8" />
-                  </svg>
+                  <PlusCircle size={14}/>
                 }
               />
 
@@ -720,9 +714,7 @@ backdrop-blur-md px-4 sm:px-6 py-4 sm:py-5 cursor-pointer shadow-[var(--shadow-c
                 error={!!holderError}
                 onClick={handleBSCScan}
                 icon={
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3 sm:w-3.5 sm:h-3.5">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                  </svg>
+                  <Heart size={14}/>
                 }
               />
             </div>

@@ -1,5 +1,3 @@
-
-
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,57 +14,66 @@ import {
 import { useState, useEffect, useRef } from "react";
 
 import BadgePill from "./BadgePill";
+import { useNavigate } from "react-router-dom";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const allLinks = [
   {
     icon: <Home className="w-5 h-5" />,
-    title: "Homepage",
-    desc: "Discover who we are, what drives us, and the communities we serve every day.",
+    title: "Platform Overview",
+    desc: "Understand how Jaimax connects blockchain, payments, and digital applications into one unified system.",
     category: "Quick Links",
+    route: "/",
   },
   {
-    icon: <Heart className="w-5 h-5" />,
-    title: "Who We Are",
-    desc: "A passionate team turning compassion into action across 22+ communities.",
+    icon: <Layers className="w-5 h-5" />,
+    title: "Jaimax Ecosystem",
+    desc: "Explore JMC Token, J-Wallet, JMC-24 Blockchain, DApps, Exchange, and Payment Gateway.",
     category: "Quick Links",
+    route: "/best-presale-crypto-token-in-india",
   },
   {
     icon: <Users className="w-5 h-5" />,
-    title: "Our Programs",
-    desc: "Education, clean water, and mentorship — explore the work that changes lives.",
+    title: "Technology & Infrastructure",
+    desc: "Learn about the scalable architecture, security mechanisms, and network design powering Jaimax.",
     category: "Quick Links",
+    route: "/newabout",
   },
   {
     icon: <CreditCard className="w-5 h-5" />,
-    title: "Donate",
-    desc: "Every contribution, however small, brings light to someone who needs it most.",
+    title: "Token Utility",
+    desc: "See how JMC powers transactions, staking, rewards, and participation across the entire ecosystem.",
     category: "Quick Links",
+    route: "/jaimax-whitepaper.pdf",
   },
   {
     icon: <List className="w-5 h-5" />,
-    title: "FAQ",
-    desc: "Answers to the most common questions about volunteering, donating, and impact.",
+    title: "Use Cases",
+    desc: "Discover how Jaimax enables real-world applications across finance, gaming, education, tourism, and payments.",
     category: "Other Pages",
+    route: "/newFeatures",
   },
   {
     icon: <MessageSquare className="w-5 h-5" />,
-    title: "Stories",
-    desc: "Real voices, real change — read testimonials from the people we've helped.",
+    title: "Security & Trust",
+    desc: "Explore the systems that ensure secure, reliable, and transparent transactions across the ecosystem.",
     category: "Other Pages",
-  },
-  {
-    icon: <Ban className="w-5 h-5" />,
-    title: "Contact Us",
-    desc: "Have a question or want to partner with us? We'd love to hear from you.",
-    category: "Other Pages",
+    route: "/aml-ctf",
   },
   {
     icon: <AlertTriangle className="w-5 h-5" />,
-    title: "Volunteer",
-    desc: "Join 850+ volunteers already making a difference in communities worldwide.",
+    title: "Support",
+    desc: "Get assistance with onboarding, wallet setup, and managing your experience on the Jaimax platform.",
     category: "Other Pages",
+    route: "/contactPage",
+  },
+  {
+    icon: <ArrowRight className="w-5 h-5" />,
+    title: "Get Started",
+    desc: "Join Jaimax and start exploring the ecosystem with simple, guided steps designed for easy onboarding.",
+    category: "Other Pages",
+    route: "/register",
   },
 ];
 
@@ -89,15 +96,23 @@ const ChevronRight = () => (
 
 // ─── Desktop link card ────────────────────────────────────────────────────────
 
-function LinkCard({ icon, title, desc }) {
+function LinkCard({ icon, title, desc, route }) {
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() => {
+  if (route.endsWith(".pdf")) {
+    window.open(route, "_blank"); 
+  } else {
+    navigate(route);
+  }
+}}
       className="
         group flex items-start gap-3 p-3 rounded-xl cursor-pointer
         transition-all duration-200
         hover:shadow-md hover:scale-[1.02]
       "
-      style={{ "--hover-bg": "var(--color-bg-overlay)" }}
       onMouseEnter={(e) =>
         (e.currentTarget.style.background = "var(--color-bg-overlay)")
       }
@@ -142,6 +157,7 @@ function MobileCarousel() {
   const n = allLinks.length;
   const timerRef = useRef(null);
   const containerRef = useRef(null);
+  const navigate = useNavigate();
 
   const resetTimer = () => {
     clearInterval(timerRef.current);
@@ -175,6 +191,24 @@ function MobileCarousel() {
       className="md:hidden flex flex-col"
       style={{ background: "var(--color-bg-page)" }}
     >
+      <div className="text-center px-4 py-4">
+          {/* Section label */}
+          <BadgePill label="Navigate Jaimax" />
+
+          <h2 className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading">
+            Everything You Need,{" "}
+            <span style={{ color: "var(--color-brand-primary)" }}>
+              All in One Ecosystem.
+            </span>
+          </h2>
+          <p
+            className="text-sm max-w-xl mx-auto leading-relaxed"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Access every part of Jaimax from blockchain infrastructure to
+            real-world applications all designed to work together seamlessly.
+          </p>
+        </div>
       {/* Hero strip — brand-dark gradient */}
       <div
         className="px-6 pt-12 pb-8 relative overflow-hidden"
@@ -194,31 +228,28 @@ function MobileCarousel() {
         />
 
         <div className="relative z-10">
-          {/* Section label */}
-          <BadgePill label="              Navigate LightReach" />
+              {/* Heading */}
+              <h3
+                className="text-2xl font-bold leading-tight mb-2"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  color: "var(--color-text-on-dark)",
+                }}
+              >
+                Jaimax — Powering Real-World Blockchain Applications
+              </h3>
 
-          <h2
-            className="text-xl font-bold leading-tight"
-            style={{
-              color: "var(--color-text-on-dark)",
-              fontFamily: "var(--font-display)",
-            }}
-          >
-            Every Page,{" "}
-            <span
-              className="italic font-light"
-              style={{ color: "var(--color-brand-accent)" }}
-            >
-              A New Direction.
-            </span>
-          </h2>
-          <p
-            className="text-xs mt-1"
-            style={{ color: "rgba(255,255,255,0.50)" }}
-          >
-            Swipe through all sections below
-          </p>
-        </div>
+              {/* Sub */}
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+              >
+                Quick access to Jaimax tools, products, and infrastructure,
+                everything built to simplify how you interact with blockchain.
+              </p>
+            </div>
+
+        
       </div>
 
       {/* Carousel */}
@@ -257,6 +288,14 @@ function MobileCarousel() {
             return (
               <div
                 key={card.title}
+                onClick={() => {
+  if (card.route.endsWith(".pdf")) {
+    window.open(card.route, "_blank"); // open like navbar
+  } else {
+    navigate(card.route);
+  }
+}}
+                className="cursor-pointer"
                 style={{
                   position: "absolute",
                   top: 20,
@@ -460,22 +499,22 @@ function MobileCarousel() {
         </div>
 
         {/* CTA */}
-        <button
-          className="mt-5 text-sm font-semibold py-3 px-10 rounded-full transition-all active:scale-95"
-          style={{
-            background: "var(--color-brand-dark)",
-            color: "var(--color-text-on-dark)",
-            boxShadow: "var(--shadow-btn)",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "var(--color-brand-deepest)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "var(--color-brand-dark)")
-          }
-        >
-          Get Started
-        </button>
+        <div className="flex justify-center">
+            {/* CTA button */}
+            <button
+              className="relative z-10 text-sm font-semibold py-3 px-7 rounded-full mt-8 
+             bg-[#111827] text-white 
+             transition-all duration-300 ease-in-out 
+             hover:bg-[--color-brand-mid] "
+              onClick={() => navigate("/login")}
+            >
+              <span className="flex items-center gap-2">
+                Enter Ecosystem
+                {/* Lucide Arrow Right */}
+                <ArrowRight size={14} />
+              </span>
+            </button>
+            </div>
       </div>
     </div>
   );
@@ -484,26 +523,21 @@ function MobileCarousel() {
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export default function SecondSection() {
+  const navigate = useNavigate();
   return (
-
     <div style={{ background: "var(--color-bg-page)" }}>
       {/* MOBILE */}
       <MobileCarousel />
 
       {/* DESKTOP */}
       <div className="hidden md:block px-4 sm:px-6 md:px-10 py-16">
-      
         <div className="text-center mb-10">
-          <BadgePill label="              Navigate LightReach" />
-         
+          <BadgePill label="Navigate Jaimax" />
 
-          <h2
-            className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading"
-          
-          >
+          <h2 className="font-black text-3xl sm:text-4xl md:text-5xl leading-tight mb-3 pt-4 sideHeading">
             Everything You Need,{" "}
             <span style={{ color: "var(--color-brand-primary)" }}>
-              All in One Place.
+              All in One Ecosystem.
             </span>
           </h2>
 
@@ -511,24 +545,42 @@ export default function SecondSection() {
             className="text-base max-w-xl mx-auto leading-relaxed"
             style={{ color: "var(--color-text-secondary)" }}
           >
-            Jump straight to any section of LightReach — from our story and
-            programs to ways you can get involved today.
+            Access every part of Jaimax from blockchain infrastructure to
+            real-world applications all designed to work together seamlessly.
           </p>
         </div>
 
         {/* ── Panel ── */}
-        <div
+        {/* <div
           className="rounded-[4px] overflow-hidden flex w-full flex-wrap"
           style={{ boxShadow: "var(--shadow-card)" }}
-        >
+        > */}
+        <div
+  className="
+    rounded-[4px] overflow-hidden w-full
+    flex flex-col md:flex-col lg:flex-row
+  "
+  style={{ boxShadow: "var(--shadow-card)" }}
+>
           {/* Left hero pillar — brand-dark gradient, same visual DNA as OurStory */}
-          <div
+          {/* <div
             className="text-white flex flex-col justify-between p-8 w-full max-w-[260px] shrink relative overflow-hidden"
             style={{
               background:
                 "linear-gradient(160deg, var(--color-brand-dark) 0%, var(--color-brand-primary) 100%)",
             }}
-          >
+          > */}
+          <div
+  className="
+    text-white flex flex-col justify-between p-8 relative overflow-hidden
+    w-full
+    lg:max-w-[260px]
+  "
+  style={{
+    background:
+      "linear-gradient(160deg, var(--color-brand-dark) 0%, var(--color-brand-primary) 100%)",
+  }}
+>
             {/* Decorative circles */}
             <div
               className="absolute -top-10 -right-10 w-40 h-40 rounded-full"
@@ -540,17 +592,6 @@ export default function SecondSection() {
             />
 
             <div className="relative z-10">
-              {/* Icon mark */}
-              <div
-                className="w-9 h-9 rounded-lg mb-6 flex items-center justify-center"
-                style={{ background: "rgba(255,255,255,0.15)" }}
-              >
-                <Layers
-                  className="w-4 h-4"
-                  style={{ color: "var(--color-brand-accent)" }}
-                />
-              </div>
-
               {/* Heading */}
               <h3
                 className="text-2xl font-bold leading-tight mb-2"
@@ -559,7 +600,7 @@ export default function SecondSection() {
                   color: "var(--color-text-on-dark)",
                 }}
               >
-                Explore Every Corner of LightReach.
+                Jaimax — Powering Real-World Blockchain Applications
               </h3>
 
               {/* Sub */}
@@ -567,44 +608,45 @@ export default function SecondSection() {
                 className="text-sm leading-relaxed"
                 style={{ color: "rgba(255,255,255,0.55)" }}
               >
-                Quick links and resources — everything you need, right here.
+                Quick access to Jaimax tools, products, and infrastructure,
+                everything built to simplify how you interact with blockchain.
               </p>
             </div>
-
+            
+            <div className="flex justify-center">
             {/* CTA button */}
             <button
               className="relative z-10 text-sm font-semibold py-3 px-7 rounded-full mt-8 
              bg-[#111827] text-white 
              transition-all duration-300 ease-in-out 
-             hover:bg-[#1f2937]"
+             hover:bg-[--color-brand-mid] "
+              onClick={() => navigate("/login")}
             >
               <span className="flex items-center gap-2">
-                Get Involved
+                Enter Ecosystem
                 {/* Lucide Arrow Right */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 12h14M13 5l7 7-7 7"
-                  />
-                </svg>
+                <ArrowRight size={14} />
               </span>
             </button>
+            </div>
           </div>
 
           {/* Right grid — white surface */}
-          <div
-            className="flex-1 px-2 py-10 lg:p-8"
+          {/* <div
+            className="flex-1 px-2 py-10 xl:p-8"
             style={{ background: "var(--color-bg-surface)" }}
-          >
-            <div className="grid grid-cols-2 lg:gap-x-6">
+          > */}
+          <div
+  className="
+    w-full
+    px-4 py-8
+    md:px-6
+    lg:flex-1 lg:p-8
+  "
+  style={{ background: "var(--color-bg-surface)" }}
+>
+            {/* <div className="grid grid-cols-2 lg:gap-x-6"> */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 lg:gap-x-6">
               <div>
                 <p
                   className="text-xs font-semibold uppercase tracking-widest mb-3 px-3"

@@ -88,7 +88,6 @@ const JaimaxContent = () => {
   );
 
 
-
   return (
     <div className="min-h-screen bg-[#085056] mt-5 text-white relative overflow-hidden">
       {/* Compact Gradient Orbs */}

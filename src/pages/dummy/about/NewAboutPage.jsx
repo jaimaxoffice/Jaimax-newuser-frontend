@@ -11,6 +11,7 @@ import img4 from "../../../assets/aboutPage/image4.jpeg"
 import img5 from "../../../assets/aboutPage/image5.jpeg"
 import img6 from "../../../assets/aboutPage/image6.jpeg"
 import BadgePill from "../BadgePill";
+import { useNavigate } from "react-router-dom";
 
 
 // ─── Scroll reveal hook ───────────────────────────────────────────────────────
@@ -166,14 +167,14 @@ export default function NewAbout() {
   const [videoOpen,  setVideoOpen]  = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled,   setScrolled]   = useState(false);
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
-
+   
 
   return (
     <div
@@ -220,7 +221,9 @@ export default function NewAbout() {
           color: var(--color-text-secondary);
           transition: var(--transition-base);
         }
-        .cta-btn-outline:hover { color: var(--color-text-primary); }
+        .cta-btn-outline:hover { color: var(--color-text-primary);
+         background: var(--color-brand-mid)
+        }
       `}</style>
 
 
@@ -247,7 +250,7 @@ export default function NewAbout() {
             >
               A secure, utility-driven crypto token — making blockchain investing simple, safe, and rewarding.
             </p>
-            <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full">
+            <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full" onClick={()=> navigate("/register")}>
               Start Investing <ArrowRight size={14} />
             </button>
           </div>
@@ -326,7 +329,7 @@ export default function NewAbout() {
 
       {/* ════ OUR MISSION ════ */}
       {/* Heading + both paragraphs taken verbatim from JaimaxOverview mission section */}
-      <section className="py-8 sm:py-20 px-4 sm:px-6">
+      <section className="py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <Reveal className="text-center mb-12 max-w-5xl mx-auto">
             {/* <h2
@@ -476,7 +479,7 @@ export default function NewAbout() {
 
       {/* ════ FOR BEGINNERS ════ */}
       {/* Heading + paragraph verbatim from JaimaxOverview "For Beginners" section */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6">
+      <section className="py-8 sm:py-10 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <Reveal className="text-center mb-12">
             <h2
@@ -516,7 +519,7 @@ export default function NewAbout() {
 
       {/* ════ WHY CHOOSE JAIMAX ════ */}
       {/* Card titles + descriptions verbatim from JaimaxOverview features array */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6" style={{ background: "var(--color-bg-overlay)" }}>
+      <section className="py-8 sm:py-10 px-4 sm:px-6" style={{ background: "var(--color-bg-overlay)" }}>
         <div className="max-w-5xl mx-auto">
           <Reveal className="text-center mb-12">
             {/* <span
@@ -567,7 +570,7 @@ export default function NewAbout() {
 
       {/* ════ VIDEO / OUR VISION ════ */}
       {/* Both paragraphs + checklist verbatim from JaimaxOverview vision section */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6">
+      <section className="py-8 sm:py-12 px-4 sm:px-6">
         
          <Reveal>
           <div className="text-center mb-8">
@@ -655,7 +658,7 @@ export default function NewAbout() {
           
         </div>
         <div className="mt-4 sm:mt-8 w-full flex justify-center">
-        <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full">
+        <button className="cta-btn-primary inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full" onClick={()=>navigate("/register")}>
                 Join Our Vision <ArrowRight size={15} />
               </button>
               </div>
@@ -664,7 +667,7 @@ export default function NewAbout() {
 
       {/* ════ CTA ════ */}
       {/* Heading + paragraph exact from JaimaxOverview CTA section */}
-      <section className="py-8 sm:py-16 px-4 sm:px-6">
+      <section className="py-8 sm:py-10 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <Reveal>
             <div
@@ -697,10 +700,11 @@ export default function NewAbout() {
                 <button
                   className="inline-flex items-center gap-2 font-semibold text-sm px-7 py-3 rounded-full transition-colors"
                   style={{ background: "var(--color-brand-accent)", color: "var(--color-brand-deepest)" }}
+                  onClick={()=> navigate("/register")}
                 >
                   Start Investing <ArrowRight size={15} />
                 </button>
-                <button className="cta-btn-outline inline-flex items-center gap-2 font-semibold text-sm px-7 py-3 rounded-full">
+                <button className="cta-btn-outline inline-flex items-center gap-2 font-semibold text-sm px-7 py-3 rounded-full" onClick={()=> navigate("/newpresale")}>
                   Learn More
                 </button>
               </div>

@@ -1,8 +1,8 @@
-// import { useState } from "react";
 // import { useFormik } from "formik";
+// import { AnimatePresence, motion } from "framer-motion";
+// import { CheckCircle, Mail, Phone, X } from "lucide-react";
+// import { useState } from "react";
 // import * as Yup from "yup";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { CheckCircle, X } from "lucide-react";
 // import { useSubmitEnquiryMutation } from "../home/HomePageApiSlice";
 
 // // Validation schema
@@ -19,7 +19,7 @@
 //     .max(15, "Phone must be at most 15 digits")
 //     .matches(
 //       /^[0-9()+-\s]*$/,
-//       "Phone must contain only numbers or symbols (+ -)"
+//       "Phone must contain only numbers or symbols (+ -)",
 //     )
 //     .required("Phone is required"),
 //   message: Yup.string()
@@ -50,7 +50,7 @@
 //         setShowThankYou(true);
 //       } catch (err) {
 //         setSubmitError(
-//           err?.data?.message || "Failed to send message. Please try again."
+//           err?.data?.message || "Failed to send message. Please try again.",
 //         );
 //       }
 //     },
@@ -65,7 +65,9 @@
 //   const modalVariants = {
 //     hidden: { opacity: 0, scale: 0.8, y: 50 },
 //     visible: {
-//       opacity: 1, scale: 1, y: 0,
+//       opacity: 1,
+//       scale: 1,
+//       y: 0,
 //       transition: { type: "spring", stiffness: 300, damping: 25 },
 //     },
 //     exit: { opacity: 0, scale: 0.8, y: 50, transition: { duration: 0.3 } },
@@ -84,24 +86,39 @@
 
 //   return (
 //     <>
-//       {/* ── Thank You Modal (doc5 teal/lime colors) ─────────────────────────── */}
+//       {/* ── Thank You Modal ─────────────────────────────────────────────────── */}
 //       <AnimatePresence>
 //         {showThankYou && (
 //           <motion.div
 //             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
 //             variants={overlayVariants}
-//             initial="hidden" animate="visible" exit="exit"
+//             initial="hidden"
+//             animate="visible"
+//             exit="exit"
 //             onClick={() => setShowThankYou(false)}
 //           >
 //             <motion.div
-//               className="relative w-full max-w-sm bg-gradient-to-br from-[#085056] to-[#0a6b73] rounded-xl p-5 shadow-2xl border border-white/20"
+//               className="relative w-full max-w-sm rounded-xl p-5 shadow-2xl"
+//               style={{
+//                 background:
+//                   "linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-primary))",
+//                 border: "1px solid rgba(255,255,255,0.15)",
+//                 boxShadow: "var(--shadow-card)",
+//               }}
 //               variants={modalVariants}
-//               initial="hidden" animate="visible" exit="exit"
+//               initial="hidden"
+//               animate="visible"
+//               exit="exit"
 //               onClick={(e) => e.stopPropagation()}
 //             >
 //               <button
 //                 onClick={() => setShowThankYou(false)}
-//                 className="absolute top-3 right-3 text-white/70 hover:text-white transition-colors"
+//                 className="absolute top-3 right-3 transition-colors"
+//                 style={{ color: "rgba(255,255,255,0.6)" }}
+//                 onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+//                 onMouseLeave={(e) =>
+//                   (e.currentTarget.style.color = "rgba(255,255,255,0.6)")
+//                 }
 //                 aria-label="Close"
 //               >
 //                 <X className="w-5 h-5" />
@@ -109,42 +126,89 @@
 
 //               <div className="text-center">
 //                 <motion.div
-//                   className="mx-auto w-14 h-14 bg-gradient-to-br from-[#c4d72d] to-[#a8bc1f] rounded-full flex items-center justify-center mb-4 shadow-lg shadow-[#c4d72d]/30"
+//                   className="mx-auto w-14 h-14 rounded-full flex items-center justify-center mb-4"
+//                   style={{
+//                     background:
+//                       "linear-gradient(135deg, var(--color-brand-accent), var(--color-brand-light))",
+//                     boxShadow: "0 8px 24px rgba(127,199,66,0.35)",
+//                   }}
 //                   initial={{ scale: 0 }}
 //                   animate={{ scale: 1 }}
 //                   transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
 //                 >
-//                   <CheckCircle className="w-7 h-7 text-[#085056]" />
+//                   <CheckCircle
+//                     className="w-7 h-7"
+//                     style={{ color: "var(--color-brand-dark)" }}
+//                   />
 //                 </motion.div>
 
 //                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
 //                   {[...Array(10)].map((_, i) => (
 //                     <motion.div
-//                       key={i} custom={i}
+//                       key={i}
+//                       custom={i}
 //                       variants={confettiVariants}
-//                       initial="hidden" animate="visible"
+//                       initial="hidden"
+//                       animate="visible"
 //                       className="absolute top-1/2 left-1/2"
 //                       style={{
 //                         width: i % 3 === 0 ? "12px" : "8px",
 //                         height: i % 3 === 0 ? "12px" : "8px",
 //                         borderRadius: i % 2 === 0 ? "50%" : "2px",
-//                         backgroundColor: ["#c4d72d","#22d3ee","#fbbf24","#f472b6","#a78bfa","#34d399","#fb7185","#60a5fa","#c4d72d","#22d3ee"][i],
+//                         backgroundColor: [
+//                           "#7fc742",
+//                           "#4a9858",
+//                           "#b8e07c",
+//                           "#2d7a3a",
+//                           "#7fc742",
+//                           "#b8e07c",
+//                           "#4a9858",
+//                           "#2d7a3a",
+//                           "#7fc742",
+//                           "#b8e07c",
+//                         ][i],
 //                       }}
 //                     />
 //                   ))}
 //                 </div>
 
-//                 <h3 className="text-xl font-bold text-white mb-1">Thank You!</h3>
-//                 <p className="text-[#c4d72d] text-sm font-semibold mb-3">
+//                 <h3
+//                   className="text-xl font-bold mb-1"
+//                   style={{
+//                     color: "var(--color-text-on-dark)",
+//                     fontFamily: "var(--font-display)",
+//                   }}
+//                 >
+//                   Thank You!
+//                 </h3>
+//                 <p
+//                   className="text-sm font-semibold mb-3"
+//                   style={{ color: "var(--color-brand-accent)" }}
+//                 >
 //                   We're glad to hear from you!
 //                 </p>
-//                 <p className="text-white/80 text-sm mb-4 leading-relaxed">
+//                 <p
+//                   className="text-sm mb-4 leading-relaxed"
+//                   style={{ color: "rgba(255,255,255,0.80)" }}
+//                 >
 //                   Your message has been sent successfully. We'll get back to you
-//                   within <span className="text-[#c4d72d] font-semibold">24-48 hours</span>.
+//                   within{" "}
+//                   <span
+//                     className="font-semibold"
+//                     style={{ color: "var(--color-brand-accent)" }}
+//                   >
+//                     24-48 hours
+//                   </span>
+//                   .
 //                 </p>
 //                 <motion.button
 //                   onClick={() => setShowThankYou(false)}
-//                   className="bg-[#c4d72d] text-[#085056] font-bold py-2 px-6 rounded-full hover:bg-[#d4e737] transition-colors text-sm"
+//                   className="font-bold py-2 px-6 rounded-full text-sm"
+//                   style={{
+//                     background: "var(--color-brand-accent)",
+//                     color: "var(--color-brand-dark)",
+//                     fontFamily: "var(--font-body)",
+//                   }}
 //                   whileHover={{ scale: 1.05 }}
 //                   whileTap={{ scale: 0.95 }}
 //                 >
@@ -157,41 +221,194 @@
 //       </AnimatePresence>
 
 //       {/* ── Main Section ─────────────────────────────────────────────────────── */}
-//       <section className="bg-[#085056] py-8 sm:py-12 lg:py-16 px-4">
+//       <section className="bg-[var(--color-bg-page)] py-8 px-4">
 //         <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-
-//           {/* ── Left column (doc5, unchanged) ── */}
+//           {/* ── Left column ── */}
 //           <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12 pr-20 lg:pr-16">
-//             <h2 className="text-white font-extrabold leading-tight text-2xl sm:text-5xl md:text-2xl lg:text-5xl xl:text-7xl">
-//               <span className="block">Let's get</span>
-//               <span className="block">in touch</span>
-//             </h2>
-
-//             <p className="mt-6 sm:mt-8 lg:mt-10 text-lg sm:text-xl lg:text-2xl text-[#c4d72d] font-semibold">
+//             <p
+//               className="mt-6 sm:mt-8 lg:mt-10 text-3xl font-semibold sideHeading text-[#00000]"
+//               style={{
+//                 // color: "var(--color-brand-primary)",
+//                 // fontFamily: "var(--font-body)",
+//               }}
+//             >
 //               We are glad to hear from you!
 //             </p>
 
-//             <div className="mt-8 sm:mt-10 lg:mt-12 space-y-5 sm:space-y-6 text-base sm:text-lg lg:text-xl text-white/90">
-//               <div>
-//                 <p className="font-semibold text-white">Phone</p>
-//                 <p>(+91) 9121758880</p>
-//                 <p>(+91) 9121799947</p>
+//             <div
+//               className="mt-8 sm:mt-10 lg:mt-12 space-y-5 sm:space-y-6"
+//               style={{ fontFamily: "var(--font-body)" }}
+//             >
+//               {/* Address */}
+//               <div className="flex items-start gap-4">
+//                 <div
+//                   className="rounded-full p-3 flex-shrink-0"
+//                   style={{ background: "var(--color-bg-overlay)" }}
+//                 >
+//                   <svg
+//                     xmlns="http://www.w3.org/2000/svg"
+//                     className="h-6 w-6"
+//                     style={{ color: "var(--color-brand-primary)" }}
+//                     fill="none"
+//                     viewBox="0 0 24 24"
+//                     stroke="currentColor"
+//                   >
+//                     <path
+//                       strokeLinecap="round"
+//                       strokeLinejoin="round"
+//                       strokeWidth={2}
+//                       d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+//                     />
+//                   </svg>
+//                 </div>
+//                 <div>
+//                   <p
+//                     className="text-base"
+//                     style={{ color: "var(--color-text-primary)" }}
+//                   >
+//                     Office
+//                   </p>
+//                   <p
+//                     className="text-sm leading-relaxed text-[#000]"
+//                     // style={{ color: "var(--color-text-secondary)" }}
+//                   >
+//                     4th Floor, Vaishnavi's Cynosure, Survey No: 18,
+//                     <br />
+//                     India Building, Gachibowli, Hyderabad, Telangana 500032
+//                   </p>
+//                   <div className="flex items-center gap-2 mt-1">
+//                     <svg
+//                       xmlns="http://www.w3.org/2000/svg"
+//                       className="h-4 w-4"
+//                       style={{ color: "var(--color-brand-mid)" }}
+//                       fill="none"
+//                       viewBox="0 0 24 24"
+//                       stroke="currentColor"
+//                     >
+//                       <path
+//                         strokeLinecap="round"
+//                         strokeLinejoin="round"
+//                         strokeWidth={2}
+//                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+//                       />
+//                     </svg>
+//                     <p
+//                       className="text-sm text-[#000000]"
+//                       // style={{ color: "var(--color-text-muted)" }}
+//                     >
+//                       Mon - Fri: 9:00 AM - 6:00 PM | Sat &amp; Sun: Closed
+//                     </p>
+//                   </div>
+//                 </div>
 //               </div>
-//               <div>
-//                 <p className="font-semibold text-white">Email</p>
-//                 <p>office@jaimax.com</p>
+
+//               {/* Phone */}
+//               <div className="flex items-start gap-4">
+//                 <div
+//                   className="rounded-full p-3 flex-shrink-0"
+//                   style={{ background: "var(--color-bg-overlay)" }}
+//                 >
+//                   <Phone
+//                     className="h-6 w-6"
+//                     style={{ color: "var(--color-brand-primary)" }}
+//                   />
+//                 </div>
+//                 <div className="flex flex-col space-y-1">
+//                   <p
+//                   className="text-sm text-[#000000]"
+//                       // style={{ color: "var(--color-text-muted)" }}
+//                   >
+//                     Phone
+//                   </p>
+//                   <a
+//                     href="tel:+919121799947"
+//                     className="text-sm transition-colors duration-200 text-[#000]"
+//                     // style={{ color: "var(--color-text-secondary)" }}
+//                     onMouseEnter={(e) =>
+//                       (e.currentTarget.style.color =
+//                         "var(--color-brand-primary)")
+//                     }
+//                     onMouseLeave={(e) =>
+//                       (e.currentTarget.style.color =
+//                         "var(--color-text-secondary)")
+//                     }
+//                   >
+//                     +91 9121799947
+//                   </a>
+//                   <a
+//                     href="tel:+919121758880"
+//                       className="text-sm transition-colors duration-200 text-[#000]"
+//                     // style={{ color: "var(--color-text-secondary)" }}
+//                     onMouseEnter={(e) =>
+//                       (e.currentTarget.style.color =
+//                         "var(--color-brand-primary)")
+//                     }
+//                     onMouseLeave={(e) =>
+//                       (e.currentTarget.style.color =
+//                         "var(--color-text-secondary)")
+//                     }
+//                   >
+//                     +91 9121758880
+//                   </a>
+//                 </div>
 //               </div>
-//               <div>
-//                 <p className="font-semibold text-white">Office</p>
-//                 <p>Hyderabad Gachibowli</p>
+
+//               {/* Email */}
+//               <div className="flex items-start gap-4">
+//                 <div
+//                   className="rounded-full p-3 flex-shrink-0"
+//                   style={{ background: "var(--color-bg-overlay)" }}
+//                 >
+//                   <Mail
+//                     className="h-6 w-6"
+//                     style={{ color: "var(--color-brand-primary)" }}
+//                   />
+//                 </div>
+//                 <div>
+//                   <p
+//                     className="text-base"
+//                     style={{ color: "var(--color-text-primary)" }}
+//                   >
+//                     Email
+//                   </p>
+//                   <a
+//                     href="mailto:office@jaimax.com"
+//                      className="text-sm transition-colors duration-200 text-[#000]"
+//                     // style={{ color: "var(--color-text-secondary)" }}
+//                     onMouseEnter={(e) =>
+//                       (e.currentTarget.style.color =
+//                         "var(--color-brand-primary)")
+//                     }
+//                     onMouseLeave={(e) =>
+//                       (e.currentTarget.style.color =
+//                         "var(--color-text-secondary)")
+//                     }
+//                   >
+//                     office@jaimax.com
+//                   </a>
+//                 </div>
 //               </div>
 //             </div>
 //           </div>
 
-//           {/* ── Right column — white/green form card (doc6) ── */}
+//           {/* ── Right column — form card ── */}
 //           <div className="flex flex-col justify-center mt-20">
-//             <div className="bg-white shadow-lg rounded-lg p-8 border border-emerald-100">
-//               <h3 className="text-xl font-semibold mb-6 text-emerald-700">
+//             <div
+//               className="rounded-lg p-8"
+//               style={{
+//                 background: "var(--color-bg-surface)",
+//                 boxShadow: "var(--shadow-card)",
+//                 border: "1px solid var(--color-border-accent)",
+//                 fontFamily: "var(--font-body)",
+//               }}
+//             >
+//               <h3
+//                 className="text-xl font-semibold mb-6"
+//                 style={{
+//                   color: "var(--color-text-accent)",
+//                   fontFamily: "var(--font-display)",
+//                 }}
+//               >
 //                 Your Details
 //               </h3>
 
@@ -199,23 +416,38 @@
 //               {(submitError || isError) && (
 //                 <div className="mb-4 p-4 rounded-lg bg-red-100 border border-red-400 text-red-700">
 //                   <div className="flex items-center">
-//                     <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-//                       <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+//                     <svg
+//                       className="w-5 h-5 mr-2"
+//                       fill="currentColor"
+//                       viewBox="0 0 20 20"
+//                     >
+//                       <path
+//                         fillRule="evenodd"
+//                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+//                         clipRule="evenodd"
+//                       />
 //                     </svg>
 //                     <span className="text-sm font-medium">
-//                       {submitError || error?.data?.message || "Failed to send message. Please try again."}
+//                       {submitError ||
+//                         error?.data?.message ||
+//                         "Failed to send message. Please try again."}
 //                     </span>
 //                   </div>
 //                 </div>
 //               )}
 
 //               <form onSubmit={formik.handleSubmit} className="space-y-4">
-
 //                 {/* Name + Email */}
 //                 <div className="flex flex-col md:flex-row gap-4">
 //                   <div className="w-full md:w-1/2">
-//                     <label className="block text-sm mb-1 text-gray-700">
-//                       Name <span className="text-emerald-600">*</span>
+//                     <label
+//                       className="block text-sm mb-1"
+//                       style={{ color: "var(--color-text-secondary)" }}
+//                     >
+//                       Name{" "}
+//                       <span style={{ color: "var(--color-brand-primary)" }}>
+//                         *
+//                       </span>
 //                     </label>
 //                     <input
 //                       type="text"
@@ -224,19 +456,28 @@
 //                       value={formik.values.name}
 //                       onChange={formik.handleChange}
 //                       onBlur={formik.handleBlur}
-//                       className={`w-full bg-emerald-50 border ${
-//                         formik.errors.name && formik.touched.name
-//                           ? "border-red-500"
-//                           : "border-emerald-200"
-//                       } rounded p-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+//                       className="w-full rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+//                       style={{
+//                         background: "var(--color-bg-overlay)",
+//                         border: `1px solid ${formik.errors.name && formik.touched.name ? "#ef4444" : "var(--color-border-accent)"}`,
+//                         color: "var(--color-text-primary)",
+//                       }}
 //                     />
 //                     {formik.errors.name && formik.touched.name && (
-//                       <div className="text-red-500 text-xs mt-1">{formik.errors.name}</div>
+//                       <div className="text-red-500 text-xs mt-1">
+//                         {formik.errors.name}
+//                       </div>
 //                     )}
 //                   </div>
 //                   <div className="w-full md:w-1/2">
-//                     <label className="block text-sm mb-1 text-gray-700">
-//                       Email Address <span className="text-emerald-600">*</span>
+//                     <label
+//                       className="block text-sm mb-1"
+//                       style={{ color: "var(--color-text-secondary)" }}
+//                     >
+//                       Email Address{" "}
+//                       <span style={{ color: "var(--color-brand-primary)" }}>
+//                         *
+//                       </span>
 //                     </label>
 //                     <input
 //                       type="email"
@@ -245,22 +486,31 @@
 //                       value={formik.values.email}
 //                       onChange={formik.handleChange}
 //                       onBlur={formik.handleBlur}
-//                       className={`w-full bg-emerald-50 border ${
-//                         formik.errors.email && formik.touched.email
-//                           ? "border-red-500"
-//                           : "border-emerald-200"
-//                       } rounded p-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+//                       className="w-full rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+//                       style={{
+//                         background: "var(--color-bg-overlay)",
+//                         border: `1px solid ${formik.errors.email && formik.touched.email ? "#ef4444" : "var(--color-border-accent)"}`,
+//                         color: "var(--color-text-primary)",
+//                       }}
 //                     />
 //                     {formik.errors.email && formik.touched.email && (
-//                       <div className="text-red-500 text-xs mt-1">{formik.errors.email}</div>
+//                       <div className="text-red-500 text-xs mt-1">
+//                         {formik.errors.email}
+//                       </div>
 //                     )}
 //                   </div>
 //                 </div>
 
 //                 {/* Phone */}
 //                 <div>
-//                   <label className="block text-sm mb-1 text-gray-700">
-//                     Phone <span className="text-emerald-600">*</span>
+//                   <label
+//                     className="block text-sm mb-1"
+//                     style={{ color: "var(--color-text-secondary)" }}
+//                   >
+//                     Phone{" "}
+//                     <span style={{ color: "var(--color-brand-primary)" }}>
+//                       *
+//                     </span>
 //                   </label>
 //                   <input
 //                     type="tel"
@@ -268,25 +518,37 @@
 //                     placeholder="Phone number"
 //                     value={formik.values.phone}
 //                     onChange={(e) => {
-//                       const value = e.target.value.replace(/[^0-9()+\-\s]/g, "");
+//                       const value = e.target.value.replace(
+//                         /[^0-9()+\-\s]/g,
+//                         "",
+//                       );
 //                       formik.setFieldValue("phone", value);
 //                     }}
 //                     onBlur={formik.handleBlur}
-//                     className={`w-full bg-emerald-50 border ${
-//                       formik.errors.phone && formik.touched.phone
-//                         ? "border-red-500"
-//                         : "border-emerald-200"
-//                     } rounded p-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+//                     className="w-full rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+//                     style={{
+//                       background: "var(--color-bg-overlay)",
+//                       border: `1px solid ${formik.errors.phone && formik.touched.phone ? "#ef4444" : "var(--color-border-accent)"}`,
+//                       color: "var(--color-text-primary)",
+//                     }}
 //                   />
 //                   {formik.errors.phone && formik.touched.phone && (
-//                     <div className="text-red-500 text-xs mt-1">{formik.errors.phone}</div>
+//                     <div className="text-red-500 text-xs mt-1">
+//                       {formik.errors.phone}
+//                     </div>
 //                   )}
 //                 </div>
 
 //                 {/* Message */}
 //                 <div>
-//                   <label className="block text-sm mb-1 text-gray-700">
-//                     Message <span className="text-emerald-600">*</span>
+//                   <label
+//                     className="block text-sm mb-1"
+//                     style={{ color: "var(--color-text-secondary)" }}
+//                   >
+//                     Message{" "}
+//                     <span style={{ color: "var(--color-brand-primary)" }}>
+//                       *
+//                     </span>
 //                   </label>
 //                   <textarea
 //                     name="message"
@@ -295,14 +557,17 @@
 //                     value={formik.values.message}
 //                     onChange={formik.handleChange}
 //                     onBlur={formik.handleBlur}
-//                     className={`w-full resize-none bg-emerald-50 border ${
-//                       formik.errors.message && formik.touched.message
-//                         ? "border-red-500"
-//                         : "border-emerald-200"
-//                     } rounded p-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+//                     className="w-full resize-none rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+//                     style={{
+//                       background: "var(--color-bg-overlay)",
+//                       border: `1px solid ${formik.errors.message && formik.touched.message ? "#ef4444" : "var(--color-border-accent)"}`,
+//                       color: "var(--color-text-primary)",
+//                     }}
 //                   />
 //                   {formik.errors.message && formik.touched.message && (
-//                     <div className="text-red-500 text-xs mt-1">{formik.errors.message}</div>
+//                     <div className="text-red-500 text-xs mt-1">
+//                       {formik.errors.message}
+//                     </div>
 //                   )}
 //                 </div>
 
@@ -311,17 +576,58 @@
 //                   <button
 //                     type="submit"
 //                     disabled={isLoading || !formik.isValid || !formik.dirty}
-//                     className={`py-2 px-6 rounded-full text-sm font-medium transition-colors duration-300 flex items-center justify-center mx-auto ${
-//                       isLoading || !formik.isValid || !formik.dirty
-//                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-//                         : "bg-emerald-600 hover:bg-emerald-700 text-white"
-//                     }`}
+//                     className="py-2 px-6 rounded-full text-sm font-medium flex items-center justify-center mx-auto transition-all duration-200"
+//                     style={{
+//                       background:
+//                         isLoading || !formik.isValid || !formik.dirty
+//                           ? "#d1d5db"
+//                           : "var(--color-brand-primary)",
+//                       color:
+//                         isLoading || !formik.isValid || !formik.dirty
+//                           ? "#9ca3af"
+//                           : "var(--color-text-on-dark)",
+//                       cursor:
+//                         isLoading || !formik.isValid || !formik.dirty
+//                           ? "not-allowed"
+//                           : "pointer",
+//                       boxShadow:
+//                         isLoading || !formik.isValid || !formik.dirty
+//                           ? "none"
+//                           : "var(--shadow-btn)",
+//                       fontFamily: "var(--font-body)",
+//                     }}
+//                     onMouseEnter={(e) => {
+//                       if (!isLoading && formik.isValid && formik.dirty)
+//                         e.currentTarget.style.background =
+//                           "var(--color-brand-mid)";
+//                     }}
+//                     onMouseLeave={(e) => {
+//                       if (!isLoading && formik.isValid && formik.dirty)
+//                         e.currentTarget.style.background =
+//                           "var(--color-brand-primary)";
+//                     }}
 //                   >
 //                     {isLoading ? (
 //                       <span className="flex items-center gap-2">
-//                         <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-//                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-//                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+//                         <svg
+//                           className="animate-spin h-4 w-4"
+//                           xmlns="http://www.w3.org/2000/svg"
+//                           fill="none"
+//                           viewBox="0 0 24 24"
+//                         >
+//                           <circle
+//                             className="opacity-25"
+//                             cx="12"
+//                             cy="12"
+//                             r="10"
+//                             stroke="currentColor"
+//                             strokeWidth="4"
+//                           />
+//                           <path
+//                             className="opacity-75"
+//                             fill="currentColor"
+//                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+//                           />
 //                         </svg>
 //                         Sending...
 //                       </span>
@@ -330,11 +636,9 @@
 //                     )}
 //                   </button>
 //                 </div>
-
 //               </form>
 //             </div>
 //           </div>
-
 //         </div>
 //       </section>
 //     </>
@@ -565,235 +869,276 @@ const HomeContactSection = () => {
         )}
       </AnimatePresence>
 
-      {/* ── Main Section ─────────────────────────────────────────────────────── */}
-      <section className="bg-[var(--color-bg-page)] py-8 px-4">
-        <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* ── Left column ── */}
-          <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12 pr-20 lg:pr-16">
-            <p
-              className="mt-6 sm:mt-8 lg:mt-10 text-3xl font-semibold sideHeading text-[#00000]"
-              style={{
-                // color: "var(--color-brand-primary)",
-                // fontFamily: "var(--font-body)",
-              }}
-            >
-              We are glad to hear from you!
-            </p>
+      {/* ── Responsive styles ───────────────────────────────────────────────── */}
+      <style>{`
+        /* Mobile: stack green card above white card */
+        .contact-wrapper { display: flex; flex-direction: column; gap: 0; }
+        .contact-green-card {
+          position: static;
+          width: 100%;
+          // border-radius: 1rem 1rem 0 0;
+          min-height: auto;
+          transform: none !important;
+        }
+        .contact-white-card {
+        
+          padding-left: 2rem;
+          // border-radius: 0 0 1rem 1rem;
+        }
 
-            <div
-              className="mt-8 sm:mt-10 lg:mt-12 space-y-5 sm:space-y-6"
-              style={{ fontFamily: "var(--font-body)" }}
-            >
-              {/* Address */}
-              <div className="flex items-start gap-4">
-                <div
-                  className="rounded-full p-3 flex-shrink-0"
-                  style={{ background: "var(--color-bg-overlay)" }}
+        /* Tablet (md): side by side flush, no overlap */
+        @media (min-width: 768px) {
+          .contact-wrapper { flex-direction: row; align-items: stretch; }
+          .contact-green-card {
+            width: 320px;
+            flex-shrink: 0;
+            // border-radius: 1rem 0 0 1rem;
+            min-height: 100%;
+          }
+          .contact-white-card {
+            padding-left: 2.5rem;
+            // border-radius: 0 1rem 1rem 0;
+          }
+        }
+
+        /* Desktop (lg): true overlap effect */
+        @media (min-width: 768px) {
+          .contact-outer { position: relative; padding-left: 80px; }
+          .contact-wrapper { display: block; }
+          .contact-green-card {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) !important;
+            width: 300px;
+            min-height: 420px;
+            // border-radius: 1rem;
+            z-index: 10;
+          }
+          .contact-white-card {
+            padding-left: 250px;
+            // border-radius: 1rem;
+            
+          }
+        }
+      `}</style>
+
+      {/* ── Main Section ─────────────────────────────────────────────────────── */}
+      <section
+        className="pb-12 lg:py-12 px-4 sm:px-8"
+        style={{ background: "var(--color-bg-page)" }}
+      >
+        <div className=" mb-8 flex flex-col items-center ">
+          <h2 className="text-3xl sideHeading mt-2 lg:text-4xl font-bold leading-tight mb-2 tracking-[-0.02em]">
+            Get in{" "}
+            <span style={{ color: "var(--color-brand-primary)" }}>Touch</span>
+          </h2>
+          <p
+            className="text-sm mb-6"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Feel free to drop us a line below!
+          </p>
+        </div>
+        <div className="mx-auto max-w-5xl">
+          <div className="contact-outer">
+            <div className="contact-wrapper">
+              {/* ── Green card ── */}
+              <div
+                className="contact-green-card p-8 flex flex-col justify-center"
+                style={{
+                  background: "var(--color-brand-primary)",
+                  boxShadow: "0 20px 50px rgba(0,0,0,0.20)",
+                  fontFamily: "var(--font-body)",
+                }}
+              >
+                <h2
+                  className="text-xl font-bold mb-8"
+                  style={{ color: "#fff", fontFamily: "var(--font-display)" }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    style={{ color: "var(--color-brand-primary)" }}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p
-                    className="text-base"
-                    style={{ color: "var(--color-text-primary)" }}
-                  >
-                    Office
-                  </p>
-                  <p
-                    className="text-sm leading-relaxed text-[#000]"
-                    // style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    4th Floor, Vaishnavi's Cynosure, Survey No: 18,
-                    <br />
-                    India Building, Gachibowli, Hyderabad, Telangana 500032
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      style={{ color: "var(--color-brand-mid)" }}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                  Contact Us
+                </h2>
+
+                <div className="space-y-5">
+                  {/* Address */}
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="flex-shrink-0 mt-0.5 rounded-full p-1.5"
+                      style={{ background: "rgba(255,255,255,0.18)" }}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="white"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                    </div>
                     <p
-                      className="text-sm text-[#000000]"
-                      // style={{ color: "var(--color-text-muted)" }}
+                      className="text-xs leading-relaxed"
+                      style={{ color: "rgba(255,255,255,0.90)" }}
                     >
-                      Mon - Fri: 9:00 AM - 6:00 PM | Sat &amp; Sun: Closed
+                      4th Floor, Vaishnavi's Cynosure,
+                      <br />
+                      Gachibowli, Hyderabad,
+                      <br />
+                      Telangana 500032
+                    </p>
+                  </div>
+
+                  {/* Email */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex-shrink-0 rounded-full p-1.5"
+                      style={{ background: "rgba(255,255,255,0.18)" }}
+                    >
+                      <Mail className="h-4 w-4" style={{ color: "#fff" }} />
+                    </div>
+                    <a
+                      href="mailto:office@jaimax.com"
+                      className="text-xs transition-opacity duration-200"
+                      style={{ color: "rgba(255,255,255,0.90)" }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.opacity = "0.7")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.opacity = "1")
+                      }
+                    >
+                      office@jaimax.com
+                    </a>
+                  </div>
+
+                  {/* Phone 1 */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex-shrink-0 rounded-full p-1.5"
+                      style={{ background: "rgba(255,255,255,0.18)" }}
+                    >
+                      <Phone className="h-4 w-4" style={{ color: "#fff" }} />
+                    </div>
+                    <a
+                      href="tel:+919121799947"
+                      className="text-xs transition-opacity duration-200"
+                      style={{ color: "rgba(255,255,255,0.90)" }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.opacity = "0.7")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.opacity = "1")
+                      }
+                    >
+                      +91 9121799947
+                    </a>
+                  </div>
+
+                  {/* Phone 2 */}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex-shrink-0 rounded-full p-1.5"
+                      style={{ background: "rgba(255,255,255,0.18)" }}
+                    >
+                      <Phone className="h-4 w-4" style={{ color: "#fff" }} />
+                    </div>
+                    <a
+                      href="tel:+919121758880"
+                      className="text-xs transition-opacity duration-200"
+                      style={{ color: "rgba(255,255,255,0.90)" }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.opacity = "0.7")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.opacity = "1")
+                      }
+                    >
+                      +91 9121758880
+                    </a>
+                  </div>
+
+                  {/* Hours */}
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="flex-shrink-0 mt-0.5 rounded-full p-1.5"
+                      style={{ background: "rgba(255,255,255,0.18)" }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="white"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p
+                      className="text-xs leading-relaxed"
+                      style={{ color: "rgba(255,255,255,0.90)" }}
+                    >
+                      Mon – Fri: 9:00 AM – 6:00 PM
+                      <br />
+                      Sat &amp; Sun: Closed
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Phone */}
-              <div className="flex items-start gap-4">
-                <div
-                  className="rounded-full p-3 flex-shrink-0"
-                  style={{ background: "var(--color-bg-overlay)" }}
-                >
-                  <Phone
-                    className="h-6 w-6"
-                    style={{ color: "var(--color-brand-primary)" }}
-                  />
-                </div>
-                <div className="flex flex-col space-y-1">
-                  <p
-                  className="text-sm text-[#000000]"
-                      // style={{ color: "var(--color-text-muted)" }}
-                  >
-                    Phone
-                  </p>
-                  <a
-                    href="tel:+919121799947"
-                    className="text-sm transition-colors duration-200 text-[#000]"
-                    // style={{ color: "var(--color-text-secondary)" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color =
-                        "var(--color-brand-primary)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color =
-                        "var(--color-text-secondary)")
-                    }
-                  >
-                    +91 9121799947
-                  </a>
-                  <a
-                    href="tel:+919121758880"
-                      className="text-sm transition-colors duration-200 text-[#000]"
-                    // style={{ color: "var(--color-text-secondary)" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color =
-                        "var(--color-brand-primary)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color =
-                        "var(--color-text-secondary)")
-                    }
-                  >
-                    +91 9121758880
-                  </a>
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className="flex items-start gap-4">
-                <div
-                  className="rounded-full p-3 flex-shrink-0"
-                  style={{ background: "var(--color-bg-overlay)" }}
-                >
-                  <Mail
-                    className="h-6 w-6"
-                    style={{ color: "var(--color-brand-primary)" }}
-                  />
-                </div>
-                <div>
-                  <p
-                    className="text-base"
-                    style={{ color: "var(--color-text-primary)" }}
-                  >
-                    Email
-                  </p>
-                  <a
-                    href="mailto:office@jaimax.com"
-                     className="text-sm transition-colors duration-200 text-[#000]"
-                    // style={{ color: "var(--color-text-secondary)" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color =
-                        "var(--color-brand-primary)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color =
-                        "var(--color-text-secondary)")
-                    }
-                  >
-                    office@jaimax.com
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Right column — form card ── */}
-          <div className="flex flex-col justify-center mt-20">
-            <div
-              className="rounded-lg p-8"
-              style={{
-                background: "var(--color-bg-surface)",
-                boxShadow: "var(--shadow-card)",
-                border: "1px solid var(--color-border-accent)",
-                fontFamily: "var(--font-body)",
-              }}
-            >
-              <h3
-                className="text-xl font-semibold mb-6"
+              {/* ── White card ── */}
+              <div
+                className="contact-white-card py-10 pr-8 sm:pr-10"
                 style={{
-                  color: "var(--color-text-accent)",
-                  fontFamily: "var(--font-display)",
+                  background: "var(--color-bg-surface)",
+                  boxShadow: "var(--shadow-card)",
+                  fontFamily: "var(--font-body)",
                 }}
               >
-                Your Details
-              </h3>
+                <h4 className="mb-4 font-semibold">Enter your details</h4>
 
-              {/* Error banner */}
-              {(submitError || isError) && (
-                <div className="mb-4 p-4 rounded-lg bg-red-100 border border-red-400 text-red-700">
-                  <div className="flex items-center">
-                    <svg
-                      className="w-5 h-5 mr-2"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span className="text-sm font-medium">
-                      {submitError ||
-                        error?.data?.message ||
-                        "Failed to send message. Please try again."}
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              <form onSubmit={formik.handleSubmit} className="space-y-4">
-                {/* Name + Email */}
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="w-full md:w-1/2">
-                    <label
-                      className="block text-sm mb-1"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      Name{" "}
-                      <span style={{ color: "var(--color-brand-primary)" }}>
-                        *
+                {/* Error banner */}
+                {(submitError || isError) && (
+                  <div className="mb-4 p-4 rounded-lg bg-red-100 border border-red-400 text-red-700">
+                    <div className="flex items-center">
+                      <svg
+                        className="w-5 h-5 mr-2"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span className="text-sm font-medium">
+                        {submitError ||
+                          error?.data?.message ||
+                          "Failed to send message. Please try again."}
                       </span>
-                    </label>
+                    </div>
+                  </div>
+                )}
+
+                <form onSubmit={formik.handleSubmit} className="space-y-4">
+                  {/* Name */}
+                  <div>
                     <input
                       type="text"
                       name="name"
@@ -801,7 +1146,7 @@ const HomeContactSection = () => {
                       value={formik.values.name}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className="w-full rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+                      className="w-full rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
                       style={{
                         background: "var(--color-bg-overlay)",
                         border: `1px solid ${formik.errors.name && formik.touched.name ? "#ef4444" : "var(--color-border-accent)"}`,
@@ -814,16 +1159,9 @@ const HomeContactSection = () => {
                       </div>
                     )}
                   </div>
-                  <div className="w-full md:w-1/2">
-                    <label
-                      className="block text-sm mb-1"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      Email Address{" "}
-                      <span style={{ color: "var(--color-brand-primary)" }}>
-                        *
-                      </span>
-                    </label>
+
+                  {/* Email */}
+                  <div>
                     <input
                       type="email"
                       name="email"
@@ -831,7 +1169,7 @@ const HomeContactSection = () => {
                       value={formik.values.email}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className="w-full rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+                      className="w-full rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
                       style={{
                         background: "var(--color-bg-overlay)",
                         border: `1px solid ${formik.errors.email && formik.touched.email ? "#ef4444" : "var(--color-border-accent)"}`,
@@ -844,146 +1182,131 @@ const HomeContactSection = () => {
                       </div>
                     )}
                   </div>
-                </div>
 
-                {/* Phone */}
-                <div>
-                  <label
-                    className="block text-sm mb-1"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Phone{" "}
-                    <span style={{ color: "var(--color-brand-primary)" }}>
-                      *
-                    </span>
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone number"
-                    value={formik.values.phone}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(
-                        /[^0-9()+\-\s]/g,
-                        "",
-                      );
-                      formik.setFieldValue("phone", value);
-                    }}
-                    onBlur={formik.handleBlur}
-                    className="w-full rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
-                    style={{
-                      background: "var(--color-bg-overlay)",
-                      border: `1px solid ${formik.errors.phone && formik.touched.phone ? "#ef4444" : "var(--color-border-accent)"}`,
-                      color: "var(--color-text-primary)",
-                    }}
-                  />
-                  {formik.errors.phone && formik.touched.phone && (
-                    <div className="text-red-500 text-xs mt-1">
-                      {formik.errors.phone}
-                    </div>
-                  )}
-                </div>
-
-                {/* Message */}
-                <div>
-                  <label
-                    className="block text-sm mb-1"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Message{" "}
-                    <span style={{ color: "var(--color-brand-primary)" }}>
-                      *
-                    </span>
-                  </label>
-                  <textarea
-                    name="message"
-                    rows="4"
-                    placeholder="Tell us about your interest"
-                    value={formik.values.message}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    className="w-full resize-none rounded p-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
-                    style={{
-                      background: "var(--color-bg-overlay)",
-                      border: `1px solid ${formik.errors.message && formik.touched.message ? "#ef4444" : "var(--color-border-accent)"}`,
-                      color: "var(--color-text-primary)",
-                    }}
-                  />
-                  {formik.errors.message && formik.touched.message && (
-                    <div className="text-red-500 text-xs mt-1">
-                      {formik.errors.message}
-                    </div>
-                  )}
-                </div>
-
-                {/* Submit */}
-                <div className="pt-2 text-center">
-                  <button
-                    type="submit"
-                    disabled={isLoading || !formik.isValid || !formik.dirty}
-                    className="py-2 px-6 rounded-full text-sm font-medium flex items-center justify-center mx-auto transition-all duration-200"
-                    style={{
-                      background:
-                        isLoading || !formik.isValid || !formik.dirty
-                          ? "#d1d5db"
-                          : "var(--color-brand-primary)",
-                      color:
-                        isLoading || !formik.isValid || !formik.dirty
-                          ? "#9ca3af"
-                          : "var(--color-text-on-dark)",
-                      cursor:
-                        isLoading || !formik.isValid || !formik.dirty
-                          ? "not-allowed"
-                          : "pointer",
-                      boxShadow:
-                        isLoading || !formik.isValid || !formik.dirty
-                          ? "none"
-                          : "var(--shadow-btn)",
-                      fontFamily: "var(--font-body)",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isLoading && formik.isValid && formik.dirty)
-                        e.currentTarget.style.background =
-                          "var(--color-brand-mid)";
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isLoading && formik.isValid && formik.dirty)
-                        e.currentTarget.style.background =
-                          "var(--color-brand-primary)";
-                    }}
-                  >
-                    {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <svg
-                          className="animate-spin h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          />
-                        </svg>
-                        Sending...
-                      </span>
-                    ) : (
-                      "Send to us"
+                  {/* Phone */}
+                  <div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Phone number"
+                      value={formik.values.phone}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(
+                          /[^0-9()+\-\s]/g,
+                          "",
+                        );
+                        formik.setFieldValue("phone", value);
+                      }}
+                      onBlur={formik.handleBlur}
+                      className="w-full rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+                      style={{
+                        background: "var(--color-bg-overlay)",
+                        border: `1px solid ${formik.errors.phone && formik.touched.phone ? "#ef4444" : "var(--color-border-accent)"}`,
+                        color: "var(--color-text-primary)",
+                      }}
+                    />
+                    {formik.errors.phone && formik.touched.phone && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {formik.errors.phone}
+                      </div>
                     )}
-                  </button>
-                </div>
-              </form>
+                  </div>
+
+                  {/* Message */}
+                  <div>
+                    <textarea
+                      name="message"
+                      rows="4"
+                      placeholder="Typing your message here....."
+                      value={formik.values.message}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="w-full resize-none rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-brand-primary)]"
+                      style={{
+                        background: "var(--color-bg-overlay)",
+                        border: `1px solid ${formik.errors.message && formik.touched.message ? "#ef4444" : "var(--color-border-accent)"}`,
+                        color: "var(--color-text-primary)",
+                      }}
+                    />
+                    {formik.errors.message && formik.touched.message && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {formik.errors.message}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Submit */}
+                  <div className="pt-1 flex justify-center">
+                    <button
+                      type="submit"
+                      disabled={isLoading || !formik.isValid || !formik.dirty}
+                      className="py-2.5 px-10 rounded-full text-sm font-semibold tracking-wide flex items-center justify-center transition-all duration-200"
+                      style={{
+                        background:
+                          isLoading || !formik.isValid || !formik.dirty
+                            ? "#d1d5db"
+                            : "var(--color-brand-primary)",
+                        color:
+                          isLoading || !formik.isValid || !formik.dirty
+                            ? "#9ca3af"
+                            : "var(--color-text-on-dark)",
+                        cursor:
+                          isLoading || !formik.isValid || !formik.dirty
+                            ? "not-allowed"
+                            : "pointer",
+                        boxShadow:
+                          isLoading || !formik.isValid || !formik.dirty
+                            ? "none"
+                            : "var(--shadow-btn)",
+                        fontFamily: "var(--font-body)",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isLoading && formik.isValid && formik.dirty)
+                          e.currentTarget.style.background =
+                            "var(--color-brand-mid)";
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isLoading && formik.isValid && formik.dirty)
+                          e.currentTarget.style.background =
+                            "var(--color-brand-primary)";
+                      }}
+                    >
+                      {isLoading ? (
+                        <span className="flex items-center gap-2">
+                          <svg
+                            className="animate-spin h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            />
+                          </svg>
+                          Sending...
+                        </span>
+                      ) : (
+                        "SEND"
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+              {/* end white card */}
             </div>
+            {/* end contact-wrapper */}
           </div>
+          {/* end contact-outer */}
         </div>
       </section>
     </>
