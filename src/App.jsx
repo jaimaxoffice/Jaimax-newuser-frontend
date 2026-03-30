@@ -294,7 +294,7 @@ const ReferEarn = lazy(() => import("./services/Referearn"));
 const PreSaleCryptoCoin = lazy(() => import("./services/PreSaleCryptoCoin"));
 const AuthContainer = lazy(() => import("./Authentication/Login"));
 const ForgotPassword = lazy(() => import("./Authentication/ForgotPassword"));
-const Dashboard = lazy(() => import("./components/Dashboard/pages/dashBoard/AdvanceDashboard"));
+const Dashboard = lazy(() => import("./components/Dashboard/pages/dashBoard/dashBoard"));
 const Wallet = lazy(() => import("./components/Dashboard/pages/wallet/wallet"));
 const BuyHistory = lazy(() => import("./components/Dashboard/pages/buyHistory/buyHistory"));
 const Security = lazy(() => import("./components/Dashboard/pages/security/security"));
