@@ -189,7 +189,7 @@ useEffect(() => {
         </>
       )} */}
 
-<CoinPricePopup/>
+{/* <CoinPricePopup/> */}
       <div className="bg-gray-900 flex flex-col items-center justify-center gap-6">
       <CoinRewardModal
         isOpen={showModal}

@@ -684,7 +684,7 @@ const ContactInformationSectionContent = () => {
                   <span>
                     Survey No :18, India building, 4th Floor, Vaishnavi's
                     Cynosure, Extension, Gachibowli, Hyderabad, Telangana
-                    500081.
+                    500032.
                   </span>
                 </motion.div>
                 <motion.div

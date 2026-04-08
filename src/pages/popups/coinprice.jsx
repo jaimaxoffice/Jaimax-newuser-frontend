@@ -4,8 +4,8 @@ import logo from "../../assets/logo.webp"
 const CURRENT_PRICE = 0.10;
 
 // Set dates so sale is currently ACTIVE (between start and end)
-const SALE_START = new Date("2026-03-25T00:00:00").getTime(); // Past date
-const SALE_END = new Date("2026-04-02T00:00:00").getTime();   // Future date
+const SALE_START = new Date("2026-03-25T00:00:00").getTime();
+const SALE_END = new Date("2026-04-02T00:00:00").getTime();   
 
 /* ── Circular Progress Timer ── */
 function CircularTimer({ total, remaining, saleStatus }) {
