@@ -464,7 +464,7 @@ export default function HomeFooter() {
       </div>
 
       {/* Second Section */}
-      <div className="w-full relative bg-gradient-to-br from-slate-900 via-teal-900 to-cyan-600 min-h-[50vh] sm:min-h-[60vh]">
+      {/* <div className="w-full relative bg-gradient-to-br from-slate-900 via-teal-900 to-cyan-600 min-h-[50vh] sm:min-h-[60vh]">
         <div
           className="relative z-10 w-full mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-24 text-center"
           style={{
@@ -478,7 +478,7 @@ export default function HomeFooter() {
           }}
         >
           <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12 lg:space-y-16">
-            {/* Icon */}
+   
             <div className="flex justify-center">
               <div className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-500 shadow-2xl">
                 <img
@@ -490,7 +490,7 @@ export default function HomeFooter() {
               </div>
             </div>
 
-            {/* Text */}
+      
             <div className="space-y-4 sm:space-y-6">
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white leading-tight px-4">
                 Stay connected with us for
@@ -502,7 +502,7 @@ export default function HomeFooter() {
               </div>
             </div>
 
-            {/* Button */}
+      
             <div className="pt-6 sm:pt-8 lg:pt-12 flex justify-center px-4">
               <button
                 onClick={onClickNavigateToLogin}
@@ -530,7 +530,7 @@ export default function HomeFooter() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

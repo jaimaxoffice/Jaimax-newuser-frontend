@@ -412,8 +412,8 @@
 
 import { React, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import Logo from "/green_logo.svg";
-import Logo2 from "/jaimaxlogo.svg";
+import Logo from "/green_logo1.svg";
+import Logo2 from "/jaimax_logo.svg";
 import { Turn as Hamburger } from "hamburger-react";
 
 const Navbar = () => {
@@ -522,7 +522,7 @@ const Navbar = () => {
               <img
                 src={Logo2}
                 className="h-7 w-auto object-contain max-h-12 transform transition-transform duration-300
-               xs:h-8 sm:h-9 md:h-10 lg:h-11 xl:h-12 2xl:h-14
+               xs:h-7 sm:h-8 md:h-10 lg:h-10 xl:h-10 2xl:h-14
                hover:scale-105 filter drop-shadow-lg "
                 alt="Jaimax Coin Logo"
                 title="Jaimax Coin – Best Pre-Sale Crypto token in India | Smart Investments"

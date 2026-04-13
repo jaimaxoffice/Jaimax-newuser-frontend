@@ -8,32 +8,53 @@ import image     from "../../assets/dummy/whatWeOfferSectionImage.png";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import BadgePill from "./BadgePill"
+import { Link } from "react-router-dom";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const services = [
   {
-    id: 0, col: "left",
+    id: 0,
+    col: "left",
     title: "Secure Crypto Wallet",
-    icon: jaicoins, iconAlt: "Jaicoins wallet icon",
-    description: "Your crypto is protected with top-tier encryption and real-time monitoring. Manage your assets securely from anywhere.",
+    icon: jaicoins,
+    iconAlt: "Jaicoins wallet icon",
+    iconTitle: "Secure Digital Wallet",
+    link: "/newabout",
+    description:
+        "Your crypto is protected with top-tier encryption and real-time monitoring. Manage your assets securely from anywhere.",
   },
   {
-    id: 1, col: "right",
+    id: 1,
+    col: "right",
     title: "Funds Management",
-    icon: eye, iconAlt: "Funds management icon",
-    description: "Add, withdraw, and monitor investments effortlessly. Stay in control of your capital anytime, anywhere.",
+    icon: eye,
+    iconAlt: "Funds management icon",
+    iconTitle: "Complete Fund Visibility",
+    link: "/refund-policy",
+    description:
+        "Add, withdraw, and monitor investments effortlessly. Stay in control of your capital anytime, anywhere.",
   },
   {
-    id: 2, col: "left",
+    id: 2,
+    col: "left",
     title: "Access to Profits",
-    icon: access, iconAlt: "Access to profits icon",
-    description: "Convert your crypto into real-world gains. Flexible, fast, and built for your financial success.",
+    icon: access,
+    iconAlt: "Access to profits icon",
+    iconTitle: "Easy Profit Access",
+    link: "/terms-and-conditions",
+    description:
+        "Convert your crypto into real-world gains. Flexible, fast, and built for your financial success.",
   },
   {
-    id: 3, col: "right",
+    id: 3,
+    col: "right",
     title: "Financial Growth",
-    icon: rocket2, iconAlt: "Financial growth icon",
-    description: "Tailored plans aligned with your goals. Grow your portfolio with strategic crypto investments.",
+    icon: rocket2,
+    iconAlt: "Financial growth icon",
+    iconTitle: "Accelerate Your Growth",
+    link: "/privacy-policy", // FIXED
+    description:
+        "Tailored plans aligned with your goals. Grow your portfolio with strategic crypto investments.",
   },
 ];
 
@@ -66,15 +87,17 @@ function FeatureCard({ service, visible, delay }) {
         className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
         style={{ background: "var(--color-brand-dark)" }}
       >
-        <img src={service.icon} alt={service.iconAlt} className="w-10 h-10 object-contain" />
+        <img src={service.icon} alt={service.iconAlt} title={service.iconTitle} className="w-10 h-10 object-contain" />
       </div>
-
+      <divc className="flex flex-col gap-2">
+        <Link to={service.link}>
+       <h4 className="sm:text-base text-md font-bold hover:text-[var(--color-brand-primary)] ">{service.title}</h4>
+       </Link>
       <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-        <span className="font-bold" style={{ color: "var(--color-text-primary)" }}>
-          {service.title}{" "}
-        </span>
+
         {service.description}
       </p>
+      </divc>
     </div>
   );
 }
