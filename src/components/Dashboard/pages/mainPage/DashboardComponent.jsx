@@ -290,31 +290,27 @@ const MiningPage = () => {
     <div className="min-h-screen bg-slate-50 font-sans">
       {/* Top navbar */}
       <div className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-[1100px] mx-auto px-4 sm:px-5 md:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
+        {/* <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 h-14 sm:h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-teal-500 to-teal-700 rounded-lg flex items-center justify-center text-white shadow-lg shadow-teal-500/30">
-              <Pickaxe className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div className="w-7 h-7 sm:w-9 sm:h-9 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl flex items-center justify-center text-white shadow-lg shadow-teal-500/30 hover:scale-105 transition-transform">
+              <Pickaxe className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
             </div>
-            <span className="font-extrabold text-base sm:text-lg text-slate-800 tracking-tight">
-              JMC <span className="text-teal-600">Mining</span>
+            <span className="font-extrabold text-sm sm:text-lg bg-gradient-to-r from-slate-800 to-teal-700 bg-clip-text text-transparent tracking-tight">
+              JMC Mining
             </span>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2">
             {wallet && (
-              <div className="hidden sm:flex font-mono text-xs sm:text-sm text-slate-500 bg-teal-50 border border-teal-200 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5">
+              <div className="hidden md:flex font-mono text-xs text-slate-600 bg-gradient-to-br from-teal-50 to-green-50 border border-teal-200/50 rounded-xl px-3 py-1.5 shadow-sm">
                 <span className="text-slate-400">Balance </span>
-                <span className="font-bold text-teal-700 ml-1">{parseFloat(wallet.totalBalance || 0).toFixed(2)} JMC</span>
+                <span className="font-bold text-teal-700 ml-1">
+                  {parseFloat(wallet.totalBalance || 0).toFixed(2)} JMC
+                </span>
               </div>
             )}
-            <button 
-              onClick={refreshAll}
-              className="flex items-center gap-1.5 sm:gap-2 bg-white border border-slate-200 rounded-lg px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-slate-600 hover:border-teal-400 hover:text-teal-600 hover:bg-teal-50 transition-all text-xs sm:text-sm font-semibold"
-            >
-              <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> 
-              <span className="hidden sm:inline">Refresh</span>
-            </button>
+
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="max-w-[1100px] mx-auto px-3 sm:px-4 md:px-5 lg:px-6 py-4 sm:py-6 md:py-8 pb-16 sm:pb-20">
@@ -328,7 +324,7 @@ const MiningPage = () => {
             <p className="text-slate-400 text-sm sm:text-base mb-8 sm:mb-10 max-w-md mx-auto leading-relaxed">
               Set up your JMC wallet to start earning tokens through daily mining sessions.
             </p>
-            <button 
+            <button
               onClick={handleCreate}
               disabled={creating}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-teal-700 text-white font-bold px-8 sm:px-12 py-3 sm:py-4 rounded-xl hover:shadow-2xl hover:shadow-teal-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
@@ -347,14 +343,13 @@ const MiningPage = () => {
             {/* Tab strip */}
             <div className="flex gap-1 border-b border-slate-200 mb-6 sm:mb-8 overflow-x-auto scrollbar-none">
               {tabs.map(t => (
-                <button 
+                <button
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
-                  className={`relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 md:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors ${
-                    activeTab === t.id 
-                      ? 'text-teal-600' 
+                  className={`relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 md:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors ${activeTab === t.id
+                      ? 'text-teal-600'
                       : 'text-slate-400 hover:text-slate-600'
-                  }`}
+                    }`}
                 >
                   <t.Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   {t.label}
@@ -409,31 +404,28 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
     {/* Mining console */}
     <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 md:p-12 mb-4 sm:mb-5 text-center shadow-sm">
       {/* Status pill */}
-      <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 sm:mb-10 border ${
-        circleState === 'error' 
-          ? 'bg-red-50 border-red-200' 
-          : circleState === 'success' 
-          ? 'bg-teal-50 border-teal-200' 
-          : circleState === 'mining' 
-          ? 'bg-teal-50 border-teal-300' 
-          : 'bg-slate-50 border-slate-200'
-      }`}>
-        <div className={`w-1.5 h-1.5 rounded-full ${
-          circleState === 'error' 
-            ? 'bg-red-500' 
-            : circleState === 'success' 
-            ? 'bg-green-500' 
-            : 'bg-teal-500'
-        } ${circleState === 'mining' ? 'animate-pulse' : ''}`} />
-        <span className={`font-mono text-[10px] sm:text-xs tracking-widest uppercase ${
-          circleState === 'error' 
-            ? 'text-red-600' 
-            : circleState === 'success' 
-            ? 'text-teal-700' 
-            : circleState === 'mining' 
-            ? 'text-teal-600' 
-            : 'text-slate-400'
+      <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 sm:mb-10 border ${circleState === 'error'
+          ? 'bg-red-50 border-red-200'
+          : circleState === 'success'
+            ? 'bg-teal-50 border-teal-200'
+            : circleState === 'mining'
+              ? 'bg-teal-50 border-teal-300'
+              : 'bg-slate-50 border-slate-200'
         }`}>
+        <div className={`w-1.5 h-1.5 rounded-full ${circleState === 'error'
+            ? 'bg-red-500'
+            : circleState === 'success'
+              ? 'bg-green-500'
+              : 'bg-teal-500'
+          } ${circleState === 'mining' ? 'animate-pulse' : ''}`} />
+        <span className={`font-mono text-[10px] sm:text-xs tracking-widest uppercase ${circleState === 'error'
+            ? 'text-red-600'
+            : circleState === 'success'
+              ? 'text-teal-700'
+              : circleState === 'mining'
+                ? 'text-teal-600'
+                : 'text-slate-400'
+          }`}>
           {circleState === 'mining' ? 'Mining in progress' : circleState === 'error' ? 'Mining failed' : circleState === 'success' ? 'Mine complete' : 'Ready to mine'}
         </span>
       </div>
@@ -459,17 +451,15 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
           >
             <div
               onClick={circleState === 'idle' ? handleMine : undefined}
-              className={`w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300 relative z-10 ${
-                circleState === 'idle' ? 'cursor-pointer hover:scale-105' : 'cursor-default'
-              } ${
-                circleState === 'error' 
-                  ? 'bg-gradient-to-br from-red-100 to-red-50 border-red-200' 
-                  : circleState === 'success' 
-                  ? 'bg-gradient-to-br from-teal-100 to-teal-50 border-teal-300' 
-                  : circleState === 'mining' 
-                  ? 'bg-gradient-to-br from-teal-50 to-white border-teal-300' 
-                  : 'bg-gradient-to-br from-teal-500 to-teal-600 border-teal-400 shadow-lg shadow-teal-500/30'
-              }`}
+              className={`w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300 relative z-10 ${circleState === 'idle' ? 'cursor-pointer hover:scale-105' : 'cursor-default'
+                } ${circleState === 'error'
+                  ? 'bg-gradient-to-br from-red-100 to-red-50 border-red-200'
+                  : circleState === 'success'
+                    ? 'bg-gradient-to-br from-teal-100 to-teal-50 border-teal-300'
+                    : circleState === 'mining'
+                      ? 'bg-gradient-to-br from-teal-50 to-white border-teal-300'
+                      : 'bg-gradient-to-br from-teal-500 to-teal-600 border-teal-400 shadow-lg shadow-teal-500/30'
+                }`}
             >
               {circleState === 'idle' && (
                 <div className="text-center">
@@ -484,7 +474,7 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
                   <div className="font-mono text-[10px] sm:text-xs text-teal-600 tracking-widest">MINING…</div>
                   <div className="flex gap-1 justify-center mt-2 sm:mt-3">
                     {[0, 0.2, 0.4].map((delay, i) => (
-                      <div 
+                      <div
                         key={i}
                         className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-teal-400 rounded-full animate-pulse"
                         style={{ animationDelay: `${delay}s` }}
@@ -538,9 +528,9 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {[
-              { l: 'Slot', v: `#${lastMineLog.slotNumber}` }, 
-              { l: 'Base', v: lastMineLog.baseReward }, 
-              { l: 'Earned', v: `+${lastMineLog.actualReward}`, hi: true }, 
+              { l: 'Slot', v: `#${lastMineLog.slotNumber}` },
+              { l: 'Base', v: lastMineLog.baseReward },
+              { l: 'Earned', v: `+${lastMineLog.actualReward}`, hi: true },
               { l: 'Status', v: lastMineLog.status }
             ].map((item, i) => (
               <div key={i} className="bg-white border border-teal-100 rounded-lg p-2 sm:p-2.5 text-center">
@@ -553,7 +543,7 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
       )}
 
       {/* Mine button */}
-      <button 
+      <button
         onClick={handleMine}
         disabled={!wallet || mining}
         className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500 to-teal-700 text-white font-bold px-10 sm:px-14 md:px-16 py-3 sm:py-4 rounded-xl hover:shadow-2xl hover:shadow-teal-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base w-full sm:w-auto justify-center"
@@ -583,39 +573,37 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
             <span className="text-xs sm:text-sm text-slate-500 flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Mining Power
             </span>
-            <span className={`font-mono text-xs sm:text-sm font-semibold ${
-              (wallet.miningPowerPct || 100) >= 80 ? 'text-teal-600' : 
-              (wallet.miningPowerPct || 100) >= 50 ? 'text-yellow-500' : 'text-red-500'
-            }`}>
+            <span className={`font-mono text-xs sm:text-sm font-semibold ${(wallet.miningPowerPct || 100) >= 80 ? 'text-teal-600' :
+                (wallet.miningPowerPct || 100) >= 50 ? 'text-yellow-500' : 'text-red-500'
+              }`}>
               {wallet.miningPowerPct || 100}%
             </span>
           </div>
           <div className="bg-slate-200 rounded-full h-1.5 overflow-hidden">
-            <div 
-              className={`h-full rounded-full transition-all duration-700 ${
-                (wallet.miningPowerPct || 100) >= 80 ? 'bg-gradient-to-r from-teal-400 to-teal-600' : 
-                (wallet.miningPowerPct || 100) >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-              }`}
+            <div
+              className={`h-full rounded-full transition-all duration-700 ${(wallet.miningPowerPct || 100) >= 80 ? 'bg-gradient-to-r from-teal-400 to-teal-600' :
+                  (wallet.miningPowerPct || 100) >= 50 ? 'bg-yellow-500' : 'bg-red-500'
+                }`}
               style={{ width: `${wallet.miningPowerPct || 100}%` }}
             />
           </div>
         </div>
-        <DRow 
-          label="Consecutive Missed" 
-          value={wallet.consecutiveMissedCount || 0} 
-          color={(wallet.consecutiveMissedCount || 0) > 0 ? 'text-red-500' : 'text-green-500'} 
+        <DRow
+          label="Consecutive Missed"
+          value={wallet.consecutiveMissedCount || 0}
+          color={(wallet.consecutiveMissedCount || 0) > 0 ? 'text-red-500' : 'text-green-500'}
         />
-        <DRow 
-          label="Recovery Mode" 
-          value={wallet.isInRecovery ? 'In Recovery' : 'Normal'} 
-          color={wallet.isInRecovery ? 'text-yellow-500' : 'text-green-500'} 
+        <DRow
+          label="Recovery Mode"
+          value={wallet.isInRecovery ? 'In Recovery' : 'Normal'}
+          color={wallet.isInRecovery ? 'text-yellow-500' : 'text-green-500'}
         />
-        <DRow 
-          label="Penalty Tier" 
-          value={(wallet.currentPenaltyTierId || 0) > 0 ? `Tier ${wallet.currentPenaltyTierId}` : 'None'} 
-          color={(wallet.currentPenaltyTierId || 0) > 0 ? 'text-red-500' : 'text-green-500'} 
+        <DRow
+          label="Penalty Tier"
+          value={(wallet.currentPenaltyTierId || 0) > 0 ? `Tier ${wallet.currentPenaltyTierId}` : 'None'}
+          color={(wallet.currentPenaltyTierId || 0) > 0 ? 'text-red-500' : 'text-green-500'}
         />
-        <DRow label="Last Mined" value={fmtDate(wallet.lastMineAt)} />
+        <DRow label="Last Mined" value={(wallet.lastMineAt)} />
       </Panel>
     </div>
   </>
@@ -634,11 +622,10 @@ const SlotTimer = ({ timeLeft, currentSlot, nextSlot, loading, hasSlots }) => {
   const display = currentSlot || nextSlot;
 
   return (
-    <div className={`rounded-2xl p-5 sm:p-6 md:p-7 mb-4 sm:mb-5 relative overflow-hidden border ${
-      isActive 
-        ? 'bg-gradient-to-br from-teal-600 to-teal-700 border-teal-500 shadow-xl shadow-teal-500/25' 
+    <div className={`rounded-2xl p-5 sm:p-6 md:p-7 mb-4 sm:mb-5 relative overflow-hidden border ${isActive
+        ? 'bg-gradient-to-br from-teal-600 to-teal-700 border-teal-500 shadow-xl shadow-teal-500/25'
         : 'bg-white border-slate-200 shadow-sm'
-    }`}>
+      }`}>
       {isActive && (
         <>
           <div className="absolute -right-10 -top-10 w-48 h-48 rounded-full bg-white/5" />
@@ -653,21 +640,18 @@ const SlotTimer = ({ timeLeft, currentSlot, nextSlot, loading, hasSlots }) => {
             {isActive && (
               <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse shadow-lg shadow-green-300" />
             )}
-            <span className={`text-[10px] sm:text-xs font-bold tracking-widest uppercase ${
-              isActive ? 'text-white/60' : 'text-slate-400'
-            }`}>
+            <span className={`text-[10px] sm:text-xs font-bold tracking-widest uppercase ${isActive ? 'text-white/60' : 'text-slate-400'
+              }`}>
               {isActive ? 'Active Mining Slot' : 'Next Slot'}
             </span>
           </div>
-          <div className={`text-2xl sm:text-3xl md:text-4xl font-extrabold mb-1 ${
-            isActive ? 'text-white' : 'text-slate-800'
-          }`}>
+          <div className={`text-2xl sm:text-3xl md:text-4xl font-extrabold mb-1 ${isActive ? 'text-white' : 'text-slate-800'
+            }`}>
             {display ? `Slot ${display.slotNumber}` : '—'}
           </div>
           {display && (
-            <div className={`font-mono text-xs sm:text-sm ${
-              isActive ? 'text-white/60' : 'text-slate-400'
-            }`}>
+            <div className={`font-mono text-xs sm:text-sm ${isActive ? 'text-white/60' : 'text-slate-400'
+              }`}>
               {fmt24(display.startHour)} → {fmt24(display.endHour)}
             </div>
           )}
@@ -680,9 +664,8 @@ const SlotTimer = ({ timeLeft, currentSlot, nextSlot, loading, hasSlots }) => {
 
         {/* Center — countdown */}
         <div className="text-center flex flex-col items-center gap-3 sm:gap-4">
-          <div className={`text-[10px] font-bold tracking-widest uppercase ${
-            isActive ? 'text-white/50' : 'text-slate-400'
-          }`}>
+          <div className={`text-[10px] font-bold tracking-widest uppercase ${isActive ? 'text-white/50' : 'text-slate-400'
+            }`}>
             {isActive ? 'Time Remaining' : 'Starts In'}
           </div>
 
@@ -693,23 +676,20 @@ const SlotTimer = ({ timeLeft, currentSlot, nextSlot, loading, hasSlots }) => {
               {[{ v: timeLeft.hours, l: 'H' }, { v: timeLeft.minutes, l: 'M' }, { v: timeLeft.seconds, l: 'S' }].map((u, i, arr) => (
                 <React.Fragment key={u.l}>
                   <div className="text-center">
-                    <div className={`font-mono text-xl sm:text-2xl md:text-3xl font-bold leading-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border min-w-[40px] sm:min-w-[52px] ${
-                      isActive 
-                        ? 'text-white bg-white/12 border-white/15' 
+                    <div className={`font-mono text-xl sm:text-2xl md:text-3xl font-bold leading-none px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border min-w-[40px] sm:min-w-[52px] ${isActive
+                        ? 'text-white bg-white/12 border-white/15'
                         : 'text-slate-800 bg-slate-100 border-slate-200'
-                    }`}>
+                      }`}>
                       {pad(u.v)}
                     </div>
-                    <div className={`font-mono text-[9px] sm:text-[10px] mt-1 tracking-widest uppercase ${
-                      isActive ? 'text-white/40' : 'text-slate-400'
-                    }`}>
+                    <div className={`font-mono text-[9px] sm:text-[10px] mt-1 tracking-widest uppercase ${isActive ? 'text-white/40' : 'text-slate-400'
+                      }`}>
                       {u.l}
                     </div>
                   </div>
                   {i < arr.length - 1 && (
-                    <div className={`font-mono text-xl sm:text-2xl md:text-3xl pt-1.5 sm:pt-2 ${
-                      isActive ? 'text-white/40 animate-pulse' : 'text-slate-300'
-                    }`}>
+                    <div className={`font-mono text-xl sm:text-2xl md:text-3xl pt-1.5 sm:pt-2 ${isActive ? 'text-white/40 animate-pulse' : 'text-slate-300'
+                      }`}>
                       :
                     </div>
                   )}
@@ -721,7 +701,7 @@ const SlotTimer = ({ timeLeft, currentSlot, nextSlot, loading, hasSlots }) => {
           {isActive && (
             <div className="w-full max-w-[220px]">
               <div className="bg-white/15 rounded-full h-1.5 overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-white rounded-full transition-all duration-1000 linear"
                   style={{ width: `${timeLeft.progress || 0}%` }}
                 />
@@ -763,7 +743,7 @@ const LogsSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
         <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 text-white relative overflow-hidden shadow-xl shadow-teal-500/20">
           <div className="absolute -right-8 -top-8 w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white/5" />
           <div className="absolute right-10 -bottom-10 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white/5" />
-          
+
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-4 sm:mb-5">
               <div>
@@ -792,15 +772,14 @@ const LogsSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
                 { label: 'Remaining', value: todayInfo.remainingSlots, icon: Clock },
                 { label: 'Total Mined', value: todayInfo.totalMined, icon: TrendingUp },
               ].map((stat, i) => (
-                <div 
+                <div
                   key={i}
-                  className={`bg-white/10 backdrop-blur-sm border rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 ${
-                    stat.highlight 
-                      ? 'border-green-300/30' 
-                      : stat.warn 
-                      ? 'border-red-300/30' 
-                      : 'border-white/20'
-                  }`}
+                  className={`bg-white/10 backdrop-blur-sm border rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 ${stat.highlight
+                      ? 'border-green-300/30'
+                      : stat.warn
+                        ? 'border-red-300/30'
+                        : 'border-white/20'
+                    }`}
                 >
                   <div className="flex items-center gap-1 sm:gap-1.5 mb-1.5 sm:mb-2">
                     <stat.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/70" />
@@ -808,13 +787,12 @@ const LogsSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
                       {stat.label}
                     </div>
                   </div>
-                  <div className={`font-mono text-lg sm:text-xl lg:text-2xl font-bold ${
-                    stat.highlight 
-                      ? 'text-green-200' 
-                      : stat.warn 
-                      ? 'text-red-200' 
-                      : 'text-white'
-                  }`}>
+                  <div className={`font-mono text-lg sm:text-xl lg:text-2xl font-bold ${stat.highlight
+                      ? 'text-green-200'
+                      : stat.warn
+                        ? 'text-red-200'
+                        : 'text-white'
+                    }`}>
                     {stat.value}
                   </div>
                 </div>
@@ -825,10 +803,10 @@ const LogsSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
       )}
 
       {/* Mining History Cards */}
-      <Panel 
-        title="Mining History" 
-        Icon={ClipboardList} 
-        count={pagination.total || logs.length} 
+      <Panel
+        title="Mining History"
+        Icon={ClipboardList}
+        count={pagination.total || logs.length}
         onRefresh={refetch}
       >
         {logs.length === 0 ? (
@@ -837,12 +815,12 @@ const LogsSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               {logs.map((log, i) => (
-                <div 
+                <div
                   key={log._id || i}
                   className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:shadow-lg hover:border-teal-300 transition-all duration-200 group"
                 >
                   {/* Header */}
-                  <div className="flex items-start justify-between mb-3 sm:mb-4">
+                  <div className="flex items-start justify-between mb-3 sm:mb-4 z-10">
                     <div className="flex items-center gap-2">
                       <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Pickaxe className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
@@ -888,25 +866,23 @@ const LogsSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
                           Mining Power
                         </span>
                       </div>
-                      <span className={`font-mono font-bold text-xs sm:text-sm ${
-                        (log.miningPowerUsed || 100) >= 80 
-                          ? 'text-teal-600' 
-                          : (log.miningPowerUsed || 100) >= 50 
-                          ? 'text-yellow-600' 
-                          : 'text-red-600'
-                      }`}>
+                      <span className={`font-mono font-bold text-xs sm:text-sm ${(log.miningPowerUsed || 100) >= 80
+                          ? 'text-teal-600'
+                          : (log.miningPowerUsed || 100) >= 50
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
                         {log.miningPowerUsed || 100}%
                       </span>
                     </div>
                     <div className="bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          (log.miningPowerUsed || 100) >= 80 
-                            ? 'bg-gradient-to-r from-teal-400 to-teal-600' 
-                            : (log.miningPowerUsed || 100) >= 50 
-                            ? 'bg-yellow-500' 
-                            : 'bg-red-500'
-                        }`}
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${(log.miningPowerUsed || 100) >= 80
+                            ? 'bg-gradient-to-r from-teal-400 to-teal-600'
+                            : (log.miningPowerUsed || 100) >= 50
+                              ? 'bg-yellow-500'
+                              : 'bg-red-500'
+                          }`}
                         style={{ width: `${log.miningPowerUsed || 100}%` }}
                       />
                     </div>
@@ -952,7 +928,7 @@ const TxSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
   const totalPages = pagination.totalPages || 1;
   const credit = txs.filter(t => t.direction === 'credit').reduce((s, t) => s + t.amount, 0);
   const debit = txs.filter(t => t.direction === 'debit').reduce((s, t) => s + t.amount, 0);
-  
+
   const typeIcon = (t) => ({ mine_reward: Pickaxe, referral_reward: Users, penalty_deduction: AlertTriangle, bonus: Gift }[t] || Gem);
   const typeName = (t) => t?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Transaction';
 
@@ -974,7 +950,7 @@ const TxSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
           </div>
         ))}
       </div>
-      
+
       <Panel title="Transactions" Icon={Wallet} count={pagination.total || txs.length} onRefresh={refetch}>
         {txs.length === 0 ? (
           <Empty Icon={Wallet} msg="No transactions yet" />
@@ -986,14 +962,12 @@ const TxSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
                 return (
                   <div key={tx._id || i} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 bg-slate-50 border border-slate-200 rounded-xl p-3 sm:p-4">
                     <div className="flex items-center gap-3 w-full sm:w-auto">
-                      <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center border flex-shrink-0 ${
-                        tx.direction === 'credit' 
-                          ? 'bg-green-50 border-green-200' 
+                      <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center border flex-shrink-0 ${tx.direction === 'credit'
+                          ? 'bg-green-50 border-green-200'
                           : 'bg-red-50 border-red-200'
-                      }`}>
-                        <TxIcon className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                          tx.direction === 'credit' ? 'text-green-500' : 'text-red-500'
-                        }`} />
+                        }`}>
+                        <TxIcon className={`w-4 h-4 sm:w-5 sm:h-5 ${tx.direction === 'credit' ? 'text-green-500' : 'text-red-500'
+                          }`} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="font-semibold text-sm sm:text-base text-slate-700 mb-0.5 truncate">{typeName(tx.type)}</div>
@@ -1001,9 +975,8 @@ const TxSection = ({ data, loading, refetch, page, setPage, fmtDate }) => {
                       </div>
                     </div>
                     <div className="text-left sm:text-right w-full sm:w-auto flex-shrink-0">
-                      <div className={`font-mono font-bold text-base sm:text-lg ${
-                        tx.direction === 'credit' ? 'text-green-600' : 'text-red-600'
-                      }`}>
+                      <div className={`font-mono font-bold text-base sm:text-lg ${tx.direction === 'credit' ? 'text-green-600' : 'text-red-600'
+                        }`}>
                         {tx.direction === 'credit' ? '+' : '-'}{tx.amount} JMC
                       </div>
                       <div className="font-mono text-[10px] sm:text-xs text-slate-400 mt-0.5">
@@ -1047,7 +1020,7 @@ const ReferralSection = ({ data, loading, refetch, page, setPage, fmtDate }) => 
           </div>
         ))}
       </div>
-      
+
       <Panel title="Referral Bonuses" Icon={Users} count={pagination.total || refs.length} onRefresh={refetch}>
         {refs.length === 0 ? (
           <Empty Icon={Users} msg="No referral bonuses yet" sub="Share your referral code to earn" />
@@ -1062,8 +1035,8 @@ const ReferralSection = ({ data, loading, refetch, page, setPage, fmtDate }) => 
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-mono text-xs sm:text-sm text-slate-600 mb-0.5 truncate">
-                        {ref.referredUserId?.length > 10 
-                          ? `${ref.referredUserId.slice(0, 8)}…${ref.referredUserId.slice(-4)}` 
+                        {ref.referredUserId?.length > 10
+                          ? `${ref.referredUserId.slice(0, 8)}…${ref.referredUserId.slice(-4)}`
                           : ref.referredUserId}
                       </div>
                       <div className="text-xs sm:text-sm text-slate-400">Mine date: {ref.mineDate}</div>
@@ -1080,7 +1053,7 @@ const ReferralSection = ({ data, loading, refetch, page, setPage, fmtDate }) => 
           </>
         )}
       </Panel>
-      
+
       <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 sm:p-5 flex gap-3 sm:gap-4 items-start">
         <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600 flex-shrink-0 mt-0.5" />
         <div>
@@ -1104,7 +1077,7 @@ const SlotsSection = ({ slots, currentSlot, timeLeft, loading, refetch, slotsDat
         <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-2xl p-6 sm:p-7 md:p-8 text-white relative overflow-hidden shadow-xl shadow-teal-500/30">
           <div className="absolute -right-8 -top-8 w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-white/6" />
           <div className="absolute right-14 -bottom-12 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-white/5" />
-          
+
           <div className="flex flex-col lg:flex-row flex-wrap items-center justify-between gap-5 sm:gap-6 relative">
             <div className="text-center lg:text-left">
               <div className="text-[10px] sm:text-xs tracking-widest uppercase text-white/60 mb-2 font-semibold flex items-center gap-2 justify-center lg:justify-start">
@@ -1113,7 +1086,7 @@ const SlotsSection = ({ slots, currentSlot, timeLeft, loading, refetch, slotsDat
               <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-1.5">Slot {currentSlot.slotNumber}</div>
               <div className="font-mono text-xs sm:text-sm text-white/60">{fmt24(currentSlot.startHour)} → {fmt24(currentSlot.endHour)}</div>
             </div>
-            
+
             <div className="flex gap-5 sm:gap-6 items-center">
               <CircularTimer progress={timeLeft.progress || 0} size={window.innerWidth < 640 ? 64 : 72} isActive={true} />
               <div className="text-center">
@@ -1124,10 +1097,10 @@ const SlotsSection = ({ slots, currentSlot, timeLeft, loading, refetch, slotsDat
               </div>
             </div>
           </div>
-          
+
           <div className="mt-5">
             <div className="bg-white/15 rounded-full h-1.5 overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-white rounded-full transition-all duration-1000 linear"
                 style={{ width: `${timeLeft.progress || 0}%` }}
               />
@@ -1145,22 +1118,20 @@ const SlotsSection = ({ slots, currentSlot, timeLeft, loading, refetch, slotsDat
             {slots.map((slot, i) => {
               const isActive = currentSlot?.slotNumber === slot.slotNumber;
               return (
-                <div 
+                <div
                   key={slot.slotNumber || i}
-                  className={`rounded-xl p-4 sm:p-5 relative overflow-hidden border transition-all hover:shadow-md ${
-                    isActive 
-                      ? 'bg-teal-50 border-teal-400 shadow-lg shadow-teal-500/15' 
+                  className={`rounded-xl p-4 sm:p-5 relative overflow-hidden border transition-all hover:shadow-md ${isActive
+                      ? 'bg-teal-50 border-teal-400 shadow-lg shadow-teal-500/15'
                       : 'bg-slate-50 border-slate-200'
-                  }`}
+                    }`}
                 >
                   {isActive && (
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 to-teal-600" />
                   )}
-                  
+
                   <div className="flex justify-between items-start mb-3">
-                    <div className={`font-extrabold text-base sm:text-lg ${
-                      isActive ? 'text-teal-700' : 'text-slate-700'
-                    }`}>
+                    <div className={`font-extrabold text-base sm:text-lg ${isActive ? 'text-teal-700' : 'text-slate-700'
+                      }`}>
                       Slot {slot.slotNumber}
                     </div>
                     {isActive && (
@@ -1170,13 +1141,12 @@ const SlotsSection = ({ slots, currentSlot, timeLeft, loading, refetch, slotsDat
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="font-mono text-xs sm:text-sm text-slate-400 mb-1.5">
                     {fmt24(slot.startHour)} → {fmt24(slot.endHour)}
                   </div>
-                  <div className={`text-xs sm:text-sm font-medium flex items-center gap-1 ${
-                    isActive ? 'text-teal-500' : 'text-slate-400'
-                  }`}>
+                  <div className={`text-xs sm:text-sm font-medium flex items-center gap-1 ${isActive ? 'text-teal-500' : 'text-slate-400'
+                    }`}>
                     <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {slot.endHour - slot.startHour}h window
                   </div>
                 </div>
@@ -1209,7 +1179,7 @@ const Panel = ({ title, Icon, count, onRefresh, children }) => (
         )}
       </div>
       {onRefresh && (
-        <button 
+        <button
           onClick={onRefresh}
           className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:border-teal-400 hover:text-teal-600 hover:bg-teal-50 transition-all text-xs sm:text-sm font-semibold"
         >
@@ -1222,38 +1192,33 @@ const Panel = ({ title, Icon, count, onRefresh, children }) => (
 );
 
 const BalCard = ({ label, value, unit, primary, bar, barVal, Icon }) => (
-  <div className={`rounded-xl p-4 sm:p-5 transition-all hover:-translate-y-1 hover:shadow-lg ${
-    primary 
-      ? 'bg-gradient-to-br from-teal-500 to-teal-700 border border-teal-400 shadow-xl shadow-teal-500/30' 
+  <div className={`rounded-xl p-4 sm:p-5 transition-all hover:-translate-y-1 hover:shadow-lg ${primary
+      ? 'bg-gradient-to-br from-teal-500 to-teal-700 border border-teal-400 shadow-xl shadow-teal-500/30'
       : 'bg-white border border-slate-200 shadow-sm'
-  }`}>
+    }`}>
     <div className="flex items-center gap-1.5 mb-2.5">
       <Icon className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${primary ? 'text-white/65' : 'text-slate-400'}`} />
-      <div className={`font-mono text-[10px] sm:text-xs tracking-widest uppercase font-medium ${
-        primary ? 'text-white/65' : 'text-slate-400'
-      }`}>
+      <div className={`font-mono text-[10px] sm:text-xs tracking-widest uppercase font-medium ${primary ? 'text-white/65' : 'text-slate-400'
+        }`}>
         {label}
       </div>
     </div>
-    <div className={`font-mono text-xl sm:text-2xl md:text-3xl font-bold leading-none ${
-      primary ? 'text-white' : 'text-slate-800'
-    }`}>
+    <div className={`font-mono text-xl sm:text-2xl md:text-3xl font-bold leading-none ${primary ? 'text-white' : 'text-slate-800'
+      }`}>
       {value} <span className="text-xs opacity-60 font-normal">{unit}</span>
     </div>
     {bar && (
-      <div className={`mt-3 rounded-full h-1.5 overflow-hidden ${
-        primary ? 'bg-white/20' : 'bg-slate-100'
-      }`}>
-        <div 
-          className={`h-full rounded-full transition-all duration-700 ${
-            primary 
-              ? 'bg-white' 
-              : barVal >= 80 
-              ? 'bg-teal-500' 
-              : barVal >= 50 
-              ? 'bg-yellow-500' 
-              : 'bg-red-500'
-          }`}
+      <div className={`mt-3 rounded-full h-1.5 overflow-hidden ${primary ? 'bg-white/20' : 'bg-slate-100'
+        }`}>
+        <div
+          className={`h-full rounded-full transition-all duration-700 ${primary
+              ? 'bg-white'
+              : barVal >= 80
+                ? 'bg-teal-500'
+                : barVal >= 50
+                  ? 'bg-yellow-500'
+                  : 'bg-red-500'
+            }`}
           style={{ width: `${barVal}%` }}
         />
       </div>
@@ -1286,7 +1251,7 @@ const Empty = ({ Icon, msg, sub }) => (
 
 const Pager = ({ page, total, setPage }) => (
   <div className="flex flex-wrap items-center justify-center gap-2 mt-6 pt-5 border-t border-slate-200">
-    <button 
+    <button
       onClick={() => setPage(page - 1)}
       disabled={page === 1}
       className="bg-white border border-slate-200 rounded-lg p-2 text-slate-500 hover:border-teal-400 hover:text-teal-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
@@ -1296,20 +1261,19 @@ const Pager = ({ page, total, setPage }) => (
     {[...Array(Math.min(5, total))].map((_, i) => {
       const p = total <= 5 ? i + 1 : page <= 3 ? i + 1 : page >= total - 2 ? total - 4 + i : page - 2 + i;
       return (
-        <button 
+        <button
           key={p}
           onClick={() => setPage(p)}
-          className={`min-w-[36px] sm:min-w-[40px] px-3 py-2 rounded-lg font-mono text-xs sm:text-sm transition-all ${
-            page === p 
-              ? 'bg-teal-500 border-teal-500 text-white font-bold' 
+          className={`min-w-[36px] sm:min-w-[40px] px-3 py-2 rounded-lg font-mono text-xs sm:text-sm transition-all ${page === p
+              ? 'bg-teal-500 border-teal-500 text-white font-bold'
               : 'bg-white border border-slate-200 text-slate-500 hover:border-teal-400 hover:text-teal-600'
-          }`}
+            }`}
         >
           {p}
         </button>
       );
     })}
-    <button 
+    <button
       onClick={() => setPage(page + 1)}
       disabled={page === total}
       className="bg-white border border-slate-200 rounded-lg p-2 text-slate-500 hover:border-teal-400 hover:text-teal-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"

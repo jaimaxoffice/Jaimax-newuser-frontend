@@ -11,8 +11,8 @@ export const createSocket = ({ socketUrl, currentUser }) => {
     transports: ["websocket"],
     query: socketQuery,
 
-    pingTimeout: 120_000,      // wait 2 min for pong before declaring dead
-    pingInterval: 25_000,      // send ping every 25s
+    pingTimeout: 120_000,      
+    pingInterval: 25_000,  
 
     reconnection: true,
     reconnectionAttempts: Infinity,
@@ -21,3 +21,4 @@ export const createSocket = ({ socketUrl, currentUser }) => {
     randomizationFactor: 0.5,
   });
 };
+

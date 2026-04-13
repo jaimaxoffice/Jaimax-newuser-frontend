@@ -33,16 +33,17 @@ export const useSocket = ({
   setIsInputDisabled,
   setRateLimitError,
   setSocketInitialized,
-
+  setBlockedUsers,
   // refs
   selectedGroupRef,
   processedMessagesRef,
   hasAutoSelectedRef,
 
- 
+  setChatError,
   handleGroupSelect,
   updateGroupLastMessage,
   showNotification,
+  setPinmessageError
 }) => {
   const socketRef = useRef(null);
   const rateLimitResetTimer = useRef(null);
@@ -83,6 +84,8 @@ export const useSocket = ({
     const socket = createSocket({ socketUrl, currentUser });
     socketRef.current = socket;
 
+    console.log(socket, "socket1234r54t")
+
     registerSocketHandlers(socket, {
       currentUser,
       SECRET_KEY,
@@ -109,16 +112,17 @@ export const useSocket = ({
       setIsDeletingMessage,
       setIsInputDisabled,
       setRateLimitError,
-
+      setChatError,
       selectedGroupRef,
       processedMessagesRef,
       rateLimitResetTimer,
-
+      setBlockedUsers,
       processIncomingMessage,
       updateGroupLastMessage,
       showNotification,
       handleGroupSelect,
       hasAutoSelectedRef,
+      setPinmessageError
     });
   }, [
     currentUser,
@@ -193,3 +197,4 @@ export const useSocket = ({
 
   return { socketRef, connectSocket };
 };
+

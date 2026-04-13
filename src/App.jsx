@@ -479,7 +479,7 @@ const App = () => {
               <Route path="/kyc-information" element={<Kyc />} />
               <Route path="/withdrawal" element={<WithDrawal />} />
               <Route path="/meetings" element={<UserMeetingsShowcase />} />
-              {/* <Route path="/community" element={<GroupChatApp />} /> */}
+              <Route path="/community" element={<GroupChatApp />} />
             <Route path="/mining" element={<MiningPage/>}/>
             </Route>
             <Route path="/support" element={<DashboardLayout />}>

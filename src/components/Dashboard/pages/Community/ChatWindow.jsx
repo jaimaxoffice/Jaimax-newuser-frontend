@@ -1,2287 +1,1037 @@
-// import React, { useEffect, useRef, useState, useCallback } from "react";
-// import Cookies from "js-cookie";
-// import {
-//   Users,
-//   ChevronDown,
-//   Pin,
-//   PinOff,
-//   X,
-//   Star,
-//   StarOff,
-//   ArrowDown,
-//   ArrowLeft,
-//   Reply,
-//   Copy,
-//   Check,
-//   CheckCheck,
-//   Pencil,
-//   Info,
-//   Trash2,
-//   Flag,
-//   Forward,
-//   Smile,
-//   Download,
-//   GripHorizontal,
-// } from "lucide-react";
-// import { decryptMessage } from "./socket/encryptmsg";
-// import Loader from "../../../../ReusableComponents/Loader/loader";
-// import loaderImage from "../../../../assets/logo.webp";
-// // import loaderImage from "/logo.webp";
-
-// // ── Sub-components ──
-// import ChatHeader from "./chatWindow/Chatheader";
-// import MessageBubble from "./chatWindow/Messagebubble";
-// import MessageInput from "./chatWindow/Messageinput";
-// import ContextMenu from "./chatWindow/ContextMenu";
-// import GroupInfoPanel from "./chatWindow/Groupinfopanel";
-// import SharedFilesPanel from "./chatWindow/Sharedfilespanel";
-// import {
-//   ClearChatModal,
-//   ErrorDetailModal,
-//   FileTypeModal,
-//   FileSendPreview,
-//   ImagePreviewModal,
-//   DocumentPreviewModal,
-//   ReportModal,
-//   ReadReceiptsModal,
-// } from "./chatWindow/Modals";
-
-// import MessageInfoPanel from "./chatWindow/MessageInfoPanel";
-// import ForwardModal from "./chatWindow/ForwardModal";
-// import StarredMessagesPanel from "./chatWindow/StarredMessagesPanel";
-// import EmojiReactionPicker from "./chatWindow/EmojiReactionPicker";
-// import EditMessageModal from "./chatWindow/EditMessageModal";
-
-// const REACTION_EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "🙏"];
-
-// // ═══════════════════════════════════════════════════════════
-// //  Responsive hooks
-// // ═══════════════════════════════════════════════════════════
-// function useIsMobile(breakpoint = 640) {
-//   const [isMobile, setIsMobile] = useState(
-//     typeof window !== "undefined" ? window.innerWidth < breakpoint : false
-//   );
-//   useEffect(() => {
-//     const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
-//     const handler = (e) => setIsMobile(e.matches);
-//     mq.addEventListener("change", handler);
-//     setIsMobile(mq.matches);
-//     return () => mq.removeEventListener("change", handler);
-//   }, [breakpoint]);
-//   return isMobile;
-// }
-
-// function useIsTablet() {
-//   const [isTablet, setIsTablet] = useState(
-//     typeof window !== "undefined"
-//       ? window.innerWidth >= 640 && window.innerWidth < 1024
-//       : false
-//   );
-//   useEffect(() => {
-//     const handler = () =>
-//       setIsTablet(window.innerWidth >= 640 && window.innerWidth < 1024);
-//     window.addEventListener("resize", handler);
-//     return () => window.removeEventListener("resize", handler);
-//   }, []);
-//   return isTablet;
-// }
-
-// const ChatWindow = ({
-//   selectedGroup,
-//   messages,
-//   ReadInfoButton,
-//   retryMessage,
-//   members,
-//   replyToMessage,
-//   groupKey,
-//   showMembers,
-//   refetchFiles,
-//   showClearChatModal,
-//   setShowClearChatModal,
-//   setShowMembers,
-//   handleReply,
-//   cancelReply,
-//   onClearChat,
-//   message,
-//   setMessage,
-//   onSendMessage,
-//   isInputDisabled,
-//   setIsInputDisabled,
-//   isLoadingMessages,
-//   isInitialMessagesLoad,
-//   loadNextPage,
-//   loadPrevPage,
-//   isLoadingUsers,
-//   userPage,
-//   totalPages,
-//   totalUsers,
-//   goToNextPage,
-//   goToPrevPage,
-//   goToFirstPage,
-//   goToLastPage,
-//   goToPage,
-//   isLoadingGroups,
-//   onBackToGroups,
-//   currentUser,
-//   typingUsers,
-//   onlineUsers,
-//   showEmojiPicker,
-//   showFileTypeModal,
-//   setShowFileTypeModal,
-//   setShowEmojiPicker,
-//   selectedFile,
-//   filePreview,
-//   showFilePreview,
-//   audioBlob,
-//   recordingTime,
-//   loadMoreUsers,
-//   isLoadingMoreUsers,
-//   hasMoreUsers,
-//   showFilesPanel,
-//   setShowFilesPanel,
-//   openMenuId,
-//   setOpenMenuId,
-//   cancelFileUpload,
-//   sendFileMessage,
-//   cancelRecording,
-//   sendAudioMessage,
-//   handleTyping,
-//   formatTime,
-//   formatDuration,
-//   fileInputRef,
-//   emojiPickerRef,
-//   messagesEndRef,
-//   chatFiles,
-//   loadingFiles,
-//   uploadingFile,
-//   uploadingAudio,
-//   socketRef,
-//   formatDateHeader,
-//   groupMessagesByDate,
-//   deleteForMe,
-//   deleteForEveryone,
-//   onMarkAsRead,
-//   loadOlderMessages,
-//   loadNewerMessages,
-//   isLoadingOlder,
-//   isLoadingNewer,
-//   hasMoreOldMessages,
-//   hasMoreNewMessages,
-//   reportMessage,
-//   selectedImages,
-//   setSelectedImages,
-//   selectedDocument,
-//   setSelectedDocument,
-//   imageCaption,
-//   setImageCaption,
-//   documentCaption,
-//   setDocumentCaption,
-//   showImagePreview,
-//   setShowImagePreview,
-//   showDocumentPreview,
-//   setShowDocumentPreview,
-//   handleImageSelect,
-//   handleDocumentSelect,
-//   sendImageMessage,
-//   sendDocumentMessage,
-//   cancelImageUpload,
-//   cancelDocumentUpload,
-//   removeImage,
-//   formatFileSize,
-//   emojiButtonRef,
-//   emojiClickInsideRef,
-//   filesPagination,
-//   filesPage,
-//   setFilesPage,
-//   filesTabType,
-//   rateLimitError,
-//   isAdmin = false,         // ← NEW: from socket join_chat_success
-//   isBlocked = false,       // ← NEW: from socket
-//   onAdminDelete,           // ← NEW: callback
-//   onBlockUser,             // ← NEW: callback
-//   onUnblockUser,
-// }) => {
-//   const isMobile = useIsMobile();
-//   const isTablet = useIsTablet();
-
-//   // ═══════════════════════════════════════════════════════════
-//   //  STATE
-//   // ═══════════════════════════════════════════════════════════
-//   const [countdown, setCountdown] = useState(0);
-//   const containerRef = useRef(null);
-//   const headerRef = useRef(null);
-//   const messagesAreaRef = useRef(null);
-//   const inputRef = useRef(null);
-//   const [isInitialLoad, setIsInitialLoad] = useState(true);
-//   const prevMessagesLengthRef = useRef(0);
-//   const [showErrorDetail, setShowErrorDetail] = useState(null);
-//   const [isComponentLoading, setIsComponentLoading] = useState(true);
-//   const [activeGroupTab, setActiveGroupTab] = useState("overview");
-
-//   // const hasMoreOldMessagesRef = useRef(hasMoreOldMessages);
-//   // const isLoadingOlderRef = useRef(isLoadingOlder);
-//   const hasMoreOldMessagesRef = useRef(hasMoreOldMessages);
-//   const isLoadingOlderRef = useRef(isLoadingOlder);
-//   const hasMoreNewMessagesRef = useRef(hasMoreNewMessages);
-//   const isLoadingNewerRef = useRef(isLoadingNewer);
-//   useEffect(() => {
-//     hasMoreOldMessagesRef.current = hasMoreOldMessages;
-//   }, [hasMoreOldMessages]);
-//   const isLoadingOlderRef = useRef(isLoadingOlder);
-//   const hasMoreNewMessagesRef = useRef(hasMoreNewMessages);
-//   const isLoadingNewerRef = useRef(isLoadingNewer);
-//   useEffect(() => {
-//     hasMoreOldMessagesRef.current = hasMoreOldMessages;
-//   }, [hasMoreOldMessages]);
-
-//   useEffect(() => {
-//     isLoadingOlderRef.current = isLoadingOlder;
-//   }, [isLoadingOlder]);
-//   useEffect(() => {
-//     isLoadingOlderRef.current = isLoadingOlder;
-//   }, [isLoadingOlder]);
-
-//   useEffect(() => {
-//     hasMoreNewMessagesRef.current = hasMoreNewMessages;
-//   }, [hasMoreNewMessages]);
-//   useEffect(() => {
-//     hasMoreNewMessagesRef.current = hasMoreNewMessages;
-//   }, [hasMoreNewMessages]);
-
-//   useEffect(() => {
-//     isLoadingNewerRef.current = isLoadingNewer;
-//   }, [isLoadingNewer]);
-//   useEffect(() => {
-//     isLoadingNewerRef.current = isLoadingNewer;
-//   }, [isLoadingNewer]);
-
-//   const scrollPositionRef = useRef(null);
-//   const isAtBottomRef = useRef(true);
-//   const [userScrolledUp, setUserScrolledUp] = useState(false);
-//   const isRestoringScrollRef = useRef(false);
-//   const [newMessagesCount, setNewMessagesCount] = useState(0);
-//   const [copiedMessageId, setCopiedMessageId] = useState(null);
-//   const membersContainerRef = useRef(null);
-//   const [showReportModal, setShowReportModal] = useState(false);
-//   const [reportingMessage, setReportingMessage] = useState(null);
-//   const [reportReason, setReportReason] = useState("");
-//   const [reportDescription, setReportDescription] = useState("");
-
-//   const [showReadReceipts, setShowReadReceipts] = useState(false);
-//   const [selectedMessageForReceipts, setSelectedMessageForReceipts] =
-//     useState(null);
-
-//   const [showMessageInfo, setShowMessageInfo] = useState(false);
-//   const [messageInfoData, setMessageInfoData] = useState(null);
-//   const [messageInfoLoading, setMessageInfoLoading] = useState(false);
-
-//   const [showForwardModal, setShowForwardModal] = useState(false);
-//   const [forwardingMessage, setForwardingMessage] = useState(null);
-
-//   const [showStarredPanel, setShowStarredPanel] = useState(false);
-//   const [starredMessages, setStarredMessages] = useState([]);
-//   const [starredLoading, setStarredLoading] = useState(false);
-
-//   const [showReactionPicker, setShowReactionPicker] = useState(null);
-//   const [reactionPickerPosition, setReactionPickerPosition] = useState({
-//     top: 0,
-//     left: 0,
-//   });
-
-//   const [showEditModal, setShowEditModal] = useState(false);
-//   const [editingMessage, setEditingMessage] = useState(null);
-//   const [editText, setEditText] = useState("");
-
-//   const [pinnedMessages, setPinnedMessages] = useState([]);
-//   const [showPinnedExpanded, setShowPinnedExpanded] = useState(false);
-//   const [currentPinnedIndex, setCurrentPinnedIndex] = useState(0);
-
-//   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
-//   const [localOpenMenuId, setLocalOpenMenuId] = useState(null);
-//   const effectiveOpenMenuId =
-//     typeof openMenuId !== "undefined" ? openMenuId : localOpenMenuId;
-//   const setEffectiveOpenMenuId = (v) => {
-//     if (typeof setOpenMenuId === "function") setOpenMenuId(v);
-//     else setLocalOpenMenuId(v);
-//   };
-
-//   const [observedMessages, setObservedMessages] = useState(new Set());
-//   const observerRef = useRef(null);
-
-//   const storedData = Cookies.get("adminUserData");
-//   let userRole = "";
-//   let platformRole = "";
-//   if (storedData) {
-//     const parsed = JSON.parse(storedData);
-//     userRole = parsed.data.role;
-//     platformRole = parsed.data.role;
-//   }
-
-//   const isOverlayOpen =
-//     showMembers || showFilesPanel || showStarredPanel || showMessageInfo;
-
-//   // ═══════════════════════════════════════════════════════════
-//   //  SOCKET LISTENERS
-//   // ═══════════════════════════════════════════════════════════
-//   useEffect(() => {
-//     const socket = socketRef?.current;
-//     if (!socket) return;
-
-//     const handlePinnedMessages = ({ chatId, messages: pinned }) => {
-//       if (chatId === selectedGroup?.chatId) setPinnedMessages(pinned || []);
-//     };
-//     const handleMessagePinned = ({ chatId, message: pinnedMsg }) => {
-//       if (chatId === selectedGroup?.chatId)
-//         setPinnedMessages((prev) => [pinnedMsg, ...prev].slice(0, 3));
-//     };
-//     const handleMessageUnpinned = ({ chatId, msgId }) => {
-//       if (chatId === selectedGroup?.chatId)
-//         setPinnedMessages((prev) => prev.filter((m) => m._id !== msgId));
-//     };
-//     const handleReactionUpdate = () => { };
-//     const handleStarSuccess = () => { };
-//     const handleMessageInfo = (data) => {
-//       setMessageInfoData(data);
-//       setMessageInfoLoading(false);
-//     };
-//     const handleStarredMessages = ({ messages: msgs }) => {
-//       setStarredMessages(msgs || []);
-//       setStarredLoading(false);
-//     };
-//     const handleMessageEdited = () => { };
-//     const handleForwardSuccess = () => {
-//       setShowForwardModal(false);
-//       setForwardingMessage(null);
-//     };
-
-//     socket.on("pinned_messages", handlePinnedMessages);
-//     socket.on("message_pinned", handleMessagePinned);
-//     socket.on("message_unpinned", handleMessageUnpinned);
-//     socket.on("message:reaction_update", handleReactionUpdate);
-//     socket.on("star_message_success", handleStarSuccess);
-//     socket.on("message_info", handleMessageInfo);
-//     socket.on("starred_messages", handleStarredMessages);
-//     socket.on("message_edited", handleMessageEdited);
-//     socket.on("forward_message_success", handleForwardSuccess);
-
-//     return () => {
-//       socket.off("pinned_messages", handlePinnedMessages);
-//       socket.off("message_pinned", handleMessagePinned);
-//       socket.off("message_unpinned", handleMessageUnpinned);
-//       socket.off("message:reaction_update", handleReactionUpdate);
-//       socket.off("star_message_success", handleStarSuccess);
-//       socket.off("message_info", handleMessageInfo);
-//       socket.off("starred_messages", handleStarredMessages);
-//       socket.off("message_edited", handleMessageEdited);
-//       socket.off("forward_message_success", handleForwardSuccess);
-//     };
-//   }, [socketRef, selectedGroup?.chatId]);
-
-//   // ═══════════════════════════════════════════════════════════
-//   //  FEATURE HANDLERS
-//   // ═══════════════════════════════════════════════════════════
-//   const handlePinMessage = useCallback(
-//     (msgId) => {
-//       socketRef?.current?.emit("pin_message", {
-//         msgId,
-//         chatId: selectedGroup.chatId,
-//         userId: currentUser.id,
-//         userName: currentUser.name,
-//       });
-//       setEffectiveOpenMenuId(null);
-//     },
-//     [socketRef, selectedGroup, currentUser]
-//   );
-
-//   const handleUnpinMessage = useCallback(
-//     (msgId) => {
-//       socketRef?.current?.emit("unpin_message", {
-//         msgId,
-//         chatId: selectedGroup.chatId,
-//       });
-//       setEffectiveOpenMenuId(null);
-//     },
-//     [socketRef, selectedGroup]
-//   );
-
-//   const handleStarMessage = useCallback(
-//     (msgId) => {
-//       socketRef?.current?.emit("star_message", {
-//         msgId,
-//         chatId: selectedGroup.chatId,
-//         userId: currentUser.id,
-//       });
-//       setEffectiveOpenMenuId(null);
-//     },
-//     [socketRef, selectedGroup, currentUser]
-//   );
-
-//   const handleUnstarMessage = useCallback(
-//     (msgId) => {
-//       socketRef?.current?.emit("unstar_message", {
-//         msgId,
-//         chatId: selectedGroup.chatId,
-//         userId: currentUser.id,
-//       });
-//       setEffectiveOpenMenuId(null);
-//     },
-//     [socketRef, selectedGroup, currentUser]
-//   );
-
-//   const handleReaction = useCallback(
-//     (msgId, emoji) => {
-//       socketRef?.current?.emit("message:react", {
-//         msgId,
-//         chatId: selectedGroup.chatId,
-//         emoji,
-//         userId: currentUser.id,
-//         userName: currentUser.name,
-//       });
-//       setShowReactionPicker(null);
-//     },
-//     [socketRef, selectedGroup, currentUser]
-//   );
-
-//   const handleRemoveReaction = useCallback(
-//     (msgId) => {
-//       socketRef?.current?.emit("message:remove_reaction", {
-//         msgId,
-//         chatId: selectedGroup.chatId,
-//         userId: currentUser.id,
-//       });
-//     },
-//     [socketRef, selectedGroup, currentUser]
-//   );
-
-//   const handleForward = useCallback((msg) => {
-//     setForwardingMessage(msg);
-//     setShowForwardModal(true);
-//     setEffectiveOpenMenuId(null);
-//   }, []);
-
-//   const submitForward = useCallback(
-//     (toChatIds) => {
-//       if (!forwardingMessage) return;
-//       socketRef?.current?.emit("forward_message", {
-//         msgId: forwardingMessage.msgId || forwardingMessage._id,
-//         fromChatId: selectedGroup.chatId,
-//         toChatIds,
-//         userId: currentUser.id,
-//         userName: currentUser.name,
-//       });
-//     },
-//     [forwardingMessage, socketRef, selectedGroup, currentUser]
-//   );
-
-//   const handleEditMessage = useCallback(
-//     (msg) => {
-//       const msgText =
-//         typeof msg.msgBody?.message === "object" && groupKey
-//           ? decryptMessage(msg.msgBody.message, groupKey)
-//           : msg.msgBody?.message || "";
-//       setEditingMessage(msg);
-//       setEditText(msgText);
-//       setShowEditModal(true);
-//       setEffectiveOpenMenuId(null);
-//     },
-//     [groupKey]
-//   );
-
-//   const submitEdit = useCallback(() => {
-//     if (!editingMessage || !editText.trim()) return;
-//     socketRef?.current?.emit("edit_message", {
-//       msgId: editingMessage.msgId || editingMessage._id,
-//       chatId: selectedGroup.chatId,
-//       newMessage: editText.trim(),
-//       userId: currentUser.id,
-//     });
-//     setShowEditModal(false);
-//     setEditingMessage(null);
-//     setEditText("");
-//   }, [editingMessage, editText, socketRef, selectedGroup, currentUser]);
-
-//   const handleShowMessageInfo = useCallback(
-//     (msg) => {
-//       setMessageInfoLoading(true);
-//       setShowMessageInfo(true);
-//       socketRef?.current?.emit("get_message_info", {
-//         msgId: msg.msgId || msg._id,
-//         chatId: selectedGroup.chatId,
-//       });
-//       setEffectiveOpenMenuId(null);
-//     },
-//     [socketRef, selectedGroup]
-//   );
-
-//   const handleShowStarred = useCallback(() => {
-//     setStarredLoading(true);
-//     setShowStarredPanel(true);
-//     socketRef?.current?.emit("get_starred_messages", {
-//       chatId: selectedGroup.chatId,
-//       userId: currentUser.id,
-//     });
-//   }, [socketRef, selectedGroup, currentUser]);
-
-//   const handleReport = useCallback((msg) => {
-//     setReportingMessage(msg);
-//     setShowReportModal(true);
-//     setEffectiveOpenMenuId(null);
-//   }, []);
-
-//   const submitReport = () => {
-//     if (!reportReason) {
-//       alert("Please select a reason");
-//       return;
-//     }
-//     const reportData = {
-//       msgId: reportingMessage.msgId || reportingMessage._id?.toString(),
-//       chatId: selectedGroup.chatId,
-//       userId: currentUser.id,
-//       reason: reportReason,
-//       description: reportDescription,
-//     };
-//     socketRef?.current?.emit("report_message", reportData);
-//     reportMessage?.(reportData);
-//     setShowReportModal(false);
-//     setReportingMessage(null);
-//     setReportReason("");
-//     setReportDescription("");
-//   };
-
-//   const handleShowReactionPicker = useCallback(
-//     (msgId, e) => {
-//       e?.stopPropagation();
-//       if (isMobile) {
-//         setReactionPickerPosition({
-//           top: window.innerHeight - 120,
-//           left: (window.innerWidth - 280) / 2,
-//         });
-//       } else {
-//         const rect = e.currentTarget.getBoundingClientRect();
-//         setReactionPickerPosition({
-//           top: Math.max(10, rect.top - 50),
-//           left: Math.min(rect.left, window.innerWidth - 300),
-//         });
-//       }
-//       setShowReactionPicker(msgId);
-//     },
-//     [isMobile]
-//   );
-
-//   // ═══════════════════════════════════════════════════════════
-//   //  EFFECTS
-//   // ═══════════════════════════════════════════════════════════
-//   useEffect(() => {
-//     let timer;
-//     if (isInputDisabled) {
-//       setCountdown(60);
-//       timer = setInterval(() => {
-//         setCountdown((prev) => {
-//           if (prev <= 1) {
-//             clearInterval(timer);
-//             setIsInputDisabled(false);
-//             return 0;
-//           }
-//           return prev - 1;
-//         });
-//       }, 1000);
-//     }
-//     return () => clearInterval(timer);
-//   }, [isInputDisabled]);
-
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       if (selectedGroup && messages !== undefined) setIsComponentLoading(false);
-//     }, 100);
-//     return () => clearTimeout(timer);
-//   }, [selectedGroup, messages]);
-
-//   useEffect(() => {
-//     setIsComponentLoading(true);
-//     setPinnedMessages([]);
-//     setShowStarredPanel(false);
-//     setShowMessageInfo(false);
-//   }, [selectedGroup?.id]);
-
-//   useEffect(() => {
-//     if (!isComponentLoading && messages?.length > 0) {
-//       requestAnimationFrame(() => {
-//         requestAnimationFrame(() => {
-//           messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-//           isAtBottomRef.current = true;
-//         });
-//       });
-//     }
-//   }, [isComponentLoading]);
-
-//   useEffect(() => {
-//     const container = membersContainerRef.current;
-//     if (!container || activeGroupTab !== "members") return;
-//     let scrollTimeout;
-//     const handleScroll = () => {
-//       clearTimeout(scrollTimeout);
-//       scrollTimeout = setTimeout(() => {
-//         const { scrollTop, scrollHeight, clientHeight } = container;
-//         const pct = ((scrollTop + clientHeight) / scrollHeight) * 100;
-//         if (pct > 90 && userPage < totalPages && !isLoadingUsers)
-//           loadNextPage?.();
-//         if (pct < 10 && userPage > 1 && !isLoadingUsers) loadPrevPage?.();
-//       }, 300);
-//     };
-//     container.addEventListener("scroll", handleScroll);
-//     return () => {
-//       clearTimeout(scrollTimeout);
-//       container.removeEventListener("scroll", handleScroll);
-//     };
-//   }, [activeGroupTab, isLoadingUsers, userPage, totalPages]);
-
-//   // useEffect(() => {
-//   //   const messagesArea = messagesAreaRef.current;
-//   //   if (!messagesArea) return;
-//   //   let scrollTimeout;
-//   //   const handleScroll = () => {
-//   //     clearTimeout(scrollTimeout);
-//   //     const { scrollTop, scrollHeight, clientHeight } = messagesArea;
-//   //     const distTop = scrollTop;
-//   //     const distBottom = scrollHeight - scrollTop - clientHeight;
-//   //     isAtBottomRef.current = distBottom < 100;
-//   //     setUserScrolledUp(!isAtBottomRef.current);
-//   //     if (isAtBottomRef.current) setNewMessagesCount(0);
-//   //     scrollTimeout = setTimeout(() => {
-//   //       if (
-//   //         distTop < 200 &&
-//   //         hasMoreOldMessagesRef.current &&
-//   //         !isLoadingOlderRef.current
-//   //       )
-//   //         loadOlderMessages();
-//   //       if (
-//   //         distBottom < 200 &&
-//   //         hasMoreNewMessages &&
-//   //         !isLoadingNewer &&
-//   //         !isAtBottomRef.current
-//   //       )
-//   //         loadNewerMessages();
-//   //     }, 200);
-//   //   };
-//   //   messagesArea.addEventListener("scroll", handleScroll);
-//   //   return () => {
-//   //     clearTimeout(scrollTimeout);
-//   //     messagesArea.removeEventListener("scroll", handleScroll);
-//   //   };
-//   // }, [
-//   //   isComponentLoading,
-//   //   isInitialMessagesLoad,
-//   //   loadOlderMessages,
-//   //   loadNewerMessages,
-//   //   hasMoreNewMessages,
-//   //   isLoadingNewer,
-//   // ]);
-//   useEffect(() => {
-//     const messagesArea = messagesAreaRef.current;
-//     if (!messagesArea) return;
-//   useEffect(() => {
-//     const messagesArea = messagesAreaRef.current;
-//     if (!messagesArea) return;
-
-//     let scrollTimeout;
-//     let scrollTimeout;
-
-//     const handleScroll = () => {
-//       clearTimeout(scrollTimeout);
-//     const handleScroll = () => {
-//       clearTimeout(scrollTimeout);
-
-//       const { scrollTop, scrollHeight, clientHeight } = messagesArea;
-//       const distBottom = scrollHeight - scrollTop - clientHeight;
-//       const { scrollTop, scrollHeight, clientHeight } = messagesArea;
-//       const distBottom = scrollHeight - scrollTop - clientHeight;
-
-//       isAtBottomRef.current = distBottom < 100;
-//       setUserScrolledUp(!isAtBottomRef.current);
-//       if (isAtBottomRef.current) setNewMessagesCount(0);
-//       isAtBottomRef.current = distBottom < 100;
-//       setUserScrolledUp(!isAtBottomRef.current);
-//       if (isAtBottomRef.current) setNewMessagesCount(0);
-
-//       scrollTimeout = setTimeout(() => {
-//         // ✅ Load older: user near TOP
-//         if (
-//           scrollTop < 200 &&
-//           hasMoreOldMessagesRef.current &&
-//           !isLoadingOlderRef.current
-//         ) {
-//           console.log("[SCROLL] Near top — loading older messages");
-//           loadOlderMessages();
-//         }
-//       scrollTimeout = setTimeout(() => {
-//         // ✅ Load older: user near TOP
-//         if (
-//           scrollTop < 200 &&
-//           hasMoreOldMessagesRef.current &&
-//           !isLoadingOlderRef.current
-//         ) {
-//           console.log("[SCROLL] Near top — loading older messages");
-//           loadOlderMessages();
-//         }
-
-//         // ✅ Load newer: user near BOTTOM but not at bottom
-//         if (
-//           distBottom < 200 &&
-//           hasMoreNewMessagesRef.current &&
-//           !isLoadingNewerRef.current &&
-//           !isAtBottomRef.current
-//         ) {
-//           loadNewerMessages();
-//         }
-//       }, 200);
-//     };
-//         // ✅ Load newer: user near BOTTOM but not at bottom
-//         if (
-//           distBottom < 200 &&
-//           hasMoreNewMessagesRef.current &&
-//           !isLoadingNewerRef.current &&
-//           !isAtBottomRef.current
-//         ) {
-//           loadNewerMessages();
-//         }
-//       }, 200);
-//     };
-
-//     messagesArea.addEventListener("scroll", handleScroll);
-//     return () => {
-//       clearTimeout(scrollTimeout);
-//       messagesArea.removeEventListener("scroll", handleScroll);
-//     };
-//   }, [loadOlderMessages, loadNewerMessages]);
-//     messagesArea.addEventListener("scroll", handleScroll);
-//     return () => {
-//       clearTimeout(scrollTimeout);
-//       messagesArea.removeEventListener("scroll", handleScroll);
-//     };
-//   }, [loadOlderMessages, loadNewerMessages]);
-//   useEffect(() => {
-//     const messagesArea = messagesAreaRef.current;
-//     if (!messagesArea) return;
-//     if (isLoadingOlder && !scrollPositionRef.current) {
-//       const visibleMessages = messagesArea.querySelectorAll("[data-msg-id]");
-//       if (visibleMessages.length > 0) {
-//         const containerRect = messagesArea.getBoundingClientRect();
-//         for (let msg of visibleMessages) {
-//           const rect = msg.getBoundingClientRect();
-//           if (
-//             rect.top >= containerRect.top &&
-//             rect.top <= containerRect.bottom
-//           ) {
-//             scrollPositionRef.current = msg.getAttribute("data-msg-id");
-//             isRestoringScrollRef.current = true;
-//             break;
-//           }
-//         }
-//       }
-//     }
-//   }, [isLoadingOlder]);
-
-//   useEffect(() => {
-//     if (
-//       !isLoadingOlder &&
-//       scrollPositionRef.current &&
-//       isRestoringScrollRef.current
-//     ) {
-//       requestAnimationFrame(() => {
-//         requestAnimationFrame(() => {
-//           const el = document.getElementById(
-//             `msg-${scrollPositionRef.current}`
-//           );
-//           if (el) el.scrollIntoView({ block: "start", behavior: "instant" });
-//           scrollPositionRef.current = null;
-//           isRestoringScrollRef.current = false;
-//         });
-//       });
-//     }
-//   }, [isLoadingOlder, messages?.length]);
-
-//   useEffect(() => {
-//     if (!selectedGroup || !messagesAreaRef.current || !currentUser?.id) return;
-//     if (observerRef.current) observerRef.current.disconnect();
-//     observerRef.current = new IntersectionObserver(
-//       (entries) => {
-//         const now = Date.now();
-//         entries.forEach((entry) => {
-//           const msgId = entry.target.getAttribute("data-msg-id");
-//           const fromUserId = entry.target.getAttribute("data-from-user-id");
-//           if (!entry.isIntersecting || entry.intersectionRatio < 0.7) return;
-//           if (!msgId || !fromUserId) return;
-//           if (fromUserId === currentUser.id.toString()) return;
-//           if (observedMessages.has(msgId)) return;
-//           setObservedMessages((prev) => {
-//             const s = new Set(prev);
-//             s.add(msgId);
-//             return s;
-//           });
-//           onMarkAsRead?.({
-//             msgId,
-//             groupId: selectedGroup.id,
-//             chatId: selectedGroup.chatId,
-//             userId: currentUser.id,
-//             timestamp: now,
-//           });
-//           if (socketRef?.current?.connected) {
-//             socketRef.current.emit("message:read", {
-//               msgId,
-//               chatId: selectedGroup.chatId,
-//               userId: currentUser.id,
-//               readAt: now,
-//             });
-//           }
-//         });
-//       },
-//       {
-//         root: messagesAreaRef.current,
-//         threshold: 0.7,
-//         rootMargin: "-20px 0px -20px 0px",
-//       }
-//     );
-//     const timeoutId = setTimeout(() => {
-//       const els = messagesAreaRef.current?.querySelectorAll("[data-msg-id]");
-//       els?.forEach((el) => {
-//         if (
-//           el.getAttribute("data-msg-id") &&
-//           el.getAttribute("data-from-user-id")
-//         )
-//           observerRef.current.observe(el);
-//       });
-//     }, 100);
-//     return () => {
-//       clearTimeout(timeoutId);
-//       observerRef.current?.disconnect();
-//     };
-//   }, [
-//     selectedGroup?.id,
-//     selectedGroup?.chatId,
-//     messages?.length,
-//     currentUser?.id,
-//     onMarkAsRead,
-//     socketRef,
-//   ]);
-
-//   useEffect(() => {
-//     setObservedMessages(new Set());
-//   }, [selectedGroup?.id]);
-
-//   useEffect(() => {
-//     const messagesArea = messagesAreaRef.current;
-//     if (!messagesArea || !messages?.length) return;
-//     if (isRestoringScrollRef.current || isLoadingOlder) {
-//       prevMessagesLengthRef.current = messages.length;
-//       return;
-//     }
-//     if (isInitialLoad) {
-//       if (!isInitialMessagesLoad && !isLoadingMessages) {
-//         requestAnimationFrame(() => {
-//           requestAnimationFrame(() => {
-//             messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-//             isAtBottomRef.current = true;
-//           });
-//         });
-//         setIsInitialLoad(false);
-//       }
-//       prevMessagesLengthRef.current = messages.length;
-//       return;
-//     }
-//     const prevLength = prevMessagesLengthRef.current;
-//     const currentLength = messages.length;
-//     if (currentLength <= prevLength) return;
-//     const lastMessage = messages[currentLength - 1];
-//     const previousLastMessage =
-//       prevLength > 0 ? messages[prevLength - 1] : null;
-//     if (
-//       previousLastMessage &&
-//       lastMessage.msgId === previousLastMessage.msgId
-//     ) {
-//       prevMessagesLengthRef.current = currentLength;
-//       return;
-//     }
-//     const isMyMessage =
-//       lastMessage?.fromUserId?.toString() === currentUser?.id?.toString();
-//     if (isMyMessage || isAtBottomRef.current) {
-//       requestAnimationFrame(() =>
-//         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-//       );
-//       setNewMessagesCount(0);
-//     } else {
-//       setNewMessagesCount((prev) => prev + 1);
-//     }
-//     prevMessagesLengthRef.current = currentLength;
-//   }, [
-//     messages?.length,
-//     currentUser?.id,
-//     isInitialLoad,
-//     isInitialMessagesLoad,
-//     isLoadingMessages,
-//   ]);
-
-//   useEffect(() => {
-//     const onClick = () => {
-//       setEffectiveOpenMenuId(null);
-//       setShowReactionPicker(null);
-//     };
-//     window.addEventListener("click", onClick);
-//     return () => window.removeEventListener("click", onClick);
-//   }, []);
-
-//   useEffect(() => {
-//     const onKey = (e) => {
-//       if (e.key === "Escape") {
-//         setEffectiveOpenMenuId(null);
-//         setShowReadReceipts(false);
-//         setShowReactionPicker(null);
-//         setShowMessageInfo(false);
-//         setShowForwardModal(false);
-//         setShowEditModal(false);
-//         setShowStarredPanel(false);
-//         setShowPinnedExpanded(false);
-//       }
-//     };
-//     window.addEventListener("keydown", onKey);
-//     return () => window.removeEventListener("keydown", onKey);
-//   }, []);
-
-//   useEffect(() => {
-//     const onResize = () => {
-//       setEffectiveOpenMenuId(null);
-//       setShowReactionPicker(null);
-//     };
-//     window.addEventListener("resize", onResize);
-//     return () => window.removeEventListener("resize", onResize);
-//   }, []);
-
-//   // ═══════════════════════════════════════════════════════════
-//   //  HELPERS
-//   // ═══════════════════════════════════════════════════════════
-//   const renderMessageWithLinks = (text) => {
-//     if (!text) return null;
-//     text = String(text);
-//     const urlRegex = /(https?:\/\/[^\s]+)/g;
-//     const parts = text.split(urlRegex);
-//     return parts.map((part, i) => {
-//       if (part.match(urlRegex)) {
-//         return (
-//           <a
-//             key={i}
-//             href={part}
-//             target="_blank"
-//             rel="noopener noreferrer"
-//             className="text-[#53bdeb] hover:underline break-all"
-//             onClick={(e) => e.stopPropagation()}
-//           >
-//             {part}
-//           </a>
-//         );
-//       }
-//       return <span key={i}>{part}</span>;
-//     });
-//   };
-
-//   const getMessageReadStatus = (msg) => {
-//     const isCurrentUser =
-//       msg.fromUserId?.toString() === currentUser?.id?.toString();
-//     if (!isCurrentUser) return null;
-//     const readBy = msg.metaData?.readBy || [];
-//     const deliveredTo = msg.metaData?.deliveredTo || [];
-//     const totalMembers = members?.length || 0;
-//     if (!msg.metaData?.isSent && msg.msgStatus === "pending") return "sending";
-//     if (msg.msgStatus === "failed") return "failed";
-//     if (readBy.length >= totalMembers - 1 && totalMembers > 1)
-//       return "read_all";
-//     if (readBy.length > 0) return "read_some";
-//     if (deliveredTo.length >= totalMembers - 1 && totalMembers > 1)
-//       return "delivered_all";
-//     if (deliveredTo.length > 0 || msg.metaData?.isDelivered)
-//       return "delivered";
-//     if (msg.metaData?.isSent) return "sent";
-//     return "sending";
-//   };
-
-//   const isMessageStarred = (msg) =>
-//     (msg.starredBy || []).includes(currentUser?.id?.toString());
-
-//   const isMessagePinned = (msg) => msg.isPinned === true;
-
-//   const canEditMessage = (msg) => {
-//     if (msg.fromUserId?.toString() !== currentUser?.id?.toString())
-//       return false;
-//     if (
-//       msg.msgBody?.message_type === "file" ||
-//       msg.msgBody?.message_type === "audio"
-//     )
-//       return false;
-//     return Date.now() - new Date(msg.timestamp).getTime() < 15 * 60 * 1000;
-//   };
-
-//   // const toggleMenu = (msgId, e, isCurrentUser) => {
-//   //   e?.stopPropagation();
-//   //   if (effectiveOpenMenuId === msgId) {
-//   //     setEffectiveOpenMenuId(null);
-//   //     return;
-//   //   }
-//   //   if (isMobile) {
-//   //     setMenuPosition({ top: 0, left: 0 });
-//   //     setEffectiveOpenMenuId(msgId);
-//   //     return;
-//   //   }
-//   //   const msgElem = document.getElementById(`msg-${msgId}`);
-//   //   const container = containerRef.current;
-//   //   const header = headerRef.current;
-//   //   if (!msgElem || !container) {
-//   //     setMenuPosition({
-//   //       top: 80,
-//   //       left: Math.max(16, (container?.clientWidth || 300) - 220),
-//   //     });
-//   //     setEffectiveOpenMenuId(msgId);
-//   //     return;
-//   //   }
-//   //   const msgRect = msgElem.getBoundingClientRect();
-//   //   const containerRect = container.getBoundingClientRect();
-//   //   const headerRect = header
-//   //     ? header.getBoundingClientRect()
-//   //     : { bottom: containerRect.top };
-//   //   const spaceAbove =
-//   //     msgRect.top - containerRect.top - (headerRect.height || 0);
-//   //   const spaceBelow = containerRect.bottom - msgRect.bottom;
-//   //   const MENU_W = 200,
-//   //     MENU_H = 280,
-//   //     GAP = 8;
-//   //   let left = isCurrentUser
-//   //     ? Math.max(
-//   //         containerRect.left + 8,
-//   //         Math.min(msgRect.right - MENU_W, containerRect.right - 8 - MENU_W)
-//   //       )
-//   //     : Math.max(
-//   //         containerRect.left + 8,
-//   //         Math.min(msgRect.left, containerRect.right - 8 - MENU_W)
-//   //       );
-//   //   let top =
-//   //     spaceAbove > MENU_H + GAP
-//   //       ? msgRect.top - MENU_H - GAP
-//   //       : spaceBelow > MENU_H + GAP
-//   //         ? msgRect.bottom + GAP
-//   //         : Math.min(
-//   //             Math.max(containerRect.top + 8, msgRect.bottom + GAP),
-//   //             containerRect.bottom - MENU_H - 8
-//   //           );
-//   //   setMenuPosition({
-//   //     top: Math.round(top - containerRect.top),
-//   //     left: Math.round(left - containerRect.left),
-//   //   });
-//   //   setEffectiveOpenMenuId(msgId);
-//   // };
-//   // ═══════════════════════════════════════════════════════════
-//   //  FIXED toggleMenu function (replace in ChatWindow)
-//   // ═══════════════════════════════════════════════════════════
-//   const toggleMenu = useCallback(
-//     (msgId, e, isCurrentUser) => {
-//       e?.stopPropagation();
-//       e?.preventDefault();
-
-//       if (effectiveOpenMenuId === msgId) {
-//         setEffectiveOpenMenuId(null);
-//         return;
-//       }
-
-//       // Mobile → bottom sheet, no position needed
-//       if (isMobile) {
-//         setMenuPosition({ top: 0, left: 0 });
-//         setEffectiveOpenMenuId(msgId);
-//         return;
-//       }
-
-//       // Desktop → calculate position relative to container
-//       const msgElem = document.getElementById(`msg-${msgId}`);
-//       const container = containerRef.current;
-
-//       if (!msgElem || !container) {
-//         setEffectiveOpenMenuId(msgId);
-//         return;
-//       }
-
-//       const containerRect = container.getBoundingClientRect();
-//       const msgRect = msgElem.getBoundingClientRect();
-
-//       const MENU_W = 220;
-//       const MENU_H = 340; // estimated max height
-//       const GAP = 6;
-//       const EDGE_PADDING = 8;
-
-//       // ── Calculate LEFT ──
-//       let left;
-//       if (isCurrentUser) {
-//         // Right-aligned messages → menu opens to the left
-//         left = msgRect.right - containerRect.left - MENU_W;
-//       } else {
-//         // Left-aligned messages → menu opens to the right
-//         left = msgRect.left - containerRect.left;
-//       }
-
-//       // Clamp left within container bounds
-//       left = Math.max(
-//         EDGE_PADDING,
-//         Math.min(left, containerRect.width - MENU_W - EDGE_PADDING)
-//       );
-
-//       // ── Calculate TOP ──
-//       const spaceBelow = containerRect.bottom - msgRect.bottom;
-//       const spaceAbove = msgRect.top - containerRect.top;
-
-//       let top;
-
-//       if (spaceBelow >= MENU_H + GAP) {
-//         // Enough space below → show below message
-//         top = msgRect.bottom - containerRect.top + GAP;
-//       } else if (spaceAbove >= MENU_H + GAP) {
-//         // Enough space above → show above message
-//         top = msgRect.top - containerRect.top - MENU_H - GAP;
-//       } else {
-//         // Not enough space either way → fit within container
-//         // Show in whichever direction has more space
-//         if (spaceBelow > spaceAbove) {
-//           top = msgRect.bottom - containerRect.top + GAP;
-//         } else {
-//           top = msgRect.top - containerRect.top - MENU_H - GAP;
-//         }
-//       }
-
-//       // Clamp top within container bounds
-//       top = Math.max(
-//         EDGE_PADDING,
-//         Math.min(top, containerRect.height - MENU_H - EDGE_PADDING)
-//       );
-
-//       setMenuPosition({
-//         top: Math.round(top),
-//         left: Math.round(left),
-//       });
-//       setEffectiveOpenMenuId(msgId);
-//     },
-//     [effectiveOpenMenuId, isMobile]
-//   );
-//   const scrollToMessage = (msgId) => {
-//     const el = document.getElementById(`msg-${msgId}`);
-//     if (el) {
-//       el.scrollIntoView({ behavior: "smooth", block: "center" });
-//       el.classList.add("highlight-message");
-//       setTimeout(() => el.classList.remove("highlight-message"), 2000);
-//     }
-//   };
-
-//   const scrollToBottom = () => {
-//     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-//     setNewMessagesCount(0);
-//   };
-
-//   const handleCopyMessage = (messageText, id) => {
-//     if (!messageText) return;
-//     let textToCopy = messageText;
-//     if (typeof messageText === "object" && messageText !== null) {
-//       if (messageText.cipherText && groupKey) {
-//         try {
-//           textToCopy = decryptMessage(messageText, groupKey);
-//         } catch {
-//           textToCopy = "[Encrypted message]";
-//         }
-//       } else {
-//         textToCopy = "[Unable to copy]";
-//       }
-//     }
-//     navigator.clipboard
-//       .writeText(String(textToCopy || ""))
-//       .then(() => {
-//         setCopiedMessageId(id);
-//         setTimeout(() => setCopiedMessageId(null), 2000);
-//       })
-//       .catch(console.error);
-//   };
-
-//   const downloadFileToDesktop = async (fileUrl, fileName) => {
-//     try {
-//       const response = await fetch(fileUrl, { mode: "cors" });
-//       if (!response.ok) throw new Error("Network error");
-//       const blob = await response.blob();
-//       const blobUrl = window.URL.createObjectURL(blob);
-//       const link = document.createElement("a");
-//       link.style.display = "none";
-//       link.href = blobUrl;
-//       link.download = fileName || "download";
-//       document.body.appendChild(link);
-//       link.click();
-//       setTimeout(() => {
-//         document.body.removeChild(link);
-//         window.URL.revokeObjectURL(blobUrl);
-//       }, 100);
-//     } catch {
-//       const link = document.createElement("a");
-//       link.href = fileUrl;
-//       link.download = fileName || "download";
-//       link.target = "_blank";
-//       document.body.appendChild(link);
-//       link.click();
-//       document.body.removeChild(link);
-//     }
-//   };
-
-//   const deduplicatedMessages = React.useMemo(() => {
-//     if (!messages || messages.length === 0) return [];
-//     const seen = new Map();
-//     for (const msg of messages) {
-//       const id =
-//         msg._id?.toString() ||
-//         msg.msgId ||
-//         msg.correlationId ||
-//         `${msg.fromUserId}-${msg.timestamp}-${msg.msgBody?.message}`;
-//       seen.set(id, msg);
-//     }
-//     return Array.from(seen.values()).sort(
-//       (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-//     );
-//   }, [messages]);
-
-//   const groupedMessages = groupMessagesByDate(deduplicatedMessages);
-//   const isEffectiveAdmin = [
-//     "admin",
-//     "superAdmin",
-//     "subAdmin",      // ← THE FIX
-//     "sub_admin",     // ← handle alternate format
-//   ].includes(userRole);
-//   // ═══════════════════════════════════════════════════════════
-//   //  RENDER
-//   // ═══════════════════════════════════════════════════════════
-//   return (
-//     <>
-//       {isComponentLoading ? (
-//         <Loader />
-//       ) : (
-//         <div
-//           ref={containerRef}
-//           className="flex-1 flex flex-col relative h-full overflow-hidden bg-[#0b141a] w-full max-w-full"
-//         >
-//           {/* ─── HEADER ─── */}
-//           {!isOverlayOpen && (
-//             <div ref={headerRef}>
-//               <ChatHeader
-//                 selectedGroup={selectedGroup}
-//                 totalUsers={totalUsers}
-//                 typingUsers={typingUsers}
-//                 setShowMembers={setShowMembers}
-//                 setShowFilesPanel={setShowFilesPanel}
-//                 setActiveGroupTab={setActiveGroupTab}
-//                 setShowClearChatModal={setShowClearChatModal}
-//                 onShowStarred={handleShowStarred}
-//                 headerRef={headerRef}
-//                 isMobile={isMobile}
-//                 onBackToGroups={onBackToGroups}
-//               />
-//             </div>
-//           )}
-
-//           {/* ─── PINNED MESSAGES BAR ─── */}
-//           {pinnedMessages.length > 0 && !isOverlayOpen && (
-//             <div className="bg-[#1f2c34] border-b border-[#2a3942] px-2 sm:px-4 py-1.5 sm:py-2">
-//               <div className="flex items-center justify-between gap-2">
-//                 <div
-//                   className="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0 cursor-pointer"
-//                   onClick={() => {
-//                     const pinId = pinnedMessages[currentPinnedIndex]?._id;
-//                     if (pinId) scrollToMessage(pinId);
-//                     setCurrentPinnedIndex(
-//                       (prev) => (prev + 1) % pinnedMessages.length
-//                     );
-//                   }}
-//                 >
-//                   <Pin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00a884] flex-shrink-0" />
-//                   <div className="flex-1 min-w-0">
-//                     <div className="flex items-center gap-1.5 sm:gap-2">
-//                       <span className="text-[#00a884] text-[10px] sm:text-xs font-medium">
-//                         Pinned
-//                         {pinnedMessages.length > 1 &&
-//                           ` (${currentPinnedIndex + 1}/${pinnedMessages.length})`}
-//                       </span>
-//                     </div>
-//                     <p className="text-xs sm:text-sm text-gray-300 truncate">
-//                       {typeof pinnedMessages[currentPinnedIndex]?.msgBody
-//                         ?.message === "string"
-//                         ? pinnedMessages[currentPinnedIndex].msgBody.message
-//                         : pinnedMessages[currentPinnedIndex]?.msgBody
-//                           ?.message_type === "file"
-//                           ? pinnedMessages[currentPinnedIndex]?.msgBody?.media
-//                             ?.fileName || "File"
-//                           : "Message"}
-//                     </p>
-//                   </div>
-//                 </div>
-//                 {pinnedMessages.length > 1 && (
-//                   <button
-//                     onClick={() => setShowPinnedExpanded(!showPinnedExpanded)}
-//                     className="p-1 hover:bg-[#2a3942] rounded flex-shrink-0"
-//                   >
-//                     <ChevronDown
-//                       className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 transition-transform ${showPinnedExpanded ? "rotate-180" : ""
-//                         }`}
-//                     />
-//                   </button>
-//                 )}
-//               </div>
-
-//               {showPinnedExpanded && (
-//                 <div className="mt-1.5 sm:mt-2 space-y-0.5 sm:space-y-1 border-t border-[#2a3942] pt-1.5 sm:pt-2">
-//                   {pinnedMessages.map((pin, idx) => (
-//                     <div
-//                       key={pin._id}
-//                       className="flex items-center justify-between py-1 px-1.5 sm:px-2 hover:bg-[#2a3942] rounded cursor-pointer"
-//                       onClick={() => {
-//                         scrollToMessage(pin._id);
-//                         setCurrentPinnedIndex(idx);
-//                         setShowPinnedExpanded(false);
-//                       }}
-//                     >
-//                       <div className="flex-1 min-w-0">
-//                         <span className="text-[10px] sm:text-xs text-[#00a884]">
-//                           {pin.publisherName}
-//                         </span>
-//                         <p className="text-[10px] sm:text-xs text-gray-400 truncate">
-//                           {typeof pin.msgBody?.message === "string"
-//                             ? pin.msgBody.message
-//                             : "Media"}
-//                         </p>
-//                       </div>
-//                       <button
-//                         onClick={(e) => {
-//                           e.stopPropagation();
-//                           handleUnpinMessage(pin._id);
-//                         }}
-//                         className="p-0.5 sm:p-1 hover:bg-[#374751] rounded flex-shrink-0 ml-1"
-//                       >
-//                         <X className="w-3 h-3 text-gray-500" />
-//                       </button>
-//                     </div>
-//                   ))}
-//                 </div>
-//               )}
-//             </div>
-//           )}
-
-//           {/* ─── OVERLAY PANELS ─── */}
-//           {selectedGroup && showMembers && (
-//             <div
-//               className={
-//                 isMobile ? "absolute inset-0 z-40 bg-[#0b141a]" : ""
-//               }
-//             >
-//               <GroupInfoPanel
-//                 selectedGroup={selectedGroup}
-//                 activeGroupTab={activeGroupTab}
-//                 setActiveGroupTab={setActiveGroupTab}
-//                 members={members}
-//                 totalUsers={totalUsers}
-//                 membersContainerRef={membersContainerRef}
-//                 accumulatedFiles={Array.isArray(chatFiles) ? chatFiles : []}
-//                 filesPage={filesPage}
-//                 setFilesPage={setFilesPage}
-//                 loadingFiles={loadingFiles}
-//                 filesPagination={filesPagination}
-//                 refetchFiles={refetchFiles}
-//                 setShowMembers={setShowMembers}
-//                 messagesEndRef={messagesEndRef}
-//                 formatFileSize={formatFileSize}
-//                 downloadFileToDesktop={downloadFileToDesktop}
-//                 isMobile={isMobile}
-//               />
-//             </div>
-//           )}
-
-//           {selectedGroup && showFilesPanel && (
-//             <div
-//               className={
-//                 isMobile ? "absolute inset-0 z-40 bg-[#0b141a]" : ""
-//               }
-//             >
-//               <SharedFilesPanel
-//                 setShowFilesPanel={setShowFilesPanel}
-//                 accumulatedFiles={Array.isArray(chatFiles) ? chatFiles : []}
-//                 filesPage={filesPage}
-//                 loadingFiles={loadingFiles}
-//                 filesPagination={filesPagination}
-//                 formatTime={formatTime}
-//                 formatFileSize={formatFileSize}
-//                 isMobile={isMobile}
-//               />
-//             </div>
-//           )}
-
-//           {showStarredPanel && (
-//             <div
-//               className={
-//                 isMobile ? "absolute inset-0 z-40 bg-[#0b141a]" : ""
-//               }
-//             >
-//               <StarredMessagesPanel
-//                 starredMessages={starredMessages}
-//                 loading={starredLoading}
-//                 onClose={() => setShowStarredPanel(false)}
-//                 onScrollToMessage={(msgId) => {
-//                   setShowStarredPanel(false);
-//                   setTimeout(() => scrollToMessage(msgId), 300);
-//                 }}
-//                 onUnstar={(msgId) => handleUnstarMessage(msgId)}
-//                 formatTime={formatTime}
-//                 groupKey={groupKey}
-//                 currentUser={currentUser}
-//                 isMobile={isMobile}
-//               />
-//             </div>
-//           )}
-
-//           {showMessageInfo && (
-//             <div
-//               className={
-//                 isMobile ? "absolute inset-0 z-40 bg-[#0b141a]" : ""
-//               }
-//             >
-//               <MessageInfoPanel
-//                 data={messageInfoData}
-//                 loading={messageInfoLoading}
-//                 members={members}
-//                 onClose={() => {
-//                   setShowMessageInfo(false);
-//                   setMessageInfoData(null);
-//                 }}
-//                 formatTime={formatTime}
-//                 isMobile={isMobile}
-//               />
-//             </div>
-//           )}
-
-//           {/* ─── MESSAGES AREA ─── */}
-//           {selectedGroup && !isOverlayOpen && (
-//             <div
-//               ref={messagesAreaRef}
-//               className="flex-1 overflow-y-auto p-1.5 sm:p-2 md:p-4 relative z-10 sidebar-scroll"
-//               style={{
-//                 overflowAnchor: "none",
-//                 WebkitOverflowScrolling: "touch",
-//                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23111b21' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-//                 backgroundColor: "#0b141a",
-//               }}
-//             >
-//               {isInitialMessagesLoad && isLoadingMessages ? (
-//                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0b141a]/90 z-50">
-//                   <div className="relative w-14 h-14 sm:w-20 sm:h-20">
-//                     <div className="absolute inset-0 rounded-full border-[3px] sm:border-4 border-[#202c33] border-t-[#00a884] animate-spin" />
-//                     <div
-//                       className="absolute inset-0 rounded-full border-[3px] sm:border-4 border-transparent border-b-[#00a884]/40 animate-spin"
-//                       style={{
-//                         animationDirection: "reverse",
-//                         animationDuration: "1s",
-//                       }}
-//                     />
-//                     <img
-//                       src={loaderImage}
-//                       alt="loader"
-//                       className="absolute inset-0 m-auto w-7 h-7 sm:w-10 sm:h-10 object-contain"
-//                     />
-//                   </div>
-//                   <p className="text-sm sm:text-lg mt-4 sm:mt-6 mb-1 font-medium text-gray-300">
-//                     Loading messages…
-//                   </p>
-//                   <p className="text-xs sm:text-sm text-gray-500">
-//                     Please wait
-//                   </p>
-//                 </div>
-//               ) : (
-//                 <>
-//                   {isLoadingOlder && (
-//                     <div className="sticky top-0 z-20 flex justify-center py-3 mb-2">
-//                       <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
-//                         <div className="relative">
-//                           <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
-//                         </div>
-//                         <span className="text-xs text-gray-300 font-medium">
-//                           Loading older messages…
-//                         </span>
-//                       </div>
-//                     </div>
-//                   )}
-//                   {isLoadingOlder && (
-//                     <div className="sticky top-0 z-20 flex justify-center py-3 mb-2">
-//                       <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
-//                         <div className="relative">
-//                           <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
-//                         </div>
-//                         <span className="text-xs text-gray-300 font-medium">
-//                           Loading older messages…
-//                         </span>
-//                       </div>
-//                     </div>
-//                   )}
-
-//                   {!isLoadingOlder && hasMoreOldMessages && messages?.length > 0 && (
-//                     <div className="flex justify-center py-2 mb-1">
-//                       <button
-//                         onClick={() => loadOlderMessages()}
-//                         className="group bg-[#182229] hover:bg-[#202c33] active:bg-[#2a3942] 
-//                   {!isLoadingOlder && hasMoreOldMessages && messages?.length > 0 && (
-//                     <div className="flex justify-center py-2 mb-1">
-//                       <button
-//                         onClick={() => loadOlderMessages()}
-//                         className="group bg-[#182229] hover:bg-[#202c33] active:bg-[#2a3942] 
-//                  px-4 py-2 rounded-xl border border-[#2a3942]/50 
-//                  hover:border-[#00a884]/40 transition-all duration-200 
-//                  cursor-pointer active:scale-95 flex items-center gap-2
-//                  shadow-sm hover:shadow-md"
-//                       >
-//                         <svg
-//                           className="w-3.5 h-3.5 text-[#00a884] group-hover:-translate-y-0.5 
-//                       >
-//                         <svg
-//                           className="w-3.5 h-3.5 text-[#00a884] group-hover:-translate-y-0.5 
-//                    transition-transform duration-200"
-//                           fill="none"
-//                           viewBox="0 0 24 24"
-//                           stroke="currentColor"
-//                           strokeWidth={2.5}
-//                         >
-//                           <path
-//                             strokeLinecap="round"
-//                             strokeLinejoin="round"
-//                             d="M5 15l7-7 7 7"
-//                           />
-//                         </svg>
-//                         <span className="text-xs sm:text-sm text-gray-400 
-//                           fill="none"
-//                           viewBox="0 0 24 24"
-//                           stroke="currentColor"
-//                           strokeWidth={2.5}
-//                         >
-//                           <path
-//                             strokeLinecap="round"
-//                             strokeLinejoin="round"
-//                             d="M5 15l7-7 7 7"
-//                           />
-//                         </svg>
-//                         <span className="text-xs sm:text-sm text-gray-400 
-//                         group-hover:text-gray-200 font-medium 
-//                         transition-colors duration-200">
-//                           Load older messages
-//                         </span>
-//                       </button>
-//                     </div>
-//                   )}
-//                           Load older messages
-//                         </span>
-//                       </button>
-//                     </div>
-//                   )}
-//                   {!messages || messages.length === 0 ? (
-//                     <div className="flex flex-col items-center justify-center h-full text-gray-500 px-4">
-//                       <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[#202c33] flex items-center justify-center mb-3 sm:mb-4">
-//                         <Users className="w-8 h-8 sm:w-12 sm:h-12 opacity-50" />
-//                       </div>
-//                       <p className="text-base sm:text-lg mb-1 text-gray-400 text-center">
-//                         No messages yet
-//                       </p>
-//                       <p className="text-xs sm:text-sm text-center">
-//                         Send a message to start the conversation
-//                       </p>
-//                     </div>
-//                   ) : (
-//                     <>
-//                       {Object.entries(groupedMessages).map(
-//                         ([dateKey, dateMessages]) => (
-//                           <div key={dateKey}>
-//                             <div className="flex justify-center my-2 sm:my-3">
-//                               <span className="bg-[#182229] text-[#8696a0] px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-lg text-[10px] sm:text-[11px] font-medium shadow-sm uppercase tracking-wide">
-//                                 {formatDateHeader(dateKey)}
-//                               </span>
-//                             </div>
-//                             {dateMessages.map((msg, index) => {
-//                               const uniqueKey =
-//                                 msg._id?.toString() ||
-//                                 msg.msgId ||
-//                                 msg.correlationId ||
-//                                 `${msg.fromUserId}-${msg.timestamp}-${index}`;
-//                               return (
-//                                 <MessageBubble
-//                                   key={uniqueKey}
-//                                   msg={msg}
-//                                   currentUser={currentUser}
-//                                   members={members}
-//                                   groupKey={groupKey}
-//                                   effectiveOpenMenuId={effectiveOpenMenuId}
-//                                   copiedMessageId={copiedMessageId}
-//                                   toggleMenu={toggleMenu}
-//                                   scrollToMessage={scrollToMessage}
-//                                   formatTime={formatTime}
-//                                   formatFileSize={formatFileSize}
-//                                   renderMessageWithLinks={
-//                                     renderMessageWithLinks
-//                                   }
-//                                   getMessageReadStatus={getMessageReadStatus}
-//                                   isEdited={msg.isEdited || false}
-//                                   isForwarded={msg.isForwarded || false}
-//                                   starred={isMessageStarred(msg)}
-//                                   pinned={isMessagePinned(msg)}
-//                                   reactions={msg.reactions || []}
-//                                   readStatus={getMessageReadStatus(msg)}
-//                                   onReact={handleShowReactionPicker}
-//                                   onRemoveReaction={handleRemoveReaction}
-//                                   isMobile={isMobile}
-//                                 />
-//                               );
-//                             })}
-//                           </div>
-//                         )
-//                       )}
-//                     </>
-//                   )}
-//                   <div ref={messagesEndRef} />
-//                   {isLoadingNewer && (
-//                     <div className="flex justify-center py-3 mt-2">
-//                       <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
-//                         <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
-//                         <span className="text-xs text-gray-300 font-medium">
-//                           Loading newer messages…
-//                         </span>
-//                       </div>
-//                     </div>
-//                   )}
-//                     <div className="flex justify-center py-3 mt-2">
-//                       <div className="bg-[#202c33] px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-lg border border-[#2a3942]">
-//                         <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#2a3942] border-t-[#00a884]" />
-//                         <span className="text-xs text-gray-300 font-medium">
-//                           Loading newer messages…
-//                         </span>
-//                       </div>
-//                     </div>
-//                   )}
-//                 </>
-//               )}
-
-//               {/* Scroll to bottom FAB */}
-//               {userScrolledUp && (
-//                 <button
-//                   onClick={scrollToBottom}
-//                   className={`fixed z-40 rounded-full bg-[#202c33] hover:bg-[#2a3942] shadow-lg flex items-center justify-center transition-all border border-[#2a3942] active:scale-95 ${isMobile
-//                     ? "bottom-20 right-4 w-9 h-9"
-//                     : "bottom-24 right-8 w-10 h-10"
-//                     }`}
-//                 >
-//                   <ArrowDown
-//                     className={`text-gray-400 ${isMobile ? "w-4 h-4" : "w-5 h-5"
-//                       }`}
-//                   />
-//                   {newMessagesCount > 0 && (
-//                     <span
-//                       className={`absolute bg-[#00a884] text-white font-bold rounded-full flex items-center justify-center ${isMobile
-//                         ? "-top-1.5 -right-1.5 text-[8px] w-4 h-4"
-//                         : "-top-2 -right-2 text-[10px] w-5 h-5"
-//                         }`}
-//                     >
-//                       {newMessagesCount > 99 ? "99+" : newMessagesCount}
-//                     </span>
-//                   )}
-//                 </button>
-//               )}
-//             </div>
-//           )}
-
-//           {/* ─── REACTION PICKER ─── */}
-//           {showReactionPicker && (
-//             <>
-//               {isMobile && (
-//                 <div
-//                   className="fixed inset-0 z-40 bg-black/40"
-//                   onClick={() => setShowReactionPicker(null)}
-//                 />
-//               )}
-//               <div
-//                 className={`fixed z-50 bg-[#233138] shadow-xl border border-[#2a3942] flex items-center ${isMobile
-//                   ? "rounded-2xl px-3 py-2 gap-2 left-1/2 -translate-x-1/2 bottom-16"
-//                   : "rounded-full px-2 py-1 gap-1"
-//                   }`}
-//                 style={
-//                   isMobile
-//                     ? {}
-//                     : {
-//                       top: reactionPickerPosition.top,
-//                       left: reactionPickerPosition.left,
-//                     }
-//                 }
-//                 onClick={(e) => e.stopPropagation()}
-//               >
-//                 {REACTION_EMOJIS.map((emoji) => (
-//                   <button
-//                     key={emoji}
-//                     onClick={() => handleReaction(showReactionPicker, emoji)}
-//                     className={`flex items-center justify-center hover:bg-[#2a3942] rounded-full transition-transform hover:scale-125 active:scale-95 ${isMobile ? "w-10 h-10 text-2xl" : "w-8 h-8 text-xl"
-//                       }`}
-//                   >
-//                     {emoji}
-//                   </button>
-//                 ))}
-//               </div>
-//             </>
-//           )}
-
-//           {/* ─── TYPING INDICATOR ─── */}
-//           {typingUsers?.length > 0 && !isOverlayOpen && (
-//             <div className="px-2 sm:px-4 py-0.5 sm:py-1 bg-[#0b141a]">
-//               <div className="flex items-center gap-1.5 sm:gap-2 text-[#00a884] text-[10px] sm:text-xs">
-//                 <div className="flex gap-0.5">
-//                   {[0, 150, 300].map((delay) => (
-//                     <span
-//                       key={delay}
-//                       className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-[#00a884] rounded-full animate-bounce"
-//                       style={{ animationDelay: `${delay}ms` }}
-//                     />
-//                   ))}
-//                 </div>
-//                 <span className="truncate">
-//                   {typingUsers.length === 1
-//                     ? `${typingUsers[0].userId || "Someone"} is typing…`
-//                     : `${typingUsers.length} people are typing…`}
-//                 </span>
-//               </div>
-//             </div>
-//           )}
-
-//           {/* ═══ MODALS ═══ */}
-//           <ImagePreviewModal
-//             showImagePreview={showImagePreview}
-//             selectedImages={selectedImages}
-//             imageCaption={imageCaption}
-//             setImageCaption={setImageCaption}
-//             uploadingFile={uploadingFile}
-//             cancelImageUpload={cancelImageUpload}
-//             sendImageMessage={sendImageMessage}
-//             removeImage={removeImage}
-//             formatFileSize={formatFileSize}
-//           />
-//           <DocumentPreviewModal
-//             showDocumentPreview={showDocumentPreview}
-//             selectedDocument={selectedDocument}
-//             uploadingFile={uploadingFile}
-//             cancelDocumentUpload={cancelDocumentUpload}
-//             sendDocumentMessage={sendDocumentMessage}
-//             formatFileSize={formatFileSize}
-//           />
-//           <ClearChatModal
-//             selectedGroup={selectedGroup}
-//             showClearChatModal={showClearChatModal}
-//             setShowClearChatModal={setShowClearChatModal}
-//             onClearChat={onClearChat}
-//           />
-//           <ErrorDetailModal
-//             showErrorDetail={showErrorDetail}
-//             setShowErrorDetail={setShowErrorDetail}
-//             retryMessage={retryMessage}
-//             formatTime={formatTime}
-//           />
-//           <FileTypeModal
-//             showFileTypeModal={showFileTypeModal}
-//             setShowFileTypeModal={setShowFileTypeModal}
-//             fileInputRef={fileInputRef}
-//           />
-//           <FileSendPreview
-//             showFilePreview={showFilePreview}
-//             selectedFile={selectedFile}
-//             filePreview={filePreview}
-//             uploadingFile={uploadingFile}
-//             cancelFileUpload={cancelFileUpload}
-//             sendFileMessage={sendFileMessage}
-//           />
-
-//           {/* Context Menu */}
-//           {selectedGroup && effectiveOpenMenuId && (
-//             <EnhancedContextMenu
-//               isAdmin={isEffectiveAdmin}  // ← Use combined check
-//               isBlocked={isBlocked}
-//               onAdminDelete={onAdminDelete}
-//               onBlockUser={onBlockUser}
-//               effectiveOpenMenuId={effectiveOpenMenuId}
-//               menuPosition={menuPosition}
-//               messages={messages}
-//               currentUser={currentUser}
-//               userRole={userRole}
-//               groupKey={groupKey}
-//               copiedMessageId={copiedMessageId}
-//               handleReply={handleReply}
-//               handleCopyMessage={handleCopyMessage}
-//               retryMessage={retryMessage}
-//               deleteForMe={deleteForMe}
-//               deleteForEveryone={deleteForEveryone}
-//               setEffectiveOpenMenuId={setEffectiveOpenMenuId}
-//               handlePinMessage={handlePinMessage}
-//               handleUnpinMessage={handleUnpinMessage}
-//               handleStarMessage={handleStarMessage}
-//               handleUnstarMessage={handleUnstarMessage}
-//               handleForward={handleForward}
-//               handleEditMessage={handleEditMessage}
-//               handleShowMessageInfo={handleShowMessageInfo}
-//               handleReport={handleReport}
-//               isMessageStarred={isMessageStarred}
-//               isMessagePinned={isMessagePinned}
-//               canEditMessage={canEditMessage}
-//               isMobile={isMobile}
-//             />
-//           )}
-
-//           <ReportModal
-//             showReportModal={showReportModal}
-//             reportingMessage={reportingMessage}
-//             reportReason={reportReason}
-//             reportDescription={reportDescription}
-//             setReportReason={setReportReason}
-//             setReportDescription={setReportDescription}
-//             setShowReportModal={setShowReportModal}
-//             setReportingMessage={setReportingMessage}
-//             groupKey={groupKey}
-//             submitReport={submitReport}
-//           />
-
-//           <ReadReceiptsModal
-//             showReadReceipts={showReadReceipts}
-//             setShowReadReceipts={setShowReadReceipts}
-//             selectedMessageForReceipts={selectedMessageForReceipts}
-//             members={members}
-//             formatTime={formatTime}
-//           />
-
-//           {/* Edit Modal */}
-//           {showEditModal && (
-//             <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60">
-//               <div
-//                 className={`bg-[#233138] shadow-2xl w-full ${isMobile
-//                   ? "rounded-t-2xl max-h-[80vh]"
-//                   : "rounded-xl max-w-md mx-4"
-//                   }`}
-//               >
-//                 <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-[#2a3942]">
-//                   <div className="flex items-center gap-2">
-//                     <Pencil className="w-4 h-4 sm:w-5 sm:h-5 text-[#00a884]" />
-//                     <h3 className="text-white text-base sm:text-lg font-medium">
-//                       Edit message
-//                     </h3>
-//                   </div>
-//                   <button
-//                     onClick={() => {
-//                       setShowEditModal(false);
-//                       setEditingMessage(null);
-//                     }}
-//                     className="p-1.5 sm:p-1 hover:bg-[#2a3942] rounded-full transition-colors"
-//                   >
-//                     <X className="w-5 h-5 text-gray-400" />
-//                   </button>
-//                 </div>
-//                 <div className="p-4 sm:p-5">
-//                   <textarea
-//                     value={editText}
-//                     onChange={(e) => setEditText(e.target.value)}
-//                     className="w-full bg-[#2a3942] text-white rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none resize-none border border-[#374751] focus:border-[#00a884] transition-colors"
-//                     rows={isMobile ? 3 : 4}
-//                     autoFocus
-//                   />
-//                 </div>
-//                 <div className="flex justify-end gap-2 sm:gap-3 px-4 sm:px-5 py-3 sm:py-4 border-t border-[#2a3942]">
-//                   <button
-//                     onClick={() => {
-//                       setShowEditModal(false);
-//                       setEditingMessage(null);
-//                     }}
-//                     className="px-3 sm:px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
-//                   >
-//                     Cancel
-//                   </button>
-//                   <button
-//                     onClick={submitEdit}
-//                     disabled={!editText.trim()}
-//                     className="px-5 sm:px-6 py-2 bg-[#00a884] hover:bg-[#06cf9c] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors active:scale-95"
-//                   >
-//                     Save
-//                   </button>
-//                 </div>
-//               </div>
-//             </div>
-//           )}
-
-//           {/* Forward Modal */}
-//           {showForwardModal && (
-//             <ForwardModal
-//               onClose={() => {
-//                 setShowForwardModal(false);
-//                 setForwardingMessage(null);
-//               }}
-//               onForward={submitForward}
-//               message={forwardingMessage}
-//               groupKey={groupKey}
-//               isMobile={isMobile}
-//             />
-//           )}
-
-//           {/* ─── INPUT BAR ─── */}
-//           {selectedGroup && !isOverlayOpen && (
-//             <MessageInput
-//               message={message}
-//               setMessage={setMessage}
-//               onSendMessage={onSendMessage}
-//               isInputDisabled={isInputDisabled}
-//               setIsInputDisabled={setIsInputDisabled}
-//               countdown={countdown}
-//               replyToMessage={replyToMessage}
-//               cancelReply={cancelReply}
-//               groupKey={groupKey}
-//               handleTyping={handleTyping}
-//               showEmojiPicker={showEmojiPicker}
-//               setShowEmojiPicker={setShowEmojiPicker}
-//               setShowFileTypeModal={setShowFileTypeModal}
-//               inputRef={inputRef}
-//               emojiPickerRef={emojiPickerRef}
-//               emojiButtonRef={emojiButtonRef}
-//               emojiClickInsideRef={emojiClickInsideRef}
-//               rateLimitError={rateLimitError}
-//               isMobile={isMobile}
-//               onCameraImageReady={(captureData) => {
-//                 // Option 1: Use your existing image preview modal
-//                 setSelectedImages([{
-//                   file: captureData.file,
-//                   preview: captureData.preview,
-//                   name: captureData.fileName,
-//                   size: captureData.fileSize,
-//                   type: captureData.fileType,
-//                 }]);
-//                 setImageCaption(captureData.caption || "");
-//                 setShowImagePreview(true);
-
-//                 // Option 2: Send directly via socket
-//                 // sendFileMessage(captureData.file, captureData.caption);
-//               }}
-//             />
-//           )}
-//         </div>
-//       )}
-
-//       <style>{`
-//         .highlight-message {
-//           animation: highlightFade 2s ease-out;
-//         }
-//         @keyframes highlightFade {
-//           0% { background-color: rgba(0, 168, 132, 0.3); }
-//           100% { background-color: transparent; }
-//         }
-//         @keyframes slide-up {
-//           from { transform: translateY(100%); }
-//           to { transform: translateY(0); }
-//         }
-//         .animate-slide-up {
-//           animation: slide-up 0.25s ease-out;
-//         }
-//         .sidebar-scroll::-webkit-scrollbar {
-//           width: 4px;
-//         }
-//         @media (min-width: 640px) {
-//           .sidebar-scroll::-webkit-scrollbar {
-//             width: 6px;
-//           }
-//         }
-//         .sidebar-scroll::-webkit-scrollbar-track {
-//           background: transparent;
-//         }
-//         .sidebar-scroll::-webkit-scrollbar-thumb {
-//           background: #374751;
-//           border-radius: 3px;
-//         }
-//         .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-//           background: #4a5568;
-//         }
-//         @supports (padding: env(safe-area-inset-bottom)) {
-//           .safe-bottom {
-//             padding-bottom: env(safe-area-inset-bottom);
-//           }
-//         }
-//         @media (max-width: 639px) {
-//           .no-select {
-//             -webkit-user-select: none;
-//             user-select: none;
-//             -webkit-touch-callout: none;
-//           }
-//         }
-//       `}</style>
-//     </>
-//   );
-// };
-
-// // ═══════════════════════════════════════════════════════════
-// //  ENHANCED CONTEXT MENU — All Lucide icons
-// // ═══════════════════════════════════════════════════════════
-// // ═══════════════════════════════════════════════════════════
-// //  ENHANCED CONTEXT MENU — Fixed positioning
-// // ═══════════════════════════════════════════════════════════
-// const EnhancedContextMenu = ({
-//   effectiveOpenMenuId,
-//   menuPosition,
-//   messages,
-//   currentUser,
-//   userRole,
-//   groupKey,
-//   copiedMessageId,
-//   handleReply,
-//   handleCopyMessage,
-//   retryMessage,
-//   deleteForMe,
-//   deleteForEveryone,
-//   setEffectiveOpenMenuId,
-//   handlePinMessage,
-//   handleUnpinMessage,
-//   handleStarMessage,
-//   handleUnstarMessage,
-//   handleForward,
-//   handleEditMessage,
-//   handleShowMessageInfo,
-//   handleReport,
-//   isMessageStarred,
-//   isMessagePinned,
-//   canEditMessage,
-//   isMobile,
-//   containerRef, // ← NEW: pass containerRef
-// }) => {
-//   const menuRef = useRef(null);
-
-//   if (!effectiveOpenMenuId) return null;
-
-//   const msg = messages?.find(
-//     (m) => (m.msgId || m._id?.toString()) === effectiveOpenMenuId
-//   );
-//   if (!msg) return null;
-
-//   const isCurrentUser =
-//     msg.fromUserId?.toString() === currentUser?.id?.toString();
-//   const isAdmin = userRole === "admin" || userRole === "superAdmin";
-//   const starred = isMessageStarred(msg);
-//   const pinned = isMessagePinned(msg);
-//   const editable = canEditMessage(msg);
-//   const msgId = msg.msgId || msg._id?.toString();
-//   const isCopied = copiedMessageId === effectiveOpenMenuId;
-
-//   // ─── Menu Item Component ───
-//   const MenuItem = ({ icon: Icon, label, onClick, danger = false }) => (
-//     <button
-//       onClick={(e) => {
-//         e.stopPropagation();
-//         onClick();
-//         setEffectiveOpenMenuId(null);
-//       }}
-//       className={`w-full flex items-center gap-3 text-sm transition-colors active:scale-[0.98] ${isMobile ? "px-5 py-3" : "px-3.5 py-2"
-//         } ${danger
-//           ? "text-red-400 hover:bg-red-500/10 active:bg-red-500/20"
-//           : "text-gray-300 hover:bg-[#2a3942] active:bg-[#374751]"
-//         }`}
-//     >
-//       <Icon
-//         className={`flex-shrink-0 ${isMobile ? "w-[18px] h-[18px]" : "w-4 h-4"
-//           } ${danger ? "text-red-400" : "text-gray-400"}`}
-//       />
-//       <span className={isMobile ? "text-[15px]" : "text-[13px]"}>
-//         {label}
-//       </span>
-//     </button>
-//   );
-
-//   const Divider = () => (
-//     <div
-//       className={`border-t border-[#2a3942] ${isMobile ? "my-1.5 mx-4" : "my-1"
-//         }`}
-//     />
-//   );
-
-//   // ─── Menu content (shared between mobile/desktop) ───
-//   const menuContent = (
-//     <>
-//       <MenuItem icon={Reply} label="Reply" onClick={() => handleReply(msg)} />
-
-//       <MenuItem
-//         icon={Smile}
-//         label="React"
-//         onClick={() => { }}
-//       />
-
-//       {msg.msgBody?.message_type !== "file" && (
-//         <MenuItem
-//           icon={isCopied ? Check : Copy}
-//           label={isCopied ? "Copied!" : "Copy"}
-//           onClick={() =>
-//             handleCopyMessage(msg.msgBody?.message, effectiveOpenMenuId)
-//           }
-//         />
-//       )}
-
-//       {isCurrentUser && editable && (
-//         <MenuItem
-//           icon={Pencil}
-//           label="Edit"
-//           onClick={() => handleEditMessage(msg)}
-//         />
-//       )}
-
-//       {pinned ? (
-//         <MenuItem
-//           icon={PinOff}
-//           label="Unpin"
-//           onClick={() => handleUnpinMessage(msgId)}
-//         />
-//       ) : (
-//         <MenuItem
-//           icon={Pin}
-//           label="Pin"
-//           onClick={() => handlePinMessage(msgId)}
-//         />
-//       )}
-
-
-
-//       {isCurrentUser && (
-//         <MenuItem
-//           icon={Info}
-//           label="Message info"
-//           onClick={() => handleShowMessageInfo(msg)}
-//         />
-//       )}
-
-//       <Divider />
-
-//       {!isCurrentUser && (
-//         <MenuItem
-//           icon={Flag}
-//           label="Report"
-//           onClick={() => handleReport(msg)}
-//         />
-//       )}
-
-//       <MenuItem
-//         icon={Trash2}
-//         label="Delete for me"
-//         onClick={() => deleteForMe(msgId, currentUser.id)}
-//         danger
-//       />
-
-//       {(isCurrentUser || isAdmin) && (
-//         <MenuItem
-//           icon={Trash2}
-//           label="Delete for everyone"
-//           onClick={() => deleteForEveryone(msgId)}
-//           danger
-//         />
-//       )}
-//     </>
-//   );
-
-//   // ═══════════════════════════════════════════════════════════
-//   //  MOBILE — Bottom Sheet
-//   // ═══════════════════════════════════════════════════════════
-//   if (isMobile) {
-//     return (
-//       <>
-//         {/* Backdrop */}
-//         <div
-//           className="fixed inset-0 z-[60] bg-black/50"
-//           onClick={(e) => {
-//             e.stopPropagation();
-//             setEffectiveOpenMenuId(null);
-//           }}
-//         />
-
-//         {/* Bottom sheet */}
-//         <div
-//           className="fixed bottom-0 left-0 right-0 z-[70] bg-[#233138] rounded-t-2xl shadow-2xl animate-slide-up"
-//           style={{
-//             maxHeight: "75vh",
-//             paddingBottom: "env(safe-area-inset-bottom, 0px)",
-//           }}
-//           onClick={(e) => e.stopPropagation()}
-//         >
-//           {/* Drag handle */}
-//           <div className="flex justify-center pt-2.5 pb-1">
-//             <div className="w-9 h-1 bg-gray-600 rounded-full" />
-//           </div>
-
-//           {/* Message preview header */}
-//           <div className="px-5 py-2.5 border-b border-[#2a3942]">
-//             <p className="text-[11px] text-[#00a884] font-medium truncate">
-//               {msg.publisherName || msg.fromUserId}
-//             </p>
-//             <p className="text-sm text-gray-300 truncate mt-0.5 leading-snug">
-//               {typeof msg.msgBody?.message === "string"
-//                 ? msg.msgBody.message.length > 60
-//                   ? msg.msgBody.message.slice(0, 60) + "…"
-//                   : msg.msgBody.message
-//                 : msg.msgBody?.message_type === "file"
-//                   ? msg.msgBody?.media?.fileName || "File"
-//                   : "Message"}
-//             </p>
-//           </div>
-
-//           {/* Scrollable menu items */}
-//           <div
-//             className="overflow-y-auto py-1.5"
-//             style={{ maxHeight: "calc(75vh - 80px)" }}
-//           >
-//             {menuContent}
-//           </div>
-//         </div>
-//       </>
-//     );
-//   }
-
-//   // ═══════════════════════════════════════════════════════════
-//   //  DESKTOP — Positioned within container (NOT fixed to viewport)
-//   // ═══════════════════════════════════════════════════════════
-//   return (
-//     <>
-//       {/* Invisible backdrop to close menu */}
-//       <div
-//         className="absolute inset-0 z-[60]"
-//         onClick={(e) => {
-//           e.stopPropagation();
-//           setEffectiveOpenMenuId(null);
-//         }}
-//       />
-
-//       {/* Menu — positioned ABSOLUTE within container, NOT fixed */}
-//       <div
-//         ref={menuRef}
-//         className="absolute z-[70] bg-[#233138] rounded-xl shadow-2xl border border-[#2a3942] py-1 overflow-hidden"
-//         style={{
-//           top: menuPosition.top,
-//           left: menuPosition.left,
-//           width: 220,
-//           maxHeight: "min(340px, calc(100% - 16px))",
-//           overflowY: "auto",
-//         }}
-//         onClick={(e) => e.stopPropagation()}
-//       >
-//         {menuContent}
-//       </div>
-//     </>
-//   );
-// };
-
-// export default ChatWindow;
-
-
-import React from 'react'
-
-const ChatWindow = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import Cookies from "js-cookie";
+import {
+  Users, ChevronDown, Pin, PinOff, X, ArrowDown,
+  Reply, Copy, Check, Pencil, Info, Trash2, Flag, Smile,
+} from "lucide-react";
+import { decryptMessage } from "./socket/encryptmsg";
+import Loader from "../../../../ReusableComponents/Loader/loader";
+import loaderImage from "../../../../assets/logo.webp";
+
+import ChatHeader from "./chatWindow/Chatheader";
+import MessageBubble from "./chatWindow/Messagebubble";
+import MessageInput from "./chatWindow/Messageinput";
+import GroupInfoPanel from "./chatWindow/Groupinfopanel";
+import SharedFilesPanel from "./chatWindow/Sharedfilespanel";
+import {
+  ClearChatModal, ErrorDetailModal, FileSendPreview,
+  ImagePreviewModal, DocumentPreviewModal, ReportModal, ReadReceiptsModal,
+} from "./chatWindow/Modals";
+import MessageInfoPanel from "./chatWindow/MessageInfoPanel";
+import ForwardModal from "./chatWindow/ForwardModal";
+import StarredMessagesPanel from "./chatWindow/StarredMessagesPanel";
+
+
+const C = {
+  teal: "#ffffff",
+  tealD: "#0c8c83",
+  tealL: "#0fa89e",
+  page: "#f0faf9",
+  white: "#ffffff",
+  t1: "#0fa89e",
+  t2: "#0fa89e",
+  t3: "#7aadaa",
+  sep: "#e0f0ef",
+  tealXL: "#085056",
+  amber: "#ffffff",
+  danger: "#ef4444",
+};
+
+const REACTION_EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "🙏"];
+
+function useIsMobile(bp = 640) {
+  const [v, setV] = useState(typeof window !== "undefined" ? window.innerWidth < bp : false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width:${bp - 1}px)`);
+    const h = e => setV(e.matches);
+    mq.addEventListener("change", h); setV(mq.matches);
+    return () => mq.removeEventListener("change", h);
+  }, [bp]);
+  return v;
+}
+function useIsTablet() {
+  const [v, setV] = useState(typeof window !== "undefined" ? window.innerWidth >= 640 && window.innerWidth < 1024 : false);
+  useEffect(() => {
+    const h = () => setV(window.innerWidth >= 640 && window.innerWidth < 1024);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return v;
 }
 
-export default ChatWindow
+/* ══════════════════════════════════════════════════════════════════════════ */
+const ChatWindow = ({
+  selectedGroup, messages, retryMessage, members, replyToMessage, groupKey,
+  showMembers, refetchFiles, showClearChatModal, setShowClearChatModal,
+  setShowMembers, handleReply, cancelReply, onClearChat,
+  message, setMessage, onSendMessage, isInputDisabled, setIsInputDisabled,
+  isLoadingMessages, isInitialMessagesLoad, loadNextPage, loadPrevPage,
+  isLoadingUsers, userPage, totalPages, totalUsers, isLoadingGroups,
+  onBackToGroups, currentUser, typingUsers, onlineUsers,
+  showEmojiPicker, showFileTypeModal, setShowFileTypeModal, setShowEmojiPicker,
+  selectedFile, filePreview, showFilePreview, audioBlob, recordingTime,
+  loadMoreUsers, isLoadingMoreUsers, hasMoreUsers,
+  showFilesPanel, setShowFilesPanel, openMenuId, setOpenMenuId,
+  cancelFileUpload, sendFileMessage, cancelRecording, sendAudioMessage,
+  handleTyping, formatTime, formatDuration, fileInputRef, emojiPickerRef,
+  messagesEndRef, chatFiles, loadingFiles, uploadingFile, uploadingAudio,
+  socketRef, formatDateHeader, groupMessagesByDate,
+  deleteForMe, deleteForEveryone, onMarkAsRead,
+  loadOlderMessages, loadNewerMessages, isLoadingOlder, isLoadingNewer,
+  hasMoreOldMessages, hasMoreNewMessages, reportMessage,
+  selectedImages, setSelectedImages, selectedDocument, setSelectedDocument,
+  imageCaption, setImageCaption, documentCaption, setDocumentCaption,
+  showImagePreview, setShowImagePreview, showDocumentPreview, setShowDocumentPreview,
+  handleImageSelect, handleDocumentSelect, sendImageMessage, sendDocumentMessage,
+  cancelImageUpload, cancelDocumentUpload, removeImage, formatFileSize,
+  emojiButtonRef, emojiClickInsideRef, filesPagination, filesPage, setFilesPage,
+  filesTabType, rateLimitError,
+  isAdmin = false, isBlocked = false, onAdminDelete, onBlockUser, onUnblockUser, chatError,
+  pinmessageError
+}) => {
+  const isMobile = useIsMobile();
+  useIsTablet();
+
+  console.log(chatError, "chatError1w2e3r45")
+  /* state */
+  const [countdown, setCountdown] = useState(0);
+  const containerRef = useRef(null);
+  const headerRef = useRef(null);
+  const messagesAreaRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const prevMessagesLengthRef = useRef(0);
+  const [showErrorDetail, setShowErrorDetail] = useState(null);
+  const [isComponentLoading, setIsComponentLoading] = useState(true);
+  const [activeGroupTab, setActiveGroupTab] = useState("overview");
+  const [localPinError, setLocalPinError] = useState(null);
+
+  const hasMoreOldRef = useRef(hasMoreOldMessages);
+  const isLoadOlderRef = useRef(isLoadingOlder);
+  const hasMoreNewRef = useRef(hasMoreNewMessages);
+  const isLoadNewerRef = useRef(isLoadingNewer);
+  useEffect(() => { hasMoreOldRef.current = hasMoreOldMessages; }, [hasMoreOldMessages]);
+  useEffect(() => { isLoadOlderRef.current = isLoadingOlder; }, [isLoadingOlder]);
+  useEffect(() => { hasMoreNewRef.current = hasMoreNewMessages; }, [hasMoreNewMessages]);
+  useEffect(() => { isLoadNewerRef.current = isLoadingNewer; }, [isLoadingNewer]);
+  const [decryptedPinTexts, setDecryptedPinTexts] = useState({});
+  const scrollPosRef = useRef(null);
+  const isAtBottomRef = useRef(true);
+  const isRestoringRef = useRef(false);
+
+  const [userScrolledUp, setUserScrolledUp] = useState(false);
+  const [newMsgCount, setNewMsgCount] = useState(0);
+  const [copiedMsgId, setCopiedMsgId] = useState(null);
+  const membersContainerRef = useRef(null);
+
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportingMsg, setReportingMsg] = useState(null);
+  const [reportReason, setReportReason] = useState("");
+  const [reportDesc, setReportDesc] = useState("");
+
+  const [showReadReceipts, setShowReadReceipts] = useState(false);
+  const [selectedMsgReceipts, setSelectedMsgReceipts] = useState(null);
+
+  const [showMsgInfo, setShowMsgInfo] = useState(false);
+  const [msgInfoData, setMsgInfoData] = useState(null);
+  const [msgInfoLoading, setMsgInfoLoading] = useState(false);
+
+  const [showForwardModal, setShowForwardModal] = useState(false);
+  const [forwardingMsg, setForwardingMsg] = useState(null);
+
+  const [showStarred, setShowStarred] = useState(false);
+  const [starredMsgs, setStarredMsgs] = useState([]);
+  const [starredLoading, setStarredLoading] = useState(false);
+
+  const [showReactionPicker, setShowReactionPicker] = useState(null);
+  const [reactionPos, setReactionPos] = useState({ top: 0, left: 0 });
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingMsg, setEditingMsg] = useState(null);
+  const [editText, setEditText] = useState("");
+
+  const [pinnedMsgs, setPinnedMsgs] = useState([]);
+  const [showPinnedExp, setShowPinnedExp] = useState(false);
+  const [pinnedIdx, setPinnedIdx] = useState(0);
+
+  const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
+  const [localMenuId, setLocalMenuId] = useState(null);
+  const effectiveMenuId = typeof openMenuId !== "undefined" ? openMenuId : localMenuId;
+  const setEffectiveMenuId = useCallback(v => {
+    if (typeof setOpenMenuId === "function") setOpenMenuId(v);
+    else setLocalMenuId(v);
+  }, [setOpenMenuId]);
+
+  const [observedMsgs, setObservedMsgs] = useState(new Set());
+  const observerRef = useRef(null);
+
+  const storedData = Cookies.get("adminUserData");
+  let userRole = "";
+  if (storedData) { try { userRole = JSON.parse(storedData)?.data?.role ?? ""; } catch { } }
+  const isEffectiveAdmin = ["admin", "superAdmin", "subAdmin", "sub_admin"].includes(userRole);
+  const isOverlayOpen = showFilesPanel || showStarred;
+
+
+  const handleDeleteForMe = useCallback((msgId, userId) => {
+    setPinnedMsgs(prev => prev.filter(m => m._id?.toString() !== msgId));
+    setDecryptedPinTexts(prev => { const copy = { ...prev }; delete copy[msgId]; return copy; });
+    deleteForMe(msgId, userId);
+  }, [deleteForMe]);
+
+  const handleDeleteForEveryone = useCallback((msgId) => {
+    setPinnedMsgs(prev => prev.filter(m => m._id?.toString() !== msgId));
+    setDecryptedPinTexts(prev => { const copy = { ...prev }; delete copy[msgId]; return copy; });
+    deleteForEveryone(msgId);
+  }, [deleteForEveryone]);
+
+  useEffect(() => {
+    if (!pinnedMsgs.length || !groupKey) return;
+    pinnedMsgs
+      .filter(pin =>
+        !pin.deletedForEveryone &&
+        !(pin.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString()))
+      )
+      .forEach(async (pin) => {
+        const msg = pin.msgBody?.message;
+        if (msg?.cipherText && msg?.iv && msg?.authTag) {
+          const result = await decryptMessage(msg, groupKey);
+          setDecryptedPinTexts(prev => ({ ...prev, [pin._id]: result }));
+        } else if (typeof msg === "string") {
+          setDecryptedPinTexts(prev => ({ ...prev, [pin._id]: msg }));
+        } else {
+          setDecryptedPinTexts(prev => ({ ...prev, [pin._id]: pin.msgBody?.media?.fileName || "Media" }));
+        }
+      });
+  }, [pinnedMsgs, groupKey, currentUser?.id]);
+
+
+
+  useEffect(() => {
+    if (!pinmessageError) return;
+    setLocalPinError(pinmessageError);
+    const t = setTimeout(() => setLocalPinError(null), 3000);
+    return () => clearTimeout(t);
+  }, [pinmessageError]);
+
+  /* ── socket listeners ──────────────────────────────────────────────────── */
+  useEffect(() => {
+    const s = socketRef?.current;
+    if (!s) return;
+    const onPinnedMsgs = ({ chatId, messages: p }) => {
+      if (chatId === selectedGroup?.chatId)
+        setPinnedMsgs((p || []).filter(m =>
+          !m.deletedForEveryone &&
+          !(m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString()))
+        ));
+    };
+    const onMsgPinned = ({ chatId, message: m }) => {
+      if (chatId === selectedGroup?.chatId) {
+        if (m.deletedForEveryone || m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString())) return;
+        setPinnedMsgs(p => [m, ...p].slice(0, 3));
+      }
+    };
+    const onMsgUnpinned = ({ chatId, msgId }) => { if (chatId === selectedGroup?.chatId) setPinnedMsgs(p => p.filter(m => m._id !== msgId)); };
+    const onMsgInfo = d => { setMsgInfoData(d); setMsgInfoLoading(false); };
+    const onStarredMsgs = ({ messages: m }) => { setStarredMsgs(m || []); setStarredLoading(false); };
+    const onForwardOk = () => { setShowForwardModal(false); setForwardingMsg(null); };
+    s.on("pinned_messages", onPinnedMsgs);
+    s.on("message_pinned", onMsgPinned);
+    s.on("message_unpinned", onMsgUnpinned);
+    s.on("message_info", onMsgInfo);
+    s.on("starred_messages", onStarredMsgs);
+    s.on("forward_message_success", onForwardOk);
+    return () => {
+      s.off("pinned_messages", onPinnedMsgs); s.off("message_pinned", onMsgPinned);
+      s.off("message_unpinned", onMsgUnpinned); s.off("message_info", onMsgInfo);
+      s.off("starred_messages", onStarredMsgs); s.off("forward_message_success", onForwardOk);
+    };
+  }, [socketRef, selectedGroup?.chatId]);
+
+  /* ── feature handlers ──────────────────────────────────────────────────── */
+  const handlePin = useCallback(id => { socketRef?.current?.emit("pin_message", { msgId: id, chatId: selectedGroup.chatId, userId: currentUser.id, userName: currentUser.name }); setEffectiveMenuId(null); }, [socketRef, selectedGroup, currentUser, setEffectiveMenuId]);
+  const handleUnpin = useCallback(id => { socketRef?.current?.emit("unpin_message", { msgId: id, chatId: selectedGroup.chatId }); setEffectiveMenuId(null); }, [socketRef, selectedGroup, setEffectiveMenuId]);
+  const handleStar = useCallback(id => { socketRef?.current?.emit("star_message", { msgId: id, chatId: selectedGroup.chatId, userId: currentUser.id }); setEffectiveMenuId(null); }, [socketRef, selectedGroup, currentUser, setEffectiveMenuId]);
+  const handleUnstar = useCallback(id => { socketRef?.current?.emit("unstar_message", { msgId: id, chatId: selectedGroup.chatId, userId: currentUser.id }); setEffectiveMenuId(null); }, [socketRef, selectedGroup, currentUser, setEffectiveMenuId]);
+
+  const handleReaction = useCallback((id, emoji) => {
+    socketRef?.current?.emit("message:react", { msgId: id, chatId: selectedGroup.chatId, emoji, userId: currentUser.id, userName: currentUser.name });
+    setShowReactionPicker(null);
+  }, [socketRef, selectedGroup, currentUser]);
+
+  const handleRemoveReaction = useCallback(id => {
+    socketRef?.current?.emit("message:remove_reaction", { msgId: id, chatId: selectedGroup.chatId, userId: currentUser.id });
+  }, [socketRef, selectedGroup, currentUser]);
+
+  const handleForward = useCallback(msg => { setForwardingMsg(msg); setShowForwardModal(true); setEffectiveMenuId(null); }, [setEffectiveMenuId]);
+  const submitForward = useCallback(toChatIds => {
+    if (!forwardingMsg) return;
+    socketRef?.current?.emit("forward_message", { msgId: forwardingMsg.msgId || forwardingMsg._id, fromChatId: selectedGroup.chatId, toChatIds, userId: currentUser.id, userName: currentUser.name });
+  }, [forwardingMsg, socketRef, selectedGroup, currentUser]);
+
+  const handleEdit = useCallback(msg => {
+    const t = typeof msg.msgBody?.message === "object" && groupKey ? decryptMessage(msg.msgBody.message, groupKey) : msg.msgBody?.message || "";
+    setEditingMsg(msg); setEditText(t); setShowEditModal(true); setEffectiveMenuId(null);
+  }, [groupKey, setEffectiveMenuId]);
+
+  const submitEdit = useCallback(() => {
+    if (!editingMsg || !editText.trim()) return;
+    socketRef?.current?.emit("edit_message", { msgId: editingMsg.msgId || editingMsg._id, chatId: selectedGroup.chatId, newMessage: editText.trim(), userId: currentUser.id });
+    setShowEditModal(false); setEditingMsg(null); setEditText("");
+  }, [editingMsg, editText, socketRef, selectedGroup, currentUser]);
+
+  const handleMsgInfo = useCallback(msg => {
+    setMsgInfoLoading(true); setShowMsgInfo(true);
+    socketRef?.current?.emit("get_message_info", { msgId: msg.msgId || msg._id, chatId: selectedGroup.chatId });
+    setEffectiveMenuId(null);
+  }, [socketRef, selectedGroup, setEffectiveMenuId]);
+
+  const handleShowStarred = useCallback(() => {
+    setStarredLoading(true); setShowStarred(true);
+    socketRef?.current?.emit("get_starred_messages", { chatId: selectedGroup.chatId, userId: currentUser.id });
+  }, [socketRef, selectedGroup, currentUser]);
+
+  const handleReport = useCallback(msg => { setReportingMsg(msg); setShowReportModal(true); setEffectiveMenuId(null); }, [setEffectiveMenuId]);
+  const submitReport = () => {
+    if (!reportReason) { alert("Please select a reason"); return; }
+    const d = { msgId: reportingMsg.msgId || reportingMsg._id?.toString(), chatId: selectedGroup.chatId, userId: currentUser.id, reason: reportReason, description: reportDesc };
+    socketRef?.current?.emit("report_message", d); reportMessage?.(d);
+    setShowReportModal(false); setReportingMsg(null); setReportReason(""); setReportDesc("");
+  };
+
+  const handleShowReactionPicker = useCallback((msgId, e) => {
+    e?.stopPropagation();
+    if (isMobile) setReactionPos({ top: window.innerHeight - 120, left: (window.innerWidth - 280) / 2 });
+    else { const r = e.currentTarget.getBoundingClientRect(); setReactionPos({ top: Math.max(10, r.top - 50), left: Math.min(r.left, window.innerWidth - 300) }); }
+    setShowReactionPicker(msgId);
+  }, [isMobile]);
+
+  /* ── effects ───────────────────────────────────────────────────────────── */
+  useEffect(() => {
+    if (!isInputDisabled) return;
+    setCountdown(60);
+    const t = setInterval(() => setCountdown(p => { if (p <= 1) { clearInterval(t); setIsInputDisabled(false); return 0; } return p - 1; }), 1000);
+    return () => clearInterval(t);
+  }, [isInputDisabled, setIsInputDisabled]);
+
+  useEffect(() => { const t = setTimeout(() => { if (selectedGroup && messages !== undefined) setIsComponentLoading(false); }, 100); return () => clearTimeout(t); }, [selectedGroup, messages]);
+  useEffect(() => { setIsComponentLoading(true); setPinnedMsgs([]); setShowStarred(false); setShowMsgInfo(false); }, [selectedGroup?.id]);
+  useEffect(() => {
+    if (!isComponentLoading && messages?.length > 0) requestAnimationFrame(() => requestAnimationFrame(() => { messagesEndRef.current?.scrollIntoView({ behavior: "instant" }); isAtBottomRef.current = true; }));
+  }, [isComponentLoading]);
+
+  useEffect(() => {
+    const c = membersContainerRef.current; if (!c || activeGroupTab !== "members") return;
+    let t;
+    const h = () => { clearTimeout(t); t = setTimeout(() => { const { scrollTop, scrollHeight, clientHeight } = c; const p = ((scrollTop + clientHeight) / scrollHeight) * 100; if (p > 90 && userPage < totalPages && !isLoadingUsers) loadNextPage?.(); if (p < 10 && userPage > 1 && !isLoadingUsers) loadPrevPage?.(); }, 300); };
+    c.addEventListener("scroll", h); return () => { clearTimeout(t); c.removeEventListener("scroll", h); };
+  }, [activeGroupTab, isLoadingUsers, userPage, totalPages, loadNextPage, loadPrevPage]);
+
+  useEffect(() => {
+    const el = messagesAreaRef.current; if (!el) return;
+    let t;
+    const h = () => { clearTimeout(t); const { scrollTop, scrollHeight, clientHeight } = el; const dist = scrollHeight - scrollTop - clientHeight; isAtBottomRef.current = dist < 100; setUserScrolledUp(!isAtBottomRef.current); if (isAtBottomRef.current) setNewMsgCount(0); t = setTimeout(() => { if (scrollTop < 200 && hasMoreOldRef.current && !isLoadOlderRef.current) loadOlderMessages(); if (dist < 200 && hasMoreNewRef.current && !isLoadNewerRef.current && !isAtBottomRef.current) loadNewerMessages(); }, 200); };
+    el.addEventListener("scroll", h, { passive: true }); return () => { clearTimeout(t); el.removeEventListener("scroll", h); };
+  }, [loadOlderMessages, loadNewerMessages]);
+
+  useEffect(() => {
+    const el = messagesAreaRef.current; if (!el || !isLoadingOlder || scrollPosRef.current) return;
+    const vis = el.querySelectorAll("[data-msg-id]"); if (!vis.length) return;
+    const cr = el.getBoundingClientRect();
+    for (const m of vis) { const r = m.getBoundingClientRect(); if (r.top >= cr.top && r.top <= cr.bottom) { scrollPosRef.current = m.getAttribute("data-msg-id"); isRestoringRef.current = true; break; } }
+  }, [isLoadingOlder]);
+
+  useEffect(() => {
+    if (!isLoadingOlder && scrollPosRef.current && isRestoringRef.current) requestAnimationFrame(() => requestAnimationFrame(() => { const el = document.getElementById(`msg-${scrollPosRef.current}`); if (el) el.scrollIntoView({ block: "start", behavior: "instant" }); scrollPosRef.current = null; isRestoringRef.current = false; }));
+  }, [isLoadingOlder, messages?.length]);
+
+  useEffect(() => {
+    if (!selectedGroup || !messagesAreaRef.current || !currentUser?.id) return;
+    observerRef.current?.disconnect();
+    observerRef.current = new IntersectionObserver(entries => { const now = Date.now(); entries.forEach(e => { if (!e.isIntersecting || e.intersectionRatio < 0.7) return; const id = e.target.getAttribute("data-msg-id"); const uid = e.target.getAttribute("data-from-user-id"); if (!id || !uid || uid === currentUser.id.toString() || observedMsgs.has(id)) return; setObservedMsgs(p => new Set([...p, id])); onMarkAsRead?.({ msgId: id, groupId: selectedGroup.id, chatId: selectedGroup.chatId, userId: currentUser.id, timestamp: now }); if (socketRef?.current?.connected) socketRef.current.emit("message:read", { msgId: id, chatId: selectedGroup.chatId, userId: currentUser.id, readAt: now }); }); }, { root: messagesAreaRef.current, threshold: 0.7, rootMargin: "-20px 0px -20px 0px" });
+    const tid = setTimeout(() => messagesAreaRef.current?.querySelectorAll("[data-msg-id]").forEach(el => observerRef.current.observe(el)), 100);
+    return () => { clearTimeout(tid); observerRef.current?.disconnect(); };
+  }, [selectedGroup?.id, selectedGroup?.chatId, messages?.length, currentUser?.id, onMarkAsRead, socketRef]);
+
+  useEffect(() => { setObservedMsgs(new Set()); }, [selectedGroup?.id]);
+
+
+  useEffect(() => {
+    if (!uploadingFile && isAtBottomRef.current) {
+      requestAnimationFrame(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+  }, [uploadingFile]);
+
+
+  useEffect(() => {
+    const el = messagesAreaRef.current; if (!el || !messages?.length) return;
+    if (isRestoringRef.current || isLoadingOlder) { prevMessagesLengthRef.current = messages.length; return; }
+    if (isInitialLoad) { if (!isInitialMessagesLoad && !isLoadingMessages) { requestAnimationFrame(() => requestAnimationFrame(() => { messagesEndRef.current?.scrollIntoView({ behavior: "instant" }); isAtBottomRef.current = true; })); setIsInitialLoad(false); } prevMessagesLengthRef.current = messages.length; return; }
+    const prev = prevMessagesLengthRef.current, cur = messages.length; if (cur <= prev) return;
+    const last = messages[cur - 1], prevLast = prev > 0 ? messages[prev - 1] : null;
+    if (prevLast && last.msgId === prevLast.msgId) { prevMessagesLengthRef.current = cur; return; }
+    const isMine = last?.fromUserId?.toString() === currentUser?.id?.toString();
+    if (isMine || isAtBottomRef.current) { requestAnimationFrame(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })); setNewMsgCount(0); } else { setNewMsgCount(p => p + 1); }
+    prevMessagesLengthRef.current = cur;
+  }, [messages?.length, currentUser?.id, isInitialLoad, isInitialMessagesLoad, isLoadingMessages, isLoadingOlder]);
+
+  useEffect(() => { const h = () => { setEffectiveMenuId(null); setShowReactionPicker(null); }; window.addEventListener("click", h); return () => window.removeEventListener("click", h); }, [setEffectiveMenuId]);
+  useEffect(() => { const h = e => { if (e.key !== "Escape") return; setEffectiveMenuId(null); setShowReadReceipts(false); setShowReactionPicker(null); setShowMsgInfo(false); setShowForwardModal(false); setShowEditModal(false); setShowStarred(false); setShowPinnedExp(false); }; window.addEventListener("keydown", h); return () => window.removeEventListener("keydown", h); }, [setEffectiveMenuId]);
+  useEffect(() => { const h = () => { setEffectiveMenuId(null); setShowReactionPicker(null); }; window.addEventListener("resize", h); return () => window.removeEventListener("resize", h); }, [setEffectiveMenuId]);
+
+  /* ── helpers ────────────────────────────────────────────────────────────── */
+  const renderLinks = text => {
+    if (!text) return null; const s = String(text); const re = /(https?:\/\/[^\s]+)/g;
+    return s.split(re).map((p, i) => re.test(p) ? <a key={i} href={p} target="_blank" rel="noopener noreferrer" className="hover:underline break-all font-medium" style={{ color: C.teal }} onClick={e => e.stopPropagation()}>{p}</a> : <span key={i}>{p}</span>);
+  };
+
+  const getReadStatus = msg => {
+    const mine = msg.fromUserId?.toString() === currentUser?.id?.toString(); if (!mine) return null;
+    const rb = msg.metaData?.readBy || [], db = msg.metaData?.deliveredTo || [], tot = members?.length || 0;
+    if (!msg.metaData?.isSent && msg.msgStatus === "pending") return "sending";
+    if (msg.msgStatus === "failed") return "failed";
+    if (rb.length >= tot - 1 && tot > 1) return "read_all";
+    if (rb.length > 0) return "read_some";
+    if (db.length >= tot - 1 && tot > 1) return "delivered_all";
+    if (db.length > 0 || msg.metaData?.isDelivered) return "delivered";
+    if (msg.metaData?.isSent) return "sent";
+    return "sending";
+  };
+
+  const isStarred = msg => (msg.starredBy || []).includes(currentUser?.id?.toString());
+  const isPinned = msg => msg.isPinned === true;
+  const canEdit = msg => {
+    if (msg.fromUserId?.toString() !== currentUser?.id?.toString()) return false;
+    if (["file", "audio"].includes(msg.msgBody?.message_type)) return false;
+    return Date.now() - new Date(msg.timestamp).getTime() < 15 * 60 * 1000;
+  };
+
+  const toggleMenu = useCallback((msgId, e, isCur) => { e?.stopPropagation(); e?.preventDefault(); if (effectiveMenuId === msgId) { setEffectiveMenuId(null); return; } if (isMobile) { setMenuPos({ top: 0, left: 0 }); setEffectiveMenuId(msgId); return; } const me = document.getElementById(`msg-${msgId}`), c = containerRef.current; if (!me || !c) { setEffectiveMenuId(msgId); return; } const cr = c.getBoundingClientRect(), mr = me.getBoundingClientRect(); const W = 220, H = 340, G = 6, P = 8; let l = isCur ? mr.right - cr.left - W : mr.left - cr.left; l = Math.max(P, Math.min(l, cr.width - W - P)); const sb = cr.bottom - mr.bottom, sa = mr.top - cr.top; let t; if (sb >= H + G) t = mr.bottom - cr.top + G; else if (sa >= H + G) t = mr.top - cr.top - H - G; else t = sb > sa ? mr.bottom - cr.top + G : mr.top - cr.top - H - G; t = Math.max(P, Math.min(t, cr.height - H - P)); setMenuPos({ top: Math.round(t), left: Math.round(l) }); setEffectiveMenuId(msgId); }, [effectiveMenuId, isMobile, setEffectiveMenuId]);
+
+  const scrollToMsg = id => { const el = document.getElementById(`msg-${id}`); if (!el) return; el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("hl-msg"); setTimeout(() => el.classList.remove("hl-msg"), 2000); };
+  const scrollToBottom = () => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); setNewMsgCount(0); };
+
+  const copyMsg = (text, id) => {
+    if (!text) return; let t = text;
+    if (typeof text === "object" && text !== null) { if (text.cipherText && groupKey) { try { t = decryptMessage(text, groupKey); } catch { t = "[Encrypted]"; } } else t = "[Unable to copy]"; }
+    navigator.clipboard.writeText(String(t || "")).then(() => { setCopiedMsgId(id); setTimeout(() => setCopiedMsgId(null), 2000); }).catch(console.error);
+  };
+
+  const downloadFile = async (url, name) => {
+    try { const r = await fetch(url, { mode: "cors" }); if (!r.ok) throw new Error(); const b = await r.blob(); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.style.display = "none"; a.href = u; a.download = name || "download"; document.body.appendChild(a); a.click(); setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(u); }, 100); }
+    catch { const a = document.createElement("a"); a.href = url; a.download = name || "download"; a.target = "_blank"; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+  };
+
+  const deduped = React.useMemo(() => { if (!messages?.length) return []; const seen = new Map(); for (const m of messages) { const id = m._id?.toString() || m.msgId || m.correlationId || `${m.fromUserId}-${m.timestamp}-${m.msgBody?.message}`; seen.set(id, m); } return Array.from(seen.values()).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)); }, [messages]);
+  const grouped = groupMessagesByDate(deduped);
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     RENDER
+  ══════════════════════════════════════════════════════════════════════════ */
+  return (
+    <>
+      {isComponentLoading ? <Loader /> : (
+        <div
+          ref={containerRef}
+          className="flex-1 flex flex-col relative h-full overflow-hidden w-full max-w-full"
+          style={{ background: C.white }}
+        >
+
+          {/* ── HEADER ──────────────────────────────────────────────────── */}
+          {!isOverlayOpen && (
+            <div
+              ref={headerRef}
+              style={{ background: `linear-gradient(135deg, ${C.tealL} 0%, ${C.tealD} 100%)` }}
+            >
+              <ChatHeader
+                selectedGroup={selectedGroup} totalUsers={totalUsers}
+                typingUsers={typingUsers} setShowMembers={setShowMembers}
+                setShowFilesPanel={setShowFilesPanel} setActiveGroupTab={setActiveGroupTab}
+                setShowClearChatModal={setShowClearChatModal} onShowStarred={handleShowStarred}
+                headerRef={headerRef} isMobile={isMobile} onBackToGroups={onBackToGroups}
+              />
+            </div>
+          )}
+
+          {/* ── PINNED BAR ──────────────────────────────────────────────── */}
+          {localPinError && !isOverlayOpen && (
+            <div
+              style={{
+                background: "#fef2f2",
+                borderLeft: "3px solid #ef4444",
+                borderBottom: "1px solid #fecaca",
+              }}
+              className="px-3 sm:px-4 py-2 flex items-center gap-2"
+            >
+              <div
+                className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "#fee2e2" }}
+              >
+                <Pin className="w-3 h-3" style={{ color: "#ef4444" }} />
+              </div>
+              <p className="text-xs sm:text-sm font-medium flex-1" style={{ color: "#b91c1c" }}>
+                {localPinError}
+              </p>
+            </div>
+          )}
+
+
+          {pinnedMsgs.length > 0 && !isOverlayOpen && (
+            <div
+              style={{
+                background: "#397378",
+                // borderBottom: `1px solid #fde68a`,
+                borderLeft: `3px solid ${C.amber}`,
+              }}
+              className="px-3 sm:px-4 py-2"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div
+                  className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
+                  onClick={() => { const id = pinnedMsgs[pinnedIdx]?._id; if (id) scrollToMsg(id); setPinnedIdx(p => (p + 1) % pinnedMsgs.length); }}
+                >
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" >
+                    <Pin className="w-3.5 h-3.5" style={{ color: C.amber }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase" style={{ color: "#90b0b3" }}>
+                      Pinned{pinnedMsgs.length > 1 && ` · ${pinnedIdx + 1}/${pinnedMsgs.length}`}
+                    </span>
+                    <p className="text-xs sm:text-sm truncate font-medium" style={{ color: "#ffffff" }}>
+                      {decryptedPinTexts[pinnedMsgs[pinnedIdx]?._id] || "Decrypting…"}
+                    </p>
+                  </div>
+                </div>
+                {pinnedMsgs.length > 1 && (
+                  <button onClick={() => setShowPinnedExp(v => !v)} className="p-1.5 rounded-lg flex-shrink-0" >
+                    <ChevronDown className={`w-6 h-6 transition-transform ${showPinnedExp ? "rotate-180" : ""}`} style={{ color: C.amber }} />
+                  </button>
+                )}
+              </div>
+              {showPinnedExp && (
+                <div className="mt-2 space-y-1 pt-2" style={{ borderTop: "1px solid #085056" }}>
+                  {pinnedMsgs.map((pin, i) => (
+                    <div key={pin._id} className="flex items-center justify-between py-1.5 px-2 rounded-lg cursor-pointer transition-colors"
+                      onClick={() => { scrollToMsg(pin._id); setPinnedIdx(i); setShowPinnedExp(false); }}>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[10px] font-semibold" style={{ color: "#90b0b3" }}>{pin.fromUserId}</span>
+                        <p className="text-xs truncate" style={{ color: "#ffffff" }}>
+                          {decryptedPinTexts[pin._id] || "Decrypting…"}
+                        </p>
+                      </div>
+                      <button onClick={e => { e.stopPropagation(); handleUnpin(pin._id); }} className="p-1 rounded-lg ml-2">
+                        <X className="w-4 h-4" style={{ color: "#ffffff" }} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── GROUP INFO OVERLAY ──────────────────────────────────────── */}
+          {selectedGroup && showMembers && (
+            <>
+              <div className="absolute inset-0 z-[25] backdrop-blur-sm" style={{ background: "rgba(13,45,43,.3)" }} onClick={() => { setShowMembers(false); setActiveGroupTab("overview"); }} />
+              <div className="absolute inset-0 z-[30] pointer-events-none flex justify-end">
+                <div className="pointer-events-auto h-full">
+                  <GroupInfoPanel
+                    selectedGroup={selectedGroup} activeGroupTab={activeGroupTab} setActiveGroupTab={setActiveGroupTab}
+                    members={members} messages={messages} groupKey={groupKey} totalUsers={totalUsers}
+                    membersContainerRef={membersContainerRef}
+                    accumulatedFiles={Array.isArray(chatFiles) ? chatFiles : []}
+                    filesPage={filesPage} setFilesPage={setFilesPage} loadingFiles={loadingFiles}
+                    filesPagination={filesPagination} refetchFiles={refetchFiles}
+                    setShowMembers={setShowMembers} messagesEndRef={messagesEndRef}
+                    formatFileSize={formatFileSize} downloadFileToDesktop={downloadFile} isMobile={isMobile}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ── OTHER OVERLAYS ──────────────────────────────────────────── */}
+          {selectedGroup && showFilesPanel && (
+            <div className={isMobile ? "absolute inset-0 z-40" : ""} style={isMobile ? { background: C.white } : {}}>
+              <SharedFilesPanel setShowFilesPanel={setShowFilesPanel} accumulatedFiles={Array.isArray(chatFiles) ? chatFiles : []} filesPage={filesPage} loadingFiles={loadingFiles} filesPagination={filesPagination} formatTime={formatTime} formatFileSize={formatFileSize} isMobile={isMobile} />
+            </div>
+          )}
+
+          {showStarred && (
+            <div className={isMobile ? "absolute inset-0 z-40" : ""} style={isMobile ? { background: C.white } : {}}>
+              <StarredMessagesPanel starredMessages={starredMsgs} loading={starredLoading} onClose={() => setShowStarred(false)} onScrollToMessage={id => { setShowStarred(false); setTimeout(() => scrollToMsg(id), 300); }} onUnstar={handleUnstar} formatTime={formatTime} groupKey={groupKey} currentUser={currentUser} isMobile={isMobile} />
+            </div>
+          )}
+
+          {showMsgInfo && (
+            <>
+              <div
+                className="absolute inset-0 z-[25] backdrop-blur-sm"
+                style={{ background: "rgba(13,45,43,.3)" }}
+                onClick={() => { setShowMsgInfo(false); setMsgInfoData(null); }}
+              />
+              <div className="absolute inset-0 z-[30] pointer-events-none flex justify-end">
+                <div className="pointer-events-auto h-full">
+                  <MessageInfoPanel
+                    data={msgInfoData}
+                    loading={msgInfoLoading}
+                    members={members}
+                    groupKey={groupKey}
+                    onClose={() => { setShowMsgInfo(false); setMsgInfoData(null); }}
+                    formatTime={formatTime}
+                    isMobile={isMobile}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ── MESSAGES AREA ───────────────────────────────────────────── */}
+          {selectedGroup && !isOverlayOpen && (
+            <div
+              ref={messagesAreaRef}
+              className="flex-1 overflow-y-auto relative z-10 chat-scroll"
+              style={{
+                overflowAnchor: "none", WebkitOverflowScrolling: "touch",
+                backgroundColor: C.page,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d9488' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Ccircle cx='0' cy='0' r='4'/%3E%3Ccircle cx='60' cy='0' r='4'/%3E%3Ccircle cx='0' cy='60' r='4'/%3E%3Ccircle cx='60' cy='60' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                padding: isMobile ? "10px 8px" : "14px 18px",
+              }}
+            >
+              {isInitialMessagesLoad && isLoadingMessages ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-50" style={{ background: `rgba(240,253,250,0.96)` }}>
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-5">
+                    <div className="absolute inset-0 rounded-full animate-spin" style={{ border: `2.5px solid #ccfbf1`, borderTopColor: "#0d9488" }} />
+                    <div className="absolute inset-0 rounded-full animate-spin" style={{ border: "2.5px solid transparent", borderBottomColor: "rgba(13,148,136,0.3)", animationDirection: "reverse", animationDuration: "1.3s" }} />
+                    <div className="absolute inset-0 m-auto rounded-full flex items-center justify-center" style={{ width: 44, height: 44, background: "#f0fdfa" }}>
+                      <img src={loaderImage} alt="" className="w-7 h-7 object-contain" />
+                    </div>
+                  </div>
+                  <p className="text-sm sm:text-base font-semibold mb-1" style={{ color: "#134e4a" }}>Loading messages…</p>
+                  <p className="text-xs sm:text-sm" style={{ color: "#6b7280" }}>Please wait a moment</p>
+                </div>
+              ) : (
+                <>
+                  {isLoadingOlder && (
+                    <div className="sticky top-0 z-20 flex justify-center py-2 mb-2">
+                      <div className="flex items-center gap-2.5 px-4 py-2 rounded-full" style={{ background: "#ffffff", border: `1px solid #99f6e4` }}>
+                        <div className="animate-spin rounded-full h-3.5 w-3.5" style={{ border: `2px solid #ccfbf1`, borderTopColor: "#0d9488" }} />
+                        <span className="text-xs font-medium" style={{ color: "#115e59" }}>Loading older…</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {!isLoadingOlder && hasMoreOldMessages && messages?.length > 0 && (
+                    <div className="flex justify-center py-2 mb-3">
+                      <button
+                        onClick={loadOlderMessages}
+                        className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all active:scale-95"
+                        style={{ background: "#ffffff", border: `1.5px solid #0d9488`, color: "#0d9488" }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "#0d9488"; e.currentTarget.style.color = "#ffffff"; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.color = "#0d9488"; }}
+                      >
+                        ↑ Load older messages
+                      </button>
+                    </div>
+                  )}
+
+                  {!messages?.length ? (
+                    <div className="flex flex-col items-center justify-center h-full px-4 py-16">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mb-4" style={{ background: "#f0fdfa", border: `2px solid #99f6e4` }}>
+                        <Users className="w-8 h-8 sm:w-10 sm:h-10" style={{ color: "#0d9488", opacity: .6 }} />
+                      </div>
+                      <p className="text-sm sm:text-base font-semibold mb-1 text-center" style={{ color: "#134e4a" }}>No messages yet</p>
+                      <p className="text-xs sm:text-sm text-center" style={{ color: "#6b7280" }}>Send a message to start the conversation</p>
+                    </div>
+                  ) : (
+                    <>
+                      {Object.entries(grouped).map(([dk, dmsgs]) => (
+                        <div key={dk}>
+                          <div className="flex justify-center my-3">
+                            <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase" style={{ background: "#ffffff", color: "#115e59", border: `1px solid #99f6e4` }}>
+                              {formatDateHeader(dk)}
+                            </span>
+                          </div>
+
+                          {dmsgs.map((msg, idx) => {
+                            const key = msg._id?.toString() || msg.msgId || msg.correlationId || `${msg.fromUserId}-${msg.timestamp}-${idx}`;
+                            return (
+                              <MessageBubble
+                                key={key} msg={msg} currentUser={currentUser} members={members}
+                                groupKey={groupKey} effectiveOpenMenuId={effectiveMenuId}
+                                copiedMessageId={copiedMsgId} toggleMenu={toggleMenu}
+                                scrollToMessage={scrollToMsg} formatTime={formatTime}
+                                formatFileSize={formatFileSize} renderMessageWithLinks={renderLinks}
+                                getMessageReadStatus={getReadStatus}
+                                isEdited={msg.isEdited || false} isForwarded={msg.isForwarded || false}
+                                starred={isStarred(msg)} pinned={isPinned(msg)}
+                                reactions={msg.reactions || []} readStatus={getReadStatus(msg)}
+                                onReact={handleShowReactionPicker} onRemoveReaction={handleRemoveReaction}
+                                isMobile={isMobile}
+                                onMediaLoad={() => {
+                                  if (isAtBottomRef.current) {
+                                    requestAnimationFrame(() => {
+                                      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+                                    });
+                                  }
+                                }}
+                              />
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  <div ref={messagesEndRef} />
+
+                  {isLoadingNewer && (
+                    <div className="flex justify-center py-2 mt-2">
+                      <div className="flex items-center gap-2.5 px-4 py-2 rounded-full" style={{ background: "#ffffff", border: `1px solid #99f6e4` }}>
+                        <div className="animate-spin rounded-full h-3.5 w-3.5" style={{ border: `2px solid #ccfbf1`, borderTopColor: "#0d9488" }} />
+                        <span className="text-xs font-medium" style={{ color: "#115e59" }}>Loading newer…</span>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {userScrolledUp && (
+                <button
+                  onClick={scrollToBottom}
+                  className={`fixed z-40 rounded-full flex items-center justify-center transition-all active:scale-95 ${isMobile ? "bottom-20 right-3 w-10 h-10" : "bottom-24 right-6 w-11 h-11"}`}
+                  style={{ background: "#0d9488" }}
+                >
+                  <ArrowDown className={isMobile ? "w-4 h-4" : "w-5 h-5"} style={{ color: "#ffffff" }} />
+                  {newMsgCount > 0 && (
+                    <span className={`absolute font-bold rounded-full flex items-center justify-center ${isMobile ? "-top-1.5 -right-1.5 text-[9px] w-4 h-4" : "-top-2 -right-2 text-[10px] w-5 h-5"}`}
+                      style={{ background: "#f59e0b", color: "#ffffff" }}>
+                      {newMsgCount > 99 ? "99+" : newMsgCount}
+                    </span>
+                  )}
+                </button>
+              )}
+            </div>
+          )}
+
+
+          {/* ── REACTION PICKER ─────────────────────────────────────────── */}
+          {showReactionPicker && (
+            <>
+              {isMobile && <div className="fixed inset-0 z-40" style={{ background: "rgba(13,45,43,.35)" }} onClick={() => setShowReactionPicker(null)} />}
+              <div
+                className={`fixed z-50 flex items-center gap-0.5 ${isMobile ? "rounded-2xl px-3 py-2.5 left-1/2 -translate-x-1/2 bottom-20" : "rounded-full px-2 py-1.5"}`}
+                style={{ background: C.white, border: `1px solid ${C.sep}`, ...(!isMobile ? { top: reactionPos.top, left: reactionPos.left } : {}) }}
+                onClick={e => e.stopPropagation()}
+              >
+                {REACTION_EMOJIS.map(e => (
+                  <button key={e} onClick={() => handleReaction(showReactionPicker, e)}
+                    className={`flex items-center justify-center rounded-full transition-all hover:scale-125 active:scale-95 ${isMobile ? "w-10 h-10 text-2xl" : "w-8 h-8 text-xl"}`}
+                    onMouseEnter={ev => ev.currentTarget.style.background = C.tealXL}
+                    onMouseLeave={ev => ev.currentTarget.style.background = "transparent"}>
+                    {e}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+
+          {/* ── MODALS ──────────────────────────────────────────────────── */}
+          <ImagePreviewModal showImagePreview={showImagePreview} selectedImages={selectedImages} imageCaption={imageCaption} setImageCaption={setImageCaption} uploadingFile={uploadingFile} cancelImageUpload={cancelImageUpload} sendImageMessage={sendImageMessage} removeImage={removeImage} formatFileSize={formatFileSize} />
+          <DocumentPreviewModal showDocumentPreview={showDocumentPreview} selectedDocument={selectedDocument} uploadingFile={uploadingFile} cancelDocumentUpload={cancelDocumentUpload} sendDocumentMessage={sendDocumentMessage} formatFileSize={formatFileSize} />
+          <ClearChatModal selectedGroup={selectedGroup} showClearChatModal={showClearChatModal} setShowClearChatModal={setShowClearChatModal} onClearChat={onClearChat} />
+          <ErrorDetailModal showErrorDetail={showErrorDetail} setShowErrorDetail={setShowErrorDetail} retryMessage={retryMessage} formatTime={formatTime} />
+          <FileSendPreview showFilePreview={showFilePreview} selectedFile={selectedFile} filePreview={filePreview} uploadingFile={uploadingFile} cancelFileUpload={cancelFileUpload} sendFileMessage={sendFileMessage} />
+
+          {/* ── CONTEXT MENU ────────────────────────────────────────────── */}
+          {selectedGroup && effectiveMenuId && (
+            <EnhancedContextMenu
+              isAdmin={isEffectiveAdmin} isBlocked={isBlocked} onAdminDelete={onAdminDelete} onBlockUser={onBlockUser}
+              effectiveOpenMenuId={effectiveMenuId} menuPosition={menuPos} messages={messages}
+              currentUser={currentUser} userRole={userRole} groupKey={groupKey} copiedMessageId={copiedMsgId}
+              handleReply={handleReply} handleCopyMessage={copyMsg} retryMessage={retryMessage}
+              deleteForMe={handleDeleteForMe}
+              deleteForEveryone={handleDeleteForEveryone} setEffectiveOpenMenuId={setEffectiveMenuId}
+              handlePinMessage={handlePin} handleUnpinMessage={handleUnpin}
+              handleStarMessage={handleStar} handleUnstarMessage={handleUnstar}
+              handleForward={handleForward} handleEditMessage={handleEdit}
+              handleShowMessageInfo={handleMsgInfo} handleReport={handleReport}
+              isMessageStarred={isStarred} isMessagePinned={isPinned} canEditMessage={canEdit} isMobile={isMobile}
+            />
+          )}
+
+          <ReportModal showReportModal={showReportModal} reportingMessage={reportingMsg} reportReason={reportReason} reportDescription={reportDesc} setReportReason={setReportReason} setReportDescription={setReportDesc} setShowReportModal={setShowReportModal} setReportingMessage={setReportingMsg} groupKey={groupKey} submitReport={submitReport} />
+          <ReadReceiptsModal showReadReceipts={showReadReceipts} setShowReadReceipts={setShowReadReceipts} selectedMessageForReceipts={selectedMsgReceipts} members={members} formatTime={formatTime} />
+
+          {/* ── EDIT MODAL ──────────────────────────────────────────────── */}
+          {showEditModal && (
+            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style={{ background: "rgba(13,45,43,.5)" }}>
+              <div className={`w-full ${isMobile ? "rounded-t-3xl max-h-[85vh]" : "rounded-2xl max-w-lg mx-4"}`} style={{ background: C.white, border: `1px solid ${C.sep}` }}>
+                {isMobile && <div className="flex justify-center pt-3 pb-1"><div className="w-10 h-1 rounded-full" style={{ background: C.sep }} /></div>}
+                <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: `1px solid ${C.sep}` }}>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: C.tealXL }}><Pencil className="w-4 h-4" style={{ color: C.teal }} /></div>
+                    <h3 className="text-sm sm:text-base font-semibold" style={{ color: C.t1 }}>Edit message</h3>
+                  </div>
+                  <button onClick={() => { setShowEditModal(false); setEditingMsg(null); }} className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: C.page }}>
+                    <X className="w-4 h-4" style={{ color: C.t3 }} />
+                  </button>
+                </div>
+                <div className="p-4 sm:p-5">
+                  <textarea
+                    value={editText} onChange={e => setEditText(e.target.value)}
+                    className="w-full rounded-xl px-4 py-3 text-sm outline-none resize-none transition-all"
+                    style={{ background: C.page, color: C.t1, border: `1.5px solid ${C.sep}`, fontFamily: "inherit" }}
+                    onFocus={e => { e.currentTarget.style.borderColor = C.teal; e.currentTarget.style.background = C.white; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = C.sep; e.currentTarget.style.background = C.page; }}
+                    rows={isMobile ? 3 : 4} autoFocus placeholder="Edit your message…"
+                  />
+                </div>
+                <div className="flex justify-end gap-3 px-4 sm:px-5 py-3 sm:py-4" style={{ borderTop: `1px solid ${C.sep}` }}>
+                  <button onClick={() => { setShowEditModal(false); setEditingMsg(null); }}
+                    className="px-4 sm:px-5 py-2 text-sm font-medium rounded-xl transition-all"
+                    style={{ color: C.t2, background: C.page, border: `1px solid ${C.sep}` }}>
+                    Cancel
+                  </button>
+                  <button onClick={submitEdit} disabled={!editText.trim()}
+                    className="px-5 sm:px-6 py-2 text-sm font-semibold rounded-xl transition-all active:scale-95 text-white disabled:opacity-40"
+                    style={{ background: "#0fa89e" }}>
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── FORWARD MODAL ───────────────────────────────────────────── */}
+          {showForwardModal && <ForwardModal onClose={() => { setShowForwardModal(false); setForwardingMsg(null); }} onForward={submitForward} message={forwardingMsg} groupKey={groupKey} isMobile={isMobile} />}
+
+          {/* ── UPLOAD TOAST ────────────────────────────────────────────── */}
+          {uploadingFile && !showImagePreview && !showDocumentPreview && !showFilePreview && (
+            <div
+              style={{
+                position: "absolute", bottom: isMobile ? 72 : 80,
+                left: "50%", transform: "translateX(-50%)",
+                zIndex: 60,
+                display: "flex", alignItems: "center", gap: 10,
+                padding: "9px 16px", borderRadius: 100,
+                background: C.white, border: `1.5px solid ${C.sep}`,
+                minWidth: 180, maxWidth: "calc(100% - 32px)",
+              }}
+            >
+              <div style={{ position: "relative", width: 18, height: 18, flexShrink: 0 }}>
+                <div style={{ position: "absolute", inset: 0, border: `2px solid rgba(29,142,133,.2)`, borderTopColor: C.teal, borderRadius: "50%", animation: "spin .8s linear infinite" }} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontSize: 12, fontWeight: 600, color: C.t1, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {selectedImages?.length > 0 ? `Uploading ${selectedImages.length > 1 ? `${selectedImages.length} photos` : "photo"}…` : selectedDocument ? "Uploading document…" : "Uploading file…"}
+                </p>
+                <p style={{ fontSize: 10, color: C.t3, margin: 0 }}>Please don't close</p>
+              </div>
+              <div style={{ display: "flex", gap: 3, flexShrink: 0 }}>
+                {[0, 150, 300].map(d => <div key={d} style={{ width: 4, height: 4, borderRadius: "50%", background: C.teal, animation: `bounce 1s ${d}ms ease-in-out infinite` }} />)}
+              </div>
+            </div>
+          )}
+
+          {/* ── INPUT BAR ───────────────────────────────────────────────── */}
+          {selectedGroup && !isOverlayOpen && (
+            <div style={{ background: C.white, borderTop: `1px solid ${C.sep}` }}>
+
+              {(chatError || rateLimitError === "__BLOCKED__") ? (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 10,
+                    padding: isMobile ? "14px 16px" : "16px 20px",
+                    background: "#fef2f2",
+                    borderTop: "1.5px solid #fecaca",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 34, height: 34,
+                      borderRadius: "50%",
+                      background: "#fee2e2",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="#ef4444" strokeWidth="2.2"
+                      strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: isMobile ? 13 : 14, fontWeight: 700, color: "#b91c1c", margin: 0, lineHeight: 1.3 }}>
+                      {chatError ? "You are blocked from this group" : "You are blocked by admin"}
+                    </p>
+                    <p style={{ fontSize: isMobile ? 11 : 12, color: "#ef4444", margin: "2px 0 0", opacity: 0.8 }}>
+                      You cannot send messages in this group
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <MessageInput
+                  message={message} setMessage={setMessage} onSendMessage={onSendMessage}
+                  isInputDisabled={isInputDisabled} setIsInputDisabled={setIsInputDisabled}
+                  countdown={countdown}
+                  replyToMessage={replyToMessage} cancelReply={cancelReply}
+                  groupKey={groupKey} handleTyping={handleTyping}
+                  showEmojiPicker={showEmojiPicker} setShowEmojiPicker={setShowEmojiPicker}
+                  showFileTypeModal={showFileTypeModal}
+                  setShowFileTypeModal={setShowFileTypeModal}
+                  fileInputRef={fileInputRef}
+                  inputRef={inputRef} emojiPickerRef={emojiPickerRef}
+                  emojiButtonRef={emojiButtonRef} emojiClickInsideRef={emojiClickInsideRef}
+                  rateLimitError={rateLimitError} isMobile={isMobile}
+                  onCameraImageReady={d => {
+                    setSelectedImages([{ file: d.file, preview: d.preview, name: d.fileName, size: d.fileSize, type: d.fileType }]);
+                    setImageCaption(d.caption || ""); setShowImagePreview(true);
+                  }}
+                />
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── GLOBAL STYLES ─────────────────────────────────────────────────── */}
+      <style>{`
+        .hl-msg { animation: hlFade 2s ease-out; border-radius: 10px; }
+        @keyframes hlFade {
+          0%   { background-color: rgba(29,142,133,0.15); }
+          100% { background-color: transparent; }
+        }
+        @keyframes slide-up {
+          from { transform: translateY(100%); opacity: 0; }
+          to   { transform: translateY(0);    opacity: 1; }
+        }
+        .animate-slide-up { animation: slide-up 0.26s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes spin   { to { transform: rotate(360deg); } }
+        @keyframes bounce { 0%,100% { transform:translateY(0);   opacity:.35; } 50% { transform:translateY(-4px); opacity:1; } }
+        .chat-scroll::-webkit-scrollbar       { width: 4px; }
+        .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: rgba(29,142,133,0.2); border-radius: 8px; }
+        .chat-scroll::-webkit-scrollbar-thumb:hover { background: rgba(29,142,133,0.4); }
+        @supports (padding: env(safe-area-inset-bottom)) {
+          .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+        }
+        @media (max-width:639px) {
+          button { -webkit-tap-highlight-color: transparent; }
+        }
+        .bubble-out {
+          background: #1d8e85 !important;
+          color: #ffffff !important;
+          border-radius: 18px 4px 18px 18px !important;
+        }
+        .bubble-in {
+          background: #ffffff !important;
+          color: #0d2d2b !important;
+          border-radius: 4px 18px 18px 18px !important;
+          border: 1px solid #e0f0ef !important;
+        }
+        .bubble-time-out { color: rgba(255,255,255,0.7) !important; }
+        .bubble-time-in  { color: #7aadaa !important; }
+        @media (max-width:639px) {
+          .msg-input-bar { padding: 6px 8px !important; }
+        }
+      `}</style>
+    </>
+  );
+};
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ENHANCED CONTEXT MENU
+══════════════════════════════════════════════════════════════════════════ */
+const EnhancedContextMenu = ({
+  effectiveOpenMenuId, menuPosition, messages, currentUser, userRole, groupKey,
+  copiedMessageId, handleReply, handleCopyMessage, retryMessage,
+  deleteForMe, deleteForEveryone, setEffectiveOpenMenuId,
+  handlePinMessage, handleUnpinMessage, handleStarMessage, handleUnstarMessage,
+  handleForward, handleEditMessage, handleShowMessageInfo, handleReport,
+  isMessageStarred, isMessagePinned, canEditMessage, isMobile,
+  isAdmin: adminProp = false,
+}) => {
+  const menuRef = useRef(null);
+  if (!effectiveOpenMenuId) return null;
+  const msg = messages?.find(m => (m.msgId || m._id?.toString()) === effectiveOpenMenuId);
+  if (!msg) return null;
+
+  const isMine = msg.fromUserId?.toString() === currentUser?.id?.toString();
+  const isAdmin = adminProp || ["admin", "superAdmin", "subAdmin", "sub_admin"].includes(userRole);
+  const starred = isMessageStarred(msg);
+  const pinned = isMessagePinned(msg);
+  const editable = canEditMessage(msg);
+  const msgId = msg.msgId || msg._id?.toString();
+  const copied = copiedMessageId === effectiveOpenMenuId;
+
+  const Item = ({ icon: Icon, label, onClick, danger = false, iconColor }) => (
+    <button
+      onClick={e => { e.stopPropagation(); onClick(); setEffectiveOpenMenuId(null); }}
+      className={`w-full flex items-center gap-3 font-medium transition-all active:scale-[0.98] ${isMobile ? "px-5 py-3.5" : "px-4 py-2.5"}`}
+      style={{ color: danger ? C.danger : C.t1, background: "transparent" }}
+    // onMouseEnter={e => e.currentTarget.style.background = danger ? "#fef2f2" : C.tealXL}
+    // onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+    >
+      <div className={`flex-shrink-0 rounded-lg flex items-center justify-center ${isMobile ? "w-8 h-8" : "w-7 h-7"}`}
+        style={{ background: danger ? "#fef2f2" : C.tealXL }}>
+        <Icon className={isMobile ? "w-4 h-4" : "w-3.5 h-3.5"} style={{ color: danger ? C.danger : (iconColor || C.teal) }} />
+      </div>
+      <span className={isMobile ? "text-[15px]" : "text-[13px]"}>{label}</span>
+    </button>
+  );
+  const Divider = () => <div className={isMobile ? "my-2 mx-5" : "my-1 mx-4"} style={{ borderTop: `1px solid ${C.sep}` }} />;
+
+  const content = (
+    <>
+      <Item icon={Reply} label="Reply" onClick={() => handleReply(msg)} />
+      {msg.msgBody?.message_type !== "file" && <Item icon={copied ? Check : Copy} label={copied ? "Copied!" : "Copy"} onClick={() => handleCopyMessage(msg.msgBody?.message, effectiveOpenMenuId)} iconColor={copied ? "#10b981" : C.teal} />}
+      {isMine && editable && <Item icon={Pencil} label="Edit" onClick={() => handleEditMessage(msg)} />}
+      {pinned ? <Item icon={PinOff} label="Unpin" onClick={() => handleUnpinMessage(msgId)} iconColor={C.amber} /> : <Item icon={Pin} label="Pin" onClick={() => handlePinMessage(msgId)} iconColor={C.amber} />}
+      {isMine && <Item icon={Info} label="Message info" onClick={() => handleShowMessageInfo(msg)} />}
+      <Divider />
+      {!isMine && <Item icon={Flag} label="Report" onClick={() => handleReport(msg)} danger />}
+      <Item icon={Trash2} label="Delete for me" onClick={() => deleteForMe(msgId, currentUser.id)} danger />
+      {(isMine || isAdmin) && <Item icon={Trash2} label="Delete for everyone" onClick={() => deleteForEveryone(msgId)} danger />}
+    </>
+  );
+
+  if (isMobile) return (
+    <>
+      <div className="fixed inset-0 z-[60]" style={{ background: "rgba(13,45,43,.45)" }} onClick={e => { e.stopPropagation(); setEffectiveOpenMenuId(null); }} />
+      <div className="fixed bottom-0 left-0 right-0 z-[70] animate-slide-up" style={{ background: C.white, borderRadius: "22px 22px 0 0", border: `1px solid ${C.sep}`, maxHeight: "78vh", paddingBottom: "env(safe-area-inset-bottom,16px)" }} onClick={e => e.stopPropagation()}>
+        <div className="flex justify-center pt-3 pb-1"><div className="w-10 h-1 rounded-full" style={{ background: C.sep }} /></div>
+        <div className="px-5 py-3 mx-4 rounded-xl mb-2" style={{ background: C.page, border: `1px solid ${C.sep}` }}>
+          <p className="text-xs font-semibold mb-0.5" style={{ color: C.teal }}>{msg.publisherName || msg.fromUserId}</p>
+          <p className="text-sm leading-snug line-clamp-2" style={{ color: C.t2 }}>
+            {typeof msg.msgBody?.message === "string" ? msg.msgBody.message.slice(0, 80) + (msg.msgBody.message.length > 80 ? "…" : "") : msg.msgBody?.message_type === "file" ? msg.msgBody?.media?.fileName || "File" : "Message"}
+          </p>
+        </div>
+        <div className="overflow-y-auto pb-2" style={{ maxHeight: "calc(78vh - 110px)" }}>{content}</div>
+      </div>
+    </>
+  );
+
+  return (
+    <>
+      <div className="absolute inset-0 z-[60]" onClick={e => { e.stopPropagation(); setEffectiveOpenMenuId(null); }} />
+      <div ref={menuRef} className="absolute z-[70] rounded-2xl py-1.5 overflow-hidden" style={{ top: menuPosition.top, left: menuPosition.left, width: 220, maxHeight: "min(340px,calc(100%-16px))", overflowY: "auto", background: C.white, border: `1px solid ${C.sep}` }} onClick={e => e.stopPropagation()}>
+        {content}
+      </div>
+    </>
+  );
+};
+
+export default ChatWindow;
+
+
