@@ -92,7 +92,7 @@ useEffect(() => {
   return (
     <div className="min-h-screen p-0 bg-[#1d8e85] rounded-xl text-sm sm:text-base md:text-lg overflow-auto">
 
-      {/* {showAnnouncementSlider && (
+      {showAnnouncementSlider && (
         <>
           <style>{`
             .announcement-slider {
@@ -187,7 +187,7 @@ useEffect(() => {
             </div>
           </div>
         </>
-      )} */}
+      )}
 
 {/* <CoinPricePopup/> */}
       <div className="bg-gray-900 flex flex-col items-center justify-center gap-6">
