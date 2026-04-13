@@ -131,7 +131,7 @@ const seoContent = {
             "@type": "Offer",
             url: "https://www.jaimax.com/best-presale-crypto-token-in-india",
             priceCurrency: "INR",
-            price: "0.035",
+            price: "0.10",
             availability: "https://schema.org/InStock",
           },
         },
@@ -1047,7 +1047,7 @@ const seoContent = {
               name: "What is the current presale price of Jaimax Coin?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "The current pre-sale price of Jaimax Coin is 0.03 INR per coin, giving early investors high upside potential before public listing.",
+                text: "The current pre-sale price of Jaimax Coin is 0.10 INR per coin, giving early investors high upside potential before public listing.",
               },
             },
             {

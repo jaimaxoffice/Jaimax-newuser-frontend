@@ -270,7 +270,7 @@ import GroupChatApp from "../src/components/Dashboard/pages/Community/MainChat";
 const CoinPricePopup = lazy(() => import("./ReusableComponents/popups/Countdown"));
 const ChatAssistant = lazy(() => import("./pages/chatSupport/chatComponent"));
 const Home = lazy(() => import("./pages/home/Home"));
-const Landingpage = lazy(() => import("./pages/home/Landingpage"));
+// const Landingpage = lazy(() => import("./pages/home/Landingpage"));
 const NotFound = lazy(() => import("./pages/home/NotFound"));
 const JaimaxComponent = lazy(() => import("./components/About/About"));
 const Contact = lazy(() => import("./components/contact/Contact"));
@@ -305,6 +305,7 @@ const Support = lazy(() => import("./components/Dashboard/pages/support/support"
 const AddMoneyToWallet = lazy(() => import("./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet"));
 const UserMeetingsShowcase = lazy(() => import("./components/Dashboard/pages/Meetings/Zoommeetings"));
 const UserDetailsComponent = lazy(() => import("./components/Dashboard/pages/jwallet/jwallet"));
+
 import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent"
 const SupportChart = lazy(() =>
   import("./components/Dashboard/pages/support/support").then((module) => ({
@@ -499,14 +500,14 @@ const App = () => {
               }
             />
             <Route element={<PublicRoute restricted />}>
-              <Route path="login" element={<AuthContainer />} />
-              <Route path="register" element={<AuthContainer />} />
-              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="login/" element={<AuthContainer />} />
+              <Route path="register/" element={<AuthContainer />} />
+              <Route path="forgot-password/" element={<ForgotPassword />} />
             </Route>
             <Route path="about" element={<JaimaxComponent />} />
             <Route path="contact" element={<Contact />} />
             <Route path="features" element={<FeaturesSection />} />
-            <Route path="landingpage" element={<Landingpage />} />
+            {/* <Route path="landingpage" element={<Landingpage />} /> */}
             <Route path="blog">
               <Route index element={<BlogLayout />} />
               <Route path=":slug" element={<BlogDetailPage />} />
@@ -516,7 +517,7 @@ const App = () => {
             <Route path="ApiTrading" element={<ApiTrading />} />
             <Route path="SpotTrading" element={<SpotTrading />} />
             <Route path="FuturesTrading" element={<FuturesTrading />} />
-            <Route path="PreSale" element={<PreSale />} />
+            {/* <Route path="PreSale" element={<PreSale />} /> */}
             <Route path="ReferEarn" element={<ReferEarn />} />
             <Route
               path="best-presale-crypto-coin-in-india"

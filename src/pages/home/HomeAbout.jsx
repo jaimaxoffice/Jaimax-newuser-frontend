@@ -655,13 +655,13 @@ import {
   useGetHolderCountQuery 
 } from "../../components/Dashboard/pages/dashBoard/DashboardApliSlice";
 import bscscan from "../../assets/image.png";
-import logo from "../../../public/Images/site_logo.svg";
+import logo from "/images/site_logo.svg";
 
 const HomeAbout = () => {
   const contractAddress = "0xD898d23a082136f4d752e4dE31D8296EaEb94277";
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
-  const ref = React.useRef(null);
+  const ref = React.useRef(null); 
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   // Fetch data using RTK Query

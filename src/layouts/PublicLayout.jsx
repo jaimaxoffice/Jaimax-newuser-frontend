@@ -4,7 +4,7 @@ import Navbar from "../global/Navbar";
 import Footer from "../global/Footer";
 
 // Routes where navbar/footer should be hidden
-const HIDDEN_NAV_ROUTES = ["/login", "/register", "/forgot-password"];
+const HIDDEN_NAV_ROUTES = ["/login/", "/register/", "/forgot-password/"];
 
 const PublicLayout = () => {
   const location = useLocation();

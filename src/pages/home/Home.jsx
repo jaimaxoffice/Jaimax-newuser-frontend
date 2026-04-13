@@ -17,7 +17,7 @@ const JaimaxFAQ = lazy(() => import("./Faq"));
 const HomeContact = lazy(() => import("./HomeContact"));
 const HomeFooter = lazy(() => import("./HomeFoot"));
 const ReviewsSection = lazy(() => import("./Rating"));
-const WorldMap = lazy(() => import("./WorldMap"));
+// const WorldMap = lazy(() => import("./WorldMap"));
 // import CountdownTimer from "../popups/CoinPricePopup1";
 import AdSlot from "./AdSlot";
 import Loader from "../../ReusableComponents/Loader/loader";

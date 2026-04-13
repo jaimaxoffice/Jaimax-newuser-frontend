@@ -10,14 +10,14 @@ const ReusableTable = ({ columns, data, isLoading }) => {
     );
 
   return (
-    <div className="rounded-lg">
+    <div className="rounded-lg overflow-auto scrollbar-none">
       <table className="w-full border-collapse rounded-lg">
         <thead>
           <tr style={{ backgroundColor: "#13b3a1" }}>
             {columns.map((col, index) => (
               <th
                 key={index}
-                className="p-3 text-left text-white text-xs font-semibold"
+                className="p-3 text-center text-white text-xs font-semibold whitespace-nowrap"
               >
                 {col.header}
               </th>

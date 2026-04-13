@@ -1220,6 +1220,7 @@ const InrTransactionTable = ({
           </span>
         ),
       },
+    
       {
         header: "Date & Time",
         accessor: "created_at",

@@ -29,15 +29,25 @@ export const usdtWithdrawApiSlice = apiSlice.injectEndpoints({
     // ===============================
     // POST: TOKEN WITHDRAW REQUEST
     // ===============================
-    usdtWithdrawRequest: builder.mutation({
+    // usdtWithdrawRequest: builder.mutation({
+    //   query: (data) => ({
+    //     url: "/usdt-withdrawal/usdt-withdraw-req",
+    //     method: "POST",
+    //     body: { ...data }, // { token, amount, walletAddress }
+    //   }),
+    //   invalidatesTags: ["withdrawal"]
+    // }),
+ usdtWithdrawRequest: builder.mutation({
       query: (data) => ({
         url: "/usdt-withdrawal/usdt-withdraw-req",
         method: "POST",
         body: { ...data }, // { token, amount, walletAddress }
+        headers: {
+          "x-idempotency-key": data.idempotencyKey, // ✅ pass from caller
+        },
       }),
-      invalidatesTags: ["withdrawal"]
+      invalidatesTags: ["withdrawal"],
     }),
-
     // ===============================
     // POST: TOKEN WITHDRAW PREVIEW
     // ===============================
@@ -56,6 +66,17 @@ export const usdtWithdrawApiSlice = apiSlice.injectEndpoints({
             method: "GET",
           }),
         }),
+         usdtWithdrawRequest: builder.mutation({
+      query: (data) => ({
+        url: "/usdt-withdrawal/usdt-withdraw-req",
+        method: "POST",
+        body: { ...data }, // { token, amount, walletAddress }
+        headers: {
+          "x-idempotency-key": data.idempotencyKey, // ✅ pass from caller
+        },
+      }),
+      invalidatesTags: ["withdrawal"],
+    }),
   }),
 });
 
