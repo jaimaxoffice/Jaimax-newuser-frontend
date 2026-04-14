@@ -274,7 +274,23 @@ const MiningPage = () => {
     toast.info('Refreshed');
   };
 
-  const fmtDate = (d) => d ? new Date(d).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '—';
+ const fmtDate = (d) => {
+  if (!d) return '—';
+  
+  // Remove 'T' and 'Z' and parse as local time
+  const cleanDate = d.replace('T', ' ').replace('Z', '');
+  const date = new Date(cleanDate);
+  
+  const month = date.toLocaleString('en-US', { month: 'short' });
+  const day = date.getDate().toString().padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const hour12 = hours % 12 || 12;
+  
+  return `${month} ${day}, ${year}, ${hour12}:${minutes} ${ampm}`;
+};
 
   const circleState = mining ? 'mining' : mineError ? 'error' : (showReward && lastMineLog) ? 'success' : 'idle';
 
@@ -289,29 +305,7 @@ const MiningPage = () => {
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
       {/* Top navbar */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-        {/* <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 h-14 sm:h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-7 h-7 sm:w-9 sm:h-9 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl flex items-center justify-center text-white shadow-lg shadow-teal-500/30 hover:scale-105 transition-transform">
-              <Pickaxe className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
-            </div>
-            <span className="font-extrabold text-sm sm:text-lg bg-gradient-to-r from-slate-800 to-teal-700 bg-clip-text text-transparent tracking-tight">
-              JMC Mining
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            {wallet && (
-              <div className="hidden md:flex font-mono text-xs text-slate-600 bg-gradient-to-br from-teal-50 to-green-50 border border-teal-200/50 rounded-xl px-3 py-1.5 shadow-sm">
-                <span className="text-slate-400">Balance </span>
-                <span className="font-bold text-teal-700 ml-1">
-                  {parseFloat(wallet.totalBalance || 0).toFixed(2)} JMC
-                </span>
-              </div>
-            )}
 
-          </div>
-        </div> */}
-      </div>
 
       <div className="max-w-[1100px] mx-auto px-3 sm:px-4 md:px-5 lg:px-6 py-4 sm:py-6 md:py-8 pb-16 sm:pb-20">
         {/* No wallet */}
@@ -380,10 +374,7 @@ const MiningPage = () => {
         )}
       </div>
 
-      {/* Footer */}
-      <div className="border-t border-slate-200 py-5 sm:py-6 text-center">
-        <span className="font-mono text-[10px] sm:text-xs text-slate-400 tracking-widest">JMC MINING PLATFORM © 2024</span>
-      </div>
+
     </div>
   );
 };
@@ -568,30 +559,16 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
         <DRow label="Per Mine" value={`${wallet.perMineJMC || 0} JMC`} />
       </Panel>
       <Panel title="Mining Status" Icon={Shield}>
-        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 sm:p-3.5 mb-2">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-xs sm:text-sm text-slate-500 flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Mining Power
-            </span>
-            <span className={`font-mono text-xs sm:text-sm font-semibold ${(wallet.miningPowerPct || 100) >= 80 ? 'text-teal-600' :
-                (wallet.miningPowerPct || 100) >= 50 ? 'text-yellow-500' : 'text-red-500'
-              }`}>
-              {wallet.miningPowerPct || 100}%
-            </span>
-          </div>
-          <div className="bg-slate-200 rounded-full h-1.5 overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-700 ${(wallet.miningPowerPct || 100) >= 80 ? 'bg-gradient-to-r from-teal-400 to-teal-600' :
-                  (wallet.miningPowerPct || 100) >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-                }`}
-              style={{ width: `${wallet.miningPowerPct || 100}%` }}
-            />
-          </div>
-        </div>
+        
         <DRow
           label="Consecutive Missed"
           value={wallet.consecutiveMissedCount || 0}
           color={(wallet.consecutiveMissedCount || 0) > 0 ? 'text-red-500' : 'text-green-500'}
+        />
+        <DRow
+          label="recovery Missed"
+          value={wallet.recoveryMissedCount || 0}
+          color={(wallet.recoveryMissedCount || 0) > 0 ? 'text-red-500' : 'text-green-500'}
         />
         <DRow
           label="Recovery Mode"
@@ -603,7 +580,7 @@ const MiningTab = ({ wallet, mining, circleState, mineError, showReward, lastMin
           value={(wallet.currentPenaltyTierId || 0) > 0 ? `Tier ${wallet.currentPenaltyTierId}` : 'None'}
           color={(wallet.currentPenaltyTierId || 0) > 0 ? 'text-red-500' : 'text-green-500'}
         />
-        <DRow label="Last Mined" value={(wallet.lastMineAt)} />
+        <DRow label="Last Mined" value={fmtDate(wallet.lastMineAt)} />
       </Panel>
     </div>
   </>
@@ -1005,21 +982,7 @@ const ReferralSection = ({ data, loading, refetch, page, setPage, fmtDate }) => 
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {[
-          { l: 'Total Earned', v: `${total} JMC`, c: 'text-teal-600', Icon: TrendingUp },
-          { l: 'Referrals', v: pagination.total || refs.length, c: 'text-slate-700', Icon: Users },
-          { l: 'Paid', v: refs.filter(r => r.status === 'paid').length, c: 'text-green-600', Icon: CheckCircle },
-          { l: 'Avg Bonus', v: `${refs.length ? (total / refs.length).toFixed(1) : 0} JMC`, c: 'text-slate-700', Icon: BarChart3 },
-        ].map((s, i) => (
-          <div key={i} className="bg-white border border-slate-200 rounded-xl p-3 sm:p-4 shadow-sm">
-            <div className="text-[10px] sm:text-xs text-slate-400 tracking-widest uppercase mb-2 font-semibold flex items-center gap-1.5">
-              <s.Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {s.l}
-            </div>
-            <div className={`font-mono text-lg sm:text-xl md:text-2xl font-bold ${s.c}`}>{s.v}</div>
-          </div>
-        ))}
-      </div>
+
 
       <Panel title="Referral Bonuses" Icon={Users} count={pagination.total || refs.length} onRefresh={refetch}>
         {refs.length === 0 ? (
@@ -1030,16 +993,12 @@ const ReferralSection = ({ data, loading, refetch, page, setPage, fmtDate }) => 
               {refs.map((ref, i) => (
                 <div key={ref._id || i} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 bg-slate-50 border border-slate-200 rounded-xl p-3 sm:p-4">
                   <div className="flex items-center gap-3 w-full sm:w-auto">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 bg-teal-50 border border-teal-200 rounded-xl flex items-center justify-center font-mono text-xs sm:text-sm font-bold text-teal-600 flex-shrink-0">
-                      {ref.referredUserId?.slice(-2)?.toUpperCase() || '??'}
-                    </div>
+                   
                     <div className="flex-1 min-w-0">
                       <div className="font-mono text-xs sm:text-sm text-slate-600 mb-0.5 truncate">
-                        {ref.referredUserId?.length > 10
-                          ? `${ref.referredUserId.slice(0, 8)}…${ref.referredUserId.slice(-4)}`
-                          : ref.referredUserId}
+                        {ref.jaimaxId}
                       </div>
-                      <div className="text-xs sm:text-sm text-slate-400">Mine date: {ref.mineDate}</div>
+                      <div className="text-xs sm:text-sm text-slate-400">date: {ref.mineDate}</div>
                     </div>
                   </div>
                   <div className="text-left sm:text-right w-full sm:w-auto flex-shrink-0">
@@ -1054,15 +1013,7 @@ const ReferralSection = ({ data, loading, refetch, page, setPage, fmtDate }) => 
         )}
       </Panel>
 
-      <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 sm:p-5 flex gap-3 sm:gap-4 items-start">
-        <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600 flex-shrink-0 mt-0.5" />
-        <div>
-          <div className="font-bold text-teal-700 mb-1.5 text-sm sm:text-base">How Referrals Work</div>
-          <div className="text-teal-600 text-xs sm:text-sm leading-relaxed">
-            Earn <strong>3 JMC</strong> every time a referred user mines successfully. More active referrals = more passive income.
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };
@@ -1088,7 +1039,7 @@ const SlotsSection = ({ slots, currentSlot, timeLeft, loading, refetch, slotsDat
             </div>
 
             <div className="flex gap-5 sm:gap-6 items-center">
-              <CircularTimer progress={timeLeft.progress || 0} size={window.innerWidth < 640 ? 64 : 72} isActive={true} />
+              {/* <CircularTimer progress={timeLeft.progress || 0} size={window.innerWidth < 640 ? 64 : 72} isActive={true} /> */}
               <div className="text-center">
                 <div className="text-[10px] sm:text-xs text-white/50 tracking-widest uppercase mb-2 font-semibold">Time Left</div>
                 <div className="font-mono text-2xl sm:text-3xl md:text-4xl font-bold">
@@ -1147,7 +1098,7 @@ const SlotsSection = ({ slots, currentSlot, timeLeft, loading, refetch, slotsDat
                   </div>
                   <div className={`text-xs sm:text-sm font-medium flex items-center gap-1 ${isActive ? 'text-teal-500' : 'text-slate-400'
                     }`}>
-                    <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {slot.endHour - slot.startHour}h window
+                    <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {slot.endHour - slot.startHour}h Slot
                   </div>
                 </div>
               );
@@ -1174,18 +1125,18 @@ const Panel = ({ title, Icon, count, onRefresh, children }) => (
           <Icon className="w-4 h-4 text-teal-600" />
           <span className="font-extrabold text-base sm:text-lg text-slate-800">{title}</span>
         </div>
-        {count !== undefined && (
+        {/* {count !== undefined && (
           <div className="font-mono text-[10px] sm:text-xs text-slate-400 tracking-widest ml-6">{count} records</div>
-        )}
+        )} */}
       </div>
-      {onRefresh && (
+      {/* {onRefresh && (
         <button
           onClick={onRefresh}
           className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:border-teal-400 hover:text-teal-600 hover:bg-teal-50 transition-all text-xs sm:text-sm font-semibold"
         >
           <RefreshCw className="w-3.5 h-3.5" /> Refresh
         </button>
-      )}
+      )} */}
     </div>
     {children}
   </div>

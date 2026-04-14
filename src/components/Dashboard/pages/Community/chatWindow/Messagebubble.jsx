@@ -384,7 +384,7 @@ const MessageBubble = ({
               {isMe && <ReadTicks status={readStatus} />}
 
               {/* Menu chevron */}
-              <button
+              {/* <button
                 className="group-hover:!opacity-100 ml-px p-px rounded-[5px] border-none bg-transparent cursor-pointer flex items-center opacity-0 transition-opacity"
                 style={{ color: isMe ? "rgba(255,255,255,.4)" : "#6b7280" }}
                 onMouseEnter={e => {
@@ -398,7 +398,24 @@ const MessageBubble = ({
                 onClick={e => toggleMenu(id, e, isMe)}
               >
                 <ChevronDown className="w-[13px] h-[13px]" />
-              </button>
+              </button> */}
+              {!(msg.isreported?.count >= 3 && msg.isreported?.isHidden) && (
+                <button
+                  className="group-hover:!opacity-100 ml-px p-px rounded-[5px] border-none bg-transparent cursor-pointer flex items-center opacity-0 transition-opacity"
+                  style={{ color: isMe ? "rgba(255,255,255,.4)" : "#6b7280" }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = isMe ? "rgba(255,255,255,.12)" : "#f0fdfa";
+                    e.currentTarget.style.color = isMe ? "#ffffff" : "#134e4a";
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.color = isMe ? "rgba(255,255,255,.4)" : "#6b7280";
+                  }}
+                  onClick={e => toggleMenu(id, e, isMe)}
+                >
+                  <ChevronDown className="w-[13px] h-[13px]" />
+                </button>
+              )}
             </div>
           )}
         </div>{/* ── end main bubble ── */}
@@ -431,7 +448,31 @@ const MessageBubble = ({
         )}
 
         {/* ── HOVER PILLS (desktop) ── */}
-        {!msg.deletedForEveryone && (
+        {/* {!msg.deletedForEveryone && (
+          <div
+            className="group-hover:!opacity-100 group-hover:!pointer-events-auto absolute top-1 flex items-center gap-1 opacity-0 transition-opacity pointer-events-none"
+            style={{ ...(isMe ? { left: -84 } : { right: -84 }) }}
+          >
+            <button
+              onClick={e => onReact?.(id, e)}
+              className="p-1.5 rounded-[9px] cursor-pointer text-[14px] flex items-center transition-all"
+              style={{ border: "1px solid #99f6e4", background: "#ffffff" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "#f0fdfa"; e.currentTarget.style.transform = "scale(1.08)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.transform = "scale(1)"; }}
+              title="React"
+            >😀</button>
+            <button
+              onClick={e => toggleMenu(id, e, isMe)}
+              className="p-1.5 rounded-[9px] cursor-pointer flex items-center transition-all"
+              style={{ border: "1px solid #99f6e4", background: "#ffffff", color: "#134e4a" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "#f0fdfa"; e.currentTarget.style.transform = "scale(1.08)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.transform = "scale(1)"; }}
+            >
+              <ChevronDown className="w-[13px] h-[13px]" />
+            </button>
+          </div>
+        )} */}
+        {!msg.deletedForEveryone && !(msg.isreported?.count >= 3 && msg.isreported?.isHidden) && (
           <div
             className="group-hover:!opacity-100 group-hover:!pointer-events-auto absolute top-1 flex items-center gap-1 opacity-0 transition-opacity pointer-events-none"
             style={{ ...(isMe ? { left: -84 } : { right: -84 }) }}

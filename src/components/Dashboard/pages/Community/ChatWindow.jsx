@@ -218,16 +218,34 @@ const ChatWindow = ({
   useEffect(() => {
     const s = socketRef?.current;
     if (!s) return;
+    // const onPinnedMsgs = ({ chatId, messages: p }) => {
+    //   if (chatId === selectedGroup?.chatId)
+    //     setPinnedMsgs((p || []).filter(m =>
+    //       !m.deletedForEveryone &&
+    //       !(m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString()))
+    //     ));
+    // };
+    // const onMsgPinned = ({ chatId, message: m }) => {
+    //   if (chatId === selectedGroup?.chatId) {
+    //     if (m.deletedForEveryone || m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString())) return;
+    //     setPinnedMsgs(p => [m, ...p].slice(0, 3));
+    //   }
+    // };
     const onPinnedMsgs = ({ chatId, messages: p }) => {
       if (chatId === selectedGroup?.chatId)
         setPinnedMsgs((p || []).filter(m =>
           !m.deletedForEveryone &&
-          !(m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString()))
+          !(m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString())) &&
+          !(m.isreported?.count >= 3 && m.isreported?.isHidden === true)   // ← add this
         ));
     };
     const onMsgPinned = ({ chatId, message: m }) => {
       if (chatId === selectedGroup?.chatId) {
-        if (m.deletedForEveryone || m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString())) return;
+        if (
+          m.deletedForEveryone ||
+          m.deletedFor?.some(uid => uid?.toString() === currentUser?.id?.toString()) ||
+          (m.isreported?.count >= 3 && m.isreported?.isHidden === true)   // ← add this
+        ) return;
         setPinnedMsgs(p => [m, ...p].slice(0, 3));
       }
     };

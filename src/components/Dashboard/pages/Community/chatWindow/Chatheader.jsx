@@ -126,9 +126,9 @@
 // export default ChatHeader;
 
 import React, { useState, useEffect } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, ArrowLeft } from "lucide-react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-
+import { useNavigate } from "react-router-dom";
 const ChatHeader = ({
   selectedGroup,
   totalUsers,
@@ -140,7 +140,7 @@ const ChatHeader = ({
   headerRef,
 }) => {
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handleClickOutside = () => {
       if (showHeaderMenu) setShowHeaderMenu(false);
@@ -173,6 +173,18 @@ const ChatHeader = ({
           }}
           className="flex items-center gap-3 flex-1 min-w-0 px-2 py-1.5 cursor-pointer text-left"
         >
+          <div className="relative shrink-0">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate("/dashboard");
+              }}
+              className="shrink-0 p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/20 transition-all"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          </div>
           {/* Avatar */}
           <div className="relative shrink-0">
             <div className="w-10 h-10 rounded-full ring-2 ring-white/30 overflow-hidden bg-white/10">
@@ -226,11 +238,10 @@ const ChatHeader = ({
             e.stopPropagation();
             setShowHeaderMenu((prev) => !prev);
           }}
-          className={`p-2 rounded-xl border transition-all ${
-            showHeaderMenu
+          className={`p-2 rounded-xl border transition-all ${showHeaderMenu
               ? "bg-white/20 border-white/30 text-white"
               : "bg-transparent border-transparent text-white/70"
-          }`}
+            }`}
         >
           <BsThreeDotsVertical className="w-5 h-5" />
         </button>

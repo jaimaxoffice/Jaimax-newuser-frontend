@@ -84,7 +84,7 @@ export const useSocket = ({
     const socket = createSocket({ socketUrl, currentUser });
     socketRef.current = socket;
 
-    console.log(socket, "socket1234r54t")
+    // console.log(socket, "socket1234r54t")
 
     registerSocketHandlers(socket, {
       currentUser,

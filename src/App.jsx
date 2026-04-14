@@ -500,8 +500,8 @@ const App = () => {
               }
             />
             <Route element={<PublicRoute restricted />}>
-              <Route path="login/" element={<AuthContainer />} />
-              <Route path="register/" element={<AuthContainer />} />
+              <Route path="login" element={<AuthContainer />} />
+              <Route path="register" element={<AuthContainer />} />
               <Route path="forgot-password/" element={<ForgotPassword />} />
             </Route>
             <Route path="about" element={<JaimaxComponent />} />
