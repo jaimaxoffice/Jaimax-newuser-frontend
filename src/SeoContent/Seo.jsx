@@ -1079,6 +1079,167 @@ const seoContent = {
       ],
     },
   },
+  cryptomining: {
+    title: "Crypto mining India with Jaimax App | Earn FREE JMC Coins",
+    description:
+      "Explore crypto mining in India with the Jaimax mining app. Participate through simple in-app activities and earn JMC coins daily.",
+    canonical: "https://www.jaimax.com/free-crypto-mining/",
+    schema: {
+       "@context": "https://schema.org",
+  "@graph": [
+
+    {
+      "@type": "WebPage",
+      "@id": "https://www.jaimax.com/free-crypto-mining/#webpage",
+      "url": "https://www.jaimax.com/free-crypto-mining",
+      "name": "Jaimax Mining - Crypto Mining",
+      "description": "Jaimax Mining is a mobile-based participation system that allows users to engage with in-app activities and track rewards through a structured dashboard.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://www.jaimax.com/#website"
+      }
+    },
+
+    {
+      "@type": "HowTo",
+      "name": "How to Start Crypto Mining with Jaimax",
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "Install the Jaimax application" },
+        { "@type": "HowToStep", "position": 2, "name": "Create your account" },
+        { "@type": "HowToStep", "position": 3, "name": "Activate your mining cycle" },
+        { "@type": "HowToStep", "position": 4, "name": "Engage with the app" },
+        { "@type": "HowToStep", "position": 5, "name": "Track activity and rewards" }
+      ]
+    },
+
+    {
+      "@type": "ItemList",
+      "name": "Jaimax Mining Features",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "No hardware required" },
+        { "@type": "ListItem", "position": 2, "name": "Mobile-based access" },
+        { "@type": "ListItem", "position": 3, "name": "Beginner friendly interface" },
+        { "@type": "ListItem", "position": 4, "name": "Structured participation model" },
+        { "@type": "ListItem", "position": 5, "name": "Activity-based engagement system" }
+      ]
+    },
+
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+
+        {
+          "@type": "Question",
+          "name": "How do I start using Jaimax Mining?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Download the Jaimax app, create your account, and activate a mining cycle. Once active, complete in-app activities to begin tracking your rewards."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "Why am I not receiving rewards after starting a cycle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If rewards are not showing, it may mean required activities such as completing the cycle or engaging with in-app steps were not fully completed. Ensure each step is finished properly."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "How do mining cycles work in Jaimax?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Jaimax Mining uses a cycle-based system where users activate a cycle and complete activities during that period. Up to 6 cycles may be available within 24 hours."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "Do I need to keep the app open for mining to work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Jaimax Mining is based on user participation, so interaction with the app is required during active cycles. It does not run background mining processes."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "Why do I need to complete activities in Jaimax Mining?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Activities such as watching ads or completing cycles are part of the participation system, allowing users to engage with the platform."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "How can I track my activity or earnings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can track your activity through the Jaimax dashboard, which displays balances, completed cycles, and participation history."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "What happens if I miss a mining cycle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If a cycle is missed, you can start the next available one. Regular participation helps maximize available opportunities."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "Why is my mining cycle not activating?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This may be due to connectivity issues, app version updates, or temporary glitches. Try restarting the app, checking your internet connection, or updating to the latest version."
+          }
+        },
+
+        {
+          "@type": "Question",
+          "name": "Can I use Jaimax Mining multiple times a day?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, users can participate in multiple cycles within a 24-hour period, depending on availability."
+          }
+        }
+
+      ]
+    },
+
+    {
+      "@type": "Organization",
+      "@id": "https://www.jaimax.com/#organization",
+      "name": "Jaimax",
+      "url": "https://www.jaimax.com",
+      "logo": "https://www.jaimax.com/logo.webp"
+    },
+
+    {
+      "@type": "WebSite",
+      "@id": "https://www.jaimax.com/#website",
+      "url": "https://www.jaimax.com/",
+      "name": "Jaimax Website"
+    },
+
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.jaimax.com/free-crypto-mining/#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.jaimax.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Crypto Mining", "item": "https://www.jaimax.com/free-crypto-mining" }
+      ]
+    }
+
+  ]
+
+    },
+  },
 };
 
 const Seo = ({ page }) => {

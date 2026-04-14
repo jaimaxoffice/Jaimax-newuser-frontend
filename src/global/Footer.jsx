@@ -280,6 +280,7 @@ const Footer = () => {
                   { name: "About", path: "/about/", title: "Learn more about Jaimax Coin and our mission" },
                   { name: "Disclaimer", path: "/disclaimer/", title: "Read our disclaimer and legal notices" },
                   { name: "Features", path: "/features/", title: "Explore Jaimax Coin features and benefits" },
+                  { name: "Mining", path: "/free-crypto-mining/", title: "Explore Jaimax Mining" },
                   { name: "Blogs", path: "/blog/", title: "Read our latest crypto insights and articles" },
                   { name: "Contact", path: "/contact/", title: "Get in touch with Jaimax support team" },
                   {

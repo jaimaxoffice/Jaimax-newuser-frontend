@@ -1,0 +1,208 @@
+/* -------------------- */
+/* 🔹 Tailwind Directives */
+/* -------------------- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------- */
+/* 🔹 Fonts */
+/* -------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+/* -------------------- */
+/* 🔹 BASE LAYER (Tokens + Global Styles) */
+/* -------------------- */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 200 20% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 20% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 20% 8%;
+
+    --primary: 185 84% 18%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 185 35% 96%;
+    --secondary-foreground: 200 20% 8%;
+
+    --muted: 185 20% 96%;
+    --muted-foreground: 200 10% 35%;
+
+    --accent: 185 84% 18%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 185 20% 85%;
+    --input: 185 20% 92%;
+    --ring: 185 84% 18%;
+
+    --radius: 0.75rem;
+
+    /* Brand tokens */
+    --brand: 185 84% 18%;
+    --brand-soft: 185 35% 96%;
+    --ink: 200 20% 8%;
+
+    --glow-brand: rgba(8, 82, 89, 0.15);
+
+    /* --font-style: 'Syne', sans-serif; */
+    font-family: 'Poppins', 'Inter', 'Space Grotesk', sans-serif;
+  }
+
+  body {
+    /* font-family: "Inter", sans-serif; */
+    font-family: 'Poppins', 'Inter', 'Space Grotesk', sans-serif;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Space Grotesk", sans-serif;
+    /* font-family: 'Syne', sans-serif; */
+  }
+}
+
+
+/* -------------------- */
+/* 🔹 COMPONENTS LAYER */
+/* -------------------- */
+@layer components {
+  .landing-theme {
+    @apply bg-background text-foreground;
+  }
+
+  /* Buttons */
+  .btn-glow {
+    @apply transition-all duration-300;
+    background: linear-gradient(135deg, #085259, #0b6b72);
+    /* box-shadow: 0 0 20px rgba(8, 82, 89, 0.22), 0 4px 15px rgba(8, 82, 89, 0.12); */
+  }
+
+  .btn-glow:hover {
+    box-shadow: 0 0 30px rgba(8, 82, 89, 0.28), 0 8px 25px rgba(8, 82, 89, 0.16);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline-white {
+    @apply transition-all duration-300;
+    background: transparent;
+    border: 1px solid rgba(8, 82, 89, 0.22);
+  }
+
+  .btn-outline-white:hover {
+    border-color: rgba(8, 82, 89, 0.5);
+    background: rgba(8, 82, 89, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .marquee-inner {
+    display: flex;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+}
+}
+
+
+/* -------------------- */
+/* 🔹 UTILITIES LAYER */
+/* -------------------- */
+@layer utilities {
+
+  /* Glass Effects */
+  .glass {
+    background: rgba(8, 82, 89, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(8, 82, 89, 0.12);
+  }
+
+  .glass-brand {
+    background: rgba(8, 82, 89, 0.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(8, 82, 89, 0.18);
+  }
+
+  .glass-white {
+    background: rgba(8, 82, 89, 0.08);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(8, 82, 89, 0.16);
+  }
+
+  /* Glow */
+  .glow-brand {
+    box-shadow: 0 0 30px rgba(8, 82, 89, 0.28), 0 0 60px rgba(8, 82, 89, 0.12);
+  }
+
+  .text-glow-brand {
+    text-shadow: 0 0 20px rgba(8, 82, 89, 0.25), 0 0 40px rgba(8, 82, 89, 0.1);
+  }
+
+  /* Text Gradients */
+  .gradient-text-brand {
+    background: linear-gradient(135deg, #085259, #0b6b72, #0f8088);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-text-black {
+    background: linear-gradient(135deg, #ffffff, #d1d5db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Layout */
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(8, 82, 89, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(8, 82, 89, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #085259, #0b6b72, #0f8088);
+    z-index: 9999;
+  }
+
+  /* Animations */
+  .float-animation { animation: float 6s ease-in-out infinite; }
+  .spin-slow { animation: spinSlow 12s linear infinite; }
+  .pulse-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
+
+  /* Misc */
+  .counter-number { font-variant-numeric: tabular-nums; }
+}
+
+
+/* -------------------- */
+/* 🔹 KEYFRAMES */
+/* -------------------- */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  33% { transform: translateY(-15px); }
+  66% { transform: translateY(-8px); }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(8, 82, 89, 0.18); }
+  50% { box-shadow: 0 0 40px rgba(8, 82, 89, 0.25); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

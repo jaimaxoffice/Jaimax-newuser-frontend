@@ -307,6 +307,7 @@ const UserMeetingsShowcase = lazy(() => import("./components/Dashboard/pages/Mee
 const UserDetailsComponent = lazy(() => import("./components/Dashboard/pages/jwallet/jwallet"));
 
 import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent"
+import Index from "./pages/NewMining/IndexPage";
 const SupportChart = lazy(() =>
   import("./components/Dashboard/pages/support/support").then((module) => ({
     default: module.SupportChart,
@@ -531,6 +532,8 @@ const App = () => {
             <Route path="Kyc-Pmla" element={<KycPmlaPolicy />} />
             <Route path="AML-CTF" element={<AmlCtfPolicy />} />
             <Route path="supportpage" element={<SupportPage />} />
+
+              <Route path="free-crypto-mining" element={<Index /> } />
           </Route>
 
           <Route path="*" element={<NotFound />} />
