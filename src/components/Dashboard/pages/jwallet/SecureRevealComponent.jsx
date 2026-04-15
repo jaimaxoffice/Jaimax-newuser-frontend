@@ -625,7 +625,7 @@ const SecureRevealComponent = () => {
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <button
                 onClick={handleCopy}
-                disabled={!revealed}
+                // disabled={!revealed}
                 className="w-full sm:flex-1 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 disabled:from-teal-400 disabled:to-teal-400 disabled:cursor-not-allowed text-white font-semibold py-2.5 sm:py-3 rounded-full transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 {copied ? (

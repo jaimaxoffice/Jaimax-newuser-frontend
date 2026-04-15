@@ -314,7 +314,9 @@ const SupportChart = lazy(() =>
   }))
 );
 
-const HIDE_CHAT_PATHS = ["/login", "/register", "/forgot-password"];
+const HIDE_CHAT_PATHS = ["/login", "/register", "/forgot-password","/community"];
+const hideOnPaths = ["/community","/login", "/register", "/forgot-password"]; 
+  const shouldHide = hideOnPaths.includes(location.pathname);
 const SPLASH_DURATION = 5000;
 
 const ChatButton = ({ isOpen, onClick }) => (
@@ -463,7 +465,7 @@ const App = () => {
           )}
         </>
       )}
-      <FloatingWhatsapp />
+      {!shouldHide && <FloatingWhatsapp />}
 
       {/* Routes with Suspense fallback */}
       <Suspense fallback={<PageLoader />}>

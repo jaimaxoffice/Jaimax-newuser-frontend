@@ -92,7 +92,7 @@ const ChatWindow = ({
   const isMobile = useIsMobile();
   useIsTablet();
 
-  console.log(chatError, "chatError1w2e3r45")
+  // console.log(chatError, "chatError1w2e3r45")
   /* state */
   const [countdown, setCountdown] = useState(0);
   const containerRef = useRef(null);
@@ -911,6 +911,7 @@ const ChatWindow = ({
                   fileInputRef={fileInputRef}
                   inputRef={inputRef} emojiPickerRef={emojiPickerRef}
                   emojiButtonRef={emojiButtonRef} emojiClickInsideRef={emojiClickInsideRef}
+                  
                   rateLimitError={rateLimitError} isMobile={isMobile}
                   onCameraImageReady={d => {
                     setSelectedImages([{ file: d.file, preview: d.preview, name: d.fileName, size: d.fileSize, type: d.fileType }]);

@@ -2348,14 +2348,12 @@ const CombinedHistorySection = () => {
     </div>
   );
 };
-
 const CryptoWithdrawal = () => {
   const selectedToken = "USDT";
 
   const [formData, setFormData] = useState({
     amount: "",
   });
-  const [amountInput, setAmountInput] = useState(""); // Local state for input
   const [idempotencyKey, setIdempotencyKey] = useState(null);
   const [errors, setErrors] = useState({});
   const [previewData, setPreviewData] = useState(null);
@@ -2388,7 +2386,10 @@ const CryptoWithdrawal = () => {
   };
 
   const calculatePreview = async (amount) => {
-    if (!amount) return setPreviewData(null);
+    if (!amount || Number(amount) <= 0) {
+      setPreviewData(null);
+      return;
+    }
 
     try {
       const res = await previewWithdraw({
@@ -2407,51 +2408,39 @@ const CryptoWithdrawal = () => {
     }
   };
 
+  // Debounce effect - triggers preview after user stops typing for 800ms
   useEffect(() => {
-    if (!formData.amount) {
-      setPreviewData(null);
+    // Clear preview immediately when amount changes
+    setPreviewData(null);
+    
+    if (!formData.amount || formData.amount.trim() === "") {
+      setDebouncedAmount("");
       return;
     }
 
     const timer = setTimeout(() => {
       setDebouncedAmount(formData.amount);
-    }, 500);
+    }, 800); // 800ms delay
 
     return () => clearTimeout(timer);
   }, [formData.amount]);
 
+  // Trigger preview calculation only when debounced amount changes
   useEffect(() => {
-    if (!debouncedAmount) return;
+    if (!debouncedAmount || debouncedAmount.trim() === "") return;
     calculatePreview(debouncedAmount);
   }, [debouncedAmount]);
 
-  // Handle text input change (just update local state)
+  // Handle input change with validation
   const handleInputChange = (e) => {
     const { value } = e.target;
+    
     // Only allow numbers and decimal point
-    if (!/^\d*\.?\d*$/.test(value)) return;
-    setAmountInput(value);
-  };
-
-  // Handle Enter key press
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      if (amountInput.trim() === "") {
-        setErrors({ amount: "Enter valid amount" });
-        return;
-      }
-
-      setFormData({ amount: amountInput });
-      setErrors({});
-      setPreviewData(null);
-      setIdempotencyKey(null);
-    }
-  };
-
-  // Handle focus out (optional - if you want to validate on blur)
-  const handleBlur = () => {
-    // You can optionally trigger preview on blur
-    // Or leave empty if you only want Enter key
+    if (value && !/^\d*\.?\d*$/.test(value)) return;
+    
+    setFormData({ amount: value });
+    setErrors({});
+    setIdempotencyKey(null); // Clear idempotency key when amount changes
   };
 
   const handleSubmit = async () => {
@@ -2486,9 +2475,9 @@ const CryptoWithdrawal = () => {
     if (res?.data?.success) {
       toast.success(res?.data?.message || "Withdrawal submitted");
       setFormData({ amount: "" });
-      setAmountInput(""); // Clear input state too
       setPreviewData(null);
       setIdempotencyKey(null);
+      setDebouncedAmount("");
       conversionRefetch();
     } else {
       const errorMessage =
@@ -2535,72 +2524,55 @@ const CryptoWithdrawal = () => {
               <div>
                 <input
                   type="text"
-                  placeholder={`Amount (INR) - Press Enter to confirm`}
-                  value={amountInput}
+                  placeholder="Enter amount in INR"
+                  value={formData.amount}
                   onChange={handleInputChange}
-                  onKeyPress={handleKeyPress}
-                  onBlur={handleBlur}
                   className="w-full border px-3 py-2 bg-white rounded mt-3 focus:ring-2 focus:ring-[#1d8d84] focus:border-transparent"
                 />
                 {errors.amount && (
                   <p className="text-xs text-red-600 mt-1">{errors.amount}</p>
                 )}
+                {formData.amount && !previewData && !previewLoading && (
+                  <p className="text-xs text-gray-500 mt-1 animate-pulse">
+                    Waiting for preview...
+                  </p>
+                )}
               </div>
 
-              {/* Display confirmed amount */}
-              {formData.amount && (
-                <div className="text-xs text-gray-600 mt-2 p-2 bg-blue-50 rounded">
-                  Confirmed amount: <span className="font-semibold">{formData.amount} INR</span>
+              {previewLoading && (
+                <div className="flex items-center justify-center py-4">
+                  <Loader />
+                  <span className="ml-2 text-sm text-gray-600">Loading preview...</span>
                 </div>
               )}
 
-              {previewLoading ? (
-                <Loader />
-              ) : (
-                previewData && (
-                  <div className="bg-gray-50 border rounded p-3 mt-3 text-xs space-y-1">
-                    <div className="flex justify-between">
-                      <span>Requested</span>
-                      <span>
-                        {formData.amount} ₹
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Equivalent USDT</span>
-                      <span>
-                        {previewData.tokenEquivalent} USDT
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-red-600">
-                      <span>Transaction fee</span>
-                      <span>
-                        -{previewData.adminFeeToken} {token}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-red-600">
-                      <span>Network Fee</span>
-                      <span>
-                        -{previewData.networkFeeToken} {token}
-                      </span>
-                    </div>
-                    <div className="flex justify-between font-semibold">
-                      <span>Total Fee</span>
-                      <span>
-                        {previewData.totalTokenFees} {token}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-green-600 font-bold">
-                      <span>You Receive</span>
-                      <span>
-                        {previewData.finalTokenReceived} {token}
-                      </span>
-                    </div>
-                    {/* <div className="flex justify-between text-gray-600 pt-1 border-t">
-                      <span>INR Deduction</span>
-                      <span>₹{previewData.finalTokenReceived}</span>
-                    </div> */}
+              {!previewLoading && previewData && (
+                <div className="bg-gray-50 border rounded p-3 mt-3 text-xs space-y-1">
+                  <div className="flex justify-between">
+                    <span>Requested</span>
+                    <span>{formData.amount} ₹</span>
                   </div>
-                )
+                  <div className="flex justify-between">
+                    <span>Equivalent USDT</span>
+                    <span>{previewData.tokenEquivalent} USDT</span>
+                  </div>
+                  <div className="flex justify-between text-red-600">
+                    <span>Transaction fee</span>
+                    <span>-{previewData.adminFeeToken} {token}</span>
+                  </div>
+                  <div className="flex justify-between text-red-600">
+                    <span>Network Fee</span>
+                    <span>-{previewData.networkFeeToken} {token}</span>
+                  </div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Total Fee</span>
+                    <span>{previewData.totalTokenFees} {token}</span>
+                  </div>
+                  <div className="flex justify-between text-green-600 font-bold">
+                    <span>You Receive</span>
+                    <span>{previewData.finalTokenReceived} {token}</span>
+                  </div>
+                </div>
               )}
 
               <button
@@ -2715,6 +2687,372 @@ const CryptoWithdrawal = () => {
     </div>
   );
 };
+// const CryptoWithdrawal = () => {
+//   const selectedToken = "USDT";
+
+//   const [formData, setFormData] = useState({
+//     amount: "",
+//   });
+//   const [amountInput, setAmountInput] = useState(""); // Local state for input
+//   const [idempotencyKey, setIdempotencyKey] = useState(null);
+//   const [errors, setErrors] = useState({});
+//   const [previewData, setPreviewData] = useState(null);
+//   const [debouncedAmount, setDebouncedAmount] = useState("");
+//   const requestId = `JAIMAX-${uuidv4()}-${Math.random().toString(36).substring(7)}`;
+
+//   const {
+//     data: conversionData,
+//     isLoading: conversionLoading,
+//     refetch: conversionRefetch,
+//   } = useInrToTokenPreviewQuery(selectedToken);
+
+//   const [previewWithdraw, { isLoading: previewLoading }] =
+//     usePreviewTokenWithdrawMutation();
+
+//   const [submitWithdraw, { isLoading: isSubmitting }] =
+//     useUsdtWithdrawRequestMutation();
+//   const { data: getSetting } = useGetSettingQuery();
+
+//   const walletData = conversionData?.data;
+//   const token = walletData?.token || selectedToken;
+//   const settings = getSetting?.data;
+
+//   const validate = () => {
+//     const errs = {};
+//     if (!formData.amount || Number(formData.amount) <= 0)
+//       errs.amount = "Enter valid amount";
+
+//     return errs;
+//   };
+
+//   const calculatePreview = async (amount) => {
+//     if (!amount) return setPreviewData(null);
+
+//     try {
+//       const res = await previewWithdraw({
+//         token: selectedToken,
+//         amount,
+//       });
+
+//       if (res?.data?.success) {
+//         setPreviewData(res.data.data);
+//       } else {
+//         toast.error(res?.error?.data?.message || "Preview failed");
+//         setPreviewData(null);
+//       }
+//     } catch {
+//       setPreviewData(null);
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (!formData.amount) {
+//       setPreviewData(null);
+//       return;
+//     }
+
+//     const timer = setTimeout(() => {
+//       setDebouncedAmount(formData.amount);
+//     }, 500);
+
+//     return () => clearTimeout(timer);
+//   }, [formData.amount]);
+
+//   useEffect(() => {
+//     if (!debouncedAmount) return;
+//     calculatePreview(debouncedAmount);
+//   }, [debouncedAmount]);
+
+//   // Handle text input change (just update local state)
+//   const handleInputChange = (e) => {
+//     const { value } = e.target;
+//     // Only allow numbers and decimal point
+//     if (!/^\d*\.?\d*$/.test(value)) return;
+//     setAmountInput(value);
+//   };
+
+//   // Handle Enter key press
+//   const handleKeyPress = (e) => {
+//     if (e.key === "Enter") {
+//       if (amountInput.trim() === "") {
+//         setErrors({ amount: "Enter valid amount" });
+//         return;
+//       }
+
+//       setFormData({ amount: amountInput });
+//       setErrors({});
+//       setPreviewData(null);
+//       setIdempotencyKey(null);
+//     }
+//   };
+
+//   // Handle focus out (optional - if you want to validate on blur)
+//   const handleBlur = () => {
+//     // You can optionally trigger preview on blur
+//     // Or leave empty if you only want Enter key
+//   };
+
+//   const handleSubmit = async () => {
+//     const errs = validate();
+//     if (Object.keys(errs).length) {
+//       setErrors(errs);
+//       return;
+//     }
+
+//     if (!previewData) {
+//       toast.error("Please wait for preview");
+//       return;
+//     }
+
+//     // ✅ Generate key once per submit attempt, reuse on retry
+//     const keyToUse =
+//       idempotencyKey ??
+//       (() => {
+//         const newKey = `JAIMAX-${selectedToken}-${formData.amount}-${uuidv4()}`;
+//         setIdempotencyKey(newKey);
+//         return newKey;
+//       })();
+
+//     console.log("Using idempotency key:", keyToUse);
+//     const res = await submitWithdraw({
+//       token: selectedToken,
+//       amount: formData.amount,
+//       idempotencyKey: keyToUse,
+//       requestId,
+//     });
+
+//     if (res?.data?.success) {
+//       toast.success(res?.data?.message || "Withdrawal submitted");
+//       setFormData({ amount: "" });
+//       setAmountInput(""); // Clear input state too
+//       setPreviewData(null);
+//       setIdempotencyKey(null);
+//       conversionRefetch();
+//     } else {
+//       const errorMessage =
+//         res?.error?.data?.message || res?.data?.message || "Withdrawal failed";
+//       toast.error(errorMessage);
+//       // ✅ Do NOT clear idempotencyKey on failure — same key reused on retry
+//       // ✅ If error is "already processed", clear it to allow new withdrawal
+//       if (
+//         errorMessage.includes("already used with different parameters") ||
+//         errorMessage.includes("Withdrawal successful") // duplicate detected, treat as success
+//       ) {
+//         setIdempotencyKey(null);
+//       }
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 py-4">
+//       <div className="max-w-screen mx-auto px-3 sm:px-4">
+//         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+//           <div className="lg:col-span-4">
+//             <div className="bg-white rounded-lg border p-4 shadow-sm">
+//               <h2 className="font-semibold mb-3">Token Withdrawal</h2>
+
+//               {conversionLoading ? (
+//                 <Loader />
+//               ) : (
+//                 <div className="bg-gradient-to-r from-[#1d8d84] to-[#00d4aa] p-3 rounded text-white mb-4">
+//                   <p className="text-xs">Available Balance</p>
+//                   <p className="text-lg font-bold">
+//                     {walletData?.estimatedTokenAmount} {token}
+//                   </p>
+//                   <p className="text-xs">
+//                     ≈ ₹{walletData?.walletINRBalance}
+//                   </p>
+//                 </div>
+//               )}
+
+//               <p className="text-xs bg-blue-50 p-2 rounded mb-3">
+//                 <Info className="w-3 h-3 inline mr-1" />₹
+//                 {walletData?.conversionRate} / {token}
+//               </p>
+
+//               <div>
+//                 <input
+//                   type="text"
+//                   placeholder={`Amount (INR) - Press Enter to confirm`}
+//                   value={amountInput}
+//                   onChange={handleInputChange}
+//                   onKeyPress={handleKeyPress}
+//                   onBlur={handleBlur}
+//                   className="w-full border px-3 py-2 bg-white rounded mt-3 focus:ring-2 focus:ring-[#1d8d84] focus:border-transparent"
+//                 />
+//                 {errors.amount && (
+//                   <p className="text-xs text-red-600 mt-1">{errors.amount}</p>
+//                 )}
+//               </div>
+
+//               {/* Display confirmed amount */}
+//               {formData.amount && (
+//                 <div className="text-xs text-gray-600 mt-2 p-2 bg-blue-50 rounded">
+//                   Confirmed amount: <span className="font-semibold">{formData.amount} INR</span>
+//                 </div>
+//               )}
+
+//               {previewLoading ? (
+//                 <Loader />
+//               ) : (
+//                 previewData && (
+//                   <div className="bg-gray-50 border rounded p-3 mt-3 text-xs space-y-1">
+//                     <div className="flex justify-between">
+//                       <span>Requested</span>
+//                       <span>
+//                         {formData.amount} ₹
+//                       </span>
+//                     </div>
+//                     <div className="flex justify-between">
+//                       <span>Equivalent USDT</span>
+//                       <span>
+//                         {previewData.tokenEquivalent} USDT
+//                       </span>
+//                     </div>
+//                     <div className="flex justify-between text-red-600">
+//                       <span>Transaction fee</span>
+//                       <span>
+//                         -{previewData.adminFeeToken} {token}
+//                       </span>
+//                     </div>
+//                     <div className="flex justify-between text-red-600">
+//                       <span>Network Fee</span>
+//                       <span>
+//                         -{previewData.networkFeeToken} {token}
+//                       </span>
+//                     </div>
+//                     <div className="flex justify-between font-semibold">
+//                       <span>Total Fee</span>
+//                       <span>
+//                         {previewData.totalTokenFees} {token}
+//                       </span>
+//                     </div>
+//                     <div className="flex justify-between text-green-600 font-bold">
+//                       <span>You Receive</span>
+//                       <span>
+//                         {previewData.finalTokenReceived} {token}
+//                       </span>
+//                     </div>
+//                     {/* <div className="flex justify-between text-gray-600 pt-1 border-t">
+//                       <span>INR Deduction</span>
+//                       <span>₹{previewData.finalTokenReceived}</span>
+//                     </div> */}
+//                   </div>
+//                 )
+//               )}
+
+//               <button
+//                 disabled={
+//                   isSubmitting ||
+//                   previewLoading ||
+//                   !previewData ||
+//                   !formData.amount
+//                 }
+//                 onClick={handleSubmit}
+//                 className="w-full mt-4 bg-[#1d8d84] py-2 rounded flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#1a7a73] transition-colors"
+//               >
+//                 {isSubmitting ? (
+//                   <>
+//                     <Loader />
+//                     <span className="text-white">Processing...</span>
+//                   </>
+//                 ) : (
+//                   <span className="text-white">Submit Withdrawal</span>
+//                 )}
+//               </button>
+//             </div>
+//           </div>
+
+//           <div className="lg:col-span-8 space-y-4">
+//             <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+//               <div className="flex items-center justify-between mb-3">
+//                 <h2 className="text-base font-semibold text-gray-900">
+//                   Registered Wallet
+//                 </h2>
+//                 <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium flex items-center gap-1">
+//                   <CheckCircle className="w-3 h-3" />
+//                   BSC Network
+//                 </span>
+//               </div>
+//               <div className="grid grid-cols-1 gap-3">
+//                 <div className="bg-gradient-to-r from-gray-50 to-white p-3 rounded-lg border border-gray-200">
+//                   <label className="block text-xs font-medium text-gray-500 uppercase mb-1">
+//                     Wallet Address
+//                   </label>
+//                   <div className="flex items-center gap-2">
+//                     <p className="text-sm text-gray-900 font-mono break-all flex-1">
+//                       {walletData?.walletAddress || "Not Available"}
+//                     </p>
+//                     {walletData?.walletAddress && (
+//                       <button
+//                         onClick={() =>
+//                           copyToClipboard(walletData.walletAddress)
+//                         }
+//                         className="text-[#1d8d84] hover:text-[#1e8064] p-1"
+//                       >
+//                         <Copy className="w-4 h-4" />
+//                       </button>
+//                     )}
+//                   </div>
+//                 </div>
+//                 <div className="grid grid-cols-2 gap-3">
+//                   <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+//                     <label className="block text-xs font-medium text-gray-500 uppercase mb-1">
+//                       Network
+//                     </label>
+//                     <p className="text-sm text-gray-900 font-medium">
+//                       BSC(BEP20)
+//                     </p>
+//                   </div>
+//                   <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+//                     <label className="block text-xs font-medium text-gray-500 uppercase mb-1">
+//                       Status
+//                     </label>
+//                     <p className="text-sm text-gray-900 font-medium">Active</p>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+//               <h2 className="text-base font-semibold text-gray-900 mb-3">
+//                 Terms & Conditions
+//               </h2>
+//               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+//                 <div className="flex gap-2">
+//                   <AlertTriangle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+//                   <div>
+//                     <h3 className="text-xs font-semibold text-yellow-800 mb-1">
+//                       Important Notes
+//                     </h3>
+//                     <ul className="text-xs text-yellow-700 space-y-1">
+//                       <li>• Ensure wallet supports BSC (BEP20) network</li>
+//                       <li>
+//                         • Transaction fee{" "}
+//                         {settings?.withdrawal_commission_usd || 0}% and network
+//                         fee {settings?.network_fee_token || 0}% will be deducted
+//                       </li>
+//                       <li>• Complete KYC verification for withdrawals</li>
+//                       <li>
+//                         • Withdrawal amount will be deducted from your INR
+//                         balance
+//                       </li>
+//                     </ul>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* ── Combined Transaction History with Tabs ── */}
+//         <div className="mt-4">
+//           <CombinedHistorySection />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 export default CryptoWithdrawal;
 
 

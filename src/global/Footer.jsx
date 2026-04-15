@@ -313,6 +313,12 @@ const Footer = () => {
                     external: true,
                     title: "View Jaimax ISO certification (PDF)",
                   },
+                  {
+                    name: "MINING documentation",
+                    path: "/Jaimax_Mining.pdf",
+                    external: true,
+                    title: "View Jaimax Mining Documentation (PDF)",
+                  },
                 ].map((link) => (
                   <li key={link.name}>
                     <NavLink

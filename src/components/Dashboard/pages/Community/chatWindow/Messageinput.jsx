@@ -221,9 +221,15 @@ const MessageInput = ({
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   // const [showPollCreator, setShowPollCreator] = useState(false);
   const attachBtnRef = useRef(null);
-
+  // console.log(emojiClickInsideRef)
   const handleEmojiClick = (emojiObject) => {
-    setMessage((prev) => prev + emojiObject.emoji);
+    // console.log("🎯 Emoji clicked:", emojiObject);
+    // console.log("📝 Current message:", message);
+    setMessage((prev) => {
+      const newMessage = prev + emojiObject.emoji;
+      // console.log("✅ New message:", newMessage);
+      return newMessage;
+    });
     setTimeout(() => inputRef.current?.focus(), 0);
   };
   const { data: userData, isLoading } = useUserDataQuery();
@@ -277,7 +283,7 @@ const MessageInput = ({
             </div>
             <div className="flex gap-3 px-4 pb-4">
               <button onClick={clearCapturedPhoto} className="flex-1 py-2.5 rounded-lg text-sm font-medium" style={{ background: "#f0fdfa", color: "#134e4a", border: "1px solid #99f6e4" }}>Discard</button>
-              <button onClick={() => {  clearCapturedPhoto(); }} className="flex-1 py-2.5 text-white rounded-lg text-sm font-medium" style={{ background: "#0d9488" }}>Send</button>
+              <button onClick={() => { clearCapturedPhoto(); }} className="flex-1 py-2.5 text-white rounded-lg text-sm font-medium" style={{ background: "#0d9488" }}>Send</button>
             </div>
           </div>
         </div>
@@ -329,12 +335,18 @@ const MessageInput = ({
               <Smile className="w-5 h-5" />
             </button> */}
 
+            {/* Emoji button */}
             <button
               ref={emojiButtonRef}
-              onPointerDown={(e) => {
+              onClick={(e) => {
+                // console.log("😀 Emoji button clicked");
+                e.preventDefault();
                 e.stopPropagation();
                 if (finalDisabled) return;
-                setShowEmojiPicker((p) => !p);
+                setShowEmojiPicker((p) => {
+                  // console.log("🔄 Toggling emoji picker:", !p);
+                  return !p;
+                });
               }}
               disabled={finalDisabled}
               className={`p-1.5 sm:p-2 transition-colors flex-shrink-0 rounded-full ${finalDisabled
@@ -347,22 +359,47 @@ const MessageInput = ({
             >
               <Smile className="w-5 h-5" />
             </button>
-            {/* Emoji picker */}
-            {/* {showEmojiPicker && !isInputDisabled && (
-              <div ref={emojiPickerRef} className={`absolute z-50 ${isMobile ? "bottom-14 left-0 right-0 mx-2" : "bottom-14 left-0"}`}
-                onPointerDown={() => { if (emojiClickInsideRef) emojiClickInsideRef.current = true; }}>
-                <EmojiPicker onEmojiClick={handleEmojiClick} theme="light" width={isMobile ? "100%" : 350} height={isMobile ? 320 : 400} searchPlaceHolder="Search emoji..." skinTonesDisabled={isMobile} previewConfig={{ showPreview: !isMobile }} />
-              </div>
-            )} */}
 
+            {/* Emoji picker */}
             {showEmojiPicker && !finalDisabled && (
               <div
                 ref={emojiPickerRef}
-                className={`absolute z-50 ${isMobile ? "bottom-14 left-0 right-0 mx-2" : "bottom-14 left-0"
+                className={`absolute z-[9999] ${isMobile ? "bottom-14 left-0 right-0 mx-2" : "bottom-14 left-0"
                   }`}
+                style={{
+                  pointerEvents: 'auto', // Ensure it receives clicks
+                }}
+                onMouseDown={(e) => {
+                  // console.log("🖱️ Mouse down on emoji picker");
+                  e.stopPropagation();
+                }}
+                onClick={(e) => {
+                  // console.log("👆 Click on emoji picker");
+                  e.stopPropagation();
+                }}
               >
                 <EmojiPicker
-                  onEmojiClick={handleEmojiClick}
+                  onEmojiClick={(emojiObject) => {
+                    // console.log("🎯 Emoji selected:", emojiObject);
+                    // console.log("📝 Current message before:", message);
+
+                    setMessage((prev) => {
+                      const newMessage = prev + emojiObject.emoji;
+                      // console.log("✅ New message after:", newMessage);
+                      return newMessage;
+                    });
+
+                    // Focus input after selection
+                    setTimeout(() => {
+                      if (inputRef.current) {
+                        inputRef.current.focus();
+                        // console.log("🎯 Input focused");
+                      }
+                    }, 0);
+
+                    // Close picker after selection
+                    setShowEmojiPicker(false);
+                  }}
                   theme="light"
                   width={isMobile ? "100%" : 350}
                   height={isMobile ? 320 : 400}
@@ -375,26 +412,25 @@ const MessageInput = ({
 
             {/* Plus / Attach button */}
             <div className="relative flex-shrink-0">
-           <button
-  ref={attachBtnRef}
-  onClick={() => {
-    if (finalDisabled) return;
-    setShowFileTypeModal((p) => !p);
-  }}
-  disabled={finalDisabled}
-  className={`p-1.5 sm:p-2 transition-all flex-shrink-0 rounded-full ${
-    finalDisabled
-      ? "cursor-not-allowed opacity-50"
-      : "hover:bg-[#f0fdfa] active:bg-[#ccfbf1]"
-  }`}
-  style={{
-    color: finalDisabled ? "#d1d5db" : "#6b7280",
-    transform: showFileTypeModal ? "rotate(45deg)" : "rotate(0deg)",
-    transition: "transform 0.2s ease, color 0.15s ease",
-  }}
->
-  <Plus className="w-5 h-5" />
-</button>
+              <button
+                ref={attachBtnRef}
+                onClick={() => {
+                  if (finalDisabled) return;
+                  setShowFileTypeModal((p) => !p);
+                }}
+                disabled={finalDisabled}
+                className={`p-1.5 sm:p-2 transition-all flex-shrink-0 rounded-full ${finalDisabled
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:bg-[#f0fdfa] active:bg-[#ccfbf1]"
+                  }`}
+                style={{
+                  color: finalDisabled ? "#d1d5db" : "#6b7280",
+                  transform: showFileTypeModal ? "rotate(45deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s ease, color 0.15s ease",
+                }}
+              >
+                <Plus className="w-5 h-5" />
+              </button>
 
               {/* WhatsApp-style popup — pass onOpenPoll */}
               <FileTypePopup

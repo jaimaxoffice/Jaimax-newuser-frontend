@@ -419,6 +419,7 @@ const GroupChatApp = () => {
   useEffect(() => {
     const outsideHandler = (e) => {
       if (emojiButtonRef.current?.contains(e.target)) return;
+      // console.lof(emojiButtonRef.current,'hello')
       if (emojiClickInsideRefLocal.current) {
         emojiClickInsideRefLocal.current = false;
         return;
@@ -549,7 +550,7 @@ const GroupChatApp = () => {
       chatId: group.groupId,
       name: group.groupName,
       groupImage: group.groupImage,
-      groupDescription: group.groupDescription,
+      groupDescription: group.groupDescriptoin,
       lastMessage: group.lastMessage || "",
       time: group.lastMessageTime || "",
       unread: group.unread || 0,

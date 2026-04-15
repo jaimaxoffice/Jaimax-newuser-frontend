@@ -2,23 +2,23 @@ import React from "react";
 import Seo from "../SeoContent/Seo";
 
 const PrivacyPolicy = () => {
-  const policyschema={
+  const policyschema = {
 
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": "https://www.jaimax.com/privacy-policy",
-  "url": "https://www.jaimax.com/privacy-policy",
-  "name": "Jaimax Privacy Policy",
-  "description": "Understand how Jaimax collects, uses and protects personal data, in line with applicable data protection and IT regulations.",
-  "inLanguage": "en",
-  "isPartOf": { "@id": "https://www.jaimax.com/#website" },
-  "publisher": { "@id": "https://www.jaimax.com/#organization" }
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.jaimax.com/privacy-policy",
+    "url": "https://www.jaimax.com/privacy-policy",
+    "name": "Jaimax Privacy Policy",
+    "description": "Understand how Jaimax collects, uses and protects personal data, in line with applicable data protection and IT regulations.",
+    "inLanguage": "en",
+    "isPartOf": { "@id": "https://www.jaimax.com/#website" },
+    "publisher": { "@id": "https://www.jaimax.com/#organization" }
 
   }
   return (
     <div className="bg-white min-h-screen py-8 px-4 sm:px-6 lg:px-8">
- <Seo page="privacy-policy" />
- {/* <Helmet>
+      <Seo page="privacy-policy" />
+      {/* <Helmet>
   <title>Privacy Policy | Jaimax Coin</title>
   <meta
     name="description"
@@ -281,9 +281,32 @@ const PrivacyPolicy = () => {
             </p>
           </div>
 
+
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">17. Advertising (Google AdMob)</h3>
+            <p className="text-teal-900">
+              Our application may display advertisements using Google AdMob, a service provided by Google LLC.
+              <br /><br />
+              AdMob may collect and use certain information from your device, including device identifiers such as the Android Advertising ID, device information, and interaction data to provide personalized or non-personalized advertisements and to measure ad performance.
+              <br /><br />
+              Users can reset or delete their Advertising ID through their device settings.
+              <br /><br />
+              To learn more about how Google uses data from apps that use its services, please visit:
+              <br />
+              <a
+                href="https://policies.google.com/technologies/ads"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-teal-600 underline break-all"
+              >
+                https://policies.google.com/technologies/ads
+              </a>
+            </p>
+          </div>
+
           {/* 17. Contact Information */}
           <div>
-            <h3 className="text-lg font-semibold text-teal-700 mb-1">17. Contact Information</h3>
+            <h3 className="text-lg font-semibold text-teal-700 mb-1">18. Contact Information</h3>
             <ul className="list-none text-teal-900 mt-1">
               <li><span className="font-semibold">Privacy Officer – Jaimax</span></li>
               <li>📧 Email: <a href="mailto:privacy@jaimax.com" className="text-teal-600 underline">privacy@jaimax.com</a></li>

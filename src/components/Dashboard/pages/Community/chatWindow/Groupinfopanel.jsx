@@ -708,6 +708,7 @@ const GroupInfoPanel = ({
 
               {/* Description */}
               <div className="bg-white mt-2 px-4 py-4 border-b border-[#085056]/8">
+            
                 {selectedGroup?.groupDescription ? (
                   <p className="text-[13.5px] text-[#0d2426] leading-relaxed">{selectedGroup.groupDescription}</p>
                 ) : (

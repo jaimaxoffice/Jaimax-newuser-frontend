@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { decryptMessage } from "../socket/encryptmsg";
 import MessageText, { safeReplyText } from "./MessageText";
-
+import { useUserDataQuery } from '../../dashBoard/DashboardApliSlice';
 const MessageBubble = ({
   msg, currentUser, members, groupKey,
   effectiveOpenMenuId, copiedMessageId,
@@ -19,14 +19,15 @@ const MessageBubble = ({
 }) => {
   const id = msg._id?.toString() || msg.id?.toString();
   const [activeGif, setActiveGif] = useState(null);
-
+  const { data, loading, error } = useUserDataQuery();
+  // console.log(data?.data?.isUserAllowedToCommunity,"hello");
+  const isallowed = data?.data?.isUserAllowedToCommunity;
   // useEffect(() => {
   //   if (isFile && !fileType(msg)?.startsWith("image/") && !msg.msgBody?.media?.is_uploading) {
   //     onMediaLoad?.();
   //   }
   // }, [msg.msgBody?.media?.is_uploading]);
 
-  console.log(msg, 'msg12e34')
 
   /* ── deleted-for-me guard ── */
   if (msg.deletedFor && Array.isArray(msg.deletedFor)) {
@@ -413,7 +414,9 @@ const MessageBubble = ({
                   }}
                   onClick={e => toggleMenu(id, e, isMe)}
                 >
-                  <ChevronDown className="w-[13px] h-[13px]" />
+                  {isallowed && (
+                    <ChevronDown className="w-[13px] h-[13px]" />
+                  )}
                 </button>
               )}
             </div>
@@ -477,23 +480,30 @@ const MessageBubble = ({
             className="group-hover:!opacity-100 group-hover:!pointer-events-auto absolute top-1 flex items-center gap-1 opacity-0 transition-opacity pointer-events-none"
             style={{ ...(isMe ? { left: -84 } : { right: -84 }) }}
           >
-            <button
-              onClick={e => onReact?.(id, e)}
-              className="p-1.5 rounded-[9px] cursor-pointer text-[14px] flex items-center transition-all"
-              style={{ border: "1px solid #99f6e4", background: "#ffffff" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#f0fdfa"; e.currentTarget.style.transform = "scale(1.08)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.transform = "scale(1)"; }}
-              title="React"
-            >😀</button>
-            <button
-              onClick={e => toggleMenu(id, e, isMe)}
-              className="p-1.5 rounded-[9px] cursor-pointer flex items-center transition-all"
-              style={{ border: "1px solid #99f6e4", background: "#ffffff", color: "#134e4a" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#f0fdfa"; e.currentTarget.style.transform = "scale(1.08)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.transform = "scale(1)"; }}
-            >
-              <ChevronDown className="w-[13px] h-[13px]" />
-            </button>
+            {isallowed && (
+              <>
+                <button
+                  onClick={e => onReact?.(id, e)}
+                  className="p-1.5 rounded-[9px] cursor-pointer text-[14px] flex items-center transition-all"
+                  style={{ border: "1px solid #99f6e4", background: "#ffffff" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "#f0fdfa"; e.currentTarget.style.transform = "scale(1.08)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.transform = "scale(1)"; }}
+                  title="React"
+                >😀</button>
+
+                <button
+                  onClick={e => toggleMenu(id, e, isMe)}
+                  className="p-1.5 rounded-[9px] cursor-pointer flex items-center transition-all"
+                  style={{ border: "1px solid #99f6e4", background: "#ffffff", color: "#134e4a" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "#f0fdfa"; e.currentTarget.style.transform = "scale(1.08)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.transform = "scale(1)"; }}
+                >
+                  <ChevronDown className="w-[13px] h-[13px]" />
+
+                </button>
+
+              </>
+            )}
           </div>
         )}
 

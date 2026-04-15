@@ -770,7 +770,7 @@ import {
   HiOutlineX,
 } from "react-icons/hi";
 import { useCallback } from "react";
-import { Wallet, UserRound, ChevronLeft, ChevronRight } from "lucide-react";
+import { Wallet, UserRound, ChevronLeft, ChevronRight,Users  } from "lucide-react";
 
 import logo from "../../assets/Images/jaimaxlogo1.svg";
 import logo2 from "../../assets/welcomeProfile.svg";
@@ -779,12 +779,12 @@ const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: HiOutlineViewGrid },
   { name: "Wallet", path: "/wallet", icon: Wallet, size: 18 },
   { name: "Buy History", path: "/buy-history", icon: HiOutlineChartBar },
-  { name: "Jaimax Community", path: "/community", icon:HiUserGroup  },
-{name:"mining",path:"/mining",icon: HiOutlineChartBar},
+  // {name:"mining",path:"/mining",icon: HiOutlineChartBar},
   { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
   { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
   { name: "Profile", path: "/profile", icon: UserRound, size: 18 },
   { name: "KYC", path: "/kyc-information", icon: HiOutlineIdentification },
+  { name: "Jaimax Community", path: "/community", icon:Users   },
   { name: "Support", path: "/support", icon: HiOutlineChatAlt2 },
   { name: "Jaimax-Hub", path: "/meetings", icon: HiOutlineVideoCamera },
   { name: "Security", path: "/security", icon: HiOutlineShieldCheck },
