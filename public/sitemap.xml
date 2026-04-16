@@ -24,12 +24,23 @@
     <priority>0.90</priority>
   </url>
 
-  <url>
+  <!-- <url>
     <loc>https://www.jaimax.com/services/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
+  </url> -->
+
+  <url>
+    <loc>https://www.jaimax.com/blog/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.92</priority>
   </url>
 
+  <url>
+    <loc>https://www.jaimax.com/free-crypto-mining/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
   <url>
     <loc>https://www.jaimax.com/blog/</loc>
     <changefreq>daily</changefreq>
