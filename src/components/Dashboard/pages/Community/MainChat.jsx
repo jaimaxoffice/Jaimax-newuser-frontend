@@ -458,8 +458,8 @@ const GroupChatApp = () => {
 
     // Debounce: wait 500ms after last messages change
     readBatchTimeoutRef.current = setTimeout(() => {
-      // console.log("Checking for unread messages to mark as read...");
-      // console.log("Current messages:", messages);
+      // 
+      // 
       const unreadMsgIds = messages
       // .filter((msg) => {
       //   const msgId = msg._id?.toString();
@@ -490,7 +490,7 @@ const GroupChatApp = () => {
         });
       }
     }, 0);
-    // console.log(messages, "hello")
+    // 
 
     return () => {
       if (readBatchTimeoutRef.current) {
@@ -1244,7 +1244,7 @@ const GroupChatApp = () => {
   }, []);
 
   // ── Render ────────────────────────────────────────────────────────────────
-  // console.log(socketInitialized, currentUser.id, isLoadingGroups, "dataebehdb ")
+  // 
   const showLoader = !socketInitialized || !currentUser.id || isLoadingGroups;
   const showGroupList = !isMobile || !selectedGroup;
   const showChatPane = !isMobile || !!selectedGroup;

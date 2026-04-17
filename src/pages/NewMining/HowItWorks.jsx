@@ -371,9 +371,9 @@ const HowItWorks = () => {
                     transition={{ duration: 0.4, delay: 0.18 }}
                     className="text-center"
                   >
-                    <span className="block text-[10px] font-bold text-[#085259]/35 tracking-widest mb-1">
+                    {/* <span className="block text-[10px] font-bold text-[#085259]/35 tracking-widest mb-1">
                       {step}
-                    </span>
+                    </span> */}
                     <p className="text-black font-semibold text-sm leading-snug mb-1.5">
                       {title}
                     </p>

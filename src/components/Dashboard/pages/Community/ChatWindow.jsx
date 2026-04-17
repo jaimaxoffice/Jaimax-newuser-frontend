@@ -92,7 +92,7 @@ const ChatWindow = ({
   const isMobile = useIsMobile();
   useIsTablet();
 
-  // console.log(chatError, "chatError1w2e3r45")
+  // 
   /* state */
   const [countdown, setCountdown] = useState(0);
   const containerRef = useRef(null);

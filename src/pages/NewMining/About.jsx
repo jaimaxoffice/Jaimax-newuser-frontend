@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Wallet, BarChart3, User } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 const features = [
   { icon: Wallet, title: "Wallet Balances", desc: "View and monitor all your wallet balances in one place." },
   { icon: BarChart3, title: "Transaction Tracking", desc: "Monitor and analyze your transaction history seamlessly." },
@@ -18,6 +18,7 @@ const cardVariants = {
 };
 
 const About = () => {
+  const navigate = useNavigate();
   return (
     <section id="about" className="py-16 relative overflow-hidden bg-[#085259]/10">
       <div className="absolute left-1/4 top-1/3 w-72 h-72 rounded-full bg-[#085259]/5 blur-[120px] pointer-events-none" />
@@ -74,17 +75,16 @@ const About = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mb-16"
         >
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => {
-              const el = document.querySelector("#mining");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="bg-[#085259] hover:bg-[#157d89] transition-colors duration-200 px-7 py-3.5 rounded-xl font-semibold text-white"
-          >
-            Explore Jaimax Mining
-          </motion.button>
+         <motion.button
+  whileHover={{ scale: 1.04 }}
+  whileTap={{ scale: 0.97 }}
+  onClick={() => navigate("/login")}
+  role="link"
+  aria-label="Explore Jaimax Mining by logging in"
+  className="bg-[#085259] hover:bg-[#157d89] transition-colors duration-200 px-7 py-3.5 rounded-full font-semibold text-white"
+>
+  Explore Jaimax Mining
+</motion.button>
         </motion.div>
 
         {/* Feature Cards */}

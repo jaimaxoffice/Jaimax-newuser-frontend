@@ -382,7 +382,7 @@
 
 //   <button
 //     className="text-sm px-4 py-1.5 rounded-md bg-[#1d8d84] text-white hover:opacity-90 transition"
-//     onClick={() => console.log("View all clicked")}
+//     onClick={() => }
 //   >
 //     View All
 //   </button>

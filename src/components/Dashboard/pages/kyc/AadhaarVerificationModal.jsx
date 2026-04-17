@@ -728,11 +728,11 @@ const AadhaarVerification = ({
 
   // Debug log to verify DigiLocker data
   useEffect(() => {
-    console.log("=== DigiLocker Data from API ===");
-    console.log("Raw digiLockerData prop:", digiLockerData);
-    console.log("Extracted Name:", digilockerName);
-    console.log("Extracted DOB:", digilockerDob);
-    console.log("================================");
+    
+    
+    
+    
+    
   }, [digiLockerData, digilockerName, digilockerDob]);
 
   useEffect(() => {
@@ -884,9 +884,9 @@ const AadhaarVerification = ({
 
   // Compare DOB from Aadhaar and DigiLocker
   const matchDob = (aadhaarDob, dlDob) => {
-    console.log("=== DOB Matching ===");
-    console.log("Aadhaar DOB:", aadhaarDob);
-    console.log("DigiLocker DOB:", dlDob);
+    
+    
+    
     
     if (!aadhaarDob || !dlDob) {
       return { 
@@ -900,8 +900,8 @@ const AadhaarVerification = ({
     const aadhaarDate = normalizeDob(aadhaarDob);
     const digilockerDate = normalizeDob(dlDob);
 
-    console.log("Parsed Aadhaar DOB:", aadhaarDate);
-    console.log("Parsed DigiLocker DOB:", digilockerDate);
+    
+    
 
     if (!aadhaarDate || !digilockerDate) {
       return { 
@@ -929,7 +929,7 @@ const AadhaarVerification = ({
       aadhaarDate.month === digilockerDate.month && 
       aadhaarDate.year === digilockerDate.year;
 
-    console.log("DOB Match Result:", matched);
+    
 
     return { 
       matched, 
@@ -945,9 +945,9 @@ const AadhaarVerification = ({
 
   // Compare names from Aadhaar and DigiLocker
   const matchNames = (aadhaarName, dlName) => {
-    console.log("=== Name Matching ===");
-    console.log("Aadhaar Name:", aadhaarName);
-    console.log("DigiLocker Name:", dlName);
+    
+    
+    
 
     if (!aadhaarName || !dlName) {
       return { matched: false, similarity: 0, reason: "Name data missing" };
@@ -957,18 +957,18 @@ const AadhaarVerification = ({
     const normalizedAadhaar = normalize(aadhaarName);
     const normalizedDigilocker = normalize(dlName);
 
-    console.log("Normalized Aadhaar Name:", normalizedAadhaar);
-    console.log("Normalized DigiLocker Name:", normalizedDigilocker);
+    
+    
 
     // Exact match
     if (normalizedAadhaar === normalizedDigilocker) {
-      console.log("Exact match found!");
+      
       return { matched: true, similarity: 1.0 };
     }
 
     // String similarity
     const similarity = stringSimilarity.compareTwoStrings(normalizedAadhaar, normalizedDigilocker);
-    console.log("Similarity Score:", similarity);
+    
 
     // Word-by-word matching
     const aadhaarWords = normalizedAadhaar.split(" ").filter((w) => w.length > 0);
@@ -983,7 +983,7 @@ const AadhaarVerification = ({
 
     const isMatched = similarity >= 0.8 || (aadhaarWordsInDigilocker && digilockerWordsInAadhaar);
 
-    console.log("Name Match Result:", isMatched);
+    
 
     return {
       matched: isMatched,
@@ -1023,8 +1023,8 @@ const AadhaarVerification = ({
       }
 
       const response = result.data;
-      console.log("=== Aadhaar Verification API Response ===");
-      console.log("Full Response:", response);
+      
+      
       
       if (response?.success || response?.status_code === 200) {
         const aadhaarData = extractAadhaarData(response);
@@ -1042,11 +1042,11 @@ const AadhaarVerification = ({
         // DOB Matching - Compare Aadhaar DOB with DigiLocker DOB from API
         if (digilockerDob && aadhaarDob) {
           const dobResult = matchDob(aadhaarDob, digilockerDob);
-          console.log("DOB Match Result:", dobResult);
+          
           setDobMatchStatus(dobResult);
           dobMatched = dobResult.matched;
         } else {
-          console.log("WARNING: DigiLocker DOB not available, cannot verify");
+          
           // You can decide: fail verification or skip DOB check
           if (!digilockerDob) {
             toast.warning("DigiLocker DOB not available for verification", { position: "top-center" });
@@ -1060,11 +1060,11 @@ const AadhaarVerification = ({
         // Name Matching - Compare Aadhaar Name with DigiLocker Name from API
         if (digilockerName && aadhaarName) {
           const nameResult = matchNames(aadhaarName, digilockerName);
-          console.log("Name Match Result:", nameResult);
+          
           setNameMatchStatus(nameResult);
           nameMatched = nameResult.matched;
         } else {
-          console.log("WARNING: DigiLocker Name not available, cannot verify");
+          
           if (!digilockerName) {
             toast.warning("DigiLocker Name not available for verification", { position: "top-center" });
             nameMatched = false; // Fail if no DigiLocker name
@@ -1124,7 +1124,7 @@ const AadhaarVerification = ({
       fullResponse: verifiedData,
     };
     
-    console.log("Proceeding with Aadhaar verification data:", aadhaarInfo);
+    
     onVerificationComplete(aadhaarInfo);
   };
 

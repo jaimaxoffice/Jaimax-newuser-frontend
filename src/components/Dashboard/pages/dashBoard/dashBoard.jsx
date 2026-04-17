@@ -29,7 +29,7 @@ const Dashboard = () => {
 const handleComplete = useCallback(async (coins) => {
   setShowModal(false);
   setTotalCoins((prev) => prev + coins);
-  // console.log(`User earned ${coins} coins!`);
+  // 
   await userRefetch();
 }, [userRefetch]);
 

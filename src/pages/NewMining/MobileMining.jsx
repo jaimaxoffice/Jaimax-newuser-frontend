@@ -162,7 +162,7 @@ const MobileMining = () => {
 
             <p className="text-black/60 text-sm sm:text-base leading-relaxed mb-4">
               Jaimax Mining introduces a mobile-first approach to{" "}
-              <strong className="text-black/80 font-semibold"><a href="https://www.jaimax.com/free-crypto-mining/">crypto mining in India</a></strong>.
+              <strong className="text-[#085259] font-semibold"><a href="https://www.jaimax.com/free-crypto-mining/">crypto mining in India</a></strong>.
             </p>
 
             <p className="text-black/60 text-sm sm:text-base leading-relaxed mb-8">

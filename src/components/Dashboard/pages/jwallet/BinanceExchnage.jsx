@@ -273,7 +273,7 @@
 //       tokensSent: parseFloat(tokenSent),
 //     }).unwrap();
 
-//     console.log("API Response:", response); // Debug log to check response structure
+//      // Debug log to check response structure
 
 //     if (response?.success === 1 && response?.data) {
 //       setAwardJmcToUserPayload(response.data);
@@ -290,7 +290,7 @@
 //     console.error("Failed to calculate equivalent JMC:", err);
     
 //     // Make sure we're accessing error data correctly
-//     console.log("Error object:", err); // Debug log
+//      // Debug log
     
 //     // Check different possible locations for the error message
 //     const errorMessage =
@@ -409,7 +409,7 @@
 //       }
 
 //       const decryptedKey = getDecryptedPrivateKey(privatekey, secret);
-//       console.log("Decryption result:", decryptedKey ? "Success" : "Failed");
+//       
 
 //       if (!decryptedKey) {
 //         toast.error("Invalid private key. Cannot proceed with swap.");
@@ -450,11 +450,11 @@
 //         amountToSend
 //       );
 
-//       console.log("Transaction sent:", tx.hash);
+//       
 //       toast.info(`Transaction submitted! Hash: ${tx.hash.substring(0, 10)}...`);
 
 //       const receipt = await tx.wait();
-//       console.log("Transaction confirmed:", receipt);
+//       
 
 //       if (receipt.status === 1) {
 //         // Transaction successful, award JMC
@@ -1242,7 +1242,7 @@ const calculateEquivalentJMC = async () => {
       }
 
       const decryptedKey = getDecryptedPrivateKey(privatekey, secret);
-      // console.log("Decryption result:", decryptedKey ? "Success" : "Failed");
+      // 
 
       if (!decryptedKey) {
         addNotification("Invalid private key. Cannot proceed with swap.", "error");
@@ -1278,11 +1278,11 @@ const calculateEquivalentJMC = async () => {
         amountToSend
       );
 
-      // console.log("Transaction sent:", tx.hash);
+      // 
       addNotification(`Transaction submitted! Hash: ${tx.hash.substring(0, 10)}...`, "info");
 
       const receipt = await tx.wait();
-      // console.log("Transaction confirmed:", receipt);
+      // 
 
       if (receipt.status === 1) {
         // Transaction successful, award JMC

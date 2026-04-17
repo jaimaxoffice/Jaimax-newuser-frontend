@@ -60,7 +60,7 @@ const CompletedSlab = ({ slab, isActive }) => (
               <span className="text-sm text-gray-800 font-semibold">
                 {slab.totalCoins}
               </span>
-              {/* {console.log(slab)} */}
+              {/* {} */}
             </div>
 
             <div className="flex justify-between items-center py-2 border-b border-slate-200">

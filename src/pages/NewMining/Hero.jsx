@@ -107,7 +107,7 @@ const Hero = () => {
               className="text-black/60 text-sm md:text-base lg:text-lg leading-relaxed mb-4 max-w-xl mx-auto lg:mx-0 text-justify"
             >
               Jaimax Mining offers a simplified way to explore{" "}
-              <span className="text-black font-bold"><a href="https://www.jaimax.com/free-crypto-mining/"> crypto mining in India </a></span>
+              <span className="text-[#085259] font-bold"><a href="https://www.jaimax.com/free-crypto-mining/"> crypto mining in India </a></span>
               through a mobile-based participation model. Instead of traditional
               mining that requires hardware and technical setup, Jaimax provides
               an accessible system where users can engage with the app and earn
@@ -122,7 +122,7 @@ const Hero = () => {
               className="text-black/60 text-sm sm:text-base lg:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0 text-justify"
             >
               This approach makes it easier for beginners to start using a{" "}
-              <span className="text-black font-bold"> <a
+              <span className="text-[#085259] font-bold"> <a
   href={playStoreLink}
   target="_blank"
   rel="noopener noreferrer"

@@ -307,21 +307,21 @@ const Navbar = () => {
                 </li>
                 
 
-                {/* <li>
+                <li>
                   <NavLink
                     className={({ isActive }) =>
                       isActive
                         ? "flex items-center justify-center text-[#0e0b0b] bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] font-semibold px-4 py-3 rounded-xl transition-all duration-300 ease-in-out text-sm shadow-lg"
                         : "flex items-center justify-center text-white/90 px-4 py-3 rounded-xl transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-[#c5d82e] hover:to-[#b8cc26] hover:text-[#0e0b0b] hover:shadow-lg text-sm active:scale-95"
                     }
-                    to="/services/"
+                    to="/free-crypto-mining/"
                     title="Explore Jaimax Coin Services - Trading, Wallet & Investment Solutions"
                     onClick={closeNavbar}
                   >
-                    Services
+                    Mining
                   </NavLink>
-                </li> */}
-<li>
+                </li>
+{/* <li>
                 <NavLink
                   className={({ isActive }) =>
                     isActive
@@ -334,7 +334,7 @@ const Navbar = () => {
                 >
                   Mining
                 </NavLink>
-              </li>
+              </li> */}
                 <li>
                   <NavLink
                     className={({ isActive }) =>

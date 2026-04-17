@@ -150,7 +150,7 @@ const CryptoMining = () => {
           </h2>
 
           <p className="text-black/60 text-sm sm:text-base leading-relaxed max-w-3xl mx-auto">
-            Jaimax Mining provides a way to explore <span className="text-black font-bold"><a href="https://www.jaimax.com/free-crypto-mining/"> free crypto mining in India </a></span>
+            Jaimax Mining provides a way to explore <span className="text-[#085259] font-bold"><a href="https://www.jaimax.com/free-crypto-mining/"> free crypto mining in India </a></span>
             without expensive equipment or infrastructure.
           </p>
         </motion.div>

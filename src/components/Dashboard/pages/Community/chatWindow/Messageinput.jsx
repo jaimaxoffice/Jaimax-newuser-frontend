@@ -221,13 +221,13 @@ const MessageInput = ({
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   // const [showPollCreator, setShowPollCreator] = useState(false);
   const attachBtnRef = useRef(null);
-  // console.log(emojiClickInsideRef)
+  // 
   const handleEmojiClick = (emojiObject) => {
-    // console.log("🎯 Emoji clicked:", emojiObject);
-    // console.log("📝 Current message:", message);
+    // 
+    // 
     setMessage((prev) => {
       const newMessage = prev + emojiObject.emoji;
-      // console.log("✅ New message:", newMessage);
+      // 
       return newMessage;
     });
     setTimeout(() => inputRef.current?.focus(), 0);
@@ -339,12 +339,12 @@ const MessageInput = ({
             <button
               ref={emojiButtonRef}
               onClick={(e) => {
-                // console.log("😀 Emoji button clicked");
+                // 
                 e.preventDefault();
                 e.stopPropagation();
                 if (finalDisabled) return;
                 setShowEmojiPicker((p) => {
-                  // console.log("🔄 Toggling emoji picker:", !p);
+                  // 
                   return !p;
                 });
               }}
@@ -370,22 +370,22 @@ const MessageInput = ({
                   pointerEvents: 'auto', // Ensure it receives clicks
                 }}
                 onMouseDown={(e) => {
-                  // console.log("🖱️ Mouse down on emoji picker");
+                  // 
                   e.stopPropagation();
                 }}
                 onClick={(e) => {
-                  // console.log("👆 Click on emoji picker");
+                  // 
                   e.stopPropagation();
                 }}
               >
                 <EmojiPicker
                   onEmojiClick={(emojiObject) => {
-                    // console.log("🎯 Emoji selected:", emojiObject);
-                    // console.log("📝 Current message before:", message);
+                    // 
+                    // 
 
                     setMessage((prev) => {
                       const newMessage = prev + emojiObject.emoji;
-                      // console.log("✅ New message after:", newMessage);
+                      // 
                       return newMessage;
                     });
 
@@ -393,7 +393,7 @@ const MessageInput = ({
                     setTimeout(() => {
                       if (inputRef.current) {
                         inputRef.current.focus();
-                        // console.log("🎯 Input focused");
+                        // 
                       }
                     }, 0);
 

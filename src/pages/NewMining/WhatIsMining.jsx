@@ -35,8 +35,8 @@ const WhatIsMining = () => {
     });
   }, [inView]);
 
-   const playStoreLink =
-  "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax";
+  const playStoreLink =
+    "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax";
 
   return (
     <section id="mining" className="py-14 relative overflow-hidden">
@@ -78,17 +78,17 @@ const WhatIsMining = () => {
             </p>
             <p className="text-black/60 text-sm sm:text-base leading-relaxed mb-3 sm:mb-5">
               While it is inspired by{" "}
-              <span className="font-semibold text-black/65"><a href="https://www.jaimax.com/free-crypto-mining/">cryptomining India </a></span>
+              <span className="font-semibold text-[#085259]"><a href="https://www.jaimax.com/free-crypto-mining/">cryptomining India </a></span>
               {" "}trends, it does not involve computational mining. Instead, it
               focuses on user participation.
             </p>
             <p className="text-black/60 text-sm sm:text-base leading-relaxed">
               This makes it a beginner-friendly{" "}
-              <span className="font-semibold text-black/65"><a
-  href={playStoreLink}
-  target="_blank"
-  rel="noopener noreferrer"
-  title="Download Jaimax Coin app from Google Play Store">crypto mining app </a></span>
+              <span className="font-semibold text-[#085259]"><a
+                href={playStoreLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Download Jaimax Coin app from Google Play Store">crypto mining app </a></span>
               {" "}that removes technical barriers.
             </p>
           </motion.div>
@@ -155,9 +155,9 @@ const WhatIsMining = () => {
                     transition={{ duration: 0.45, delay: 0.15, ease: "easeOut" }}
                   >
                     <div className="flex items-center gap-2 mb-1.5 pl-5">
-                      <span className="text-[10px] font-bold text-[#085259]/35 tracking-widest">
+                      {/* <span className="text-[10px] font-bold text-[#085259]/35 tracking-widest">
                         {num}
-                      </span>
+                      </span> */}
                       <p className="text-black font-semibold text-sm sm:text-[15px] leading-snug">
                         {title}
                       </p>

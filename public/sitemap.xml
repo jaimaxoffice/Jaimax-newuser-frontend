@@ -24,11 +24,6 @@
     <priority>0.90</priority>
   </url>
 
-  <!-- <url>
-    <loc>https://www.jaimax.com/services/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.88</priority>
-  </url> -->
 
   <url>
     <loc>https://www.jaimax.com/blog/</loc>

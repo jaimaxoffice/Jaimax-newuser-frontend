@@ -236,7 +236,7 @@
 //                 </td>
 //                 <td className="border border-teal-100 px-3 py-2 text-center">
 //                   {(Number(purchaseCoinsBreakup?.charges) || 0).toFixed(2)}
-//                   {/* {console.log(purchaseCoinsBreakup?.charges, "hello charges")} */}
+//                   {/* {} */}
 //                 </td>
 //                 <td className="border border-teal-100 px-3 py-2 text-right text-teal-800">
 //                   {/* {(Number(purchaseCoinsBreakup?.totalAmount) || 0).toFixed(2)} */}
@@ -1008,10 +1008,10 @@
 //   const userDataTopasID = Cookies.get("userData");
 //   const parsedUserData = JSON.parse(userDataTopasID || "{}");
 
-//   // console.log(parsedUserData.data)
+//   // 
 //   const userDataTopassid = parsedUserData?._id;
 
-//   // console.log(userDataTopassid)
+//   // 
 
 //   // API hooks
 //   const { data: apiData, refetch: refetchRounds } = useGetRoundQuery();
@@ -1150,7 +1150,7 @@
 
 //     try {
 //       const response = await proceedOrder(payload).unwrap();
-//       // console.log(response?.data?.requsetedAmount, "response");
+//       // 
 //       if (response.status_code === 200) {
 //         if (response.data.shortageResolved) {
 //           setPurchaseCoinsBreakup({
