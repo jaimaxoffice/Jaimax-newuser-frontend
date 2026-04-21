@@ -48,7 +48,7 @@ const SeoSection = () => {
         >
           <p className="text-black/60 text-sm sm:text-base leading-relaxed mb-4 max-w-6xl mx-auto text-justify">
             Jaimax Mining is a simplified and beginner-friendly way to explore{" "}
-            <span className="text-black font-bold">
+            <span className="text-[#085259] hover:text-[#bfd22a] font-bold">
               <a href="https://www.jaimax.com/free-crypto-mining/">
                 crypto mining in India{" "}
               </a>
@@ -58,7 +58,7 @@ const SeoSection = () => {
             crypto activity, manage wallet data, and engage with a growing
             digital ecosystem while earning JMC coins through structured in-app
             activities. As a modern{" "}
-            <span className="text-black font-bold">
+            <span className="text-[#085259] hover:text-[#bfd22a] font-bold">
               {" "}
               <a
                 href={playStoreLink}
@@ -84,7 +84,7 @@ const SeoSection = () => {
             a clear and easy experience while gradually introducing users to the
             fundamentals of digital platforms and blockchain-based systems
             powered by the{" "}
-            <span className="text-black font-bold">
+            <span className="text-[#085259] hover:text-[#bfd22a] font-bold">
               <a href="https://www.jaimax.com/">Jaimax Token</a>
             </span>
             .
@@ -94,7 +94,7 @@ const SeoSection = () => {
             support rewards, transactions, and future platform features
             including payments and services. As the platform evolves, it is
             being developed alongside the upcoming {" "}
-            <strong className="text-black">JMC-24 blockchain</strong>, which aims to enhance
+            <strong className="text-[#085259] hover:text-[#bfd22a]">JMC-24 blockchain</strong>, which aims to enhance
             scalability, efficiency, and real-world usability across different
             applications. This broader infrastructure connects multiple
             components such as wallet systems, exchange development, and digital
@@ -102,7 +102,7 @@ const SeoSection = () => {
           </p>
           <p className="text-black/60 text-sm sm:text-base leading-relaxed mb-4 max-w-6xl mx-auto text-justify">
             With this foundation, Jaimax is positioning itself among the{" "}
-            <span className="text-black font-bold">
+            <span className="text-[#085259] hover:text-[#bfd22a] font-bold">
               <a href="https://www.jaimax.com/best-presale-crypto-token-in-india">
                 best presale crypto token in India{" "}
               </a>

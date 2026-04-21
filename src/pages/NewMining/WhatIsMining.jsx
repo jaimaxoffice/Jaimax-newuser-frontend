@@ -78,13 +78,13 @@ const WhatIsMining = () => {
             </p>
             <p className="text-black/60 text-sm sm:text-base leading-relaxed mb-3 sm:mb-5">
               While it is inspired by{" "}
-              <span className="font-semibold text-[#085259]"><a href="https://www.jaimax.com/free-crypto-mining/">cryptomining India </a></span>
+              <span className="font-semibold text-[#085259] hover:text-[#bfd22a]"><a href="https://www.jaimax.com/free-crypto-mining/">cryptomining India </a></span>
               {" "}trends, it does not involve computational mining. Instead, it
               focuses on user participation.
             </p>
             <p className="text-black/60 text-sm sm:text-base leading-relaxed">
               This makes it a beginner-friendly{" "}
-              <span className="font-semibold text-[#085259]"><a
+              <span className="font-semibold text-[#085259] hover:text-[#bfd22a]"><a
                 href={playStoreLink}
                 target="_blank"
                 rel="noopener noreferrer"

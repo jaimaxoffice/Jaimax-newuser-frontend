@@ -13,6 +13,12 @@
   </url>
 
   <url>
+    <loc>https://www.jaimax.com/free-crypto-mining/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
     <loc>https://www.jaimax.com/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -24,18 +30,13 @@
     <priority>0.90</priority>
   </url>
 
-
   <url>
     <loc>https://www.jaimax.com/blog/</loc>
     <changefreq>daily</changefreq>
     <priority>0.92</priority>
   </url>
 
-  <url>
-    <loc>https://www.jaimax.com/free-crypto-mining/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.95</priority>
-  </url>
+
   <url>
     <loc>https://www.jaimax.com/blog/</loc>
     <changefreq>daily</changefreq>
@@ -91,6 +92,12 @@
 
   <url>
     <loc>https://www.jaimax.com/jaimax-whitepaper.pdf</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.20</priority>
+  </url>
+
+  <url>
+    <loc>https://www.jaimax.com/Jaimax_Mining.pdf</loc>
     <changefreq>yearly</changefreq>
     <priority>0.20</priority>
   </url>

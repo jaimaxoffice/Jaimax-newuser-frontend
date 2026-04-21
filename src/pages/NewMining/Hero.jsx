@@ -25,7 +25,7 @@ const Hero = () => {
   };
 
   const playStoreLink =
-  "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax";
+    "https://play.google.com/store/apps/details?id=com.jaimaxjaimax.jaimaxjaimax";
 
   return (
     <section
@@ -69,9 +69,9 @@ const Hero = () => {
               className="inline-flex items-center gap-2 glass-brand rounded-full px-4 py-2 mb-5 sm:mb-6"
             >
               <div className="w-1.5 h-1.5 rounded-full bg-[#085259]" />
-            <span className="text-[#085259] text-xs font-semibold tracking-widest uppercase">
-              India's Premier Crypto Mining App
-            </span>
+              <span className="text-[#085259] text-xs font-semibold tracking-widest uppercase">
+                India's Premier Crypto Mining App
+              </span>
             </motion.div>
             {/* <div className="inline-flex items-center gap-2 bg-[#085259]/10 border border-[#085259]/20 rounded-full px-4 py-2 mb-5">
             <div className="w-1.5 h-1.5 rounded-full bg-[#085259]" />
@@ -86,14 +86,14 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold leading-tight mb-4 sm:mb-5 "
-             
+
             >
               <span
-  className="text-center bg-gradient-to-r from-black/50 to-[#0b6b72] bg-clip-text text-transparent"
-  
->
+                className="text-center bg-gradient-to-r from-black/50 to-[#0b6b72] bg-clip-text text-transparent"
+
+              >
                 Jaimax Mining </span><br /> <span className="text-black">A Simple Way to Start Crypto{" "}</span>
-              
+
               <span className="gradient-text-brand " >
                 Mining in India
               </span>
@@ -107,7 +107,7 @@ const Hero = () => {
               className="text-black/60 text-sm md:text-base lg:text-lg leading-relaxed mb-4 max-w-xl mx-auto lg:mx-0 text-justify"
             >
               Jaimax Mining offers a simplified way to explore{" "}
-              <span className="text-[#085259] font-bold"><a href="https://www.jaimax.com/free-crypto-mining/"> crypto mining in India </a></span>
+              <span className="text-[#085259] hover:text-[#bfd22a] font-bold"><a href="https://www.jaimax.com/free-crypto-mining/"> crypto mining in India </a></span>
               through a mobile-based participation model. Instead of traditional
               mining that requires hardware and technical setup, Jaimax provides
               an accessible system where users can engage with the app and earn
@@ -122,11 +122,11 @@ const Hero = () => {
               className="text-black/60 text-sm sm:text-base lg:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0 text-justify"
             >
               This approach makes it easier for beginners to start using a{" "}
-              <span className="text-[#085259] font-bold"> <a
-  href={playStoreLink}
-  target="_blank"
-  rel="noopener noreferrer"
-  title="Download Jaimax Coin app from Google Play Store"> crypto mining app </a> </span>
+              <span className="text-[#085259] hover:text-[#bfd22a] font-bold"> <a
+                href={playStoreLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Download Jaimax Coin app from Google Play Store"> crypto mining app </a> </span>
               without investment while understanding how digital ecosystems work.
             </motion.p>
 
@@ -138,21 +138,21 @@ const Hero = () => {
               className="flex flex-col xs:flex-row sm:flex-row gap-3 sm:gap-4 w-full justify-center lg:justify-start mb-8 sm:mb-10"
             >
               <a
-  href={playStoreLink}
-  target="_blank"
-  rel="noopener noreferrer"
-  title="Download Jaimax Coin app from Google Play Store"
-  className="btn-glow  px-9 py-4 rounded-full text-sm font-bold text-white flex items-center justify-center gap-2 relative overflow-hidden shine-effect pulse-glow w-full sm:w-auto"
->
-  <Download className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-  Start Mining Now
-</a>
+                href={playStoreLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Download Jaimax Coin app from Google Play Store"
+                className="btn-glow  px-9 py-4 rounded-full text-sm font-bold text-white flex items-center justify-center gap-2 relative overflow-hidden shine-effect pulse-glow w-full sm:w-auto"
+              >
+                <Download className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                Start Mining Now
+              </a>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => handleScroll("#how-it-works")}
-                className="glass border border-[#085259]/15  px-9 py-4  rounded-full text-sm sm:text-base font-semibold text-black hover:border-[#085259]/40 hover:bg-[#085259]/5 transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto"
+                onClick={() => window.open("https://www.jaimax.com/Jaimax_Mining.pdf", "_blank")}
+                className="glass border border-[#085259]/15 px-9 py-4 rounded-full text-sm sm:text-base font-semibold text-black hover:border-[#085259]/40 hover:bg-[#085259]/5 transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 Explore How It Works
                 <ChevronDown className="w-4 h-4 flex-shrink-0" />
@@ -161,27 +161,27 @@ const Hero = () => {
           </div>
 
           {/* ── Right: Coin visual ── */}
-         {/* ── Right: Coin visual ── */}
-<motion.div
-  initial={{ opacity: 0, x: 60 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
-  className="relative flex items-center justify-center order-second lg:order-last lg:block hidden"
->
-  <div className="mx-auto h-full">
-    
-    <motion.img
-      src={heroCoin}
-      alt="JMC Coin - Crypto Mining India"
-      className="w-full h-full object-contain"
-      style={{
-        filter:
-          "drop-shadow(0 0 40px rgba(8,82,89,0.28)) drop-shadow(0 0 80px rgba(8,82,89,0.12))",
-      }}
-    />
+          {/* ── Right: Coin visual ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
+            className="relative flex items-center justify-center order-second lg:order-last lg:block hidden"
+          >
+            <div className="mx-auto h-full">
 
-  </div>
-</motion.div>
+              <motion.img
+                src={heroCoin}
+                alt="JMC Coin - Crypto Mining India"
+                className="w-full h-full object-contain"
+                style={{
+                  filter:
+                    "drop-shadow(0 0 40px rgba(8,82,89,0.28)) drop-shadow(0 0 80px rgba(8,82,89,0.12))",
+                }}
+              />
+
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

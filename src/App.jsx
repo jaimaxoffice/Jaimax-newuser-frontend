@@ -305,7 +305,7 @@ const Support = lazy(() => import("./components/Dashboard/pages/support/support"
 const AddMoneyToWallet = lazy(() => import("./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet"));
 const UserMeetingsShowcase = lazy(() => import("./components/Dashboard/pages/Meetings/Zoommeetings"));
 const UserDetailsComponent = lazy(() => import("./components/Dashboard/pages/jwallet/jwallet"));
-
+const Referral=lazy(()=>import ("./components/Dashboard/pages/Referral/Referral"));
 import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent"
 import Index from "./pages/NewMining/IndexPage";
 const SupportChart = lazy(() =>
@@ -473,6 +473,7 @@ const App = () => {
           <Route element={<PrivateRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/referral" element={<Referral />} />
               <Route path="/wallet" element={<Wallet />} />
               <Route path="/add-funds" element={<AddMoneyToWallet />} />
               <Route path="/buy-history" element={<BuyHistory />} />
