@@ -432,19 +432,20 @@ const SupportList = () => {
       header: "S.No",
       accessor: "ticketId",
       render: (row) => (
-        <span className="font-medium text-gray-800">{row.ticketId}</span>
+        <span className="font-medium text-gray-800 items-center">{row.ticketId}</span>
       ),
     },
     {
       header: "Type",
       accessor: "type",
-      render: (row) => <span className="text-gray-600">{row.type}</span>,
+      render: (row) => <span className="text-gray-600 items-center">{row.type}</span>,
     },
     {
       header: "Title",
       accessor: "subject",
+      align:"center",
       render: (row) => (
-        <span className="text-gray-800 max-w-xs truncate block">
+        <span className="text-gray-800 max-w-xs truncate block items-center">
           {row.subject}
         </span>
       ),
@@ -452,14 +453,15 @@ const SupportList = () => {
     {
       header: "Created",
       accessor: "createdOn",
-      render: (row) => <span className="text-gray-600">{row.createdOn}</span>,
+      render: (row) => <span className="text-gray-600 items-center">{row.createdOn}</span>,
     },
     {
       header: "Status",
       accessor: "status",
+      align:"center",
       render: (row) => (
         <span
-          className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(row.status)}`}
+          className={`px-3 py-1 rounded-full text-xs font-semibold border items-center ${getStatusColor(row.status)}`}
         >
           {row.status}
         </span>
@@ -468,10 +470,11 @@ const SupportList = () => {
     {
       header: "Action",
       accessor: "action",
+      align:"center",
       render: (row) => (
         <a
           href={`/support/support-chat/${row.id}`}
-          className="text-teal-600 hover:text-teal-800 transition-colors duration-200 flex items-center gap-1"
+          className="text-teal-600 hover:text-teal-800 transition-colors duration-200 flex items-center gap-1 items-center"
         >
           <Eye size={16} />
           View
@@ -700,7 +703,7 @@ const SupportList = () => {
           </>
         ) : (
           <div className="text-center py-20">
-            <div className="text-6xl mb-4">🎫</div>
+            <div className="text-6xl mb-4"></div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               No tickets found
             </h3>

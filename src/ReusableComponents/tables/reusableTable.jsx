@@ -29,7 +29,7 @@ const ReusableTable = ({ columns, data, isLoading }) => {
             data.map((row, rowIndex) => (
               <tr key={rowIndex} className="border-b hover:bg-gray-50">
                 {columns.map((col, colIndex) => (
-                  <td key={colIndex} className="p-3 text-xs text-black">
+                  <td key={colIndex} className="p-3 text-xs text-black text-center">
                     {col.render ? col.render(row, rowIndex) : row[col.accessor]}
                   </td>
                 ))}
