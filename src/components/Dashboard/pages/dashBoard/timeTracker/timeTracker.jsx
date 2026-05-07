@@ -184,7 +184,7 @@
 //               </tr>
 //             </thead>
 //             <tbody>
-              
+
 //               {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
 //                 const resolvedPrice =
 //                   currency === "INR"
@@ -226,7 +226,7 @@
 //                   )}{" "}
 //                   {currency}
 //                 </td>
-               
+
 //               </tr>
 
 //               {/* Total Row */}
@@ -477,7 +477,7 @@
 
 //     {/* Content */}
 //     <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-      
+
 //       {/* Mobile Card View */}
 //       <div className="block sm:hidden space-y-3">
 //         {purchaseCoinsBreakup?.shortageResolution?.map((item, index) => {
@@ -511,7 +511,7 @@
 //             </div>
 //           );
 //         })}
-        
+
 //         {/* Charges Card */}
 //         <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
 //           <div className="flex justify-between items-center">
@@ -521,7 +521,7 @@
 //             </span>
 //           </div>
 //         </div>
-        
+
 //         {/* Total Card */}
 //         <div className="bg-teal-100 border-2 border-teal-300 rounded-lg p-4">
 //           <div className="space-y-2">
@@ -1169,7 +1169,7 @@
 //               position: "top-center",
 //             });
 //           } else {
-            
+
 //             toast.error("Insufficient coins available in ICO Rounds", {
 //               position: "top-center",
 //             });
@@ -1185,7 +1185,7 @@
 //           position: "top-center",
 //         });
 //       } else {
-        
+
 //         toast.error(`${error?.data?.message}`, {
 //           position: "top-center",
 //         });
@@ -1224,7 +1224,7 @@
 //           position: "top-center",
 //         });
 //       } else {
-        
+
 //         toast.error(errorMessage, {
 //           position: "top-center",
 //         });
@@ -1528,7 +1528,8 @@ const SlabTabs = () => {
   const [errors, setErrors] = useState({});
   const [isToastShown, setIsToastShown] = useState(false);
   const [loading, setLoading] = useState(false);
-const [initialTabSet, setInitialTabSet] = useState(false);
+  const [initialTabSet, setInitialTabSet] = useState(false);
+  const [staking, setStaking] = useState(false);
   // Modal states
   const [showModal, setShowModal] = useState(false);
   const [showPurchaseCoinsModal, setShowPurchaseCoinsModal] = useState(false);
@@ -1618,22 +1619,21 @@ const [initialTabSet, setInitialTabSet] = useState(false);
       const isINR = currency === "INR";
       const currencySettings = isINR
         ? {
-            min: settings.data.buy_min_price_jaimax_inr,
-            max: settings.data.buy_max_price_jaimax_inr,
-          }
+          min: settings.data.buy_min_price_jaimax_inr,
+          max: settings.data.buy_max_price_jaimax_inr,
+        }
         : {
-            min: settings.data.buy_min_price_jaimax_usd,
-            max: settings.data.buy_max_price_jaimax_usd,
-          };
+          min: settings.data.buy_min_price_jaimax_usd,
+          max: settings.data.buy_max_price_jaimax_usd,
+        };
 
       const minAmount =
         isINR && Boolean(userData?.data.isActive) ? 100 : currencySettings.min;
       const maxAmount = currencySettings.max;
 
       if (value < minAmount) {
-        newErrors.amount = `Minimum amount should be ${
-          isINR ? "₹" : "$"
-        }${minAmount}.`;
+        newErrors.amount = `Minimum amount should be ${isINR ? "₹" : "$"
+          }${minAmount}.`;
       } else if (value > maxAmount) {
         // newErrors.amount = `Maximum amount should be ${
         //   isINR ? "₹" : "$"
@@ -1655,7 +1655,7 @@ const [initialTabSet, setInitialTabSet] = useState(false);
   const onChangePaymentMethod = (method) => {
     setPaymentMethod(method);
   };
-  
+
   const onProceedOrder = async (e) => {
     e?.preventDefault();
     if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
@@ -1679,23 +1679,23 @@ const [initialTabSet, setInitialTabSet] = useState(false);
             requestedAmount: response.data.requsetedAmount,
             requsetedAmount: response.data.requsetedAmount,
             charges: response.data.charges ?? 0,
-            atPriceInr:response.data.atPriceInr ?? 0,
-            atPriceUsdt:response.data.atPriceUsdt ?? 0,
-            effectiveAmount:response.data.effectiveAmount ?? 0,
+            atPriceInr: response.data.atPriceInr ?? 0,
+            atPriceUsdt: response.data.atPriceUsdt ?? 0,
+            effectiveAmount: response.data.effectiveAmount ?? 0,
           });
           setShowPurchaseCoinsModal(true);
         } else {
           setIsToastShown(true);
           if (response.data.effectiveAmount) {
-           setPurchaseCoinsBreakup({
-            totalCoins: response.data.totalCoins,
-            totalAmount: response.data.totalAmount,
-            requestedAmount: response.data.requsetedAmount,
-            requsetedAmount: response.data.requsetedAmount,
-            charges: response.data.charges ?? 0,
-             atPriceInr:response.data.atPriceInr,
-            atPriceUsdt:response.data.atPriceUsdt,
-          });
+            setPurchaseCoinsBreakup({
+              totalCoins: response.data.totalCoins,
+              totalAmount: response.data.totalAmount,
+              requestedAmount: response.data.requsetedAmount,
+              requsetedAmount: response.data.requsetedAmount,
+              charges: response.data.charges ?? 0,
+              atPriceInr: response.data.atPriceInr,
+              atPriceUsdt: response.data.atPriceUsdt,
+            });
           }
         }
       }
@@ -1714,7 +1714,7 @@ const [initialTabSet, setInitialTabSet] = useState(false);
       }
     }
   };
-  
+
   const onSubmitBuy = async () => {
     if (!validate() || !handleBlur() || Object.keys(errors).length !== 0) {
       return;
@@ -1725,6 +1725,7 @@ const [initialTabSet, setInitialTabSet] = useState(false);
       currency: currency,
       paymentMethod: paymentMethod,
       id: userDataTopassid,
+      staking,
     };
 
     try {
@@ -1827,15 +1828,15 @@ const [initialTabSet, setInitialTabSet] = useState(false);
       refetchUserData();
     }
   };
-useEffect(() => {
-  if (slabsData.length > 0 && !initialTabSet) {
-    const activeIndex = slabsData.findIndex((slab) => slab.type === "active");
-    if (activeIndex !== -1) {
-      setActiveTab(activeIndex);
+  useEffect(() => {
+    if (slabsData.length > 0 && !initialTabSet) {
+      const activeIndex = slabsData.findIndex((slab) => slab.type === "active");
+      if (activeIndex !== -1) {
+        setActiveTab(activeIndex);
+      }
+      setInitialTabSet(true);
     }
-    setInitialTabSet(true);
-  }
-}, [slabsData, initialTabSet]);
+  }, [slabsData, initialTabSet]);
   // Loading state - only show if no data at all
   if (slabsData.length === 0) {
     return (
@@ -1862,10 +1863,9 @@ useEffect(() => {
                   key={slab.id}
                   onClick={() => handleTabClick(index)}
                   className={`relative px-4 py-1.5 text-sm font-semibold rounded-full whitespace-nowrap flex-shrink-0 transition-all duration-500 ease-in-out 
-                    ${
-                      activeTab === index
-                        ? "bg-gradient-to-r from-[#0a8377] via-[#0d9387] to-[#0a8377] text-white shadow-[0_0_8px_rgba(13,147,135,0.35)] scale-[1.05]"
-                        : "bg-gradient-to-r from-[#b9ebe4] to-[#a2e3d8] text-teal-900 hover:from-[#a8e6db] hover:to-[#94ddce] hover:scale-[1.03]"
+                    ${activeTab === index
+                      ? "bg-gradient-to-r from-[#0a8377] via-[#0d9387] to-[#0a8377] text-white shadow-[0_0_8px_rgba(13,147,135,0.35)] scale-[1.05]"
+                      : "bg-gradient-to-r from-[#b9ebe4] to-[#a2e3d8] text-teal-900 hover:from-[#a8e6db] hover:to-[#94ddce] hover:scale-[1.03]"
                     }`}
                 >
                   <span className="relative z-10 flex items-center justify-center gap-1">
@@ -1889,11 +1889,10 @@ useEffect(() => {
                 <button
                   key={slab.id}
                   onClick={() => handleTabClick(index)}
-                  className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${
-                    activeTab === index
+                  className={`px-3 py-2 text-xs rounded-full font-bold transition-all duration-500 whitespace-nowrap flex-shrink-0 border ${activeTab === index
                       ? "bg-[#000] text-white border-emerald-400 shadow-md shadow-emerald-500/25"
                       : "bg-gradient-to-r from-teal-700 to-slate-800 text-slate-300 border-slate-600 hover:from-slate-600 hover:to-slate-700 hover:text-white shadow-sm"
-                  }`}
+                    }`}
                 >
                   {slab.id} Slab
                 </button>
@@ -1936,6 +1935,8 @@ useEffect(() => {
                     handleInputChange={handleInputChange}
                     handleBlur={handleBlur}
                     userData={userData}
+                    staking={staking}
+                    setStaking={setStaking}
                   />
                 ) : currentSlab?.type === "sold" ? (
                   <CompletedSlab slab={currentSlab} isActive={true} />
@@ -1963,11 +1964,10 @@ useEffect(() => {
               <button
                 key={index}
                 onClick={() => handleTabClick(index)}
-                className={`rounded-full transition-all duration-500 shadow-md ${
-                  activeTab === index
+                className={`rounded-full transition-all duration-500 shadow-md ${activeTab === index
                     ? "bg-gradient-to-r from-emerald-500 to-teal-500 w-6 h-2 shadow-emerald-500/25"
                     : "bg-gradient-to-r from-slate-400 to-slate-500 w-2 h-2 hover:from-slate-300 hover:to-slate-400 hover:scale-125"
-                }`}
+                  }`}
               />
             ))}
           </div>

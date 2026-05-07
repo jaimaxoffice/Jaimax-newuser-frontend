@@ -648,10 +648,30 @@ const TopCards = React.memo(() => {
         iconBg: "#fce4ec",
         isCompleted: false,
       },
+      // {
+      //   label: "Super Bonus",
+      //   value: `${currencySymbol}${Number(
+      //     userData?.data?.super_bonus || 0
+      //   ).toFixed(2)}`,
+      //   image: assets.superBonus,
+      //   hoverImage: assets.superBonus1,
+      //   iconBg: "#f1f8e9",
+      //   isCompleted: false,
+      // },
       {
-        label: "Super Bonus",
+        label: "Holded Available blnce",
         value: `${currencySymbol}${Number(
-          userData?.data?.super_bonus || 0
+          userData?.data?.holdedInr || 0
+        ).toFixed(2)}`,
+        image: assets.superBonus,
+        hoverImage: assets.superBonus1,
+        iconBg: "#f1f8e9",
+        isCompleted: false,
+      },
+      {
+        label: "P2P Balance",
+        value: `${currencySymbol}${Number(
+          userData?.data?.p2pInr || 0
         ).toFixed(2)}`,
         image: assets.superBonus,
         hoverImage: assets.superBonus1,

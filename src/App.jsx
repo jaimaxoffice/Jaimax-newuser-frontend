@@ -308,6 +308,7 @@ const UserDetailsComponent = lazy(() => import("./components/Dashboard/pages/jwa
 const Referral=lazy(()=>import ("./components/Dashboard/pages/Referral/Referral"));
 import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent"
 import Index from "./pages/NewMining/IndexPage";
+import StakingDashboard from "./components/Dashboard/staking/Staking";
 const SupportChart = lazy(() =>
   import("./components/Dashboard/pages/support/support").then((module) => ({
     default: module.SupportChart,
@@ -485,6 +486,7 @@ const App = () => {
               <Route path="/meetings" element={<UserMeetingsShowcase />} />
               <Route path="/community" element={<GroupChatApp />} />
             <Route path="/mining" element={<MiningPage/>}/>
+            <Route path="/staking" element={<StakingDashboard/>}/>
             </Route>
             <Route path="/support" element={<DashboardLayout />}>
               <Route index element={<Support />} />

@@ -782,6 +782,7 @@ const navItems = [
   { name: "Buy History", path: "/buy-history", icon: HiOutlineChartBar },
   // {name:"mining",path:"/mining",icon: HiOutlineChartBar},
   { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
+  { name: "Staking", path: "/staking", icon: HiOutlineShieldCheck },
   { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
   { name: "Profile", path: "/profile", icon: UserRound, size: 18 },
   { name: "KYC", path: "/kyc-information", icon: HiOutlineIdentification },

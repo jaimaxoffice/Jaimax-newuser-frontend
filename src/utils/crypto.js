@@ -77,3 +77,17 @@ export const decryptPayload = async (encryptedData, iv, password) => {
 
   return JSON.parse(new TextDecoder().decode(decryptedBuffer));
 };
+
+
+  const formatDateWithAmPm = (isoString) => {
+    const date = new Date(isoString);
+    const dd = String(date.getUTCDate()).padStart(2, "0");
+    const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const yyyy = date.getUTCFullYear();
+    let hh = date.getUTCHours();
+    const min = String(date.getUTCMinutes()).padStart(2, "0");
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12 || 12;
+    return `${dd}-${mm}-${yyyy} ${hh}:${min} ${ampm}`;
+  };
+  export {formatDateWithAmPm};

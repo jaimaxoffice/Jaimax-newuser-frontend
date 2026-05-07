@@ -1536,18 +1536,18 @@ const UsdtTransactionTableTab = ({
           </span>
         ),
       },
-      // {
-      //   header: "Platform Fee (INR)",
-      //   accessor: "admin_inr_charges",
-      //   align: 'center',
-      //   render: (row) => (
-      //     <div className="flex justify-center">
-      //       <span className="text-teal-600 font-medium whitespace-nowrap">
-      //         ₹{row.admin_inr_charges || "-"}
-      //       </span>
-      //     </div>
-      //   ),
-      // },
+      {
+        header: "Mode Of Payment",
+        accessor: "sourceOfWithdrwal",
+        align: 'center',
+        render: (row) => (
+          <div className="flex justify-center">
+            <span className=" font-medium ">
+              {row.sourceOfWithdrwal || "-"}
+            </span>
+          </div>
+        ),
+      },
       {
         header: "Date",
         accessor: "created_at",
@@ -2348,11 +2348,14 @@ const CombinedHistorySection = () => {
     </div>
   );
 };
+const validSources = ["Inr", "p2pInr", "holdedInr"]; 
+
 const CryptoWithdrawal = () => {
   const selectedToken = "USDT";
 
   const [formData, setFormData] = useState({
     amount: "",
+    sourceOfWithdrwal: "Inr", // Fixed typo: sourceOfWithdrwal -> sourceOfWithdrwal
   });
   const [idempotencyKey, setIdempotencyKey] = useState(null);
   const [errors, setErrors] = useState({});
@@ -2377,10 +2380,46 @@ const CryptoWithdrawal = () => {
   const token = walletData?.token || selectedToken;
   const settings = getSetting?.data;
 
+  // Balance type options - Fixed mapping between UI and API values
+  const balanceOptions = [
+    {
+      value: "Inr", // Use actual API values
+      label: "Available Balance",
+      inrBalance: walletData?.walletINRBalance || "0.00",
+      tokenAmount: walletData?.estimatedTokenAmount || "0.0000",
+      icon: <Wallet className="w-4 h-4" />
+    },
+    {
+      value: "p2pInr", // Use actual API values
+      label: "P2P Balance", 
+      inrBalance: walletData?.p2pINRBalance || "0.00",
+      tokenAmount: walletData?.p2pEstimatedTokenAmount || "0.0000",
+      icon: <CreditCard className="w-4 h-4" />
+    },
+    {
+      value: "holdedInr", // Use actual API values
+      label: "Hold Balance",
+      inrBalance: walletData?.holdedINRBalance || "0.00", 
+      tokenAmount: walletData?.holdedEstimatedTokenAmount || "0.0000",
+      icon: <Building className="w-4 h-4" />
+    }
+  ];
+
+  // Get current selected balance info
+  const selectedBalance = balanceOptions.find(option => option.value === formData.sourceOfWithdrwal);
+
   const validate = () => {
     const errs = {};
     if (!formData.amount || Number(formData.amount) <= 0)
       errs.amount = "Enter valid amount";
+    
+    if (!selectedBalance || Number(selectedBalance.inrBalance) <= 0) {
+      errs.sourceOfWithdrwal = "Selected balance has insufficient funds";
+    }
+    
+    if (formData.amount && selectedBalance && Number(formData.amount) > Number(selectedBalance.inrBalance)) {
+      errs.amount = `Amount exceeds available balance of ₹${selectedBalance.inrBalance}`;
+    }
 
     return errs;
   };
@@ -2395,6 +2434,7 @@ const CryptoWithdrawal = () => {
       const res = await previewWithdraw({
         token: selectedToken,
         amount,
+        sourceOfWithdrwal: formData.sourceOfWithdrwal, // Fixed typo
       });
 
       if (res?.data?.success) {
@@ -2410,7 +2450,7 @@ const CryptoWithdrawal = () => {
 
   // Debounce effect - triggers preview after user stops typing for 800ms
   useEffect(() => {
-    // Clear preview immediately when amount changes
+    // Clear preview immediately when amount or balance type changes
     setPreviewData(null);
     
     if (!formData.amount || formData.amount.trim() === "") {
@@ -2420,10 +2460,10 @@ const CryptoWithdrawal = () => {
 
     const timer = setTimeout(() => {
       setDebouncedAmount(formData.amount);
-    }, 800); // 800ms delay
+    }, 800);
 
     return () => clearTimeout(timer);
-  }, [formData.amount]);
+  }, [formData.amount, formData.sourceOfWithdrwal]); // Fixed typo
 
   // Trigger preview calculation only when debounced amount changes
   useEffect(() => {
@@ -2433,14 +2473,16 @@ const CryptoWithdrawal = () => {
 
   // Handle input change with validation
   const handleInputChange = (e) => {
-    const { value } = e.target;
+    const { name, value } = e.target;
     
-    // Only allow numbers and decimal point
-    if (value && !/^\d*\.?\d*$/.test(value)) return;
+    if (name === "amount") {
+      // Only allow numbers and decimal point
+      if (value && !/^\d*\.?\d*$/.test(value)) return;
+    }
     
-    setFormData({ amount: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
     setErrors({});
-    setIdempotencyKey(null); // Clear idempotency key when amount changes
+    setIdempotencyKey(null); // Clear idempotency key when form changes
   };
 
   const handleSubmit = async () => {
@@ -2455,26 +2497,26 @@ const CryptoWithdrawal = () => {
       return;
     }
 
-    // ✅ Generate key once per submit attempt, reuse on retry
+    // Generate key once per submit attempt, reuse on retry
     const keyToUse =
       idempotencyKey ??
       (() => {
-        const newKey = `JAIMAX-${selectedToken}-${formData.amount}-${uuidv4()}`;
+        const newKey = `JAIMAX-${selectedToken}-${formData.amount}-${formData.sourceOfWithdrwal}-${uuidv4()}`;
         setIdempotencyKey(newKey);
         return newKey;
       })();
 
-    
     const res = await submitWithdraw({
       token: selectedToken,
       amount: formData.amount,
+      sourceOfWithdrwal: formData.sourceOfWithdrwal, // Fixed typo
       idempotencyKey: keyToUse,
       requestId,
     });
 
     if (res?.data?.success) {
       toast.success(res?.data?.message || "Withdrawal submitted");
-      setFormData({ amount: "" });
+      setFormData({ amount: "", sourceOfWithdrwal: "Inr" }); // Fixed typo and value
       setPreviewData(null);
       setIdempotencyKey(null);
       setDebouncedAmount("");
@@ -2483,11 +2525,10 @@ const CryptoWithdrawal = () => {
       const errorMessage =
         res?.error?.data?.message || res?.data?.message || "Withdrawal failed";
       toast.error(errorMessage);
-      // ✅ Do NOT clear idempotencyKey on failure — same key reused on retry
-      // ✅ If error is "already processed", clear it to allow new withdrawal
+      
       if (
         errorMessage.includes("already used with different parameters") ||
-        errorMessage.includes("Withdrawal successful") // duplicate detected, treat as success
+        errorMessage.includes("Withdrawal successful")
       ) {
         setIdempotencyKey(null);
       }
@@ -2502,18 +2543,45 @@ const CryptoWithdrawal = () => {
             <div className="bg-white rounded-lg border p-4 shadow-sm">
               <h2 className="font-semibold mb-3">Token Withdrawal</h2>
 
+              {/* Balance Type Dropdown */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Balance Type
+                </label>
+                <select
+                  name="sourceOfWithdrwal" // Fixed typo
+                  value={formData.sourceOfWithdrwal} // Fixed typo
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:ring-2 focus:ring-[#1d8d84] focus:border-transparent"
+                >
+                  {balanceOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label} - ₹{option.inrBalance}
+                    </option>
+                  ))}
+                </select>
+                {errors.sourceOfWithdrwal && ( // Fixed typo
+                  <p className="text-xs text-red-600 mt-1">{errors.sourceOfWithdrwal}</p>
+                )}
+              </div>
+
               {conversionLoading ? (
                 <Loader />
               ) : (
-                <div className="bg-gradient-to-r from-[#1d8d84] to-[#00d4aa] p-3 rounded text-white mb-4">
-                  <p className="text-xs">Available Balance</p>
-                  <p className="text-lg font-bold">
-                    {walletData?.estimatedTokenAmount} {token}
-                  </p>
-                  <p className="text-xs">
-                    ≈ ₹{walletData?.walletINRBalance}
-                  </p>
-                </div>
+                selectedBalance && (
+                  <div className="bg-gradient-to-r from-[#1d8d84] to-[#00d4aa] p-3 rounded text-white mb-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      {selectedBalance.icon}
+                      <p className="text-xs font-medium">{selectedBalance.label}</p>
+                    </div>
+                    <p className="text-lg font-bold">
+                      {selectedBalance.tokenAmount} {token}
+                    </p>
+                    <p className="text-xs">
+                      ≈ ₹{selectedBalance.inrBalance}
+                    </p>
+                  </div>
+                )
               )}
 
               <p className="text-xs bg-blue-50 p-2 rounded mb-3">
@@ -2524,6 +2592,7 @@ const CryptoWithdrawal = () => {
               <div>
                 <input
                   type="text"
+                  name="amount"
                   placeholder="Enter amount in INR"
                   value={formData.amount}
                   onChange={handleInputChange}
@@ -2553,6 +2622,10 @@ const CryptoWithdrawal = () => {
                     <span>{formData.amount} ₹</span>
                   </div>
                   <div className="flex justify-between">
+                    <span>From</span>
+                    <span className="font-medium">{selectedBalance.label}</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span>Equivalent USDT</span>
                     <span>{previewData.tokenEquivalent} USDT</span>
                   </div>
@@ -2580,7 +2653,9 @@ const CryptoWithdrawal = () => {
                   isSubmitting ||
                   previewLoading ||
                   !previewData ||
-                  !formData.amount
+                  !formData.amount ||
+                  !selectedBalance ||
+                  Number(selectedBalance.inrBalance) <= 0
                 }
                 onClick={handleSubmit}
                 className="w-full mt-4 bg-[#1d8d84] py-2 rounded flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#1a7a73] transition-colors"
@@ -2598,6 +2673,29 @@ const CryptoWithdrawal = () => {
           </div>
 
           <div className="lg:col-span-8 space-y-4">
+            {/* Balance Overview Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {balanceOptions.map((balance) => (
+                <div
+                  key={balance.value}
+                  className={`bg-white rounded-lg border p-4 shadow-sm transition-all duration-200 cursor-pointer ${
+                    formData.sourceOfWithdrwal === balance.value // Fixed typo
+                      ? "border-[#1d8d84] bg-[#1d8d84]/5"
+                      : "hover:border-gray-300"
+                  }`}
+                  onClick={() => handleInputChange({ target: { name: "sourceOfWithdrwal", value: balance.value } })} // Fixed typo
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    {balance.icon}
+                    <h3 className="text-sm font-medium text-gray-900">{balance.label}</h3>
+                  </div>
+                  <p className="text-lg font-bold text-gray-800">₹{balance.inrBalance}</p>
+                  <p className="text-xs text-gray-500">≈ {balance.tokenAmount} {token}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Rest of your component remains the same */}
             <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-base font-semibold text-gray-900">
@@ -2668,9 +2766,9 @@ const CryptoWithdrawal = () => {
                       </li>
                       <li>• Complete KYC verification for withdrawals</li>
                       <li>
-                        • Withdrawal amount will be deducted from your INR
-                        balance
+                        • Withdrawal amount will be deducted from selected balance type
                       </li>
+                      <li>• P2P and Hold balances have different processing times</li>
                     </ul>
                   </div>
                 </div>
@@ -2679,7 +2777,7 @@ const CryptoWithdrawal = () => {
           </div>
         </div>
 
-        {/* ── Combined Transaction History with Tabs ── */}
+        {/* Combined Transaction History with Tabs */}
         <div className="mt-4">
           <CombinedHistorySection />
         </div>
