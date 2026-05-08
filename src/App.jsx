@@ -309,6 +309,7 @@ const Referral=lazy(()=>import ("./components/Dashboard/pages/Referral/Referral"
 import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent"
 import Index from "./pages/NewMining/IndexPage";
 import StakingDashboard from "./components/Dashboard/staking/Staking";
+import P2PModule from "./components/Dashboard/pages/p2p/P2PModule";
 const SupportChart = lazy(() =>
   import("./components/Dashboard/pages/support/support").then((module) => ({
     default: module.SupportChart,
@@ -487,6 +488,7 @@ const App = () => {
               <Route path="/community" element={<GroupChatApp />} />
             <Route path="/mining" element={<MiningPage/>}/>
             <Route path="/staking" element={<StakingDashboard/>}/>
+            <Route path="/p2p" element={<P2PModule />} />
             </Route>
             <Route path="/support" element={<DashboardLayout />}>
               <Route index element={<Support />} />

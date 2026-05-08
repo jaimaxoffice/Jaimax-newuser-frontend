@@ -770,7 +770,7 @@ import {
   HiOutlineX,
 } from "react-icons/hi";
 import { useCallback } from "react";
-import { Wallet, UserRound, ChevronLeft, ChevronRight,Users  } from "lucide-react";
+import { Wallet, UserRound, ChevronLeft, ChevronRight,Users, ArrowLeftRight  } from "lucide-react";
 
 import logo from "../../assets/Images/jaimaxlogo1.svg";
 import logo2 from "../../assets/welcomeProfile.svg";
@@ -783,6 +783,7 @@ const navItems = [
   // {name:"mining",path:"/mining",icon: HiOutlineChartBar},
   { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
   { name: "Staking", path: "/staking", icon: HiOutlineShieldCheck },
+  { name: "P2P", path: "/p2p", icon:ArrowLeftRight   },
   { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
   { name: "Profile", path: "/profile", icon: UserRound, size: 18 },
   { name: "KYC", path: "/kyc-information", icon: HiOutlineIdentification },
