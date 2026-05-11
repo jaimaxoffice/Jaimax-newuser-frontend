@@ -9,6 +9,7 @@ export const p2pApiSlice = apiSlice.injectEndpoints({
         body: {
           sellerUsername,
           buyInr,
+          tradeType,
         },
       }),
       invalidatesTags: ["P2PHistory"],

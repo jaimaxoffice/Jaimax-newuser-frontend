@@ -54,8 +54,8 @@
 // const ChatButton = ({ isOpen, onClick }) => (
 //   <button
 //     onClick={onClick}
-//     className="bg-white text-purple-600 rounded-full w-14 h-14 
-//                shadow-2xl flex items-center justify-center 
+//     className="bg-white text-purple-600 rounded-full w-14 h-14
+//                shadow-2xl flex items-center justify-center
 //                transition-all duration-300 backdrop-blur-sm
 //                border border-purple-200 hover:scale-110"
 //     aria-label="AI Assistant"
@@ -142,7 +142,6 @@
 //     return () => clearInterval(interval);
 //   }, [showSplash]);
 
-
 //   return (
 //     <>
 
@@ -163,10 +162,8 @@
 //       )}
 //       <FloatingWhatsapp />
 
-
-
 // {/* private routes */}
-//       <Routes> 
+//       <Routes>
 //         <Route element={<PrivateRoute />}>
 //           <Route element={<DashboardLayout />}>
 //             <Route path="/dashboard" element={<Dashboard />} />
@@ -177,7 +174,7 @@
 //             <Route path="/profile" element={<Profile />} />
 //             <Route path="/jwallet" element={<UserDetailsComponent />} />
 //             <Route path="/kyc-information" element={<Kyc />} />
-//             <Route path="/withdrawal" element={<WithDrawal />} /> 
+//             <Route path="/withdrawal" element={<WithDrawal />} />
 //             <Route path="/meetings" element={<UserMeetingsShowcase />} />
 //           </Route>
 //           <Route path="/support" element={<DashboardLayout />}>
@@ -185,7 +182,6 @@
 //             <Route path="support-chat/:id" element={<SupportChart />} />
 //           </Route>
 //         </Route>
-
 
 // {/* public routes */}
 //         <Route path="/" element={<PublicLayout />}>
@@ -206,7 +202,6 @@
 //             <Route path="register" element={<AuthContainer />} />
 //             <Route path="forgot-password" element={<ForgotPassword />} />
 //           </Route>
-
 
 // {/* before login pages */}
 //           <Route path="about" element={<JaimaxComponent />} />
@@ -265,9 +260,11 @@ import { ToastContainer } from "./ReusableComponents/Toasts/Toasts";
 import ErrorBoundary from "./pages/chatSupport/ErrorBoundary";
 import PageLoader from "./ReusableComponents/Loader/loader";
 import GroupChatApp from "../src/components/Dashboard/pages/Community/MainChat";
-
+import { useUserDataQuery } from "./components/Dashboard/pages/dashBoard/DashboardApliSlice";
 // Lazy loaded components
-const CoinPricePopup = lazy(() => import("./ReusableComponents/popups/Countdown"));
+const CoinPricePopup = lazy(
+  () => import("./ReusableComponents/popups/Countdown"),
+);
 const ChatAssistant = lazy(() => import("./pages/chatSupport/chatComponent"));
 const Home = lazy(() => import("./pages/home/Home"));
 // const Landingpage = lazy(() => import("./pages/home/Landingpage"));
@@ -277,7 +274,9 @@ const Contact = lazy(() => import("./components/contact/Contact"));
 const FeaturesSection = lazy(() => import("./pages/home/HomeFeatures"));
 const BlogLayout = lazy(() => import("./components/BlogSection/Blog"));
 const BlogDetailPage = lazy(() => import("./components/BlogSection/Article"));
-const CryptoServicesFlipCards = lazy(() => import("./components/MainServices/services"));
+const CryptoServicesFlipCards = lazy(
+  () => import("./components/MainServices/services"),
+);
 const SupportPage = lazy(() => import("./global/SupportPage"));
 const RefundPolicy = lazy(() => import("./global/RefundPolicy"));
 const TermsConditions = lazy(() => import("./global/TermsConditons"));
@@ -294,31 +293,66 @@ const ReferEarn = lazy(() => import("./services/Referearn"));
 const PreSaleCryptoCoin = lazy(() => import("./services/PreSaleCryptoCoin"));
 const AuthContainer = lazy(() => import("./Authentication/Login"));
 const ForgotPassword = lazy(() => import("./Authentication/ForgotPassword"));
-const Dashboard = lazy(() => import("./components/Dashboard/pages/dashBoard/dashBoard"));
+const Dashboard = lazy(
+  () => import("./components/Dashboard/pages/dashBoard/dashBoard"),
+);
 const Wallet = lazy(() => import("./components/Dashboard/pages/wallet/wallet"));
-const BuyHistory = lazy(() => import("./components/Dashboard/pages/buyHistory/buyHistory"));
-const Security = lazy(() => import("./components/Dashboard/pages/security/security"));
-const Profile = lazy(() => import("./components/Dashboard/pages/profile/profile"));
+const BuyHistory = lazy(
+  () => import("./components/Dashboard/pages/buyHistory/buyHistory"),
+);
+const Security = lazy(
+  () => import("./components/Dashboard/pages/security/security"),
+);
+const Profile = lazy(
+  () => import("./components/Dashboard/pages/profile/profile"),
+);
 const Kyc = lazy(() => import("./components/Dashboard/pages/kyc/kyc"));
-const WithDrawal = lazy(() => import("./components/Dashboard/pages/widthDrawal/WithdrawalRoute"));
-const Support = lazy(() => import("./components/Dashboard/pages/support/support"));
-const AddMoneyToWallet = lazy(() => import("./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet"));
-const UserMeetingsShowcase = lazy(() => import("./components/Dashboard/pages/Meetings/Zoommeetings"));
-const UserDetailsComponent = lazy(() => import("./components/Dashboard/pages/jwallet/jwallet"));
-const Referral=lazy(()=>import ("./components/Dashboard/pages/Referral/Referral"));
-import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent"
+const WithDrawal = lazy(
+  () => import("./components/Dashboard/pages/widthDrawal/WithdrawalRoute"),
+);
+const Support = lazy(
+  () => import("./components/Dashboard/pages/support/support"),
+);
+const AddMoneyToWallet = lazy(
+  () =>
+    import("./components/Dashboard/pages/AddMoneyToWallet/AddMoneyToWallet"),
+);
+const UserMeetingsShowcase = lazy(
+  () => import("./components/Dashboard/pages/Meetings/Zoommeetings"),
+);
+const UserDetailsComponent = lazy(
+  () => import("./components/Dashboard/pages/jwallet/jwallet"),
+);
+const Referral = lazy(
+  () => import("./components/Dashboard/pages/Referral/Referral"),
+);
+import MiningPage from "./components/Dashboard/pages/mainPage/DashboardComponent";
 import Index from "./pages/NewMining/IndexPage";
-import StakingDashboard from "./components/Dashboard/staking/Staking";
-import P2PModule from "./components/Dashboard/pages/p2p/P2PModule";
+// import StakingDashboard from "./components/Dashboard/staking/Staking";
+const StakingDashboard = lazy(
+  () => import("./components/Dashboard/staking/Staking"),
+);
+// import P2PModule from "./components/Dashboard/pages/p2p/P2PModule";
+const P2PModule = lazy(
+  () => import("./components/Dashboard/pages/p2p/P2PModule"),
+);
+const WpStaking = lazy(
+  () => import("./components/Dashboard/pages/WpStaking/WpStaking"),
+);
 const SupportChart = lazy(() =>
   import("./components/Dashboard/pages/support/support").then((module) => ({
     default: module.SupportChart,
-  }))
+  })),
 );
 
-const HIDE_CHAT_PATHS = ["/login", "/register", "/forgot-password","/community"];
-const hideOnPaths = ["/community","/login", "/register", "/forgot-password"]; 
-  const shouldHide = hideOnPaths.includes(location.pathname);
+const HIDE_CHAT_PATHS = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/community",
+];
+const hideOnPaths = ["/community", "/login", "/register", "/forgot-password"];
+const shouldHide = hideOnPaths.includes(location.pathname);
 const SPLASH_DURATION = 5000;
 
 const ChatButton = ({ isOpen, onClick }) => (
@@ -331,15 +365,29 @@ const ChatButton = ({ isOpen, onClick }) => (
     aria-label="AI Assistant"
   >
     {isOpen ? (
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-        viewBox="0 0 24 24" stroke="#085056" strokeWidth={3}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="#085056"
+        strokeWidth={3}
+      >
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
       </svg>
     ) : (
-      <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"
-        viewBox="0 0 24 24" fill="none" stroke="#085056" strokeWidth={2}
-        strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="34"
+        height="34"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#085056"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
         <path d="M8 12h.01" />
         <path d="M12 12h.01" />
@@ -357,13 +405,17 @@ const App = () => {
   const staticElementsRemovedRef = useRef(false);
   const loaderRemovedRef = useRef(false);
   const showChat = useMemo(() => {
-    const isSupportChatRoute = location.pathname.startsWith("/dashboard/support/support-chat");
+    const isSupportChatRoute = location.pathname.startsWith(
+      "/dashboard/support/support-chat",
+    );
     return !HIDE_CHAT_PATHS.includes(location.pathname) && !isSupportChatRoute;
   }, [location.pathname]);
 
   const toggleChat = useCallback(() => setChatOpen((prev) => !prev), []);
   const closeChat = useCallback(() => setChatOpen(false), []);
 
+  const { data: userData, error, isLoading } = useUserDataQuery();
+  const hasAnyWP = userData?.data?.hasAnyWP;
   // ✅ SINGLE useEffect to remove static elements
   useEffect(() => {
     // Only run once
@@ -375,12 +427,12 @@ const App = () => {
 
     // Immediately hide (prevents visual duplication)
     if (staticNavbar) {
-      staticNavbar.style.opacity = '0';
-      staticNavbar.style.pointerEvents = 'none';
+      staticNavbar.style.opacity = "0";
+      staticNavbar.style.pointerEvents = "none";
     }
     if (staticHero) {
-      staticHero.style.opacity = '0';
-      staticHero.style.pointerEvents = 'none';
+      staticHero.style.opacity = "0";
+      staticHero.style.pointerEvents = "none";
     }
 
     // Remove from DOM after transition
@@ -486,9 +538,19 @@ const App = () => {
               <Route path="/withdrawal" element={<WithDrawal />} />
               <Route path="/meetings" element={<UserMeetingsShowcase />} />
               <Route path="/community" element={<GroupChatApp />} />
-            <Route path="/mining" element={<MiningPage/>}/>
-            <Route path="/staking" element={<StakingDashboard/>}/>
-            <Route path="/p2p" element={<P2PModule />} />
+              <Route path="/mining" element={<MiningPage />} />
+              <Route path="/staking" element={<StakingDashboard />} />
+              <Route path="/p2p" element={<P2PModule />} />
+              <Route
+                path="/wp-staking"
+                element={
+                  hasAnyWP ? (
+                    <WpStaking />
+                  ) : (
+                    <Navigate to="/dashboard" replace />
+                  )
+                }
+              />
             </Route>
             <Route path="/support" element={<DashboardLayout />}>
               <Route index element={<Support />} />
@@ -529,9 +591,14 @@ const App = () => {
             <Route path="ReferEarn" element={<ReferEarn />} />
             <Route
               path="best-presale-crypto-coin-in-india"
-              element={<Navigate to="/best-presale-crypto-token-in-india" replace />}
+              element={
+                <Navigate to="/best-presale-crypto-token-in-india" replace />
+              }
             />
-            <Route path="best-presale-crypto-token-in-india" element={<PreSaleCryptoCoin />} />
+            <Route
+              path="best-presale-crypto-token-in-india"
+              element={<PreSaleCryptoCoin />}
+            />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="terms-and-conditions" element={<TermsConditions />} />
             <Route path="refund-policy" element={<RefundPolicy />} />
@@ -540,7 +607,7 @@ const App = () => {
             <Route path="AML-CTF" element={<AmlCtfPolicy />} />
             <Route path="supportpage" element={<SupportPage />} />
 
-              <Route path="free-crypto-mining" element={<Index /> } />
+            <Route path="free-crypto-mining" element={<Index />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
