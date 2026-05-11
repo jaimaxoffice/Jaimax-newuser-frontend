@@ -1,250 +1,8 @@
-// import React, { useEffect } from "react";
-// import { X, ArrowRight, Coins } from "lucide-react";
-// import { Formik, Form, Field, ErrorMessage } from "formik";
 
-// const CreateStakeModal = ({
-//   show,
-//   onClose,
-//   stakeSchema,
-//   handleStakeSubmit,
-//   getQuote,
-//   quoteData,
-//   quoteLoading,
-//   quoteError,
-//   isLoading,
-// }) => {
-//   if (!show) return null;
-
-//   return (
-//     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4 animate-fadeIn">
-//       <div className="relative bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl w-full max-w-lg rounded-3xl overflow-hidden">
-
-//         {/* Glow */}
-//         <div className="absolute inset-0 bg-gradient-to-br from-teal-100/40 to-transparent pointer-events-none" />
-
-//         {/* Header */}
-//         <div className="relative flex justify-between items-center px-6 py-5 border-b border-teal-100">
-//           <div>
-//             <h3 className="text-xl font-bold text-gray-800">
-//               Create Staking Order
-//             </h3>
-//             <p className="text-sm text-gray-500">
-//               Buy JMX directly from a seller
-//             </p>
-//           </div>
-
-//           <button
-//             onClick={onClose}
-//             className="w-10 h-10 rounded-full bg-white shadow hover:bg-red-50 flex items-center justify-center transition"
-//           >
-//             <X size={20} className="text-gray-600" />
-//           </button>
-//         </div>
-
-//         <Formik
-//           initialValues={{
-//             sellerUsername: "",
-//             buyInr: "",
-//           }}
-//           validationSchema={stakeSchema}
-//           onSubmit={handleStakeSubmit}
-//         >
-//           {({ values, isSubmitting }) => {
-//             useEffect(() => {
-//               if (values.sellerUsername && values.buyInr) {
-//                 const timeout = setTimeout(() => {
-//                   getQuote({
-//                     sellerUsername: values.sellerUsername,
-//                     buyInr: Number(values.buyInr),
-//                   });
-//                 }, 500);
-
-//                 return () => clearTimeout(timeout);
-//               }
-//             }, [values.sellerUsername, values.buyInr]);
-
-//             return (
-//               <Form className="relative p-6 space-y-5">
-
-//                 {/* Inputs */}
-//                 <div>
-//                   <label className="block mb-2 font-medium text-gray-700">
-//                     Seller Username
-//                   </label>
-//                   <Field
-//                     name="sellerUsername"
-//                     type="text"
-//                     placeholder="Enter seller username"
-//                     className="w-full rounded-xl border border-gray-200 bg-white/70 px-4 py-3 focus:ring-2 focus:ring-teal-500 outline-none"
-//                   />
-//                   <ErrorMessage
-//                     name="sellerUsername"
-//                     component="p"
-//                     className="text-red-500 text-sm mt-1"
-//                   />
-//                 </div>
-
-//                 <div>
-//                   <label className="block mb-2 font-medium text-gray-700">
-//                     Amount (INR)
-//                   </label>
-//                   <Field
-//                     name="buyInr"
-//                     type="number"
-//                     placeholder="Enter amount"
-//                     className="w-full rounded-xl border border-gray-200 bg-white/70 px-4 py-3 focus:ring-2 focus:ring-teal-500 outline-none"
-//                   />
-//                   <ErrorMessage
-//                     name="buyInr"
-//                     component="p"
-//                     className="text-red-500 text-sm mt-1"
-//                   />
-//                 </div>
-
-//                 {/* Quote Preview */}
-//                 {values.sellerUsername && values.buyInr && (
-//                   <div className="bg-white/70 backdrop-blur-lg border border-teal-100 rounded-2xl p-5 shadow-inner">
-
-//                     {quoteLoading ? (
-//                       <div className="flex justify-center py-6">
-//                         <Coins className="animate-spin text-teal-600" />
-//                       </div>
-//                     ) : quoteError ? (
-//   <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-//     <p className="text-red-600 font-semibold">
-//       Quote Unavailable
-//     </p>
-//     <p className="text-sm text-red-500 mt-1">
-//       {quoteError?.data?.message || "Unable to fetch quote"}
-//     </p>
-//   </div>
-// ) : quoteData ? (
-//                       <>
-//                         {/* Coin animation */}
-//                         <div className="relative flex justify-between items-center mb-6">
-//                           <div className="text-center">
-//                             <p className="text-xs text-gray-500">Seller</p>
-//                             <p className="font-semibold text-red-500">
-//                               {quoteData?.data?.parties?.seller?.username}
-//                             </p>
-//                           </div>
-
-//                           <div className="relative w-28 h-10 flex items-center">
-//                             <div className="absolute inset-0 border-t border-dashed border-teal-300 top-1/2" />
-//                             <Coins
-//                               className="absolute text-yellow-500 animate-coinMove"
-//                               size={22}
-//                             />
-//                           </div>
-
-//                           <div className="text-center">
-//                             <p className="text-xs text-gray-500">Buyer</p>
-//                             <p className="font-semibold text-green-500">
-//                               {quoteData?.data?.parties?.buyer?.username}
-//                             </p>
-//                           </div>
-//                         </div>
-
-//                         <div className="space-y-3 text-sm">
-//                           <PreviewRow
-//                             label="Payment"
-//                             value={quoteData?.data?.summary?.youWillPay}
-//                           />
-//                           <PreviewRow
-//                             label="Token Receive"
-//                             value={quoteData?.data?.summary?.youWillReceive}
-//                           />
-//                           <PreviewRow
-//                             label="Coin Price"
-//                             value={quoteData?.data?.summary?.pricePerCoin}
-//                           />
-//                           <PreviewRow
-//                             label="Wallet Balance After"
-//                             value={quoteData?.data?.summary?.walletBalanceAfter}
-//                           />
-//                         </div>
-//                       </>
-//                     ) : null}
-//                   </div>
-//                 )}
-
-//                 <button
-//                   type="submit"
-//                   disabled={isLoading || isSubmitting}
-//                   className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold shadow-lg transition"
-//                 >
-//                   {isLoading ? "Submitting..." : "Submit Order"}
-//                 </button>
-//               </Form>
-//             );
-//           }}
-//         </Formik>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const PreviewRow = ({ label, value }) => (
-//   <div className="flex justify-between">
-//     <span className="text-gray-600">{label}</span>
-//     <span className="font-semibold text-teal-700">{value}</span>
-//   </div>
-// );
-
-// export default CreateStakeModal;
 
 import React, { useEffect } from "react";
 import { X, Coins, ArrowLeftRight } from "lucide-react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
-/* ─────────────────────────────────────────────────────────────────
-   PASTE THIS INTO YOUR index.css
-   ─────────────────────────────────────────────────────────────────
-
-@keyframes arcCoin {
-  0% {
-    left: 0%;
-    top: 50%;
-    opacity: 0;
-    transform: translateY(-50%) scale(0.5);
-  }
-  12% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
-  50% {
-    top: 0%;
-    opacity: 1;
-    transform: translateY(-80%) scale(1.15);
-  }
-  88% {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
-  100% {
-    left: calc(100% - 20px);
-    top: 50%;
-    opacity: 0;
-    transform: translateY(-50%) scale(0.5);
-  }
-}
-
-.coin-arc {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 50%;
-  left: 0%;
-  animation: arcCoin 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-.coin-arc-2 {
-  animation-delay: 0.6s;
-}
-.coin-arc-3 {
-  animation-delay: 1.2s;
-}
-
-   ───────────────────────────────────────────────────────────────── */
 
 /* ── Arc Transfer animation component ── */
 const ArcTransfer = () => (
@@ -280,8 +38,10 @@ const CreateStakeModal = ({
   quoteLoading,
   quoteError,
   isLoading,
+  tradeType,
 }) => {
   if (!show) return null;
+  console.log(tradeType)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4">
@@ -319,7 +79,7 @@ const CreateStakeModal = ({
 
         {/* ── Form body ── */}
         <Formik
-          initialValues={{ sellerUsername: "", buyInr: "" }}
+          initialValues={{ sellerUsername: "", buyInr: "", tradeType }}
           validationSchema={stakeSchema}
           onSubmit={handleStakeSubmit}
         >
@@ -330,11 +90,12 @@ const CreateStakeModal = ({
                   getQuote({
                     sellerUsername: values.sellerUsername,
                     buyInr: Number(values.buyInr),
+                    tradeType,
                   });
                 }, 500);
                 return () => clearTimeout(timeout);
               }
-            }, [values.sellerUsername, values.buyInr]);
+            }, [values.sellerUsername, values.buyInr, tradeType]);
 
             return (
               <Form className="px-6 pb-6 mt-5 space-y-5">

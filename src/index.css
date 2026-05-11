@@ -267,3 +267,18 @@ body,
     animation-delay: 1.2s;
   }
 }
+
+@keyframes shrinkRightToLeft {
+  from {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+}
+
+.sell-progress {
+  animation: shrinkRightToLeft 3s linear forwards;
+}

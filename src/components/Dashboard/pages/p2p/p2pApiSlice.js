@@ -3,7 +3,7 @@ import { apiSlice } from "../../../../ApiSliceComponent/jaiMaxApi";
 export const p2pApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     buyP2P: builder.mutation({
-      query: ({ sellerUsername, buyInr }) => ({
+      query: ({ sellerUsername, buyInr, tradeType }) => ({
         url: "p2p/buy-p2p",
         method: "POST",
         body: {
@@ -16,13 +16,18 @@ export const p2pApiSlice = apiSlice.injectEndpoints({
     }),
 
     getP2PQuote: builder.query({
-      query: ({ sellerUsername, buyInr }) =>
-        `p2p/p2p-quote?sellerUsername=${sellerUsername}&buyInr=${buyInr}`,
+      query: ({ sellerUsername, buyInr, tradeType }) =>
+        `p2p/p2p-quote?sellerUsername=${sellerUsername}&buyInr=${buyInr}&tradeType=${tradeType}`,
     }),
 
     getMyP2PHistory: builder.query({
-      query: ({ page = 1, limit = 10 } = {}) =>
-        `p2p/my-p2p-history?page=${page}&limit=${limit}`,
+      query: ({ page = 1, limit = 10, tradeType } = {}) =>
+        `p2p/user-p2p-history?page=${page}&limit=${limit}&tradeType=${tradeType}`,
+      providesTags: ["P2PHistory"],
+    }),
+    sellToCompany: builder.query({
+      query: () =>
+        "p2p/sell-to-company",
       providesTags: ["P2PHistory"],
     }),
   }),
@@ -33,4 +38,6 @@ export const {
   useGetP2PQuoteQuery,
   useLazyGetP2PQuoteQuery,
   useGetMyP2PHistoryQuery,
+  useSellToCompanyQuery,
+  useLazySellToCompanyQuery,
 } = p2pApiSlice;
