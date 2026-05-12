@@ -20,9 +20,14 @@ export const p2pApiSlice = apiSlice.injectEndpoints({
         `p2p/p2p-quote?sellerUsername=${sellerUsername}&buyInr=${buyInr}&tradeType=${tradeType}`,
     }),
 
-    getMyP2PHistory: builder.query({
+    getP2PHistorySeller: builder.query({
       query: ({ page = 1, limit = 10, tradeType } = {}) =>
-        `p2p/user-p2p-history?page=${page}&limit=${limit}&tradeType=${tradeType}`,
+        `p2p/seller-p2p-history?page=${page}&limit=${limit}&tradeType=${tradeType}`,
+      providesTags: ["P2PHistory"],
+    }),
+    getP2PHistoryBuyer: builder.query({
+      query: ({ page = 1, limit = 10, tradeType } = {}) =>
+        `p2p/buyer-p2p-history?page=${page}&limit=${limit}&tradeType=${tradeType}`,
       providesTags: ["P2PHistory"],
     }),
     sellToCompany: builder.query({
@@ -37,7 +42,8 @@ export const {
   useBuyP2PMutation,
   useGetP2PQuoteQuery,
   useLazyGetP2PQuoteQuery,
-  useGetMyP2PHistoryQuery,
+  useGetP2PHistoryBuyerQuery,
+  useGetP2PHistorySellerQuery,
   useSellToCompanyQuery,
   useLazySellToCompanyQuery,
 } = p2pApiSlice;

@@ -791,7 +791,6 @@ function Sidebar({
 }) {
   const { data: userData, error, isLoading } = useUserDataQuery();
   const hasAnyWP = userData?.data?.hasAnyWP;
-  // console.log("User Data:", userData);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -804,15 +803,7 @@ function Sidebar({
     { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
     { name: "Staking", path: "/staking", icon: HiOutlineShieldCheck },
     { name: "P2P", path: "/p2p", icon: ArrowLeftRight },
-    ...(hasAnyWP
-      ? [
-          {
-            name: "WP-Staking",
-            path: "/wp-staking",
-            icon: GrStakeholder,
-          },
-        ]
-      : []),
+    ...(hasAnyWP ? [ {name: "WP-Staking",path: "/wp-staking",icon: GrStakeholder,},]: []),
     { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
     { name: "Profile", path: "/profile", icon: UserRound, size: 18 },
     { name: "KYC", path: "/kyc-information", icon: HiOutlineIdentification },

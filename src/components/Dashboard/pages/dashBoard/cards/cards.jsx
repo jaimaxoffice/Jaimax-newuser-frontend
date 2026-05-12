@@ -628,16 +628,16 @@ const TopCards = React.memo(() => {
         iconBg: "#fff3e0",
         isCompleted: false,
       },
-      {
-        label: "Referral Earnings",
-        value: `${currencySymbol}${Number(
-          userData?.data?.referenceInr || 0
-        ).toFixed(2)}`,
-        image: assets.referal,
-        hoverImage: assets.referal1, 
-        iconBg: "#f3e5f5",
-        isCompleted: false,
-      },
+      // {
+      //   label: "Referral Earnings",
+      //   value: `${currencySymbol}${Number(
+      //     userData?.data?.referenceInr || 0
+      //   ).toFixed(2)}`,
+      //   image: assets.referal,
+      //   hoverImage: assets.referal1, 
+      //   iconBg: "#f3e5f5",
+      //   isCompleted: false,
+      // },
       {
         label: "Withdrawal Amount",
         value: `${currencySymbol}${Number(
@@ -672,6 +672,16 @@ const TopCards = React.memo(() => {
         label: "P2P Balance",
         value: `${currencySymbol}${Number(
           userData?.data?.p2pInr || 0
+        ).toFixed(2)}`,
+        image: assets.superBonus,
+        hoverImage: assets.superBonus1,
+        iconBg: "#f1f8e9",
+        isCompleted: false,
+      },
+      {
+        label: "wealthPlan staking Balance",
+        value: `${currencySymbol}${Number(
+          userData?.data?.wpStakingInr || 0
         ).toFixed(2)}`,
         image: assets.superBonus,
         hoverImage: assets.superBonus1,

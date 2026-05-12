@@ -4,6 +4,7 @@ import { useGetStakingRewardsQuery } from './stakingApiSlice';
 import ReusableTable from "../../../ReusableComponents/tables/reusableTable";
 import Pagination from "../../../ReusableComponents/Pagination/Pagination";
 import dayjs from 'dayjs';
+import { ArrowLeft } from 'lucide-react';
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const fmtTokens = (n) =>
   new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 }).format(n || 0);
@@ -62,7 +63,7 @@ const BackButton = ({ onBack }) => (
     onMouseEnter={e => { e.currentTarget.style.borderColor = '#9FE1CB'; e.currentTarget.style.color = '#0F6E56'; }}
     onMouseLeave={e => { e.currentTarget.style.borderColor = '#e5e7eb'; e.currentTarget.style.color = '#374151'; }}
   >
-    ← Back to Dashboard
+    <ArrowLeft size={15} /> Back to Dashboard
   </button>
 );
 
@@ -188,14 +189,14 @@ const StakingRewards = ({ onBack, orderId }) => {
 
 
           {/* ── Table / Cards ───────────────────────────────────────────────── */}
-          <div style={{ background: '#fff', borderRadius: 16, border: '0.5px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+          <div style={{ background: '#fff', borderRadius: 8, border: '0.5px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
 
             {/* Table header bar */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '0.5px solid #f3f4f6', background: 'linear-gradient(90deg,#f0fdf9,#fff)' }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>Reward history</div>
-              <div style={{ fontSize: 12, color: '#9ca3af' }}>
+              {/* <div style={{ fontSize: 12, color: '#9ca3af' }}>
                 {pagination?.totalItems || logs.length} entries · Page {currentPage} of {pagination?.totalPages || 1}
-              </div>
+              </div> */}
             </div>
 
             {/* ── Desktop table ──────────────────────────────────────────────── */}

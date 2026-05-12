@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import ReusableTable from "../../../../ReusableComponents/tables/reusableTable";
+import Loader from "../../../../ReusableComponents/Loader/loader";
 
 const EmptyState = ({ onOpenStakeModal }) => (
   <div className="flex flex-col items-center justify-center text-center bg-white rounded-2xl border border-teal-100 shadow-sm p-6 sm:p-16">
@@ -48,7 +49,7 @@ const TradeCard = ({ trade }) => (
             Trade ID
           </p>
           <p className="text-white font-semibold text-sm mt-1">
-            #{trade.tradeId.toUpperCase()}
+            {trade.tradeId.toUpperCase()}
           </p>
         </div>
 
@@ -152,7 +153,9 @@ const StakingHistory = ({
   onOpenStakeModal,
 }) => {
   const trades = history?.data?.trades || [];
-
+ if(isLoading){
+  <Loader/>
+ }
   if (!trades.length) {
     return <EmptyState onOpenStakeModal={onOpenStakeModal} />;
   }
@@ -168,7 +171,7 @@ const totalPages = Number(pagination.totalPages || 1);
   },
   {
     header: "Trade ID",
-    render: (row) => `#${row.tradeId.toUpperCase()}`,
+    render: (row) => `${row.tradeId.toUpperCase().slice(0,-3)}`,
   },
   {
     header: "Buyer",
@@ -184,12 +187,12 @@ const totalPages = Number(pagination.totalPages || 1);
       `₹${Number(row.payment?.totalInr || 0).toLocaleString("en-IN")}`,
   },
   {
-    header: "Coins",
+    header: "Coins (JMC)",
     render: (row) =>
       <span
         className="truncate max-w-[200px]"
       >
-        ${Number(row.coins?.totalCoins || 0).toLocaleString()} JMC
+        {Number(row.coins?.totalCoins || 0).toLocaleString()}
       </span>
 
   },
