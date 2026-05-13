@@ -1105,11 +1105,11 @@ const P2PTransactionsView = ({ onBack }) => {
         ? "mining"
         : "regular";
 
-  const { data: getHistory, isLoading: loading } = useGetP2PHistorySellerQuery({
-    page: 1,
-    limit: 10,
-    tradeType,
-  });
+    const { data: getHistory, isLoading: loading } = useGetP2PHistorySellerQuery({
+      page: 1,
+      limit: 10,
+      tradeType,
+    });
 
   const trades = getHistory?.data?.trades || [];
   const summary = getHistory?.data?.orderSummary || { total: 0 };
@@ -1424,10 +1424,92 @@ const StakingDashboard = () => {
           )}
 
           {!data.orders?.length && (
-            <div style={{ textAlign: 'center', padding: '4rem 1rem', background: '#fff', borderRadius: 8, border: '0.5px solid #e5e7eb' }}>
-              <div style={{ fontSize: 16, fontWeight: 600, color: '#111827', marginBottom: 6 }}>No orders yet</div>
-              <div style={{ fontSize: 13, color: '#9ca3af' }}>Start your staking journey by creating your first order</div>
-            </div>
+            // <div style={{ textAlign: 'center', padding: '4rem 1rem', background: '#fff', borderRadius: 8, border: '0.5px solid #e5e7eb' }}>
+            //   <div style={{ fontSize: 16, fontWeight: 600, color: '#111827', marginBottom: 6 }}>No orders yet</div>
+            //   <div style={{ fontSize: 13, color: '#9ca3af' }}>Start your staking journey by creating your first order</div>
+            // </div>
+
+            <div style={{ 
+  textAlign: 'center', 
+  padding: '4rem 1rem', 
+  background: `
+    radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(15, 118, 110, 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, rgba(20, 184, 166, 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(20, 184, 166, 0.05) 25%, transparent 25%),
+    #ffffff
+  `,
+  backgroundSize: '100% 100%, 100% 100%, 20px 20px, 20px 20px',
+  borderRadius: 16, 
+  border: '2px dashed #14b8a6',
+  position: 'relative',
+  overflow: 'hidden'
+}}>
+  <div style={{
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    width: '60px',
+    height: '60px',
+    borderRadius: '50%',
+    background: 'linear-gradient(45deg, #14b8a6, #0f766e)',
+    opacity: 0.1,
+    transform: 'rotate(45deg)'
+  }}></div>
+  
+  <div style={{
+    position: 'absolute',
+    bottom: '15px',
+    left: '15px',
+    width: '40px',
+    height: '40px',
+    border: '3px solid #14b8a6',
+    borderRadius: '50%',
+    opacity: 0.2
+  }}></div>
+
+  <div style={{ 
+    fontSize: '2.5rem',
+    marginBottom: 8,
+    color: '#0f766e'
+  }}>
+    
+  </div>
+  
+  <div style={{ 
+    fontSize: 18, 
+    fontWeight: 700, 
+    color: '#0f766e', 
+    marginBottom: 10,
+    textTransform: 'uppercase',
+    letterSpacing: '1px'
+  }}>
+    No orders yet
+  </div>
+  <div style={{ 
+    fontSize: 14, 
+    color: '#14b8a6',
+    fontWeight: 500,
+    fontStyle: 'italic'
+  }}>
+     Start your staking journey by creating your first order
+  </div>
+  
+  <div style={{
+    marginTop: '1rem',
+    display: 'inline-flex',
+    gap: '4px'
+  }}>
+    {[1,2,3].map(i => (
+      <div key={i} style={{
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        background: i === 2 ? '#14b8a6' : '#e6fffa'
+      }}></div>
+    ))}
+  </div>
+</div>
           )}
 
         </div>

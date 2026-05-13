@@ -1351,13 +1351,13 @@ const CryptoWithdrawal = () => {
 
           <div className="lg:col-span-8 space-y-4">
             {/* Balance Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {balanceOptions.map((balance) => (
                 <div
                   key={balance.value}
                   className={`bg-white rounded-lg border p-4 shadow-sm transition-all duration-200 cursor-pointer ${formData.sourceOfWithdrwal === balance.value // Fixed typo
-                      ? "border-[#1d8d84] bg-[#1d8d84]/5"
-                      : "hover:border-gray-300"
+                    ? "border-[#1d8d84] bg-[#1d8d84]/5"
+                    : "hover:border-gray-300"
                     }`}
                   onClick={() => handleInputChange({ target: { name: "sourceOfWithdrwal", value: balance.value } })} // Fixed typo
                 >
