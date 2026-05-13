@@ -221,21 +221,21 @@ const MessageInput = ({
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   // const [showPollCreator, setShowPollCreator] = useState(false);
   const attachBtnRef = useRef(null);
-  // 
+  // console.log(emojiClickInsideRef)
   const handleEmojiClick = (emojiObject) => {
-    // 
-    // 
+    // console.log("🎯 Emoji clicked:", emojiObject);
+    // console.log("📝 Current message:", message);
     setMessage((prev) => {
       const newMessage = prev + emojiObject.emoji;
-      // 
+      // console.log("✅ New message:", newMessage);
       return newMessage;
     });
     setTimeout(() => inputRef.current?.focus(), 0);
   };
   const { data: userData, isLoading } = useUserDataQuery();
-  const isAllowed = userData?.data?.isUserAllowedToCommunity;
-  const finalDisabled = isInputDisabled || !isAllowed || isLoading;
-  const isBlocked = !isLoading && !isAllowed;
+  const canAccessDocuments = userData?.data?.isUserAllowedToCommunity; // Only for file uploads
+  const finalDisabled = isInputDisabled || isLoading; // Input disabled only by rate limit
+  // const isBlocked = !isLoading && !isAllowed;
   const handleCameraCapture = useCallback((captureData) => {
     setShowCamera(false);
     if (onCameraCapture) { onCameraCapture(captureData); return; }
@@ -244,14 +244,14 @@ const MessageInput = ({
   }, [onCameraCapture, onCameraImageReady]);
 
   const clearCapturedPhoto = useCallback(() => setCapturedPhoto(null), []);
-  {
-    !isLoading && !isAllowed && (
-      <div className="mb-2 px-3 py-2 rounded-lg bg-yellow-50 border border-yellow-300 text-xs text-yellow-700 flex items-center gap-2">
-        <AlertTriangle className="w-4 h-4 text-yellow-600" />
-        You are not allowed to send messages in this community.
-      </div>
-    )
-  }
+  // {
+  //   !isLoading && !isAllowed && (
+  //     <div className="mb-2 px-3 py-2 rounded-lg bg-yellow-50 border border-yellow-300 text-xs text-yellow-700 flex items-center gap-2">
+  //       <AlertTriangle className="w-4 h-4 text-yellow-600" />
+  //       You are not allowed to send messages in this community.
+  //     </div>
+  //   )
+  // }
   return (
     <>
       {/* Camera Modal */}
@@ -339,19 +339,19 @@ const MessageInput = ({
             <button
               ref={emojiButtonRef}
               onClick={(e) => {
-                // 
+                // console.log("😀 Emoji button clicked");
                 e.preventDefault();
                 e.stopPropagation();
                 if (finalDisabled) return;
                 setShowEmojiPicker((p) => {
-                  // 
+                  // console.log("🔄 Toggling emoji picker:", !p);
                   return !p;
                 });
               }}
               disabled={finalDisabled}
               className={`p-1.5 sm:p-2 transition-colors flex-shrink-0 rounded-full ${finalDisabled
-                  ? "cursor-not-allowed opacity-50"
-                  : "hover:bg-[#f0fdfa] active:bg-[#ccfbf1]"
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-[#f0fdfa] active:bg-[#ccfbf1]"
                 }`}
               style={{
                 color: finalDisabled ? "#d1d5db" : "#6b7280",
@@ -370,22 +370,22 @@ const MessageInput = ({
                   pointerEvents: 'auto', // Ensure it receives clicks
                 }}
                 onMouseDown={(e) => {
-                  // 
+                  // console.log("🖱️ Mouse down on emoji picker");
                   e.stopPropagation();
                 }}
                 onClick={(e) => {
-                  // 
+                  // console.log("👆 Click on emoji picker");
                   e.stopPropagation();
                 }}
               >
                 <EmojiPicker
                   onEmojiClick={(emojiObject) => {
-                    // 
-                    // 
+                    // console.log("🎯 Emoji selected:", emojiObject);
+                    // console.log("📝 Current message before:", message);
 
                     setMessage((prev) => {
                       const newMessage = prev + emojiObject.emoji;
-                      // 
+                      // console.log("✅ New message after:", newMessage);
                       return newMessage;
                     });
 
@@ -393,7 +393,7 @@ const MessageInput = ({
                     setTimeout(() => {
                       if (inputRef.current) {
                         inputRef.current.focus();
-                        // 
+                        // console.log("🎯 Input focused");
                       }
                     }, 0);
 
@@ -415,32 +415,38 @@ const MessageInput = ({
               <button
                 ref={attachBtnRef}
                 onClick={() => {
-                  if (finalDisabled) return;
+                  if (!canAccessDocuments) {
+                    // Show error message to user
+                    alert("You don't have permission to attach files");
+                    return;
+                  }
                   setShowFileTypeModal((p) => !p);
                 }}
-                disabled={finalDisabled}
-                className={`p-1.5 sm:p-2 transition-all flex-shrink-0 rounded-full ${finalDisabled
+                disabled={!canAccessDocuments}
+                className={`p-1.5 sm:p-2 transition-all flex-shrink-0 rounded-full ${!canAccessDocuments
                   ? "cursor-not-allowed opacity-50"
                   : "hover:bg-[#f0fdfa] active:bg-[#ccfbf1]"
                   }`}
                 style={{
-                  color: finalDisabled ? "#d1d5db" : "#6b7280",
-                  transform: showFileTypeModal ? "rotate(45deg)" : "rotate(0deg)",
+                  color: !canAccessDocuments ? "#d1d5db" : "#6b7280",
+                  transform: showFileTypeModal && canAccessDocuments ? "rotate(45deg)" : "rotate(0deg)",
                   transition: "transform 0.2s ease, color 0.15s ease",
                 }}
+                title={!canAccessDocuments ? "You don't have permission to attach files" : "Attach file"}
               >
                 <Plus className="w-5 h-5" />
               </button>
 
               {/* WhatsApp-style popup — pass onOpenPoll */}
-              <FileTypePopup
-                showFileTypeModal={showFileTypeModal}
-                setShowFileTypeModal={setShowFileTypeModal}
-                fileInputRef={fileInputRef}
-                onOpenCamera={() => setShowCamera(true)}
-                // onOpenPoll={() => setShowPollCreator(true)}
-                anchorRef={attachBtnRef}
-              />
+              {canAccessDocuments && (
+                <FileTypePopup
+                  showFileTypeModal={showFileTypeModal}
+                  setShowFileTypeModal={setShowFileTypeModal}
+                  fileInputRef={fileInputRef}
+                  onOpenCamera={() => setShowCamera(true)}
+                  anchorRef={attachBtnRef}
+                />
+              )}
             </div>
 
             {/* Text input */}
@@ -459,40 +465,35 @@ const MessageInput = ({
               onFocus={(e) => (e.target.style.boxShadow = "0 0 0 2px rgba(13,148,136,0.3)")}
               onBlur={(e) => (e.target.style.boxShadow = "none")}
             /> */}
-            {isBlocked ? (
-              <div className="flex-1 min-w-0 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-sm flex items-center justify-center text-teal-600 bg-teal-50 border border-teal-200">
-                {/* <AlertTriangle className="w-4 h-4 mr-2 text-red-500" /> */}
-                You are not allowed to send messages
-              </div>
-            ) : (
-              <input
-                ref={inputRef}
-                type="text"
-                value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                  handleTyping?.();
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    if (message?.trim()) onSendMessage?.();
-                  }
-                }}
-                disabled={finalDisabled}
-                placeholder={
-                  isLoading ? "Checking permission..." : "Type a message"
+
+            <input
+              ref={inputRef}
+              type="text"
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                handleTyping?.();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  if (message?.trim()) onSendMessage?.();
                 }
-                className={`flex-1 min-w-0 w-0 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-sm transition-all ${finalDisabled ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                style={{
-                  background: "#f0fdfa",
-                  color: "#134e4a",
-                  border: "1px solid #99f6e4",
-                  outline: "none",
-                }}
-              />
-            )}
+              }}
+              disabled={finalDisabled}
+              placeholder={
+                isLoading ? "Checking permission..." : "Type a message"
+              }
+              className={`flex-1 min-w-0 w-0 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-sm transition-all ${finalDisabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              style={{
+                background: "#f0fdfa",
+                color: "#134e4a",
+                border: "1px solid #99f6e4",
+                outline: "none",
+              }}
+            />
+
             {/* {message?.trim() && (
               <button onPointerDown={(e) => { e.preventDefault(); if (!isInputDisabled && message?.trim()) onSendMessage?.(); }} disabled={isInputDisabled}
                 className={`flex-shrink-0 p-2 sm:p-2.5 rounded-full transition-all active:scale-90 ${isInputDisabled ? "opacity-50 cursor-not-allowed" : "shadow-lg"}`}
@@ -502,7 +503,7 @@ const MessageInput = ({
                 <Send className="w-5 h-5 text-white" />
               </button>
             )} */}
-            {message?.trim() && (
+            {/* {message?.trim() && (
               <button
                 onPointerDown={(e) => {
                   e.preventDefault();
@@ -517,6 +518,28 @@ const MessageInput = ({
                 style={{
                   background: finalDisabled ? "#d1d5db" : "#0d9488",
                 }}
+              >
+                <Send className="w-5 h-5 text-white" />
+              </button>
+            )} */}
+
+            {message?.trim() && (
+              <button
+                onPointerDown={(e) => {
+                  e.preventDefault();
+
+                  if (finalDisabled) return;
+
+                  if (message?.trim()) onSendMessage?.();
+                }}    
+                disabled={finalDisabled}
+                className={`flex-shrink-0 p-2 sm:p-2.5 rounded-full transition-all active:scale-90 ${finalDisabled ? "opacity-50 cursor-not-allowed" : "shadow-lg"
+                  }`}
+                style={{
+                  background: finalDisabled ? "#d1d5db" : "#0d9488",
+                }}
+                onMouseEnter={(e) => { if (!finalDisabled) e.currentTarget.style.background = "#14b8a6"; }}
+                onMouseLeave={(e) => { if (!finalDisabled) e.currentTarget.style.background = "#0d9488"; }}
               >
                 <Send className="w-5 h-5 text-white" />
               </button>

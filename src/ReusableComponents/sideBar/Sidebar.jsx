@@ -752,6 +752,292 @@
 
 // export default Sidebar;
 
+// import { useLocation, useNavigate } from "react-router-dom";
+// import {
+//   HiOutlineViewGrid,
+//   HiOutlineChartBar,
+//   HiOutlineShieldCheck,
+//   HiOutlineIdentification,
+//   HiOutlineCash,
+//   HiUserGroup,
+//   HiOutlineChatAlt2,
+//   HiOutlineLogout,
+//   HiOutlineVideoCamera,
+//   HiOutlineCreditCard,
+//   HiOutlineX,
+// } from "react-icons/hi";
+// import { GrStakeholder } from "react-icons/gr";
+// import { useCallback } from "react";
+// import {
+//   Wallet,
+//   UserRound,
+//   ChevronLeft,
+//   ChevronRight,
+//   Users,
+//   ArrowLeftRight,
+// } from "lucide-react";
+
+// import logo from "../../assets/Images/jaimaxlogo1.svg";
+// import logo2 from "../../assets/welcomeProfile.svg";
+// import { useUserDataQuery } from "../../../src/components/Dashboard/pages/dashBoard/DashboardApliSlice";
+
+// function Sidebar({
+//   isOpen,
+//   isCollapsed,
+//   isMobile,
+//   onClose,
+//   onToggleCollapse,
+//   onLogoutClick,
+// }) {
+//   const { data: userData, error, isLoading } = useUserDataQuery();
+//   const hasAnyWP = userData?.data?.hasAnyWP;
+//   // console.log("User Data:", userData);
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   const navItems = [
+//     { name: "Dashboard", path: "/dashboard", icon: HiOutlineViewGrid },
+//     // { name: "Referral", path: "/Referral", icon: HiOutlineViewGrid },
+//     { name: "Wallet", path: "/wallet", icon: Wallet, size: 18 },
+//     { name: "Buy History", path: "/buy-history", icon: HiOutlineChartBar },
+//     // {name:"mining",path:"/mining",icon: HiOutlineChartBar},
+//     { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
+//     { name: "Staking", path: "/staking", icon: HiOutlineShieldCheck },
+//     { name: "P2P", path: "/p2p", icon: ArrowLeftRight },
+//     ...(hasAnyWP
+//       ? [
+//           {
+//             name: "WP-Staking",
+//             path: "/wp-staking",
+//             icon: GrStakeholder,
+//           },
+//         ]
+//       : []),
+//     { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
+//     { name: "Profile", path: "/profile", icon: UserRound, size: 18 },
+//     { name: "KYC", path: "/kyc-information", icon: HiOutlineIdentification },
+//     { name: "Jaimax Community", path: "/community", icon: Users },
+//     { name: "Support", path: "/support", icon: HiOutlineChatAlt2 },
+//     { name: "Jaimax-Hub", path: "/meetings", icon: HiOutlineVideoCamera },
+//     { name: "Security", path: "/security", icon: HiOutlineShieldCheck },
+//   ];
+//   // Handle navigation click
+//   const handleNavClick = useCallback(
+//     (item) => {
+//       if (item.path && location.pathname !== item.path) {
+//         navigate(item.path);
+//       }
+//       // Close sidebar on mobile after navigation
+//       if (isMobile) {
+//         onClose();
+//       }
+//     },
+//     [isMobile, location.pathname, navigate, onClose],
+//   );
+
+//   // Handle logout click
+//   const handleLogoutClick = useCallback(() => {
+//     onLogoutClick();
+//   }, [onLogoutClick]);
+
+//   // Check if route is active
+//   const isActive = useCallback(
+//     (path) => {
+//       return (
+//         location.pathname === path ||
+//         (path === "/wallet" && location.pathname === "/add-funds") ||
+//         location.pathname.startsWith(path + "/")
+//       );
+//     },
+//     [location.pathname],
+//   );
+
+//   // Determine sidebar width
+//   const getSidebarClasses = () => {
+//     if (isMobile) {
+//       return `w-72 ${isOpen ? "translate-x-0" : "-translate-x-full"}`;
+//     }
+//     return `${isCollapsed ? "w-20" : "w-64"} translate-x-0`;
+//   };
+
+//   // Check if labels should be shown
+//   const showLabels = isMobile || !isCollapsed;
+
+//   return (
+//     <aside
+//       className={`
+//         fixed top-0 left-0 h-screen flex flex-col z-50
+//         transition-all duration-300 ease-in-out
+//         bg-[#085056] shadow-2xl
+//         ${getSidebarClasses()}
+//       `}
+//     >
+//       {/* Header */}
+//       <div className="flex items-center justify-between h-16 px-4 border-b border-white/10 flex-shrink-0">
+//         {/* Logo */}
+//         <div
+//           className={`flex items-center ${
+//             !isMobile && isCollapsed ? "justify-center w-full" : ""
+//           }`}
+//         >
+//           {showLabels ? (
+//             <img src={logo} alt="Jaimax Logo" className="h-12 object-contain" />
+//           ) : (
+//             <img src={logo2} alt="Jaimax Logo" className="h-8 object-contain" />
+//           )}
+//         </div>
+
+//         {/* Toggle/Close Button */}
+//         {isMobile ? (
+//           // Mobile: Close button
+//           <button
+//             onClick={onClose}
+//             className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+//             aria-label="Close menu"
+//           >
+//             <HiOutlineX size={22} />
+//           </button>
+//         ) : (
+//           // Desktop: Collapse toggle button
+//           <button
+//             onClick={onToggleCollapse}
+//             className={`p-2 rounded-lg text-white/70   transition-colors
+//               ${isCollapsed ? "absolute -right-1 top-5  rounded-full" : ""}
+//             `}
+//             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+//           >
+//             {isCollapsed ? (
+//               <ChevronRight size={18} />
+//             ) : (
+//               <ChevronLeft size={18} />
+//             )}
+//           </button>
+//         )}
+//       </div>
+
+//       {/* Navigation */}
+//       <nav
+//         className="flex-1 overflow-y-auto p-3"
+//         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+//       >
+//         {/* Menu Label */}
+//         {showLabels && (
+//           <p className="text-[10px] text-white/40 uppercase font-semibold mb-3 px-3 tracking-widest">
+//             Menu
+//           </p>
+//         )}
+
+//         <div className="space-y-1">
+//           {navItems.map((item) => {
+//             const IconComponent = item.icon;
+//             const active = isActive(item.path);
+
+//             return (
+//               <button
+//                 key={item.name}
+//                 onClick={() => handleNavClick(item)}
+//                 className={`
+//                   w-full relative flex items-center font-medium 
+//                   transition-all duration-200 rounded-xl group
+//                   ${showLabels ? "px-4 py-3 justify-start" : "p-3 justify-center"}
+//                   ${
+//                     active
+//                       ? "text-white bg-white/20"
+//                       : "text-white/70 hover:text-white hover:bg-white/10"
+//                   }
+//                 `}
+//               >
+//                 {/* Active indicator */}
+//                 {active && (
+//                   <span
+//                     className={`absolute bg-white rounded-full ${
+//                       showLabels
+//                         ? "left-0 top-1/2 -translate-y-1/2 h-8 w-1"
+//                         : "bottom-1 left-1/2 -translate-x-1/2 h-1 w-6"
+//                     }`}
+//                   />
+//                 )}
+
+//                 {/* Icon */}
+//                 <span
+//                   className={`flex-shrink-0 ${showLabels ? "text-xl" : "text-2xl"}`}
+//                 >
+//                   <IconComponent size={item.size || 20} />
+//                 </span>
+
+//                 {/* Label */}
+//                 {showLabels && (
+//                   <span className="ml-3 text-sm font-medium truncate">
+//                     {item.name}
+//                   </span>
+//                 )}
+
+//                 {/* Tooltip - Desktop collapsed only */}
+//                 {!isMobile && isCollapsed && (
+//                   <div
+//                     className="absolute left-full ml-3 px-3 py-2 bg-[#085056] border border-white/20 
+//                                text-white text-sm font-medium rounded-lg opacity-0 invisible 
+//                                group-hover:opacity-100 group-hover:visible transition-all duration-200 
+//                                whitespace-nowrap z-[60] shadow-xl pointer-events-none"
+//                   >
+//                     {item.name}
+//                     <div className="absolute right-full top-1/2 -translate-y-1/2 border-8 border-transparent border-r-[#085056]" />
+//                   </div>
+//                 )}
+//               </button>
+//             );
+//           })}
+//         </div>
+//       </nav>
+
+//       {/* Logout Section */}
+//       <div className="p-3 border-t border-white/10 flex-shrink-0">
+//         <button
+//           onClick={handleLogoutClick}
+//           className={`
+//             w-full flex items-center font-medium rounded-xl
+//             text-white/60 hover:text-white hover:bg-red-500/20
+//             transition-all duration-200 group relative
+//             ${showLabels ? "px-4 py-3 justify-start" : "p-3 justify-center"}
+//           `}
+//         >
+//           <HiOutlineLogout
+//             className={`flex-shrink-0 ${showLabels ? "text-xl" : "text-2xl"}`}
+//           />
+
+//           {showLabels && (
+//             <span className="ml-3 text-sm font-medium">Logout</span>
+//           )}
+
+//           {/* Tooltip - Desktop collapsed only */}
+//           {!isMobile && isCollapsed && (
+//             <div
+//               className="absolute left-full ml-3 px-3 py-2 bg-[#085056] border border-white/20 
+//                          text-white text-sm font-medium rounded-lg opacity-0 invisible 
+//                          group-hover:opacity-100 group-hover:visible transition-all duration-200 
+//                          whitespace-nowrap z-[60] shadow-xl pointer-events-none"
+//             >
+//               Logout
+//             </div>
+//           )}
+//         </button>
+//       </div>
+
+//       {/* Hide scrollbar styles */}
+//       <style>{`
+//         nav::-webkit-scrollbar {
+//           display: none;
+//         }
+//       `}</style>
+//     </aside>
+//   );
+// }
+
+// export default Sidebar;
+
+
+
+
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   HiOutlineViewGrid,
@@ -780,6 +1066,7 @@ import {
 import logo from "../../assets/Images/jaimaxlogo1.svg";
 import logo2 from "../../assets/welcomeProfile.svg";
 import { useUserDataQuery } from "../../../src/components/Dashboard/pages/dashBoard/DashboardApliSlice";
+import { useUnread } from "../../context/UnreadContext"; // Added
 
 function Sidebar({
   isOpen,
@@ -789,21 +1076,38 @@ function Sidebar({
   onToggleCollapse,
   onLogoutClick,
 }) {
-  const { data: userData, error, isLoading } = useUserDataQuery();
+  const { data: userData } = useUserDataQuery();
   const hasAnyWP = userData?.data?.hasAnyWP;
+
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Added unread logic
+  const { unread } = useUnread();
+
+  const communityUnread = Object.values(unread || {}).reduce(
+    (sum, count) => sum + (count || 0),
+    0
+  );
+
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: HiOutlineViewGrid },
-    // { name: "Referral", path: "/Referral", icon: HiOutlineViewGrid },
     { name: "Wallet", path: "/wallet", icon: Wallet, size: 18 },
     { name: "Buy History", path: "/buy-history", icon: HiOutlineChartBar },
-    // {name:"mining",path:"/mining",icon: HiOutlineChartBar},
     { name: "J-Wallet", path: "/jwallet", icon: HiOutlineCreditCard },
     { name: "Staking", path: "/staking", icon: HiOutlineShieldCheck },
     { name: "P2P", path: "/p2p", icon: ArrowLeftRight },
-    ...(hasAnyWP ? [ {name: "WP-Staking",path: "/wp-staking",icon: GrStakeholder,},]: []),
+
+    ...(hasAnyWP
+      ? [
+        {
+          name: "WP-Staking",
+          path: "/wp-staking",
+          icon: GrStakeholder,
+        },
+      ]
+      : []),
+
     { name: "Withdrawal", path: "/withdrawal", icon: HiOutlineCash },
     { name: "Profile", path: "/profile", icon: UserRound, size: 18 },
     { name: "KYC", path: "/kyc-information", icon: HiOutlineIdentification },
@@ -812,26 +1116,24 @@ function Sidebar({
     { name: "Jaimax-Hub", path: "/meetings", icon: HiOutlineVideoCamera },
     { name: "Security", path: "/security", icon: HiOutlineShieldCheck },
   ];
-  // Handle navigation click
+
   const handleNavClick = useCallback(
     (item) => {
       if (item.path && location.pathname !== item.path) {
         navigate(item.path);
       }
-      // Close sidebar on mobile after navigation
+
       if (isMobile) {
         onClose();
       }
     },
-    [isMobile, location.pathname, navigate, onClose],
+    [isMobile, location.pathname, navigate, onClose]
   );
 
-  // Handle logout click
   const handleLogoutClick = useCallback(() => {
     onLogoutClick();
   }, [onLogoutClick]);
 
-  // Check if route is active
   const isActive = useCallback(
     (path) => {
       return (
@@ -840,18 +1142,17 @@ function Sidebar({
         location.pathname.startsWith(path + "/")
       );
     },
-    [location.pathname],
+    [location.pathname]
   );
 
-  // Determine sidebar width
   const getSidebarClasses = () => {
     if (isMobile) {
       return `w-72 ${isOpen ? "translate-x-0" : "-translate-x-full"}`;
     }
+
     return `${isCollapsed ? "w-20" : "w-64"} translate-x-0`;
   };
 
-  // Check if labels should be shown
   const showLabels = isMobile || !isCollapsed;
 
   return (
@@ -865,22 +1166,26 @@ function Sidebar({
     >
       {/* Header */}
       <div className="flex items-center justify-between h-16 px-4 border-b border-white/10 flex-shrink-0">
-        {/* Logo */}
         <div
-          className={`flex items-center ${
-            !isMobile && isCollapsed ? "justify-center w-full" : ""
-          }`}
+          className={`flex items-center ${!isMobile && isCollapsed ? "justify-center w-full" : ""
+            }`}
         >
           {showLabels ? (
-            <img src={logo} alt="Jaimax Logo" className="h-12 object-contain" />
+            <img
+              src={logo}
+              alt="Jaimax Logo"
+              className="h-12 object-contain"
+            />
           ) : (
-            <img src={logo2} alt="Jaimax Logo" className="h-8 object-contain" />
+            <img
+              src={logo2}
+              alt="Jaimax Logo"
+              className="h-8 object-contain"
+            />
           )}
         </div>
 
-        {/* Toggle/Close Button */}
         {isMobile ? (
-          // Mobile: Close button
           <button
             onClick={onClose}
             className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-colors"
@@ -889,11 +1194,10 @@ function Sidebar({
             <HiOutlineX size={22} />
           </button>
         ) : (
-          // Desktop: Collapse toggle button
           <button
             onClick={onToggleCollapse}
-            className={`p-2 rounded-lg text-white/70   transition-colors
-              ${isCollapsed ? "absolute -right-1 top-5  rounded-full" : ""}
+            className={`p-2 rounded-lg text-white/70 transition-colors
+              ${isCollapsed ? "absolute -right-1 top-5 rounded-full" : ""}
             `}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
@@ -909,9 +1213,11 @@ function Sidebar({
       {/* Navigation */}
       <nav
         className="flex-1 overflow-y-auto p-3"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
       >
-        {/* Menu Label */}
         {showLabels && (
           <p className="text-[10px] text-white/40 uppercase font-semibold mb-3 px-3 tracking-widest">
             Menu
@@ -928,47 +1234,52 @@ function Sidebar({
                 key={item.name}
                 onClick={() => handleNavClick(item)}
                 className={`
-                  w-full relative flex items-center font-medium 
+                  w-full relative flex items-center font-medium
                   transition-all duration-200 rounded-xl group
-                  ${showLabels ? "px-4 py-3 justify-start" : "p-3 justify-center"}
-                  ${
-                    active
-                      ? "text-white bg-white/20"
-                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  ${showLabels
+                    ? "px-4 py-3 justify-start"
+                    : "p-3 justify-center"
+                  }
+                  ${active
+                    ? "text-white bg-white/20"
+                    : "text-white/70 hover:text-white hover:bg-white/10"
                   }
                 `}
               >
-                {/* Active indicator */}
                 {active && (
                   <span
-                    className={`absolute bg-white rounded-full ${
-                      showLabels
+                    className={`absolute bg-white rounded-full ${showLabels
                         ? "left-0 top-1/2 -translate-y-1/2 h-8 w-1"
                         : "bottom-1 left-1/2 -translate-x-1/2 h-1 w-6"
-                    }`}
+                      }`}
                   />
                 )}
 
-                {/* Icon */}
                 <span
-                  className={`flex-shrink-0 ${showLabels ? "text-xl" : "text-2xl"}`}
+                  className={`flex-shrink-0 ${showLabels ? "text-xl" : "text-2xl"
+                    }`}
                 >
                   <IconComponent size={item.size || 20} />
                 </span>
 
-                {/* Label */}
                 {showLabels && (
                   <span className="ml-3 text-sm font-medium truncate">
                     {item.name}
                   </span>
                 )}
 
-                {/* Tooltip - Desktop collapsed only */}
+                {/* Added unread badge */}
+                {item.name === "Jaimax Community" && communityUnread > 0 && (
+                  <span className="ml-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-tight">
+                    {communityUnread > 99 ? "99+" : communityUnread}
+                  </span>
+                )}
+
                 {!isMobile && isCollapsed && (
                   <div
-                    className="absolute left-full ml-3 px-3 py-2 bg-[#085056] border border-white/20 
-                               text-white text-sm font-medium rounded-lg opacity-0 invisible 
-                               group-hover:opacity-100 group-hover:visible transition-all duration-200 
+                    className="absolute left-full ml-3 px-3 py-2 bg-[#085056] border border-white/20
+                               text-white text-sm font-medium rounded-lg opacity-0 invisible
+                               group-hover:opacity-100 group-hover:visible transition-all duration-200
                                whitespace-nowrap z-[60] shadow-xl pointer-events-none"
                   >
                     {item.name}
@@ -981,7 +1292,7 @@ function Sidebar({
         </div>
       </nav>
 
-      {/* Logout Section */}
+      {/* Logout */}
       <div className="p-3 border-t border-white/10 flex-shrink-0">
         <button
           onClick={handleLogoutClick}
@@ -993,19 +1304,19 @@ function Sidebar({
           `}
         >
           <HiOutlineLogout
-            className={`flex-shrink-0 ${showLabels ? "text-xl" : "text-2xl"}`}
+            className={`flex-shrink-0 ${showLabels ? "text-xl" : "text-2xl"
+              }`}
           />
 
           {showLabels && (
             <span className="ml-3 text-sm font-medium">Logout</span>
           )}
 
-          {/* Tooltip - Desktop collapsed only */}
           {!isMobile && isCollapsed && (
             <div
-              className="absolute left-full ml-3 px-3 py-2 bg-[#085056] border border-white/20 
-                         text-white text-sm font-medium rounded-lg opacity-0 invisible 
-                         group-hover:opacity-100 group-hover:visible transition-all duration-200 
+              className="absolute left-full ml-3 px-3 py-2 bg-[#085056] border border-white/20
+                         text-white text-sm font-medium rounded-lg opacity-0 invisible
+                         group-hover:opacity-100 group-hover:visible transition-all duration-200
                          whitespace-nowrap z-[60] shadow-xl pointer-events-none"
             >
               Logout
@@ -1014,7 +1325,6 @@ function Sidebar({
         </button>
       </div>
 
-      {/* Hide scrollbar styles */}
       <style>{`
         nav::-webkit-scrollbar {
           display: none;
@@ -1025,3 +1335,12 @@ function Sidebar({
 }
 
 export default Sidebar;
+
+
+
+
+
+
+
+
+

@@ -13,6 +13,8 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 import { config, bsc, bscTestnet } from "./wagmi.js";
 import { registerSW } from 'virtual:pwa-register';
+import { UnreadProvider } from "./context/UnreadContext.jsx";
+import { SocketProvider } from "./context/SocketProvider.jsx";
 registerSW({ immediate: true });
 const queryClient = new QueryClient();
 const helmetContext = {};
@@ -21,13 +23,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       {/* <HelmetProvider context={helmetContext}> */}
       <BrowserRouter>
-          <WagmiProvider config={config}>
-            <QueryClientProvider client={queryClient}>
-              <RainbowKitProvider initialChain={bsc}>
-                <App />
-              </RainbowKitProvider>
-            </QueryClientProvider>
-          </WagmiProvider>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider initialChain={bsc}>
+              {/* <App /> */}
+              <UnreadProvider>
+                <SocketProvider>   {/* ← ADD THIS */}
+                  <App />
+                </SocketProvider>
+              </UnreadProvider>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
       </BrowserRouter>
       {/* </HelmetProvider> */}
     </Provider>

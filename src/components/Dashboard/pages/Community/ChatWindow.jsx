@@ -86,13 +86,12 @@ const ChatWindow = ({
   cancelImageUpload, cancelDocumentUpload, removeImage, formatFileSize,
   emojiButtonRef, emojiClickInsideRef, filesPagination, filesPage, setFilesPage,
   filesTabType, rateLimitError,
-  isAdmin = false, isBlocked = false, onAdminDelete, onBlockUser, onUnblockUser, chatError,
+  isAdmin = false, isBlocked = false, onAdminDelete, onBlockUser, onUnblockUser, chatError, unread,
   pinmessageError
 }) => {
   const isMobile = useIsMobile();
   useIsTablet();
-
-  // 
+  // console.log(chatError, "chatError1w2e3r45")
   /* state */
   const [countdown, setCountdown] = useState(0);
   const containerRef = useRef(null);
@@ -163,6 +162,7 @@ const ChatWindow = ({
     else setLocalMenuId(v);
   }, [setOpenMenuId]);
 
+  console.log(unread, "unread1w2e3r4")
   const [observedMsgs, setObservedMsgs] = useState(new Set());
   const observerRef = useRef(null);
 
@@ -365,10 +365,10 @@ const ChatWindow = ({
 
   useEffect(() => {
     if (!selectedGroup || !messagesAreaRef.current || !currentUser?.id) return;
-    observerRef.current?.disconnect();
+    // observerRef.current?.disconnect();
     observerRef.current = new IntersectionObserver(entries => { const now = Date.now(); entries.forEach(e => { if (!e.isIntersecting || e.intersectionRatio < 0.7) return; const id = e.target.getAttribute("data-msg-id"); const uid = e.target.getAttribute("data-from-user-id"); if (!id || !uid || uid === currentUser.id.toString() || observedMsgs.has(id)) return; setObservedMsgs(p => new Set([...p, id])); onMarkAsRead?.({ msgId: id, groupId: selectedGroup.id, chatId: selectedGroup.chatId, userId: currentUser.id, timestamp: now }); if (socketRef?.current?.connected) socketRef.current.emit("message:read", { msgId: id, chatId: selectedGroup.chatId, userId: currentUser.id, readAt: now }); }); }, { root: messagesAreaRef.current, threshold: 0.7, rootMargin: "-20px 0px -20px 0px" });
     const tid = setTimeout(() => messagesAreaRef.current?.querySelectorAll("[data-msg-id]").forEach(el => observerRef.current.observe(el)), 100);
-    return () => { clearTimeout(tid); observerRef.current?.disconnect(); };
+    return () => { clearTimeout(tid);  };
   }, [selectedGroup?.id, selectedGroup?.chatId, messages?.length, currentUser?.id, onMarkAsRead, socketRef]);
 
   useEffect(() => { setObservedMsgs(new Set()); }, [selectedGroup?.id]);
@@ -911,7 +911,7 @@ const ChatWindow = ({
                   fileInputRef={fileInputRef}
                   inputRef={inputRef} emojiPickerRef={emojiPickerRef}
                   emojiButtonRef={emojiButtonRef} emojiClickInsideRef={emojiClickInsideRef}
-                  
+
                   rateLimitError={rateLimitError} isMobile={isMobile}
                   onCameraImageReady={d => {
                     setSelectedImages([{ file: d.file, preview: d.preview, name: d.fileName, size: d.fileSize, type: d.fileType }]);

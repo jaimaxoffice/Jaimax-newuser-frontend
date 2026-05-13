@@ -72,6 +72,11 @@ export const registerSocketHandlers = (socket, handlers) => {
     setPinmessageError,
     setChatError,
     setLastSeenInfo,     // optional
+
+    isChatOpen,
+    //  unreadcounts
+
+    setUnreadCounts,
   } = handlers;
 
   // Safe setter — won't crash if handler doesn't exist yet
@@ -79,15 +84,23 @@ export const registerSocketHandlers = (socket, handlers) => {
     return typeof setter === "function" ? setter : () => { };
   };
 
+  // console.log(setUnreadCounts,"setUnreadCounts1w2e3r4")
+
 
   socket.on("connect", () => {
     setSocketConnected(true);
+
+
+    // console.log("hlolonfinevq1w234")
 
     const activeGroup = selectedGroupRef.current;
 
     if (activeGroup?.chatId) {
 
       socket.emit("join_chat", { chatId: activeGroup.chatId });
+
+
+      console.log("emiited_flow")
 
       // Mark pending messages as failed
       setMessages((prev) =>
@@ -104,6 +117,12 @@ export const registerSocketHandlers = (socket, handlers) => {
       );
     }
 
+    // socket.emit("get_unread_count", {
+    //   chatId: "JAIMAXedb6df9e-52e0-4cfe-8723-83d33a58f9f0",
+    //   userId: "JAIMAX874ZICP"
+    // });
+    // console.log("get_unread_count")
+
     // Auto-select first group if none selected
     if (!hasAutoSelectedRef.current) {
       setGroups((currentGroups) => {
@@ -117,7 +136,7 @@ export const registerSocketHandlers = (socket, handlers) => {
   });
 
 
-  socket.on("disconnect", () => setSocketConnected(false));
+  // socket.on("disconnect", () => setSocketConnected(false));
 
   // ═══════════════════════════════════════════════════════════
   //  PRESENCE
@@ -211,6 +230,52 @@ export const registerSocketHandlers = (socket, handlers) => {
       setIsInitialMessagesLoad(false);
     }
   });
+
+
+
+
+  // socket.on("unread_counts", ({ unreadCounts }) => {
+  //   console.log("📊 Received unread counts from server:", unreadCounts);
+  //   safeSetter(setUnreadCounts)(unreadCounts);
+  // });
+
+  // socket.on("unread_reset", ({ chatId }) => {
+  //   console.log(`✅ Unread reset for chat: ${chatId}`);
+  //   safeSetter(setUnreadCounts)((prev) => ({ ...prev, [chatId]: 0 }));
+  // });
+
+
+  // console.log(isChatOpen, "isChatOpenqqq")
+
+  // socket.emit("get_unread_count", {
+  //   chatId: "JAIMAXedb6df9e-52e0-4cfe-8723-83d33a58f9f0",
+  //   userId: "JAIMAX874ZICP"
+  // });
+
+
+  // socket.on("unread_count_update", (data) => {
+  //   console.log("Unread:", data.unreadCount);
+
+  //   // update UI badge
+  //   setUnreadCounts(data.unreadCount);
+  // });
+
+
+
+  // Listen for count
+  socket.on("unread_count", ({ chatId, count }) => {
+    console.log(`Unread in ${chatId}: ${count}`);
+  });
+
+  // 3. server resets count when you join a chat
+  socket.on("unread_reset", ({ chatId }) => {
+    setUnreadCounts((prev) => ({ ...prev, [chatId]: 0 }));
+  });
+
+
+
+
+
 
 
   socket.on(
@@ -375,34 +440,9 @@ export const registerSocketHandlers = (socket, handlers) => {
     }
   });
 
-  // ═══════════════════════════════════════════════════════════
-  //  SEND MESSAGE ERROR
-  // ═══════════════════════════════════════════════════════════
-  // socket.on("send_message_error", ({ error, correlationId }) => {
-  //   if (isRateLimitError(error)) {
-  //     setMessages((prev) =>
-  //       prev.filter((msg) => msg.correlationId !== correlationId)
-  //     );
-  //     setRateLimitError(error);
-  //     setIsInputDisabled(true);
-  //     if (rateLimitResetTimer.current) {
-  //       clearTimeout(rateLimitResetTimer.current);
-  //     }
-  //     rateLimitResetTimer.current = setTimeout(() => {
-  //       setIsInputDisabled(false);
-  //       setRateLimitError("");
-  //     }, RATE_LIMIT_COOLDOWN_MS);
-  //     return;
-  //   }
 
-  //   setMessages((prev) =>
-  //     prev.map((msg) =>
-  //       msg.correlationId === correlationId
-  //         ? { ...msg, status: "failed", msgStatus: "failed", error }
-  //         : msg
-  //     )
-  //   );
-  // });
+
+
   socket.on("send_message_error", ({ error, correlationId, blocked }) => {
     // ── BLOCKED BY ADMIN ──────────────────────────────────────
     if (blocked === true) {
@@ -564,6 +604,7 @@ export const registerSocketHandlers = (socket, handlers) => {
   });
 
 
+
   const applyDeletedForEveryone = (msgId) =>
     setMessages((prev) =>
       prev.map((msg) => {
@@ -707,8 +748,8 @@ export const registerSocketHandlers = (socket, handlers) => {
 
   socket.on("reaction_error", ({ error }) => {
     console.error("Reaction error:", error);
-  }); 
- 
+  });
+
   socket.on("pinned_messages", ({ chatId, messages: pinnedMsgs }) => {
     // Filter out messages that are deleted for the current user
     const filteredPinned = (pinnedMsgs || []).filter((m) => {

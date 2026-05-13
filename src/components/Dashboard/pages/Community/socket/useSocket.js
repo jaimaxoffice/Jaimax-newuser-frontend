@@ -34,6 +34,11 @@ export const useSocket = ({
   setRateLimitError,
   setSocketInitialized,
   setBlockedUsers,
+
+  isChatOpen,
+
+  //  unreadcount
+  setUnreadCounts,
   // refs
   selectedGroupRef,
   processedMessagesRef,
@@ -76,8 +81,8 @@ export const useSocket = ({
   const connectSocket = useCallback(() => {
     // Tear down any existing socket cleanly
     if (socketRef.current) {
-      socketRef.current.removeAllListeners();
-      socketRef.current.disconnect();
+      // socketRef.current.removeAllListeners();
+      // socketRef.current.disconnect();
       socketRef.current = null;
     }
 
@@ -122,7 +127,10 @@ export const useSocket = ({
       showNotification,
       handleGroupSelect,
       hasAutoSelectedRef,
-      setPinmessageError
+      setPinmessageError,
+      // unreadcounts
+      setUnreadCounts,
+      isChatOpen
     });
   }, [
     currentUser,
@@ -157,6 +165,8 @@ export const useSocket = ({
     setIsDeletingMessage,
     setIsInputDisabled,
     setRateLimitError,
+    isChatOpen,
+    setUnreadCounts
   ]);
 
   // ── Initial connect + cleanup ──────────────────────────────────────────
@@ -169,8 +179,8 @@ export const useSocket = ({
 
     return () => {
       rateLimitResetTimer.current && clearTimeout(rateLimitResetTimer.current);
-      socketRef.current?.removeAllListeners();
-      socketRef.current?.disconnect();
+      // socketRef.current?.removeAllListeners();
+      // socketRef.current?.disconnect();
       socketRef.current = null;
       setSocketInitialized(false);
     };

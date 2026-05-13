@@ -11,6 +11,7 @@ import { useGetGroupsQuery } from "./communityApiSlice";
 import { encryptMessage, decryptMessage } from "./socket/encryptmsg.js";
 import Loader from "../../../../ReusableComponents/Loader/loader.jsx";
 import { useSocket } from "./socket/useSocket.js";
+import { useUnread } from "../../../../context/UnreadContext.jsx";
 import {
   safeDecrypt,
   decodeHtmlEntities,
@@ -23,6 +24,7 @@ import {
   formatDuration,
   makeId,
 } from "./socket/socketUtils.js";
+import { useLocation } from "react-router-dom";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const MESSAGES_PER_PAGE = 50;
@@ -128,6 +130,7 @@ const parseCurrentUser = () => {
     if (!raw) return { id: "", name: "", userregisteredDate: undefined };
     const parsed = JSON.parse(raw);
     const data = parsed?.data || parsed || {};
+    console.log(data, "data123")
     const registeredDate =
       data.registeredDate ||
       data.userregisteredDate ||
@@ -167,6 +170,9 @@ const GroupChatApp = () => {
   const [blockedUsers, setBlockedUsers] = useState([]);
   const [pinmessageError, setPinmessageError] = useState()
 
+
+  const location = useLocation();
+
   // ── Groups ───────────────────────────────────────────────────────────────
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
@@ -192,8 +198,7 @@ const GroupChatApp = () => {
   const [members, setMembers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [chatError, setChatError] = useState(false)
-
-  // ── UI state ──────────────────────────────────────────────────────────────
+  const { setUnread: setUnreadCounts } = useUnread();  // ── UI state ──────────────────────────────────────────────────────────────
   const [showMembers, setShowMembers] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showFilesPanel, setShowFilesPanel] = useState(false);
@@ -234,6 +239,8 @@ const GroupChatApp = () => {
   const [typingUsers, setTypingUsers] = useState([]);
   const [isDeletingMessage, setIsDeletingMessage] = useState(false);
   const [rateLimitError, setRateLimitError] = useState("");
+  // console.log("isChatOpen RIGHT NOW:", isChatOpen); // ← add this
+
 
   // ── Refs ──────────────────────────────────────────────────────────────────
   const messagesEndRef = useRef(null);
@@ -289,13 +296,15 @@ const GroupChatApp = () => {
             ...g,
             lastMessage: preview,
             time: formatTime(data.timestamp),
-            unread: shouldIncrementUnread ? g.unread + 1 : g.unread,
+            unread11: shouldIncrementUnread ? g.unread + 1 : g.unre1ad,
           };
         }),
       );
     },
     [SECRET_KEY, currentUser.id],
   );
+
+
 
   const showNotification = useCallback((data) => {
     setNotifications((prev) =>
@@ -351,7 +360,7 @@ const GroupChatApp = () => {
     window.currentLoadingTimeout = loadingTimeout;
 
     setGroups((prev) =>
-      prev.map((g) => (g.id === group.id ? { ...g, unread: 0 } : g)),
+      prev.map((g) => (g.id === group.id ? { ...g } : g)),
     );
     setNotifications((prev) => prev.filter((n) => n.chatId !== group.chatId));
 
@@ -399,10 +408,11 @@ const GroupChatApp = () => {
     processedMessagesRef,
     hasAutoSelectedRef,
     setPinmessageError,
-
+    setUnreadCounts,
     handleGroupSelect,
     updateGroupLastMessage,
     showNotification,
+
   });
 
   // ── Side-effects ──────────────────────────────────────────────────────────
@@ -458,8 +468,8 @@ const GroupChatApp = () => {
 
     // Debounce: wait 500ms after last messages change
     readBatchTimeoutRef.current = setTimeout(() => {
-      // 
-      // 
+      // console.log("Checking for unread messages to mark as read...");
+      // console.log("Current messages:", messages);
       const unreadMsgIds = messages
       // .filter((msg) => {
       //   const msgId = msg._id?.toString();
@@ -490,7 +500,7 @@ const GroupChatApp = () => {
         });
       }
     }, 0);
-    // 
+    // console.log(messages, "hello")
 
     return () => {
       if (readBatchTimeoutRef.current) {
@@ -553,7 +563,7 @@ const GroupChatApp = () => {
       groupDescription: group.groupDescriptoin,
       lastMessage: group.lastMessage || "",
       time: group.lastMessageTime || "",
-      unread: group.unread || 0,
+      // unread: group.unread || 0,
       avatar:
         "https://res.cloudinary.com/ddefr5owc/image/upload/v1766049897/logo_xwrr9w.png",
     }));
@@ -623,25 +633,10 @@ const GroupChatApp = () => {
     });
   }, [isLoadingNewer, hasMoreNewMessages, newestMessageTimestamp, messages]);
 
-  // const handleTyping = useCallback(() => {
-  //   if (isInputDisabled || !socketRef.current || !selectedGroupRef.current)
-  //     return;
-  //   socketRef.current.emit("user:typing", {
-  //     chatId: selectedGroupRef.current.chatId,
-  //     userId: currentUser.id,
-  //     userName: currentUser.fromUserId,
-  //   });
-  //   typingTimeoutRef.current && clearTimeout(typingTimeoutRef.current);
-  //   typingTimeoutRef.current = setTimeout(() => {
-  //     socketRef.current?.emit("user:stop-typing", {
-  //       chatId: selectedGroupRef.current?.chatId,
-  //       userId: currentUser.id,
-  //     });
-  //   }, TYPING_TIMEOUT_MS);
-  // }, [currentUser, isInputDisabled]);
-  // ✅ Debounced typing — emits ONCE, not per keystroke
 
+  // console.log("Emitting get_unread_counts");
 
+  // socketRef.current.emit("get_unread_counts");
 
   const handleTyping = useCallback(() => {
     if (!socketRef.current?.connected || !selectedGroupRef.current) return;
@@ -1059,6 +1054,9 @@ const GroupChatApp = () => {
     [currentUser.id],
   );
 
+
+
+
   const deleteForEveryone = useCallback(
     (msgId) => {
       setIsDeletingMessage(true);
@@ -1244,7 +1242,7 @@ const GroupChatApp = () => {
   }, []);
 
   // ── Render ────────────────────────────────────────────────────────────────
-  // 
+  // console.log(socketInitialized, currentUser.id, isLoadingGroups, "dataebehdb ")
   const showLoader = !socketInitialized || !currentUser.id || isLoadingGroups;
   const showGroupList = !isMobile || !selectedGroup;
   const showChatPane = !isMobile || !!selectedGroup;
