@@ -828,11 +828,11 @@ function WpStaking() {
           </div>
 
           {/* ── Metric Row ────────────────────────── */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 20 }}>
+          {/* <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginBottom: 20 }}>
             <MetricCard label="Total Awarded" value={fmt(data.totalTokensAwarded)} unit="JMC tokens" primary delay={0.1} />
             <MetricCard label="Net Balance" value={fmt(data.netTokens)} unit="JMC available" delay={0.14} />
             <MetricCard label="Sold in P2P" value={fmt(data.totalSoldInP2P)} unit="JMC transferred" delay={0.18} />
-          </div>
+          </div> */}
 
           {/* ── P2P History ─────────────────────────── */}
           <div style={{

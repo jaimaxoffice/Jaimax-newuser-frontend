@@ -62,7 +62,7 @@ const CreateStakeModal = ({
             <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight flex gap-2 items-center">
               <span><ArrowLeftRight /></span>
               <span>P2P Purchase</span>
-              
+
             </h3>
             <p className="text-teal-100 text-xs sm:text-sm mt-1.5 text-start">
               Buy JMC directly from a seller
@@ -142,12 +142,12 @@ const CreateStakeModal = ({
                   <div className="">
                     {quoteLoading ? (
                       <div className="bg-teal-50 p-3 sm:p-5 rounded-xl">
-                      <div className="flex justify-center py-6">
-                        <Coins
-                          className="animate-spin text-teal-700"
-                          size={24}
-                        />
-                      </div>
+                        <div className="flex justify-center py-6">
+                          <Coins
+                            className="animate-spin text-teal-700"
+                            size={24}
+                          />
+                        </div>
                       </div>
                     ) : quoteError ? (
                       <div className="bg-red-50 rounded-xl p-4">
@@ -163,6 +163,7 @@ const CreateStakeModal = ({
                         {/* Seller → arc coins → Buyer */}
                         <div className="flex flex-col sm:flex-row items-center justify-between mb-5 sm:gap-0">
                           <div className="text-center shrink-0">
+                            
                             <p className="text-[10px] sm:text-xs text-gray-400 sm:mb-1.5">
                               Seller
                             </p>
@@ -170,6 +171,9 @@ const CreateStakeModal = ({
                               {quoteData?.data?.parties?.seller?.username}
                             </span>
                           </div>
+                             <span className="text-[10px] sm:text-xs font-semibold   px-3 py-1 rounded-full">
+                              {quoteData?.data?.parties?.seller?.name}
+                            </span>
 
                           {/* Arc animation sits between the two labels */}
                           <ArcTransfer />

@@ -84,12 +84,6 @@ const TradeCard = ({ trade }) => (
     <div className="p-4 space-y-5">
       {/* Buyer / Seller */}
       <div className="">
-        {/* <div className="bg-teal-50 rounded-2xl p-3">
-          <p className="text-xs text-slate-500">Buyer</p>
-          <p className="font-semibold text-slate-800 mt-1 truncate">
-            {trade.buyer?.username}
-          </p>
-        </div> */}
 
         <div className="bg-teal-50 rounded-2xl p-3 flex justify-between items-center">
           <p className="text-xs text-slate-500">Total Coins</p>
@@ -130,10 +124,6 @@ const TradeCard = ({ trade }) => (
           <Calendar size={14} />
           {formatDateWithAmPm(trade.createdAt)}
         </div>
-
-        {/* <span className="text-xs font-medium text-teal-600">
-          {trade.coins.totalCoins.toLocaleString()} JMC
-        </span> */}
       </div>
     </div>
   </div>

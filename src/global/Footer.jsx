@@ -342,7 +342,14 @@ const Footer = () => {
               </h3>
               <ul className="space-y-2 sm:space-y-3">
                 {[
-                  { name: "ICO Timeline", path: "/PreSale/", title: "View Jaimax ICO timeline and pre-sale details" },
+                  { name: "WP Settlement Form", path: "https://docs.google.com/forms/d/e/1FAIpQLSevMMMBn7LuJicTDOeXncgPbK7XYjkzpnsLfGGBUpKFBiNbGQ/viewform", title: "Kindly fill the form for the test." },
+                  {
+                    name: "Submit WP Conversion",
+                    path: "/settlement_form.pdf",
+                    external: true,
+                    title: "View Settlement Form PDF",
+                  },
+                  // { name: "ICO Timeline", path: "/PreSale/", title: "View Jaimax ICO timeline and pre-sale details" },
                   { name: "Margin Trading", path: "/Margintrading/", title: "Learn about margin trading on Jaimax" },
                   { name: "API Trading", path: "/ApiTrading/", title: "Explore Jaimax API trading solutions" },
                   { name: "Spot Trading", path: "/SpotTrading/", title: "Start spot trading on Jaimax platform" },
@@ -350,14 +357,25 @@ const Footer = () => {
                   { name: "Pre Sale Crypto Coin", path: "/best-presale-crypto-coin-in-india", title: "Discover futures trading opportunities" },
                 ].map((link) => (
                   <li key={link.name}>
-                    <NavLink
-                      to={link.path}
-                      title={link.title}
-                      className="text-white/70 text-sm transition-all duration-300 hover:text-white hover:translate-x-1 inline-block relative group"
-                    >
-                      {link.name}
-                      <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-[#c5d82e] to-[#b8cc26] transition-all duration-300 group-hover:w-full"></span>
-                    </NavLink>
+                    {link.external ? (
+                      <a
+                        href={link.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={link.title}
+                        className="text-white/70 text-sm transition-all duration-300 hover:text-white hover:translate-x-1 inline-block relative group"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <NavLink
+                        to={link.path}
+                        title={link.title}
+                        className="text-white/70 text-sm transition-all duration-300 hover:text-white hover:translate-x-1 inline-block relative group"
+                      >
+                        {link.name}
+                      </NavLink>
+                    )}
                   </li>
                 ))}
               </ul>
