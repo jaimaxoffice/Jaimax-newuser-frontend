@@ -207,14 +207,14 @@ const UsdtTransactionTableTab = ({
         ),
       },
       {
-        header: "Mode Of Payment",
+        header: "Source of Withdrawal",
         accessor: "sourceOfWithdrwal",
         align: 'center',
         render: (row) => (
           <div className="flex justify-center">
             <span className=" font-medium ">
               {row.sourceOfWithdrwal || "-"}
-            </span>
+            </span> 
           </div>
         ),
       },

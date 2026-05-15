@@ -268,6 +268,7 @@ const routeTitles = {
   "/consents": "Consents",
   "/dashboardapis": "Dashboard APIs",
   "/goa-vacation": "Goa Vacation",
+  "/staking":"Staking",
   "/p2p": "P2P"
 };
 

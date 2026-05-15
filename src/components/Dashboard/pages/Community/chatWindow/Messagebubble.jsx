@@ -414,9 +414,9 @@ const MessageBubble = ({
                   }}
                   onClick={e => toggleMenu(id, e, isMe)}
                 >
-                  {isallowed && (
+                  {/* {isallowed && ( */}
                     <ChevronDown className="w-[13px] h-[13px]" />
-                  )}
+                  {/* )} */}
                 </button>
               )}
             </div>
@@ -480,7 +480,7 @@ const MessageBubble = ({
             className="group-hover:!opacity-100 group-hover:!pointer-events-auto absolute top-1 flex items-center gap-1 opacity-0 transition-opacity pointer-events-none"
             style={{ ...(isMe ? { left: -84 } : { right: -84 }) }}
           >
-            {isallowed && (
+            {/* {isallowed && ( */}
               <>
                 <button
                   onClick={e => onReact?.(id, e)}
@@ -503,7 +503,7 @@ const MessageBubble = ({
                 </button>
 
               </>
-            )}
+            {/* )} */}
           </div>
         )}
 
