@@ -377,9 +377,9 @@ const ReferralRewards = ({ onBack }) => {
       {/* ── Empty ── */}
       {!logs.length ? (
         <div className="bg-white rounded-2xl p-14 text-center border border-gray-100">
-          <div className="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center mx-auto mb-4">
+          {/* <div className="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center mx-auto mb-4">
             <Gift size={20} className="text-teal-600" />
-          </div>
+          </div> */}
           <p className="text-sm font-semibold text-gray-800 mb-1">No referral rewards yet</p>
           <p className="text-xs text-gray-400">Your referral commissions will appear here</p>
         </div>

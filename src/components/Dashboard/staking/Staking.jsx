@@ -646,41 +646,66 @@ const StakingDashboard = () => {
 
           {/* Info Modal */}
           {showInfoModal && (
-            <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => setShowInfoModal(false)}>
-              <div style={{ backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)', padding: '2rem', maxWidth: '500px', width: '90%', maxHeight: '80vh', overflow: 'auto' }} onClick={(e) => e.stopPropagation()}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                  <h2 style={{ fontSize: 18, fontWeight: 700, color: '#111827', margin: 0 }}>Dashboard Metrics</h2>
-                  <button onClick={() => setShowInfoModal(false)} style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#6b7280' }}>✕</button>
+            <div
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-4"
+              onClick={() => setShowInfoModal(false)}
+            >
+              <div
+                className="bg-white rounded-lg shadow-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header - Fixed */}
+                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+                  <h2 className="text-lg font-bold text-gray-900">Dashboard Metrics</h2>
+                  <button
+                    onClick={() => setShowInfoModal(false)}
+                    className="text-gray-400 hover:text-gray-600 text-xl leading-none transition-colors"
+                  >
+                    ✕
+                  </button>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                {/* Content - Scrollable */}
+                <div className="px-6 py-4 space-y-2">
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 200, color: '#111827', margin: '0 0 0.25rem 0' }}>Total Staked : Total JMC tokens you have locked in staking</p>
+                    <p className="text-sm font-light text-gray-900 mb-1">
+                      <span className="font-semibold">Total Staked:</span> Total JMC tokens you have locked in staking
+                    </p>
                   </div>
-                  <hr style={{ margin: '0.5rem 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
+                  <hr className="border-gray-200" />
 
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 200, color: '#111827', margin: '0 0 0.25rem 0' }}>Interest Earned : Rewards earned from staking and referrals.</p>
+                    <p className="text-sm font-light text-gray-900 mb-1">
+                      <span className="font-semibold">Interest Earned:</span> Rewards earned from staking and referrals.
+                    </p>
                   </div>
-                  <hr style={{ margin: '0.5rem 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
+                  <hr className="border-gray-200" />
 
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 200, color: '#111827', margin: '0 0 0.25rem 0' }}>Referral Earnings :  Tokens earned by inviting users.</p>
+                    <p className="text-sm font-light text-gray-900 mb-1">
+                      <span className="font-semibold">Referral Earnings:</span> Tokens earned by inviting users.
+                    </p>
                   </div>
-                  <hr style={{ margin: '0.5rem 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
+                  <hr className="border-gray-200" />
 
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 200, color: '#111827', margin: '0 0 0.25rem 0' }}>Lifetime Earnings :Total earnings since you started.</p>
+                    <p className="text-sm font-light text-gray-900 mb-1">
+                      <span className="font-semibold">Lifetime Earnings:</span> Total earnings since you started.
+                    </p>
                   </div>
-                  <hr style={{ margin: '0.5rem 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
+                  <hr className="border-gray-200" />
 
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 200, color: '#111827', margin: '0 0 0.25rem 0' }}>Active Orders :Orders that are currently running.</p>
+                    <p className="text-sm font-light text-gray-900 mb-1">
+                      <span className="font-semibold">Active Orders:</span> Orders that are currently running.
+                    </p>
                   </div>
-                  <hr style={{ margin: '0.5rem 0', border: 'none', borderTop: '1px solid #e5e7eb' }} />
+                  <hr className="border-gray-200" />
 
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 200, color: '#111827', margin: '0 0 0.25rem 0' }}>Sold in P2P : Tokens  sold in the P2P market.</p>
+                    <p className="text-sm font-light text-gray-900 mb-1">
+                      <span className="font-semibold">Sold in P2P:</span> Tokens sold in the P2P market.
+                    </p>
                   </div>
                 </div>
               </div>

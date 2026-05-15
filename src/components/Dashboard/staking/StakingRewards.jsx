@@ -141,7 +141,7 @@ const StakingRewards = ({ onBack, orderId }) => {
         <div style={{ maxWidth: 1500, margin: '0 auto' }}>
           <BackButton onBack={onBack} />
           <div style={{ marginTop: '1.25rem', background: '#fff', borderRadius: 16, border: '0.5px solid #e5e7eb', padding: '4rem 1rem', textAlign: 'center' }}>
-            <div style={{ fontSize: 36, marginBottom: 12 }}>🪙</div>
+            {/* <div style={{ fontSize: 36, marginBottom: 12 }}>🪙</div> */}
             <div style={{ fontSize: 16, fontWeight: 600, color: '#111827', marginBottom: 6 }}>No rewards yet</div>
             <div style={{ fontSize: 13, color: '#9ca3af' }}>Staking rewards will appear here as they are disbursed daily</div>
           </div>
